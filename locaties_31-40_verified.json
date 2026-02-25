@@ -1,0 +1,194 @@
+{
+  "locaties": [
+    {
+      "id": 31,
+      "naam": "Efteling",
+      "type": "play",
+      "adres": "Europalaan 1, 5171 KW Kaatsheuvel",
+      "website": "https://www.efteling.com",
+      "google_maps_url": "https://goo.gl/maps/dn6UiaKapWx",
+      "coordinaten": {
+        "lat": 51.650654,
+        "lng": 5.049746
+      },
+      "faciliteiten": {
+        "koffie": true,
+        "alcohol": true,
+        "verschoon": true
+      },
+      "beschrijving": "Het grootste themapark van Nederland met veel attracties geschikt voor peuters, waaronder het Sprookjesbos, Carnaval Festival en diverse speeltuinen. Kinderen tot 3 jaar gratis.",
+      "region": "Overig"
+    },
+    {
+      "id": 32,
+      "naam": "Julianatoren",
+      "type": "play",
+      "adres": "Amersfoortseweg 35, 7313 AC Apeldoorn",
+      "website": "https://www.julianatoren.nl",
+      "google_maps_url": "https://www.google.com/maps/search/Julianatoren+Apeldoorn",
+      "coordinaten": {
+        "lat": 52.227544,
+        "lng": 5.916241
+      },
+      "faciliteiten": {
+        "koffie": true,
+        "alcohol": true,
+        "verschoon": true
+      },
+      "beschrijving": "Compact kinderpretpark speciaal voor jonge kinderen tot 10 jaar. Meer dan 60 attracties, veel al geschikt vanaf 2 jaar. Overzichtelijk en goed te lopen voor kleine kinderbeentjes.",
+      "region": "Overig"
+    },
+    {
+      "id": 33,
+      "naam": "Dierenpark Amersfoort",
+      "type": "nature",
+      "adres": "Barchman Wuytierslaan 224, 3819 AC Amersfoort",
+      "website": "https://dierenparkamersfoort.nl",
+      "google_maps_url": "https://www.google.com/maps/search/Dierenpark+Amersfoort",
+      "coordinaten": {
+        "lat": 52.150746,
+        "lng": 5.346012
+      },
+      "faciliteiten": {
+        "koffie": true,
+        "alcohol": true,
+        "verschoon": true
+      },
+      "beschrijving": "Dierentuin die zichzelf omschrijft als dé dierentuin voor kinderen. Kinderen kunnen klimmen, glijden en varen tussen de dieren. Inclusief Dinopark met levensgrote dinosauriërs.",
+      "region": "Utrecht"
+    },
+    {
+      "id": 34,
+      "naam": "Hortus Botanicus Leiden",
+      "type": "nature",
+      "adres": "Rapenburg 73, 2311 GJ Leiden",
+      "website": "https://www.hortusleiden.nl",
+      "google_maps_url": "https://www.google.com/maps/search/Hortus+Botanicus+Leiden",
+      "coordinaten": {
+        "lat": 52.157094,
+        "lng": 4.484522
+      },
+      "faciliteiten": {
+        "koffie": true,
+        "alcohol": false,
+        "verschoon": true
+      },
+      "beschrijving": "De oudste botanische tuin van Nederland, opgericht in 1590. Rustige groene oase in de binnenstad van Leiden met diverse tuindelen, kassen en een tropisch kassencomplex.",
+      "region": "Overig"
+    },
+    {
+      "id": 35,
+      "naam": "Molen de Valk",
+      "type": "museum",
+      "adres": "Molenwerf 1, 2312 CH Leiden",
+      "website": "https://molenmuseumdevalk.nl",
+      "google_maps_url": "https://www.google.com/maps/search/Molen+de+Valk+Leiden",
+      "coordinaten": {
+        "lat": 52.1645,
+        "lng": 4.48643
+      },
+      "faciliteiten": {
+        "koffie": false,
+        "alcohol": false,
+        "verschoon": false
+      },
+      "beschrijving": "Molenmuseum in een gerestaureerde graanmolen uit 1743. Laat zien hoe molenaars en hun gezinnen leefden en werken. Beperkte faciliteiten voor peuters.",
+      "region": "Overig"
+    },
+    {
+      "id": 36,
+      "naam": "Stoomtrein Katwijk Leiden",
+      "type": "museum",
+      "adres": "Jan Pellenbargweg 1, 2235 SP Valkenburg ZH",
+      "website": "https://stoomtreinkatwijkleiden.nl",
+      "google_maps_url": "https://www.google.com/maps/search/Stoomtrein+Katwijk+Leiden",
+      "coordinaten": {
+        "lat": 52.1745,
+        "lng": 4.4257
+      },
+      "faciliteiten": {
+        "koffie": true,
+        "alcohol": false,
+        "verschoon": true
+      },
+      "beschrijving": "Museum met stoomtreinritten tussen Katwijk en Valkenburg. Leuk voor treinliefhebbers van alle leeftijden. Seizoensgebonden open, voornamelijk in weekends en vakanties.",
+      "region": "Overig"
+    },
+    {
+      "id": 37,
+      "naam": "Duinrell",
+      "type": "play",
+      "adres": "Duinrell 1, 2242 JP Wassenaar",
+      "website": "https://www.duinrell.com",
+      "google_maps_url": "https://www.google.com/maps/search/Duinrell+Wassenaar",
+      "coordinaten": {
+        "lat": 52.146875,
+        "lng": 4.38286
+      },
+      "faciliteiten": {
+        "koffie": true,
+        "alcohol": true,
+        "verschoon": true
+      },
+      "beschrijving": "Attractiepark met Tikibad waterpark. Voor peuters is er Kids Waterpark Playa, Rick's Avonturen Burcht, en diverse rustige attracties zoals de Carrousel en Monorail.",
+      "region": "Den Haag"
+    },
+    {
+      "id": 38,
+      "naam": "Rijksmuseum Amsterdam",
+      "type": "museum",
+      "adres": "Museumstraat 1, 1071 XX Amsterdam",
+      "website": "https://www.rijksmuseum.nl",
+      "google_maps_url": "https://www.google.com/maps/search/Rijksmuseum+Amsterdam",
+      "coordinaten": {
+        "lat": 52.360001,
+        "lng": 4.885278
+      },
+      "faciliteiten": {
+        "koffie": true,
+        "alcohol": true,
+        "verschoon": true
+      },
+      "beschrijving": "Nederlands bekendste museum met speciale kinderactiviteiten zoals de Pim & Pom audiotour, Teekenlab en familiespeurtochten. Kinderen tot 18 jaar gratis.",
+      "region": "Amsterdam"
+    },
+    {
+      "id": 39,
+      "naam": "Van Gogh Museum",
+      "type": "museum",
+      "adres": "Paulus Potterstraat 7, 1071 CX Amsterdam",
+      "website": "https://www.vangoghmuseum.nl",
+      "google_maps_url": "https://www.google.com/maps/search/Van+Gogh+Museum+Amsterdam",
+      "coordinaten": {
+        "lat": 52.358059,
+        "lng": 4.881124
+      },
+      "faciliteiten": {
+        "koffie": true,
+        "alcohol": false,
+        "verschoon": true
+      },
+      "beschrijving": "Wereldberoemd museum met het grootste Van Gogh-collectie ter wereld. Kindvriendelijk met gratis familietour, speurtochten en schilderworkshops. Kinderen tot 17 jaar gratis.",
+      "region": "Amsterdam"
+    },
+    {
+      "id": 40,
+      "naam": "Stedelijk Museum Amsterdam",
+      "type": "museum",
+      "adres": "Museumplein 10, 1071 DJ Amsterdam",
+      "website": "https://www.stedelijk.nl",
+      "google_maps_url": "https://www.google.com/maps/search/Stedelijk+Museum+Amsterdam",
+      "coordinaten": {
+        "lat": 52.358009,
+        "lng": 4.879665
+      },
+      "faciliteiten": {
+        "koffie": true,
+        "alcohol": false,
+        "verschoon": true
+      },
+      "beschrijving": "Museum voor moderne en hedendaagse kunst. Biedt familierondleidingen, scheessessies tussen sculpturen en WhatsApp-speurtochten voor kinderen. Kinderen tot 18 jaar gratis.",
+      "region": "Amsterdam"
+    }
+  ]
+}
