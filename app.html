@@ -155,6 +155,7 @@
 
         <div class="tag-mixer">
             <button class="tag-pill active" onclick="toggleTag('all')">Alles</button>
+            <button class="tag-pill" onclick="toggleTag('favorites')">⭐ Favorieten</button>
             <button class="tag-pill" onclick="toggleTag('play')">Speeltuin</button>
             <button class="tag-pill" onclick="toggleTag('nature')">Bos & Natuur</button>
             <button class="tag-pill" onclick="toggleTag('horeca')">Horeca</button>
@@ -192,6 +193,27 @@
         let userLocation = null;
         let allLocations = [];
         let autocomplete;
+        
+        // Favorieten uit localStorage
+        function getFavorites() {
+            return JSON.parse(localStorage.getItem('peuterplannen_favorites') || '[]');
+        }
+        
+        function toggleFavorite(locationId) {
+            const favorites = getFavorites();
+            const index = favorites.indexOf(locationId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(locationId);
+            }
+            localStorage.setItem('peuterplannen_favorites', JSON.stringify(favorites));
+            loadLocations(); // Re-render om hartje te updaten
+        }
+        
+        function isFavorite(locationId) {
+            return getFavorites().includes(locationId);
+        }
 
         function initAutocomplete() {
             const input = document.getElementById('location-input');
@@ -275,10 +297,20 @@
             const container = document.getElementById('results-container'), loader = document.getElementById('loader'), error = document.getElementById('error');
             container.innerHTML = ''; loader.classList.remove('hidden'); error.classList.add('hidden');
             try {
-                let url = SB_URL + "?select=*"; if (activeTag !== 'all') url += "&type=eq." + activeTag; url += "&order=created_at.desc";
+                let url = SB_URL + "?select=*";
+                if (activeTag !== 'all' && activeTag !== 'favorites') url += "&type=eq." + activeTag;
+                url += "&order=created_at.desc";
                 const response = await fetch(url, { method: 'GET', headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" } });
                 if (!response.ok) throw new Error('Fetch failed: ' + response.status);
-                allLocations = await response.json(); loader.classList.add('hidden');
+                allLocations = await response.json();
+                
+                // Filter favorites als dat de actieve tag is
+                if (activeTag === 'favorites') {
+                    const favorites = getFavorites();
+                    allLocations = allLocations.filter(item => favorites.includes(item.id));
+                }
+                
+                loader.classList.add('hidden');
                 if (allLocations.length === 0) { container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>Probeer een andere categorie</div>'; return; }
                 if (userLocation) { allLocations.forEach(item => { item.distanceKm = calculateDistance(userLocation.lat, userLocation.lng, item.lat, item.lng); }); allLocations.sort((a, b) => a.distanceKm - b.distanceKm); }
                 renderCards(allLocations, {}); if (userLocation) { const travelTimes = await calculateTravelTimes(allLocations); renderCards(allLocations, travelTimes); }
@@ -291,6 +323,8 @@
                 const travelInfo = travelTimes[item.id];
                 const distanceText = userLocation ? `${item.distanceKm.toFixed(1)} km` : (item.region || 'Randstad');
                 const travelTimeHtml = travelInfo ? `<div class="travel-time ${travelInfo.estimated ? 'estimated' : ''}"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>${travelInfo.duration}</div>` : (userLocation ? '<div class="travel-time calculating"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Reistijd...</div>' : '');
+                const isFav = isFavorite(item.id);
+                const favIcon = isFav ? 'fill: var(--peach); stroke: var(--peach);' : 'fill: none; stroke: var(--ink-muted);';
                 const card = document.createElement('div'); card.className = 'result-card glass-card'; card.style.animationDelay = `${index * 0.05}s`;
                 card.innerHTML = `
                     <div class="meta-top">
@@ -298,10 +332,15 @@
                             <div class="distance">${distanceText}</div>
                             ${travelTimeHtml}
                         </div>
-                        <div class="badges">
-                            ${item.coffee ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg><span class="tooltip">Koffie beschikbaar</span></div>' : ''}
-                            ${item.alcohol ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 3h10v9a5 5 0 0 1-10 0V3z"/></svg><span class="tooltip">Alcohol beschikbaar</span></div>' : ''}
-                            ${item.diaper ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v2a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3V7a5 5 0 0 1 5-5z"/><path d="M9 12v8a3 3 0 0 0 6 0v-8"/></svg><span class="tooltip">Verschoonplek</span></div>' : ''}
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <button onclick="toggleFavorite(${item.id})" style="background: none; border: none; padding: 4px; cursor: pointer;" title="${isFav ? 'Verwijder uit favorieten' : 'Toevoegen aan favorieten'}">
+                                <svg width="22" height="22" viewBox="0 0 24 24" style="${favIcon} stroke-width: 2; transition: all 0.2s;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                            </button>
+                            <div class="badges">
+                                ${item.coffee ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg><span class="tooltip">Koffie beschikbaar</span></div>' : ''}
+                                ${item.alcohol ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 3h10v9a5 5 0 0 1-10 0V3z"/></svg><span class="tooltip">Alcohol beschikbaar</span></div>' : ''}
+                                ${item.diaper ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v2a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3V7a5 5 0 0 1 5-5z"/><path d="M9 12v8a3 3 0 0 0 6 0v-8"/></svg><span class="tooltip">Verschoonplek</span></div>' : ''}
+                            </div>
                         </div>
                     </div>
                     <div class="name">${item.name}</div>
@@ -309,10 +348,24 @@
                     <div class="actions">
                         <a href="https://www.google.com/maps/dir/?api=1&origin=${userLocation ? userLocation.lat + ',' + userLocation.lng : ''}&destination=${item.lat},${item.lng}" target="_blank" class="btn btn-primary"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>Route</a>
                         ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Website</a>` : ''}
+                        <button onclick="shareLocation('${item.name}', ${item.lat}, ${item.lng})" class="btn" title="Delen"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>
                     </div>
                 `;
                 container.appendChild(card);
             });
+        }
+        
+        // Deel functie
+        function shareLocation(name, lat, lng) {
+            const url = `https://www.google.com/maps/?q=${lat},${lng}`;
+            const text = `Bekijk ${name} op PeuterPlannen: ${url}`;
+            if (navigator.share) {
+                navigator.share({ title: name, text: text, url: url });
+            } else {
+                // WhatsApp deeplink fallback
+                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+                window.open(whatsappUrl, '_blank');
+            }
         }
 
         function toggleTag(tag) {
