@@ -1,1154 +1,1303 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Peuterplannen 🌟</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #FFFBF5;
-    --primary: #6C3CE1;
-    --primary-light: #EDE5FF;
-    --accent: #FFD93D;
-    --success: #6BCB77;
-    --pink: #FF6B9D;
-    --text: #1A1A2E;
-    --text-muted: #6B7280;
-    --card: #FFFFFF;
-    --radius: 20px;
-    --radius-lg: 24px;
-    --shadow: 0 4px 20px rgba(0,0,0,0.08);
-    --shadow-md: 0 8px 30px rgba(0,0,0,0.12);
-    --transition: all 0.2s ease;
-  }
-
-  body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding-bottom: 40px;
-  }
-
-  /* Header */
-  .app-header {
-    background: linear-gradient(135deg, var(--primary) 0%, #8B5CF6 100%);
-    color: white;
-    padding: 20px 20px 0;
-    text-align: center;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 4px 20px rgba(108,60,225,0.3);
-  }
-
-  .app-title {
-    font-size: 1.6rem;
-    font-weight: 900;
-    letter-spacing: -0.5px;
-    margin-bottom: 4px;
-  }
-
-  .app-subtitle {
-    font-size: 0.85rem;
-    opacity: 0.85;
-    font-weight: 500;
-    margin-bottom: 16px;
-  }
-
-  /* Tabs */
-  .tabs {
-    display: flex;
-    gap: 4px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 16px 16px 0 0;
-    padding: 6px 6px 0;
-  }
-
-  .tab-btn {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: rgba(255,255,255,0.7);
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    padding: 10px 8px 12px;
-    border-radius: 12px 12px 0 0;
-    cursor: pointer;
-    transition: var(--transition);
-    white-space: nowrap;
-  }
-
-  .tab-btn.active {
-    background: var(--bg);
-    color: var(--primary);
-  }
-
-  .tab-btn:hover:not(.active) {
-    background: rgba(255,255,255,0.1);
-    color: white;
-  }
-
-  /* Main content */
-  .main {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 24px 16px;
-  }
-
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
-
-  /* Cards */
-  .card {
-    background: var(--card);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow);
-    padding: 20px;
-    margin-bottom: 16px;
-  }
-
-  /* Buttons */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 18px;
-    border-radius: 50px;
-    border: none;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: var(--transition);
-    min-height: 44px;
-  }
-
-  .btn:hover { transform: scale(1.02); }
-  .btn:active { transform: scale(0.98); }
-
-  .btn-primary {
-    background: var(--primary);
-    color: white;
-    box-shadow: 0 4px 15px rgba(108,60,225,0.35);
-  }
-
-  .btn-primary:hover {
-    background: #5a2fd4;
-    box-shadow: 0 6px 20px rgba(108,60,225,0.45);
-  }
-
-  .btn-accent {
-    background: var(--accent);
-    color: var(--text);
-  }
-
-  .btn-ghost {
-    background: var(--primary-light);
-    color: var(--primary);
-  }
-
-  .btn-sm {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    min-height: 34px;
-  }
-
-  /* Today tab */
-  .date-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-
-  .date-header h2 {
-    font-size: 1.6rem;
-    font-weight: 900;
-    color: var(--text);
-  }
-
-  .date-badge {
-    background: var(--primary-light);
-    color: var(--primary);
-    font-weight: 700;
-    font-size: 0.8rem;
-    padding: 4px 12px;
-    border-radius: 50px;
-  }
-
-  .time-block {
-    background: var(--card);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow);
-    padding: 20px;
-    margin-bottom: 16px;
-    transition: var(--transition);
-  }
-
-  .time-block:hover {
-    box-shadow: var(--shadow-md);
-  }
-
-  .time-block-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-
-  .time-block-title {
-    font-size: 1.1rem;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .time-block-ochtend { border-top: 4px solid #FFD93D; }
-  .time-block-middag { border-top: 4px solid #FF6B9D; }
-  .time-block-avond { border-top: 4px solid #6C3CE1; }
-
-  .activities-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    min-height: 36px;
-    margin-bottom: 12px;
-  }
-
-  .activity-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--primary-light);
-    color: var(--primary);
-    border-radius: 50px;
-    padding: 6px 12px 6px 10px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    transition: var(--transition);
-    animation: popIn 0.2s ease;
-  }
-
-  @keyframes popIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-
-  .activity-pill .remove-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--primary);
-    opacity: 0.6;
-    padding: 0;
-    font-size: 1rem;
-    line-height: 1;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-  }
-
-  .activity-pill .remove-btn:hover { opacity: 1; color: #e53e3e; }
-
-  .empty-state {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    font-weight: 600;
-    font-style: italic;
-    padding: 8px 0;
-  }
-
-  /* Week tab */
-  .week-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-
-  .week-nav h2 {
-    font-size: 1.2rem;
-    font-weight: 800;
-  }
-
-  .nav-btn {
-    background: var(--card);
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 1.1rem;
-    cursor: pointer;
-    box-shadow: var(--shadow);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-  }
-
-  .nav-btn:hover { transform: scale(1.08); box-shadow: var(--shadow-md); }
-
-  .week-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-  }
-
-  .day-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 10px 8px;
-    cursor: pointer;
-    transition: var(--transition);
-    min-height: 100px;
-  }
-
-  .day-card:hover { transform: scale(1.03); box-shadow: var(--shadow-md); }
-
-  .day-card.today {
-    background: linear-gradient(135deg, var(--primary), #8B5CF6);
-    color: white;
-    box-shadow: 0 6px 20px rgba(108,60,225,0.35);
-  }
-
-  .day-name {
-    font-size: 0.7rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    opacity: 0.7;
-    margin-bottom: 2px;
-  }
-
-  .day-card.today .day-name { opacity: 0.85; color: white; }
-
-  .day-num {
-    font-size: 1.3rem;
-    font-weight: 900;
-    margin-bottom: 6px;
-  }
-
-  .day-chip {
-    font-size: 0.65rem;
-    font-weight: 700;
-    background: var(--primary-light);
-    color: var(--primary);
-    border-radius: 50px;
-    padding: 2px 6px;
-    display: block;
-    margin-bottom: 3px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .day-card.today .day-chip {
-    background: rgba(255,255,255,0.25);
-    color: white;
-  }
-
-  /* Activities library */
-  .search-bar {
-    position: relative;
-    margin-bottom: 16px;
-  }
-
-  .search-bar input {
-    width: 100%;
-    padding: 12px 16px 12px 44px;
-    border-radius: 50px;
-    border: 2px solid transparent;
-    background: var(--card);
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    box-shadow: var(--shadow);
-    outline: none;
-    transition: var(--transition);
-  }
-
-  .search-bar input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px var(--primary-light);
-  }
-
-  .search-icon {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.1rem;
-  }
-
-  .filter-chips {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
-
-  .filter-chip {
-    background: var(--card);
-    border: 2px solid transparent;
-    border-radius: 50px;
-    padding: 7px 14px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    white-space: nowrap;
-  }
-
-  .filter-chip:hover { transform: scale(1.03); }
-
-  .filter-chip.active {
-    background: var(--primary);
-    color: white;
-    box-shadow: 0 4px 12px rgba(108,60,225,0.3);
-  }
-
-  .activities-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  @media (min-width: 600px) {
-    .activities-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-
-  .activity-card {
-    background: var(--card);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow);
-    padding: 16px;
-    transition: var(--transition);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .activity-card:hover {
-    transform: scale(1.02);
-    box-shadow: var(--shadow-md);
-  }
-
-  .activity-emoji {
-    font-size: 2.4rem;
-    margin-bottom: 8px;
-    line-height: 1;
-  }
-
-  .activity-name {
-    font-size: 0.95rem;
-    font-weight: 800;
-    margin-bottom: 4px;
-    color: var(--text);
-  }
-
-  .activity-age {
-    display: inline-block;
-    background: var(--accent);
-    color: var(--text);
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 50px;
-    margin-bottom: 6px;
-  }
-
-  .activity-desc {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    font-weight: 600;
-    line-height: 1.4;
-    flex: 1;
-    margin-bottom: 10px;
-  }
-
-  /* Modal */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(4px);
-    z-index: 1000;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-  }
-
-  .modal-overlay.open {
-    opacity: 1;
-    pointer-events: all;
-  }
-
-  .modal {
-    background: var(--bg);
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    padding: 24px 20px 40px;
-    width: 100%;
-    max-width: 600px;
-    transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-
-  .modal-overlay.open .modal {
-    transform: translateY(0);
-  }
-
-  .modal-handle {
-    width: 40px;
-    height: 4px;
-    background: #e0e0e0;
-    border-radius: 50px;
-    margin: 0 auto 20px;
-  }
-
-  .modal-title {
-    font-size: 1.3rem;
-    font-weight: 900;
-    margin-bottom: 20px;
-    color: var(--text);
-  }
-
-  .form-group {
-    margin-bottom: 16px;
-  }
-
-  .form-label {
-    display: block;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .form-input, .form-select {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: var(--radius);
-    border: 2px solid #E5E7EB;
-    background: var(--card);
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    outline: none;
-    transition: var(--transition);
-    -webkit-appearance: none;
-  }
-
-  .form-input:focus, .form-select:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px var(--primary-light);
-  }
-
-  .modal-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-  }
-
-  .modal-actions .btn { flex: 1; justify-content: center; }
-
-  /* Library quick-add pills */
-  .library-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  .library-pill {
-    background: var(--card);
-    border: 2px solid #E5E7EB;
-    border-radius: 50px;
-    padding: 6px 12px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: var(--transition);
-  }
-
-  .library-pill:hover {
-    border-color: var(--primary);
-    background: var(--primary-light);
-    color: var(--primary);
-  }
-
-  .library-pill.selected {
-    border-color: var(--primary);
-    background: var(--primary);
-    color: white;
-  }
-
-  /* Toast */
-  .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: var(--text);
-    color: white;
-    border-radius: 50px;
-    padding: 12px 20px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    z-index: 2000;
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    white-space: nowrap;
-  }
-
-  .toast.show { transform: translateX(-50%) translateY(0); }
-
-  /* Responsive */
-  @media (max-width: 480px) {
-    .week-grid { grid-template-columns: repeat(7, 1fr); gap: 4px; }
-    .day-card { padding: 6px 4px; }
-    .day-num { font-size: 1.1rem; }
-    .tab-btn { font-size: 0.75rem; padding: 8px 4px 10px; }
-    .app-title { font-size: 1.3rem; }
-  }
-
-  .no-results {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--text-muted);
-  }
-  .no-results .nr-emoji { font-size: 3rem; margin-bottom: 12px; }
-  .no-results p { font-weight: 600; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peuterplannen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #F9F7F4;
+      --text-primary: #1C1917;
+      --text-secondary: #78716C;
+      --text-muted: #A8A29E;
+      --accent: #2D6A4F;
+      --accent-light: #D8F3DC;
+      --accent-hover: #235c43;
+      --border: #E7E5E4;
+      --border-input: #D4D2CF;
+      --card: #FFFFFF;
+      --danger: #DC2626;
+      --danger-hover: #b91c1c;
+      --stone-100: #F5F5F4;
+
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --space-7: 48px;
+      --space-8: 64px;
+
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+
+      --font-xs: 11px;
+      --font-sm: 13px;
+      --font-base: 15px;
+      --font-md: 17px;
+      --font-lg: 20px;
+      --font-xl: 24px;
+      --font-2xl: 28px;
+
+      --shadow-card: 0 1px 3px rgba(0,0,0,0.06);
+      --transition: 150ms ease;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: var(--font-base);
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Layout */
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 0 var(--space-5);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-4) 0 var(--space-3);
+    }
+
+    .app-name {
+      font-size: var(--font-base);
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .header-date {
+      font-size: var(--font-sm);
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 0;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: var(--space-3) var(--space-4);
+      font-family: inherit;
+      font-size: var(--font-sm);
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: color var(--transition), border-color var(--transition);
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .tab-btn.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--accent);
+    }
+
+    /* Main content */
+    .main-content {
+      flex: 1;
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      padding: var(--space-6) var(--space-5);
+    }
+
+    /* Tab panels */
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* Day header */
+    .day-title {
+      font-size: var(--font-xl);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--space-6);
+      letter-spacing: -0.02em;
+    }
+
+    /* Time sections */
+    .time-sections {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .time-section {
+      border-left: 2px solid var(--accent-light);
+      padding-left: var(--space-4);
+    }
+
+    .time-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-3);
+    }
+
+    .time-section-label {
+      font-size: var(--font-xs);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .add-btn-small {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      background: none;
+      border: none;
+      padding: var(--space-1) var(--space-2);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: var(--font-sm);
+      border-radius: var(--radius-sm);
+      transition: color var(--transition), background var(--transition);
+    }
+
+    .add-btn-small:hover {
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    /* Activity pills */
+    .activities-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      min-height: 32px;
+    }
+
+    .activity-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-1) var(--space-3);
+      font-size: var(--font-sm);
+      color: var(--text-primary);
+      transition: border-color var(--transition);
+    }
+
+    .activity-pill:hover {
+      border-color: var(--border-input);
+    }
+
+    .pill-remove {
+      display: flex;
+      align-items: center;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: color var(--transition);
+      line-height: 1;
+    }
+
+    .pill-remove:hover {
+      color: var(--danger);
+    }
+
+    .empty-slot {
+      font-size: var(--font-sm);
+      color: var(--text-muted);
+      font-style: italic;
+      line-height: 2;
+    }
+
+    /* Week tab */
+    .week-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-5);
+    }
+
+    .week-nav-title {
+      font-size: var(--font-md);
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .week-nav-btns {
+      display: flex;
+      gap: var(--space-2);
+    }
+
+    .icon-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: background var(--transition), color var(--transition), border-color var(--transition);
+    }
+
+    .icon-btn:hover {
+      background: var(--stone-100);
+      color: var(--text-primary);
+      border-color: var(--border-input);
+    }
+
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: var(--space-2);
+    }
+
+    .week-day-col {
+      min-width: 0;
+    }
+
+    .week-day-head {
+      text-align: center;
+      padding: var(--space-2) var(--space-1);
+      margin-bottom: var(--space-2);
+      border-radius: var(--radius-sm);
+    }
+
+    .week-day-head.today {
+      background: var(--accent-light);
+    }
+
+    .week-day-name {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    .week-day-head.today .week-day-name {
+      color: var(--accent);
+    }
+
+    .week-day-num {
+      font-size: var(--font-md);
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .week-day-head.today .week-day-num {
+      color: var(--accent);
+    }
+
+    .week-activities {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .week-chip {
+      font-size: 10px;
+      padding: 2px var(--space-2);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: background var(--transition);
+    }
+
+    .week-more {
+      font-size: 10px;
+      color: var(--text-muted);
+      padding: 2px var(--space-2);
+    }
+
+    .week-empty {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 2px var(--space-1);
+    }
+
+    /* Activities tab */
+    .activities-search {
+      position: relative;
+      margin-bottom: var(--space-4);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: var(--space-3);
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: var(--space-2) var(--space-3) var(--space-2) 36px;
+      border: 1px solid var(--border-input);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: var(--font-sm);
+      color: var(--text-primary);
+      background: var(--card);
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      outline: 2px solid var(--accent);
+      outline-offset: -1px;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: var(--space-5);
+      overflow-x: auto;
+      padding-bottom: var(--space-3);
+      margin-bottom: var(--space-5);
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .filter-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-link {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      font-family: inherit;
+      font-size: var(--font-sm);
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      padding: 0 0 var(--space-1);
+      transition: color var(--transition), border-color var(--transition);
+    }
+
+    .filter-link:hover {
+      color: var(--text-secondary);
+    }
+
+    .filter-link.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--accent);
+    }
+
+    .activities-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    @media (min-width: 560px) {
+      .activities-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-3);
+      }
+    }
+
+    .activity-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      transition: border-color var(--transition);
+    }
+
+    .activity-card:hover {
+      border-color: var(--border-input);
+    }
+
+    .activity-card-name {
+      font-size: var(--font-base);
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .activity-card-category {
+      font-size: var(--font-xs);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .activity-card-desc {
+      font-size: var(--font-sm);
+      color: var(--text-secondary);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .activity-card-footer {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: var(--space-2);
+      border-top: 1px solid var(--border);
+      margin-top: var(--space-1);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: var(--space-2) var(--space-4);
+      font-family: inherit;
+      font-size: var(--font-sm);
+      font-weight: 500;
+      cursor: pointer;
+      transition: background var(--transition);
+      outline: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2) var(--space-4);
+      font-family: inherit;
+      font-size: var(--font-sm);
+      font-weight: 500;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      outline: none;
+    }
+
+    .btn-ghost:hover {
+      background: var(--stone-100);
+      color: var(--text-primary);
+    }
+
+    .btn-ghost:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(28, 25, 23, 0.4);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-5);
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 440px;
+      padding: var(--space-6);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+
+    .modal-title {
+      font-size: var(--font-md);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--space-5);
+      letter-spacing: -0.01em;
+    }
+
+    .modal-meta {
+      font-size: var(--font-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: var(--space-2);
+    }
+
+    .form-group {
+      margin-bottom: var(--space-4);
+    }
+
+    .form-label {
+      display: block;
+      font-size: var(--font-sm);
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: var(--space-2);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--border-input);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: var(--font-base);
+      color: var(--text-primary);
+      background: var(--bg);
+      outline: none;
+      transition: border-color var(--transition);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-input:focus {
+      border-color: var(--accent);
+      outline: 2px solid var(--accent);
+      outline-offset: -1px;
+      background: var(--card);
+    }
+
+    .form-select {
+      width: 100%;
+      padding: var(--space-2) var(--space-3);
+      border: 1px solid var(--border-input);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: var(--font-base);
+      color: var(--text-primary);
+      background: var(--bg);
+      outline: none;
+      cursor: pointer;
+      transition: border-color var(--transition);
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2378716C' stroke-width='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+
+    .form-select:focus {
+      border-color: var(--accent);
+      outline: 2px solid var(--accent);
+      outline-offset: -1px;
+      background-color: var(--card);
+    }
+
+    .or-divider {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin: var(--space-4) 0;
+    }
+
+    .or-divider::before,
+    .or-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .or-divider span {
+      font-size: var(--font-xs);
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .library-link {
+      display: block;
+      text-align: center;
+      font-size: var(--font-sm);
+      color: var(--accent);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-weight: 500;
+      padding: var(--space-2);
+      width: 100%;
+    }
+
+    .library-link:hover {
+      text-decoration: underline;
+    }
+
+    .library-quick {
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-4);
+    }
+
+    .library-quick.open {
+      display: flex;
+    }
+
+    .library-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-2) var(--space-3);
+      cursor: pointer;
+      transition: background var(--transition);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .library-item:last-child {
+      border-bottom: none;
+    }
+
+    .library-item:hover {
+      background: var(--stone-100);
+    }
+
+    .library-item-name {
+      font-size: var(--font-sm);
+      color: var(--text-primary);
+    }
+
+    .library-item-cat {
+      font-size: var(--font-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: var(--space-3);
+      justify-content: flex-end;
+      margin-top: var(--space-5);
+    }
+
+    /* No results */
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: var(--space-8) var(--space-5);
+      color: var(--text-muted);
+      font-size: var(--font-sm);
+      font-style: italic;
+    }
+
+    @media (max-width: 480px) {
+      .main-content {
+        padding: var(--space-5) var(--space-4);
+      }
+
+      .modal {
+        padding: var(--space-5);
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header class="app-header">
-  <div class="app-title">🌟 Peuterplannen</div>
-  <div class="app-subtitle">Jouw dagplanner voor kleine avonturiers</div>
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('vandaag')">📅 Vandaag</button>
-    <button class="tab-btn" onclick="switchTab('week')">🗓️ Week</button>
-    <button class="tab-btn" onclick="switchTab('activiteiten')">🎨 Activiteiten</button>
-  </div>
-</header>
-
-<div class="main">
-
-  <!-- TAB: VANDAAG -->
-  <div class="tab-panel active" id="tab-vandaag">
-    <div class="date-header">
-      <h2 id="today-title">Vandaag</h2>
-      <span class="date-badge" id="today-badge"></span>
+<div class="app">
+  <header class="app-header">
+    <div class="header-top">
+      <span class="app-name">Peuterplannen</span>
+      <span class="header-date" id="header-date"></span>
     </div>
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="vandaag">Vandaag</button>
+      <button class="tab-btn" data-tab="week">Week</button>
+      <button class="tab-btn" data-tab="activiteiten">Activiteiten</button>
+    </nav>
+  </header>
 
-    <!-- Ochtend -->
-    <div class="time-block time-block-ochtend">
-      <div class="time-block-header">
-        <div class="time-block-title">🌅 Ochtend</div>
-        <button class="btn btn-ghost btn-sm" onclick="openAddModal('ochtend')">+ Toevoegen</button>
+  <main class="main-content">
+
+    <!-- Vandaag -->
+    <div class="tab-panel active" id="panel-vandaag">
+      <h1 class="day-title" id="today-title"></h1>
+      <div class="time-sections">
+        <section class="time-section">
+          <div class="time-section-header">
+            <span class="time-section-label">Ochtend</span>
+            <button class="add-btn-small" onclick="openAddModal('ochtend')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+              Toevoegen
+            </button>
+          </div>
+          <div class="activities-list" id="list-ochtend"></div>
+        </section>
+
+        <section class="time-section">
+          <div class="time-section-header">
+            <span class="time-section-label">Middag</span>
+            <button class="add-btn-small" onclick="openAddModal('middag')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+              Toevoegen
+            </button>
+          </div>
+          <div class="activities-list" id="list-middag"></div>
+        </section>
+
+        <section class="time-section">
+          <div class="time-section-header">
+            <span class="time-section-label">Avond</span>
+            <button class="add-btn-small" onclick="openAddModal('avond')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+              Toevoegen
+            </button>
+          </div>
+          <div class="activities-list" id="list-avond"></div>
+        </section>
       </div>
-      <div class="activities-list" id="list-ochtend"></div>
     </div>
 
-    <!-- Middag -->
-    <div class="time-block time-block-middag">
-      <div class="time-block-header">
-        <div class="time-block-title">☀️ Middag</div>
-        <button class="btn btn-ghost btn-sm" onclick="openAddModal('middag')">+ Toevoegen</button>
+    <!-- Week -->
+    <div class="tab-panel" id="panel-week">
+      <div class="week-header-row">
+        <span class="week-nav-title" id="week-range-label"></span>
+        <div class="week-nav-btns">
+          <button class="icon-btn" onclick="navigateWeek(-1)" title="Vorige week">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button class="icon-btn" onclick="navigateWeek(1)" title="Volgende week">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
       </div>
-      <div class="activities-list" id="list-middag"></div>
+      <div class="week-grid" id="week-grid"></div>
     </div>
 
-    <!-- Avond -->
-    <div class="time-block time-block-avond">
-      <div class="time-block-header">
-        <div class="time-block-title">🌙 Avond</div>
-        <button class="btn btn-ghost btn-sm" onclick="openAddModal('avond')">+ Toevoegen</button>
+    <!-- Activiteiten -->
+    <div class="tab-panel" id="panel-activiteiten">
+      <div class="activities-search">
+        <span class="search-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </span>
+        <input type="text" class="search-input" id="search-input" placeholder="Activiteit zoeken..." oninput="filterActivities()">
       </div>
-      <div class="activities-list" id="list-avond"></div>
-    </div>
-  </div>
 
-  <!-- TAB: WEEK -->
-  <div class="tab-panel" id="tab-week">
-    <div class="week-nav">
-      <button class="nav-btn" onclick="changeWeek(-1)">&#9664;</button>
-      <h2 id="week-label">Deze week</h2>
-      <button class="nav-btn" onclick="changeWeek(1)">&#9654;</button>
-    </div>
-    <div class="week-grid" id="week-grid"></div>
-  </div>
+      <div class="filter-bar">
+        <button class="filter-link active" data-cat="alle" onclick="setFilter('alle', this)">Alle</button>
+        <button class="filter-link" data-cat="Buiten" onclick="setFilter('Buiten', this)">Buiten</button>
+        <button class="filter-link" data-cat="Creatief" onclick="setFilter('Creatief', this)">Creatief</button>
+        <button class="filter-link" data-cat="Rustig" onclick="setFilter('Rustig', this)">Rustig</button>
+        <button class="filter-link" data-cat="Sociaal" onclick="setFilter('Sociaal', this)">Sociaal</button>
+        <button class="filter-link" data-cat="Bewegen" onclick="setFilter('Bewegen', this)">Bewegen</button>
+      </div>
 
-  <!-- TAB: ACTIVITEITEN -->
-  <div class="tab-panel" id="tab-activiteiten">
-    <div class="search-bar">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="search-input" placeholder="Zoek een activiteit..." oninput="filterActivities()">
+      <div class="activities-grid" id="activities-grid"></div>
     </div>
-    <div class="filter-chips" id="filter-chips"></div>
-    <div class="activities-grid" id="activities-grid"></div>
-  </div>
 
+  </main>
 </div>
 
-<!-- MODAL: Add activity -->
-<div class="modal-overlay" id="add-modal">
+<!-- Modal: Toevoegen -->
+<div class="modal-backdrop" id="modal-add" onclick="handleBackdropClick(event, 'modal-add')">
   <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">✏️ Activiteit toevoegen</div>
+    <div class="modal-meta" id="modal-add-meta"></div>
+    <h2 class="modal-title">Activiteit toevoegen</h2>
 
     <div class="form-group">
-      <label class="form-label">Tijdblok</label>
-      <select class="form-select" id="modal-block">
-        <option value="ochtend">🌅 Ochtend</option>
-        <option value="middag">☀️ Middag</option>
-        <option value="avond">🌙 Avond</option>
+      <label class="form-label" for="new-activity-name">Naam</label>
+      <input type="text" class="form-input" id="new-activity-name" placeholder="bijv. Speeltuin" onkeydown="handleAddKeydown(event)">
+    </div>
+
+    <div class="or-divider"><span>of</span></div>
+
+    <button class="library-link" onclick="toggleLibraryQuick()">Kies uit bibliotheek</button>
+
+    <div class="library-quick" id="library-quick"></div>
+
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('modal-add')">Annuleren</button>
+      <button class="btn-primary" onclick="confirmAddActivity()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Toevoegen
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Inplannen -->
+<div class="modal-backdrop" id="modal-schedule" onclick="handleBackdropClick(event, 'modal-schedule')">
+  <div class="modal">
+    <div class="modal-meta">Inplannen</div>
+    <h2 class="modal-title" id="modal-schedule-title"></h2>
+
+    <div class="form-group">
+      <label class="form-label" for="schedule-date">Datum</label>
+      <input type="date" class="form-input" id="schedule-date">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="schedule-moment">Moment</label>
+      <select class="form-select" id="schedule-moment">
+        <option value="ochtend">Ochtend</option>
+        <option value="middag">Middag</option>
+        <option value="avond">Avond</option>
       </select>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">Dag</label>
-      <select class="form-select" id="modal-day"></select>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Kies uit bibliotheek</label>
-      <div class="library-pills" id="modal-library-pills"></div>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Of typ zelf</label>
-      <input type="text" class="form-input" id="modal-custom-input" placeholder="bijv. 🎈 Ballonnen opblazen">
-    </div>
-
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('add-modal')">Annuleren</button>
-      <button class="btn btn-primary" onclick="saveActivity()">💾 Opslaan</button>
+      <button class="btn-ghost" onclick="closeModal('modal-schedule')">Annuleren</button>
+      <button class="btn-primary" onclick="confirmSchedule()">Inplannen</button>
     </div>
   </div>
 </div>
-
-<!-- MODAL: Plan from library -->
-<div class="modal-overlay" id="plan-modal">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title" id="plan-modal-title">📅 Inplannen</div>
-
-    <div class="form-group">
-      <label class="form-label">Dag</label>
-      <select class="form-select" id="plan-day"></select>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Tijdblok</label>
-      <select class="form-select" id="plan-block">
-        <option value="ochtend">🌅 Ochtend</option>
-        <option value="middag">☀️ Middag</option>
-        <option value="avond">🌙 Avond</option>
-      </select>
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal('plan-modal')">Annuleren</button>
-      <button class="btn btn-primary" onclick="savePlan()">📅 Inplannen</button>
-    </div>
-  </div>
-</div>
-
-<!-- Toast -->
-<div class="toast" id="toast"></div>
 
 <script>
-// ==================== DATA ====================
-var STORAGE_KEY = 'peuterplannen_data';
+  // ── Constants & Data ──────────────────────────────────────────────────────
 
-function loadData() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
-  catch(e) { return {}; }
-}
+  const STORAGE_KEY = 'peuterplannen_v2';
 
-function saveData(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
+  const LIBRARY = [
+    { name: 'Voorlezen', cat: 'Rustig', desc: 'Samen een boek lezen of luisteren naar een verhaaltje.' },
+    { name: 'Speeltuin', cat: 'Buiten', desc: 'Klimmen, glijden en schommelen in de buitenlucht.' },
+    { name: 'Tekenen', cat: 'Creatief', desc: 'Vrij tekenen met kleurpotloden, stiften of krijt.' },
+    { name: 'Zandkasteel bouwen', cat: 'Buiten', desc: 'Graven en bouwen in de zandbak of aan het strand.' },
+    { name: 'Knutselen', cat: 'Creatief', desc: 'Knippen, plakken en maken met papier en andere materialen.' },
+    { name: 'Dansen', cat: 'Bewegen', desc: 'Muziek aan en vrij bewegen op het ritme.' },
+    { name: 'Puzzelen', cat: 'Rustig', desc: 'Een legpuzzel samenleggen, van eenvoudig tot uitdagend.' },
+    { name: 'Natuur ontdekken', cat: 'Buiten', desc: 'Bladeren, insecten en bloemen bekijken in de tuin of het park.' },
+    { name: 'Speelafspraak', cat: 'Sociaal', desc: 'Spelen met een vriendje of vriendinnetje thuis of ergens anders.' },
+    { name: 'Bakken', cat: 'Creatief', desc: 'Koekjes of muffins bakken en versieren.' },
+    { name: 'Fietsen', cat: 'Bewegen', desc: 'Een ritje maken op de fiets of loopfiets.' },
+    { name: 'Zingen', cat: 'Bewegen', desc: 'Kinderliedjes zingen en bewegen op de muziek.' },
+    { name: 'Blokken stapelen', cat: 'Rustig', desc: 'Torens bouwen en creatief spelen met bouwblokken.' },
+    { name: 'Schilderen', cat: 'Creatief', desc: 'Vrij schilderen met vingerverf of kwast op papier.' },
+    { name: 'Verstoppertje', cat: 'Sociaal', desc: 'Samen verstoppertje of tikkertje spelen in huis of tuin.' },
+    { name: 'Bibliotheek', cat: 'Rustig', desc: 'Boeken uitzoeken en voorlezen in de bibliotheek.' },
+    { name: 'Klei kneden', cat: 'Creatief', desc: 'Vormen maken met klei of Play-Doh.' },
+    { name: 'Park bezoek', cat: 'Buiten', desc: 'Een wandeling of picknick in het park.' },
+    { name: 'Yoga voor kids', cat: 'Bewegen', desc: 'Eenvoudige yoga-poses doen met een dierenverhaal.' },
+    { name: 'Memory spelen', cat: 'Rustig', desc: 'Kaartjes omdraaien en paren vinden.' },
+    { name: 'Water spelen', cat: 'Buiten', desc: 'Met water spelen in een teiltje of met een tuinslang.' },
+    { name: 'Theater kijken', cat: 'Sociaal', desc: 'Een kindervoorstelling of poppentheater bezoeken.' },
+    { name: 'Lego bouwen', cat: 'Creatief', desc: 'Samen bouwen met Duplo of Lego.' },
+    { name: 'Buiten rennen', cat: 'Bewegen', desc: 'Vrij rennen en spelen in de tuin of op een grasveld.' },
+  ];
 
-function dateKey(date) {
-  var d = new Date(date);
-  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-}
+  // ── Storage ───────────────────────────────────────────────────────────────
 
-function getActivitiesFor(dateStr, block) {
-  var data = loadData();
-  return (data[dateStr] && data[dateStr][block]) ? data[dateStr][block] : [];
-}
-
-function addActivityTo(dateStr, block, name) {
-  var data = loadData();
-  if (!data[dateStr]) data[dateStr] = {};
-  if (!data[dateStr][block]) data[dateStr][block] = [];
-  data[dateStr][block].push(name);
-  saveData(data);
-}
-
-function removeActivityFrom(dateStr, block, index) {
-  var data = loadData();
-  if (data[dateStr] && data[dateStr][block]) {
-    data[dateStr][block].splice(index, 1);
-    saveData(data);
+  function loadData() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch { return {}; }
   }
-}
 
-// ==================== STATE ====================
-var currentDate = new Date();
-var weekOffset = 0;
-var planActivityName = '';
-var addModalBlock = 'ochtend';
-var selectedLibraryPill = '';
+  function saveData(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
 
-// ==================== TABS ====================
-function switchTab(name) {
-  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
-  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
-  document.getElementById('tab-' + name).classList.add('active');
-  var tabMap = { vandaag: 0, week: 1, activiteiten: 2 };
-  var btns = document.querySelectorAll('.tab-btn');
-  if (btns[tabMap[name]]) btns[tabMap[name]].classList.add('active');
-  if (name === 'vandaag') renderToday(currentDate);
-  if (name === 'week') renderWeek();
-  if (name === 'activiteiten') renderActivities();
-}
+  function getDateKey(d) {
+    return d.toISOString().split('T')[0];
+  }
 
-// ==================== TODAY ====================
-var DAYS_NL = ['zondag','maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag'];
-var MONTHS_NL = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+  function ensureDay(data, key) {
+    if (!data[key]) data[key] = { ochtend: [], middag: [], avond: [] };
+    ['ochtend', 'middag', 'avond'].forEach(m => { if (!data[key][m]) data[key][m] = []; });
+  }
 
-function renderToday(dateOverride) {
-  var d = dateOverride || currentDate;
-  var key = dateKey(d);
-  document.getElementById('today-title').textContent =
-    'Vandaag, ' + DAYS_NL[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS_NL[d.getMonth()];
-  document.getElementById('today-badge').textContent = d.getDate() + ' ' + MONTHS_NL[d.getMonth()];
+  // ── Date helpers ──────────────────────────────────────────────────────────
 
-  ['ochtend','middag','avond'].forEach(function(block) {
-    var list = document.getElementById('list-' + block);
-    var items = getActivitiesFor(key, block);
+  const NL_DAYS   = ['Zondag','Maandag','Dinsdag','Woensdag','Donderdag','Vrijdag','Zaterdag'];
+  const NL_SHORT  = ['Zo','Ma','Di','Wo','Do','Vr','Za'];
+  const NL_MONTHS = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+
+  function today() {
+    const d = new Date(); d.setHours(0,0,0,0); return d;
+  }
+
+  function addDays(d, n) {
+    const c = new Date(d); c.setDate(c.getDate() + n); return c;
+  }
+
+  function isSameDay(a, b) { return getDateKey(a) === getDateKey(b); }
+
+  function getMondayOf(d) {
+    const day = d.getDay();
+    return addDays(d, day === 0 ? -6 : 1 - day);
+  }
+
+  // ── State ─────────────────────────────────────────────────────────────────
+
+  let currentWeekStart = getMondayOf(today());
+  let addModalMoment   = null;
+  let scheduleActivity = null;
+  let activeFilter     = 'alle';
+  let libraryOpen      = false;
+
+  // ── Render: Vandaag ───────────────────────────────────────────────────────
+
+  function renderToday() {
+    const t = today();
+    document.getElementById('today-title').textContent =
+      NL_DAYS[t.getDay()] + ' ' + t.getDate() + ' ' + NL_MONTHS[t.getMonth()];
+    document.getElementById('header-date').textContent =
+      t.getDate() + ' ' + NL_MONTHS[t.getMonth()];
+
+    const data = loadData();
+    const key  = getDateKey(t);
+    ensureDay(data, key);
+
+    ['ochtend','middag','avond'].forEach(m => renderMoment(data[key][m], m, key));
+  }
+
+  function renderMoment(activities, moment, dateKey) {
+    const list = document.getElementById('list-' + moment);
     list.innerHTML = '';
-    if (items.length === 0) {
-      var empty = document.createElement('span');
-      empty.className = 'empty-state';
-      empty.textContent = 'Nog niets gepland... voeg iets toe! 🌈';
-      list.appendChild(empty);
-    } else {
-      items.forEach(function(name, i) {
-        var pill = document.createElement('span');
-        pill.className = 'activity-pill';
-        pill.innerHTML = name + ' <button class="remove-btn" data-date="' + key + '" data-block="' + block + '" data-idx="' + i + '" title="Verwijder">\u00d7</button>';
-        list.appendChild(pill);
+
+    if (!activities || activities.length === 0) {
+      const em = document.createElement('span');
+      em.className = 'empty-slot';
+      em.textContent = 'Niets gepland';
+      list.appendChild(em);
+      return;
+    }
+
+    activities.forEach((act, idx) => {
+      const pill = document.createElement('div');
+      pill.className = 'activity-pill';
+
+      const name = document.createElement('span');
+      name.textContent = act;
+      pill.appendChild(name);
+
+      const btn = document.createElement('button');
+      btn.className = 'pill-remove';
+      btn.title = 'Verwijderen';
+      btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+      btn.onclick = () => removeActivity(dateKey, moment, idx);
+      pill.appendChild(btn);
+
+      list.appendChild(pill);
+    });
+  }
+
+  function removeActivity(dateKey, moment, index) {
+    const data = loadData();
+    ensureDay(data, dateKey);
+    data[dateKey][moment].splice(index, 1);
+    saveData(data);
+    renderToday();
+    if (document.getElementById('panel-week').classList.contains('active')) renderWeek();
+  }
+
+  // ── Modal: Add ────────────────────────────────────────────────────────────
+
+  function openAddModal(moment) {
+    addModalMoment = moment;
+    const labels = { ochtend: 'Ochtend', middag: 'Middag', avond: 'Avond' };
+    document.getElementById('modal-add-meta').textContent = labels[moment];
+    document.getElementById('new-activity-name').value = '';
+    libraryOpen = false;
+    document.getElementById('library-quick').classList.remove('open');
+    openModal('modal-add');
+    setTimeout(() => document.getElementById('new-activity-name').focus(), 60);
+  }
+
+  function toggleLibraryQuick() {
+    libraryOpen = !libraryOpen;
+    const el = document.getElementById('library-quick');
+    if (libraryOpen) {
+      el.classList.add('open');
+      el.innerHTML = '';
+      LIBRARY.forEach(act => {
+        const item = document.createElement('div');
+        item.className = 'library-item';
+        item.innerHTML =
+          '<span class="library-item-name">' + act.name + '</span>' +
+          '<span class="library-item-cat">' + act.cat + '</span>';
+        item.onclick = () => {
+          document.getElementById('new-activity-name').value = act.name;
+          libraryOpen = false;
+          el.classList.remove('open');
+        };
+        el.appendChild(item);
       });
+    } else {
+      el.classList.remove('open');
+    }
+  }
+
+  function handleAddKeydown(e) {
+    if (e.key === 'Enter')  confirmAddActivity();
+    if (e.key === 'Escape') closeModal('modal-add');
+  }
+
+  function confirmAddActivity() {
+    const name = document.getElementById('new-activity-name').value.trim();
+    if (!name) return;
+
+    const t   = today();
+    const key = getDateKey(t);
+    const data = loadData();
+    ensureDay(data, key);
+    data[key][addModalMoment].push(name);
+    saveData(data);
+    closeModal('modal-add');
+    renderToday();
+  }
+
+  // ── Modal: Schedule ───────────────────────────────────────────────────────
+
+  function openScheduleModal(actName) {
+    scheduleActivity = actName;
+    document.getElementById('modal-schedule-title').textContent = actName;
+    document.getElementById('schedule-date').value = getDateKey(today());
+    document.getElementById('schedule-moment').value = 'ochtend';
+    openModal('modal-schedule');
+  }
+
+  function confirmSchedule() {
+    const dateVal = document.getElementById('schedule-date').value;
+    const moment  = document.getElementById('schedule-moment').value;
+    if (!dateVal || !scheduleActivity) return;
+
+    const data = loadData();
+    ensureDay(data, dateVal);
+    data[dateVal][moment].push(scheduleActivity);
+    saveData(data);
+    closeModal('modal-schedule');
+    renderToday();
+    if (document.getElementById('panel-week').classList.contains('active')) renderWeek();
+  }
+
+  // ── Modal helpers ─────────────────────────────────────────────────────────
+
+  function openModal(id)  { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  function handleBackdropClick(e, id) {
+    if (e.target === e.currentTarget) closeModal(id);
+  }
+
+  // ── Render: Week ──────────────────────────────────────────────────────────
+
+  function renderWeek() {
+    const grid = document.getElementById('week-grid');
+    grid.innerHTML = '';
+    const data = loadData();
+    const t    = today();
+
+    const end = addDays(currentWeekStart, 6);
+    document.getElementById('week-range-label').textContent =
+      currentWeekStart.getDate() + ' ' + NL_MONTHS[currentWeekStart.getMonth()] +
+      ' – ' + end.getDate() + ' ' + NL_MONTHS[end.getMonth()] + ' ' + end.getFullYear();
+
+    for (let i = 0; i < 7; i++) {
+      const d      = addDays(currentWeekStart, i);
+      const key    = getDateKey(d);
+      const isToday = isSameDay(d, t);
+
+      const col  = document.createElement('div');
+      col.className = 'week-day-col';
+
+      const head = document.createElement('div');
+      head.className = 'week-day-head' + (isToday ? ' today' : '');
+      head.innerHTML =
+        '<div class="week-day-name">' + NL_SHORT[d.getDay()] + '</div>' +
+        '<div class="week-day-num">'  + d.getDate() + '</div>';
+      col.appendChild(head);
+
+      const acts = document.createElement('div');
+      acts.className = 'week-activities';
+
+      ensureDay(data, key);
+      const all = [...data[key].ochtend, ...data[key].middag, ...data[key].avond];
+
+      if (all.length === 0) {
+        const em = document.createElement('div');
+        em.className = 'week-empty';
+        em.textContent = '—';
+        acts.appendChild(em);
+      } else {
+        all.slice(0, 3).forEach(act => {
+          const chip = document.createElement('div');
+          chip.className = 'week-chip';
+          chip.textContent = act;
+          chip.title = act;
+          acts.appendChild(chip);
+        });
+        if (all.length > 3) {
+          const more = document.createElement('div');
+          more.className = 'week-more';
+          more.textContent = '+' + (all.length - 3) + ' meer';
+          acts.appendChild(more);
+        }
+      }
+
+      col.appendChild(acts);
+      grid.appendChild(col);
+    }
+  }
+
+  function navigateWeek(dir) {
+    currentWeekStart = addDays(currentWeekStart, dir * 7);
+    renderWeek();
+  }
+
+  // ── Render: Activiteiten ──────────────────────────────────────────────────
+
+  function renderActivities() {
+    const grid  = document.getElementById('activities-grid');
+    const query = document.getElementById('search-input').value.trim().toLowerCase();
+    grid.innerHTML = '';
+
+    const filtered = LIBRARY.filter(act => {
+      const matchCat   = activeFilter === 'alle' || act.cat === activeFilter;
+      const matchQuery = !query ||
+        act.name.toLowerCase().includes(query) ||
+        act.desc.toLowerCase().includes(query);
+      return matchCat && matchQuery;
+    });
+
+    if (filtered.length === 0) {
+      const em = document.createElement('div');
+      em.className = 'no-results';
+      em.textContent = 'Geen activiteiten gevonden.';
+      grid.appendChild(em);
+      return;
+    }
+
+    filtered.forEach(act => {
+      const card = document.createElement('article');
+      card.className = 'activity-card';
+
+      const safeName = act.name.replace(/'/g, "\\'");
+
+      card.innerHTML =
+        '<div class="activity-card-name">' + act.name + '</div>' +
+        '<div class="activity-card-category">' + act.cat + '</div>' +
+        '<p class="activity-card-desc">' + act.desc + '</p>' +
+        '<div class="activity-card-footer">' +
+          '<button class="btn-primary" onclick="openScheduleModal(\'' + safeName + '\')">' +
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>' +
+            ' Inplannen' +
+          '</button>' +
+        '</div>';
+
+      grid.appendChild(card);
+    });
+  }
+
+  function filterActivities() { renderActivities(); }
+
+  function setFilter(cat, btn) {
+    activeFilter = cat;
+    document.querySelectorAll('.filter-link').forEach(el => el.classList.remove('active'));
+    btn.classList.add('active');
+    renderActivities();
+  }
+
+  // ── Tabs ──────────────────────────────────────────────────────────────────
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + tab));
+      if (tab === 'week')        renderWeek();
+      if (tab === 'activiteiten') renderActivities();
+    });
+  });
+
+  // ── Keyboard ──────────────────────────────────────────────────────────────
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeModal('modal-add');
+      closeModal('modal-schedule');
     }
   });
 
-  // Attach remove listeners
-  document.querySelectorAll('.remove-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      removeActivity(this.dataset.date, this.dataset.block, parseInt(this.dataset.idx));
-    });
-  });
-}
+  // ── Init ──────────────────────────────────────────────────────────────────
 
-function removeActivity(dateStr, block, index) {
-  removeActivityFrom(dateStr, block, index);
-  renderToday(currentDate);
-  showToast('Activiteit verwijderd 🗑️');
-}
-
-// ==================== WEEK ====================
-var DAYS_SHORT = ['Zo','Ma','Di','Wo','Do','Vr','Za'];
-
-function getWeekStart(offset) {
-  var d = new Date();
-  var day = d.getDay();
-  var diff = (day === 0) ? -6 : 1 - day;
-  d.setDate(d.getDate() + diff + offset * 7);
-  d.setHours(0,0,0,0);
-  return d;
-}
-
-function renderWeek() {
-  var weekStart = getWeekStart(weekOffset);
-  var weekEnd = new Date(weekStart);
-  weekEnd.setDate(weekEnd.getDate() + 6);
-
-  function fmt(d) { return d.getDate() + ' ' + MONTHS_NL[d.getMonth()].slice(0,3); }
-  document.getElementById('week-label').textContent = fmt(weekStart) + ' \u2013 ' + fmt(weekEnd);
-
-  var grid = document.getElementById('week-grid');
-  grid.innerHTML = '';
-  var todayKey = dateKey(new Date());
-
-  for (var i = 0; i < 7; i++) {
-    var day = new Date(weekStart);
-    day.setDate(weekStart.getDate() + i);
-    var key = dateKey(day);
-    var isToday = key === todayKey;
-
-    var card = document.createElement('div');
-    card.className = 'day-card' + (isToday ? ' today' : '');
-    card.setAttribute('data-date', key);
-
-    // Mon=i+1 index wrapping
-    var dayIdx = (i + 1) % 7;
-    card.innerHTML = '<div class="day-name">' + DAYS_SHORT[dayIdx] + '</div><div class="day-num">' + day.getDate() + '</div>';
-
-    var data = loadData();
-    var dayData = data[key] || {};
-    ['ochtend','middag','avond'].forEach(function(block) {
-      var items = dayData[block] || [];
-      items.slice(0,2).forEach(function(name) {
-        var chip = document.createElement('div');
-        chip.className = 'day-chip';
-        chip.textContent = name.length > 10 ? name.slice(0,9) + '\u2026' : name;
-        card.appendChild(chip);
-      });
-      if (items.length > 2) {
-        var more = document.createElement('div');
-        more.className = 'day-chip';
-        more.textContent = '+' + (items.length - 2) + ' meer';
-        card.appendChild(more);
-      }
-    });
-
-    (function(capturedDay) {
-      card.addEventListener('click', function() { goToDay(capturedDay); });
-    })(new Date(day));
-
-    grid.appendChild(card);
-  }
-}
-
-function changeWeek(dir) {
-  weekOffset += dir;
-  renderWeek();
-}
-
-function goToDay(date) {
-  currentDate = new Date(date);
-  weekOffset = 0;
-  switchTab('vandaag');
-}
-
-// ==================== ACTIVITIES LIBRARY ====================
-var ACTIVITIES = [
-  { emoji:'🛝', name:'Naar de speeltuin', cat:'buiten', age:'1-5 jaar', desc:'Klimmen, glijden en schommelen in de buitenlucht.' },
-  { emoji:'🚲', name:'Fietsen / loopfiets', cat:'buiten', age:'1-4 jaar', desc:'Buiten rijden op eigen tempo, lekker in beweging.' },
-  { emoji:'🖍️', name:'Tekenen met krijtjes', cat:'buiten', age:'2-5 jaar', desc:'Kleurrijke tekeningen maken op stoep of terras.' },
-  { emoji:'🍂', name:'Bladeren verzamelen', cat:'buiten', age:'2-5 jaar', desc:'Op ontdekking in de natuur, kleuren en vormen zoeken.' },
-  { emoji:'🏖️', name:'Zandkasteel bouwen', cat:'buiten', age:'1-5 jaar', desc:'Fantasievolle bouwwerken in zandbak of op strand.' },
-  { emoji:'💦', name:'Waterspelen in tuin', cat:'buiten', age:'1-4 jaar', desc:'Spatten, gieten en nat worden op warme dagen.' },
-  { emoji:'🎨', name:'Vingerverven', cat:'creatief', age:'1-4 jaar', desc:'Schilderen met handjes en vingers — lekker vies!' },
-  { emoji:'🪨', name:'Klei kneden', cat:'creatief', age:'2-5 jaar', desc:'Boetseren en vormen maken met zachte klei.' },
-  { emoji:'🔖', name:'Stempelen', cat:'creatief', age:'2-5 jaar', desc:'Vrolijke prints maken met stempels en verf.' },
-  { emoji:'✂️', name:'Knutselen met papier', cat:'creatief', age:'3-5 jaar', desc:'Knippen, plakken en vouwen van papier en karton.' },
-  { emoji:'🥁', name:'Muziek met pannen', cat:'creatief', age:'1-3 jaar', desc:'Eigen muziek maken met keukengerei als instrument.' },
-  { emoji:'📖', name:'Voorlezen', cat:'rustig', age:'0-5 jaar', desc:'Samen in een boek kruipen en verhalen beleven.' },
-  { emoji:'🧩', name:'Puzzelen', cat:'rustig', age:'2-5 jaar', desc:'Concentreren en puzzelstukjes op hun plek leggen.' },
-  { emoji:'🃏', name:'Memory spelen', cat:'rustig', age:'3-5 jaar', desc:'Geheugen trainen met kaartjes omdraaien en onthouden.' },
-  { emoji:'🎵', name:'Rustige muziek', cat:'rustig', age:'0-5 jaar', desc:'Ontspannen luisteren naar zachte kinderliedjes.' },
-  { emoji:'🖼️', name:'Beeldboeken bekijken', cat:'rustig', age:'1-4 jaar', desc:'Zelf plaatjes bekijken en verhaal bedenken.' },
-  { emoji:'👧', name:'Speeldate', cat:'sociaal', age:'2-5 jaar', desc:'Samen spelen met een vriendje of vriendinnetje.' },
-  { emoji:'📚', name:'Naar de bibliotheek', cat:'sociaal', age:'1-5 jaar', desc:'Boeken lenen en voorleesuurtje bijwonen.' },
-  { emoji:'🤸', name:'Gymles peuters', cat:'sociaal', age:'2-4 jaar', desc:'Bewegen en spelen met andere peuters in de gymzaal.' },
-  { emoji:'🛒', name:'Boodschappen doen', cat:'sociaal', age:'1-5 jaar', desc:'Meehelpen met boodschappen doen — leren en ontdekken.' },
-  { emoji:'💃', name:'Dansen op muziek', cat:'bewegen', age:'1-5 jaar', desc:'Vrolijk bewegen en dansen op vrolijke nummers.' },
-  { emoji:'🏗️', name:'Hindernisbaan bouwen', cat:'bewegen', age:'2-5 jaar', desc:'Kussens, stoelen en dekens worden een avonturenparcours.' },
-  { emoji:'🤾', name:'Trampolinespringen', cat:'bewegen', age:'2-5 jaar', desc:'Energie kwijt met springen op trampoline.' },
-  { emoji:'⚽', name:'Balspelen', cat:'bewegen', age:'1-5 jaar', desc:'Gooien, vangen, rollen — grove motoriek ontwikkelen.' }
-];
-
-var FILTERS = [
-  { key:'alle', label:'⭐ Alle' },
-  { key:'buiten', label:'🌳 Buiten' },
-  { key:'creatief', label:'🎨 Creatief' },
-  { key:'rustig', label:'😴 Rustig' },
-  { key:'sociaal', label:'👫 Sociaal' },
-  { key:'bewegen', label:'🏃 Bewegen' }
-];
-
-var activeFilter = 'alle';
-
-function renderFilterChips() {
-  var container = document.getElementById('filter-chips');
-  container.innerHTML = '';
-  FILTERS.forEach(function(f) {
-    var chip = document.createElement('button');
-    chip.className = 'filter-chip' + (activeFilter === f.key ? ' active' : '');
-    chip.textContent = f.label;
-    (function(fkey) {
-      chip.addEventListener('click', function() { activeFilter = fkey; renderActivities(); });
-    })(f.key);
-    container.appendChild(chip);
-  });
-}
-
-function renderActivities() {
-  renderFilterChips();
-  var query = (document.getElementById('search-input').value || '').toLowerCase();
-  var grid = document.getElementById('activities-grid');
-  grid.innerHTML = '';
-
-  var filtered = ACTIVITIES.filter(function(a) {
-    var matchCat = activeFilter === 'alle' || a.cat === activeFilter;
-    var matchSearch = !query || a.name.toLowerCase().indexOf(query) !== -1 || a.desc.toLowerCase().indexOf(query) !== -1;
-    return matchCat && matchSearch;
-  });
-
-  if (filtered.length === 0) {
-    var noRes = document.createElement('div');
-    noRes.className = 'no-results';
-    noRes.style.gridColumn = '1 / -1';
-    noRes.innerHTML = '<div class="nr-emoji">🔍</div><p>Geen activiteiten gevonden.<br>Probeer een andere zoekterm!</p>';
-    grid.appendChild(noRes);
-    return;
-  }
-
-  filtered.forEach(function(a) {
-    var card = document.createElement('div');
-    card.className = 'activity-card';
-    var planName = (a.emoji + ' ' + a.name).replace(/'/g, "\\'");
-    card.innerHTML =
-      '<div class="activity-emoji">' + a.emoji + '</div>' +
-      '<div class="activity-name">' + a.name + '</div>' +
-      '<span class="activity-age">👶 ' + a.age + '</span>' +
-      '<div class="activity-desc">' + a.desc + '</div>';
-    var planBtn = document.createElement('button');
-    planBtn.className = 'btn btn-primary btn-sm';
-    planBtn.textContent = '📅 Inplannen';
-    (function(aEmoji, aName) {
-      planBtn.addEventListener('click', function() { openPlanModal(aEmoji + ' ' + aName); });
-    })(a.emoji, a.name);
-    card.appendChild(planBtn);
-    grid.appendChild(card);
-  });
-}
-
-function filterActivities() { renderActivities(); }
-
-// ==================== MODALS ====================
-function openAddModal(block) {
-  addModalBlock = block;
-  selectedLibraryPill = '';
-  document.getElementById('modal-block').value = block;
-  document.getElementById('modal-custom-input').value = '';
-  populateDaySelect('modal-day');
-  populateLibraryPills();
-  openModal('add-modal');
-}
-
-function populateLibraryPills() {
-  var container = document.getElementById('modal-library-pills');
-  container.innerHTML = '';
-  ACTIVITIES.slice(0, 12).forEach(function(a) {
-    var pill = document.createElement('button');
-    pill.className = 'library-pill';
-    pill.textContent = a.emoji + ' ' + a.name;
-    var fullName = a.emoji + ' ' + a.name;
-    pill.addEventListener('click', function() {
-      selectedLibraryPill = fullName;
-      container.querySelectorAll('.library-pill').forEach(function(p) { p.classList.remove('selected'); });
-      pill.classList.add('selected');
-      document.getElementById('modal-custom-input').value = '';
-    });
-    container.appendChild(pill);
-  });
-}
-
-function saveActivity() {
-  var block = document.getElementById('modal-block').value;
-  var dayVal = document.getElementById('modal-day').value;
-  var custom = document.getElementById('modal-custom-input').value.trim();
-  var name = custom || selectedLibraryPill;
-
-  if (!name) { showToast('Kies of typ een activiteit! ✏️'); return; }
-
-  addActivityTo(dayVal, block, name);
-  closeModal('add-modal');
-  renderToday(currentDate);
-  showToast('Activiteit toegevoegd! 🎉');
-}
-
-function openPlanModal(actName) {
-  planActivityName = actName;
-  document.getElementById('plan-modal-title').textContent = '📅 ' + actName + ' inplannen';
-  populateDaySelect('plan-day');
-  openModal('plan-modal');
-}
-
-function savePlan() {
-  var day = document.getElementById('plan-day').value;
-  var block = document.getElementById('plan-block').value;
-  addActivityTo(day, block, planActivityName);
-  closeModal('plan-modal');
-  showToast('Ingepland! 📅');
-}
-
-function populateDaySelect(selectId) {
-  var sel = document.getElementById(selectId);
-  sel.innerHTML = '';
-  var today = new Date();
-  today.setHours(0,0,0,0);
-  for (var i = 0; i < 14; i++) {
-    var d = new Date(today);
-    d.setDate(today.getDate() + i);
-    var opt = document.createElement('option');
-    opt.value = dateKey(d);
-    var label = i === 0 ? 'Vandaag' : i === 1 ? 'Morgen' : DAYS_NL[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS_NL[d.getMonth()];
-    opt.textContent = label;
-    sel.appendChild(opt);
-  }
-}
-
-function openModal(id) {
-  document.getElementById(id).classList.add('open');
-}
-
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
-
-// Close modal on overlay click
-document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
-  overlay.addEventListener('click', function(e) {
-    if (e.target === overlay) closeModal(overlay.id);
-  });
-});
-
-// ==================== TOAST ====================
-var toastTimer;
-function showToast(msg) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(function() { t.classList.remove('show'); }, 2500);
-}
-
-// ==================== INIT ====================
-renderToday(currentDate);
-renderActivities();
+  renderToday();
 </script>
 </body>
 </html>
