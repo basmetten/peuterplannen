@@ -257,21 +257,35 @@
                         origins: [start],
                         destinations: destinations,
                         travelMode: 'DRIVING'
-                    }, (res, status) => status === 'OK' ? resolve(res) : reject(status));
+                    }, (res, status) => {
+                        if (status === 'OK') resolve(res);
+                        else reject(status);
+                    });
                 });
 
                 const results = response.rows[0].elements;
-                filtered = filtered.map((item, idx) => ({
-                    ...item,
-                    durationText: results[idx].duration ? results[idx].duration.text : "? min",
-                    durationValue: results[idx].duration ? results[idx].duration.value / 60 : 999
-                })).filter(item => item.durationValue <= maxTime)
-                  .sort((a, b) => a.durationValue - b.durationValue);
+                filtered = filtered.map((item, idx) => {
+                    const res = results[idx];
+                    const hasRoute = res.status === 'OK' && res.duration;
+                    return {
+                        ...item,
+                        durationText: hasRoute ? res.duration.text : "onbekend",
+                        durationValue: hasRoute ? res.duration.value / 60 : 9999
+                    };
+                });
+
+                // Filter alleen op tijd als we ECHT data hebben, anders toon alles
+                const hasAnyTimeData = filtered.some(i => i.durationValue < 9999);
+                if (hasAnyTimeData) {
+                    filtered = filtered.filter(item => item.durationValue <= maxTime || item.durationValue === 9999)
+                              .sort((a, b) => a.durationValue - b.durationValue);
+                }
 
                 renderResults(filtered);
             } catch (err) {
-                console.error(err);
-                alert("Er ging iets mis met het berekenen van de reistijd. Bekijk alle resultaten.");
+                console.error("Distance Matrix Error:", err);
+                // Fallback: Toon alles zonder reistijd
+                filtered = filtered.map(item => ({ ...item, durationText: "reistijd onbekend", durationValue: 9999 }));
                 renderResults(filtered);
             }
         }
