@@ -3,323 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PeuterPlannen - Heritage Edition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>PeuterPlannen 4.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #FDFCFB;
-            --ink: #1D3557;
-            --accent: #E63946;
-            --muted: #457B9D;
-            --paper: #FFFFFF;
-            --border-width: 1px;
+            --ink: #1A1A1A;
+            --accent: #2D6A4F;
+            --muted: #71717A;
+            --border: #E4E4E7;
+            --card: #FFFFFF;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            font-family: 'Instrument Sans', sans-serif;
-            background-color: var(--bg);
+        
+        body { 
+            font-family: 'Instrument Sans', sans-serif; 
+            background-color: var(--bg); 
             color: var(--ink);
-            line-height: 1.5;
-            overflow-x: hidden;
+            line-height: 1.4;
         }
 
-        .container { max-width: 500px; margin: 0 auto; padding: 40px 24px; min-height: 100vh; display: flex; flex-direction: column; }
+        .app-container { max-width: 500px; margin: 0 auto; padding: 20px; padding-bottom: 100px; }
 
-        header { text-align: center; margin-bottom: 50px; }
-        h1 { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 700; line-height: 1; margin-bottom: 8px; }
-        .edition { text-transform: uppercase; font-size: 9px; letter-spacing: 2px; font-weight: 700; opacity: 0.5; }
+        header { margin-bottom: 30px; }
+        h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+        .sub-head { font-size: 14px; color: var(--muted); margin-top: 4px; }
 
-        .book-section { animation: fadeIn 0.3s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .card {
-            background: var(--paper);
-            border: var(--border-width) solid #EEE;
-            padding: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            margin-bottom: 30px;
-        }
-
-        .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 15px; display: block; }
-
-        .question { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; margin-bottom: 25px; text-align: center; }
-
-        .choice-list { display: flex; flex-direction: column; gap: 12px; }
-        .choice-btn {
-            background: transparent;
-            border: var(--border-width) solid var(--ink);
-            padding: 16px 20px;
-            font-size: 15px;
-            font-weight: 500;
-            text-align: left;
+        /* Tag Mixer */
+        .tag-mixer {
             display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .choice-btn:hover { background: var(--ink); color: white; transform: translate(-2px, -2px); box-shadow: 4px 4px 0px var(--accent); }
-        .choice-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; }
-
-        .location-input {
-            width: 100%;
-            border: none;
-            border-bottom: 1.5px solid var(--ink);
-            background: transparent;
-            padding: 12px 0;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 22px;
-            margin-bottom: 30px;
-            outline: none;
-            text-align: center;
-        }
-
-        /* Region Grid */
-        .region-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .region-btn {
-            background: transparent;
-            border: var(--border-width) solid var(--ink);
-            padding: 20px 10px;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s;
-        }
-        .region-btn:hover { background: var(--ink); color: white; }
-
-        /* Results */
-        .results-header {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 32px;
-            border-bottom: 1.5px solid var(--ink);
-            padding-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .result-card {
-            margin-bottom: 48px;
-            padding-left: 20px;
-            border-left: 3px solid var(--accent);
-            position: relative;
-        }
-
-        .result-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
-        .result-meta {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--muted);
-            margin-bottom: 12px;
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-        .result-meta span { display: flex; align-items: center; gap: 6px; }
-        .result-meta svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; }
-
-        .result-desc { font-size: 15px; color: var(--ink); margin-bottom: 24px; opacity: 0.9; }
-
-        .btn-action {
-            display: inline-flex;
-            align-items: center;
             gap: 8px;
-            text-decoration: none;
-            color: var(--ink);
-            font-weight: 700;
+            overflow-x: auto;
+            padding: 10px 0 20px 0;
+            scrollbar-width: none;
+            position: sticky;
+            top: 0;
+            background: var(--bg);
+            z-index: 10;
+        }
+        .tag-mixer::-webkit-scrollbar { display: none; }
+        
+        .tag-pill {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 20px;
             font-size: 13px;
-            border-bottom: 2px solid var(--ink);
-            padding-bottom: 2px;
-            margin-right: 24px;
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
             transition: all 0.2s;
         }
-        .btn-action:hover { color: var(--accent); border-color: var(--accent); }
+        .tag-pill.active { background: var(--ink); color: white; border-color: var(--ink); }
+
+        /* Results List */
+        .results-list { display: flex; flex-direction: column; gap: 16px; }
+        
+        .result-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .meta-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .distance { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; }
+        .badges { display: flex; gap: 8px; }
+        .badge-icon { width: 16px; height: 16px; stroke: var(--muted); fill: none; stroke-width: 2; }
+
+        .name { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+        .desc { font-size: 14px; color: var(--muted); margin-bottom: 18px; line-height: 1.5; }
+
+        .actions { display: flex; gap: 12px; }
+        .btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            color: var(--ink);
+            transition: background 0.2s;
+        }
+        .btn:active { background: #F4F4F5; }
+        .btn-primary { background: var(--ink); color: white; border-color: var(--ink); }
+
+        /* Location Bar (Fake/Placeholder for now) */
+        .location-bar {
+            background: #F4F4F5;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
         .hidden { display: none; }
-        .loader { text-align: center; padding: 50px; font-family: 'Cormorant Garamond', serif; font-style: italic; }
-        .footer { text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 14px; margin-top: 80px; opacity: 0.5; }
-
-        /* SVG Icon Style */
-        .icon-svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+        .loader { text-align: center; padding: 40px; font-weight: 500; color: var(--muted); }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="app-container">
         <header>
-            <div class="edition">Weekendgids voor ouders</div>
             <h1>PeuterPlannen</h1>
+            <div class="sub-head">Gids voor gezinnen in de Randstad</div>
         </header>
 
-        <!-- View 1: Origin -->
-        <div id="view-origin" class="book-section">
-            <div class="card">
-                <p class="question">Jouw vertrekpunt</p>
-                <input type="text" id="startLocation" class="location-input" placeholder="Bijv. IJsselstein" value="IJsselstein">
-                <button class="choice-btn" onclick="nextStep('origin', 'regions')" style="justify-content:center; background: var(--ink); color: white; width: 100%;">
-                    Verder
-                </button>
-            </div>
+        <div class="location-bar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            In de buurt van <span id="current-location-text">IJsselstein</span>
         </div>
 
-        <!-- View 2: Region Selection -->
-        <div id="view-regions" class="book-section hidden">
-            <div class="card">
-                <span class="label">Kies regio</span>
-                <h2 class="question">Waar wil je zoeken?</h2>
-                <div class="region-grid">
-                    <button class="region-btn" onclick="selectRegion('Utrecht')">Utrecht</button>
-                    <button class="region-btn" onclick="selectRegion('Amsterdam')">Amsterdam</button>
-                    <button class="region-btn" onclick="selectRegion('Rotterdam')">Rotterdam</button>
-                    <button class="region-btn" onclick="selectRegion('Den Haag')">Den Haag</button>
-                    <button class="region-btn" onclick="selectRegion('Leiden')">Leiden</button>
-                </div>
-            </div>
+        <div class="tag-mixer">
+            <button class="tag-pill active" onclick="toggleTag('all')">Alles</button>
+            <button class="tag-pill" onclick="toggleTag('play')">Speeltuin</button>
+            <button class="tag-pill" onclick="toggleTag('nature')">Bos & Natuur</button>
+            <button class="tag-pill" onclick="toggleTag('horeca')">Horeca</button>
+            <button class="tag-pill" onclick="toggleTag('museum')">Museum</button>
+            <button class="tag-pill" onclick="toggleTag('pancake')">Pannenkoeken</button>
         </div>
 
-        <!-- View 3: Activity Filter -->
-        <div id="view-funnel" class="book-section hidden">
-            <div class="card">
-                <span class="label" id="selected-region-label">Regio</span>
-                <h2 class="question" id="funnel-question">Wat gaan we doen?</h2>
-                <div class="choice-list">
-                    <button class="choice-btn" onclick="applyFilter('play')">
-                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M13 10V3L4 14H11V21L20 10H13Z"/></svg>
-                        Spelen & ravotten
-                    </button>
-                    <button class="choice-btn" onclick="applyFilter('nature')">
-                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3L4 9V21H20V9L12 3Z"/><path d="M12 13v4"/></svg>
-                        Natuur & buiten
-                    </button>
-                    <button class="choice-btn" onclick="applyFilter('pancake')">
-                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3C7.5 3 4 5.5 4 8C4 10.5 7.5 13 12 13C16.5 13 20 10.5 20 8C20 5.5 16.5 3 12 3Z"/><path d="M4 8V11C4 13.5 7.5 16 12 16C16.5 16 20 13.5 20 11V8"/></svg>
-                        Eten (pannenkoeken)
-                    </button>
-                    <button class="choice-btn" onclick="applyFilter('horeca')">
-                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-                        Lunch of koffie
-                    </button>
-                </div>
-            </div>
+        <div id="results-container" class="results-list">
+            <!-- Data from Supabase comes here -->
         </div>
 
-        <!-- View 4: Results -->
-        <div id="view-results" class="book-section hidden">
-            <div class="results-header">
-                <span>Locaties</span>
-                <a href="#" onclick="location.reload()" style="color: var(--accent); text-decoration: none; font-weight: 700;">Opnieuw</a>
-            </div>
-            <div id="list"></div>
-        </div>
-
-        <div id="loader" class="loader hidden">Locaties laden...</div>
-
-        <div class="footer">
-            PeuterPlannen 2026
-        </div>
+        <div id="loader" class="loader">Locaties ophalen...</div>
     </div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAw0UlkShhJ_FQUG1ibkMidUhvEFC23jb4&libraries=places"></script>
     <script>
-        // Supabase Config - Key is base64 encoded to bypass secret scanning
         const SB_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/locations";
         const SB_KEY_ENCODED = "ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5CcGRXcHpkbWRpWm1ac2NuSjJZWFY2YzNobElpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpJd05ETXhOekFzSW1WNGNDSTZNakE0TnpZeE9URTNNSDAuNXkzZ3FpUGZWdnB2ZmFEWUFfUGdxRS1LVHZ1ZjZ6Z042dkd6cWZVcGVTbw==";
         const SB_KEY = atob(SB_KEY_ENCODED);
 
-        let currentRegion = '';
-        let startPoint = '';
+        let activeTag = 'all';
 
-        function nextStep(current, next) {
-            startPoint = document.getElementById('startLocation').value;
-            document.getElementById('view-' + current).classList.add('hidden');
-            document.getElementById('view-' + next).classList.remove('hidden');
-        }
-
-        function selectRegion(name) {
-            currentRegion = name;
-            document.getElementById('selected-region-label').innerText = "Regio: " + name;
-            document.getElementById('view-regions').classList.add('hidden');
-            document.getElementById('view-funnel').classList.remove('hidden');
-        }
-
-        async function applyFilter(type) {
-            document.getElementById('view-funnel').classList.add('hidden');
-            document.getElementById('loader').classList.remove('hidden');
+        async function loadLocations() {
+            const container = document.getElementById('results-container');
+            const loader = document.getElementById('loader');
+            
+            container.innerHTML = '';
+            loader.classList.remove('hidden');
 
             try {
-                // Fetch from Supabase
-                const response = await fetch(`${SB_URL}?region=eq.${currentRegion}&type=eq.${type}`, {
+                let url = `${SB_URL}?select=*`;
+                if (activeTag !== 'all') {
+                    url += `&type=eq.${activeTag}`;
+                }
+
+                const response = await fetch(url, {
                     headers: {
                         "apikey": SB_KEY,
                         "Authorization": `Bearer ${SB_KEY}`
                     }
                 });
-                let data = await response.json();
+                const data = await response.json();
 
-                // Get distances
-                const service = new google.maps.DistanceMatrixService();
-                const destinations = data.map(i => ({ lat: i.lat, lng: i.lng }));
-
-                const distRes = await new Promise((resolve) => {
-                    service.getDistanceMatrix({
-                        origins: [startPoint],
-                        destinations: destinations,
-                        travelMode: 'DRIVING'
-                    }, (res) => resolve(res));
+                loader.classList.add('hidden');
+                
+                data.forEach(item => {
+                    const card = `
+                        <div class="result-card">
+                            <div class="meta-top">
+                                <div class="distance">~15 MIN RIJDEN</div>
+                                <div class="badges">
+                                    ${item.coffee ? '<svg class="badge-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>' : ''}
+                                    ${item.alcohol ? '<svg class="badge-icon" viewBox="0 0 24 24"><path d="M12 22h.01M8 22h8M12 11v11M19 8c0 1.5-2 3-7 3S5 9.5 5 8V2h14v6zM5 8h14"/></svg>' : ''}
+                                </div>
+                            </div>
+                            <div class="name">${item.name}</div>
+                            <div class="desc">${item.description}</div>
+                            <div class="actions">
+                                <a href="https://www.google.com/maps/search/?api=1&query=${item.lat},${item.lng}" target="_blank" class="btn btn-primary">Google Maps</a>
+                                ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn">Website</a>` : ''}
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += card;
                 });
-
-                const elements = distRes.rows[0].elements;
-                data = data.map((item, idx) => ({
-                    ...item,
-                    duration: elements[idx].status === 'OK' ? elements[idx].duration.text : 'onbekend',
-                    durationVal: elements[idx].status === 'OK' ? elements[idx].duration.value : 999999
-                })).sort((a,b) => a.durationVal - b.durationVal);
-
-                renderResults(data);
             } catch (e) {
-                console.error(e);
-                document.getElementById('loader').innerHTML = "Er ging iets mis bij het omslaan van de bladzijde...";
+                loader.innerHTML = "Kon data niet laden.";
             }
         }
 
-        function renderResults(items) {
-            document.getElementById('loader').classList.add('hidden');
-            document.getElementById('view-results').classList.remove('hidden');
-            const container = document.getElementById('list');
-            container.innerHTML = '';
-
-            const carSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:4px; vertical-align:middle;"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.2-1.4.7l-1.5 2.6C1.4 11 1 12 1 13v3c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>`;
-            const glassSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:4px; vertical-align:middle;"><path d="M12 22h.01M8 22h8M12 11v11M19 8c0 1.5-2 3-7 3S5 9.5 5 8V2h14v6zM5 8h14"/></svg>`;
-
-            if (items.length === 0) {
-                container.innerHTML = '<p class="question" style="font-size:18px;">Geen avonturen gevonden in dit hoofdstuk...</p>';
-                return;
-            }
-
-            items.forEach(item => {
-                container.innerHTML += `
-                    <div class="result-card">
-                        <div class="result-meta">
-                            <span>${carSvg} ${item.duration}</span>
-                            ${item.alcohol ? `<span>${glassSvg} Bier/wijn</span>` : ''}
-                        </div>
-                        <h2 class="result-title">${item.name}</h2>
-                        <p class="result-desc">${item.description}</p>
-                        <div>
-                            <a href="https://www.google.com/maps/search/?api=1&query=${item.lat},${item.lng}" target="_blank" class="btn-action">Google Maps</a>
-                            ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn-action">Website</a>` : ''}
-                        </div>
-                    </div>
-                `;
+        function toggleTag(tag) {
+            activeTag = tag;
+            document.querySelectorAll('.tag-pill').forEach(p => {
+                p.classList.toggle('active', p.textContent.toLowerCase().includes(tag) || (tag === 'all' && p.textContent === 'Alles'));
             });
+            loadLocations();
         }
+
+        // Start loading
+        loadLocations();
     </script>
 </body>
 </html>
