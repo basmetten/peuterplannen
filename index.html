@@ -12,7 +12,7 @@
             --accent: #E63946;
             --muted: #457B9D;
             --paper: #FFFFFF;
-            --border-width: 1.5px;
+            --border-width: 1px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -22,30 +22,29 @@
             background-color: var(--bg); 
             color: var(--ink);
             line-height: 1.5;
-            background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
             overflow-x: hidden;
         }
 
         .container { max-width: 500px; margin: 0 auto; padding: 40px 24px; min-height: 100vh; display: flex; flex-direction: column; }
 
         header { text-align: center; margin-bottom: 50px; }
-        h1 { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 700; font-style: italic; line-height: 1; margin-bottom: 8px; }
-        .edition { text-transform: uppercase; font-size: 10px; letter-spacing: 3px; font-weight: 600; opacity: 0.6; }
+        h1 { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 700; line-height: 1; margin-bottom: 8px; }
+        .edition { text-transform: uppercase; font-size: 9px; letter-spacing: 2px; font-weight: 700; opacity: 0.5; }
 
-        .book-section { animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .book-section { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .card {
             background: var(--paper);
-            border: var(--border-width) solid var(--ink);
+            border: var(--border-width) solid #EEE;
             padding: 30px;
-            box-shadow: 6px 6px 0px var(--ink);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
             margin-bottom: 30px;
         }
 
-        .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 15px; display: block; }
+        .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 15px; display: block; }
         
-        .question { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; margin-bottom: 25px; text-align: center; }
+        .question { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; margin-bottom: 25px; text-align: center; }
 
         .choice-list { display: flex; flex-direction: column; gap: 12px; }
         .choice-btn {
@@ -155,17 +154,17 @@
 <body>
     <div class="container">
         <header>
-            <div class="edition">Heritage Edition — 2026</div>
+            <div class="edition">Weekendgids voor ouders</div>
             <h1>PeuterPlannen</h1>
         </header>
 
         <!-- View 1: Origin -->
         <div id="view-origin" class="book-section">
             <div class="card">
-                <p class="question">Waar begint de reis?</p>
-                <input type="text" id="startLocation" class="location-input" placeholder="Je stad of dorp..." value="IJsselstein">
+                <p class="question">Jouw vertrekpunt</p>
+                <input type="text" id="startLocation" class="location-input" placeholder="Bijv. IJsselstein" value="IJsselstein">
                 <button class="choice-btn" onclick="nextStep('origin', 'regions')" style="justify-content:center; background: var(--ink); color: white; width: 100%;">
-                    Volgende pagina →
+                    Verder
                 </button>
             </div>
         </div>
@@ -173,8 +172,8 @@
         <!-- View 2: Region Selection -->
         <div id="view-regions" class="book-section hidden">
             <div class="card">
-                <span class="label">Inleiding</span>
-                <h2 class="question">Welk hoofdstuk slaan we open?</h2>
+                <span class="label">Kies regio</span>
+                <h2 class="question">Waar wil je zoeken?</h2>
                 <div class="region-grid">
                     <button class="region-btn" onclick="selectRegion('Utrecht')">Utrecht</button>
                     <button class="region-btn" onclick="selectRegion('Amsterdam')">Amsterdam</button>
@@ -185,27 +184,27 @@
             </div>
         </div>
 
-        <!-- View 3: Story Funnel -->
+        <!-- View 3: Activity Filter -->
         <div id="view-funnel" class="book-section hidden">
             <div class="card">
                 <span class="label" id="selected-region-label">Regio</span>
-                <h2 class="question" id="funnel-question">Wat voor avontuur zoeken we?</h2>
+                <h2 class="question" id="funnel-question">Wat gaan we doen?</h2>
                 <div class="choice-list">
                     <button class="choice-btn" onclick="applyFilter('play')">
                         <svg class="icon-svg" viewBox="0 0 24 24"><path d="M13 10V3L4 14H11V21L20 10H13Z"/></svg>
-                        Gaan met die banaan! (Uitrennen)
+                        Spelen & ravotten
                     </button>
                     <button class="choice-btn" onclick="applyFilter('nature')">
                         <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3L4 9V21H20V9L12 3Z"/><path d="M12 13v4"/></svg>
-                        Lekker struinen (Ontdekken)
+                        Natuur & buiten
                     </button>
                     <button class="choice-btn" onclick="applyFilter('pancake')">
                         <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3C7.5 3 4 5.5 4 8C4 10.5 7.5 13 12 13C16.5 13 20 10.5 20 8C20 5.5 16.5 3 12 3Z"/><path d="M4 8V11C4 13.5 7.5 16 12 16C16.5 16 20 13.5 20 11V8"/></svg>
-                        Gewoon gezellig (Eten & Spelen)
+                        Eten (pannenkoeken)
                     </button>
                     <button class="choice-btn" onclick="applyFilter('horeca')">
                         <svg class="icon-svg" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-                        Ontspannen borrelen (Horeca)
+                        Lunch of koffie
                     </button>
                 </div>
             </div>
@@ -214,24 +213,24 @@
         <!-- View 4: Results -->
         <div id="view-results" class="book-section hidden">
             <div class="results-header">
-                <span>Geselecteerde Pagina's</span>
-                <a href="#" onclick="location.reload()" style="color: var(--accent); text-decoration: none; font-weight: 700;">Aanpassen</a>
+                <span>Locaties</span>
+                <a href="#" onclick="location.reload()" style="color: var(--accent); text-decoration: none; font-weight: 700;">Opnieuw</a>
             </div>
             <div id="list"></div>
         </div>
 
-        <div id="loader" class="loader hidden">De bladzijden worden omgeslagen...</div>
+        <div id="loader" class="loader hidden">Locaties laden...</div>
 
         <div class="footer">
-            © 2026 — Een handgemaakte reisgids voor de Randstad
+            PeuterPlannen 2026
         </div>
     </div>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAw0UlkShhJ_FQUG1ibkMidUhvEFC23jb4&libraries=places"></script>
     <script>
-        // Supabase Config - VERVANG DIT MET JE EIGEN KEY
+        // Supabase Config
         const SB_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/locations";
-        const SB_KEY = "JOUW_SUPABASE_KEY_HIER"; // Vraag Bas om de juiste key 
+        const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpdWpzdmdiZmZscnJ2YXV6c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA1MTI0MDAsImV4cCI6MjA1NjA4ODQwMH0.placeholder"; // Gebruik de anon key uit je dashboard 
 
         let currentRegion = '';
         let startPoint = '';
@@ -308,12 +307,12 @@
                     <div class="result-card">
                         <div class="result-meta">
                             <span>${carSvg} ${item.duration}</span>
-                            ${item.alcohol ? `<span>${glassSvg} OUDER-VRIENDELIJK</span>` : ''}
+                            ${item.alcohol ? `<span>${glassSvg} Bier/wijn</span>` : ''}
                         </div>
                         <h2 class="result-title">${item.name}</h2>
                         <p class="result-desc">${item.description}</p>
                         <div>
-                            <a href="https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}" target="_blank" class="btn-action">Route & Parkeren</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=${item.lat},${item.lng}" target="_blank" class="btn-action">Google Maps</a>
                             ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn-action">Website</a>` : ''}
                         </div>
                     </div>
