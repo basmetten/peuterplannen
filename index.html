@@ -76,7 +76,9 @@
             border-radius: 12px;
             padding: 24px;
             margin-bottom: 16px;
+            transition: transform 0.2s;
         }
+        .result-card:hover { transform: translateY(-2px); }
 
         .result-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
         .result-title { font-size: 18px; font-weight: 700; }
@@ -99,24 +101,25 @@
         }
         .btn-outline:hover { background: var(--bg); }
 
-        .hidden { display: none; }
+        .loading { text-align: center; color: var(--text-muted); font-size: 14px; padding: 40px; display: none; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>PeuterPlannen</h1>
-            <p class="subtitle">Vind je volgende weekend-avontuur in de Randstad</p>
+            <p class="subtitle">Weekend-gids voor ouders in de Randstad</p>
         </header>
 
         <div id="wizard" class="wizard-card">
             <div class="form-group">
-                <label>Waar vertrek je vandaan?</label>
+                <label>📍 Waar vertrek je vandaan?</label>
                 <input type="text" id="startLocation" placeholder="Stad of postcode..." value="Utrecht">
+                <button onclick="useCurrentLocation()" style="background:none; border:none; color:var(--accent); font-size:11px; font-weight:600; cursor:pointer; margin-top:4px;">Gebruik mijn GPS locatie</button>
             </div>
 
             <div class="form-group">
-                <label>Binnen of buiten?</label>
+                <label>🌳 Binnen of buiten?</label>
                 <select id="environment">
                     <option value="both">Maakt niet uit</option>
                     <option value="outdoor">Lekker naar buiten</option>
@@ -125,66 +128,166 @@
             </div>
 
             <div class="form-group">
-                <label>Wat wil je doen?</label>
+                <label>🍕 Wat gaan we doen?</label>
                 <select id="type">
                     <option value="all">Alles tonen</option>
                     <option value="nature">Natuur & Wandelen</option>
                     <option value="horeca">Eten & Drinken</option>
                     <option value="pancake">Pannenkoeken</option>
                     <option value="museum">Museum</option>
-                    <option value="play">Spelen</option>
+                    <option value="play">Spelen & Attracties</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>⏱ Max reistijd (auto)</label>
+                <select id="maxTime">
+                    <option value="999">Geen limiet</option>
+                    <option value="15">Max 15 min</option>
+                    <option value="30">Max 30 min</option>
+                    <option value="45">Max 45 min</option>
+                    <option value="60">Max 60 min</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                    <input type="checkbox" id="alcoholOnly"> 🍺 Alleen plekken met alcohol
+                    <input type="checkbox" id="alcoholOnly"> 🍷 Alleen plekken met bier/wijn (voor papa/mama)
                 </label>
             </div>
 
-            <button class="btn-primary" onclick="search()">Zoek avonturen</button>
+            <button class="btn-primary" onclick="search()">Vind avonturen</button>
         </div>
+
+        <div id="loading" class="loading">Berekenen van reistijden... 🚗💨</div>
 
         <div id="resultsList" class="results">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                <h2 style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">Resultaten</h2>
+                <h2 style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">Resultaten in de buurt</h2>
                 <button onclick="location.reload()" style="background: none; border: none; font-size: 13px; color: var(--accent); cursor: pointer; font-weight: 600;">Aanpassen</button>
             </div>
             <div id="cardsContainer"></div>
         </div>
     </div>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAw0UlkShhJ_FQUG1ibkMidUhvEFC23jb4&libraries=places"></script>
     <script>
         const database = [
-            { name: "Hans & Grietje", type: "pancake", desc: "Het meest magische pannenkoekenhuis van Nederland met enorme speeltuin.", alcohol: true, indoor: true, website: "https://www.hansengrietje.zeewolde.nl/", parking: "https://maps.google.com/?q=Hans+en+Grietje+Parkeren" },
-            { name: "Gagelbos Utrecht", type: "nature", desc: "Speelbos met vlotten, modder en houten speeltoestellen. Puur natuur.", alcohol: false, indoor: false, website: "-", parking: "https://maps.google.com/?q=Gagelbos+Parkeren" },
-            { name: "Nijntje Museum", type: "museum", desc: "De droom van elke 2-jarige. Volledig interactief en kid-proof.", alcohol: false, indoor: true, website: "https://nijntjemuseum.nl/", parking: "https://maps.google.com/?q=Parkeren+Nijntje+Museum" },
-            { name: "Meneer Paprika", type: "horeca", desc: "Speelgoedwinkel en café in één in hartje Haarlem. Met enorme Thomas de Trein tafel.", alcohol: true, indoor: true, website: "https://meneerpaprika.nl/", parking: "https://maps.google.com/?q=Parkeren+Haarlem+Centrum" },
-            { name: "Diergaarde Blijdorp", type: "play", desc: "Prachtige dierentuin met veel overdekte speelplekken (Oceanium).", alcohol: true, indoor: true, website: "https://www.diergaardeblijdorp.nl/", parking: "https://maps.google.com/?q=Blijdorp+Parkeren" },
-            { name: "'t Hooge Nest", type: "nature", desc: "Prachtige plek in de bossen bij Blaricum met goede horeca en speeltoestellen.", alcohol: true, indoor: false, website: "https://thoogenest.nl/", parking: "https://maps.google.com/?q=Parkeren+Hooge+Nest" }
+            { name: "Hans & Grietje", type: "pancake", desc: "Het meest magische pannenkoekenhuis van Nederland met enorme speeltuin en sprookjespark.", alcohol: true, indoor: true, website: "https://www.hansengrietje.zeewolde.nl/", coords: { lat: 52.3429, lng: 5.4842 }, parking: "https://maps.google.com/?q=Hans+en+Grietje+Parkeren" },
+            { name: "Gagelbos Utrecht", type: "nature", desc: "Speelbos met vlotten, modder en houten speeltoestellen. Puur natuur.", alcohol: false, indoor: false, website: "-", coords: { lat: 52.1333, lng: 5.1167 }, parking: "https://maps.google.com/?q=Gagelbos+Parkeren" },
+            { name: "Nijntje Museum", type: "museum", desc: "De droom van elke 2-jarige. Volledig interactief en kid-proof.", alcohol: false, indoor: true, website: "https://nijntjemuseum.nl/", coords: { lat: 52.0833, lng: 5.1250 }, parking: "https://maps.google.com/?q=Parkeren+Nijntje+Museum" },
+            { name: "Meneer Paprika", type: "horeca", desc: "Speelgoedwinkel en café in één in hartje Haarlem. Met enorme Thomas de Trein tafel.", alcohol: true, indoor: true, website: "https://meneerpaprika.nl/", coords: { lat: 52.3833, lng: 4.6333 }, parking: "https://maps.google.com/?q=Parkeren+Haarlem+Centrum" },
+            { name: "Diergaarde Blijdorp", type: "play", desc: "Prachtige dierentuin met veel overdekte speelplekken (Oceanium).", alcohol: true, indoor: true, website: "https://www.diergaardeblijdorp.nl/", coords: { lat: 51.9268, lng: 4.4539 }, parking: "https://maps.google.com/?q=Blijdorp+Parkeren" },
+            { name: "'t Hooge Nest", type: "nature", desc: "Prachtige plek in de bossen bij Blaricum met goede horeca en speeltoestellen.", alcohol: true, indoor: false, website: "https://thoogenest.nl/", coords: { lat: 52.2833, lng: 5.2333 }, parking: "https://maps.google.com/?q=Parkeren+Hooge+Nest" },
+            { name: "Geertje's Hoeve", type: "nature", desc: "Beleefboerderij bij Utrecht. Geitjes voeren, ponyrijden en lekker eten.", alcohol: true, indoor: true, website: "https://geertjeshoeve.nl/", coords: { lat: 52.1265, lng: 4.9818 }, parking: "https://maps.google.com/?q=Thematerweg+5+Haarzuilens" },
+            { name: "Boerderij de Boerinn", type: "play", desc: "Speelboerderij met vlotten, skelters en veel dieren in Kamerik.", alcohol: true, indoor: true, website: "https://www.deboerinn.nl/", coords: { lat: 52.1055, lng: 4.8855 }, parking: "https://maps.google.com/?q=Mijzijde+6+Kamerik" },
+            { name: "Het Woeste Westen", type: "nature", desc: "Natuurspeeltuin in Amsterdam West. Klimmen over water en hutten bouwen.", alcohol: false, indoor: false, website: "https://www.woestewesten.nl/", coords: { lat: 52.3880, lng: 4.8569 }, parking: "https://maps.google.com/?q=Transformatorweg+10+Amsterdam" },
+            { name: "Villa Augustus", type: "horeca", desc: "Restaurant en markt in een oude watertoren met prachtige moestuin in Dordrecht.", alcohol: true, indoor: true, website: "https://www.villa-augustus.nl/", coords: { lat: 51.8150, lng: 4.6850 }, parking: "https://maps.google.com/?q=Villa+Augustus+Parkeren" },
+            { name: "Restaurant Leuk Bussum", type: "horeca", desc: "Gezellig restaurant met enorme speelkelder (100m2) en oppas.", alcohol: true, indoor: true, website: "https://restaurantleuk.nl/", coords: { lat: 52.2687, lng: 5.1610 }, parking: "https://maps.google.com/?q=Parkeergarage+Nieuwe+Brink+Bussum" },
+            { name: "De Tuin van de Smid", type: "horeca", desc: "Duurzaam theehuis in Park Cronesteyn (Leiden). Veel ruimte in de natuur.", alcohol: true, indoor: true, website: "https://www.detuinvandesmid.nl/", coords: { lat: 52.1413, lng: 4.4976 }, parking: "https://maps.google.com/?q=Polderpad+8+Leiden" },
+            { name: "Theehuis Rhijnauwen", type: "pancake", desc: "Iconisch pannenkoekenhuis aan de Kromme Rijn met grote houten speeltuin.", alcohol: true, indoor: true, website: "https://theehuisrhijnauwen.nl/", coords: { lat: 52.0726, lng: 5.1610 }, parking: "https://maps.google.com/?q=Rhijnauwenselaan+16+Bunnik" },
+            { name: "Het Jagershuis", type: "pancake", desc: "Pannenkoeken eten in de bossen van Lage Vuursche met grote speeltuin.", alcohol: true, indoor: true, website: "https://jagershuislagevuursche.nl/", coords: { lat: 52.1707, lng: 5.2014 }, parking: "https://maps.google.com/?q=Dorpstraat+11+Lage+Vuursche" },
+            { name: "Plaswijckpark", type: "play", desc: "Enorm speelpark in Rotterdam met binnen- en buitenspeeltuinen en een kleine zoo.", alcohol: true, indoor: true, website: "https://www.plaswijckpark.nl/", coords: { lat: 51.9540, lng: 4.4750 }, parking: "https://maps.google.com/?q=Ringdijk+20+Rotterdam" },
+            { name: "Speelpark Oud Valkeveen", type: "play", desc: "Kindvriendelijk attractiepark in Naarden. Perfect voor peuters.", alcohol: true, indoor: true, website: "https://www.oudvalkeveen.nl/", coords: { lat: 52.3047, lng: 5.1923 }, parking: "https://maps.google.com/?q=Oud+Huizerweg+2+Naarden" },
+            { name: "Villa Zebra", type: "museum", desc: "Interactief kinderkunstmuseum in Rotterdam voor kids vanaf 2 jaar.", alcohol: false, indoor: true, website: "https://www.villazebra.nl/", coords: { lat: 51.9114, lng: 4.4970 }, parking: "https://maps.google.com/?q=Stieltjesstraat+21+Rotterdam" },
+            { name: "Kinderboekenmuseum", type: "museum", desc: "De wereld van Kikker en Nijntje komt tot leven in Den Haag.", alcohol: false, indoor: true, website: "https://www.kinderboekenmuseum.nl/", coords: { lat: 52.0805, lng: 4.3242 }, parking: "https://maps.google.com/?q=Q-Park+CS+New+Babylon" },
+            { name: "Spazio Rotterdam", type: "horeca", desc: "Italiaans restaurant bij Rotterdam Airport met speelhoek bij de landingsbaan.", alcohol: true, indoor: true, website: "https://spazio-rotterdam.nl/", coords: { lat: 51.9567, lng: 4.4172 }, parking: "https://maps.google.com/?q=Malpensabaan+3+Rotterdam" },
+            { name: "Keck Gouda", type: "horeca", desc: "Hip kindercafé in Gouda met houten 'Play Ground' om te klimmen.", alcohol: true, indoor: true, website: "https://keckgouda.nl/", coords: { lat: 52.0167, lng: 4.7167 }, parking: "https://maps.google.com/?q=Keck+Gouda+Parkeren" },
+            { name: "Kraantje Lek", type: "horeca", desc: "Beroemde uitspanning in de duinen bij Overveen met grote speeltuin.", alcohol: true, indoor: true, website: "https://kraantjelek.nl/", coords: { lat: 52.3833, lng: 4.5833 }, parking: "https://maps.google.com/?q=Duinlustweg+22+Overveen" },
+            { name: "PAND Pannenkoek", type: "pancake", desc: "Creatief ingericht pannenkoekenhuis met een echte caravan binnen.", alcohol: true, indoor: true, website: "https://pandpannenkoek.nl/", coords: { lat: 52.0238, lng: 5.1765 }, parking: "https://maps.google.com/?q=Provincialeweg+1+Schalkwijk" },
+            { name: "Smullen en Spelen", type: "pancake", desc: "Natuurspeeltuin en pannenkoekenhuis in Almere.", alcohol: true, indoor: true, website: "https://www.smullen.nl/", coords: { lat: 52.3500, lng: 5.2500 }, parking: "https://maps.google.com/?q=Enrico+Fermistraat+30+Almere" },
+            { name: "Geitenboerderij Ridammerhoeve", type: "nature", desc: "Spelen en dieren kijken in het Amsterdamse Bos.", alcohol: false, indoor: true, website: "https://www.geitenboerderij.nl/", coords: { lat: 52.3130, lng: 4.8244 }, parking: "https://maps.google.com/?q=Nieuwe+Meerlaan+3+Amstelveen" },
+            { name: "De Mekkerstee", type: "nature", desc: "Grote geitenboerderij in Ouddorp met kaasmakerij en speeltuin.", alcohol: false, indoor: true, website: "https://www.demekkerstee.nl/", coords: { lat: 51.8167, lng: 3.9333 }, parking: "https://maps.google.com/?q=Hofdijksweg+34+Ouddorp" },
+            { name: "Museum Speelklok", type: "museum", desc: "Vrolijke zelfspelende muziekinstrumenten in Utrecht.", alcohol: true, indoor: true, website: "https://www.museumspeelklok.nl/", coords: { lat: 52.0908, lng: 5.1195 }, parking: "https://maps.google.com/?q=Springweg+Parkeren+Utrecht" },
+            { name: "KidZcity", type: "play", desc: "Grootste overdekte speelparadijs in Utrecht.", alcohol: true, indoor: true, website: "https://www.kidzcity.nl/", coords: { lat: 52.1000, lng: 5.0833 }, parking: "https://maps.google.com/?q=Vlampijpstraat+Utrecht" },
+            { name: "Buurten in de fabriek", type: "horeca", desc: "Hip restaurant in een oude fabriek in Utrecht met speelhoek.", alcohol: true, indoor: true, website: "https://www.kombuurten.nl/", coords: { lat: 52.0833, lng: 5.0833 }, parking: "https://maps.google.com/?q=Buurten+in+de+fabriek+Parkeren" },
+            { name: "Grand Café Turf", type: "horeca", desc: "Gezellige plek in Hoorn met een zandbak binnen.", alcohol: true, indoor: true, website: "https://grandcafeturf.nl/", coords: { lat: 52.6426, lng: 5.0586 }, parking: "https://maps.google.com/?q=Gedempte+Turfhaven+Hoorn" },
+            { name: "De Vreemde Vogel", type: "horeca", desc: "Buitenhotel en restaurant in Vlaardingen met natuursafari.", alcohol: true, indoor: true, website: "https://www.devreemdevogel.nl/", coords: { lat: 51.9167, lng: 4.3333 }, parking: "https://maps.google.com/?q=Vossiusstraat+6+Vlaardingen" },
+            { name: "Boomhuttenclub", type: "horeca", desc: "Houten boomhutten binnen in Den Haag.", alcohol: true, indoor: true, website: "https://boomhuttenclub.nl/", coords: { lat: 52.0833, lng: 4.3167 }, parking: "https://maps.google.com/?q=Boomhuttenclub+Parkeren" },
+            { name: "KinderSpeelCafe Zandbak", type: "horeca", desc: "Kleinschalig speelcafé in Noordwijk voor de allerkleinsten.", alcohol: true, indoor: true, website: "https://speelcafezandbak.nl/", coords: { lat: 52.2333, lng: 4.4333 }, parking: "https://maps.google.com/?q=Noordwijk+Parkeren" },
+            { name: "Juffrouw van Zanten", type: "horeca", desc: "Gezellige ontbijt- en lunchplek in Rotterdam.", alcohol: true, indoor: true, website: "https://juffrouwvanzanten.com/", coords: { lat: 51.9333, lng: 4.4833 }, parking: "https://maps.google.com/?q=Rotterdam+Lusthofstraat+Parkeren" },
+            { name: "Pannenkoekenparadijs Haarlem", type: "pancake", desc: "Groot speelpark met midgetgolf en pannenkoeken.", alcohol: true, indoor: true, website: "https://pannenkoekenparadijs.nl/", coords: { lat: 52.3814, lng: 4.6714 }, parking: "https://maps.google.com/?q=Reinaldapad+10+Haarlem" },
+            { name: "Restaurant Duinvermaak", type: "pancake", desc: "Klassieker in Bergen met enorme speeltuin.", alcohol: true, indoor: true, website: "https://www.duinvermaak.nl/", coords: { lat: 52.6657, lng: 4.6974 }, parking: "https://maps.google.com/?q=Breelaan+132+Bergen" },
+            { name: "Amsterdamse Waterleidingduinen", type: "nature", desc: "Herten spotten en wandelen door de duinen.", alcohol: true, indoor: false, website: "https://awd.waternet.nl/", coords: { lat: 52.3500, lng: 4.5667 }, parking: "https://maps.google.com/?q=Ingang+Panneland+Parkeren" },
+            { name: "Kralingse Bos", type: "nature", desc: "Bos in Rotterdam met hertenkamp en speeltuinen.", alcohol: true, indoor: false, website: "-", coords: { lat: 51.9333, lng: 4.5167 }, parking: "https://maps.google.com/?q=Langepad+Rotterdam" }
         ];
 
-        function search() {
+        function useCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    const geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({ location: { lat, lng } }, (results, status) => {
+                        if (status === "OK") {
+                            document.getElementById('startLocation').value = results[0].formatted_address;
+                        }
+                    });
+                });
+            }
+        }
+
+        async function search() {
+            const start = document.getElementById('startLocation').value;
             const env = document.getElementById('environment').value;
             const type = document.getElementById('type').value;
             const alc = document.getElementById('alcoholOnly').checked;
+            const maxTime = parseInt(document.getElementById('maxTime').value);
 
-            const filtered = database.filter(item => {
+            if (!start) { alert("Vul eerst je vertrekpunt in!"); return; }
+
+            document.getElementById('wizard').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+
+            // Filter basic attributes first
+            let filtered = database.filter(item => {
                 if (env !== 'both' && (env === 'indoor' ? !item.indoor : item.indoor)) return false;
                 if (type !== 'all' && item.type !== type) return false;
                 if (alc && !item.alcohol) return false;
                 return true;
             });
 
-            const container = document.getElementById('cardsContainer');
-            container.innerHTML = '';
+            // Get reistijden from Google
+            const service = new google.maps.DistanceMatrixService();
+            const destinations = filtered.map(item => item.coords);
 
-            filtered.forEach(item => {
+            try {
+                const response = await new Promise((resolve, reject) => {
+                    service.getDistanceMatrix({
+                        origins: [start],
+                        destinations: destinations,
+                        travelMode: 'DRIVING'
+                    }, (res, status) => status === 'OK' ? resolve(res) : reject(status));
+                });
+
+                const results = response.rows[0].elements;
+                filtered = filtered.map((item, idx) => ({
+                    ...item,
+                    durationText: results[idx].duration ? results[idx].duration.text : "? min",
+                    durationValue: results[idx].duration ? results[idx].duration.value / 60 : 999
+                })).filter(item => item.durationValue <= maxTime)
+                  .sort((a, b) => a.durationValue - b.durationValue);
+
+                renderResults(filtered);
+            } catch (err) {
+                console.error(err);
+                alert("Er ging iets mis met het berekenen van de reistijd. Bekijk alle resultaten.");
+                renderResults(filtered);
+            }
+        }
+
+        function renderResults(list) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('resultsList').style.display = 'block';
+            const container = document.getElementById('cardsContainer');
+            container.innerHTML = list.length === 0 ? '<p style="text-align:center; color:var(--text-muted);">Geen avonturen gevonden die aan je filters voldoen. Probeer de reistijd te verhogen!</p>' : '';
+
+            list.forEach(item => {
                 const card = `
                     <div class="result-card">
                         <div class="result-header">
                             <span class="result-title">${item.name}</span>
-                            <span class="result-meta">~25 min</span>
+                            <span class="result-meta">${item.durationText || ''}</span>
                         </div>
                         <p class="result-desc">${item.desc}</p>
                         <div style="margin-bottom: 20px;">
@@ -193,15 +296,12 @@
                         </div>
                         <div class="actions">
                             <a href="${item.parking}" target="_blank" class="btn-outline">Parkeren</a>
-                            <a href="${item.website}" target="_blank" class="btn-outline">Website</a>
+                            <a href="${item.website !== '-' ? item.website : '#'}" target="_blank" class="btn-outline" ${item.website === '-' ? 'style="opacity:0.3; pointer-events:none;"' : ''}>Website</a>
                         </div>
                     </div>
                 `;
                 container.innerHTML += card;
             });
-
-            document.getElementById('wizard').style.display = 'none';
-            document.getElementById('resultsList').style.display = 'block';
         }
     </script>
 </body>
