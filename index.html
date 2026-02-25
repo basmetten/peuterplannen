@@ -77,6 +77,21 @@
             text-align: center;
         }
 
+        /* Region Grid */
+        .region-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .region-btn {
+            background: transparent;
+            border: var(--border-width) solid var(--ink);
+            padding: 20px 10px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .region-btn:hover { background: var(--ink); color: white; }
+
         /* Results */
         .results-header {
             font-family: 'Cormorant Garamond', serif;
@@ -130,7 +145,11 @@
         .btn-action:hover { color: var(--accent); border-color: var(--accent); }
 
         .hidden { display: none; }
+        .loader { text-align: center; padding: 50px; font-family: 'Cormorant Garamond', serif; font-style: italic; }
         .footer { text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 14px; margin-top: 80px; opacity: 0.5; }
+
+        /* SVG Icon Style */
+        .icon-svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; }
     </style>
 </head>
 <body>
@@ -140,39 +159,62 @@
             <h1>PeuterPlannen</h1>
         </header>
 
-        <div id="step-1" class="book-section">
+        <!-- View 1: Origin -->
+        <div id="view-origin" class="book-section">
             <div class="card">
-                <p class="question">Waar begint het verhaal vandaag?</p>
-                <input type="text" id="startLocation" class="location-input" placeholder="Type stad of dorp..." value="IJsselstein">
-                <button class="choice-btn" onclick="nextStep()" style="justify-content:center; background: var(--ink); color: white; width: 100%;">
+                <p class="question">Waar begint de reis?</p>
+                <input type="text" id="startLocation" class="location-input" placeholder="Je stad of dorp..." value="IJsselstein">
+                <button class="choice-btn" onclick="nextStep('origin', 'regions')" style="justify-content:center; background: var(--ink); color: white; width: 100%;">
                     Volgende pagina →
                 </button>
             </div>
         </div>
 
-        <div id="step-2" class="book-section hidden">
+        <!-- View 2: Region Selection -->
+        <div id="view-regions" class="book-section hidden">
             <div class="card">
-                <p class="question">Hoe is de energie van de kleintjes?</p>
+                <span class="label">Inleiding</span>
+                <h2 class="question">Welk hoofdstuk slaan we open?</h2>
+                <div class="region-grid">
+                    <button class="region-btn" onclick="selectRegion('Utrecht')">Utrecht</button>
+                    <button class="region-btn" onclick="selectRegion('Amsterdam')">Amsterdam</button>
+                    <button class="region-btn" onclick="selectRegion('Rotterdam')">Rotterdam</button>
+                    <button class="region-btn" onclick="selectRegion('Den Haag')">Den Haag</button>
+                    <button class="region-btn" onclick="selectRegion('Leiden')">Leiden</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View 3: Story Funnel -->
+        <div id="view-funnel" class="book-section hidden">
+            <div class="card">
+                <span class="label" id="selected-region-label">Regio</span>
+                <h2 class="question" id="funnel-question">Wat voor avontuur zoeken we?</h2>
                 <div class="choice-list">
-                    <button class="choice-btn" onclick="search('play')">
-                        <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14H11V21L20 10H13Z"/></svg>
+                    <button class="choice-btn" onclick="applyFilter('play')">
+                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M13 10V3L4 14H11V21L20 10H13Z"/></svg>
                         Gaan met die banaan! (Uitrennen)
                     </button>
-                    <button class="choice-btn" onclick="search('nature')">
-                        <svg viewBox="0 0 24 24"><path d="M12 3L4 9V21H20V9L12 3Z"/><path d="M12 13V17"/></svg>
+                    <button class="choice-btn" onclick="applyFilter('nature')">
+                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3L4 9V21H20V9L12 3Z"/><path d="M12 13v4"/></svg>
                         Lekker struinen (Ontdekken)
                     </button>
-                    <button class="choice-btn" onclick="search('pancake')">
-                        <svg viewBox="0 0 24 24"><path d="M12 3C7.5 3 4 5.5 4 8C4 10.5 7.5 13 12 13C16.5 13 20 10.5 20 8C20 5.5 16.5 3 12 3Z"/><path d="M4 8V11C4 13.5 7.5 16 12 16C16.5 16 20 13.5 20 11V8"/></svg>
+                    <button class="choice-btn" onclick="applyFilter('pancake')">
+                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 3C7.5 3 4 5.5 4 8C4 10.5 7.5 13 12 13C16.5 13 20 10.5 20 8C20 5.5 16.5 3 12 3Z"/><path d="M4 8V11C4 13.5 7.5 16 12 16C16.5 16 20 13.5 20 11V8"/></svg>
                         Gewoon gezellig (Eten & Spelen)
+                    </button>
+                    <button class="choice-btn" onclick="applyFilter('horeca')">
+                        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                        Ontspannen borrelen (Horeca)
                     </button>
                 </div>
             </div>
         </div>
 
-        <div id="results" class="hidden">
+        <!-- View 4: Results -->
+        <div id="view-results" class="book-section hidden">
             <div class="results-header">
-                <span>Geselecteerde Avonturen</span>
+                <span>Geselecteerde Pagina's</span>
                 <a href="#" onclick="location.reload()" style="color: var(--accent); text-decoration: none; font-weight: 700;">Aanpassen</a>
             </div>
             <div id="list"></div>
@@ -187,69 +229,69 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAw0UlkShhJ_FQUG1ibkMidUhvEFC23jb4&libraries=places"></script>
     <script>
-        const database = [
-            { name: "Nijntje Museum", type: "play", desc: "Hét museum voor peuters. Stap letterlijk in de wereld van Dick Bruna. 100% veilig en vrolijk.", alcohol: false, coords: { lat: 52.0837, lng: 5.1258 }, website: "https://nijntjemuseum.nl/" },
-            { name: "Geertje's Hoeve", type: "nature", desc: "Beleefboerderij bij Haarzuilens. Geitjes de fles geven, ponyrijden en een heerlijk terras.", alcohol: true, coords: { lat: 52.1265, lng: 4.9818 }, website: "https://geertjeshoeve.nl/" },
-            { name: "Hans & Grietje Zeewolde", type: "pancake", desc: "Magisch pannenkoekenhuis met bewegende tafels en een enorme speeltuin.", alcohol: true, coords: { lat: 52.3429, lng: 5.4842 }, website: "https://www.hansengrietje.zeewolde.nl/" },
-            { name: "Speelbos Gagelbos", type: "nature", desc: "Speelbos met vlotten, modder en houten tunnels. Een paradijs voor kleine ontdekkingsreizigers.", alcohol: false, coords: { lat: 52.1285, lng: 5.1082 }, website: "-" },
-            { name: "Marnemoende IJsselstein", type: "nature", desc: "Prachtige jachthaven aan de Hollandse IJssel met een speeltuin en fijn restaurant.", alcohol: true, coords: { lat: 52.0225, lng: 4.9785 }, website: "https://marnemoende.nl/" },
-            { name: "Natuurkwartier Nieuwegein", type: "nature", desc: "Kinderboerderij, speelbos en pannenkoekenhuis in het groen van Nieuwegein.", alcohol: true, coords: { lat: 52.0163, lng: 5.0768 }, website: "https://natuurkwartier.nl/" },
-            { name: "Meneer Paprika Haarlem", type: "play", desc: "Speelgoedwinkel en café met een legendarische Thomas de Trein baan. Hartje Haarlem.", alcohol: true, coords: { lat: 52.3833, lng: 4.6333 }, website: "https://meneerpaprika.nl/" },
-            { name: "Kraantje Lek Overveen", type: "nature", desc: "Iconisch pannenkoekenhuis aan de voet van een klimduin met enorme houten speeltuin.", alcohol: true, coords: { lat: 52.3833, lng: 4.5833 }, website: "https://kraantjelek.nl/" },
-            { name: "Diergaarde Blijdorp", type: "play", desc: "Prachtige dierentuin met veel overdekte speelplekken (Oceanium) voor de allerkleinsten.", alcohol: true, coords: { lat: 51.9268, lng: 4.4539 }, website: "https://www.diergaardeblijdorp.nl/" },
-            { name: "Villa Zebra Rotterdam", type: "play", desc: "Interactief kinderkunstmuseum in Rotterdam waar spelen en ontdekken centraal staan.", alcohol: false, coords: { lat: 51.9114, lng: 4.4970 }, website: "https://www.villazebra.nl/" },
-            { name: "Kinderboekenmuseum Den Haag", type: "play", desc: "De wereld van Kikker en Nijntje komt tot leven in een volledig interactief museum.", alcohol: false, coords: { lat: 52.0805, lng: 4.3242 }, website: "https://www.kinderboekenmuseum.nl/" },
-            { name: "Speelpark Oud Valkeveen", type: "play", desc: "Groot speelpark aan het Gooimeer, speciaal ingericht voor de allerjongsten.", alcohol: true, coords: { lat: 52.3047, lng: 5.1923 }, website: "https://www.oudvalkeveen.nl/" },
-            { name: "Jack's Grillhouse Nieuwegein", type: "play", desc: "Restaurant met een grote, vrolijke binnenspeelruimte voor de kleintjes.", alcohol: true, coords: { lat: 52.0295, lng: 5.0935 }, website: "https://jacksgrillhouse.nl/" },
-            { name: "Theehuis Rhijnauwen", type: "pancake", desc: "Iconisch pannenkoekenhuis aan het water met een grote houten speeltuin bij Utrecht.", alcohol: true, coords: { lat: 52.0726, lng: 5.1610 }, website: "https://theehuisrhijnauwen.nl/" },
-            { name: "Speeltuin de Koppel", type: "play", desc: "Grote, schone buitenspeeltuin in IJsselstein met fijne toestellen voor peuters.", alcohol: false, coords: { lat: 52.0210, lng: 5.0385 }, website: "https://speeltuindekoppel.nl/" },
-            { name: "Molen de Ster Utrecht", type: "play", desc: "Historische molen met een fijne kinderboerderij en een klein terras.", alcohol: false, coords: { lat: 52.0913, lng: 5.1015 }, website: "https://molendester.nu/" },
-            { name: "Kasteel Groeneveld Baarn", type: "nature", desc: "Prachtig landgoed met kasteeltuinen, speurtochten en een goed restaurant.", alcohol: true, coords: { lat: 52.2167, lng: 5.2667 }, website: "https://www.staatsbosbeheer.nl/groeneveld" },
-            { name: "Monkey Town IJsselstein", type: "play", desc: "Overdekt speelparadijs met een vrolijke en overzichtelijke peuterhoek.", alcohol: false, coords: { lat: 52.0232, lng: 5.0457 }, website: "https://monkeytown.eu/nl/ijsselstein" },
-            { name: "Ballorig Houten", type: "play", desc: "Binnenspeeltuin met ruime faciliteiten voor kleintjes en gratis toegang voor ouders.", alcohol: false, coords: { lat: 52.0252, lng: 5.1917 }, website: "https://www.ballorig.nl/houten" },
-            { name: "De Tuin van de Smid Leiden", type: "nature", desc: "Theehuis in Park Cronesteyn met veel natuurlijke speelruimte en biologisch eten.", alcohol: true, coords: { lat: 52.1413, lng: 4.4976 }, website: "https://www.detuinvandesmid.nl/" }
-        ];
+        // Supabase Config - VERVANG DIT MET JE EIGEN KEY
+        const SB_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/locations";
+        const SB_KEY = "JOUW_SUPABASE_KEY_HIER"; // Vraag Bas om de juiste key 
 
-        function nextStep() {
-            document.getElementById('step-1').classList.add('hidden');
-            document.getElementById('step-2').classList.remove('hidden');
+        let currentRegion = '';
+        let startPoint = '';
+
+        function nextStep(current, next) {
+            startPoint = document.getElementById('startLocation').value;
+            document.getElementById('view-' + current).classList.add('hidden');
+            document.getElementById('view-' + next).classList.remove('hidden');
         }
 
-        async function search(filterType) {
-            const start = document.getElementById('startLocation').value;
-            const service = new google.maps.DistanceMatrixService();
-            
-            let filtered = database.filter(i => i.type === filterType);
-            const destinations = filtered.map(i => i.coords);
+        function selectRegion(name) {
+            currentRegion = name;
+            document.getElementById('selected-region-label').innerText = "Regio: " + name;
+            document.getElementById('view-regions').classList.add('hidden');
+            document.getElementById('view-funnel').classList.remove('hidden');
+        }
 
-            document.getElementById('step-2').classList.add('hidden');
+        async function applyFilter(type) {
+            document.getElementById('view-funnel').classList.add('hidden');
             document.getElementById('loader').classList.remove('hidden');
 
             try {
-                const response = await new Promise((resolve) => {
+                // Fetch from Supabase
+                const response = await fetch(`${SB_URL}?region=eq.${currentRegion}&type=eq.${type}`, {
+                    headers: {
+                        "apikey": SB_KEY,
+                        "Authorization": `Bearer ${SB_KEY}`
+                    }
+                });
+                let data = await response.json();
+
+                // Get distances
+                const service = new google.maps.DistanceMatrixService();
+                const destinations = data.map(i => ({ lat: i.lat, lng: i.lng }));
+
+                const distRes = await new Promise((resolve) => {
                     service.getDistanceMatrix({
-                        origins: [start],
+                        origins: [startPoint],
                         destinations: destinations,
                         travelMode: 'DRIVING'
                     }, (res) => resolve(res));
                 });
 
-                const results = response.rows[0].elements;
-                filtered = filtered.map((item, idx) => ({
+                const elements = distRes.rows[0].elements;
+                data = data.map((item, idx) => ({
                     ...item,
-                    duration: results[idx].status === 'OK' ? results[idx].duration.text : 'onbekend',
-                    durationVal: results[idx].status === 'OK' ? results[idx].duration.value : 999999
+                    duration: elements[idx].status === 'OK' ? elements[idx].duration.text : 'onbekend',
+                    durationVal: elements[idx].status === 'OK' ? elements[idx].duration.value : 999999
                 })).sort((a,b) => a.durationVal - b.durationVal);
 
-                render(filtered);
+                renderResults(data);
             } catch (e) {
-                render(filtered);
+                console.error(e);
+                document.getElementById('loader').innerHTML = "Er ging iets mis bij het omslaan van de bladzijde...";
             }
         }
 
-        function render(items) {
+        function renderResults(items) {
             document.getElementById('loader').classList.add('hidden');
-            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('view-results').classList.remove('hidden');
             const container = document.getElementById('list');
             container.innerHTML = '';
 
@@ -257,7 +299,7 @@
             const glassSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:4px; vertical-align:middle;"><path d="M12 22h.01M8 22h8M12 11v11M19 8c0 1.5-2 3-7 3S5 9.5 5 8V2h14v6zM5 8h14"/></svg>`;
 
             if (items.length === 0) {
-                container.innerHTML = '<p class="question" style="font-size:18px;">Nog geen avonturen gevonden in dit hoofdstuk... Probeer een andere categorie!</p>';
+                container.innerHTML = '<p class="question" style="font-size:18px;">Geen avonturen gevonden in dit hoofdstuk...</p>';
                 return;
             }
 
@@ -269,9 +311,9 @@
                             ${item.alcohol ? `<span>${glassSvg} OUDER-VRIENDELIJK</span>` : ''}
                         </div>
                         <h2 class="result-title">${item.name}</h2>
-                        <p class="result-desc">${item.desc}</p>
+                        <p class="result-desc">${item.description}</p>
                         <div>
-                            <a href="https://www.google.com/maps/dir/?api=1&destination=${item.coords.lat},${item.coords.lng}" target="_blank" class="btn-action">Route & Parkeren</a>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lng}" target="_blank" class="btn-action">Route & Parkeren</a>
                             ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn-action">Website</a>` : ''}
                         </div>
                     </div>
