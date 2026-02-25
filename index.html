@@ -4,558 +4,295 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PeuterPlannen — Storybook Edition</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #FDFCFB;
-            --navy: #1D3557;
-            --red: #E63946;
-            --blue: #457B9D;
             --ink: #1D3557;
+            --accent: #E63946;
+            --paper: #FFFFFF;
+            --border: #1D3557;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
-            color: var(--navy);
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--ink);
             line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            min-height: 100vh;
+            background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
         }
 
-        h1, h2, h3, .heading-font {
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 600;
-        }
+        .container { max-width: 600px; margin: 0 auto; padding: 60px 24px; }
 
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 3rem 1.5rem;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            line-height: 1;
-            margin-bottom: 0.5rem;
-            color: var(--navy);
-        }
-
-        .subtitle {
-            font-family: 'Cormorant Garamond', serif;
+        header { margin-bottom: 64px; text-align: center; }
+        h1 { 
+            font-family: 'Cormorant Garamond', serif; 
+            font-size: 42px; 
+            font-weight: 700; 
             font-style: italic;
-            font-size: 1.5rem;
-            color: var(--blue);
+            line-height: 1;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
         }
-
-        /* Ink Borders */
-        .ink-box {
-            border: 1.5px solid var(--navy);
-            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
-            padding: 2.5rem;
-            background: rgba(255,255,255,0.4);
-            margin-bottom: 2rem;
-        }
-
-        /* Wizard Styles */
-        .wizard-question {
-            font-size: 2rem;
-            text-align: center;
-            margin-bottom: 2rem;
+        .subtitle { 
             font-family: 'Cormorant Garamond', serif;
-        }
-
-        .location-input-wrapper {
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1.5px solid var(--navy);
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            padding: 0.5rem 0;
-            text-align: center;
-            outline: none;
-            color: var(--navy);
-        }
-
-        input::placeholder {
-            color: #ccc;
+            font-size: 18px; 
+            color: var(--ink);
             opacity: 0.8;
         }
 
-        .filter-grid {
+        .book-card {
+            background: var(--paper);
+            border: 1.5px solid var(--border);
+            padding: 40px;
+            box-shadow: 8px 8px 0px var(--ink);
+            margin-bottom: 40px;
+        }
+
+        .question {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .energy-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1rem;
+            gap: 16px;
         }
 
-        .btn-filter {
+        .btn-choice {
             background: transparent;
-            border: 1.5px solid var(--navy);
-            border-radius: 12px;
-            padding: 1.5rem;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.4rem;
+            border: 1.5px solid var(--border);
+            padding: 16px 24px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
             font-weight: 600;
+            color: var(--ink);
             cursor: pointer;
-            transition: all 0.3s;
-            color: var(--navy);
+            text-align: left;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 1rem;
+            gap: 16px;
+            transition: all 0.2s;
         }
 
-        .btn-filter:hover {
-            background: var(--navy);
-            color: var(--bg);
-            transform: translateY(-2px);
+        .btn-choice:hover {
+            background: var(--ink);
+            color: white;
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0px var(--accent);
         }
 
-        /* Results Styles */
-        .chapter-header {
-            border-bottom: 1px solid rgba(29, 53, 87, 0.2);
-            padding-bottom: 0.5rem;
-            margin-bottom: 2rem;
+        .btn-choice svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+        }
+
+        .location-input {
+            width: 100%;
+            border: none;
+            border-bottom: 1.5px solid var(--border);
+            background: transparent;
+            padding: 12px 0;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            margin-bottom: 40px;
+            outline: none;
+        }
+
+        /* Results */
+        .results-header {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 32px;
+            border-bottom: 1.5px solid var(--ink);
+            padding-bottom: 8px;
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
         }
 
-        .chapter-num {
+        .chapter-card {
+            margin-bottom: 48px;
+            padding-left: 20px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .chapter-title {
             font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 1.2rem;
-            color: var(--blue);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
         }
 
-        .result-card {
-            margin-bottom: 4rem;
-            position: relative;
-        }
-
-        .result-title {
-            font-size: 2.5rem;
-            line-height: 1.1;
-            margin-bottom: 1rem;
-        }
-
-        .result-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
+        .chapter-meta {
+            font-size: 12px;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: var(--blue);
-        }
-
-        .meta-item {
+            color: var(--accent);
+            margin-bottom: 12px;
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            gap: 16px;
         }
 
-        .result-desc {
-            font-size: 1.15rem;
-            margin-bottom: 2rem;
-            color: #2b2b2b;
-            text-align: justify;
-        }
-
-        .result-actions {
-            display: flex;
-            gap: 1rem;
+        .chapter-desc {
+            font-size: 15px;
+            color: var(--ink);
+            margin-bottom: 24px;
+            opacity: 0.9;
         }
 
         .btn-action {
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
             display: inline-flex;
             align-items: center;
-            gap: 0.6rem;
-            transition: opacity 0.2s;
-        }
-
-        .btn-primary {
-            background: var(--navy);
-            color: var(--bg);
-        }
-
-        .btn-secondary {
-            border: 1px solid var(--navy);
-            color: var(--navy);
+            gap: 8px;
+            text-decoration: none;
+            color: var(--ink);
+            font-weight: 600;
+            font-size: 13px;
+            border-bottom: 1.5px solid var(--ink);
+            padding-bottom: 2px;
+            margin-right: 24px;
         }
 
         .btn-action:hover {
-            opacity: 0.8;
+            color: var(--accent);
+            border-color: var(--accent);
         }
 
-        /* SVGs */
-        .icon {
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 1.5;
-            width: 20px;
-            height: 20px;
-        }
-
-        .icon-lg {
-            width: 32px;
-            height: 32px;
-        }
-
-        /* Loading & State */
-        #loading {
+        .hidden { display: none; }
+        
+        .footer {
             text-align: center;
             font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 1.5rem;
-            margin: 4rem 0;
-        }
-
-        .hidden { display: none !important; }
-
-        @media (min-width: 600px) {
-            .filter-grid {
-                grid-template-columns: 1fr 1fr 1fr;
-            }
+            font-size: 14px;
+            margin-top: 80px;
+            opacity: 0.5;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>PeuterPlannen</h1>
+            <p class="subtitle">Hoofdstuk: Jouw Weekend-Avontuur</p>
+        </header>
 
-<div class="container">
-    <header>
-        <h1>PeuterPlannen</h1>
-        <p class="subtitle">Een handgetekende gids voor het weekend</p>
-    </header>
-
-    <div id="view-wizard">
-        <div class="location-input-wrapper">
-            <input type="text" id="origin" placeholder="Vanaf waar vertrekken we?" value="Amsterdam">
+        <div id="step-1" class="book-card">
+            <p class="question">Waar begint het verhaal vandaag?</p>
+            <input type="text" id="startLocation" class="location-input" placeholder="Type stad of dorp..." value="Utrecht">
+            <button class="btn-choice" onclick="nextStep()" style="justify-content:center; background: var(--ink); color: white;">
+                Volgende pagina →
+            </button>
         </div>
-        
-        <h2 class="wizard-question">Wat voor avontuur zoeken we vandaag?</h2>
-        
-        <div class="filter-grid">
-            <button class="btn-filter" onclick="handleSearch('relaxed')">
-                <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 3"/></svg>
-                Rustig aan
-            </button>
-            <button class="btn-filter" onclick="handleSearch('discovery')">
-                <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                Nieuwe dingen
-            </button>
-            <button class="btn-filter" onclick="handleSearch('energy')">
-                <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                Energie kwijt
-            </button>
+
+        <div id="step-2" class="book-card hidden">
+            <p class="question">Hoe is de energie van de kleintjes?</p>
+            <div class="energy-grid">
+                <button class="btn-choice" onclick="search('play')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M13 10V3L4 14H11V21L20 10H13Z"/></svg>
+                    Gaan met die banaan! (Uitrennen)
+                </button>
+                <button class="btn-choice" onclick="search('nature')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3L4 9V21H20V9L12 3Z"/><path d="M12 13V17"/></svg>
+                    Lekker struinen (Ontdekken)
+                </button>
+                <button class="btn-choice" onclick="search('pancake')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3C7.5 3 4 5.5 4 8C4 10.5 7.5 13 12 13C16.5 13 20 10.5 20 8C20 5.5 16.5 3 12 3Z"/><path d="M4 8V11C4 13.5 7.5 16 12 16C16.5 16 20 13.5 20 11V8"/></svg>
+                    Gewoon gezellig (Eten & Spelen)
+                </button>
+            </div>
+        </div>
+
+        <div id="results" class="hidden">
+            <div class="results-header">
+                <span>Geselecteerde Avonturen</span>
+                <a href="#" onclick="location.reload()" style="color: var(--accent); text-decoration: none;">Aanpassen</a>
+            </div>
+            <div id="list"></div>
+        </div>
+
+        <div class="footer">
+            © 2026 — Een handgemaakte reisgids voor de Randstad
         </div>
     </div>
 
-    <div id="loading" class="hidden">De bladzijden worden omgeslagen...</div>
-    
-    <div id="view-results" class="hidden">
-        <div id="results-list"></div>
-        <div style="text-align: center; margin-top: 4rem;">
-            <button class="btn-filter" onclick="showWizard()" style="padding: 0.8rem 2rem;">
-                Terug naar het begin
-            </button>
-        </div>
-    </div>
-</div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAw0UlkShhJ_FQUG1ibkMidUhvEFC23jb4&libraries=places"></script>
+    <script>
+        const database = [
+            { name: "Hans & Grietje", type: "pancake", desc: "Het meest magische pannenkoekenhuis van Nederland met enorme speeltuin en sprookjespark.", alcohol: true, coords: { lat: 52.3429, lng: 5.4842 }, parking: "https://maps.google.com/?q=Hans+en+Grietje+Parkeren" },
+            { name: "Gagelbos Utrecht", type: "nature", desc: "Speelbos met vlotten, modder en houten speeltoestellen. Puur natuur.", alcohol: false, coords: { lat: 52.1333, lng: 5.1167 }, parking: "https://maps.google.com/?q=Gagelbos+Parkeren" },
+            { name: "Nijntje Museum", type: "play", desc: "De droom van elke 2-jarige. Volledig interactief en kid-proof.", alcohol: false, coords: { lat: 52.0833, lng: 5.1250 }, parking: "https://maps.google.com/?q=Parkeren+Nijntje+Museum" },
+            { name: "Meneer Paprika", type: "pancake", desc: "Speelgoedwinkel en café in één in hartje Haarlem. Met enorme Thomas de Trein tafel.", alcohol: true, coords: { lat: 52.3833, lng: 4.6333 }, parking: "https://maps.google.com/?q=Parkeren+Haarlem+Centrum" },
+            { name: "Diergaarde Blijdorp", type: "play", desc: "Prachtige dierentuin met veel overdekte speelplekken (Oceanium).", alcohol: true, coords: { lat: 51.9268, lng: 4.4539 }, parking: "https://maps.google.com/?q=Blijdorp+Parkeren" },
+            { name: "'t Hooge Nest", type: "nature", desc: "Prachtige plek in de bossen bij Blaricum met goede horeca en speeltoestellen.", alcohol: true, coords: { lat: 52.2833, lng: 5.2333 }, parking: "https://maps.google.com/?q=Parkeren+Hooge+Nest" }
+        ];
 
-<!-- Icons Template Repository -->
-<svg style="display:none">
-    <symbol id="icon-pin" viewBox="0 0 24 24">
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-        <circle cx="12" cy="10" r="3"></circle>
-    </symbol>
-    <symbol id="icon-house" viewBox="0 0 24 24">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-    </symbol>
-    <symbol id="icon-tree" viewBox="0 0 24 24">
-        <path d="M12 2L8 8h3v8H9l3 6 3-6h-2V8h3l-4-6z"></path>
-    </symbol>
-    <symbol id="icon-beer" viewBox="0 0 24 24">
-        <path d="M6 3h11l1 15a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L6 3z"></path>
-        <path d="M17 7h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1.5"></path>
-        <path d="M6 8h11"></path>
-    </symbol>
-    <symbol id="icon-car" viewBox="0 0 24 24">
-        <rect x="1" y="10" width="22" height="8" rx="2"></rect>
-        <path d="M7 10l2-4h6l2 4"></path>
-        <circle cx="7" cy="18" r="2"></circle>
-        <circle cx="17" cy="18" r="2"></circle>
-    </symbol>
-</svg>
-
-<script>
-    const DISTANCE_MATRIX_KEY = 'AIzaSyAw0UlkShhJ_FQUG1ibkMidUhvEFC23jb4';
-
-    const DATABASE = [
-        {
-            name: "Hans & Grietje Zeewolde",
-            type: "Horeca",
-            description: "Een betoverend pannenkoekenhuis waar de tafels bewegen en de vloer kraakt. Buiten wacht een enorme speeltuin met springkussens en glijbanen, terwijl binnen de magie van Grimm tot leven komt.",
-            coords: { lat: 52.3389, lng: 5.4851 },
-            parkingCoords: { lat: 52.3389, lng: 5.4851 },
-            website: "https://www.hansengrietjezeewolde.nl/",
-            alcohol: true,
-            indoor: true,
-            priceCategory: 2,
-            tags: ['energy', 'relaxed']
-        },
-        {
-            name: "Speelbos Gagelbos",
-            type: "Wandelen",
-            description: "Geen aangeharkte paden, maar vlotten over het water, verstopplekken in oude bunkers en modderige weggetjes door de natuur. De ideale plek voor kleine ontdekkingsreizigers die niet bang zijn voor vuile knieën.",
-            coords: { lat: 52.1384, lng: 5.0933 },
-            parkingCoords: { lat: 52.1395, lng: 5.0945 },
-            website: "https://www.staatsbosbeheer.nl/natuurgebieden/utrechtse-noorderpark/activiteiten/speelbos-het-gagelbos",
-            alcohol: false,
-            indoor: false,
-            priceCategory: 1,
-            tags: ['energy']
-        },
-        {
-            name: "Nijntje Museum Utrecht",
-            type: "Museum",
-            description: "Stap letterlijk in de boekjes van Dick Bruna. Een veilige, kleurrijke wereld waar peuters kunnen koken, doktertje spelen en veilig over straat kunnen in de miniatuurstad van Nijntje.",
-            coords: { lat: 52.0838, lng: 5.1271 },
-            parkingCoords: null,
-            website: "https://nijntjemuseum.nl/",
-            alcohol: false,
-            indoor: true,
-            priceCategory: 2,
-            tags: ['discovery', 'relaxed']
-        },
-        {
-            name: "Jochem Myjer Speeltuin",
-            type: "Speeltuin",
-            description: "In het hart van de Leidse Hout ligt deze oase van rust en plezier. Een natuurspeeltuin waar water, zand en houten toestellen de hoofdrol spelen. Perfect te combineren met een wandeling door het park.",
-            coords: { lat: 52.1524, lng: 4.4788 },
-            parkingCoords: { lat: 52.1518, lng: 4.4775 },
-            website: "https://www.leidse-hout.nl/speeltuin/",
-            alcohol: false,
-            indoor: false,
-            priceCategory: 1,
-            tags: ['energy']
-        },
-        {
-            name: "Diergaarde Blijdorp",
-            type: "Dieren",
-            description: "Reis van de bodem van de oceaan naar de toppen van de jungle. Met een overdekte speeltuin en talloze plekken om even te zitten, blijft dit een klassieker voor elk type weer.",
-            coords: { lat: 51.9272, lng: 4.4533 },
-            parkingCoords: { lat: 51.9304, lng: 4.4519 },
-            website: "https://www.diergaardeblijdorp.nl/",
-            alcohol: true,
-            indoor: true,
-            priceCategory: 3,
-            tags: ['discovery']
-        },
-        {
-            name: "Meneer Paprika Haarlem",
-            type: "Horeca",
-            description: "Een warme huiskamer in de stad. Terwijl de ouders genieten van een goede koffie (of een biertje), bouwen de kleintjes eindeloos aan de enorme houten treintafel die het hart van de zaak vormt.",
-            coords: { lat: 52.3838, lng: 4.6369 },
-            parkingCoords: null,
-            website: "https://www.meneerpaprika.nl/",
-            alcohol: true,
-            indoor: true,
-            priceCategory: 2,
-            tags: ['relaxed']
-        },
-        {
-            name: "Geertje's Hoeve",
-            type: "Dieren",
-            description: "Het boerenleven op een steenworp afstand van de stad. Geef de geitjes een flesje, zie hoe de kaas gemaakt wordt en sluit af met een ambachtelijke pannenkoek op het erf.",
-            coords: { lat: 52.1245, lng: 4.9961 },
-            parkingCoords: { lat: 52.1245, lng: 4.9961 },
-            website: "https://www.geertjeshoeve.nl/",
-            alcohol: true,
-            indoor: true,
-            priceCategory: 1,
-            tags: ['discovery', 'energy']
-        },
-        {
-            name: "ARTIS Amsterdam",
-            type: "Dieren",
-            description: "Oude bomen, historische gebouwen en dieren uit alle windstreken. Een plek waar natuur en cultuur samenkomen in het hart van de hoofdstad. Vergeet de kinderboerderij achterin niet.",
-            coords: { lat: 52.3660, lng: 4.9125 },
-            parkingCoords: { lat: 52.3672, lng: 4.9189 },
-            website: "https://www.artis.nl/",
-            alcohol: true,
-            indoor: true,
-            priceCategory: 3,
-            tags: ['discovery']
-        },
-        {
-            name: "Linnaeushof",
-            type: "Speeltuin",
-            description: "Zonder elektronica, maar met spierkracht. In de grootste speeltuin van Europa draait alles om zelf bewegen. Voor de allerkleinsten is er de Dreumesland-zone met veilige en overzichtelijke toestellen.",
-            coords: { lat: 52.3289, lng: 4.5982 },
-            parkingCoords: { lat: 52.3289, lng: 4.5982 },
-            website: "https://www.linnaeushof.nl/",
-            alcohol: false,
-            indoor: true,
-            priceCategory: 3,
-            tags: ['energy']
-        },
-        {
-            name: "Maritiem Museum Rotterdam",
-            type: "Museum",
-            description: "Professor Plons nodigt je uit in zijn haven. Een unieke plek waar kinderen spelenderwijs leren laden en lossen, varen en vissen. Een van de best gewaardeerde kindermusea van het land.",
-            coords: { lat: 51.9178, lng: 4.4822 },
-            parkingCoords: null,
-            website: "https://maritiemmuseum.nl/",
-            alcohol: false,
-            indoor: true,
-            priceCategory: 2,
-            tags: ['discovery']
+        function nextStep() {
+            document.getElementById('step-1').classList.add('hidden');
+            document.getElementById('step-2').classList.remove('hidden');
         }
-    ];
 
-    const wizardView = document.getElementById('view-wizard');
-    const resultsView = document.getElementById('view-results');
-    const loadingView = document.getElementById('loading');
-    const resultsList = document.getElementById('results-list');
-    const originInput = document.getElementById('origin');
-
-    function showWizard() {
-        wizardView.classList.remove('hidden');
-        resultsView.classList.add('hidden');
-        loadingView.classList.add('hidden');
-        window.scrollTo(0,0);
-    }
-
-    async function handleSearch(category) {
-        const origin = originInput.value || "Amsterdam";
-        
-        wizardView.classList.add('hidden');
-        loadingView.classList.remove('hidden');
-
-        const filtered = DATABASE.filter(item => item.tags.includes(category));
-
-        try {
-            const resultsWithTime = await getReistijden(origin, filtered);
-            resultsWithTime.sort((a, b) => a.durationValue - b.durationValue);
-            renderResults(resultsWithTime);
+        async function search(filterType) {
+            const start = document.getElementById('startLocation').value;
+            const service = new google.maps.DistanceMatrixService();
             
-            loadingView.classList.add('hidden');
-            resultsView.classList.remove('hidden');
-        } catch (error) {
-            console.error(error);
-            renderResults(filtered.map(f => ({...f, duration: '?', durationValue: 9999})));
-            loadingView.classList.add('hidden');
-            resultsView.classList.remove('hidden');
-        }
-    }
+            let filtered = database.filter(i => i.type === filterType);
+            const destinations = filtered.map(i => i.coords);
 
-    async function getReistijden(origin, targets) {
-        if (targets.length === 0) return [];
-        
-        const destinations = targets.map(t => `${t.coords.lat},${t.coords.lng}`).join('|');
-        const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${destinations}&key=${DISTANCE_MATRIX_KEY}`;
+            document.getElementById('step-2').innerHTML = "<p class='question'>Momentje, de koets wordt klaargemaakt... 🚗</p>";
 
-        const response = await fetch(url);
-        const data = await response.json();
+            try {
+                const response = await new Promise((resolve) => {
+                    service.getDistanceMatrix({
+                        origins: [start],
+                        destinations: destinations,
+                        travelMode: 'DRIVING'
+                    }, (res) => resolve(res));
+                });
 
-        if (data.status !== 'OK') return targets.map(t => ({...t, duration: '?', durationValue: 9999}));
+                const results = response.rows[0].elements;
+                filtered = filtered.map((item, idx) => ({
+                    ...item,
+                    duration: results[idx].status === 'OK' ? results[idx].duration.text : 'onbekend'
+                }));
 
-        return targets.map((target, index) => {
-            const element = data.rows[0].elements[index];
-            return {
-                ...target,
-                duration: element.status === 'OK' ? element.duration.text : '?',
-                durationValue: element.status === 'OK' ? element.duration.value : 9999
-            };
-        });
-    }
-
-    function renderResults(items) {
-        resultsList.innerHTML = '';
-        if (items.length === 0) {
-            resultsList.innerHTML = '<p class="wizard-question">Dit hoofdstuk is helaas nog leeg...</p>';
-            return;
+                render(filtered);
+            } catch (e) {
+                render(filtered);
+            }
         }
 
-        items.forEach((item, idx) => {
-            const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${item.parkingCoords ? item.parkingCoords.lat + ',' + item.parkingCoords.lng : item.coords.lat + ',' + item.coords.lng}`;
-            
-            const section = document.createElement('div');
-            section.className = 'result-card';
-            section.innerHTML = `
-                <div class="chapter-header">
-                    <span class="chapter-num">Hoofdstuk ${idx + 1}</span>
-                    <div class="meta-item" style="color: var(--navy); font-weight: 600;">
-                        <svg class="icon"><use href="#icon-car"></use></svg>
-                        ${item.duration}
-                    </div>
-                </div>
-                <h2 class="result-title">${item.name}</h2>
-                <div class="result-meta">
-                    <div class="meta-item">
-                        <svg class="icon"><use href="${item.indoor ? '#icon-house' : '#icon-tree'}"></use></svg>
-                        ${item.indoor ? 'Binnen' : 'Buiten'}
-                    </div>
-                    <div class="meta-item">
-                        <svg class="icon"><use href="#icon-beer"></use></svg>
-                        ${item.alcohol ? 'Alcohol beschikbaar' : 'Geen alcohol'}
-                    </div>
-                    <div class="meta-item" style="letter-spacing: 0.2em;">
-                        ${'€'.repeat(item.priceCategory)}
-                    </div>
-                </div>
-                <p class="result-desc">${item.description}</p>
-                <div class="result-actions">
-                    <a href="${navUrl}" target="_blank" class="btn-action btn-primary">
-                        Ga op pad
-                    </a>
-                    ${item.website !== "-" ? `<a href="${item.website}" target="_blank" class="btn-action btn-secondary">Website</a>` : ''}
-                </div>
-            `;
-            resultsList.appendChild(section);
-        });
-        window.scrollTo(0,0);
-    }
+        function render(items) {
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+            const container = document.getElementById('list');
+            container.innerHTML = '';
 
-    // Try geolocation on start
-    window.onload = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((pos) => {
-                originInput.value = `${pos.coords.latitude},${pos.coords.longitude}`;
-            }, () => {
-                // Default stays
+            items.forEach(item => {
+                container.innerHTML += `
+                    <div class="chapter-card">
+                        <div class="chapter-meta">
+                            <span>🚗 ${item.duration}</span>
+                            ${item.alcohol ? '<span>🍷 Ouder-vriendelijk</span>' : ''}
+                        </div>
+                        <h2 class="chapter-title">${item.name}</h2>
+                        <p class="chapter-desc">${item.desc}</p>
+                        <div>
+                            <a href="${item.parking}" target="_blank" class="btn-action">Navigeer naar Parkeren</a>
+                            <a href="#" class="btn-action">Lees Meer</a>
+                        </div>
+                    </div>
+                `;
             });
         }
-    };
-</script>
-
+    </script>
 </body>
 </html>
