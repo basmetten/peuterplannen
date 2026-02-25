@@ -2,15 +2,14 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PeuterPlannen 5.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeuterPlannen — De beste plekken voor jouw kleintje</title>
+    <meta name="description" content="Ontkindvriendelijke restaurants, speeltuinen, musea en meer in de Randstad. Met één hand te bedienen, want je hebt die andere voor je peuter nodig.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2N76HLT7xL2F3BrRS4nECpbEUqN1Y5wo&libraries=places,geometry,distance_matrix"></script>
     <style>
         :root {
-            /* Golden Hour Palette */
             --bg-warm: #FDF8F3;
             --bg-cream: #F5EDE4;
             --bg-ivory: #FFFDF9;
@@ -18,354 +17,176 @@
             --gold-light: #E8C9A0;
             --gold-dark: #B8935F;
             --peach: #F4A261;
-            --peach-soft: rgba(244, 162, 97, 0.15);
-            --amber: #E9C46A;
             --ink: #2D2A26;
             --ink-light: #5C5854;
             --ink-muted: #9A9590;
             --card-bg: rgba(255, 253, 249, 0.95);
             --card-border: rgba(212, 165, 116, 0.3);
             --card-shadow: 0 4px 24px rgba(45, 42, 38, 0.08);
-            --success: #2A9D8F;
-            --safe-bottom: env(safe-area-inset-bottom, 20px);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        html { height: 100%; }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100%; background: linear-gradient(180deg, var(--bg-warm) 0%, var(--bg-cream) 100%); color: var(--ink); line-height: 1.5; overflow-x: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-warm); color: var(--ink); line-height: 1.6; }
 
-        .aurora-bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, var(--bg-warm) 0%, var(--bg-cream) 50%, #FFF5EB 100%); z-index: -2; }
-        .aurora-glow { position: fixed; top: -30%; right: -20%; width: 80%; height: 80%; background: radial-gradient(ellipse at center, rgba(244, 162, 97, 0.12) 0%, transparent 60%), radial-gradient(ellipse at 30% 70%, rgba(233, 196, 106, 0.08) 0%, transparent 50%); animation: aurora 15s ease-in-out infinite; z-index: -1; }
-        @keyframes aurora { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-2%, 2%) scale(1.05); } }
+        nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(253, 248, 243, 0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid var(--card-border); }
+        .nav-container { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; color: var(--ink); text-decoration: none; }
+        .nav-logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--gold-primary), var(--peach)); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .nav-logo-icon svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
+        .nav-links { display: flex; gap: 32px; }
+        .nav-links a { color: var(--ink-light); text-decoration: none; font-weight: 500; font-size: 15px; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--gold-dark); }
+        .nav-cta { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: transform 0.2s; }
+        .nav-cta:hover { transform: translateY(-1px); }
 
-        .app-container { max-width: 500px; margin: 0 auto; padding: 24px 16px calc(100px + var(--safe-bottom)); position: relative; }
+        .hero { padding: 140px 24px 80px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .hero-content h1 { font-size: 52px; font-weight: 700; line-height: 1.15; margin-bottom: 20px; letter-spacing: -0.02em; }
+        .hero-content h1 span { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-content p { font-size: 20px; color: var(--ink-light); margin-bottom: 32px; max-width: 480px; }
+        .hero-cta { display: flex; gap: 16px; }
+        .hero-cta-primary { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); color: white; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 20px rgba(212, 165, 116, 0.3); transition: transform 0.2s; }
+        .hero-cta-primary:hover { transform: translateY(-2px); }
+        .hero-cta-secondary { background: var(--bg-ivory); color: var(--ink); padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; border: 1px solid var(--card-border); }
 
-        header { margin-bottom: 24px; text-align: center; }
-        .logo { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-        .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--gold-primary), var(--peach)); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(212, 165, 116, 0.4); }
-        .logo-icon svg { width: 24px; height: 24px; stroke: white; fill: none; stroke-width: 2; }
-        h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
-        .sub-head { font-size: 14px; color: var(--ink-muted); font-weight: 500; }
+        .stats { padding: 60px 24px; }
+        .stats-container { max-width: 800px; margin: 0 auto; display: flex; justify-content: space-around; text-align: center; }
+        .stat-number { font-size: 48px; font-weight: 700; background: linear-gradient(135deg, var(--gold-primary), var(--peach)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-label { color: var(--ink-muted); font-size: 15px; margin-top: 4px; }
 
-        .glass-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; box-shadow: var(--card-shadow); }
-        .location-section { padding: 20px; margin-bottom: 20px; }
-        .location-label { font-size: 12px; font-weight: 600; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-        .location-input-wrapper { display: flex; gap: 10px; align-items: center; }
-        .location-input { flex: 1; padding: 14px 16px; background: var(--bg-ivory); border: 1px solid var(--card-border); border-radius: 12px; font-size: 15px; font-family: inherit; color: var(--ink); transition: all 0.2s ease; }
-        .location-input::placeholder { color: var(--ink-muted); }
-        .location-input:focus { outline: none; border-color: var(--gold-primary); box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.15); }
+        .features { padding: 80px 24px; background: var(--bg-cream); }
+        .features-container { max-width: 1200px; margin: 0 auto; }
+        .features-header { text-align: center; margin-bottom: 60px; }
+        .features-header h2 { font-size: 36px; font-weight: 700; margin-bottom: 12px; }
+        .features-header p { font-size: 18px; color: var(--ink-light); }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+        .feature-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 32px; box-shadow: var(--card-shadow); }
+        .feature-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--gold-light), var(--peach)); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+        .feature-icon svg { width: 24px; height: 24px; stroke: white; fill: none; stroke-width: 2; }
+        .feature-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 10px; }
+        .feature-card p { color: var(--ink-light); font-size: 15px; }
 
-        .icon-btn { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: var(--bg-ivory); border: 1px solid var(--card-border); border-radius: 12px; cursor: pointer; transition: all 0.2s ease; position: relative; }
-        .icon-btn:hover { background: var(--bg-cream); border-color: var(--gold-light); transform: translateY(-1px); }
-        .icon-btn:active { transform: scale(0.96); }
-        .icon-btn svg { stroke: var(--ink-light); fill: none; stroke-width: 2; width: 22px; height: 22px; }
-        .icon-btn.primary { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); border-color: transparent; }
-        .icon-btn.primary svg { stroke: white; }
-        .icon-btn.primary:hover { background: linear-gradient(135deg, var(--gold-dark), #E8955F); box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4); }
+        footer { background: var(--ink); color: white; padding: 60px 24px 40px; margin-top: 60px; }
+        .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
+        .footer-brand p { color: rgba(255,255,255,0.7); margin-top: 12px; font-size: 15px; }
+        .footer-links h4 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; color: var(--gold-light); }
+        .footer-links a { display: block; color: rgba(255,255,255,0.7); text-decoration: none; margin-bottom: 10px; font-size: 15px; transition: color 0.2s; }
+        .footer-links a:hover { color: white; }
+        .footer-bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: rgba(255,255,255,0.5); font-size: 14px; }
 
-        .gps-status { font-size: 13px; color: var(--ink-light); margin-top: 12px; display: flex; align-items: center; gap: 8px; padding: 0 4px; }
-        .gps-status.loading::before { content: ''; width: 14px; height: 14px; border: 2px solid var(--card-border); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .gps-status.error { color: var(--peach); }
-
-        .tag-mixer { display: flex; gap: 8px; overflow-x: auto; padding: 4px 4px 16px; scrollbar-width: none; position: sticky; top: 0; z-index: 10; margin: 0 -12px; padding-left: 12px; }
-        .tag-mixer::-webkit-scrollbar { display: none; }
-        .tag-pill { background: var(--card-bg); border: 1px solid var(--card-border); padding: 10px 18px; border-radius: 24px; font-size: 13px; font-weight: 500; color: var(--ink-light); white-space: nowrap; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(45, 42, 38, 0.04); }
-        .tag-pill:hover { background: var(--bg-cream); border-color: var(--gold-light); }
-        .tag-pill.active { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); color: white; border-color: transparent; box-shadow: 0 4px 15px rgba(212, 165, 116, 0.3); }
-
-        .results-list { display: flex; flex-direction: column; gap: 16px; }
-        .result-card { padding: 20px; transition: all 0.3s ease; animation: cardEnter 0.4s ease backwards; }
-        @keyframes cardEnter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .result-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(45, 42, 38, 0.12); border-color: var(--gold-light); }
-
-        .meta-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
-        .meta-left { display: flex; flex-direction: column; gap: 6px; }
-        .distance { font-size: 12px; font-weight: 700; color: var(--success); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; }
-        .distance::before { content: ''; width: 6px; height: 6px; background: var(--success); border-radius: 50%; }
-        .travel-time { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--ink-muted); }
-        .travel-time svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
-        .travel-time.calculating { opacity: 0.6; }
-        .travel-time.error { color: var(--peach); }
-
-        .badges { display: flex; gap: 10px; }
-        .badge-wrapper { position: relative; }
-        .badge-icon { width: 20px; height: 20px; stroke: var(--gold-primary); fill: none; stroke-width: 1.8; cursor: help; transition: all 0.2s ease; }
-        .badge-icon:hover { stroke: var(--peach); transform: scale(1.1); }
-        .tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-8px); background: var(--ink); color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; white-space: nowrap; opacity: 0; visibility: hidden; transition: all 0.2s ease; z-index: 100; }
-        .tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: var(--ink); }
-        .badge-wrapper:hover .tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-4px); }
-
-        .name { font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; color: var(--ink); }
-        .desc { font-size: 14px; color: var(--ink-light); margin-bottom: 18px; line-height: 1.6; }
-
-        .actions { display: flex; gap: 10px; }
-        .btn { flex: 1; padding: 12px; text-align: center; text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; border: 1px solid var(--card-border); color: var(--ink); transition: all 0.2s ease; cursor: pointer; background: var(--bg-ivory); display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
-        .btn:hover { background: var(--bg-cream); border-color: var(--gold-light); }
-        .btn-primary { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); color: white; border-color: transparent; }
-        .btn-primary:hover { background: linear-gradient(135deg, var(--gold-dark), #E8955F); box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4); }
-
-        .hidden { display: none !important; }
-        .loader { text-align: center; padding: 60px 20px; font-weight: 500; color: var(--ink-muted); }
-        .loader::before { content: ''; display: block; width: 40px; height: 40px; margin: 0 auto 16px; border: 3px solid var(--card-border); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 1s linear infinite; }
-        .error-msg { text-align: center; padding: 40px; color: var(--peach); font-size: 14px; background: var(--peach-soft); border-radius: 12px; margin: 20px 0; }
-        .no-results { text-align: center; padding: 60px 20px; color: var(--ink-muted); }
-        .no-results strong { display: block; color: var(--ink); margin-bottom: 8px; font-size: 18px; }
-
-        .pac-container { background: var(--bg-ivory) !important; border: 1px solid var(--card-border) !important; border-radius: 12px !important; box-shadow: var(--card-shadow) !important; font-family: inherit !important; margin-top: 8px !important; }
-        .pac-item { padding: 12px 16px !important; font-family: inherit !important; font-size: 14px !important; color: var(--ink) !important; border-bottom: 1px solid var(--card-border) !important; }
-        .pac-item:hover { background: var(--bg-cream) !important; }
-        .pac-item-query { color: var(--ink) !important; font-weight: 600; }
-        .pac-matched { color: var(--gold-dark) !important; }
-        .pac-icon { display: none; }
+        @media (max-width: 768px) {
+            .hero { grid-template-columns: 1fr; padding-top: 100px; }
+            .hero-content h1 { font-size: 36px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .footer-container { grid-template-columns: 1fr 1fr; }
+            .nav-links { display: none; }
+        }
     </style>
 </head>
 <body>
-    <div class="aurora-bg"></div>
-    <div class="aurora-glow"></div>
-    
-    <div class="app-container">
-        <header>
-            <div class="logo">
-                <div class="logo-icon">
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon">
                     <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                 </div>
-                <h1>PeuterPlannen</h1>
+                PeuterPlannen
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">Over</a>
+                <a href="contact.html">Contact</a>
             </div>
-            <div class="sub-head">Vind de perfecte plek voor jouw kleintje</div>
-        </header>
-
-        <div class="location-section glass-card">
-            <div class="location-label">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                In de buurt van
-            </div>
-            <div class="location-input-wrapper">
-                <input type="text" id="location-input" class="location-input" placeholder="Typ je stad of postcode..." value="">
-                <button class="icon-btn" onclick="getCurrentLocation()" title="Gebruik mijn locatie">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg>
-                </button>
-                <button class="icon-btn primary" onclick="updateLocation()">
-                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                </button>
-            </div>
-            <div id="gps-status" class="gps-status hidden"></div>
+            <a href="app.html" class="nav-cta">Open App</a>
         </div>
+    </nav>
 
-        <div class="tag-mixer">
-            <button class="tag-pill active" onclick="toggleTag('all')">Alles</button>
-            <button class="tag-pill" onclick="toggleTag('play')">Speeltuin</button>
-            <button class="tag-pill" onclick="toggleTag('nature')">Bos & Natuur</button>
-            <button class="tag-pill" onclick="toggleTag('horeca')">Horeca</button>
-            <button class="tag-pill" onclick="toggleTag('museum')">Museum</button>
-            <button class="tag-pill" onclick="toggleTag('pancake')">Pannenkoeken</button>
-        </div>
-
-        <div id="results-container" class="results-list"></div>
-        <div id="loader" class="loader">Locaties laden...</div>
-        <div id="error" class="error-msg hidden"></div>
-
-        <!-- Suggestie Sectie -->
-        <div class="suggestion-section glass-card" style="margin-top: 40px; padding: 20px;">
-            <div class="location-label">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7-7-7M5 12h14"/></svg>
-                Locatie toevoegen
+    <section class="hero">
+        <div class="hero-content">
+            <h1>De beste plekken voor <span>jouw kleintje</span></h1>
+            <p>Kindvriendelijke restaurants, speeltuinen, musea en meer in de Randstad. Met één hand te bedienen, want je hebt die andere voor je peuter nodig.</p>
+            <div class="hero-cta">
+                <a href="app.html" class="hero-cta-primary">Start met zoeken</a>
+                <a href="about.html" class="hero-cta-secondary">Lees meer</a>
             </div>
-            <p style="font-size: 13px; color: var(--ink-muted); margin-bottom: 12px;">Mist er een pareltje? Typ de naam of website en onze AI regelt de rest.</p>
-            <div class="location-input-wrapper">
-                <input type="text" id="suggestion-input" class="location-input" placeholder="Bijv: Restaurant Heidezicht Bussum">
-                <button class="icon-btn primary" onclick="submitSuggestion()" id="suggestion-btn">
-                    <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-                </button>
-            </div>
-            <div id="suggestion-status" class="gps-status hidden"></div>
         </div>
-    </div>
+        <div class="hero-visual" style="text-align: center;">
+            <div style="font-size: 120px;">🎯</div>
+        </div>
+    </section>
 
-    <script>
-        // Supabase Config
-        const SB_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/locations";
-        const SB_KEY = atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5CcGRXcHpkbWRpWm1ac2NuSjJZWFY2YzNobElpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpJd05ETXhOekFzSW1WNGNDSTZNakE0TnpZeE9URTNNSDAuNXkzZ3FpUGZWdnB2ZmFEWUFfUGdxRS1LVHZ1ZjZ6Z042dkd6cWZVcGVTbw==");
+    <section class="stats">
+        <div class="stats-container">
+            <div>
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Locaties</div>
+            </div>
+            <div>
+                <div class="stat-number">4</div>
+                <div class="stat-label">Steden</div>
+            </div>
+            <div>
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Geverifieerd</div>
+            </div>
+        </div>
+    </section>
 
-        let activeTag = 'all';
-        let userLocation = null;
-        let allLocations = [];
-        let autocomplete;
-
-        function initAutocomplete() {
-            const input = document.getElementById('location-input');
-            autocomplete = new google.maps.places.Autocomplete(input, {
-                types: ['geocode'],
-                componentRestrictions: { country: 'nl' },
-                fields: ['geometry', 'formatted_address', 'name']
-            });
-            autocomplete.addListener('place_changed', () => {
-                const place = autocomplete.getPlace();
-                if (place.geometry) {
-                    userLocation = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), name: place.formatted_address || place.name };
-                    loadLocations();
-                }
-            });
-        }
-
-        async function getCurrentLocation() {
-            const statusEl = document.getElementById('gps-status'), input = document.getElementById('location-input');
-            if (!navigator.geolocation) { showGpsStatus('GPS niet beschikbaar', 'error'); return; }
-            showGpsStatus('Locatie ophalen...', 'loading');
-            navigator.geolocation.getCurrentPosition(async (position) => {
-                userLocation = { lat: position.coords.latitude, lng: position.coords.longitude, name: 'Mijn locatie' };
-                try {
-                    const geocoder = new google.maps.Geocoder();
-                    const result = await new Promise((resolve, reject) => {
-                        geocoder.geocode({ location: { lat: userLocation.lat, lng: userLocation.lng } }, (results, status) => {
-                            if (status === 'OK' && results[0]) resolve(results[0]); else reject(status);
-                        });
-                    });
-                    const locality = result.address_components.find(c => c.types.includes('locality') || c.types.includes('sublocality'));
-                    userLocation.name = locality ? locality.long_name : result.formatted_address;
-                    input.value = userLocation.name;
-                    showGpsStatus(`Locatie: ${userLocation.name}`, '');
-                    setTimeout(() => statusEl.classList.add('hidden'), 2000);
-                    loadLocations();
-                } catch (err) { input.value = 'Mijn locatie'; showGpsStatus('Locatie gevonden', ''); setTimeout(() => statusEl.classList.add('hidden'), 2000); loadLocations(); }
-            }, (err) => { let msg = 'Locatie niet beschikbaar'; if (err.code === 1) msg = 'Toestemming geweigerd'; if (err.code === 2) msg = 'Locatie niet gevonden'; if (err.code === 3) msg = 'Timeout'; showGpsStatus(msg, 'error'); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
-        }
-
-        function showGpsStatus(message, type) { const el = document.getElementById('gps-status'); el.textContent = message; el.className = 'gps-status ' + type; }
-
-        async function updateLocation() {
-            const input = document.getElementById('location-input').value.trim(); if (!input) return;
-            const geocoder = new google.maps.Geocoder();
-            try {
-                const result = await new Promise((resolve, reject) => {
-                    geocoder.geocode({ address: input + ', Nederland' }, (results, status) => { if (status === 'OK' && results[0]) resolve(results[0]); else reject(status); });
-                });
-                userLocation = { lat: result.geometry.location.lat(), lng: result.geometry.location.lng(), name: input };
-                loadLocations();
-            } catch (err) { showGpsStatus('Locatie niet gevonden', 'error'); }
-        }
-
-        function calculateDistance(lat1, lng1, lat2, lng2) {
-            const R = 6371, dLat = (lat2 - lat1) * Math.PI / 180, dLng = (lng2 - lng1) * Math.PI / 180;
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng/2) * Math.sin(dLng/2);
-            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        }
-
-        async function calculateTravelTimes(destinations) {
-            if (!userLocation || destinations.length === 0) return {};
-            const service = new google.maps.DistanceMatrixService(), batchSize = 25, results = {};
-            for (let i = 0; i < destinations.length; i += batchSize) {
-                const batch = destinations.slice(i, i + batchSize);
-                try {
-                    const response = await new Promise((resolve, reject) => {
-                        service.getDistanceMatrix({ origins: [{ lat: userLocation.lat, lng: userLocation.lng }], destinations: batch.map(d => ({ lat: d.lat, lng: d.lng })), travelMode: google.maps.TravelMode.DRIVING, unitSystem: google.maps.UnitSystem.METRIC }, (result, status) => { if (status === 'OK') resolve(result); else reject(status); });
-                    });
-                    batch.forEach((dest, idx) => {
-                        const element = response.rows[0].elements[idx];
-                        if (element.status === 'OK') results[dest.id] = { duration: element.duration.text, durationValue: element.duration.value, distance: element.distance.text };
-                        else { const dist = calculateDistance(userLocation.lat, userLocation.lng, dest.lat, dest.lng), mins = Math.round(dist * 1.5); results[dest.id] = { duration: `~${mins} min`, durationValue: mins * 60, distance: `${dist.toFixed(1)} km`, estimated: true }; }
-                    });
-                } catch (err) { batch.forEach(dest => { const dist = calculateDistance(userLocation.lat, userLocation.lng, dest.lat, dest.lng), mins = Math.round(dist * 1.5); results[dest.id] = { duration: `~${mins} min`, durationValue: mins * 60, distance: `${dist.toFixed(1)} km`, estimated: true }; }); }
-            }
-            return results;
-        }
-
-        async function loadLocations() {
-            const container = document.getElementById('results-container'), loader = document.getElementById('loader'), error = document.getElementById('error');
-            container.innerHTML = ''; loader.classList.remove('hidden'); error.classList.add('hidden');
-            try {
-                let url = SB_URL + "?select=*"; if (activeTag !== 'all') url += "&type=eq." + activeTag; url += "&order=created_at.desc";
-                const response = await fetch(url, { method: 'GET', headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" } });
-                if (!response.ok) throw new Error('Fetch failed: ' + response.status);
-                allLocations = await response.json(); loader.classList.add('hidden');
-                if (allLocations.length === 0) { container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>Probeer een andere categorie</div>'; return; }
-                if (userLocation) { allLocations.forEach(item => { item.distanceKm = calculateDistance(userLocation.lat, userLocation.lng, item.lat, item.lng); }); allLocations.sort((a, b) => a.distanceKm - b.distanceKm); }
-                renderCards(allLocations, {}); if (userLocation) { const travelTimes = await calculateTravelTimes(allLocations); renderCards(allLocations, travelTimes); }
-            } catch (e) { console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.textContent = 'Kon data niet laden. Vernieuw de pagina.'; }
-        }
-
-        function renderCards(locations, travelTimes) {
-            const container = document.getElementById('results-container'); container.innerHTML = '';
-            locations.forEach((item, index) => {
-                const travelInfo = travelTimes[item.id];
-                const distanceText = userLocation ? `${item.distanceKm.toFixed(1)} km` : (item.region || 'Randstad');
-                const travelTimeHtml = travelInfo ? `<div class="travel-time ${travelInfo.estimated ? 'estimated' : ''}"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>${travelInfo.duration}</div>` : (userLocation ? '<div class="travel-time calculating"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Reistijd...</div>' : '');
-                const card = document.createElement('div'); card.className = 'result-card glass-card'; card.style.animationDelay = `${index * 0.05}s`;
-                card.innerHTML = `
-                    <div class="meta-top">
-                        <div class="meta-left">
-                            <div class="distance">${distanceText}</div>
-                            ${travelTimeHtml}
-                        </div>
-                        <div class="badges">
-                            ${item.coffee ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg><span class="tooltip">Koffie beschikbaar</span></div>' : ''}
-                            ${item.alcohol ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 3h10v9a5 5 0 0 1-10 0V3z"/></svg><span class="tooltip">Alcohol beschikbaar</span></div>' : ''}
-                            ${item.diaper ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v2a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3V7a5 5 0 0 1 5-5z"/><path d="M9 12v8a3 3 0 0 0 6 0v-8"/></svg><span class="tooltip">Verschoonplek</span></div>' : ''}
-                        </div>
+    <section class="features">
+        <div class="features-container">
+            <div class="features-header">
+                <h2>Waarom PeuterPlannen?</h2>
+                <p>Gemaakt door ouders, voor ouders</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                     </div>
-                    <div class="name">${item.name}</div>
-                    <div class="desc">${item.description || ''}</div>
-                    <div class="actions">
-                        <a href="https://www.google.com/maps/dir/?api=1&origin=${userLocation ? userLocation.lat + ',' + userLocation.lng : ''}&destination=${item.lat},${item.lng}" target="_blank" class="btn btn-primary"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>Route</a>
-                        ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Website</a>` : ''}
+                    <h3>Snel vinden</h3>
+                    <p>Geen eindeloos scrollen. Filter op afstand, type en faciliteiten. Binnen 3 seconden heb je een match.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                     </div>
-                `;
-                container.appendChild(card);
-            });
-        }
+                    <h3>Echte info</h3>
+                    <p>Wij checken elke locatie. Is er een verschoonplek? Mag er een biertje? Met welke leeftijd is het geschikt?</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg>
+                    </div>
+                    <h3>One-hand UX</h3>
+                    <p>Ontworpen voor ouders die een kind vasthouden. Grote knoppen, duidelijke contrasten, geen gedoe.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        function toggleTag(tag) {
-            activeTag = tag;
-            document.querySelectorAll('.tag-pill').forEach(p => p.classList.remove('active'));
-            event.target.classList.add('active');
-            loadLocations();
-        }
-
-        document.getElementById('location-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') updateLocation(); });
-        document.getElementById('suggestion-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') submitSuggestion(); });
-        window.addEventListener('load', () => { initAutocomplete(); loadLocations(); });
-
-        // Suggestie functionaliteit
-        async function submitSuggestion() {
-            const input = document.getElementById('suggestion-input');
-            const statusEl = document.getElementById('suggestion-status');
-            const btn = document.getElementById('suggestion-btn');
-            const value = input.value.trim();
-            
-            if (!value) return;
-            
-            btn.disabled = true;
-            statusEl.className = 'gps-status loading';
-            statusEl.textContent = 'Suggestie versturen...';
-            
-            try {
-                const response = await fetch('https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/suggestions', {
-                    method: 'POST',
-                    headers: {
-                        'apikey': SB_KEY,
-                        'Authorization': 'Bearer ' + SB_KEY,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ input: value, status: 'pending' })
-                });
-                
-                if (response.ok) {
-                    statusEl.className = 'gps-status';
-                    statusEl.style.color = 'var(--success)';
-                    statusEl.textContent = '✓ Dankjewel! We checken het uit.';
-                    input.value = '';
-                    setTimeout(() => { statusEl.classList.add('hidden'); statusEl.style.color = ''; }, 3000);
-                } else {
-                    throw new Error('Failed to submit');
-                }
-            } catch (e) {
-                statusEl.className = 'gps-status error';
-                statusEl.textContent = 'Kon niet versturen. Probeer later opnieuw.';
-            } finally {
-                btn.disabled = false;
-            }
-        }
-    </script>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <strong style="font-size: 20px;">PeuterPlannen</strong>
+                <p>Vind de perfecte plek voor jouw kleintje. Altijd geverifieerd, altijd up-to-date.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Product</h4>
+                <a href="app.html">App</a>
+                <a href="about.html">Over</a>
+            </div>
+            <div class="footer-links">
+                <h4>Contact</h4>
+                <a href="contact.html">Contact</a>
+                <a href="#">Suggestie</a>
+            </div>
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <a href="#">Privacy</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2025 PeuterPlannen — Gemaakt met ☕ en 😴 in Amsterdam
+        </div>
+    </footer>
 </body>
 </html>
