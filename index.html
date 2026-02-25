@@ -12,7 +12,7 @@
             --accent: #E63946;
             --muted: #457B9D;
             --paper: #FFFFFF;
-            --line: rgba(29, 53, 87, 0.15);
+            --border-width: 1.5px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -24,142 +24,135 @@
             line-height: 1.5;
             background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
         }
 
-        .container { max-width: 500px; margin: 0 auto; padding: 60px 24px; min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 500px; margin: 0 auto; padding: 40px 24px; min-height: 100vh; display: flex; flex-direction: column; }
 
-        /* Typography */
-        h1, h2, .font-serif { font-family: 'Cormorant Garamond', serif; font-style: italic; }
-        
-        header { text-align: center; margin-bottom: 60px; position: relative; }
-        h1 { font-size: 52px; font-weight: 700; line-height: 0.9; margin-bottom: 12px; }
-        .edition-label { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; font-weight: 600; opacity: 0.4; margin-bottom: 20px; display: block; }
+        header { text-align: center; margin-bottom: 50px; }
+        h1 { font-family: 'Cormorant Garamond', serif; font-size: 44px; font-weight: 700; font-style: italic; line-height: 1; margin-bottom: 8px; }
+        .edition { text-transform: uppercase; font-size: 10px; letter-spacing: 3px; font-weight: 600; opacity: 0.6; }
 
-        /* Layout */
-        .book-section { animation: pageTurn 0.5s ease-out; }
-        @keyframes pageTurn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        .book-section { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .book-card {
+        .card {
             background: var(--paper);
-            border: 1px solid var(--line);
-            padding: 40px 30px;
-            box-shadow: 0 10px 30px rgba(29, 53, 87, 0.05);
-            margin-bottom: 40px;
-            position: relative;
+            border: var(--border-width) solid var(--ink);
+            padding: 30px;
+            box-shadow: 6px 6px 0px var(--ink);
+            margin-bottom: 30px;
         }
 
-        /* Elements */
-        .question { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; margin-bottom: 35px; text-align: center; line-height: 1.2; }
+        .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 15px; display: block; }
         
-        .choice-list { display: flex; flex-direction: column; gap: 14px; }
+        .question { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; margin-bottom: 25px; text-align: center; }
+
+        .choice-list { display: flex; flex-direction: column; gap: 12px; }
         .choice-btn {
             background: transparent;
-            border: 1.5px solid var(--ink);
-            padding: 18px 24px;
+            border: var(--border-width) solid var(--ink);
+            padding: 16px 20px;
             font-size: 15px;
-            font-weight: 600;
+            font-weight: 500;
             text-align: left;
             display: flex;
             align-items: center;
-            gap: 18px;
+            gap: 15px;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s;
         }
         .choice-btn:hover { background: var(--ink); color: white; transform: translate(-2px, -2px); box-shadow: 4px 4px 0px var(--accent); }
-        .choice-btn svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+        .choice-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; }
 
         .location-input {
             width: 100%;
             border: none;
-            border-bottom: 2px solid var(--ink);
+            border-bottom: 1.5px solid var(--ink);
             background: transparent;
-            padding: 15px 0;
+            padding: 12px 0;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 24px;
-            margin-bottom: 40px;
+            font-size: 22px;
+            margin-bottom: 30px;
             outline: none;
             text-align: center;
-            color: var(--ink);
         }
 
-        /* Results Display */
+        /* Results */
         .results-header {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 32px;
+            border-bottom: 1.5px solid var(--ink);
+            padding-bottom: 8px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            border-bottom: 1px solid var(--ink);
-            padding-bottom: 12px;
         }
-        .results-header span { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        .back-link { font-size: 13px; font-weight: 700; color: var(--accent); text-decoration: none; border-bottom: 1.5px solid transparent; }
-        .back-link:hover { border-color: var(--accent); }
 
-        .chapter-entry {
-            margin-bottom: 56px;
+        .result-card {
+            margin-bottom: 48px;
+            padding-left: 20px;
+            border-left: 3px solid var(--accent);
             position: relative;
         }
-        .chapter-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 700; margin-bottom: 10px; line-height: 1.1; }
-        
-        .chapter-meta {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 18px;
+
+        .result-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        .result-meta {
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.05em;
             color: var(--muted);
+            margin-bottom: 12px;
+            display: flex;
+            gap: 15px;
             align-items: center;
         }
-        .chapter-meta span { display: flex; align-items: center; gap: 6px; }
-        .chapter-meta svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+        .result-meta span { display: flex; align-items: center; gap: 6px; }
+        .result-meta svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; }
         
-        .chapter-desc { font-size: 16px; color: var(--ink); margin-bottom: 28px; opacity: 0.85; text-align: justify; hyphens: auto; }
+        .result-desc { font-size: 15px; color: var(--ink); margin-bottom: 24px; opacity: 0.9; }
 
-        .action-row { display: flex; gap: 24px; }
-        .btn-ink {
-            font-size: 13px;
-            font-weight: 700;
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             text-decoration: none;
             color: var(--ink);
-            border-bottom: 2.5px solid var(--ink);
-            padding-bottom: 3px;
+            font-weight: 700;
+            font-size: 13px;
+            border-bottom: 2px solid var(--ink);
+            padding-bottom: 2px;
+            margin-right: 24px;
             transition: all 0.2s;
         }
-        .btn-ink:hover { color: var(--accent); border-color: var(--accent); }
+        .btn-action:hover { color: var(--accent); border-color: var(--accent); }
 
-        /* Helpers */
         .hidden { display: none; }
-        .fade-in { animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        .footer { text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 14px; margin-top: 100px; padding-bottom: 40px; opacity: 0.4; }
+        .footer { text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 14px; margin-top: 80px; opacity: 0.5; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <span class="edition-label">Handgemaakte Editie</span>
+            <div class="edition">Heritage Edition — 2026</div>
             <h1>PeuterPlannen</h1>
         </header>
 
-        <!-- View 1: Location -->
         <div id="step-1" class="book-section">
-            <div class="book-card">
-                <p class="question">Waar begint de ontdekkingsreis vandaag?</p>
+            <div class="card">
+                <p class="question">Waar begint het verhaal vandaag?</p>
                 <input type="text" id="startLocation" class="location-input" placeholder="Type stad of dorp..." value="IJsselstein">
                 <button class="choice-btn" onclick="nextStep()" style="justify-content:center; background: var(--ink); color: white; width: 100%;">
-                    Open de Gids →
+                    Volgende pagina →
                 </button>
             </div>
         </div>
 
-        <!-- View 2: Energy / Vibe -->
         <div id="step-2" class="book-section hidden">
-            <div class="book-card">
-                <p class="question">Hoeveel energie hebben we vandaag?</p>
+            <div class="card">
+                <p class="question">Hoe is de energie van de kleintjes?</p>
                 <div class="choice-list">
                     <button class="choice-btn" onclick="search('play')">
                         <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14H11V21L20 10H13Z"/></svg>
@@ -177,48 +170,44 @@
             </div>
         </div>
 
-        <!-- View 3: Results -->
-        <div id="results" class="book-section hidden">
+        <div id="results" class="hidden">
             <div class="results-header">
-                <span>Geselecteerde Pagina's</span>
-                <a href="#" onclick="location.reload()" class="back-link">Aanpassen</a>
+                <span>Geselecteerde Avonturen</span>
+                <a href="#" onclick="location.reload()" style="color: var(--accent); text-decoration: none; font-weight: 700;">Aanpassen</a>
             </div>
             <div id="list"></div>
         </div>
 
-        <div id="loader" class="loader hidden" style="text-align:center; padding:60px; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:20px;">De pagina's worden omgeslagen...</div>
+        <div id="loader" class="loader hidden">De bladzijden worden omgeslagen...</div>
 
         <div class="footer">
-            © 2026 — Een gecureerde weekendgids voor de Randstad
+            © 2026 — Een handgemaakte reisgids voor de Randstad
         </div>
     </div>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAw0UlkShhJ_FQUG1ibkMidUhvEFC23jb4&libraries=places"></script>
     <script>
-        // DE ECHTE DATABASE - GEEN LOOPS, GEEN PLACEHOLDERS
         const database = [
-            // UTRECHT / IJSSELSTEIN / NIEUWEGEIN
-            { name: "Hans & Grietje Zeewolde", type: "pancake", desc: "Het meest magische pannenkoekenhuis van Nederland. Bewegende tafels, glijbanen binnen en een enorm sprookjespark buiten.", alcohol: true, coords: { lat: 52.3429, lng: 5.4842 }, website: "https://www.hansengrietje.zeewolde.nl/" },
-            { name: "Speelbos Gagelbos", type: "nature", desc: "Avontuurlijk speelbos bij Utrecht/IJsselstein met vlotten over het water, houten tunnels en modderige paden.", alcohol: false, coords: { lat: 52.1285, lng: 5.1082 }, website: "-" },
-            { name: "Nijntje Museum", type: "play", desc: "De droom van elke peuter. Volledig interactief museum in hartje Utrecht waar kids in de wereld van Dick Bruna stappen.", alcohol: false, coords: { lat: 52.0837, lng: 5.1258 }, website: "https://nijntjemuseum.nl/" },
-            { name: "Geertje's Hoeve", type: "nature", desc: "Beleefboerderij bij Haarzuilens. Geitjes voeren, ponyrijden en daarna heerlijk lunchen op het boerenterras.", alcohol: true, coords: { lat: 52.1265, lng: 4.9818 }, website: "https://geertjeshoeve.nl/" },
-            { name: "Molen de Ster", type: "play", desc: "Prachtige houtzaagmolen in Utrecht met een fijne omheinde speeltuin en een kinderboerderij direct ernaast.", alcohol: true, coords: { lat: 52.0911, lng: 5.1033 }, website: "https://molendester.nu/" },
-            { name: "Monkey Town IJsselstein", type: "play", desc: "Lokaal favoriet speelparadijs met een ruime en veilige peuterzone voor de allerkleinsten.", alcohol: false, coords: { lat: 52.0233, lng: 5.0457 }, website: "https://monkeytown.eu/nl/ijsselstein" },
-            { name: "Speeltuin de Koppel", type: "play", desc: "Grote, schone buitenspeeltuin in IJsselstein met veel variatie en een fijn terras voor de ouders.", alcohol: true, coords: { lat: 52.0167, lng: 5.0433 }, website: "https://speeltuindekoppel.nl/" },
-            { name: "Natuurkwartier Nieuwegein", type: "nature", desc: "Prachtig park met kinderboerderij IJsselstee, een waterspeelplaats en een echt speelbos.", alcohol: false, coords: { lat: 52.0133, lng: 5.0833 }, website: "https://natuurkwartier.nl/" },
-            { name: "Ballorig Houten", type: "play", desc: "Grote binnenspeeltuin in Houten met specifieke 'Peuter Ochtenden' en veel overzicht voor ouders.", alcohol: false, coords: { lat: 52.0253, lng: 5.1918 }, website: "https://www.ballorig.nl/houten" },
-            
-            // AMSTERDAM / HAARLEM
-            { name: "Groot Melkhuis", type: "nature", desc: "Terras midden in het Vondelpark met een legendarische omheinde speeltuin. Dé plek voor een middag in de zon.", alcohol: true, coords: { lat: 52.3585, lng: 4.8684 }, website: "https://grootmelkhuis.nl/" },
-            { name: "Kraantje Lek Overveen", type: "nature", desc: "Iconische uitspanning aan de voet van de duinen met een enorme houten speeltuin en klimduin.", alcohol: true, coords: { lat: 52.3833, lng: 4.5833 }, website: "https://kraantjelek.nl/" },
-            { name: "Meneer Paprika Haarlem", type: "pancake", desc: "Speelgoedwinkel en café in één. Terwijl jij koffie drinkt, spelen de kids aan de 5-meter lange treinbaan tafel.", alcohol: true, coords: { lat: 52.3833, lng: 4.6333 }, website: "https://meneerpaprika.nl/" },
-            { name: "NEMO Dak", type: "play", desc: "Het gratis toegankelijke dakterras van NEMO met waterspelletjes en een fenomenaal uitzicht over Amsterdam.", alcohol: true, coords: { lat: 52.3742, lng: 4.9122 }, website: "https://www.nemosciencemuseum.nl/" },
-            
-            // ROTTERDAM / DEN HAAG
-            { name: "Plaswijckpark", type: "play", desc: "Enorm familiepark in Rotterdam met speeltuinen, een kleine dierentuin en een verkeerstuin. Perfect voor 0-4 jaar.", alcohol: true, coords: { lat: 51.9613, lng: 4.4984 }, website: "https://www.plaswijckpark.nl/" },
-            { name: "Maritiem Museum (Plons)", type: "play", desc: "De interactieve wereld van Professor Plons in Rotterdam is een absolute hit voor peuters.", alcohol: true, coords: { lat: 51.9174, lng: 4.4821 }, website: "https://maritiemmuseum.nl/" },
-            { name: "Kinderboekenmuseum", type: "play", desc: "In Den Haag komen Kikker en Nijntje tot leven in dit interactieve en veilige kindermuseum.", alcohol: false, coords: { lat: 52.0805, lng: 4.3162 }, website: "https://www.kinderboekenmuseum.nl/" },
-            { name: "Villa Zebra", type: "play", desc: "Hét kinderkunstmuseum van Rotterdam. Op de begane grond is alles speciaal ingericht voor 2 tot 6 jaar.", alcohol: false, coords: { lat: 51.9114, lng: 4.4970 }, website: "https://www.villazebra.nl/" }
+            { name: "Nijntje Museum", type: "play", desc: "Hét museum voor peuters. Stap letterlijk in de wereld van Dick Bruna. 100% veilig en vrolijk.", alcohol: false, coords: { lat: 52.0837, lng: 5.1258 }, website: "https://nijntjemuseum.nl/" },
+            { name: "Geertje's Hoeve", type: "nature", desc: "Beleefboerderij bij Haarzuilens. Geitjes de fles geven, ponyrijden en een heerlijk terras.", alcohol: true, coords: { lat: 52.1265, lng: 4.9818 }, website: "https://geertjeshoeve.nl/" },
+            { name: "Hans & Grietje Zeewolde", type: "pancake", desc: "Magisch pannenkoekenhuis met bewegende tafels en een enorme speeltuin.", alcohol: true, coords: { lat: 52.3429, lng: 5.4842 }, website: "https://www.hansengrietje.zeewolde.nl/" },
+            { name: "Speelbos Gagelbos", type: "nature", desc: "Speelbos met vlotten, modder en houten tunnels. Een paradijs voor kleine ontdekkingsreizigers.", alcohol: false, coords: { lat: 52.1285, lng: 5.1082 }, website: "-" },
+            { name: "Marnemoende IJsselstein", type: "nature", desc: "Prachtige jachthaven aan de Hollandse IJssel met een speeltuin en fijn restaurant.", alcohol: true, coords: { lat: 52.0225, lng: 4.9785 }, website: "https://marnemoende.nl/" },
+            { name: "Natuurkwartier Nieuwegein", type: "nature", desc: "Kinderboerderij, speelbos en pannenkoekenhuis in het groen van Nieuwegein.", alcohol: true, coords: { lat: 52.0163, lng: 5.0768 }, website: "https://natuurkwartier.nl/" },
+            { name: "Meneer Paprika Haarlem", type: "play", desc: "Speelgoedwinkel en café met een legendarische Thomas de Trein baan. Hartje Haarlem.", alcohol: true, coords: { lat: 52.3833, lng: 4.6333 }, website: "https://meneerpaprika.nl/" },
+            { name: "Kraantje Lek Overveen", type: "nature", desc: "Iconisch pannenkoekenhuis aan de voet van een klimduin met enorme houten speeltuin.", alcohol: true, coords: { lat: 52.3833, lng: 4.5833 }, website: "https://kraantjelek.nl/" },
+            { name: "Diergaarde Blijdorp", type: "play", desc: "Prachtige dierentuin met veel overdekte speelplekken (Oceanium) voor de allerkleinsten.", alcohol: true, coords: { lat: 51.9268, lng: 4.4539 }, website: "https://www.diergaardeblijdorp.nl/" },
+            { name: "Villa Zebra Rotterdam", type: "play", desc: "Interactief kinderkunstmuseum in Rotterdam waar spelen en ontdekken centraal staan.", alcohol: false, coords: { lat: 51.9114, lng: 4.4970 }, website: "https://www.villazebra.nl/" },
+            { name: "Kinderboekenmuseum Den Haag", type: "play", desc: "De wereld van Kikker en Nijntje komt tot leven in een volledig interactief museum.", alcohol: false, coords: { lat: 52.0805, lng: 4.3242 }, website: "https://www.kinderboekenmuseum.nl/" },
+            { name: "Speelpark Oud Valkeveen", type: "play", desc: "Groot speelpark aan het Gooimeer, speciaal ingericht voor de allerjongsten.", alcohol: true, coords: { lat: 52.3047, lng: 5.1923 }, website: "https://www.oudvalkeveen.nl/" },
+            { name: "Jack's Grillhouse Nieuwegein", type: "play", desc: "Restaurant met een grote, vrolijke binnenspeelruimte voor de kleintjes.", alcohol: true, coords: { lat: 52.0295, lng: 5.0935 }, website: "https://jacksgrillhouse.nl/" },
+            { name: "Theehuis Rhijnauwen", type: "pancake", desc: "Iconisch pannenkoekenhuis aan het water met een grote houten speeltuin bij Utrecht.", alcohol: true, coords: { lat: 52.0726, lng: 5.1610 }, website: "https://theehuisrhijnauwen.nl/" },
+            { name: "Speeltuin de Koppel", type: "play", desc: "Grote, schone buitenspeeltuin in IJsselstein met fijne toestellen voor peuters.", alcohol: false, coords: { lat: 52.0210, lng: 5.0385 }, website: "https://speeltuindekoppel.nl/" },
+            { name: "Molen de Ster Utrecht", type: "play", desc: "Historische molen met een fijne kinderboerderij en een klein terras.", alcohol: false, coords: { lat: 52.0913, lng: 5.1015 }, website: "https://molendester.nu/" },
+            { name: "Kasteel Groeneveld Baarn", type: "nature", desc: "Prachtig landgoed met kasteeltuinen, speurtochten en een goed restaurant.", alcohol: true, coords: { lat: 52.2167, lng: 5.2667 }, website: "https://www.staatsbosbeheer.nl/groeneveld" },
+            { name: "Monkey Town IJsselstein", type: "play", desc: "Overdekt speelparadijs met een vrolijke en overzichtelijke peuterhoek.", alcohol: false, coords: { lat: 52.0232, lng: 5.0457 }, website: "https://monkeytown.eu/nl/ijsselstein" },
+            { name: "Ballorig Houten", type: "play", desc: "Binnenspeeltuin met ruime faciliteiten voor kleintjes en gratis toegang voor ouders.", alcohol: false, coords: { lat: 52.0252, lng: 5.1917 }, website: "https://www.ballorig.nl/houten" },
+            { name: "De Tuin van de Smid Leiden", type: "nature", desc: "Theehuis in Park Cronesteyn met veel natuurlijke speelruimte en biologisch eten.", alcohol: true, coords: { lat: 52.1413, lng: 4.4976 }, website: "https://www.detuinvandesmid.nl/" }
         ];
 
         function nextStep() {
@@ -230,11 +219,11 @@
             const start = document.getElementById('startLocation').value;
             const service = new google.maps.DistanceMatrixService();
             
-            document.getElementById('step-2').classList.add('hidden');
-            document.getElementById('loader').classList.remove('hidden');
-
             let filtered = database.filter(i => i.type === filterType);
             const destinations = filtered.map(i => i.coords);
+
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('loader').classList.remove('hidden');
 
             try {
                 const response = await new Promise((resolve) => {
@@ -264,26 +253,26 @@
             const container = document.getElementById('list');
             container.innerHTML = '';
 
-            const carSvg = `<svg viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.2-1.4.7l-1.5 2.6C1.4 11 1 12 1 13v3c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>`;
-            const glassSvg = `<svg viewBox="0 0 24 24"><path d="M8 22h8M12 11v11M19 8c0 1.5-2 3-7 3S5 9.5 5 8V2h14v6zM5 8h14"/></svg>`;
+            const carSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:4px; vertical-align:middle;"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.2-1.4.7l-1.5 2.6C1.4 11 1 12 1 13v3c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>`;
+            const glassSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:4px; vertical-align:middle;"><path d="M12 22h.01M8 22h8M12 11v11M19 8c0 1.5-2 3-7 3S5 9.5 5 8V2h14v6zM5 8h14"/></svg>`;
 
             if (items.length === 0) {
-                container.innerHTML = '<p class="question" style="margin-top:40px; opacity:0.5;">Dit hoofdstuk is nog leeg...<br><small>Probeer een andere categorie.</small></p>';
+                container.innerHTML = '<p class="question" style="font-size:18px;">Nog geen avonturen gevonden in dit hoofdstuk... Probeer een andere categorie!</p>';
                 return;
             }
 
             items.forEach(item => {
                 container.innerHTML += `
-                    <div class="chapter-entry fade-in">
-                        <div class="chapter-meta">
+                    <div class="result-card">
+                        <div class="result-meta">
                             <span>${carSvg} ${item.duration}</span>
                             ${item.alcohol ? `<span>${glassSvg} OUDER-VRIENDELIJK</span>` : ''}
                         </div>
-                        <h2 class="chapter-title">${item.name}</h2>
-                        <p class="chapter-desc">${item.desc}</p>
-                        <div class="action-row">
-                            <a href="https://www.google.com/maps/dir/?api=1&destination=${item.coords.lat},${item.coords.lng}" target="_blank" class="btn-ink">Route & Parkeren</a>
-                            ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn-ink">Bezoek Website</a>` : ''}
+                        <h2 class="result-title">${item.name}</h2>
+                        <p class="result-desc">${item.desc}</p>
+                        <div>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=${item.coords.lat},${item.coords.lng}" target="_blank" class="btn-action">Route & Parkeren</a>
+                            ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn-action">Website</a>` : ''}
                         </div>
                     </div>
                 `;
