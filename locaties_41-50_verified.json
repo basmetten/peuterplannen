@@ -1,0 +1,192 @@
+[
+  {
+    "id": 41,
+    "name": "Muiderslot",
+    "address": "Herengracht 1, 1398 AA Muiden",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=52.334167,5.071389",
+    "coordinates": {
+      "lat": 52.334167,
+      "lng": 5.071389
+    },
+    "website": "https://muiderslot.nl",
+    "type": "museum",
+    "facilities": {
+      "coffee": true,
+      "alcohol": true,
+      "changingTable": true
+    },
+    "description": "Middeleeuws kasteel uit 1280 met tuinen, deel van UNESCO Werelderfgoed. Kindvriendelijk met speurtochten en activiteiten.",
+    "region": "Gooi en Vechtstreek"
+  },
+  {
+    "id": 42,
+    "name": "Zaanse Schans",
+    "address": "Schansend 7, 1509 AW Zaandam",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=52.47389,4.81639",
+    "coordinates": {
+      "lat": 52.47389,
+      "lng": 4.81639
+    },
+    "website": "https://www.dezaanseschans.nl",
+    "type": "museum",
+    "facilities": {
+      "coffee": true,
+      "alcohol": true,
+      "changingTable": true
+    },
+    "description": "Openluchtmuseum met historische molens, groene houten huizen en ambachten. Gratis toegankelijk, musea betaald.",
+    "region": "Zaanstreek"
+  },
+  {
+    "id": 43,
+    "name": "Volendam & Edam",
+    "address": "Haven 1, 1131 AD Volendam",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=52.4961,5.0728",
+    "coordinates": {
+      "lat": 52.4961,
+      "lng": 5.0728
+    },
+    "website": "https://www.laagholland.com/nl/edam-volendam",
+    "type": "nature",
+    "facilities": {
+      "coffee": true,
+      "alcohol": true,
+      "changingTable": true
+    },
+    "description": "Historische vissersdorpjes met haven, dijk en authentieke geveltjes. Edam bekend van de kaasmarkt.",
+    "region": "Waterland"
+  },
+  {
+    "id": 44,
+    "name": "Marken",
+    "address": "Havenbuurt 19c, 1156 BK Marken",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=52.458993,5.103206",
+    "coordinates": {
+      "lat": 52.458993,
+      "lng": 5.103206
+    },
+    "website": "https://www.laagholland.com/nl/marken",
+    "type": "nature",
+    "facilities": {
+      "coffee": true,
+      "alcohol": true,
+      "changingTable": true
+    },
+    "description": "Autoluw schiereiland met karakteristieke houten huizen, vuurtoren en Marker Museum. Bereikbaar via dijk of veerboot.",
+    "region": "Waterland"
+  },
+  {
+    "id": 45,
+    "name": "Keukenhof",
+    "address": "Stationsweg 166A, 2161 AM Lisse",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=52.269679,4.546869",
+    "coordinates": {
+      "lat": 52.269679,
+      "lng": 4.546869
+    },
+    "website": "https://keukenhof.nl",
+    "type": "nature",
+    "facilities": {
+      "coffee": true,
+      "alcohol": true,
+      "changingTable": true
+    },
+    "description": "Seizoensgebonden bloemenpark open van 19 maart t/m 10 mei. Beroemd om tulpen, hyacinten en daffodils. Kinderen: speeltuin en dierenweide.",
+    "region": "Bollenstreek"
+  },
+  {
+    "id": 46,
+    "name": "Kunstfort bij Vijfhuizen",
+    "address": "Fortwachter 1, 2141 EE Vijfhuizen",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=52.347443,4.670293",
+    "coordinates": {
+      "lat": 52.347443,
+      "lng": 4.670293
+    },
+    "website": "https://www.kunstfort.nl",
+    "type": "museum",
+    "facilities": {
+      "coffee": true,
+      "alcohol": false,
+      "changingTable": false
+    },
+    "description": "Fort uit 1890 met tentoonstellingen moderne kunst. Eiland dagelijks toegankelijk, fortgebouw do/vr/za/zo 13:00-17:00 uur.",
+    "region": "Haarlemmermeer"
+  },
+  {
+    "id": 47,
+    "name": "Haarlem Centrum - Speeltuinen",
+    "address": "Scheepmakersdijk 10, 2011 AS Haarlem",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=52.3824,4.638",
+    "coordinates": {
+      "lat": 52.3824,
+      "lng": 4.638
+    },
+    "website": "https://www.haarlem.nl",
+    "type": "play",
+    "facilities": {
+      "coffee": true,
+      "alcohol": true,
+      "changingTable": true
+    },
+    "description": "Meerdere speeltuinen in centrum waaronder De Glasblazers aan het Spaarne met houten klimschip, en Het Paradijsje in de binnenstad.",
+    "region": "Haarlem"
+  },
+  {
+    "id": 48,
+    "name": "Zandvoort aan Zee",
+    "address": "Strandweg 1, 2042 JA Zandvoort",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=52.3749,4.5341",
+    "coordinates": {
+      "lat": 52.3749,
+      "lng": 4.5341
+    },
+    "website": "https://visitzandvoort.com",
+    "type": "nature",
+    "facilities": {
+      "coffee": true,
+      "alcohol": true,
+      "changingTable": true
+    },
+    "description": "9 kilometer breed strand op 2 minuten lopen van station Zandvoort aan Zee. Strandpaviljoens, duinen en zee.",
+    "region": "Kennemerland"
+  },
+  {
+    "id": 49,
+    "name": "Scheveningen",
+    "address": "Strandweg 1, 2586 JK Den Haag",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=52.1046,4.2756",
+    "coordinates": {
+      "lat": 52.1046,
+      "lng": 4.2756
+    },
+    "website": "https://www.denhaag.com/nl/scheveningen",
+    "type": "nature",
+    "facilities": {
+      "coffee": true,
+      "alcohol": true,
+      "changingTable": true
+    },
+    "description": "Bekende badplaats met boulevard, pier, Sea Life en Kurhaus. Breed zandstrand met strandtenten en speelgelegenheden.",
+    "region": "Den Haag"
+  },
+  {
+    "id": 50,
+    "name": "Fort bij Spijkerboor",
+    "address": "Westdijk 46, 1464 PC Westbeemster",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=52.53996,4.838865",
+    "coordinates": {
+      "lat": 52.53996,
+      "lng": 4.838865
+    },
+    "website": "https://www.natuurmonumenten.nl/natuurgebieden/fort-bij-spijkerboor",
+    "type": "nature",
+    "facilities": {
+      "coffee": false,
+      "alcohol": false,
+      "changingTable": false
+    },
+    "description": "Fort uit de Stelling van Amsterdam op Unesco Werelderfgoedlijst. Open voor publiek met wandelroutes en uitzicht.",
+    "region": "Beemster"
+  }
+]
