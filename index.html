@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="nl" data-version="2026.01.10.1">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peuterplannen | Bas Metten</title>
+    <meta name="description" content="Plan leuke dagen voor je peuter. Dagplanning, activiteiten bibliotheek en weekoverzicht.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'Source Serif 4', Georgia, serif;
+            --accent: #D2691E;
+            --accent-glow: rgba(210, 105, 30, 0.2);
+            --accent-dark: #B5531F;
+            --secondary-accent: #E07856;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border-default: #e2e8f0;
+        }
+        [data-theme="dark"] {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #141417;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-default: #27272a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Header */
+        .header { padding: 1.5rem 0; border-bottom: 2px solid var(--border-default); }
+        .nav { display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo {
+            display: flex; align-items: center; gap: 0.5rem;
+            text-decoration: none; color: var(--text-primary);
+            font-family: var(--font-display); font-weight: 700; font-size: 1.25rem;
+        }
+        .logo-dot { width: 8px; height: 8px; background: var(--accent); }
+        .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+        .back-link {
+            font-family: var(--font-display); font-size: 0.875rem; font-weight: 600;
+            color: var(--text-secondary); text-decoration: none;
+            text-transform: uppercase; letter-spacing: 0.05em; transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--accent); }
+        .theme-toggle {
+            background: none; border: 2px solid var(--border-default);
+            color: var(--text-secondary); padding: 0.4rem 0.75rem;
+            font-family: var(--font-display); font-size: 0.75rem; font-weight: 600;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 0.05em;
+            transition: all 0.2s;
+        }
+        .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* Main */
+        main { flex: 1; padding: 3rem 0 4rem; }
+
+        .page-header { margin-bottom: 3rem; }
+        .page-label {
+            font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--accent); margin-bottom: 0.75rem;
+        }
+        .page-title {
+            font-family: var(--font-display); font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700; line-height: 1.1; margin-bottom: 0.75rem;
+        }
+        .page-desc { font-size: 1.0625rem; color: var(--text-secondary); max-width: 600px; }
+
+        /* Tabs */
+        .tabs {
+            display: flex; gap: 0; border-bottom: 2px solid var(--border-default);
+            margin-bottom: 2.5rem; overflow-x: auto;
+        }
+        .tab-btn {
+            font-family: var(--font-display); font-size: 0.875rem; font-weight: 600;
+            padding: 0.75rem 1.5rem; background: none; border: none;
+            color: var(--text-secondary); cursor: pointer;
+            border-bottom: 3px solid transparent; margin-bottom: -2px;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            white-space: nowrap; transition: all 0.2s;
+        }
+        .tab-btn:hover { color: var(--accent); }
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ---- DAG PLANNING ---- */
+        .dag-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap;
+        }
+        .dag-nav { display: flex; align-items: center; gap: 1rem; }
+        .dag-nav-btn {
+            background: none; border: 2px solid var(--border-default);
+            color: var(--text-secondary); width: 36px; height: 36px;
+            font-size: 1rem; cursor: pointer; font-family: var(--font-display);
+            font-weight: 700; transition: all 0.2s; display: flex;
+            align-items: center; justify-content: center;
+        }
+        .dag-nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .dag-datum {
+            font-family: var(--font-display); font-size: 1.125rem; font-weight: 700;
+        }
+
+        .tijdlijn { display: flex; flex-direction: column; gap: 1.5rem; }
+        .tijdblok {
+            border: 2px solid var(--border-default);
+            background: var(--bg-secondary);
+        }
+        .tijdblok-header {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 1rem 1.25rem; border-bottom: 2px solid var(--border-default);
+            background: var(--bg-primary);
+        }
+        .tijdblok-icon {
+            width: 36px; height: 36px; background: var(--accent);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .tijdblok-icon svg { width: 18px; height: 18px; stroke: white; fill: none; }
+        .tijdblok-title {
+            font-family: var(--font-display); font-weight: 700; font-size: 1rem;
+        }
+        .tijdblok-tijd { font-size: 0.8125rem; color: var(--text-secondary); }
+        .tijdblok-body { padding: 1rem 1.25rem; }
+
+        .activiteit-lijst { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+        .activiteit-item {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.625rem 0.875rem; background: var(--bg-primary);
+            border: 2px solid var(--border-default);
+            transition: all 0.2s;
+        }
+        .activiteit-item:hover { border-color: var(--accent); transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--accent-glow); }
+        .activiteit-item-emoji { font-size: 1.25rem; flex-shrink: 0; }
+        .activiteit-item-naam {
+            flex: 1; font-family: var(--font-display); font-size: 0.875rem; font-weight: 600;
+        }
+        .activiteit-item-remove {
+            background: none; border: none; color: var(--text-secondary);
+            cursor: pointer; font-size: 1rem; padding: 0 0.25rem; transition: color 0.2s;
+        }
+        .activiteit-item-remove:hover { color: #e53e3e; }
+
+        .add-activiteit-row {
+            display: flex; gap: 0.5rem; flex-wrap: wrap;
+        }
+        .add-activiteit-input {
+            flex: 1; min-width: 150px; padding: 0.5rem 0.75rem;
+            border: 2px solid var(--border-default); background: var(--bg-primary);
+            color: var(--text-primary); font-family: var(--font-display);
+            font-size: 0.875rem; outline: none; transition: border-color 0.2s;
+        }
+        .add-activiteit-input:focus { border-color: var(--accent); }
+        .btn {
+            font-family: var(--font-display); font-size: 0.8125rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            padding: 0.5rem 1rem; border: 2px solid var(--accent);
+            background: var(--accent); color: white; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn:hover { background: var(--accent-dark); border-color: var(--accent-dark); transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--accent-glow); }
+        .btn-outline {
+            background: none; color: var(--accent);
+        }
+        .btn-outline:hover { background: var(--accent); color: white; }
+
+        /* ---- ACTIVITEITEN BIBLIOTHEEK ---- */
+        .bibliotheek-filter {
+            display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem;
+        }
+        .filter-btn {
+            font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            padding: 0.375rem 0.875rem; border: 2px solid var(--border-default);
+            background: none; color: var(--text-secondary); cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            border-color: var(--accent); color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        .activiteiten-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+        .activiteit-kaart {
+            border: 2px solid var(--border-default); background: var(--bg-secondary);
+            padding: 1.25rem; transition: all 0.2s; cursor: pointer; position: relative;
+        }
+        .activiteit-kaart:hover {
+            border-color: var(--accent); transform: translate(-4px, -4px);
+            box-shadow: 8px 8px 0 var(--accent-glow);
+        }
+        .activiteit-kaart-top {
+            display: flex; align-items: flex-start; justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        .activiteit-emoji { font-size: 2rem; line-height: 1; }
+        .activiteit-leeftijd {
+            font-family: var(--font-display); font-size: 0.625rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            padding: 0.2rem 0.5rem; background: var(--accent); color: white;
+        }
+        .activiteit-naam {
+            font-family: var(--font-display); font-weight: 700; font-size: 0.9375rem;
+            margin-bottom: 0.375rem;
+        }
+        .activiteit-omschrijving {
+            font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5;
+            margin-bottom: 0.75rem;
+        }
+        .activiteit-cat {
+            display: inline-block; font-family: var(--font-display);
+            font-size: 0.625rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; padding: 0.2rem 0.5rem;
+            border: 1px solid var(--border-default); color: var(--text-secondary);
+        }
+        .plan-toevoegen-overlay {
+            position: absolute; inset: 0; background: var(--accent);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.2s;
+            font-family: var(--font-display); font-size: 0.875rem;
+            font-weight: 700; color: white; text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .activiteit-kaart:hover .plan-toevoegen-overlay { opacity: 0.92; }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            display: none; align-items: center; justify-content: center;
+            z-index: 100; padding: 1rem;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: var(--bg-primary); border: 2px solid var(--border-default);
+            max-width: 420px; width: 100%; padding: 2rem;
+        }
+        .modal-title {
+            font-family: var(--font-display); font-size: 1.25rem; font-weight: 700;
+            margin-bottom: 1.25rem;
+        }
+        .modal-label {
+            font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);
+            display: block; margin-bottom: 0.5rem;
+        }
+        .modal select {
+            width: 100%; padding: 0.5rem 0.75rem; border: 2px solid var(--border-default);
+            background: var(--bg-primary); color: var(--text-primary);
+            font-family: var(--font-display); font-size: 0.875rem; margin-bottom: 1.25rem;
+            outline: none; cursor: pointer;
+        }
+        .modal select:focus { border-color: var(--accent); }
+        .modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
+
+        /* ---- WEEKOVERZICHT ---- */
+        .week-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap;
+        }
+        .week-nav { display: flex; align-items: center; gap: 1rem; }
+        .week-label {
+            font-family: var(--font-display); font-size: 1rem; font-weight: 700;
+        }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px; border: 2px solid var(--border-default);
+            background: var(--border-default);
+            overflow: hidden;
+        }
+        .week-dag {
+            background: var(--bg-primary); min-height: 140px;
+        }
+        .week-dag-header {
+            padding: 0.625rem 0.75rem; background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-default);
+        }
+        .week-dag-naam {
+            font-family: var(--font-display); font-size: 0.6875rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary);
+        }
+        .week-dag-num {
+            font-family: var(--font-display); font-size: 1.25rem; font-weight: 700;
+            line-height: 1;
+        }
+        .week-dag.vandaag .week-dag-header { background: var(--accent); }
+        .week-dag.vandaag .week-dag-naam { color: rgba(255,255,255,0.8); }
+        .week-dag.vandaag .week-dag-num { color: white; }
+        .week-dag-items { padding: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem; }
+        .week-item {
+            font-family: var(--font-display); font-size: 0.6875rem; font-weight: 600;
+            padding: 0.25rem 0.375rem; background: var(--accent-glow);
+            border-left: 2px solid var(--accent); color: var(--text-primary);
+            cursor: pointer; transition: background 0.15s;
+        }
+        .week-item:hover { background: var(--accent); color: white; }
+        .week-item-emoji { margin-right: 0.2rem; }
+
+        .week-add-btn {
+            width: 100%; padding: 0.25rem; background: none;
+            border: 1px dashed var(--border-default); color: var(--text-secondary);
+            font-family: var(--font-display); font-size: 0.6875rem; cursor: pointer;
+            transition: all 0.2s; margin-top: 0.25rem;
+        }
+        .week-add-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* Footer */
+        .footer { padding: 2rem 0; border-top: 2px solid var(--border-default); }
+        .footer-content {
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: var(--font-display); font-size: 0.75rem; color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .week-grid { grid-template-columns: repeat(7, minmax(90px, 1fr)); overflow-x: auto; }
+            .tijdlijn { gap: 1rem; }
+        }
+        @media (max-width: 640px) {
+            .footer-content { flex-direction: column; gap: 0.5rem; }
+            .page-title { font-size: 1.75rem; }
+            .dag-header { flex-direction: column; align-items: flex-start; }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem;
+            background: var(--text-primary); color: var(--bg-primary);
+            font-family: var(--font-display); font-size: 0.875rem; font-weight: 600;
+            padding: 0.75rem 1.25rem; z-index: 200;
+            transform: translateY(4rem); opacity: 0;
+            transition: all 0.3s; pointer-events: none;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="../../" class="nav-logo">
+                    <span>BM</span>
+                    <span class="logo-dot"></span>
+                </a>
+                <div class="nav-right">
+                    <button class="theme-toggle" onclick="toggleTheme()">🌙 Thema</button>
+                    <a href="../" class="back-link">&larr; Terug</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <p class="page-label">Tools voor ouders</p>
+                <h1 class="page-title">🧸 Peuterplannen</h1>
+                <p class="page-desc">Plan leuke dagen voor je peuter (1–4 jaar). Dagplanning, activiteiten en weekoverzicht — alles opgeslagen in je browser.</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('dagplanning')">📅 Dagplanning</button>
+                <button class="tab-btn" onclick="switchTab('bibliotheek')">📚 Activiteiten</button>
+                <button class="tab-btn" onclick="switchTab('weekoverzicht')">🗓️ Weekoverzicht</button>
+            </div>
+
+            <!-- TAB: Dagplanning -->
+            <div id="tab-dagplanning" class="tab-panel active">
+                <div class="dag-header">
+                    <div class="dag-nav">
+                        <button class="dag-nav-btn" onclick="navigeerDag(-1)">←</button>
+                        <span class="dag-datum" id="dagDatumLabel"></span>
+                        <button class="dag-nav-btn" onclick="navigeerDag(1)">→</button>
+                    </div>
+                    <button class="btn btn-outline" onclick="navigeerDag(0)">Vandaag</button>
+                </div>
+                <div class="tijdlijn" id="tijdlijn"></div>
+            </div>
+
+            <!-- TAB: Activiteiten Bibliotheek -->
+            <div id="tab-bibliotheek" class="tab-panel">
+                <div class="bibliotheek-filter">
+                    <button class="filter-btn active" onclick="filterCat('alle')">Alle</button>
+                    <button class="filter-btn" onclick="filterCat('buiten')">🌳 Buiten</button>
+                    <button class="filter-btn" onclick="filterCat('creatief')">🎨 Creatief</button>
+                    <button class="filter-btn" onclick="filterCat('rustig')">📖 Rustig</button>
+                    <button class="filter-btn" onclick="filterCat('sociaal')">👫 Sociaal</button>
+                    <button class="filter-btn" onclick="filterCat('beweging')">🏃 Beweging</button>
+                </div>
+                <div class="activiteiten-grid" id="activiteitenGrid"></div>
+            </div>
+
+            <!-- TAB: Weekoverzicht -->
+            <div id="tab-weekoverzicht" class="tab-panel">
+                <div class="week-header">
+                    <div class="week-nav">
+                        <button class="dag-nav-btn" onclick="navigeerWeek(-1)">←</button>
+                        <span class="week-label" id="weekLabel"></span>
+                        <button class="dag-nav-btn" onclick="navigeerWeek(1)">→</button>
+                    </div>
+                    <button class="btn btn-outline" onclick="navigeerWeek(0)">Deze week</button>
+                </div>
+                <div class="week-grid" id="weekGrid"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <span>🧸 Peuterplannen — voor ouders van peuters</span>
+                <span>Alles lokaal opgeslagen in je browser</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal: Voeg toe aan dag -->
+    <div class="modal-overlay" id="planModal">
+        <div class="modal">
+            <h2 class="modal-title" id="modalActiviteitNaam"></h2>
+            <label class="modal-label" for="modalDagSelect">Kies een dag</label>
+            <select id="modalDagSelect"></select>
+            <label class="modal-label" for="modalBlokSelect">Kies een dagdeel</label>
+            <select id="modalBlokSelect">
+                <option value="ochtend">🌅 Ochtend (08:00–12:00)</option>
+                <option value="middag">☀️ Middag (12:00–17:00)</option>
+                <option value="avond">🌙 Avond (17:00–20:00)</option>
+            </select>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="sluitModal()">Annuleren</button>
+                <button class="btn" onclick="voegToeAanDag()">Toevoegen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Week add modal -->
+    <div class="modal-overlay" id="weekModal">
+        <div class="modal">
+            <h2 class="modal-title">Activiteit toevoegen</h2>
+            <label class="modal-label" for="weekModalInput">Activiteit</label>
+            <input id="weekModalInput" class="add-activiteit-input" style="width:100%;margin-bottom:1.25rem" placeholder="bijv. Fietsen in het park 🚲" />
+            <label class="modal-label">Dagdeel</label>
+            <select id="weekModalBlok" style="width:100%;padding:0.5rem;border:2px solid var(--border-default);background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-display);font-size:0.875rem;margin-bottom:1.25rem;outline:none;">
+                <option value="ochtend">Ochtend</option>
+                <option value="middag">Middag</option>
+                <option value="avond">Avond</option>
+            </select>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="sluitWeekModal()">Annuleren</button>
+                <button class="btn" onclick="slaWeekItemOp()">Toevoegen</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+    // ============================================================
+    // DATA & STATE
+    // ============================================================
+    const BLOKKEN = [
+        { id: 'ochtend', label: 'Ochtend', tijd: '08:00 – 12:00', icon: '<path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/><circle cx="12" cy="12" r="5"/>' },
+        { id: 'middag', label: 'Middag',   tijd: '12:00 – 17:00', icon: '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>' },
+        { id: 'avond',   label: 'Avond',   tijd: '17:00 – 20:00', icon: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>' },
+    ];
+
+    const ACTIVITEITEN_LIB = [
+        { id: 1, emoji: '🌳', naam: 'Wandelen in het park',         cat: 'buiten',   leeftijd: '1+', omschrijving: 'Frisse lucht en natuur ontdekken. Let op vogels, blaadjes en bloemen.' },
+        { id: 2, emoji: '🚲', naam: 'Fietsen / loopfiets',          cat: 'buiten',   leeftijd: '2+', omschrijving: 'Buiten rijden op de loopfiets of driewieler. Goed voor motoriek.' },
+        { id: 3, emoji: '🏖️', naam: 'Zandkuil / zandbak',           cat: 'buiten',   leeftijd: '1+', omschrijving: 'Graven, bouwen en gieten met zand en water.' },
+        { id: 4, emoji: '🦆', naam: 'Eenden voeren',                cat: 'buiten',   leeftijd: '1+', omschrijving: 'Broodkorsten meenemen naar de vijver. Dieren leren kennen.' },
+        { id: 5, emoji: '🎨', naam: 'Vingerverf',                   cat: 'creatief', leeftijd: '1+', omschrijving: 'Trek een oud shirt aan en laat los. Stimuleert creativiteit en zintuigen.' },
+        { id: 6, emoji: '✂️', naam: 'Knippen en plakken',           cat: 'creatief', leeftijd: '2+', omschrijving: 'Tijdschriften uitknippen en een collage maken. Motoriek en creativiteit.' },
+        { id: 7, emoji: '🖍️', naam: 'Tekenen en kleuren',           cat: 'creatief', leeftijd: '1+', omschrijving: 'Dikke waskrijtjes of stiften op groot papier. Vrij expressief.' },
+        { id: 8, emoji: '🧱', naam: 'Bouwen met blokken/duplo',     cat: 'creatief', leeftijd: '1+', omschrijving: 'Torens bouwen en omgooien. Ruimtelijk inzicht en probleemoplossend denken.' },
+        { id: 9, emoji: '🫧', naam: 'Bellenblazen',                  cat: 'buiten',   leeftijd: '1+', omschrijving: 'Buiten bellen blazen en achterna rennen. Altijd een hit!' },
+        { id:10, emoji: '📖', naam: 'Voorlezen',                    cat: 'rustig',   leeftijd: '1+', omschrijving: 'Samen een prentenboek lezen. Taal, fantasie en knuffeltijd.' },
+        { id:11, emoji: '🧩', naam: 'Puzzelen',                     cat: 'rustig',   leeftijd: '2+', omschrijving: 'Grote stukken puzzels voor peuters. Concentratie en probleemoplossend.' },
+        { id:12, emoji: '🎵', naam: 'Muziek en dansen',             cat: 'beweging', leeftijd: '1+', omschrijving: 'Liedjes zingen en dansen op muziek. Ritme en plezier.' },
+        { id:13, emoji: '🧸', naam: 'Fantasiespel / rollenspel',    cat: 'rustig',   leeftijd: '2+', omschrijving: 'Doktertje spelen, winkeltje of koken. Sociale en taalontwikkeling.' },
+        { id:14, emoji: '👫', naam: 'Speelafspraak',                cat: 'sociaal',  leeftijd: '1+', omschrijving: 'Samen spelen met een vriendje. Sociaal leren en delen.' },
+        { id:15, emoji: '🌊', naam: 'Waterspelen',                  cat: 'buiten',   leeftijd: '1+', omschrijving: 'Met een bassin of emmer water spelen in de tuin. Super voor warme dagen.' },
+        { id:16, emoji: '🏃', naam: 'Hindernisbaan',                cat: 'beweging', leeftijd: '2+', omschrijving: 'Kussens, stoelen en dozen als hindernisbaan. Goed voor motoriek.' },
+        { id:17, emoji: '🥣', naam: 'Samen koken / bakken',        cat: 'creatief', leeftijd: '2+', omschrijving: 'Mee roeren, deeg kneden of koekjes stansen. Leren én lekker.' },
+        { id:18, emoji: '🎭', naam: 'Poppentheater',                cat: 'rustig',   leeftijd: '2+', omschrijving: 'Handpoppen laten praten en een verhaal maken. Fantasie en taal.' },
+        { id:19, emoji: '🌱', naam: 'Tuinieren',                   cat: 'buiten',   leeftijd: '2+', omschrijving: 'Zaden planten en water geven. Natuur, geduld en verantwoordelijkheid.' },
+        { id:20, emoji: '🎠', naam: 'Speeltuin',                    cat: 'beweging', leeftijd: '1+', omschrijving: 'Glijbaan, schommel en klimmen. Motoriek en zelfvertrouwen.' },
+        { id:21, emoji: '🎪', naam: 'Gymles thuis',                 cat: 'beweging', leeftijd: '1+', omschrijving: 'Rollen, klauteren, springen op matjes. Goed voor grove motoriek.' },
+        { id:22, emoji: '🎶', naam: 'Muziekinstrumenten',          cat: 'creatief', leeftijd: '1+', omschrijving: 'Pannendeksels, trommels of xylofoon bespelen. Ritme en plezier.' },
+        { id:23, emoji: '🐞', naam: 'Insecten zoeken',             cat: 'buiten',   leeftijd: '2+', omschrijving: 'Met een loepje op zoek naar kevers en vlinders. Nieuwsgierigheid stimuleren.' },
+        { id:24, emoji: '🍪', naam: 'Koekjes decoreren',           cat: 'creatief', leeftijd: '2+', omschrijving: 'Kant-en-klare koekjes versieren met glazuur en strooisel. Fijn motoriek.' },
+    ];
+
+    let huidigeDag   = new Date();
+    huidigeDag.setHours(0,0,0,0);
+    let huidigWeekOffset = 0;
+    let activeCat    = 'alle';
+    let pendingActiviteit = null;
+    let pendingWeekDag    = null;
+
+    const DAGEN_NL = ['Zondag','Maandag','Dinsdag','Woensdag','Donderdag','Vrijdag','Zaterdag'];
+    const DAGEN_KORT = ['Zo','Ma','Di','Wo','Do','Vr','Za'];
+    const MAANDEN_NL = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+
+    // ============================================================
+    // LOCAL STORAGE HELPERS
+    // ============================================================
+    function dagKey(date) {
+        return 'pp_dag_' + date.toISOString().slice(0,10);
+    }
+    function laadDag(date) {
+        const raw = localStorage.getItem(dagKey(date));
+        if (!raw) return { ochtend: [], middag: [], avond: [] };
+        try { return JSON.parse(raw); } catch(e) { return { ochtend: [], middag: [], avond: [] }; }
+    }
+    function slaaDag(date, data) {
+        localStorage.setItem(dagKey(date), JSON.stringify(data));
+    }
+
+    // ============================================================
+    // THEME
+    // ============================================================
+    function applyTheme() {
+        const t = localStorage.getItem('theme-preference') || 'light';
+        document.documentElement.setAttribute('data-theme', t);
+    }
+    function toggleTheme() {
+        const cur = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = cur === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('theme-preference', next);
+        document.documentElement.setAttribute('data-theme', next);
+    }
+    applyTheme();
+
+    // ============================================================
+    // TABS
+    // ============================================================
+    function switchTab(naam) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-' + naam).classList.add('active');
+        event.target.classList.add('active');
+        if (naam === 'weekoverzicht') renderWeek();
+    }
+
+    // ============================================================
+    // DAGPLANNING
+    // ============================================================
+    function navigeerDag(delta) {
+        if (delta === 0) {
+            huidigeDag = new Date();
+            huidigeDag.setHours(0,0,0,0);
+        } else {
+            huidigeDag = new Date(huidigeDag.getTime() + delta * 86400000);
+        }
+        renderDag();
+    }
+
+    function renderDag() {
+        const today = new Date(); today.setHours(0,0,0,0);
+        const isVandaag = huidigeDag.getTime() === today.getTime();
+        const dagNaam = DAGEN_NL[huidigeDag.getDay()];
+        const label = isVandaag
+            ? 'Vandaag — ' + dagNaam + ' ' + huidigeDag.getDate() + ' ' + MAANDEN_NL[huidigeDag.getMonth()]
+            : dagNaam + ' ' + huidigeDag.getDate() + ' ' + MAANDEN_NL[huidigeDag.getMonth()] + ' ' + huidigeDag.getFullYear();
+        document.getElementById('dagDatumLabel').textContent = label;
+
+        const dagData = laadDag(huidigeDag);
+        const container = document.getElementById('tijdlijn');
+        container.innerHTML = '';
+
+        BLOKKEN.forEach(blok => {
+            const items = dagData[blok.id] || [];
+            const el = document.createElement('div');
+            el.className = 'tijdblok';
+            el.innerHTML = `
+                <div class="tijdblok-header">
+                    <div class="tijdblok-icon">
+                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            ${blok.icon}
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="tijdblok-title">${blok.label}</div>
+                        <div class="tijdblok-tijd">${blok.tijd}</div>
+                    </div>
+                </div>
+                <div class="tijdblok-body">
+                    <div class="activiteit-lijst" id="lijst-${blok.id}">
+                        ${items.map((item, idx) => `
+                            <div class="activiteit-item">
+                                <span class="activiteit-item-emoji">${item.emoji || '📌'}</span>
+                                <span class="activiteit-item-naam">${escHtml(item.naam)}</span>
+                                <button class="activiteit-item-remove" onclick="verwijderItem('${blok.id}', ${idx})" title="Verwijderen">✕</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="add-activiteit-row">
+                        <input class="add-activiteit-input" id="input-${blok.id}" placeholder="Activiteit toevoegen…" onkeydown="if(event.key==='Enter') voegDirectToe('${blok.id}')">
+                        <button class="btn btn-outline" onclick="voegDirectToe('${blok.id}')">+ Toevoegen</button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(el);
+        });
+    }
+
+    function voegDirectToe(blokId) {
+        const input = document.getElementById('input-' + blokId);
+        const naam = input.value.trim();
+        if (!naam) return;
+        const dagData = laadDag(huidigeDag);
+        dagData[blokId].push({ naam, emoji: '📌' });
+        slaaDag(huidigeDag, dagData);
+        input.value = '';
+        renderDag();
+        showToast('✅ Toegevoegd aan ' + blokId + '!');
+    }
+
+    function verwijderItem(blokId, idx) {
+        const dagData = laadDag(huidigeDag);
+        dagData[blokId].splice(idx, 1);
+        slaaDag(huidigeDag, dagData);
+        renderDag();
+    }
+
+    // ============================================================
+    // BIBLIOTHEEK
+    // ============================================================
+    function filterCat(cat) {
+        activeCat = cat;
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.toggle('active', b.textContent.toLowerCase().includes(cat) || (cat === 'alle' && b.textContent.includes('Alle')));
+        });
+        renderBibliotheek();
+    }
+
+    function renderBibliotheek() {
+        const gefilterd = activeCat === 'alle'
+            ? ACTIVITEITEN_LIB
+            : ACTIVITEITEN_LIB.filter(a => a.cat === activeCat);
+
+        const grid = document.getElementById('activiteitenGrid');
+        grid.innerHTML = gefilterd.map(a => `
+            <div class="activiteit-kaart" onclick="openPlanModal(${a.id})">
+                <div class="activiteit-kaart-top">
+                    <span class="activiteit-emoji">${a.emoji}</span>
+                    <span class="activiteit-leeftijd">${a.leeftijd}</span>
+                </div>
+                <div class="activiteit-naam">${escHtml(a.naam)}</div>
+                <div class="activiteit-omschrijving">${escHtml(a.omschrijving)}</div>
+                <span class="activiteit-cat">${catLabel(a.cat)}</span>
+                <div class="plan-toevoegen-overlay">+ Inplannen</div>
+            </div>
+        `).join('');
+    }
+
+    function catLabel(cat) {
+        const labels = { buiten: '🌳 Buiten', creatief: '🎨 Creatief', rustig: '📖 Rustig', sociaal: '👫 Sociaal', beweging: '🏃 Beweging' };
+        return labels[cat] || cat;
+    }
+
+    // ============================================================
+    // MODAL: Plan activiteit in
+    // ============================================================
+    function openPlanModal(id) {
+        pendingActiviteit = ACTIVITEITEN_LIB.find(a => a.id === id);
+        if (!pendingActiviteit) return;
+        document.getElementById('modalActiviteitNaam').textContent = pendingActiviteit.emoji + ' ' + pendingActiviteit.naam;
+
+        // Genereer de komende 14 dagen als opties
+        const select = document.getElementById('modalDagSelect');
+        select.innerHTML = '';
+        const today = new Date(); today.setHours(0,0,0,0);
+        for (let i = 0; i < 14; i++) {
+            const d = new Date(today.getTime() + i * 86400000);
+            const opt = document.createElement('option');
+            opt.value = d.toISOString().slice(0,10);
+            opt.textContent = (i === 0 ? 'Vandaag — ' : '') + DAGEN_NL[d.getDay()] + ' ' + d.getDate() + ' ' + MAANDEN_NL[d.getMonth()];
+            select.appendChild(opt);
+        }
+        document.getElementById('planModal').classList.add('open');
+    }
+
+    function sluitModal() {
+        document.getElementById('planModal').classList.remove('open');
+        pendingActiviteit = null;
+    }
+
+    function voegToeAanDag() {
+        if (!pendingActiviteit) return;
+        const dagStr = document.getElementById('modalDagSelect').value;
+        const blokId = document.getElementById('modalBlokSelect').value;
+        const d = new Date(dagStr + 'T00:00:00');
+        const dagData = laadDag(d);
+        dagData[blokId].push({ naam: pendingActiviteit.naam, emoji: pendingActiviteit.emoji });
+        slaaDag(d, dagData);
+        sluitModal();
+        showToast('✅ ' + pendingActiviteit.naam + ' ingepland!');
+        if (huidigeDag.toISOString().slice(0,10) === dagStr) renderDag();
+    }
+
+    // ============================================================
+    // WEEKOVERZICHT
+    // ============================================================
+    function getMaandaagVanWeek(offset) {
+        const now = new Date(); now.setHours(0,0,0,0);
+        const dag = now.getDay() === 0 ? 6 : now.getDay() - 1; // 0=ma
+        const maandag = new Date(now.getTime() - dag * 86400000 + offset * 7 * 86400000);
+        return maandag;
+    }
+
+    function navigeerWeek(delta) {
+        if (delta === 0) huidigWeekOffset = 0;
+        else huidigWeekOffset += delta;
+        renderWeek();
+    }
+
+    function renderWeek() {
+        const maandag = getMaandaagVanWeek(huidigWeekOffset);
+        const zondag  = new Date(maandag.getTime() + 6 * 86400000);
+
+        document.getElementById('weekLabel').textContent =
+            maandag.getDate() + ' ' + MAANDEN_NL[maandag.getMonth()] +
+            ' – ' +
+            zondag.getDate() + ' ' + MAANDEN_NL[zondag.getMonth()] + ' ' + zondag.getFullYear();
+
+        const today = new Date(); today.setHours(0,0,0,0);
+        const grid = document.getElementById('weekGrid');
+        grid.innerHTML = '';
+
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(maandag.getTime() + i * 86400000);
+            const isVandaag = d.getTime() === today.getTime();
+            const dagData = laadDag(d);
+            const alleItems = [
+                ...dagData.ochtend.map(it => ({...it, dagdeel:'ochtend'})),
+                ...dagData.middag.map(it => ({...it, dagdeel:'middag'})),
+                ...dagData.avond.map(it => ({...it, dagdeel:'avond'})),
+            ];
+
+            const col = document.createElement('div');
+            col.className = 'week-dag' + (isVandaag ? ' vandaag' : '');
+            col.innerHTML = `
+                <div class="week-dag-header">
+                    <div class="week-dag-naam">${DAGEN_KORT[d.getDay()]}</div>
+                    <div class="week-dag-num">${d.getDate()}</div>
+                </div>
+                <div class="week-dag-items">
+                    ${alleItems.map((it, idx) => `
+                        <div class="week-item" onclick="verwijderWeekItem('${d.toISOString().slice(0,10)}', '${it.dagdeel}', ${alleItems.filter(x=>x.dagdeel===it.dagdeel).indexOf(it)})">
+                            <span class="week-item-emoji">${it.emoji || '📌'}</span>${escHtml(it.naam)}
+                        </div>
+                    `).join('')}
+                    <button class="week-add-btn" onclick="openWeekModal('${d.toISOString().slice(0,10)}')">+ toevoegen</button>
+                </div>
+            `;
+            grid.appendChild(col);
+        }
+    }
+
+    function openWeekModal(dagStr) {
+        pendingWeekDag = dagStr;
+        document.getElementById('weekModalInput').value = '';
+        document.getElementById('weekModal').classList.add('open');
+    }
+    function sluitWeekModal() {
+        document.getElementById('weekModal').classList.remove('open');
+        pendingWeekDag = null;
+    }
+    function slaWeekItemOp() {
+        const naam = document.getElementById('weekModalInput').value.trim();
+        if (!naam || !pendingWeekDag) return;
+        const blokId = document.getElementById('weekModalBlok').value;
+        const d = new Date(pendingWeekDag + 'T00:00:00');
+        const dagData = laadDag(d);
+        dagData[blokId].push({ naam, emoji: '📌' });
+        slaaDag(d, dagData);
+        sluitWeekModal();
+        renderWeek();
+        showToast('✅ Toegevoegd!');
+    }
+    function verwijderWeekItem(dagStr, blokId, idx) {
+        const d = new Date(dagStr + 'T00:00:00');
+        const dagData = laadDag(d);
+        dagData[blokId].splice(idx, 1);
+        slaaDag(d, dagData);
+        renderWeek();
+    }
+
+    // ============================================================
+    // UTILS
+    // ============================================================
+    function escHtml(str) {
+        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // Close modals on overlay click
+    document.getElementById('planModal').addEventListener('click', function(e) { if (e.target === this) sluitModal(); });
+    document.getElementById('weekModal').addEventListener('click', function(e) { if (e.target === this) sluitWeekModal(); });
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    renderDag();
+    renderBibliotheek();
+    </script>
+</body>
+</html>
