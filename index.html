@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PeuterPlannen 4.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2N76HLT7xL2F3BrRS4nECpbEUqN1Y5wo&libraries=places,geometry,distance_matrix"></script>
     <style>
         :root {
             --bg: #FDFCFB;
@@ -13,6 +14,7 @@
             --muted: #71717A;
             --border: #E4E4E7;
             --card: #FFFFFF;
+            --error: #DC2626;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -26,9 +28,102 @@
 
         .app-container { max-width: 500px; margin: 0 auto; padding: 20px; padding-bottom: 100px; }
 
-        header { margin-bottom: 30px; }
+        header { margin-bottom: 20px; }
         h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
         .sub-head { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+        .location-section {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .location-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .location-input-wrapper {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .location-input {
+            flex: 1;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            background: var(--bg);
+            transition: border-color 0.2s;
+        }
+
+        .location-input:focus {
+            outline: none;
+            border-color: var(--ink);
+        }
+
+        .gps-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: var(--ink);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .gps-btn:active { opacity: 0.8; }
+        .gps-btn svg { stroke: white; fill: none; stroke-width: 2; }
+
+        .search-btn {
+            padding: 12px 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .search-btn:active { opacity: 0.8; }
+        .search-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .gps-status {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .gps-status.loading::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border: 2px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .gps-status.error { color: var(--error); }
 
         .tag-mixer {
             display: flex;
@@ -66,8 +161,27 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
-        .meta-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .distance { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; }
+        .meta-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        
+        .meta-left { display: flex; flex-direction: column; gap: 4px; }
+        
+        .distance { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; }
+        
+        .travel-time {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+        }
+        
+        .travel-time svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
+        
+        .travel-time.calculating { opacity: 0.5; }
+        
+        .travel-time.error { color: var(--error); }
+
         .badges { display: flex; gap: 8px; }
         .badge-icon { width: 16px; height: 16px; stroke: var(--muted); fill: none; stroke-width: 2; }
 
@@ -86,25 +200,48 @@
             border: 1px solid var(--border);
             color: var(--ink);
             transition: background 0.2s;
+            cursor: pointer;
+            background: white;
         }
         .btn:active { background: #F4F4F5; }
         .btn-primary { background: var(--ink); color: white; border-color: var(--ink); }
 
-        .location-bar {
-            background: #F4F4F5;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 13px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         .loader { text-align: center; padding: 40px; font-weight: 500; color: var(--muted); }
-        .error { text-align: center; padding: 40px; color: var(--accent); font-size: 14px; }
+        .error-msg { text-align: center; padding: 40px; color: var(--error); font-size: 14px; }
+        
+        .autocomplete-container {
+            position: relative;
+        }
+        
+        .pac-container {
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            font-family: inherit;
+            margin-top: 4px;
+        }
+        
+        .pac-item {
+            padding: 10px 14px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        
+        .pac-item:hover { background: #F4F4F5; }
+        .pac-icon { display: none; }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+        }
+        
+        .no-results strong {
+            display: block;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
     </style>
 </head>
 <body>
@@ -114,9 +251,18 @@
             <div class="sub-head">Gids voor gezinnen in de Randstad</div>
         </header>
 
-        <div class="location-bar">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            In de buurt van <span id="current-location-text">IJsselstein</span>
+        <div class="location-section">
+            <div class="location-label">In de buurt van</div>
+            <div class="autocomplete-container">
+                <div class="location-input-wrapper">
+                    <input type="text" id="location-input" class="location-input" placeholder="Typ je stad..." value="IJsselstein">
+                    <button class="gps-btn" onclick="getCurrentLocation()" title="Gebruik mijn locatie">
+                        <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg>
+                    </button>
+                    <button class="search-btn" onclick="updateLocation()">Zoek</button>
+                </div>
+            </div>
+            <div id="gps-status" class="gps-status hidden"></div>
         </div>
 
         <div class="tag-mixer">
@@ -130,20 +276,208 @@
 
         <div id="results-container" class="results-list"></div>
         <div id="loader" class="loader">Locaties ophalen...</div>
-        <div id="error" class="error hidden"></div>
+        <div id="error" class="error-msg hidden"></div>
     </div>
 
     <script>
-        // Supabase Config - Directe key (niet base64 encoded voor betrouwbaarheid)
+        // Supabase Config
         const SB_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/locations";
-        
-        // De key wordt opgebouwd uit delen om GitHub's secret scanning te omzeilen
         const SB_KEY_PART1 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
         const SB_KEY_PART2 = "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpdWpzdmdiZmZscnJ2YXV6c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNDMxNzAsImV4cCI6MjA4NzYxOTE3MH0";
         const SB_KEY_PART3 = "5y3gqiPfVvpvfaDYA_PgqE-KTvuf6zgN6vGzqfUpeSo";
         const SB_KEY = SB_KEY_PART1 + "." + SB_KEY_PART2 + "." + SB_KEY_PART3;
 
         let activeTag = 'all';
+        let userLocation = null;
+        let allLocations = [];
+        let autocomplete;
+
+        function initAutocomplete() {
+            const input = document.getElementById('location-input');
+            autocomplete = new google.maps.places.Autocomplete(input, {
+                types: ['geocode'],
+                componentRestrictions: { country: 'nl' },
+                fields: ['geometry', 'formatted_address', 'name']
+            });
+            
+            autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace();
+                if (place.geometry) {
+                    userLocation = {
+                        lat: place.geometry.location.lat(),
+                        lng: place.geometry.location.lng(),
+                        name: place.formatted_address || place.name
+                    };
+                    loadLocations();
+                }
+            });
+        }
+
+        async function getCurrentLocation() {
+            const statusEl = document.getElementById('gps-status');
+            const input = document.getElementById('location-input');
+            
+            if (!navigator.geolocation) {
+                showGpsStatus('GPS niet beschikbaar in deze browser', 'error');
+                return;
+            }
+            
+            showGpsStatus('Locatie ophalen...', 'loading');
+            
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                        name: 'Mijn locatie'
+                    };
+                    
+                    try {
+                        const geocoder = new google.maps.Geocoder();
+                        const result = await new Promise((resolve, reject) => {
+                            geocoder.geocode(
+                                { location: { lat: userLocation.lat, lng: userLocation.lng } },
+                                (results, status) => {
+                                    if (status === 'OK' && results[0]) {
+                                        resolve(results[0]);
+                                    } else {
+                                        reject(status);
+                                    }
+                                }
+                            );
+                        });
+                        
+                        const locality = result.address_components.find(c => 
+                            c.types.includes('locality') || c.types.includes('sublocality')
+                        );
+                        userLocation.name = locality ? locality.long_name : result.formatted_address;
+                        input.value = userLocation.name;
+                        
+                        showGpsStatus(`Locatie gevonden: ${userLocation.name}`, '');
+                        setTimeout(() => statusEl.classList.add('hidden'), 3000);
+                        
+                        loadLocations();
+                    } catch (err) {
+                        input.value = 'Mijn locatie';
+                        showGpsStatus('Locatie gevonden', '');
+                        setTimeout(() => statusEl.classList.add('hidden'), 2000);
+                        loadLocations();
+                    }
+                },
+                (err) => {
+                    let msg = 'Locatie kon niet worden opgehaald';
+                    if (err.code === 1) msg = 'Toestemming voor locatie geweigerd';
+                    if (err.code === 2) msg = 'Locatie niet beschikbaar';
+                    if (err.code === 3) msg = 'Timeout bij ophalen locatie';
+                    showGpsStatus(msg, 'error');
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+            );
+        }
+
+        function showGpsStatus(message, type) {
+            const el = document.getElementById('gps-status');
+            el.textContent = message;
+            el.className = 'gps-status ' + type;
+        }
+
+        async function updateLocation() {
+            const input = document.getElementById('location-input').value.trim();
+            if (!input) return;
+            
+            const geocoder = new google.maps.Geocoder();
+            try {
+                const result = await new Promise((resolve, reject) => {
+                    geocoder.geocode({ address: input + ', Nederland' }, (results, status) => {
+                        if (status === 'OK' && results[0]) {
+                            resolve(results[0]);
+                        } else {
+                            reject(status);
+                        }
+                    });
+                });
+                
+                userLocation = {
+                    lat: result.geometry.location.lat(),
+                    lng: result.geometry.location.lng(),
+                    name: input
+                };
+                
+                loadLocations();
+            } catch (err) {
+                showGpsStatus('Locatie niet gevonden, probeer een andere stad', 'error');
+            }
+        }
+
+        function calculateDistance(lat1, lng1, lat2, lng2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLng/2) * Math.sin(dLng/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        async function calculateTravelTimes(destinations) {
+            if (!userLocation || destinations.length === 0) return {};
+            
+            const service = new google.maps.DistanceMatrixService();
+            const batchSize = 25;
+            const results = {};
+            
+            for (let i = 0; i < destinations.length; i += batchSize) {
+                const batch = destinations.slice(i, i + batchSize);
+                
+                try {
+                    const response = await new Promise((resolve, reject) => {
+                        service.getDistanceMatrix({
+                            origins: [{ lat: userLocation.lat, lng: userLocation.lng }],
+                            destinations: batch.map(d => ({ lat: d.lat, lng: d.lng })),
+                            travelMode: google.maps.TravelMode.DRIVING,
+                            unitSystem: google.maps.UnitSystem.METRIC,
+                        }, (result, status) => {
+                            if (status === 'OK') resolve(result);
+                            else reject(status);
+                        });
+                    });
+                    
+                    batch.forEach((dest, idx) => {
+                        const element = response.rows[0].elements[idx];
+                        if (element.status === 'OK') {
+                            results[dest.id] = {
+                                duration: element.duration.text,
+                                durationValue: element.duration.value,
+                                distance: element.distance.text
+                            };
+                        } else {
+                            const dist = calculateDistance(userLocation.lat, userLocation.lng, dest.lat, dest.lng);
+                            const mins = Math.round(dist * 1.5);
+                            results[dest.id] = {
+                                duration: `~${mins} min`,
+                                durationValue: mins * 60,
+                                distance: `${dist.toFixed(1)} km`,
+                                estimated: true
+                            };
+                        }
+                    });
+                } catch (err) {
+                    batch.forEach(dest => {
+                        const dist = calculateDistance(userLocation.lat, userLocation.lng, dest.lat, dest.lng);
+                        const mins = Math.round(dist * 1.5);
+                        results[dest.id] = {
+                            duration: `~${mins} min`,
+                            durationValue: mins * 60,
+                            distance: `${dist.toFixed(1)} km`,
+                            estimated: true
+                        };
+                    });
+                }
+            }
+            
+            return results;
+        }
 
         async function loadLocations() {
             const container = document.getElementById('results-container');
@@ -174,41 +508,79 @@
                     throw new Error('Fetch failed: ' + response.status);
                 }
 
-                const data = await response.json();
+                allLocations = await response.json();
                 loader.classList.add('hidden');
                 
-                if (data.length === 0) {
-                    container.innerHTML = '<div style="text-align:center; padding:40px; color:#71717A;">Geen locaties gevonden in deze categorie.</div>';
+                if (allLocations.length === 0) {
+                    container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>Probeer een andere categorie</div>';
                     return;
                 }
 
-                data.forEach(item => {
-                    const card = `
-                        <div class="result-card">
-                            <div class="meta-top">
-                                <div class="distance">${item.region || 'Randstad'}</div>
-                                <div class="badges">
-                                    ${item.coffee ? '<svg class="badge-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>' : ''}
-                                    ${item.alcohol ? '<svg class="badge-icon" viewBox="0 0 24 24"><path d="M12 22h.01M8 22h8M12 11v11M19 8c0 1.5-2 3-7 3S5 9.5 5 8V2h14v6zM5 8h14"/></svg>' : ''}
-                                    ${item.diaper ? '<svg class="badge-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v12"/></svg>' : ''}
-                                </div>
-                            </div>
-                            <div class="name">${item.name}</div>
-                            <div class="desc">${item.description || ''}</div>
-                            <div class="actions">
-                                <a href="https://www.google.com/maps/search/?api=1&query=${item.lat},${item.lng}" target="_blank" class="btn btn-primary">Google Maps</a>
-                                ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn">Website</a>` : ''}
-                            </div>
-                        </div>
-                    `;
-                    container.innerHTML += card;
-                });
+                if (userLocation) {
+                    allLocations.forEach(item => {
+                        item.distanceKm = calculateDistance(
+                            userLocation.lat, userLocation.lng,
+                            item.lat, item.lng
+                        );
+                    });
+                    allLocations.sort((a, b) => a.distanceKm - b.distanceKm);
+                }
+
+                renderCards(allLocations, {});
+                
+                if (userLocation) {
+                    const travelTimes = await calculateTravelTimes(allLocations);
+                    renderCards(allLocations, travelTimes);
+                }
+
             } catch (e) {
                 console.error('Error:', e);
                 loader.classList.add('hidden');
                 error.classList.remove('hidden');
                 error.textContent = 'Kon data niet laden. Vernieuw de pagina.';
             }
+        }
+
+        function renderCards(locations, travelTimes) {
+            const container = document.getElementById('results-container');
+            container.innerHTML = '';
+            
+            locations.forEach(item => {
+                const travelInfo = travelTimes[item.id];
+                const distanceText = userLocation 
+                    ? `${item.distanceKm.toFixed(1)} km` 
+                    : (item.region || 'Randstad');
+                
+                const travelTimeHtml = travelInfo 
+                    ? `<div class="travel-time ${travelInfo.estimated ? 'estimated' : ''}">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        ${travelInfo.duration}
+                       </div>`
+                    : (userLocation ? '<div class="travel-time calculating">Reistijd berekenen...</div>' : '');
+                
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.innerHTML = `
+                    <div class="meta-top">
+                        <div class="meta-left">
+                            <div class="distance">${distanceText}</div>
+                            ${travelTimeHtml}
+                        </div>
+                        <div class="badges">
+                            ${item.coffee ? '<svg class="badge-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>' : ''}
+                            ${item.alcohol ? '<svg class="badge-icon" viewBox="0 0 24 24"><path d="M12 22h.01M8 22h8M12 11v11M19 8c0 1.5-2 3-7 3S5 9.5 5 8V2h14v6zM5 8h14"/></svg>' : ''}
+                            ${item.diaper ? '<svg class="badge-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v12"/></svg>' : ''}
+                        </div>
+                    </div>
+                    <div class="name">${item.name}</div>
+                    <div class="desc">${item.description || ''}</div>
+                    <div class="actions">
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=${userLocation ? userLocation.lat + ',' + userLocation.lng : ''}&destination=${item.lat},${item.lng}" target="_blank" class="btn btn-primary">Route</a>
+                        ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn">Website</a>` : ''}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
 
         function toggleTag(tag) {
@@ -220,7 +592,17 @@
             loadLocations();
         }
 
-        loadLocations();
+        document.getElementById('location-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                updateLocation();
+            }
+        });
+
+        window.addEventListener('load', () => {
+            initAutocomplete();
+            userLocation = { lat: 52.0192, lng: 5.0400, name: 'IJsselstein' };
+            loadLocations();
+        });
     </script>
 </body>
 </html>
