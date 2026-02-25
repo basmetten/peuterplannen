@@ -284,9 +284,12 @@
                 renderResults(filtered);
             } catch (err) {
                 console.error("Distance Matrix Error:", err);
-                // Fallback: Toon alles zonder reistijd
-                filtered = filtered.map(item => ({ ...item, durationText: "reistijd onbekend", durationValue: 9999 }));
-                renderResults(filtered);
+                document.getElementById('loading').innerHTML = `<span style="color:var(--danger)">Fout bij berekenen reistijd: ${err}.<br><small>Check of Geocoding API & Distance Matrix API aanstaan in Google Console.</small></span>`;
+                setTimeout(() => {
+                    // Fallback: Toon alles zonder reistijd
+                    filtered = filtered.map(item => ({ ...item, durationText: "reistijd onbekend", durationValue: 9999 }));
+                    renderResults(filtered);
+                }, 2000);
             }
         }
 
