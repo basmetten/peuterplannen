@@ -3,243 +3,379 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PeuterPlannen — Weekend Gids</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>PeuterPlannen — Editorial Lifestyle Gids</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #F9F7F4;
-            --text: #1C1917;
-            --text-muted: #78716C;
-            --accent: #2D6A4F;
-            --accent-light: #D8F3DC;
-            --border: #E7E5E4;
+            --bg: #FDFCFB;
+            --text: #1A1A1A;
+            --accent: #3E4E3B;
+            --border: #EEEEEE;
+            --muted: #717171;
             --white: #FFFFFF;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg); 
-            color: var(--text);
-            line-height: 1.5;
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
             -webkit-font-smoothing: antialiased;
         }
 
-        .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
-
-        header { margin-bottom: 48px; text-align: center; }
-        h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
-        .subtitle { color: var(--text-muted); font-size: 15px; }
-
-        .wizard-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 32px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        body { 
+            font-family: 'Instrument Sans', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text);
+            line-height: 1.6;
         }
 
-        .form-group { margin-bottom: 24px; }
-        label { display: block; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 8px; }
-        
-        input[type="text"], select {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 16px;
-            font-family: inherit;
-            background: var(--bg);
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', serif;
         }
 
-        input:focus { outline: none; border-color: var(--accent); }
-
-        .btn-primary {
-            width: 100%;
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.2s;
+        .container { 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            padding: 40px 24px; 
         }
 
-        .btn-primary:hover { opacity: 0.9; }
-
-        .results { margin-top: 48px; display: none; }
-        .result-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 16px;
-            transition: transform 0.2s;
-        }
-        .result-card:hover { transform: translateY(-2px); }
-
-        .result-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-        .result-title { font-size: 18px; font-weight: 700; }
-        .result-meta { font-size: 13px; color: var(--accent); font-weight: 600; }
-        .result-desc { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
-
-        .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; background: var(--bg); margin-right: 8px; }
-        .tag-alcohol { background: #FEE2E2; color: #991B1B; }
-
-        .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .btn-outline {
+        /* Hero Section */
+        header { 
+            margin-bottom: 64px; 
             text-align: center;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        h1 { 
+            font-size: clamp(2.5rem, 8vw, 4rem); 
+            font-weight: 500; 
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .subtitle { 
+            color: var(--muted); 
+            font-size: 1.1rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* Wizard / Filter Section */
+        .wizard-container {
+            margin-bottom: 64px;
+        }
+
+        .input-group {
+            max-width: 500px;
+            margin: 0 auto 32px;
+            position: relative;
+        }
+
+        .minimal-input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid var(--border);
+            background: transparent;
+            padding: 12px 0;
+            font-size: 1.25rem;
+            font-family: 'Instrument Sans', sans-serif;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .minimal-input:focus {
+            outline: none;
+            border-bottom-color: var(--accent);
+        }
+
+        .pill-filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .pill {
+            padding: 8px 20px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .pill:hover {
+            border-color: var(--muted);
+        }
+
+        .pill.active {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+        }
+
+        .search-trigger {
+            display: block;
+            margin: 0 auto;
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            padding: 16px 48px;
+            border-radius: 4px;
+            font-family: 'Instrument Sans', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .search-trigger:hover {
+            opacity: 0.9;
+        }
+
+        /* Bento Grid */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            display: none; /* Hidden by default */
+        }
+
+        .bento-item {
+            grid-column: span 12;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .bento-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .bento-image {
+            width: 100%;
+            height: 240px;
+            background-color: #F3F3F3;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 0.3s;
+        }
+
+        .bento-item:hover .bento-image {
+            opacity: 0.9;
+        }
+
+        .bento-content {
+            padding: 24px;
+        }
+
+        .bento-title {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .bento-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 16px;
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .bento-desc {
+            font-size: 0.95rem;
+            color: var(--muted);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Desktop Bento Variations */
+        @media (min-width: 768px) {
+            .bento-item.large { grid-column: span 8; }
+            .bento-item.medium { grid-column: span 4; }
+            .bento-item.small { grid-column: span 4; }
+            
+            .large .bento-image { height: 350px; }
+            .medium .bento-image { height: 200px; }
+        }
+
+        /* Icons */
+        .icon {
+            width: 14px;
+            height: 14px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            display: none;
+            font-style: italic;
+            color: var(--muted);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 100px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        /* Transitions */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Modal / Detail (Simple for now) */
+        .detail-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-link {
             text-decoration: none;
             color: var(--text);
-            font-size: 13px;
+            font-size: 0.8rem;
             font-weight: 600;
-            padding: 10px;
+            padding: 8px 16px;
             border: 1px solid var(--border);
-            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
         }
-        .btn-outline:hover { background: var(--bg); }
 
-        .loading { text-align: center; color: var(--text-muted); font-size: 14px; padding: 40px; display: none; }
+        .btn-link:hover {
+            border-color: var(--text);
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>PeuterPlannen</h1>
-            <p class="subtitle">Weekend-gids voor ouders in de Randstad</p>
+        <header class="fade-in">
+            <h1 class="serif">Ontdek de mooiste weekenden.</h1>
+            <p class="subtitle">Een gecureerde gids voor het moderne gezin.</p>
         </header>
 
-        <div id="wizard" class="wizard-card">
-            <div class="form-group">
-                <label>📍 Waar vertrek je vandaan?</label>
-                <input type="text" id="startLocation" placeholder="Stad of postcode..." value="Utrecht">
-                <button onclick="useCurrentLocation()" style="background:none; border:none; color:var(--accent); font-size:11px; font-weight:600; cursor:pointer; margin-top:4px;">Gebruik mijn GPS locatie</button>
+        <section id="wizard" class="wizard-container fade-in">
+            <div class="input-group">
+                <input type="text" id="startLocation" class="minimal-input" placeholder="Vanuit welke stad vertrek je?" value="Utrecht">
             </div>
 
-            <div class="form-group">
-                <label>🌳 Binnen of buiten?</label>
-                <select id="environment">
-                    <option value="both">Maakt niet uit</option>
-                    <option value="outdoor">Lekker naar buiten</option>
-                    <option value="indoor">Binnen blijven</option>
-                </select>
+            <div class="pill-filters" id="envFilters">
+                <div class="pill active" data-value="both">Overal</div>
+                <div class="pill" data-value="outdoor">Buitenlucht</div>
+                <div class="pill" data-value="indoor">Binnen</div>
             </div>
 
-            <div class="form-group">
-                <label>🍕 Wat gaan we doen?</label>
-                <select id="type">
-                    <option value="all">Alles tonen</option>
-                    <option value="nature">Natuur & Wandelen</option>
-                    <option value="horeca">Eten & Drinken</option>
-                    <option value="pancake">Pannenkoeken</option>
-                    <option value="museum">Museum</option>
-                    <option value="play">Spelen & Attracties</option>
-                </select>
+            <div class="pill-filters" id="typeFilters">
+                <div class="pill active" data-value="all">Alles</div>
+                <div class="pill" data-value="nature">Natuur</div>
+                <div class="pill" data-value="horeca">Gastronomie</div>
+                <div class="pill" data-value="pancake">Pannenkoeken</div>
+                <div class="pill" data-value="museum">Cultuur</div>
+                <div class="pill" data-value="play">Spelen</div>
             </div>
 
-            <div class="form-group">
-                <label>⏱ Max reistijd (auto)</label>
-                <select id="maxTime">
-                    <option value="999">Geen limiet</option>
-                    <option value="15">Max 15 min</option>
-                    <option value="30">Max 30 min</option>
-                    <option value="45">Max 45 min</option>
-                    <option value="60">Max 60 min</option>
-                </select>
+            <div class="pill-filters" id="alcoholFilter">
+                <div class="pill" id="alcoholPill" data-value="false">Met een glas wijn</div>
             </div>
 
-            <div class="form-group">
-                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                    <input type="checkbox" id="alcoholOnly"> 🍷 Alleen plekken met bier/wijn (voor papa/mama)
-                </label>
-            </div>
+            <button class="search-trigger" onclick="search()">Zoeken</button>
+        </section>
 
-            <button class="btn-primary" onclick="search()">Vind avonturen</button>
+        <div id="loading" class="loading">Moment, we berekenen de mooiste routes...</div>
+
+        <div id="resultsGrid" class="bento-grid">
+            <!-- Cards will be injected here -->
         </div>
 
-        <div id="loading" class="loading">Berekenen van reistijden... 🚗💨</div>
-
-        <div id="resultsList" class="results">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                <h2 style="font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">Resultaten in de buurt</h2>
-                <button onclick="location.reload()" style="background: none; border: none; font-size: 13px; color: var(--accent); cursor: pointer; font-weight: 600;">Aanpassen</button>
-            </div>
-            <div id="cardsContainer"></div>
-        </div>
+        <footer>
+            <p class="serif">&copy; 2026 PeuterPlannen — Editorial Lifestyle Gids</p>
+        </footer>
     </div>
+
+    <!-- Icons Library (SVG helper) -->
+    <script>
+        const icons = {
+            map: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>',
+            clock: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>',
+            wine: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h3m-3 0a3 3 0 1 0-6 0c0 1.657 1.343 3 3 3m3-3V3m0 3a3 3 0 1 1-6 0M10.5 21h3m-3 0a3 3 0 1 0-6 0c0 1.657 1.343 3 3 3m3-3v-3m0 3a3 3 0 1 1-6 0m6-6v3m0 0a3 3 0 1 0-6 0c0 1.657 1.343 3 3 3m3-3a3 3 0 1 1-6 0m6 3v3m3-15h-9m9 0a3 3 0 1 1-6 0m6 0v3m0 0a3 3 0 1 0-6 0c0 1.657 1.343 3 3 3m3-3a3 3 0 1 1-6 0" /></svg>',
+            external: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>'
+        };
+    </script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAw0UlkShhJ_FQUG1ibkMidUhvEFC23jb4&libraries=places"></script>
     <script>
         const database = [
-            { name: "Hans & Grietje", type: "pancake", desc: "Het meest magische pannenkoekenhuis van Nederland met enorme speeltuin en sprookjespark.", alcohol: true, indoor: true, website: "https://www.hansengrietje.zeewolde.nl/", coords: { lat: 52.3429, lng: 5.4842 }, parking: "https://maps.google.com/?q=Hans+en+Grietje+Parkeren" },
-            { name: "Gagelbos Utrecht", type: "nature", desc: "Speelbos met vlotten, modder en houten speeltoestellen. Puur natuur.", alcohol: false, indoor: false, website: "-", coords: { lat: 52.1333, lng: 5.1167 }, parking: "https://maps.google.com/?q=Gagelbos+Parkeren" },
-            { name: "Nijntje Museum", type: "museum", desc: "De droom van elke 2-jarige. Volledig interactief en kid-proof.", alcohol: false, indoor: true, website: "https://nijntjemuseum.nl/", coords: { lat: 52.0833, lng: 5.1250 }, parking: "https://maps.google.com/?q=Parkeren+Nijntje+Museum" },
-            { name: "Meneer Paprika", type: "horeca", desc: "Speelgoedwinkel en café in één in hartje Haarlem. Met enorme Thomas de Trein tafel.", alcohol: true, indoor: true, website: "https://meneerpaprika.nl/", coords: { lat: 52.3833, lng: 4.6333 }, parking: "https://maps.google.com/?q=Parkeren+Haarlem+Centrum" },
-            { name: "Diergaarde Blijdorp", type: "play", desc: "Prachtige dierentuin met veel overdekte speelplekken (Oceanium).", alcohol: true, indoor: true, website: "https://www.diergaardeblijdorp.nl/", coords: { lat: 51.9268, lng: 4.4539 }, parking: "https://maps.google.com/?q=Blijdorp+Parkeren" },
-            { name: "'t Hooge Nest", type: "nature", desc: "Prachtige plek in de bossen bij Blaricum met goede horeca en speeltoestellen.", alcohol: true, indoor: false, website: "https://thoogenest.nl/", coords: { lat: 52.2833, lng: 5.2333 }, parking: "https://maps.google.com/?q=Parkeren+Hooge+Nest" },
-            { name: "Geertje's Hoeve", type: "nature", desc: "Beleefboerderij bij Utrecht. Geitjes voeren, ponyrijden en lekker eten.", alcohol: true, indoor: true, website: "https://geertjeshoeve.nl/", coords: { lat: 52.1265, lng: 4.9818 }, parking: "https://maps.google.com/?q=Thematerweg+5+Haarzuilens" },
-            { name: "Boerderij de Boerinn", type: "play", desc: "Speelboerderij met vlotten, skelters en veel dieren in Kamerik.", alcohol: true, indoor: true, website: "https://www.deboerinn.nl/", coords: { lat: 52.1055, lng: 4.8855 }, parking: "https://maps.google.com/?q=Mijzijde+6+Kamerik" },
-            { name: "Het Woeste Westen", type: "nature", desc: "Natuurspeeltuin in Amsterdam West. Klimmen over water en hutten bouwen.", alcohol: false, indoor: false, website: "https://www.woestewesten.nl/", coords: { lat: 52.3880, lng: 4.8569 }, parking: "https://maps.google.com/?q=Transformatorweg+10+Amsterdam" },
-            { name: "Villa Augustus", type: "horeca", desc: "Restaurant en markt in een oude watertoren met prachtige moestuin in Dordrecht.", alcohol: true, indoor: true, website: "https://www.villa-augustus.nl/", coords: { lat: 51.8150, lng: 4.6850 }, parking: "https://maps.google.com/?q=Villa+Augustus+Parkeren" },
-            { name: "Restaurant Leuk Bussum", type: "horeca", desc: "Gezellig restaurant met enorme speelkelder (100m2) en oppas.", alcohol: true, indoor: true, website: "https://restaurantleuk.nl/", coords: { lat: 52.2687, lng: 5.1610 }, parking: "https://maps.google.com/?q=Parkeergarage+Nieuwe+Brink+Bussum" },
-            { name: "De Tuin van de Smid", type: "horeca", desc: "Duurzaam theehuis in Park Cronesteyn (Leiden). Veel ruimte in de natuur.", alcohol: true, indoor: true, website: "https://www.detuinvandesmid.nl/", coords: { lat: 52.1413, lng: 4.4976 }, parking: "https://maps.google.com/?q=Polderpad+8+Leiden" },
-            { name: "Theehuis Rhijnauwen", type: "pancake", desc: "Iconisch pannenkoekenhuis aan de Kromme Rijn met grote houten speeltuin.", alcohol: true, indoor: true, website: "https://theehuisrhijnauwen.nl/", coords: { lat: 52.0726, lng: 5.1610 }, parking: "https://maps.google.com/?q=Rhijnauwenselaan+16+Bunnik" },
-            { name: "Het Jagershuis", type: "pancake", desc: "Pannenkoeken eten in de bossen van Lage Vuursche met grote speeltuin.", alcohol: true, indoor: true, website: "https://jagershuislagevuursche.nl/", coords: { lat: 52.1707, lng: 5.2014 }, parking: "https://maps.google.com/?q=Dorpstraat+11+Lage+Vuursche" },
-            { name: "Plaswijckpark", type: "play", desc: "Enorm speelpark in Rotterdam met binnen- en buitenspeeltuinen en een kleine zoo.", alcohol: true, indoor: true, website: "https://www.plaswijckpark.nl/", coords: { lat: 51.9540, lng: 4.4750 }, parking: "https://maps.google.com/?q=Ringdijk+20+Rotterdam" },
-            { name: "Speelpark Oud Valkeveen", type: "play", desc: "Kindvriendelijk attractiepark in Naarden. Perfect voor peuters.", alcohol: true, indoor: true, website: "https://www.oudvalkeveen.nl/", coords: { lat: 52.3047, lng: 5.1923 }, parking: "https://maps.google.com/?q=Oud+Huizerweg+2+Naarden" },
-            { name: "Villa Zebra", type: "museum", desc: "Interactief kinderkunstmuseum in Rotterdam voor kids vanaf 2 jaar.", alcohol: false, indoor: true, website: "https://www.villazebra.nl/", coords: { lat: 51.9114, lng: 4.4970 }, parking: "https://maps.google.com/?q=Stieltjesstraat+21+Rotterdam" },
-            { name: "Kinderboekenmuseum", type: "museum", desc: "De wereld van Kikker en Nijntje komt tot leven in Den Haag.", alcohol: false, indoor: true, website: "https://www.kinderboekenmuseum.nl/", coords: { lat: 52.0805, lng: 4.3242 }, parking: "https://maps.google.com/?q=Q-Park+CS+New+Babylon" },
-            { name: "Spazio Rotterdam", type: "horeca", desc: "Italiaans restaurant bij Rotterdam Airport met speelhoek bij de landingsbaan.", alcohol: true, indoor: true, website: "https://spazio-rotterdam.nl/", coords: { lat: 51.9567, lng: 4.4172 }, parking: "https://maps.google.com/?q=Malpensabaan+3+Rotterdam" },
-            { name: "Keck Gouda", type: "horeca", desc: "Hip kindercafé in Gouda met houten 'Play Ground' om te klimmen.", alcohol: true, indoor: true, website: "https://keckgouda.nl/", coords: { lat: 52.0167, lng: 4.7167 }, parking: "https://maps.google.com/?q=Keck+Gouda+Parkeren" },
-            { name: "Kraantje Lek", type: "horeca", desc: "Beroemde uitspanning in de duinen bij Overveen met grote speeltuin.", alcohol: true, indoor: true, website: "https://kraantjelek.nl/", coords: { lat: 52.3833, lng: 4.5833 }, parking: "https://maps.google.com/?q=Duinlustweg+22+Overveen" },
-            { name: "PAND Pannenkoek", type: "pancake", desc: "Creatief ingericht pannenkoekenhuis met een echte caravan binnen.", alcohol: true, indoor: true, website: "https://pandpannenkoek.nl/", coords: { lat: 52.0238, lng: 5.1765 }, parking: "https://maps.google.com/?q=Provincialeweg+1+Schalkwijk" },
-            { name: "Smullen en Spelen", type: "pancake", desc: "Natuurspeeltuin en pannenkoekenhuis in Almere.", alcohol: true, indoor: true, website: "https://www.smullen.nl/", coords: { lat: 52.3500, lng: 5.2500 }, parking: "https://maps.google.com/?q=Enrico+Fermistraat+30+Almere" },
-            { name: "Geitenboerderij Ridammerhoeve", type: "nature", desc: "Spelen en dieren kijken in het Amsterdamse Bos.", alcohol: false, indoor: true, website: "https://www.geitenboerderij.nl/", coords: { lat: 52.3130, lng: 4.8244 }, parking: "https://maps.google.com/?q=Nieuwe+Meerlaan+3+Amstelveen" },
-            { name: "De Mekkerstee", type: "nature", desc: "Grote geitenboerderij in Ouddorp met kaasmakerij en speeltuin.", alcohol: false, indoor: true, website: "https://www.demekkerstee.nl/", coords: { lat: 51.8167, lng: 3.9333 }, parking: "https://maps.google.com/?q=Hofdijksweg+34+Ouddorp" },
-            { name: "Museum Speelklok", type: "museum", desc: "Vrolijke zelfspelende muziekinstrumenten in Utrecht.", alcohol: true, indoor: true, website: "https://www.museumspeelklok.nl/", coords: { lat: 52.0908, lng: 5.1195 }, parking: "https://maps.google.com/?q=Springweg+Parkeren+Utrecht" },
-            { name: "KidZcity", type: "play", desc: "Grootste overdekte speelparadijs in Utrecht.", alcohol: true, indoor: true, website: "https://www.kidzcity.nl/", coords: { lat: 52.1000, lng: 5.0833 }, parking: "https://maps.google.com/?q=Vlampijpstraat+Utrecht" },
-            { name: "Buurten in de fabriek", type: "horeca", desc: "Hip restaurant in een oude fabriek in Utrecht met speelhoek.", alcohol: true, indoor: true, website: "https://www.kombuurten.nl/", coords: { lat: 52.0833, lng: 5.0833 }, parking: "https://maps.google.com/?q=Buurten+in+de+fabriek+Parkeren" },
-            { name: "Grand Café Turf", type: "horeca", desc: "Gezellige plek in Hoorn met een zandbak binnen.", alcohol: true, indoor: true, website: "https://grandcafeturf.nl/", coords: { lat: 52.6426, lng: 5.0586 }, parking: "https://maps.google.com/?q=Gedempte+Turfhaven+Hoorn" },
-            { name: "De Vreemde Vogel", type: "horeca", desc: "Buitenhotel en restaurant in Vlaardingen met natuursafari.", alcohol: true, indoor: true, website: "https://www.devreemdevogel.nl/", coords: { lat: 51.9167, lng: 4.3333 }, parking: "https://maps.google.com/?q=Vossiusstraat+6+Vlaardingen" },
-            { name: "Boomhuttenclub", type: "horeca", desc: "Houten boomhutten binnen in Den Haag.", alcohol: true, indoor: true, website: "https://boomhuttenclub.nl/", coords: { lat: 52.0833, lng: 4.3167 }, parking: "https://maps.google.com/?q=Boomhuttenclub+Parkeren" },
-            { name: "KinderSpeelCafe Zandbak", type: "horeca", desc: "Kleinschalig speelcafé in Noordwijk voor de allerkleinsten.", alcohol: true, indoor: true, website: "https://speelcafezandbak.nl/", coords: { lat: 52.2333, lng: 4.4333 }, parking: "https://maps.google.com/?q=Noordwijk+Parkeren" },
-            { name: "Juffrouw van Zanten", type: "horeca", desc: "Gezellige ontbijt- en lunchplek in Rotterdam.", alcohol: true, indoor: true, website: "https://juffrouwvanzanten.com/", coords: { lat: 51.9333, lng: 4.4833 }, parking: "https://maps.google.com/?q=Rotterdam+Lusthofstraat+Parkeren" },
-            { name: "Pannenkoekenparadijs Haarlem", type: "pancake", desc: "Groot speelpark met midgetgolf en pannenkoeken.", alcohol: true, indoor: true, website: "https://pannenkoekenparadijs.nl/", coords: { lat: 52.3814, lng: 4.6714 }, parking: "https://maps.google.com/?q=Reinaldapad+10+Haarlem" },
-            { name: "Restaurant Duinvermaak", type: "pancake", desc: "Klassieker in Bergen met enorme speeltuin.", alcohol: true, indoor: true, website: "https://www.duinvermaak.nl/", coords: { lat: 52.6657, lng: 4.6974 }, parking: "https://maps.google.com/?q=Breelaan+132+Bergen" },
-            { name: "Amsterdamse Waterleidingduinen", type: "nature", desc: "Herten spotten en wandelen door de duinen.", alcohol: true, indoor: false, website: "https://awd.waternet.nl/", coords: { lat: 52.3500, lng: 4.5667 }, parking: "https://maps.google.com/?q=Ingang+Panneland+Parkeren" },
-            { name: "Kralingse Bos", type: "nature", desc: "Bos in Rotterdam met hertenkamp en speeltuinen.", alcohol: true, indoor: false, website: "-", coords: { lat: 51.9333, lng: 4.5167 }, parking: "https://maps.google.com/?q=Langepad+Rotterdam" }
+            { name: "Hans & Grietje", type: "pancake", desc: "Het meest magische pannenkoekenhuis van Nederland met enorme speeltuin en sprookjespark.", alcohol: true, indoor: true, website: "https://www.hansengrietje.zeewolde.nl/", coords: { lat: 52.3429, lng: 5.4842 }, parking: "https://maps.google.com/?q=Hans+en+Grietje+Parkeren", photo: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=800" },
+            { name: "Gagelbos Utrecht", type: "nature", desc: "Speelbos met vlotten, modder en houten speeltoestellen. Puur natuur.", alcohol: false, indoor: false, website: "-", coords: { lat: 52.1333, lng: 5.1167 }, parking: "https://maps.google.com/?q=Gagelbos+Parkeren", photo: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=800" },
+            { name: "Nijntje Museum", type: "museum", desc: "De droom van elke 2-jarige. Volledig interactief en kid-proof.", alcohol: false, indoor: true, website: "https://nijntjemuseum.nl/", coords: { lat: 52.0833, lng: 5.1250 }, parking: "https://maps.google.com/?q=Parkeren+Nijntje+Museum", photo: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800" },
+            { name: "Meneer Paprika", type: "horeca", desc: "Speelgoedwinkel en café in één in hartje Haarlem. Met enorme Thomas de Trein tafel.", alcohol: true, indoor: true, website: "https://meneerpaprika.nl/", coords: { lat: 52.3833, lng: 4.6333 }, parking: "https://maps.google.com/?q=Parkeren+Haarlem+Centrum", photo: "https://images.unsplash.com/photo-1555448248-2571daf6344b?auto=format&fit=crop&q=80&w=800" },
+            { name: "Diergaarde Blijdorp", type: "play", desc: "Prachtige dierentuin met veel overdekte speelplekken (Oceanium).", alcohol: true, indoor: true, website: "https://www.diergaardeblijdorp.nl/", coords: { lat: 51.9268, lng: 4.4539 }, parking: "https://maps.google.com/?q=Blijdorp+Parkeren", photo: "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&q=80&w=800" },
+            { name: "'t Hooge Nest", type: "nature", desc: "Prachtige plek in de bossen bij Blaricum met goede horeca en speeltoestellen.", alcohol: true, indoor: false, website: "https://thoogenest.nl/", coords: { lat: 52.2833, lng: 5.2333 }, parking: "https://maps.google.com/?q=Parkeren+Hooge+Nest", photo: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=80&w=800" },
+            { name: "Geertje's Hoeve", type: "nature", desc: "Beleefboerderij bij Utrecht. Geitjes voeren, ponyrijden en lekker eten.", alcohol: true, indoor: true, website: "https://geertjeshoeve.nl/", coords: { lat: 52.1265, lng: 4.9818 }, parking: "https://maps.google.com/?q=Thematerweg+5+Haarzuilens", photo: "https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&q=80&w=800" },
+            { name: "Boerderij de Boerinn", type: "play", desc: "Speelboerderij met vlotten, skelters en veel dieren in Kamerik.", alcohol: true, indoor: true, website: "https://www.deboerinn.nl/", coords: { lat: 52.1055, lng: 4.8855 }, parking: "https://maps.google.com/?q=Mijzijde+6+Kamerik", photo: "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&q=80&w=800" },
+            { name: "Het Woeste Westen", type: "nature", desc: "Natuurspeeltuin in Amsterdam West. Klimmen over water en hutten bouwen.", alcohol: false, indoor: false, website: "https://www.woestewesten.nl/", coords: { lat: 52.3880, lng: 4.8569 }, parking: "https://maps.google.com/?q=Transformatorweg+10+Amsterdam", photo: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&q=80&w=800" },
+            { name: "Villa Augustus", type: "horeca", desc: "Restaurant en markt in een oude watertoren met prachtige moestuin in Dordrecht.", alcohol: true, indoor: true, website: "https://www.villa-augustus.nl/", coords: { lat: 51.8150, lng: 4.6850 }, parking: "https://maps.google.com/?q=Villa+Augustus+Parkeren", photo: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=800" },
+            { name: "Restaurant Leuk Bussum", type: "horeca", desc: "Gezellig restaurant met enorme speelkelder (100m2) en oppas.", alcohol: true, indoor: true, website: "https://restaurantleuk.nl/", coords: { lat: 52.2687, lng: 5.1610 }, parking: "https://maps.google.com/?q=Parkeergarage+Nieuwe+Brink+Bussum", photo: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=800" },
+            { name: "Theehuis Rhijnauwen", type: "pancake", desc: "Iconisch pannenkoekenhuis aan de Kromme Rijn met grote houten speeltuin.", alcohol: true, indoor: true, website: "https://theehuisrhijnauwen.nl/", coords: { lat: 52.0726, lng: 5.1610 }, parking: "https://maps.google.com/?q=Rhijnauwenselaan+16+Bunnik", photo: "https://images.unsplash.com/photo-1504754668056-230e1d784b4e?auto=format&fit=crop&q=80&w=800" },
+            { name: "Museum Speelklok", type: "museum", desc: "Vrolijke zelfspelende muziekinstrumenten in Utrecht.", alcohol: true, indoor: true, website: "https://www.museumspeelklok.nl/", coords: { lat: 52.0908, lng: 5.1195 }, parking: "https://maps.google.com/?q=Springweg+Parkeren+Utrecht", photo: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800" },
+            { name: "Plaswijckpark", type: "play", desc: "Enorm speelpark in Rotterdam met binnen- en buitenspeeltuinen en een kleine zoo.", alcohol: true, indoor: true, website: "https://www.plaswijckpark.nl/", coords: { lat: 51.9540, lng: 4.4750 }, parking: "https://maps.google.com/?q=Ringdijk+20+Rotterdam", photo: "https://images.unsplash.com/photo-1531844251246-9a1bfaae09fc?auto=format&fit=crop&q=80&w=800" }
         ];
 
-        function useCurrentLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    const geocoder = new google.maps.Geocoder();
-                    geocoder.geocode({ location: { lat, lng } }, (results, status) => {
-                        if (status === "OK") {
-                            document.getElementById('startLocation').value = results[0].formatted_address;
-                        }
-                    });
-                });
-            }
-        }
+        // UI Interactions
+        document.querySelectorAll('.pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                const parent = this.parentElement;
+                if (parent.id === 'alcoholFilter') {
+                    this.classList.toggle('active');
+                } else {
+                    parent.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
 
         async function search() {
             const start = document.getElementById('startLocation').value;
-            const env = document.getElementById('environment').value;
-            const type = document.getElementById('type').value;
-            const alc = document.getElementById('alcoholOnly').checked;
-            const maxTime = parseInt(document.getElementById('maxTime').value);
+            const env = document.querySelector('#envFilters .pill.active').dataset.value;
+            const type = document.querySelector('#typeFilters .pill.active').dataset.value;
+            const alc = document.getElementById('alcoholPill').classList.contains('active');
 
             if (!start) { alert("Vul eerst je vertrekpunt in!"); return; }
 
             document.getElementById('wizard').style.display = 'none';
             document.getElementById('loading').style.display = 'block';
 
-            // Filter basic attributes first
             let filtered = database.filter(item => {
                 if (env !== 'both' && (env === 'indoor' ? !item.indoor : item.indoor)) return false;
                 if (type !== 'all' && item.type !== type) return false;
@@ -247,77 +383,76 @@
                 return true;
             });
 
-            // Get reistijden from Google
             const service = new google.maps.DistanceMatrixService();
             const destinations = filtered.map(item => item.coords);
 
             try {
-                const response = await new Promise((resolve, reject) => {
-                    service.getDistanceMatrix({
-                        origins: [start],
-                        destinations: destinations,
-                        travelMode: 'DRIVING'
-                    }, (res, status) => {
-                        if (status === 'OK') resolve(res);
-                        else reject(status);
+                if (destinations.length > 0) {
+                    const response = await new Promise((resolve, reject) => {
+                        service.getDistanceMatrix({
+                            origins: [start],
+                            destinations: destinations,
+                            travelMode: 'DRIVING'
+                        }, (res, status) => {
+                            if (status === 'OK') resolve(res);
+                            else reject(status);
+                        });
                     });
-                });
 
-                const results = response.rows[0].elements;
-                filtered = filtered.map((item, idx) => {
-                    const res = results[idx];
-                    const hasRoute = res.status === 'OK' && res.duration;
-                    return {
-                        ...item,
-                        durationText: hasRoute ? res.duration.text : "onbekend",
-                        durationValue: hasRoute ? res.duration.value / 60 : 9999
-                    };
-                });
-
-                // Filter alleen op tijd als we ECHT data hebben, anders toon alles
-                const hasAnyTimeData = filtered.some(i => i.durationValue < 9999);
-                if (hasAnyTimeData) {
-                    filtered = filtered.filter(item => item.durationValue <= maxTime || item.durationValue === 9999)
-                              .sort((a, b) => a.durationValue - b.durationValue);
+                    const results = response.rows[0].elements;
+                    filtered = filtered.map((item, idx) => {
+                        const res = results[idx];
+                        const hasRoute = res.status === 'OK' && res.duration;
+                        return {
+                            ...item,
+                            durationText: hasRoute ? res.duration.text : "onbekend",
+                            durationValue: hasRoute ? res.duration.value / 60 : 9999
+                        };
+                    });
                 }
 
                 renderResults(filtered);
             } catch (err) {
                 console.error("Distance Matrix Error:", err);
-                document.getElementById('loading').innerHTML = `<span style="color:var(--danger)">Fout bij berekenen reistijd: ${err}.<br><small>Check of Geocoding API & Distance Matrix API aanstaan in Google Console.</small></span>`;
-                setTimeout(() => {
-                    // Fallback: Toon alles zonder reistijd
-                    filtered = filtered.map(item => ({ ...item, durationText: "reistijd onbekend", durationValue: 9999 }));
-                    renderResults(filtered);
-                }, 2000);
+                // Fallback
+                filtered = filtered.map(item => ({ ...item, durationText: "reistijd onbekend", durationValue: 9999 }));
+                renderResults(filtered);
             }
         }
 
         function renderResults(list) {
             document.getElementById('loading').style.display = 'none';
-            document.getElementById('resultsList').style.display = 'block';
-            const container = document.getElementById('cardsContainer');
-            container.innerHTML = list.length === 0 ? '<p style="text-align:center; color:var(--text-muted);">Geen avonturen gevonden die aan je filters voldoen. Probeer de reistijd te verhogen!</p>' : '';
+            const grid = document.getElementById('resultsGrid');
+            grid.style.display = 'grid';
+            grid.innerHTML = '';
 
-            list.forEach(item => {
-                const card = `
-                    <div class="result-card">
-                        <div class="result-header">
-                            <span class="result-title">${item.name}</span>
-                            <span class="result-meta">${item.durationText || ''}</span>
+            if (list.length === 0) {
+                grid.innerHTML = '<p class="serif" style="grid-column: span 12; text-align: center; font-size: 1.5rem; margin-top: 40px;">Geen verborgen parels gevonden voor deze selectie.</p>';
+                return;
+            }
+
+            list.forEach((item, idx) => {
+                const bentoClass = (idx % 3 === 0) ? 'large' : (idx % 3 === 1) ? 'medium' : 'small';
+                const card = document.createElement('div');
+                card.className = `bento-item ${bentoClass} fade-in`;
+                card.style.animationDelay = `${idx * 0.1}s`;
+                
+                card.innerHTML = `
+                    <div class="bento-image" style="background-image: url('${item.photo}')"></div>
+                    <div class="bento-content">
+                        <h2 class="bento-title serif">${item.name}</h2>
+                        <p class="bento-desc">${item.desc}</p>
+                        <div class="bento-meta">
+                            <span>${icons.clock} ${item.durationText || ''}</span>
+                            ${item.alcohol ? `<span>${icons.wine} Alcohol</span>` : ''}
                         </div>
-                        <p class="result-desc">${item.desc}</p>
-                        <div style="margin-bottom: 20px;">
-                            ${item.alcohol ? '<span class="tag tag-alcohol">Bier/Wijn</span>' : ''}
-                            <span class="tag">${item.indoor ? 'Binnen' : 'Buiten'}</span>
-                        </div>
-                        <div class="actions">
-                            <a href="${item.parking}" target="_blank" class="btn-outline">Parkeren</a>
-                            <a href="${item.website !== '-' ? item.website : '#'}" target="_blank" class="btn-outline" ${item.website === '-' ? 'style="opacity:0.3; pointer-events:none;"' : ''}>Website</a>
+                        <div class="detail-actions">
+                            <a href="${item.parking}" target="_blank" class="btn-link">${icons.map} Parkeren</a>
+                            ${item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn-link">${icons.external} Website</a>` : ''}
                         </div>
                     </div>
                 `;
-                container.innerHTML += card;
+                grid.appendChild(card);
             });
         }
     </script>
