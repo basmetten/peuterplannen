@@ -338,11 +338,20 @@
             const geocoder = new google.maps.Geocoder();
             try {
                 const result = await new Promise((resolve, reject) => {
-                    geocoder.geocode({ address: input + ', Nederland' }, (results, status) => { if (status === 'OK' && results[0]) resolve(results[0]); else reject(status); });
+                    geocoder.geocode({ address: input + ', Nederland' }, (results, status) => { 
+                        console.log('Geocode status:', status, 'results:', results?.length);
+                        if (status === 'OK' && results[0]) resolve(results[0]); 
+                        else reject(status); 
+                    });
                 });
                 userLocation = { lat: result.geometry.location.lat(), lng: result.geometry.location.lng(), name: input };
+                console.log('User location set:', userLocation);
+                showGpsStatus(`Zoeken naar locaties bij ${input}...`, 'active');
                 loadLocations();
-            } catch (err) { showGpsStatus('Locatie niet gevonden', 'error'); }
+            } catch (err) { 
+                console.error('Geocode error:', err); 
+                showGpsStatus('Locatie niet gevonden. Probeer "Amsterdam, Netherlands"', 'error'); 
+            }
         }
 
         function calculateDistance(lat1, lng1, lat2, lng2) {
@@ -354,10 +363,13 @@
         async function calculateTravelTimes(destinations) {
             if (!userLocation || destinations.length === 0) return {};
             const results = {};
+            console.log('Calculating travel times for', destinations.length, 'locations from', userLocation);
             // Use OSRM (Open Source Routing Machine) - gratis, accurate, geen API key nodig
+            let osrmSuccess = 0, osrmFail = 0;
             for (let i = 0; i < destinations.length; i += 25) {
                 const batch = destinations.slice(i, i + 25);
                 for (const dest of batch) {
+                    if (!dest.lat || !dest.lng) { console.warn('Missing coords for', dest.name); continue; }
                     try {
                         const url = `https://router.project-osrm.org/route/v1/driving/${userLocation.lng},${userLocation.lat};${dest.lng},${dest.lat}?overview=false`;
                         const resp = await fetch(url);
@@ -368,9 +380,11 @@
                                 const distance = data.routes[0].distance / 1000; // km
                                 const mins = Math.round(duration / 60);
                                 results[dest.id] = { duration: `${mins} min`, durationValue: duration, distance: `${distance.toFixed(1)} km` };
+                                osrmSuccess++;
                             }
                         }
                     } catch (err) {
+                        osrmFail++;
                         // Fallback als OSRM faalt: gebruik haversine + 1.5x schatting
                         const dist = calculateDistance(userLocation.lat, userLocation.lng, dest.lat, dest.lng);
                         const mins = Math.round(dist * 1.5);
@@ -378,6 +392,7 @@
                     }
                 }
             }
+            console.log('OSRM: success', osrmSuccess, '/ fail', osrmFail);
             return results;
         }
 
