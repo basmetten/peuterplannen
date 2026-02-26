@@ -66,4 +66,37 @@
     <priority>0.75</priority>
   </url>
 
+
+  <!-- Type-landingspagina's -->
+  <url>
+    <loc>https://basmetten.github.io/peuterplannen/speeltuinen.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://basmetten.github.io/peuterplannen/musea.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://basmetten.github.io/peuterplannen/pannenkoeken.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://basmetten.github.io/peuterplannen/natuur.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://basmetten.github.io/peuterplannen/horeca.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
 </urlset>
