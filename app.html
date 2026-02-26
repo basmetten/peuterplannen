@@ -83,7 +83,7 @@
         .glass-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; box-shadow: var(--card-shadow); }
         .location-section { padding: 20px; margin-bottom: 20px; }
         .location-label { font-size: 11px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-        .location-input-wrapper { display: flex; gap: 10px; align-items: center; }
+        .location-input-wrapper { display: none; gap: 10px; align-items: center; }
         .location-input { flex: 1; padding: 14px 16px; background: var(--bg-ivory); border: 1px solid var(--card-border); border-radius: 12px; font-size: 16px; font-family: inherit; color: var(--ink); transition: all 0.2s ease; }
         .location-input::placeholder { color: var(--ink-muted); }
         .location-input:focus { outline: none; border-color: var(--gold-primary); box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.15); }
@@ -373,7 +373,7 @@
             const container = document.getElementById('results-container'), loader = document.getElementById('loader'), error = document.getElementById('error');
             container.innerHTML = ''; loader.classList.remove('hidden'); error.classList.add('hidden');
             try {
-                let url = SB_URL + "?select=id,name,type,description,website,lat,lng,region,coffee,alcohol,diaper,place_id";
+                let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id";
                 if (activeTag !== 'all' && activeTag !== 'favorites') url += "&type=eq." + activeTag;
                 url += "&order=created_at.desc";
                 const response = await fetch(url, { method: 'GET', headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" } });
@@ -388,8 +388,9 @@
                 
                 loader.classList.add('hidden');
                 if (allLocations.length === 0) { container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>Probeer een andere categorie</div>'; return; }
-                if (userLocation) { allLocations.forEach(item => { item.distanceKm = calculateDistance(userLocation.lat, userLocation.lng, item.lat, item.lng); }); allLocations.sort((a, b) => a.distanceKm - b.distanceKm); }
-                renderCards(allLocations, {}); if (userLocation) { const travelTimes = await calculateTravelTimes(allLocations); allLocations.sort((a, b) => (travelTimes[a.id]?.durationValue || 999999) - (travelTimes[b.id]?.durationValue || 999999)); renderCards(allLocations, travelTimes); }
+                // Sorteer op afstand van stadscentrum
+                allLocations.sort((a, b) => (a.distance_from_city_center_km || 999) - (b.distance_from_city_center_km || 999));
+                renderCards(allLocations);
             } catch (e) { console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.textContent = 'Kon data niet laden. Vernieuw de pagina.'; }
         }
 
@@ -408,12 +409,10 @@
             return `https://maps.google.com/maps`;
         }
 
-        function renderCards(locations, travelTimes) {
+        function renderCards(locations) {
             const container = document.getElementById('results-container'); container.innerHTML = '';
             locations.forEach((item, index) => {
-                const travelInfo = travelTimes[item.id];
-                const distanceText = userLocation ? `${item.distanceKm.toFixed(1)} km` : (item.region || 'Randstad');
-                const travelTimeHtml = travelInfo ? `<div class="travel-time ${travelInfo.estimated ? 'estimated' : ''}"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>${travelInfo.duration}</div>` : (userLocation ? '<div class="travel-time calculating"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Reistijd...</div>' : '');
+                const distanceText = item.distance_from_city_center_km ? `${item.distance_from_city_center_km} km van centrum` : (item.region || 'Randstad');
                 const isFav = isFavorite(item.id);
                 const favIcon = isFav ? 'fill: var(--peach); stroke: var(--peach);' : 'fill: none; stroke: var(--ink-muted);';
                 const card = document.createElement('div'); card.className = 'result-card glass-card reveal'; card.style.animationDelay = `${Math.min(index * 0.06, 0.4)}s`;
@@ -421,7 +420,6 @@
                     <div class="meta-top">
                         <div class="meta-left">
                             <div class="distance">${distanceText}</div>
-                            ${travelTimeHtml}
                         </div>
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <button onclick="toggleFavorite(${item.id})" style="background: none; border: none; padding: 4px; cursor: pointer;" title="${isFav ? 'Verwijder uit favorieten' : 'Toevoegen aan favorieten'}">
