@@ -86,47 +86,56 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-warm: #FDF8F3;
-            --bg-cream: #F5EDE4;
-            --bg-ivory: #FFFDF9;
-            --gold-primary: #D4A574;
-            --gold-light: #E8C9A0;
-            --gold-dark: #B8935F;
-            --peach: #F4A261;
-            --ink: #2D2A26;
-            --ink-light: #5C5854;
-            --ink-muted: #9A9590;
-            --card-bg: rgba(255, 253, 249, 0.95);
-            --card-border: rgba(212, 165, 116, 0.3);
-            --card-shadow: 0 4px 24px rgba(45, 42, 38, 0.08);
+            --bg-warm: #FAFAF8;
+            --bg-cream: #F0EDE8;
+            --bg-ivory: #FFFFFF;
+            --navy: #1B2B4B;
+            --navy-light: #2C3E6B;
+            --gold-primary: #C9A96E;
+            --gold-light: #E0C992;
+            --gold-dark: #A8864A;
+            --peach: #E8956D;
+            --ink: #1B2B4B;
+            --ink-light: #4A5568;
+            --ink-muted: #8896A8;
+            --card-bg: #FFFFFF;
+            --card-border: rgba(201, 169, 110, 0.2);
+            --card-shadow: 0 2px 16px rgba(27, 43, 75, 0.07);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-warm); color: var(--ink); line-height: 1.6; }
 
-        nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(253, 248, 243, 0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid var(--card-border); }
+        /* Scroll-reveal animaties */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .reveal { opacity: 0; }
+        .reveal.visible { animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        @media (prefers-reduced-motion: reduce) { .reveal, .reveal.visible { animation: none; opacity: 1; } }
+
+        nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(250, 250, 248, 0.96); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid var(--card-border); }
         .nav-container { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
-        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; color: var(--ink); text-decoration: none; }
-        .nav-logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--gold-primary), var(--peach)); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-        .nav-logo-icon svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
+        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; color: var(--navy); text-decoration: none; }
+        .nav-logo-icon { width: 32px; height: 32px; background: var(--navy); border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
+        .nav-logo-icon:hover { transform: rotate(-5deg); }
+        .nav-logo-icon svg { width: 18px; height: 18px; stroke: var(--gold-light); fill: none; stroke-width: 2; }
         .nav-links { display: flex; gap: 32px; }
         .nav-links a { color: var(--ink-light); text-decoration: none; font-weight: 500; font-size: 15px; transition: color 0.2s; }
-        .nav-links a:hover { color: var(--gold-dark); }
-        .nav-cta { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: transform 0.2s; }
-        .nav-cta:hover { transform: translateY(-1px); }
+        .nav-links a:hover { color: var(--navy); }
+        .nav-cta { background: var(--navy); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s; letter-spacing: 0.01em; }
+        .nav-cta:hover { background: var(--navy-light); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(27, 43, 75, 0.25); }
 
         .hero { padding: 140px 24px 80px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
         .hero-content h1 { font-size: 52px; font-weight: 700; line-height: 1.15; margin-bottom: 20px; letter-spacing: -0.02em; }
-        .hero-content h1 span { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-content h1 { color: var(--navy); } .hero-content h1 span { color: var(--gold-primary); }
         .hero-content p { font-size: 20px; color: var(--ink-light); margin-bottom: 32px; max-width: 480px; }
         .hero-cta { display: flex; gap: 16px; }
-        .hero-cta-primary { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); color: white; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 20px rgba(212, 165, 116, 0.3); transition: transform 0.2s; }
-        .hero-cta-primary:hover { transform: translateY(-2px); }
+        .hero-cta-primary { background: var(--navy); color: white; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 20px rgba(27,43,75,0.25); transition: all 0.25s cubic-bezier(0.22,1,0.36,1); letter-spacing: 0.01em; }
+        .hero-cta-primary:hover { background: var(--navy-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(27,43,75,0.3); }
         .hero-cta-secondary { background: var(--bg-ivory); color: var(--ink); padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; border: 1px solid var(--card-border); }
 
         .stats { padding: 60px 24px; }
         .stats-container { max-width: 800px; margin: 0 auto; display: flex; justify-content: space-around; text-align: center; }
-        .stat-number { font-size: 48px; font-weight: 700; background: linear-gradient(135deg, var(--gold-primary), var(--peach)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-number { font-size: 48px; font-weight: 700; color: var(--navy); }
         .stat-label { color: var(--ink-muted); font-size: 15px; margin-top: 4px; }
 
         .features { padding: 80px 24px; background: var(--bg-cream); }
@@ -136,7 +145,7 @@
         .features-header p { font-size: 18px; color: var(--ink-light); }
         .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
         .feature-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 32px; box-shadow: var(--card-shadow); }
-        .feature-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--gold-light), var(--peach)); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+        .feature-icon { width: 48px; height: 48px; background: var(--navy); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(27,43,75,0.2); }
         .feature-icon svg { width: 24px; height: 24px; stroke: white; fill: none; stroke-width: 2; }
         .feature-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 10px; }
         .feature-card p { color: var(--ink-light); font-size: 15px; }
@@ -264,5 +273,16 @@
             © 2025 PeuterPlannen — Gemaakt met ☕ en 😴 in Amsterdam
         </div>
     </footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+}, {threshold: 0.1, rootMargin: '0px 0px -30px 0px'});
+document.querySelectorAll('.feature-card, .stat-item, .hero-content, .hero-visual').forEach((el, i) => {
+  el.classList.add('reveal');
+  el.style.animationDelay = (i * 0.1) + 's';
+  observer.observe(el);
+});
+</script>
 </body>
 </html>
