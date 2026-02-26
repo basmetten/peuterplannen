@@ -1,0 +1,347 @@
+{
+  "batch": "71-90",
+  "verified_at": "2026-02-26T05:45:00Z",
+  "notes": "Locatie 89 (Plaswijckpark) was al geverifieerd in eerdere batch (id 17). Locatie 83 (Villa Augustus) is nieuw geverifieerd.",
+  "locaties": [
+    {
+      "id": 71,
+      "naam": "Achter het Behang",
+      "adres": "Emmaplein 5, 3701 DK Zeist",
+      "gps": {
+        "lat": 52.0889,
+        "lng": 5.2375
+      },
+      "website": "https://www.achtertbehang.nl",
+      "type": "horeca",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": true
+      },
+      "beschrijving": "Kindvriendelijk kidscafé met creatieve binnenspeeltuin voor kinderen tot 8 jaar. Silent Disco, verkleedruimte, mini-supermarkt, treinbaan en klim/glij-mogelijkheden. Entree €4 per kind. Gezonde menukaart en kinderfeestjes mogelijk."
+    },
+    {
+      "id": 72,
+      "naam": "Blik & Burgers",
+      "adres": "Filosofenlaantje 9, 3703 DZ Zeist",
+      "gps": {
+        "lat": 52.0762,
+        "lng": 5.2344
+      },
+      "website": "https://blikenburgers.nl",
+      "type": "horeca",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "Restaurant bij Speeltuin Blikkenburg met binnen- en buitenspeelgelegenheid. Vlees, vis en vegetarische burgers. Speeltuin geschikt voor verschillende leeftijden, ook peuterhoek aanwezig."
+    },
+    {
+      "id": 73,
+      "naam": "Anafora Parkrestaurant",
+      "adres": "Uilenboslaan 1, 3451 GB Vleuten",
+      "gps": {
+        "lat": 52.0840,
+        "lng": 5.0210
+      },
+      "website": "https://www.eet.nu/vleuten/anafora",
+      "type": "horeca",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "Restaurant in Parkzoom Vleuten met groot terras. Ontbijt, lunch en diner. Speelweide voor kinderen aanwezig. Honden welkom op het terras."
+    },
+    {
+      "id": 74,
+      "naam": "Maximus Brouwerij",
+      "adres": "Pratumplaats 2A, 3454 NA De Meern",
+      "gps": {
+        "lat": 52.0870,
+        "lng": 5.0420
+      },
+      "website": "https://maximusbrouwerij.nl",
+      "type": "horeca",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": false
+      },
+      "beschrijving": "Brouwerij met proeflokaal in De Meern. Eigen bieren, pizza's en borrelplanken. Buitenterras met speelhoek voor kinderen. Rondleidingen mogelijk."
+    },
+    {
+      "id": 75,
+      "naam": "JEU de boules bar",
+      "adres": "Paardenveld 3, 3511 RD Utrecht",
+      "gps": {
+        "lat": 52.0951,
+        "lng": 5.1112
+      },
+      "website": "https://bhg.nl/locatie/jeu/",
+      "type": "horeca",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": false
+      },
+      "beschrijving": "Jeu de boules bar in centrum Utrecht. Indoor en outdoor banen. Lichtere ballen beschikbaar voor kinderen. Kinderfeestjes mogelijk. Vanaf ongeveer 5 jaar speelbaar."
+    },
+    {
+      "id": 76,
+      "naam": "Rocking Chair",
+      "adres": "Willem van Noortstraat 88, 3514 GG Utrecht",
+      "gps": {
+        "lat": 52.0980,
+        "lng": 5.1240
+      },
+      "website": "https://www.debuik.nl/utrecht/restaurant/rocking-chair",
+      "type": "horeca",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "Kindvriendelijk café in de Vogelenbuurt met speelhoek voor kinderen. Warme sfeer, goede koffie en lunchgerechten. Ideaal voor ouders om te werken terwijl kinderen spelen."
+    },
+    {
+      "id": 77,
+      "naam": "Koffie & Ik",
+      "adres": "Vleutenseweg 169, 3532 HC Utrecht",
+      "gps": {
+        "lat": 52.0950,
+        "lng": 5.0950
+      },
+      "website": "https://koffieenik.nl",
+      "type": "horeca",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": false
+      },
+      "beschrijving": "Speciaal koffiecafé met uitgebreide koffiemenu's en homemade taart. Klein maar gezellig. Beperkte zitplaatsen, vooral gericht op koffieliefhebbers. Geen specifieke kinderfaciliteiten."
+    },
+    {
+      "id": 78,
+      "naam": "The Village Coffee & Music",
+      "adres": "Voorstraat 44-46, 3512 AP Utrecht",
+      "gps": {
+        "lat": 52.0980,
+        "lng": 5.1150
+      },
+      "website": "https://thevillagecoffee.nl",
+      "type": "horeca",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": false
+      },
+      "beschrijving": "Koffiebar met meerdere locaties in Utrecht. De Voorstraat locatie is de originele vestiging. Koffie, lunch, borrel en live muziek avonden. Geen speelhoek maar wel kindvriendelijk."
+    },
+    {
+      "id": 79,
+      "naam": "Nijntje Pleintje",
+      "adres": "1e Achterstraat, 3512 VL Utrecht (hoek Van Asch van Wijckskade)",
+      "gps": {
+        "lat": 52.0961,
+        "lng": 5.1164
+      },
+      "website": "https://nijntjemuseum.nl",
+      "type": "play",
+      "faciliteiten": {
+        "coffee": false,
+        "alcohol": false,
+        "diaper": false
+      },
+      "beschrijving": "Fotogeniek pleintje met Nijntje-beeld en rode witte blokken. Gratis toegankelijk, iconische fotospot. Nabij Nijntje Museum (aparte entree)."
+    },
+    {
+      "id": 80,
+      "naam": "Griftpark",
+      "adres": "Van Swindenstraat 129, 3514 XR Utrecht",
+      "gps": {
+        "lat": 52.0989,
+        "lng": 5.1275
+      },
+      "website": "https://stichtinggriftpark.nl",
+      "type": "nature",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "Modern stadspark met speeltuin Griftsteede, kinderboerderij, skatebaan, voetbalkooi en ligweides. Parkcafé voor koffie en hapjes. Speeltuin geopend di-zo 10:00-17:00."
+    },
+    {
+      "id": 81,
+      "naam": "Parqiet",
+      "adres": "Baden Powelllaan 20, 3016 GJ Rotterdam",
+      "gps": {
+        "lat": 51.9135,
+        "lng": 4.4730
+      },
+      "website": "https://www.parqiet.nl",
+      "type": "horeca",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "Parkcafé in Het Park aan de voet van de Euromast. Kinderhoek met boekjes en spelletjes binnen, kindermenu beschikbaar. Grote speelweide buiten in het park."
+    },
+    {
+      "id": 82,
+      "naam": "De Tuin",
+      "adres": "Plaszoom 354, 3062 CL Rotterdam",
+      "gps": {
+        "lat": 51.9322,
+        "lng": 4.5216
+      },
+      "website": "https://www.restaurantdetuin.nl",
+      "type": "horeca",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "Restaurant aan de Kralingse Plas en Kralingse Bos. Groot terras met speelgelegenheid voor kinderen. Lunch, diner en borrel. Ideaal voor gezinnen."
+    },
+    {
+      "id": 83,
+      "naam": "Villa Augustus",
+      "adres": "Oranjelaan 7, 3311 DH Dordrecht",
+      "gps": {
+        "lat": 51.8133,
+        "lng": 4.6901
+      },
+      "website": "https://www.villa-augustus.nl",
+      "type": "horeca",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "Hotel en restaurant in monumentale watertoren met moestuin. Restaurant in voormalig gemaal serveert seizoensgebonden gerechten met eigen geoogste groentes. Kindvriendelijk terras."
+    },
+    {
+      "id": 84,
+      "naam": "Het Boterhuis",
+      "adres": "Markt 15-17a, 2611 GP Delft",
+      "gps": {
+        "lat": 52.0067,
+        "lng": 4.3556
+      },
+      "website": "https://www.boterhuis.nl",
+      "type": "horeca",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": false
+      },
+      "beschrijving": "Grandcafé in hartje Delft aan de Markt. Uitgebreide lunch en dinerkaart. Geen specifieke speelhoek maar wel kindvriendelijk. Terras met uitzicht op de markt."
+    },
+    {
+      "id": 85,
+      "naam": "Knus",
+      "adres": "Zavelpad 3, 2616 LH Delft",
+      "gps": {
+        "lat": 52.0208,
+        "lng": 4.3706
+      },
+      "website": "https://www.knus.nl",
+      "type": "horeca",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "Terras en partycentrum in Delftse Hout. Speeltuin, waterfietsen en doolhof voor kinderen. Populair voor kinderfeestjes. Gratis parkeren op 150m. Uitzicht over het water."
+    },
+    {
+      "id": 86,
+      "naam": "BuytenDelft",
+      "adres": "Korftlaan 3a, 2616 LJ Delft",
+      "gps": {
+        "lat": 52.0173,
+        "lng": 4.3750
+      },
+      "website": "https://buytendelft.nl",
+      "type": "play",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": true
+      },
+      "beschrijving": "Stadsboerderij met waterspeeltuin. Gratis toegang tot speeltuin met waterpartijen. Boerderijdieren, speelweide en terras. Open op woensdag, zaterdag en zondag."
+    },
+    {
+      "id": 87,
+      "naam": "Stadsboerderij De Kooi",
+      "adres": "Maeterlinckweg 85, 3076 GA Rotterdam",
+      "gps": {
+        "lat": 51.8709,
+        "lng": 4.5164
+      },
+      "website": "https://go-kids.nl/rotterdam/erop-uit/kinderboerderij-de-kooi",
+      "type": "play",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": true
+      },
+      "beschrijving": "Kinderboerderij in Rotterdam-Zuid met diverse dieren, speeltuin en educatieve activiteiten. Theehuis voor koffie en limonade. Gratis entree."
+    },
+    {
+      "id": 88,
+      "naam": "Speelcentrum Weena",
+      "adres": "Diergaardesingel 50, 3014 AC Rotterdam",
+      "gps": {
+        "lat": 51.9219,
+        "lng": 4.4671
+      },
+      "website": "https://www.speelcentrumweena.nl",
+      "type": "play",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": true
+      },
+      "beschrijving": "Peuter- en kleuterspeelcentrum met binnen- en buitenspeelgelegenheid. Speciale peuterpret ochtenden. Speelgoed, knutselhoek en buitenspeeltuin."
+    },
+    {
+      "id": 89,
+      "naam": "Plaswijckpark",
+      "adres": "Ringdijk 20, 3054 KW Rotterdam",
+      "gps": {
+        "lat": 51.9576,
+        "lng": 4.4793
+      },
+      "website": "https://www.plaswijckpark.nl",
+      "type": "play",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "ALREEDS GEVERIFIEERD (id 17 in eerder bestand). Familiepark met Dierenwijck, Speelwijck en Wandelwijck. Restaurant in de Heuvel en Havenzicht."
+    },
+    {
+      "id": 90,
+      "naam": "De Ontdekhoek",
+      "adres": "Schuttersweg 76, 3034 RN Rotterdam",
+      "gps": {
+        "lat": 51.9265,
+        "lng": 4.4625
+      },
+      "website": "https://go-kids.nl/rotterdam/erop-uit/ontdekhoek-rotterdam-ontdekken-leren-en-beleven",
+      "type": "play",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": true
+      },
+      "beschrijving": "Activiteitencentrum voor kinderen 4-14 jaar met hands-on experimenten. Aardappelchips maken, zeep maken, plastic bootjes maken. Horeca aanwezig, eigen eten mag mee. Nabijgelegen speeltuin buiten."
+    }
+  ]
+}

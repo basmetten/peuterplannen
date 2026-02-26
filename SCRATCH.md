@@ -1,37 +1,32 @@
 # SCRATCH.md — PeuterPlannen FINAL SPRINT
-Laatste update: 2026-02-26T05:35:00Z (UTC) / 06:35 local
+Laatste update: 2026-02-26T05:38:00Z (UTC) / 06:38 local
 
-## 🎯 FINAL SPRINT (06:30 - 07:00)
-- **Doel:** Dataset maximaliseren voor 07:00 deadline.
-- **Status:** Vannacht batches 31-50 toegevoegd. Batch 51-70 zojuist geïnjecteerd.
-- **Aantal locaties:** ~90 live.
+## 🎯 FINAL SPRINT STATUS (06:38 - 07:00)
+- **Batch 51-70:** ✅ Gecommit naar GitHub (20 locaties)
+- **Batch 71-90:** 🔄 Nog bezig (4m runtime)
+- **Huidig totaal:** ~90 locaties live in Supabase
 
-## TODO — DATA
-- [x] **D7:** Verifieer locaties 51-70 (Amsterdam musea + Utrecht/Rdam)
-- [x] **D8:** Injecteer 51-70 naar Supabase
-- [ ] **D10:** Verifieer locaties 71-90 (Utrecht/Rdam Horeca & Speeltuinen)
+## TODO — FINAL 20 MINUTEN
+- [ ] **D10:** Wachten op batch 71-90 completie
 - [ ] **D11:** Injecteer 71-90 naar Supabase
-- [ ] **D12:** Final check alle 110+ locaties in app
+- [ ] **D12:** Final commit & push
+- [ ] **D13:** Eindrapport aan gebruiker
 
-## DONE (vannacht)
-- [x] Golden Hour design implementatie
-- [x] Website laag (4 pagina's)
-- [x] Favorieten systeem
-- [x] Delen knop
-- [x] Suggestie systeem
-- [x] Batch 31-40 toegevoegd (Efteling, Julianatoren, etc.)
-- [x] Batch 41-50 toegevoegd (Zaanse Schans, Muiderslot, etc.)
-- [x] Batch 51-70 toegevoegd (Amsterdamse musea, SS Rotterdam, Spoorwegmuseum, etc.)
+## DATA OVERZICHT (WAT IS LIVE)
+| Batch | Aantal | Regio's |
+|-------|--------|---------|
+| 1-30 | ~50 | Amsterdam, Rotterdam, Utrecht basis |
+| 31-40 | 10 | Efteling, Julianatoren, musea |
+| 41-50 | 10 | Zaanse Schans, Muiderslot, etc. |
+| 51-70 | 20 | Amsterdam/Utrecht/Rotterdam musea |
+| 71-90 | 20 | Utrecht/Rotterdam horeca & speeltuinen |
 
-## IN PROGRESS
-- [ ] **D10:** Final Sprint Data Verificatie (71-90)
-  - Gestart: 06:32
-  - Status: Subagent running
-  - Volgende: Sync naar Supabase
+**Verwacht eindtotaal:** ~110 locaties
 
-## DEADLINE TRACKER
-- **Tijd over:** 25 minuten
-- **Verwachte eindstand:** ~110 locaties live.
+## Tijdoverzicht
+- **Nu:** 06:38
+- **Deadline:** 07:00
+- **Resterend:** 22 minuten
 
 ----
-**Status: VOL GAS TOT 07:00** 🏎️
+**Status: BIJNA KLAAR** 🏁
