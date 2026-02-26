@@ -395,15 +395,15 @@
 
         function buildMapsUrl(item) {
             // Opent locatie in Google Maps (niet navigatie — gewoon de plek geselecteerd)
-            // Gebruikt betrouwbare URL-formats met fallbacks:
-            // 1. Search by name + coördinaten (meest compatible)
-            // 2. Place ID als fallback
-            // 3. Pure coördinaten als laatste resort
-            if (item.lat && item.lng) {
-                return `https://maps.google.com/maps?q=${encodeURIComponent(item.name)}@${item.lat},${item.lng}&z=15`;
-            }
+            // Prioriteit: place_id is authoritative bron van Google
             if (item.place_id) {
-                return `https://maps.google.com/?q=place_id:${item.place_id}`;
+                // Format: https://maps.google.com/?cid=PLACE_ID werkt meest reliable
+                // Alternatief: place_id query-param
+                return `https://maps.google.com/maps?cid=${item.place_id}`;
+            }
+            // Fallback: coördinaten + zoom
+            if (item.lat && item.lng) {
+                return `https://maps.google.com/maps?q=${item.lat},${item.lng}&z=17`;
             }
             return `https://maps.google.com/maps`;
         }
