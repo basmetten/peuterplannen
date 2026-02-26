@@ -353,19 +353,30 @@
 
         async function calculateTravelTimes(destinations) {
             if (!userLocation || destinations.length === 0) return {};
-            const service = new google.maps.DistanceMatrixService(), batchSize = 25, results = {};
-            for (let i = 0; i < destinations.length; i += batchSize) {
-                const batch = destinations.slice(i, i + batchSize);
-                try {
-                    const response = await new Promise((resolve, reject) => {
-                        service.getDistanceMatrix({ origins: [{ lat: userLocation.lat, lng: userLocation.lng }], destinations: batch.map(d => ({ lat: d.lat, lng: d.lng })), travelMode: google.maps.TravelMode.DRIVING, unitSystem: google.maps.UnitSystem.METRIC }, (result, status) => { if (status === 'OK') resolve(result); else reject(status); });
-                    });
-                    batch.forEach((dest, idx) => {
-                        const element = response.rows[0].elements[idx];
-                        if (element.status === 'OK') results[dest.id] = { duration: element.duration.text, durationValue: element.duration.value, distance: element.distance.text };
-                        else { const dist = calculateDistance(userLocation.lat, userLocation.lng, dest.lat, dest.lng), mins = Math.round(dist * 1.5); results[dest.id] = { duration: `~${mins} min`, durationValue: mins * 60, distance: `${dist.toFixed(1)} km`, estimated: true }; }
-                    });
-                } catch (err) { batch.forEach(dest => { const dist = calculateDistance(userLocation.lat, userLocation.lng, dest.lat, dest.lng), mins = Math.round(dist * 1.5); results[dest.id] = { duration: `~${mins} min`, durationValue: mins * 60, distance: `${dist.toFixed(1)} km`, estimated: true }; }); }
+            const results = {};
+            // Use OSRM (Open Source Routing Machine) - gratis, accurate, geen API key nodig
+            for (let i = 0; i < destinations.length; i += 25) {
+                const batch = destinations.slice(i, i + 25);
+                for (const dest of batch) {
+                    try {
+                        const url = `https://router.project-osrm.org/route/v1/driving/${userLocation.lng},${userLocation.lat};${dest.lng},${dest.lat}?overview=false`;
+                        const resp = await fetch(url);
+                        if (resp.ok) {
+                            const data = await resp.json();
+                            if (data.routes && data.routes[0]) {
+                                const duration = data.routes[0].duration; // seconden
+                                const distance = data.routes[0].distance / 1000; // km
+                                const mins = Math.round(duration / 60);
+                                results[dest.id] = { duration: `${mins} min`, durationValue: duration, distance: `${distance.toFixed(1)} km` };
+                            }
+                        }
+                    } catch (err) {
+                        // Fallback als OSRM faalt: gebruik haversine + 1.5x schatting
+                        const dist = calculateDistance(userLocation.lat, userLocation.lng, dest.lat, dest.lng);
+                        const mins = Math.round(dist * 1.5);
+                        results[dest.id] = { duration: `~${mins} min`, durationValue: mins * 60, distance: `${dist.toFixed(1)} km`, estimated: true };
+                    }
+                }
             }
             return results;
         }
@@ -374,7 +385,7 @@
             const container = document.getElementById('results-container'), loader = document.getElementById('loader'), error = document.getElementById('error');
             container.innerHTML = ''; loader.classList.remove('hidden'); error.classList.add('hidden');
             try {
-                let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id";
+                let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng";
                 if (activeTag !== 'all' && activeTag !== 'favorites') url += "&type=eq." + activeTag;
                 url += "&order=created_at.desc";
                 const response = await fetch(url, { method: 'GET', headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" } });
