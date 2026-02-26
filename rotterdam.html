@@ -13,7 +13,7 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -643,25 +643,31 @@
   </script>
   <style>
     :root {
-      --navy: #1B2B4B;
+      --primary: #2A9D8F;
+      --primary-light: #E6F5F3;
+      --primary-dark: #1E7A6E;
+      --accent: #E76F51;
+      --navy: #264653;
       --navy-light: #2C3E6B;
-      --gold: #C9A96E;
-      --bg: #FAFAF8;
-      --bg-cream: #F0EDE8;
-      --text: #1B2B4B;
-      --text-muted: #4A5568;
-      --card-shadow: 0 2px 16px rgba(27,43,75,0.07);
+      --gold: #E9C46A;
+      --bg: #FEFBF6;
+      --bg-cream: #FFF8F0;
+      --text: #264653;
+      --text-muted: #5A7A84;
+      --card-shadow: 0 4px 12px rgba(38,70,83,0.10);
+      --font-heading: 'Nunito', sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+    h1, h2, h3, h4 { font-family: var(--font-heading); }
 
-    nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(250,250,248,0.96); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid rgba(201,169,110,0.2); }
+    nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(250,250,248,0.96); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid rgba(42,157,143,0.15); }
     .nav-inner { max-width: 1100px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     .nav-logo { font-weight: 700; font-size: 18px; color: var(--navy); text-decoration: none; }
     .nav-logo span { color: var(--gold); }
-    .nav-cta { background: var(--navy); color: white; padding: 9px 18px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; }
+    .nav-cta { background: var(--primary); color: white; padding: 9px 18px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; }
 
-    .hero { background: var(--navy); color: white; padding: 100px 24px 60px; text-align: center; }
+    .hero { background: var(--primary); color: white; padding: 100px 24px 60px; text-align: center; }
     .hero h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
     .hero h1 span { color: var(--gold); }
     .hero p { font-size: 18px; opacity: 0.85; max-width: 640px; margin: 0 auto 28px; }
@@ -676,15 +682,15 @@
 
     main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
 
-    .intro-box { background: var(--bg-cream); border-radius: 12px; padding: 28px 32px; margin-bottom: 40px; border-left: 4px solid var(--gold); }
+    .intro-box { background: var(--bg-cream); border-radius: 12px; padding: 28px 32px; margin-bottom: 40px; border-left: 4px solid var(--primary); }
     .intro-box p { font-size: 17px; color: var(--text); line-height: 1.8; }
 
     .type-section { margin-bottom: 48px; }
-    .type-section h2 { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--bg-cream); }
+    .type-section h2 { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--primary-light); }
 
     .loc-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
-    .loc-item { background: white; border-radius: 12px; padding: 20px 22px; box-shadow: var(--card-shadow); border: 1px solid rgba(201,169,110,0.15); transition: transform 0.2s, box-shadow 0.2s; }
-    .loc-item:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(27,43,75,0.12); }
+    .loc-item { background: white; border-radius: 12px; padding: 20px 22px; box-shadow: var(--card-shadow); border: 1px solid rgba(42,157,143,0.12); transition: transform 0.2s, box-shadow 0.2s; }
+    .loc-item:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(38,70,83,0.12); }
     .loc-item h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
     .loc-item h3 a { color: var(--navy); text-decoration: none; }
     .loc-item h3 a:hover { text-decoration: underline; }
@@ -699,14 +705,14 @@
     .other-cities a { color: var(--navy); text-decoration: none; font-weight: 500; margin-right: 4px; }
     .other-cities a:hover { text-decoration: underline; }
 
-    .cta-block { background: var(--navy); color: white; border-radius: 16px; padding: 36px 32px; text-align: center; margin-top: 48px; }
+    .cta-block { background: var(--primary); color: white; border-radius: 16px; padding: 36px 32px; text-align: center; margin-top: 48px; }
     .cta-block h3 { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
     .cta-block p { opacity: 0.8; margin-bottom: 24px; }
-    .cta-block a { background: var(--gold); color: var(--navy); padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; }
-    .cta-block a:hover { background: #dbb97e; }
+    .cta-block a { background: white; color: var(--primary); padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; }
+    .cta-block a:hover { background: #f0f0f0; }
 
     footer { background: var(--navy); color: rgba(255,255,255,0.6); padding: 32px 24px; text-align: center; font-size: 14px; }
-    footer a { color: var(--gold); text-decoration: none; }
+    footer a { color: var(--primary); text-decoration: none; }
 
     @media (max-width: 600px) { .loc-list { grid-template-columns: 1fr; } .hero { padding: 90px 16px 40px; } }
   </style>

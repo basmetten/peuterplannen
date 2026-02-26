@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PeuterPlannen — Vind kindvriendelijke uitjes bij jou in de buurt</title>
-    <meta name="description" content="Zoek op locatie en vind de beste kindvriendelijke speeltuinen, restaurants, musea en natuur in de Randstad. Gratis, snel, 164 geverifieerde plekken.">
+    <meta name="description" content="Zoek op locatie en vind de beste kindvriendelijke speeltuinen, restaurants, musea en natuur. Gratis, snel, 195 geverifieerde plekken.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://peuterplannen.nl/app.html">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://peuterplannen.nl/app.html">
     <meta property="og:title" content="PeuterPlannen — Kindvriendelijke uitjes in de buurt">
-    <meta property="og:description" content="195 geverifieerde locaties: speeltuinen, restaurants, musea en natuur voor kinderen in Amsterdam, Rotterdam, Utrecht, Den Haag, Haarlem, Leiden en de Utrechtse Heuvelrug.">
+    <meta property="og:description" content="195 geverifieerde locaties: speeltuinen, restaurants, musea en natuur voor gezinnen in de Randstad en Utrechtse Heuvelrug.">
     <meta property="og:locale" content="nl_NL">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="PeuterPlannen — Uitjes voor kinderen">
@@ -21,7 +21,7 @@
       "@type": "WebApplication",
       "name": "PeuterPlannen",
       "url": "https://peuterplannen.nl/app.html",
-      "description": "Interactieve kaart met 195 kindvriendelijke locaties in de Randstad. Filter op type: speeltuin, restaurant, museum, natuur.",
+      "description": "Interactieve kaart met 195 kindvriendelijke locaties. Filter op type: speeltuin, restaurant, museum, natuur.",
       "applicationCategory": "LifestyleApplication",
       "operatingSystem": "Any",
       "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}
@@ -29,206 +29,216 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAw0UlkShhJ_FQUG1ibkMidUhvEFC23jb4&libraries=places,geometry,distance_matrix"></script>
     <style>
         :root {
-            /* Soft Premium Palette */
-            --bg-warm: #FAFAF8;
-            --bg-cream: #F4F1EC;
-            --bg-ivory: #FFFFFF;
-            --navy: #1B2B4B;
-            --navy-light: #2C3E6B;
-            --navy-muted: rgba(27, 43, 75, 0.08);
-            --gold-primary: #C9A96E;
-            --gold-light: #E0C992;
-            --gold-dark: #A8864A;
-            --peach: #E8956D;
-            --peach-soft: rgba(232, 149, 109, 0.12);
-            --ink: #1B2B4B;
-            --ink-light: #4A5568;
-            --ink-muted: #8896A8;
-            --card-bg: #FFFFFF;
-            --card-border: rgba(201, 169, 110, 0.25);
-            --card-shadow: 0 2px 16px rgba(27, 43, 75, 0.07), 0 1px 4px rgba(27, 43, 75, 0.04);
-            --card-shadow-hover: 0 8px 32px rgba(27, 43, 75, 0.13), 0 2px 8px rgba(27, 43, 75, 0.06);
-            --success: #2A9D8F;
+            --primary: #2A9D8F;
+            --primary-light: #E6F5F3;
+            --primary-dark: #1E7A6E;
+            --accent: #E76F51;
+            --accent-light: #FDF0EC;
+            --bg: #FEFBF6;
+            --bg-warm: #FFF8F0;
+            --surface: #FFFFFF;
+            --text: #264653;
+            --text-secondary: #5A7A84;
+            --text-muted: #94A3B0;
+            --gold: #E9C46A;
+            --success: #52B788;
+            --shadow-sm: 0 1px 3px rgba(38, 70, 83, 0.08);
+            --shadow-md: 0 4px 12px rgba(38, 70, 83, 0.10);
+            --shadow-lg: 0 8px 30px rgba(38, 70, 83, 0.12);
+            --shadow-hover: 0 12px 40px rgba(38, 70, 83, 0.15);
+            --font-heading: 'Nunito', sans-serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
             --safe-bottom: env(safe-area-inset-bottom, 20px);
+            --radius: 16px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         html { height: 100%; }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100%; background: var(--bg-warm); color: var(--ink); line-height: 1.5; overflow-x: hidden; }
-
-        .aurora-bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(160deg, #FAFAF8 0%, #F0EDE8 100%); z-index: -2; }
-        .aurora-glow { position: fixed; top: -20%; right: -10%; width: 60%; height: 60%; background: radial-gradient(ellipse at center, rgba(201, 169, 110, 0.07) 0%, transparent 60%); z-index: -1; pointer-events: none; }
+        body { font-family: var(--font-body); min-height: 100%; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
 
         /* Skeleton loader */
-        .skeleton { background: linear-gradient(90deg, var(--bg-cream) 25%, var(--bg-ivory) 50%, var(--bg-cream) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+        .skeleton { background: linear-gradient(90deg, var(--bg-warm) 25%, #f0ebe3 50%, var(--bg-warm) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 12px; }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        .skeleton-card { height: 100px; margin-bottom: 12px; }
 
-        /* Scroll reveal animaties — CLS-veilig via transform only */
+        /* Animations */
         @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .reveal { opacity: 0; }
         .reveal.visible { animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
         @media (prefers-reduced-motion: reduce) { .reveal, .reveal.visible { animation: none; opacity: 1; } }
-
-        .app-container { max-width: 500px; margin: 0 auto; padding: 24px 16px calc(100px + var(--safe-bottom)); position: relative; }
-
-        header { margin-bottom: 24px; text-align: center; background: linear-gradient(135deg, var(--navy) 0%, #0f1e35 100%); padding: 32px 24px; margin: 0 0 24px 0; border-radius: 0 0 24px 24px; box-shadow: 0 4px 20px rgba(27, 43, 75, 0.12); } header h1 { color: white; opacity: 1; text-shadow: 0 2px 8px rgba(0,0,0,0.2); } header p { color: rgba(255,255,255,0.9); }
-        .logo { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 8px; transition: transform 0.2s ease, opacity 0.2s ease; } .logo:hover { transform: translateY(-2px); opacity: 0.8; }
-        .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--navy), var(--navy-light)); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(27, 43, 75, 0.25); transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .logo-icon:hover { transform: rotate(-3deg) scale(1.05); box-shadow: 0 6px 24px rgba(27, 43, 75, 0.3); }
-        .logo-icon svg { width: 24px; height: 24px; stroke: var(--gold-light); fill: none; stroke-width: 2; }
-        h1 { font-size: 32px; letter-spacing: -0.03em; font-weight: 700; letter-spacing: -0.02em; color: var(--navy); }
-        .sub-head { font-size: 14px; color: var(--ink-muted); font-weight: 500; }
-
-        .glass-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; box-shadow: var(--card-shadow); }
-        .location-section { padding: 20px; margin-bottom: 20px; }
-        .location-label { font-size: 11px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-        .location-input-wrapper { display: flex; gap: 10px; align-items: center; }
-        .location-input-wrapper button { display: flex; }
-        .location-input { flex: 1; padding: 14px 16px; background: var(--bg-ivory); border: 1px solid var(--card-border); border-radius: 12px; font-size: 16px; font-family: inherit; color: var(--ink); transition: all 0.2s ease; }
-        .location-input::placeholder { color: var(--ink-muted); }
-        .location-input:focus { outline: none; border-color: var(--gold-primary); box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.15); }
-
-        .icon-btn { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: var(--bg-ivory); border: 1px solid var(--card-border); border-radius: 12px; cursor: pointer; transition: all 0.2s ease; position: relative; touch-action: manipulation; }
-        @media (hover: hover) {
-            .icon-btn:hover { background: var(--bg-cream); border-color: var(--gold-light); transform: translateY(-1px); }
-        }
-        .icon-btn:active { transform: scale(0.96); background: var(--bg-cream); }
-        .icon-btn svg { stroke: var(--ink-light); fill: none; stroke-width: 2; width: 22px; height: 22px; }
-        .icon-btn.primary { background: var(--navy); border-color: transparent; }
-        .icon-btn.primary svg { stroke: var(--gold-light); }
-        @media (hover: hover) {
-            .icon-btn.primary:hover { background: var(--navy-light); box-shadow: 0 4px 15px rgba(27, 43, 75, 0.3); }
-        }
-        .icon-btn.primary:active { background: var(--navy-light); }
-
-        .gps-status { font-size: 13px; color: var(--ink-light); margin-top: 12px; display: flex; align-items: center; gap: 8px; padding: 0 4px; }
-        .gps-status.loading::before { content: ''; width: 14px; height: 14px; border: 2px solid var(--card-border); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes heartPop { 0% { transform: scale(1); } 30% { transform: scale(1.3); } 60% { transform: scale(0.95); } 100% { transform: scale(1); } }
+        .heart-pop { animation: heartPop 0.4s ease; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .gps-status.error { color: var(--peach); }
 
-        .tag-mixer { display: flex; gap: 8px; overflow-x: auto; padding: 4px 4px 16px; scrollbar-width: none; position: sticky; top: 0; z-index: 10; margin: 0 -12px; padding-left: 12px; }
-        .tag-mixer::-webkit-scrollbar { display: none; }
-        .tag-pill { background: var(--card-bg); border: 1px solid var(--card-border); padding: 10px 18px; border-radius: 24px; font-size: 13px; font-weight: 500; color: var(--ink-light); white-space: nowrap; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(45, 42, 38, 0.04); touch-action: manipulation; }
-        @media (hover: hover) {
-            .tag-pill:hover { background: var(--bg-cream); border-color: var(--gold-light); }
+        .app-container { max-width: 540px; margin: 0 auto; padding: 0 16px calc(80px + var(--safe-bottom)); position: relative; }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--bg-warm) 0%, var(--primary-light) 100%);
+            padding: 24px 20px 28px;
+            margin: 0 -16px 20px;
+            text-align: center;
         }
-        .tag-pill:active { background: var(--bg-cream); transform: scale(0.98); }
-        .tag-pill.active { background: var(--navy); color: white; border-color: transparent; box-shadow: 0 4px 15px rgba(27, 43, 75, 0.25); }
+        .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; margin-bottom: 4px; }
+        .logo-icon { width: 40px; height: 40px; background: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(42, 157, 143, 0.3); }
+        .logo-icon svg { width: 22px; height: 22px; stroke: white; fill: none; stroke-width: 2; }
+        h1 { font-family: var(--font-heading); font-size: 28px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+        .sub-head { font-size: 15px; color: var(--text-secondary); font-weight: 500; margin-top: 2px; }
 
-        .results-list { display: flex; flex-direction: column; gap: 16px; }
-        .result-card { padding: 20px; transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease; touch-action: manipulation; border-left: 5px solid var(--gold-primary); border: 1px solid var(--card-border); border-radius: 12px; background: linear-gradient(145deg, #FFFFFF 0%, #FDF8F3 100%); box-shadow: var(--card-shadow); }
-        @media (hover: hover) {
-            .result-card:hover { transform: translateY(-3px); box-shadow: var(--card-shadow-hover); border-color: var(--gold-primary); border-left-color: var(--navy); }
+        /* Search card */
+        .search-section { background: var(--surface); border: 1px solid rgba(42, 157, 143, 0.15); border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 20px; margin-bottom: 16px; }
+        .search-label { font-family: var(--font-heading); font-size: 12px; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+        .search-input-wrapper { display: flex; gap: 8px; align-items: center; }
+        .search-input { flex: 1; padding: 14px 16px; background: var(--bg); border: 2px solid transparent; border-radius: 12px; font-size: 16px; font-family: inherit; color: var(--text); transition: all 0.2s; }
+        .search-input::placeholder { color: var(--text-muted); }
+        .search-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(42, 157, 143, 0.1); }
+
+        .icon-btn { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: var(--bg); border: 1px solid rgba(42, 157, 143, 0.15); border-radius: 12px; cursor: pointer; transition: all 0.2s; touch-action: manipulation; }
+        .icon-btn:active { transform: scale(0.96); }
+        .icon-btn svg { stroke: var(--text-secondary); fill: none; stroke-width: 2; width: 22px; height: 22px; }
+        .icon-btn.primary { background: var(--primary); border-color: transparent; }
+        .icon-btn.primary svg { stroke: white; }
+        .icon-btn.primary:active { background: var(--primary-dark); }
+
+        .gps-status { font-size: 13px; color: var(--text-secondary); margin-top: 10px; display: flex; align-items: center; gap: 8px; }
+        .gps-status.loading::before { content: ''; width: 14px; height: 14px; border: 2px solid rgba(42,157,143,0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .gps-status.error { color: var(--accent); }
+
+        /* Filter chips */
+        .filter-chips { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 4px 0 16px; position: sticky; top: 0; z-index: 10; background: var(--bg); margin: 0 -4px; padding-left: 4px; padding-right: 4px; }
+        .filter-chips::-webkit-scrollbar { display: none; }
+        .chip { flex-shrink: 0; scroll-snap-align: start; padding: 10px 16px; border-radius: 24px; border: 1.5px solid rgba(42, 157, 143, 0.2); background: var(--surface); font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--text-secondary); white-space: nowrap; cursor: pointer; transition: all 0.2s; touch-action: manipulation; box-shadow: var(--shadow-sm); }
+        .chip:active { transform: scale(0.96); }
+        .chip.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(42, 157, 143, 0.3); }
+        .chip-divider { flex-shrink: 0; width: 1px; height: 24px; background: rgba(42, 157, 143, 0.15); align-self: center; }
+
+        /* Results */
+        .results-list { display: flex; flex-direction: column; gap: 14px; }
+
+        /* Location card */
+        .loc-card {
+            background: var(--surface);
+            border: 1px solid rgba(42, 157, 143, 0.12);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s;
+            touch-action: manipulation;
         }
-        .result-card:active { transform: scale(0.99); }
-
-        .meta-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
-        .meta-left { display: flex; flex-direction: column; gap: 6px; }
-        .distance { font-size: 12px; font-weight: 700; color: var(--success); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; }
-        .distance::before { content: ''; width: 6px; height: 6px; background: var(--success); border-radius: 50%; }
-        .travel-time { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--ink-muted); }
-        .travel-time svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
-        .travel-time.calculating { opacity: 0.6; }
-        .travel-time.error { color: var(--peach); }
-
-        .badges { display: flex; gap: 10px; }
-        .badge-wrapper { position: relative; }
-        .badge-icon { width: 20px; height: 20px; stroke: var(--gold-primary); fill: none; stroke-width: 1.8; cursor: help; transition: all 0.2s ease; touch-action: manipulation; }
+        .loc-card:active { transform: scale(0.99); }
         @media (hover: hover) {
-            .badge-icon:hover { stroke: var(--peach); transform: scale(1.1); }
+            .loc-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
         }
-        .tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-8px); background: var(--ink); color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; white-space: nowrap; opacity: 0; visibility: hidden; transition: all 0.2s ease; z-index: 100; pointer-events: none; }
-        .tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: var(--ink); }
-        .badge-wrapper:hover .tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-4px); }
-        /* Touch friendly tooltip: also show on active */
-        .badge-wrapper:active .tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-4px); }
 
-        .name { font-size: 19px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; color: var(--navy); line-height: 1.3; }
-        .desc { font-size: 14px; color: var(--ink-light); margin-bottom: 18px; line-height: 1.6; }
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .card-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+        .pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; }
+        .pill-type { background: var(--primary-light); color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.06em; }
+        .pill-weather { background: var(--bg-warm); color: var(--text-secondary); }
+        .pill-weather svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
+        .pill-distance { background: rgba(82, 183, 136, 0.1); color: #2D8B5E; font-weight: 700; }
+        .pill-region { background: var(--bg-warm); color: var(--text-muted); }
+        .pill-verified { background: rgba(233, 196, 106, 0.15); color: #9A7B2E; }
 
-        .actions { display: flex; gap: 10px; }
-        .btn { flex: 1; padding: 14px 16px; font-size: 15px; text-align: center; text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; border: 1px solid var(--card-border); color: var(--ink); transition: all 0.2s ease; cursor: pointer; background: var(--bg-ivory); display: flex; align-items: center; justify-content: center; gap: 6px; touch-action: manipulation; }
-        .maps-button { flex: 1; padding: 14px 16px; border-radius: 10px; background: var(--bg-ivory); border: 1px solid var(--card-border); display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s ease; touch-action: manipulation; color: var(--navy); cursor: pointer; gap: 6px; font-size: 14px; font-weight: 600; }
-        .maps-button:hover { border-color: var(--navy); background: var(--bg-cream); }
-        .maps-icon { width: 18px; height: 18px; }
-        .maps-icon { width: 18px; height: 18px; color: inherit; }
+        .card-fav { background: none; border: none; padding: 6px; cursor: pointer; transition: transform 0.2s; touch-action: manipulation; border-radius: 50%; }
+        .card-fav:hover { background: var(--accent-light); }
+        .card-fav svg { width: 22px; height: 22px; stroke-width: 2; transition: all 0.2s; }
+
+        .card-name { font-family: var(--font-heading); font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+        .card-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.6; }
+
+        .card-facilities { display: flex; gap: 12px; margin-bottom: 14px; }
+        .facility { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-muted); font-weight: 500; }
+        .facility svg { width: 14px; height: 14px; stroke: var(--primary); fill: none; stroke-width: 2; }
+
+        .card-actions { display: flex; gap: 8px; }
+        .btn { flex: 1; padding: 12px 14px; font-size: 14px; font-weight: 600; text-align: center; text-decoration: none; border-radius: 12px; border: 1.5px solid rgba(42, 157, 143, 0.2); color: var(--text); background: var(--surface); display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: all 0.2s; touch-action: manipulation; font-family: inherit; }
+        .btn:active { transform: scale(0.98); }
         .btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
-        @media (hover: hover) {
-            .btn:hover { background: var(--bg-cream); border-color: var(--gold-light); }
-        }
-        .btn:active { background: var(--bg-cream); transform: scale(0.98); }
-        .btn-primary { background: var(--navy); color: white; border-color: transparent; font-weight: 600; letter-spacing: 0.01em; }
-        @media (hover: hover) {
-            .btn-primary:hover { background: var(--navy-light); box-shadow: 0 4px 16px rgba(27, 43, 75, 0.3); transform: translateY(-1px); }
-        }
-        .btn-primary:active { background: var(--navy-light); transform: scale(0.98); }
+        .btn-maps { color: var(--primary-dark); border-color: rgba(42, 157, 143, 0.3); }
+        .btn-maps:hover { background: var(--primary-light); border-color: var(--primary); }
+        .btn-share { padding: 12px; flex: 0; min-width: 44px; }
 
         .hidden { display: none !important; }
-        .loader { text-align: center; padding: 60px 20px; font-weight: 500; color: var(--ink-muted); }
-        .loader::before { content: ''; display: block; width: 40px; height: 40px; margin: 0 auto 16px; border: 3px solid var(--card-border); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 1s linear infinite; }
-        .error-msg { text-align: center; padding: 40px; color: var(--peach); font-size: 14px; background: var(--peach-soft); border-radius: 12px; margin: 20px 0; }
-        .no-results { text-align: center; padding: 60px 20px; color: var(--ink-muted); }
-        .no-results strong { display: block; color: var(--ink); margin-bottom: 8px; font-size: 18px; }
+        .loader { text-align: center; padding: 60px 20px; font-weight: 500; color: var(--text-muted); font-family: var(--font-heading); font-size: 16px; }
+        .loader::before { content: ''; display: block; width: 40px; height: 40px; margin: 0 auto 16px; border: 3px solid rgba(42,157,143,0.15); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        .error-msg { text-align: center; padding: 40px; color: var(--accent); font-size: 14px; background: var(--accent-light); border-radius: var(--radius); margin: 20px 0; }
+        .no-results { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+        .no-results strong { display: block; color: var(--text); margin-bottom: 8px; font-size: 18px; font-family: var(--font-heading); }
 
-        .pac-container { background: var(--bg-ivory) !important; border: 1px solid var(--card-border) !important; border-radius: 12px !important; box-shadow: var(--card-shadow) !important; font-family: inherit !important; margin-top: 8px !important; }
-        .pac-item { padding: 12px 16px !important; font-family: inherit !important; font-size: 14px !important; color: var(--ink) !important; border-bottom: 1px solid var(--card-border) !important; }
-        .pac-item:hover { background: var(--bg-cream) !important; }
-        .pac-item-query { color: var(--ink) !important; font-weight: 600; }
-        .pac-matched { color: var(--gold-dark) !important; }
+        /* Bottom nav (mobile) */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid rgba(42, 157, 143, 0.1); padding: 8px 0; padding-bottom: calc(8px + var(--safe-bottom)); display: flex; justify-content: space-around; z-index: 100; box-shadow: 0 -2px 12px rgba(38, 70, 83, 0.06); }
+        .bnav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 16px; text-decoration: none; font-size: 10px; font-weight: 600; color: var(--text-muted); transition: color 0.2s; }
+        .bnav-item.active { color: var(--primary); }
+        .bnav-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; }
+        @media (min-width: 768px) { .bottom-nav { display: none; } body { padding-bottom: 0; } }
+
+        /* Skeleton cards */
+        .skeleton-card { background: var(--surface); border-radius: var(--radius); padding: 18px 20px; border: 1px solid rgba(42,157,143,0.08); }
+        .skel-line { height: 12px; margin-bottom: 10px; border-radius: 6px; }
+        .skel-title { height: 20px; width: 70%; margin-bottom: 10px; border-radius: 6px; }
+        .skel-pills { display: flex; gap: 8px; margin-bottom: 14px; }
+        .skel-pill { width: 60px; height: 24px; border-radius: 8px; }
+
+        /* Google Autocomplete styling */
+        .pac-container { background: var(--surface) !important; border: 1px solid rgba(42,157,143,0.15) !important; border-radius: 12px !important; box-shadow: var(--shadow-lg) !important; font-family: inherit !important; margin-top: 8px !important; }
+        .pac-item { padding: 12px 16px !important; font-family: inherit !important; font-size: 14px !important; color: var(--text) !important; border-bottom: 1px solid rgba(42,157,143,0.08) !important; }
+        .pac-item:hover { background: var(--primary-light) !important; }
+        .pac-item-query { color: var(--text) !important; font-weight: 600; }
+        .pac-matched { color: var(--primary-dark) !important; }
         .pac-icon { display: none; }
+
+        /* Noscript fallback */
+        noscript div { max-width: 800px; margin: 80px auto; padding: 24px; font-family: sans-serif; }
     </style>
 </head>
-<body ontouchstart="">
+<body>
 <noscript>
-  <div style="max-width:800px;margin:80px auto;padding:24px;font-family:sans-serif;">
-    <h1 style="color:#1B2B4B;">PeuterPlannen — Uitjes voor peuters in de Randstad</h1>
-    <p style="color:#4A5568;margin:12px 0 24px;">164 geverifieerde uitjes voor gezinnen met jonge kinderen. Bekijk per stad of per type:</p>
-    <h2 style="color:#1B2B4B;font-size:16px;margin-bottom:12px;">Per stad</h2>
-    <ul style="margin-bottom:24px;">
-      <li><a href="amsterdam.html" style="color:#1B2B4B;">Uitjes met peuters in Amsterdam (45 locaties)</a></li>
-      <li><a href="utrecht.html" style="color:#1B2B4B;">Uitjes met peuters in Utrecht (40 locaties)</a></li>
-      <li><a href="rotterdam.html" style="color:#1B2B4B;">Uitjes met peuters in Rotterdam (29 locaties)</a></li>
-      <li><a href="den-haag.html" style="color:#1B2B4B;">Uitjes met peuters in Den Haag (24 locaties)</a></li>
-      <li><a href="haarlem.html" style="color:#1B2B4B;">Uitjes met peuters in Haarlem (5 locaties)</a></li>
-      <li><a href="leiden.html" style="color:#1B2B4B;">Uitjes met peuters in Leiden (9 locaties)</a></li>
-    </ul>
-    <h2 style="color:#1B2B4B;font-size:16px;margin-bottom:12px;">Per type uitje</h2>
+  <div>
+    <h1>PeuterPlannen</h1>
+    <p>195 geverifieerde uitjes voor gezinnen met jonge kinderen.</p>
+    <h2>Per stad</h2>
     <ul>
-      <li><a href="speeltuinen.html" style="color:#1B2B4B;">Speeltuinen voor peuters (40 locaties)</a></li>
-      <li><a href="musea.html" style="color:#1B2B4B;">Musea voor peuters (36 locaties)</a></li>
-      <li><a href="natuur.html" style="color:#1B2B4B;">Natuur met peuters (37 locaties)</a></li>
-      <li><a href="horeca.html" style="color:#1B2B4B;">Kindvriendelijke restaurants (38 locaties)</a></li>
-      <li><a href="pannenkoeken.html" style="color:#1B2B4B;">Pannenkoekenrestaurants (16 locaties)</a></li>
+      <li><a href="amsterdam.html">Amsterdam (42 locaties)</a></li>
+      <li><a href="utrecht.html">Utrecht (39 locaties)</a></li>
+      <li><a href="rotterdam.html">Rotterdam (28 locaties)</a></li>
+      <li><a href="den-haag.html">Den Haag (23 locaties)</a></li>
+      <li><a href="haarlem.html">Haarlem (8 locaties)</a></li>
+      <li><a href="leiden.html">Leiden (9 locaties)</a></li>
+      <li><a href="utrechtse-heuvelrug.html">Utrechtse Heuvelrug (31 locaties)</a></li>
+    </ul>
+    <h2>Per type</h2>
+    <ul>
+      <li><a href="speeltuinen.html">Speeltuinen</a></li>
+      <li><a href="musea.html">Musea</a></li>
+      <li><a href="natuur.html">Natuur</a></li>
+      <li><a href="horeca.html">Restaurants</a></li>
+      <li><a href="pannenkoeken.html">Pannenkoeken</a></li>
     </ul>
   </div>
 </noscript>
-    <div class="aurora-bg"></div>
-    <div class="aurora-glow"></div>
-    
+
     <div class="app-container">
         <header>
-            <a href="/" class="logo" style="text-decoration: none; color: inherit; cursor: pointer;">
+            <a href="/" class="logo">
                 <div class="logo-icon">
                     <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                 </div>
                 <h1>PeuterPlannen</h1>
             </a>
-            <div class="sub-head">Vind de perfecte plek voor jouw kleintje</div>
+            <div class="sub-head">Waar gaan we vandaag naartoe?</div>
         </header>
 
-        <div class="location-section glass-card">
-            <div class="location-label">
+        <div class="search-section">
+            <div class="search-label">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                 In de buurt van
             </div>
-            <div class="location-input-wrapper">
-                <input type="text" id="location-input" class="location-input" placeholder="Typ je stad of adres..." value="">
+            <div class="search-input-wrapper">
+                <input type="text" id="location-input" class="search-input" placeholder="Typ je stad of adres..." value="">
                 <button class="icon-btn" onclick="getCurrentLocation()" title="Gebruik mijn locatie">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg>
                 </button>
@@ -239,66 +249,88 @@
             <div id="gps-status" class="gps-status hidden"></div>
         </div>
 
-        <div class="tag-mixer">
-            <button class="tag-pill active" onclick="toggleTag('all')">Alles</button>
-            <button class="tag-pill" onclick="toggleTag('favorites')">⭐ Favorieten</button>
-            <button class="tag-pill" onclick="toggleTag('play')">Speeltuin</button>
-            <button class="tag-pill" onclick="toggleTag('nature')">Bos & Natuur</button>
-            <button class="tag-pill" onclick="toggleTag('horeca')">Horeca</button>
-            <button class="tag-pill" onclick="toggleTag('museum')">Museum</button>
-            <button class="tag-pill" onclick="toggleTag('pancake')">Pannenkoeken</button>
+        <div class="filter-chips">
+            <button class="chip active" onclick="toggleTag('all')">Alles</button>
+            <button class="chip" onclick="toggleTag('favorites')">Favorieten</button>
+            <div class="chip-divider"></div>
+            <button class="chip" onclick="toggleTag('play')">Speeltuin</button>
+            <button class="chip" onclick="toggleTag('nature')">Natuur</button>
+            <button class="chip" onclick="toggleTag('horeca')">Horeca</button>
+            <button class="chip" onclick="toggleTag('museum')">Museum</button>
+            <button class="chip" onclick="toggleTag('pancake')">Pannenkoeken</button>
+            <div class="chip-divider"></div>
+            <button class="chip" onclick="toggleWeather('indoor')">Binnen</button>
+            <button class="chip" onclick="toggleWeather('outdoor')">Buiten</button>
         </div>
 
         <div id="results-container" class="results-list"></div>
         <div id="loader" class="loader">Locaties laden...</div>
         <div id="error" class="error-msg hidden"></div>
-
     </div>
 
+    <!-- Mobile bottom navigation -->
+    <nav class="bottom-nav">
+        <a href="/" class="bnav-item">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            <span>Home</span>
+        </a>
+        <a href="app.html" class="bnav-item active">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <span>Zoeken</span>
+        </a>
+        <button class="bnav-item" onclick="toggleTag('favorites')" style="background:none;border:none;cursor:pointer;">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span>Favorieten</span>
+        </button>
+        <a href="about.html" class="bnav-item">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <span>Info</span>
+        </a>
+    </nav>
+
     <script>
-        // Supabase Config
         const SB_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/locations";
         const SB_KEY = atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5CcGRXcHpkbWRpWm1ac2NuSjJZWFY2YzNobElpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpJd05ETXhOekFzSW1WNGNDSTZNakE0TnpZeE9URTNNSDAuNXkzZ3FpUGZWdnB2ZmFEWUFfUGdxRS1LVHZ1ZjZ6Z042dkd6cWZVcGVTbw==");
 
         let activeTag = 'all';
+        let activeWeather = null;
         let userLocation = null;
         let allLocations = [];
         let autocomplete;
-        
-        // Favorieten uit localStorage
-        function getFavorites() {
-            return JSON.parse(localStorage.getItem('peuterplannen_favorites') || '[]');
-        }
-        
-        function showToast(msg) {
-            let t = document.getElementById("toast");
-            if (!t) { t = document.createElement("div"); t.id = "toast"; t.className = "toast"; document.body.appendChild(t); }
-            t.textContent = msg; t.classList.add("show");
-            setTimeout(() => t.classList.remove("show"), 3000);
-        }
 
-        function toggleFavorite(locationId) {
+        const TYPE_LABELS = { play: 'Speeltuin', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', pancake: 'Pannenkoeken' };
+        const WEATHER_LABELS = { indoor: 'Binnen', outdoor: 'Buiten', both: 'Binnen & buiten' };
+        const WEATHER_ICONS = {
+            indoor: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
+            outdoor: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
+            both: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="14" r="3"/></svg>'
+        };
+
+        function getFavorites() { return JSON.parse(localStorage.getItem('peuterplannen_favorites') || '[]'); }
+        function isFavorite(id) { return getFavorites().includes(id); }
+
+        function toggleFavorite(locationId, btn) {
             const favorites = getFavorites();
             const index = favorites.indexOf(locationId);
-            if (index > -1) {
-                favorites.splice(index, 1);
-            } else {
-                favorites.push(locationId);
-            }
+            if (index > -1) favorites.splice(index, 1); else favorites.push(locationId);
             localStorage.setItem('peuterplannen_favorites', JSON.stringify(favorites));
-            loadLocations(); // Re-render om hartje te updaten
+            if (btn) { btn.classList.add('heart-pop'); setTimeout(() => btn.classList.remove('heart-pop'), 400); }
+            loadLocations();
         }
-        
-        function isFavorite(locationId) {
-            return getFavorites().includes(locationId);
+
+        function toggleWeather(weather) {
+            if (activeWeather === weather) { activeWeather = null; } else { activeWeather = weather; }
+            document.querySelectorAll('.chip').forEach(c => {
+                if (c.textContent === 'Binnen' || c.textContent === 'Buiten') c.classList.remove('active');
+            });
+            if (activeWeather) event.target.classList.add('active');
+            loadLocations();
         }
 
         function initAutocomplete() {
             const input = document.getElementById('location-input');
             autocomplete = new google.maps.places.Autocomplete(input, {
-                types: ['geocode'],
-                componentRestrictions: { country: 'nl' },
-                fields: ['geometry', 'formatted_address', 'name']
+                types: ['geocode'], componentRestrictions: { country: 'nl' }, fields: ['geometry', 'formatted_address', 'name']
             });
             autocomplete.addListener('place_changed', () => {
                 const place = autocomplete.getPlace();
@@ -339,20 +371,14 @@
             const geocoder = new google.maps.Geocoder();
             try {
                 const result = await new Promise((resolve, reject) => {
-                    geocoder.geocode({ address: input + ', Nederland' }, (results, status) => { 
-                        console.log('Geocode status:', status, 'results:', results?.length);
-                        if (status === 'OK' && results[0]) resolve(results[0]); 
-                        else reject(status); 
+                    geocoder.geocode({ address: input + ', Nederland' }, (results, status) => {
+                        if (status === 'OK' && results[0]) resolve(results[0]); else reject(status);
                     });
                 });
                 userLocation = { lat: result.geometry.location.lat(), lng: result.geometry.location.lng(), name: input };
-                console.log('User location set:', userLocation);
-                showGpsStatus(`Zoeken naar locaties bij ${input}...`, 'active');
+                showGpsStatus(`Zoeken bij ${input}...`, 'active');
                 loadLocations();
-            } catch (err) { 
-                console.error('Geocode error:', err); 
-                showGpsStatus('Locatie niet gevonden. Probeer "Amsterdam, Netherlands"', 'error'); 
-            }
+            } catch (err) { showGpsStatus('Locatie niet gevonden', 'error'); }
         }
 
         function calculateDistance(lat1, lng1, lat2, lng2) {
@@ -366,7 +392,6 @@
             const service = new google.maps.DistanceMatrixService();
             const results = {};
             const batchSize = 25;
-            
             for (let i = 0; i < destinations.length; i += batchSize) {
                 const batch = destinations.slice(i, i + batchSize);
                 try {
@@ -376,16 +401,11 @@
                             destinations: batch.map(d => ({ lat: d.lat, lng: d.lng })),
                             travelMode: google.maps.TravelMode.DRIVING,
                             unitSystem: google.maps.UnitSystem.METRIC
-                        }, (result, status) => {
-                            if (status === 'OK') resolve(result);
-                            else reject(status);
-                        });
+                        }, (result, status) => { if (status === 'OK') resolve(result); else reject(status); });
                     });
                     batch.forEach((dest, idx) => {
-                        const element = response.rows[0].elements[idx];
-                        if (element.status === 'OK') {
-                            results[dest.id] = { duration: element.duration.text, durationValue: element.duration.value, distance: element.distance.text };
-                        }
+                        const el = response.rows[0].elements[idx];
+                        if (el.status === 'OK') results[dest.id] = { duration: el.duration.text, durationValue: el.duration.value, distance: el.distance.text };
                     });
                 } catch (err) {
                     batch.forEach(dest => {
@@ -402,127 +422,123 @@
             const container = document.getElementById('results-container'), loader = document.getElementById('loader'), error = document.getElementById('error');
             container.innerHTML = ''; loader.classList.remove('hidden'); error.classList.add('hidden');
             try {
-                let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng";
+                let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather";
                 if (activeTag !== 'all' && activeTag !== 'favorites') url += "&type=eq." + activeTag;
+                if (activeWeather) url += "&weather=eq." + activeWeather;
                 url += "&order=created_at.desc";
                 const response = await fetch(url, { method: 'GET', headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" } });
                 if (!response.ok) throw new Error('Fetch failed: ' + response.status);
                 allLocations = await response.json();
-                
-                // Filter favorites als dat de actieve tag is
+
                 if (activeTag === 'favorites') {
                     const favorites = getFavorites();
                     allLocations = allLocations.filter(item => favorites.includes(item.id));
                 }
-                
-                if (allLocations.length === 0) { loader.classList.add('hidden'); container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>Probeer een andere categorie</div>'; return; }
-                
-                // Als user GPS/zoekin heeft: EERST reistijden berekenen, dan renderen
-                if (userLocation) { 
-                    console.log('User location active, calculating travel times...');
-                    const travelTimes = await calculateTravelTimes(allLocations); 
-                    allLocations.sort((a, b) => (travelTimes[a.id]?.durationValue || 999999) - (travelTimes[b.id]?.durationValue || 999999)); 
+
+                if (allLocations.length === 0) { loader.classList.add('hidden'); container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>Probeer een andere categorie of filter</div>'; return; }
+
+                if (userLocation) {
+                    const travelTimes = await calculateTravelTimes(allLocations);
+                    allLocations.sort((a, b) => (travelTimes[a.id]?.durationValue || 999999) - (travelTimes[b.id]?.durationValue || 999999));
                     loader.classList.add('hidden');
-                    renderCards(allLocations, travelTimes); 
+                    renderCards(allLocations, travelTimes);
                 } else {
-                    // Fallback: sorteer op afstand van stadscentrum
                     allLocations.sort((a, b) => (a.distance_from_city_center_km || 999) - (b.distance_from_city_center_km || 999));
                     loader.classList.add('hidden');
-                    renderCards(allLocations, {}); 
+                    renderCards(allLocations, {});
                 }
             } catch (e) { console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.textContent = 'Kon data niet laden. Vernieuw de pagina.'; }
         }
 
         function buildMapsUrl(item) {
-            // iOS/Android compatible: plaats openen in Google Maps
-            // iOS: Google Maps app (comgooglemaps://) of Safari fallback
-            // Android: Google Maps app of browser
-            if (item.place_id) {
-                // Primair: Google Maps web search (werkt op beide platforms)
-                return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}&query_place_id=${item.place_id}`;
-            }
-            return `https://www.google.com/maps`;
+            if (item.place_id) return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}&query_place_id=${item.place_id}`;
+            return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}`;
         }
 
         function renderCards(locations, travelTimes = {}) {
-            const container = document.getElementById('results-container'); container.innerHTML = '';
+            const container = document.getElementById('results-container');
+            container.innerHTML = '';
             locations.forEach((item, index) => {
                 const travelInfo = travelTimes[item.id];
-                const distanceText = userLocation && travelInfo ? `${travelInfo.duration}` : (item.distance_from_city_center_km ? `${item.distance_from_city_center_km} km van centrum` : (item.region || 'Randstad'));
                 const isFav = isFavorite(item.id);
-                const favIcon = isFav ? 'fill: var(--peach); stroke: var(--peach);' : 'fill: none; stroke: var(--ink-muted);';
-                const card = document.createElement('div'); card.className = 'result-card glass-card reveal'; card.style.animationDelay = `${Math.min(index * 0.06, 0.4)}s`;
+                const favStyle = isFav ? 'fill: #E76F51; stroke: #E76F51;' : 'fill: none; stroke: #94A3B0;';
+                const typeLabel = TYPE_LABELS[item.type] || item.type;
+                const weatherLabel = WEATHER_LABELS[item.weather] || '';
+                const weatherIcon = WEATHER_ICONS[item.weather] || '';
+
+                let distancePill = '';
+                if (userLocation && travelInfo) {
+                    distancePill = `<span class="pill pill-distance">${travelInfo.duration}</span>`;
+                } else if (item.region) {
+                    distancePill = `<span class="pill pill-region">${item.region}</span>`;
+                }
+
+                const facilities = [];
+                if (item.coffee) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>Koffie</span>');
+                if (item.diaper) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5z"/><path d="M6 9.01V9"/></svg>Verschonen</span>');
+                if (item.alcohol) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 3h10v9a5 5 0 0 1-10 0V3z"/></svg>Alcohol</span>');
+
+                const card = document.createElement('div');
+                card.className = 'loc-card reveal';
+                card.style.animationDelay = `${Math.min(index * 0.05, 0.3)}s`;
                 card.innerHTML = `
-                    <div class="meta-top">
-                        <div class="meta-left">
-                            <div class="distance">${distanceText}</div>
+                    <div class="card-top">
+                        <div class="card-pills">
+                            <span class="pill pill-type">${typeLabel}</span>
+                            ${weatherLabel ? `<span class="pill pill-weather">${weatherIcon}${weatherLabel}</span>` : ''}
+                            ${distancePill}
                         </div>
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <button onclick="toggleFavorite(${item.id})" style="background: none; border: none; padding: 4px; cursor: pointer;" title="${isFav ? 'Verwijder uit favorieten' : 'Toevoegen aan favorieten'}">
-                                <svg width="22" height="22" viewBox="0 0 24 24" style="${favIcon} stroke-width: 2; transition: all 0.2s;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                            </button>
-                            <div class="badges">
-                                ${item.coffee ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg><span class="tooltip">Koffie beschikbaar</span></div>' : ''}
-                                ${item.alcohol ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 3h10v9a5 5 0 0 1-10 0V3z"/></svg><span class="tooltip">Alcohol beschikbaar</span></div>' : ''}
-                                ${item.diaper ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M8 2h8v2H8V2zm2 4h4v2h-4V6zm-2 2h10v1H8v-1zm1 2h8v10H9V10zm3 2h2v6h-2v-6zm4 0h2v6h-2v-6z" fill="currentColor"/></svg><span class="tooltip">Verschoonplek</span></div>' : ''}
-                            </div>
-                        </div>
+                        <button class="card-fav" onclick="toggleFavorite(${item.id}, this)" title="${isFav ? 'Verwijder favoriet' : 'Opslaan'}">
+                            <svg viewBox="0 0 24 24" style="${favStyle}"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                        </button>
                     </div>
-                    <div class="name">${item.name}</div>
-                    <div class="desc">${item.description || ''}</div>
-                    <div class="actions">
-                        <a href="${buildMapsUrl(item)}" target="_blank" class="maps-button" title="Open in Google Maps"><svg viewBox="0 0 24 24" class="maps-icon"><path d="M12 2C6.48 2 2 6.48 2 12c0 7 10 13 10 13s10-6 10-13c0-5.52-4.48-10-10-10zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" fill="#EA4335"/><circle cx="12" cy="12" r="3" fill="white"/></svg>Maps</a>
-                        ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Website</a>` : ''}
-                        <button onclick="shareLocation('${item.name}', ${item.lat}, ${item.lng})" class="btn" title="Delen"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>
+                    <div class="card-name">${item.name}</div>
+                    <div class="card-desc">${item.description || ''}</div>
+                    ${facilities.length ? `<div class="card-facilities">${facilities.join('')}</div>` : ''}
+                    <div class="card-actions">
+                        <a href="${buildMapsUrl(item)}" target="_blank" class="btn btn-maps">
+                            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            Route
+                        </a>
+                        ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn"><svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
+                        <button onclick="shareLocation('${item.name.replace(/'/g, "\\'")}', ${item.lat}, ${item.lng})" class="btn btn-share" title="Delen">
+                            <svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                        </button>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
-        
-        // Deel functie
+
         function shareLocation(name, lat, lng) {
             const url = `https://www.google.com/maps/?q=${lat},${lng}`;
             const text = `Bekijk ${name} op PeuterPlannen: ${url}`;
-            if (navigator.share) {
-                navigator.share({ title: name, text: text, url: url });
-            } else {
-                // WhatsApp deeplink fallback
-                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
-                window.open(whatsappUrl, '_blank');
-            }
+            if (navigator.share) { navigator.share({ title: name, text: text, url: url }); }
+            else { window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'); }
         }
 
         function toggleTag(tag) {
             activeTag = tag;
-            document.querySelectorAll('.tag-pill').forEach(p => p.classList.remove('active'));
-            event.target.classList.add('active');
+            activeWeather = null;
+            document.querySelectorAll('.chip').forEach(p => p.classList.remove('active'));
+            if (event && event.target) event.target.classList.add('active');
+            else document.querySelector('.chip').classList.add('active');
             loadLocations();
         }
 
         document.getElementById('location-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') updateLocation(); });
         window.addEventListener('load', () => { initAutocomplete(); loadLocations(); });
 
-        // Scroll-reveal: CLS-veilig via IntersectionObserver (alleen transform + opacity)
+        // Scroll-reveal observer
         const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    revealObserver.unobserve(entry.target);
-                }
-            });
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } });
         }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
 
-        function observeCards() {
-            document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-        }
-
-        // Observer na elke render-cyclus aanroepen
-        const _origRenderCards = renderCards;
-        // Patch: na render, observe nieuwe cards
         const resultsContainer = document.getElementById('results-container');
         if (resultsContainer) {
-            new MutationObserver(() => observeCards()).observe(resultsContainer, { childList: true });
+            new MutationObserver(() => {
+                document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
+            }).observe(resultsContainer, { childList: true });
         }
     </script>
 </body>
