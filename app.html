@@ -247,21 +247,6 @@
         <div id="loader" class="loader">Locaties laden...</div>
         <div id="error" class="error-msg hidden"></div>
 
-        <!-- Suggestie Sectie -->
-        <div class="suggestion-section glass-card" style="margin-top: 40px; padding: 20px;">
-            <div class="location-label">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7-7-7M5 12h14"/></svg>
-                Locatie toevoegen
-            </div>
-            <p style="font-size: 13px; color: var(--ink-muted); margin-bottom: 12px;">Mist er een pareltje? Typ de naam of website en onze AI regelt de rest.</p>
-            <div class="location-input-wrapper">
-                <input type="text" id="suggestion-input" class="location-input" placeholder="Bijv: Restaurant Heidezicht Bussum">
-                <button class="icon-btn primary" onclick="submitSuggestion()" id="suggestion-btn">
-                    <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-                </button>
-            </div>
-            <div id="suggestion-status" class="gps-status hidden"></div>
-        </div>
     </div>
 
     <script>
@@ -393,11 +378,11 @@
                 loader.classList.add('hidden');
                 if (allLocations.length === 0) { container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>Probeer een andere categorie</div>'; return; }
                 
-                // Eerst sorteren op afstand van stadscentrum
-                if (userLocation) { allLocations.forEach(item => { item.distanceKm = calculateDistance(userLocation.lat, userLocation.lng, item.lat, item.lng); }); allLocations.sort((a, b) => a.distanceKm - b.distanceKm); }
+                // Sorteer op afstand van stadscentrum (default)
+                allLocations.sort((a, b) => (a.distance_from_city_center_km || 999) - (b.distance_from_city_center_km || 999));
                 renderCards(allLocations, {}); 
                 
-                // Dan reistijden berekenen en opnieuw sorteren
+                // Als user GPS inschakelt: reistijden berekenen en opnieuw sorteren
                 if (userLocation) { const travelTimes = await calculateTravelTimes(allLocations); allLocations.sort((a, b) => (travelTimes[a.id]?.durationValue || 999999) - (travelTimes[b.id]?.durationValue || 999999)); renderCards(allLocations, travelTimes); }
             } catch (e) { console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.textContent = 'Kon data niet laden. Vernieuw de pagina.'; }
         }
@@ -470,49 +455,7 @@
         }
 
         document.getElementById('location-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') updateLocation(); });
-        document.getElementById('suggestion-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') submitSuggestion(); });
         window.addEventListener('load', () => { initAutocomplete(); loadLocations(); });
-
-        // Suggestie functionaliteit
-        async function submitSuggestion() {
-            const input = document.getElementById('suggestion-input');
-            const statusEl = document.getElementById('suggestion-status');
-            const btn = document.getElementById('suggestion-btn');
-            const value = input.value.trim();
-            
-            if (!value) return;
-            
-            btn.disabled = true;
-            statusEl.className = 'gps-status loading';
-            statusEl.textContent = 'Suggestie versturen...';
-            
-            try {
-                const response = await fetch('https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/suggestions', {
-                    method: 'POST',
-                    headers: {
-                        'apikey': SB_KEY,
-                        'Authorization': 'Bearer ' + SB_KEY,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ input: value, status: 'pending' })
-                });
-                
-                if (response.ok) {
-                    statusEl.className = 'gps-status';
-                    statusEl.style.color = 'var(--success)';
-                    statusEl.textContent = '✓ Dankjewel! We checken het uit.';
-                    input.value = '';
-                    setTimeout(() => { statusEl.classList.add('hidden'); statusEl.style.color = ''; }, 3000);
-                } else {
-                    throw new Error('Failed to submit');
-                }
-            } catch (e) {
-                statusEl.className = 'gps-status error';
-                statusEl.textContent = 'Kon niet versturen. Probeer later opnieuw.';
-            } finally {
-                btn.disabled = false;
-            }
-        }
 
         // Scroll-reveal: CLS-veilig via IntersectionObserver (alleen transform + opacity)
         const revealObserver = new IntersectionObserver((entries) => {
