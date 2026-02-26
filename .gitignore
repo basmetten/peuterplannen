@@ -9,3 +9,4 @@ verify_place_ids.js
 all_locations_for_verification.json
 all_locations_raw.json
 batch_*.json
+alcohol_age_check.js
