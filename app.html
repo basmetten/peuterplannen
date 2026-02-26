@@ -395,11 +395,17 @@
 
         function buildMapsUrl(item) {
             // Opent locatie in Google Maps (niet navigatie — gewoon de plek geselecteerd)
-            if (item.place_id) {
-                return `https://www.google.com/maps/place/?q=place_id:${item.place_id}`;
+            // Gebruikt betrouwbare URL-formats met fallbacks:
+            // 1. Search by name + coördinaten (meest compatible)
+            // 2. Place ID als fallback
+            // 3. Pure coördinaten als laatste resort
+            if (item.lat && item.lng) {
+                return `https://maps.google.com/maps?q=${encodeURIComponent(item.name)}@${item.lat},${item.lng}&z=15`;
             }
-            // Fallback: naam + coördinaten als Place ID ontbreekt
-            return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}&query_place_id=${item.lat},${item.lng}`;
+            if (item.place_id) {
+                return `https://maps.google.com/?q=place_id:${item.place_id}`;
+            }
+            return `https://maps.google.com/maps`;
         }
 
         function renderCards(locations, travelTimes) {
