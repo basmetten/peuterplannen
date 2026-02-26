@@ -51,17 +51,22 @@
         .location-section { padding: 20px; margin-bottom: 20px; }
         .location-label { font-size: 12px; font-weight: 600; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
         .location-input-wrapper { display: flex; gap: 10px; align-items: center; }
-        .location-input { flex: 1; padding: 14px 16px; background: var(--bg-ivory); border: 1px solid var(--card-border); border-radius: 12px; font-size: 15px; font-family: inherit; color: var(--ink); transition: all 0.2s ease; }
+        .location-input { flex: 1; padding: 14px 16px; background: var(--bg-ivory); border: 1px solid var(--card-border); border-radius: 12px; font-size: 16px; font-family: inherit; color: var(--ink); transition: all 0.2s ease; }
         .location-input::placeholder { color: var(--ink-muted); }
         .location-input:focus { outline: none; border-color: var(--gold-primary); box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.15); }
 
-        .icon-btn { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: var(--bg-ivory); border: 1px solid var(--card-border); border-radius: 12px; cursor: pointer; transition: all 0.2s ease; position: relative; }
-        .icon-btn:hover { background: var(--bg-cream); border-color: var(--gold-light); transform: translateY(-1px); }
-        .icon-btn:active { transform: scale(0.96); }
+        .icon-btn { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: var(--bg-ivory); border: 1px solid var(--card-border); border-radius: 12px; cursor: pointer; transition: all 0.2s ease; position: relative; touch-action: manipulation; }
+        @media (hover: hover) {
+            .icon-btn:hover { background: var(--bg-cream); border-color: var(--gold-light); transform: translateY(-1px); }
+        }
+        .icon-btn:active { transform: scale(0.96); background: var(--bg-cream); }
         .icon-btn svg { stroke: var(--ink-light); fill: none; stroke-width: 2; width: 22px; height: 22px; }
         .icon-btn.primary { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); border-color: transparent; }
         .icon-btn.primary svg { stroke: white; }
-        .icon-btn.primary:hover { background: linear-gradient(135deg, var(--gold-dark), #E8955F); box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4); }
+        @media (hover: hover) {
+            .icon-btn.primary:hover { background: linear-gradient(135deg, var(--gold-dark), #E8955F); box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4); }
+        }
+        .icon-btn.primary:active { background: var(--gold-dark); }
 
         .gps-status { font-size: 13px; color: var(--ink-light); margin-top: 12px; display: flex; align-items: center; gap: 8px; padding: 0 4px; }
         .gps-status.loading::before { content: ''; width: 14px; height: 14px; border: 2px solid var(--card-border); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -70,14 +75,19 @@
 
         .tag-mixer { display: flex; gap: 8px; overflow-x: auto; padding: 4px 4px 16px; scrollbar-width: none; position: sticky; top: 0; z-index: 10; margin: 0 -12px; padding-left: 12px; }
         .tag-mixer::-webkit-scrollbar { display: none; }
-        .tag-pill { background: var(--card-bg); border: 1px solid var(--card-border); padding: 10px 18px; border-radius: 24px; font-size: 13px; font-weight: 500; color: var(--ink-light); white-space: nowrap; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(45, 42, 38, 0.04); }
-        .tag-pill:hover { background: var(--bg-cream); border-color: var(--gold-light); }
+        .tag-pill { background: var(--card-bg); border: 1px solid var(--card-border); padding: 10px 18px; border-radius: 24px; font-size: 13px; font-weight: 500; color: var(--ink-light); white-space: nowrap; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(45, 42, 38, 0.04); touch-action: manipulation; }
+        @media (hover: hover) {
+            .tag-pill:hover { background: var(--bg-cream); border-color: var(--gold-light); }
+        }
+        .tag-pill:active { background: var(--bg-cream); transform: scale(0.98); }
         .tag-pill.active { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); color: white; border-color: transparent; box-shadow: 0 4px 15px rgba(212, 165, 116, 0.3); }
 
         .results-list { display: flex; flex-direction: column; gap: 16px; }
-        .result-card { padding: 20px; transition: all 0.3s ease; animation: cardEnter 0.4s ease backwards; }
+        .result-card { padding: 20px; transition: all 0.3s ease; animation: cardEnter 0.4s ease backwards; touch-action: manipulation; }
         @keyframes cardEnter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .result-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(45, 42, 38, 0.12); border-color: var(--gold-light); }
+        @media (hover: hover) {
+            .result-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(45, 42, 38, 0.12); border-color: var(--gold-light); }
+        }
 
         .meta-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
         .meta-left { display: flex; flex-direction: column; gap: 6px; }
@@ -90,21 +100,31 @@
 
         .badges { display: flex; gap: 10px; }
         .badge-wrapper { position: relative; }
-        .badge-icon { width: 20px; height: 20px; stroke: var(--gold-primary); fill: none; stroke-width: 1.8; cursor: help; transition: all 0.2s ease; }
-        .badge-icon:hover { stroke: var(--peach); transform: scale(1.1); }
-        .tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-8px); background: var(--ink); color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; white-space: nowrap; opacity: 0; visibility: hidden; transition: all 0.2s ease; z-index: 100; }
+        .badge-icon { width: 20px; height: 20px; stroke: var(--gold-primary); fill: none; stroke-width: 1.8; cursor: help; transition: all 0.2s ease; touch-action: manipulation; }
+        @media (hover: hover) {
+            .badge-icon:hover { stroke: var(--peach); transform: scale(1.1); }
+        }
+        .tooltip { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-8px); background: var(--ink); color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; white-space: nowrap; opacity: 0; visibility: hidden; transition: all 0.2s ease; z-index: 100; pointer-events: none; }
         .tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: var(--ink); }
         .badge-wrapper:hover .tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-4px); }
+        /* Touch friendly tooltip: also show on active */
+        .badge-wrapper:active .tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-4px); }
 
         .name { font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; color: var(--ink); }
         .desc { font-size: 14px; color: var(--ink-light); margin-bottom: 18px; line-height: 1.6; }
 
         .actions { display: flex; gap: 10px; }
-        .btn { flex: 1; padding: 12px; text-align: center; text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; border: 1px solid var(--card-border); color: var(--ink); transition: all 0.2s ease; cursor: pointer; background: var(--bg-ivory); display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn { flex: 1; padding: 12px; text-align: center; text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; border: 1px solid var(--card-border); color: var(--ink); transition: all 0.2s ease; cursor: pointer; background: var(--bg-ivory); display: flex; align-items: center; justify-content: center; gap: 6px; touch-action: manipulation; }
         .btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
-        .btn:hover { background: var(--bg-cream); border-color: var(--gold-light); }
+        @media (hover: hover) {
+            .btn:hover { background: var(--bg-cream); border-color: var(--gold-light); }
+        }
+        .btn:active { background: var(--bg-cream); transform: scale(0.98); }
         .btn-primary { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); color: white; border-color: transparent; }
-        .btn-primary:hover { background: linear-gradient(135deg, var(--gold-dark), #E8955F); box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4); }
+        @media (hover: hover) {
+            .btn-primary:hover { background: linear-gradient(135deg, var(--gold-dark), #E8955F); box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4); }
+        }
+        .btn-primary:active { background: var(--gold-dark); }
 
         .hidden { display: none !important; }
         .loader { text-align: center; padding: 60px 20px; font-weight: 500; color: var(--ink-muted); }
@@ -121,7 +141,7 @@
         .pac-icon { display: none; }
     </style>
 </head>
-<body>
+<body ontouchstart="">
     <div class="aurora-bg"></div>
     <div class="aurora-glow"></div>
     
