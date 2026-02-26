@@ -7,7 +7,7 @@
  * Bijv:    node verify_place_ids.js 1 20
  */
 
-const GOOGLE_KEY = "AIzaSyAw0UlkShhJ_FQUG1ibkMidUhvEFC23jb4";
+const GOOGLE_KEY = process.env.GOOGLE_MAPS_KEY || require('fs').readFileSync('.supabase_env', 'utf8').match(/GOOGLE_MAPS_KEY=(.+)/)?.[1]?.trim();
 const SB_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/locations";
 const SB_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || require('fs').readFileSync('.supabase_env','utf8').match(/SUPABASE_SERVICE_KEY=(.+)/)?.[1] || '';
 const MGMT_URL = "https://api.supabase.com/v1/projects/piujsvgbfflrrvauzsxe/database/query";

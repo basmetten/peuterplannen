@@ -1,1 +1,11 @@
 .supabase_env
+SCRATCH.md
+memory/
+peuterplannen/
+dedup_locations.js
+fix_incomplete_locations.js
+add_new_locations.js
+verify_place_ids.js
+all_locations_for_verification.json
+all_locations_raw.json
+batch_*.json

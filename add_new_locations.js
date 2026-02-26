@@ -7,7 +7,7 @@ const { readFileSync } = require('fs');
 const env = readFileSync('.supabase_env', 'utf8');
 const SB_KEY = env.match(/SUPABASE_SERVICE_KEY=(.+)/)?.[1]?.trim();
 const MGMT_TOKEN = env.match(/SUPABASE_ACCESS_TOKEN=(.+)/)?.[1]?.trim();
-const GOOGLE_KEY = "AIzaSyAw0UlkShhJ_FQUG1ibkMidUhvEFC23jb4";
+const GOOGLE_KEY = process.env.GOOGLE_MAPS_KEY || require('fs').readFileSync('.supabase_env', 'utf8').match(/GOOGLE_MAPS_KEY=(.+)/)?.[1]?.trim();
 const SB_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/locations";
 const MGMT_URL = "https://api.supabase.com/v1/projects/piujsvgbfflrrvauzsxe/database/query";
 
