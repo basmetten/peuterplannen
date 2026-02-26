@@ -2,34 +2,68 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
+  <!-- Hoofdpagina's -->
   <url>
     <loc>https://basmetten.github.io/peuterplannen/</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="nl" href="https://basmetten.github.io/peuterplannen/"/>
   </url>
-
   <url>
     <loc>https://basmetten.github.io/peuterplannen/app.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="nl" href="https://basmetten.github.io/peuterplannen/app.html"/>
   </url>
-
   <url>
     <loc>https://basmetten.github.io/peuterplannen/about.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.5</priority>
   </url>
-
   <url>
     <loc>https://basmetten.github.io/peuterplannen/contact.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Stad-landingspagina's -->
+  <url>
+    <loc>https://basmetten.github.io/peuterplannen/amsterdam.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://basmetten.github.io/peuterplannen/utrecht.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://basmetten.github.io/peuterplannen/rotterdam.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://basmetten.github.io/peuterplannen/den-haag.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://basmetten.github.io/peuterplannen/haarlem.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://basmetten.github.io/peuterplannen/leiden.html</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
 
 </urlset>

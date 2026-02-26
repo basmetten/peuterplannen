@@ -10,3 +10,4 @@ all_locations_for_verification.json
 all_locations_raw.json
 batch_*.json
 alcohol_age_check.js
+generate_city_pages.js

@@ -165,6 +165,16 @@
             .footer-container { grid-template-columns: 1fr 1fr; }
             .nav-links { display: none; }
         }
+
+        .cities-section { padding: 80px 24px; background: var(--bg-cream); }
+        .section-title { font-size: 32px; font-weight: 700; color: var(--navy); text-align: center; margin-bottom: 12px; }
+        .section-sub { color: var(--ink-light); text-align: center; font-size: 17px; margin-bottom: 40px; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .cities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+        .city-card { background: white; border-radius: 12px; padding: 24px 20px; text-align: center; text-decoration: none; border: 1px solid rgba(201,169,110,0.2); box-shadow: 0 2px 12px rgba(27,43,75,0.06); transition: all 0.25s; display: flex; flex-direction: column; gap: 6px; }
+        .city-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(27,43,75,0.13); border-color: var(--navy); }
+        .city-card strong { font-size: 17px; font-weight: 700; color: var(--navy); }
+        .city-card span { font-size: 13px; color: var(--ink-muted); }
     </style>
 </head>
 <body>
@@ -248,6 +258,39 @@
         </div>
     </section>
 
+
+    <section class="cities-section">
+        <div class="container">
+            <h2 class="section-title">Uitjes per stad</h2>
+            <p class="section-sub">Bekijk alle kindvriendelijke locaties per regio — geverifieerd en actueel.</p>
+            <div class="cities-grid">
+                <a href="amsterdam.html" class="city-card">
+                    <strong>Amsterdam</strong>
+                    <span>45 locaties</span>
+                </a>
+                <a href="utrecht.html" class="city-card">
+                    <strong>Utrecht</strong>
+                    <span>40 locaties</span>
+                </a>
+                <a href="rotterdam.html" class="city-card">
+                    <strong>Rotterdam</strong>
+                    <span>29 locaties</span>
+                </a>
+                <a href="den-haag.html" class="city-card">
+                    <strong>Den Haag</strong>
+                    <span>24 locaties</span>
+                </a>
+                <a href="haarlem.html" class="city-card">
+                    <strong>Haarlem</strong>
+                    <span>5 locaties</span>
+                </a>
+                <a href="leiden.html" class="city-card">
+                    <strong>Leiden</strong>
+                    <span>9 locaties</span>
+                </a>
+            </div>
+        </div>
+    </section>
     <footer>
         <div class="footer-container">
             <div class="footer-brand">
