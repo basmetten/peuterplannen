@@ -63,6 +63,11 @@
         .aurora-bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(160deg, #FAFAF8 0%, #F0EDE8 100%); z-index: -2; }
         .aurora-glow { position: fixed; top: -20%; right: -10%; width: 60%; height: 60%; background: radial-gradient(ellipse at center, rgba(201, 169, 110, 0.07) 0%, transparent 60%); z-index: -1; pointer-events: none; }
 
+        /* Skeleton loader */
+        .skeleton { background: linear-gradient(90deg, var(--bg-cream) 25%, var(--bg-ivory) 50%, var(--bg-cream) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        .skeleton-card { height: 100px; margin-bottom: 12px; }
+
         /* Scroll reveal animaties — CLS-veilig via transform only */
         @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -117,7 +122,7 @@
         .tag-pill.active { background: var(--navy); color: white; border-color: transparent; box-shadow: 0 4px 15px rgba(27, 43, 75, 0.25); }
 
         .results-list { display: flex; flex-direction: column; gap: 16px; }
-        .result-card { padding: 20px; transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease; touch-action: manipulation; border-left: 3px solid transparent; }
+        .result-card { padding: 20px; transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease, border-color 0.25s ease; touch-action: manipulation; border-left: 4px solid var(--gold-primary); border: 1px solid var(--card-border); }
         @media (hover: hover) {
             .result-card:hover { transform: translateY(-3px); box-shadow: var(--card-shadow-hover); border-color: var(--gold-primary); border-left-color: var(--navy); }
         }
@@ -148,7 +153,7 @@
         .desc { font-size: 14px; color: var(--ink-light); margin-bottom: 18px; line-height: 1.6; }
 
         .actions { display: flex; gap: 10px; }
-        .btn { flex: 1; padding: 12px; text-align: center; text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; border: 1px solid var(--card-border); color: var(--ink); transition: all 0.2s ease; cursor: pointer; background: var(--bg-ivory); display: flex; align-items: center; justify-content: center; gap: 6px; touch-action: manipulation; }
+        .btn { flex: 1; padding: 14px 16px; font-size: 15px; text-align: center; text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; border: 1px solid var(--card-border); color: var(--ink); transition: all 0.2s ease; cursor: pointer; background: var(--bg-ivory); display: flex; align-items: center; justify-content: center; gap: 6px; touch-action: manipulation; }
         .maps-button { width: 48px; height: 48px; padding: 0; border-radius: 12px; background: var(--navy); border: none; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s ease; touch-action: manipulation; flex: 0 0 auto; color: var(--gold-light); }
         .maps-button:hover { background: var(--navy-light); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(27, 43, 75, 0.25); }
         .maps-icon { width: 20px; height: 20px; color: inherit; }
