@@ -4,25 +4,25 @@
 
   <!-- Hoofdpagina's -->
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/</loc>
+    <loc>https://peuterplannen.nl/</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/app.html</loc>
+    <loc>https://peuterplannen.nl/app.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/about.html</loc>
+    <loc>https://peuterplannen.nl/about.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/contact.html</loc>
+    <loc>https://peuterplannen.nl/contact.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
@@ -30,37 +30,37 @@
 
   <!-- Stad-landingspagina's -->
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/amsterdam.html</loc>
+    <loc>https://peuterplannen.nl/amsterdam.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/utrecht.html</loc>
+    <loc>https://peuterplannen.nl/utrecht.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/rotterdam.html</loc>
+    <loc>https://peuterplannen.nl/rotterdam.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/den-haag.html</loc>
+    <loc>https://peuterplannen.nl/den-haag.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/haarlem.html</loc>
+    <loc>https://peuterplannen.nl/haarlem.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/leiden.html</loc>
+    <loc>https://peuterplannen.nl/leiden.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
@@ -69,31 +69,31 @@
 
   <!-- Type-landingspagina's -->
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/speeltuinen.html</loc>
+    <loc>https://peuterplannen.nl/speeltuinen.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/musea.html</loc>
+    <loc>https://peuterplannen.nl/musea.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/pannenkoeken.html</loc>
+    <loc>https://peuterplannen.nl/pannenkoeken.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/natuur.html</loc>
+    <loc>https://peuterplannen.nl/natuur.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://basmetten.github.io/peuterplannen/horeca.html</loc>
+    <loc>https://peuterplannen.nl/horeca.html</loc>
     <lastmod>2026-02-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
