@@ -389,7 +389,7 @@
                 loader.classList.add('hidden');
                 if (allLocations.length === 0) { container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>Probeer een andere categorie</div>'; return; }
                 if (userLocation) { allLocations.forEach(item => { item.distanceKm = calculateDistance(userLocation.lat, userLocation.lng, item.lat, item.lng); }); allLocations.sort((a, b) => a.distanceKm - b.distanceKm); }
-                renderCards(allLocations, {}); if (userLocation) { const travelTimes = await calculateTravelTimes(allLocations); renderCards(allLocations, travelTimes); }
+                renderCards(allLocations, {}); if (userLocation) { const travelTimes = await calculateTravelTimes(allLocations); allLocations.sort((a, b) => (travelTimes[a.id]?.durationValue || 999999) - (travelTimes[b.id]?.durationValue || 999999)); renderCards(allLocations, travelTimes); }
             } catch (e) { console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.textContent = 'Kon data niet laden. Vernieuw de pagina.'; }
         }
 
