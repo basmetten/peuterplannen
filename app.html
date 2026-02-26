@@ -3,53 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PeuterPlannen 5.0</title>
+    <title>PeuterPlannen — Vind kindvriendelijke uitjes bij jou in de buurt</title>
+    <meta name="description" content="Zoek op locatie en vind de beste kindvriendelijke speeltuinen, restaurants, musea en natuur in de Randstad. Gratis, snel, 135 geverifieerde plekken.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://basmetten.github.io/peuterplannen/app.html">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://basmetten.github.io/peuterplannen/app.html">
+    <meta property="og:title" content="PeuterPlannen — Kindvriendelijke uitjes in de buurt">
+    <meta property="og:description" content="135 geverifieerde locaties: speeltuinen, restaurants, musea en natuur voor kinderen in Amsterdam, Rotterdam, Utrecht en Den Haag.">
+    <meta property="og:locale" content="nl_NL">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="PeuterPlannen — Uitjes voor kinderen">
+    <meta name="twitter:description" content="Vind kindvriendelijke locaties bij jou in de buurt.">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "PeuterPlannen",
+      "url": "https://basmetten.github.io/peuterplannen/app.html",
+      "description": "Interactieve kaart met 135 kindvriendelijke locaties in de Randstad. Filter op type: speeltuin, restaurant, museum, natuur.",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "Any",
+      "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}
+    }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAw0UlkShhJ_FQUG1ibkMidUhvEFC23jb4&libraries=places,geometry,distance_matrix"></script>
     <style>
         :root {
-            /* Golden Hour Palette */
-            --bg-warm: #FDF8F3;
-            --bg-cream: #F5EDE4;
-            --bg-ivory: #FFFDF9;
-            --gold-primary: #D4A574;
-            --gold-light: #E8C9A0;
-            --gold-dark: #B8935F;
-            --peach: #F4A261;
-            --peach-soft: rgba(244, 162, 97, 0.15);
-            --amber: #E9C46A;
-            --ink: #2D2A26;
-            --ink-light: #5C5854;
-            --ink-muted: #9A9590;
-            --card-bg: rgba(255, 253, 249, 0.95);
-            --card-border: rgba(212, 165, 116, 0.3);
-            --card-shadow: 0 4px 24px rgba(45, 42, 38, 0.08);
+            /* Soft Premium Palette */
+            --bg-warm: #FAFAF8;
+            --bg-cream: #F4F1EC;
+            --bg-ivory: #FFFFFF;
+            --navy: #1B2B4B;
+            --navy-light: #2C3E6B;
+            --navy-muted: rgba(27, 43, 75, 0.08);
+            --gold-primary: #C9A96E;
+            --gold-light: #E0C992;
+            --gold-dark: #A8864A;
+            --peach: #E8956D;
+            --peach-soft: rgba(232, 149, 109, 0.12);
+            --ink: #1B2B4B;
+            --ink-light: #4A5568;
+            --ink-muted: #8896A8;
+            --card-bg: #FFFFFF;
+            --card-border: rgba(201, 169, 110, 0.25);
+            --card-shadow: 0 2px 16px rgba(27, 43, 75, 0.07), 0 1px 4px rgba(27, 43, 75, 0.04);
+            --card-shadow-hover: 0 8px 32px rgba(27, 43, 75, 0.13), 0 2px 8px rgba(27, 43, 75, 0.06);
             --success: #2A9D8F;
             --safe-bottom: env(safe-area-inset-bottom, 20px);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         html { height: 100%; }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100%; background: linear-gradient(180deg, var(--bg-warm) 0%, var(--bg-cream) 100%); color: var(--ink); line-height: 1.5; overflow-x: hidden; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100%; background: var(--bg-warm); color: var(--ink); line-height: 1.5; overflow-x: hidden; }
 
-        .aurora-bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, var(--bg-warm) 0%, var(--bg-cream) 50%, #FFF5EB 100%); z-index: -2; }
-        .aurora-glow { position: fixed; top: -30%; right: -20%; width: 80%; height: 80%; background: radial-gradient(ellipse at center, rgba(244, 162, 97, 0.12) 0%, transparent 60%), radial-gradient(ellipse at 30% 70%, rgba(233, 196, 106, 0.08) 0%, transparent 50%); animation: aurora 15s ease-in-out infinite; z-index: -1; }
-        @keyframes aurora { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-2%, 2%) scale(1.05); } }
+        .aurora-bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(160deg, #FAFAF8 0%, #F0EDE8 100%); z-index: -2; }
+        .aurora-glow { position: fixed; top: -20%; right: -10%; width: 60%; height: 60%; background: radial-gradient(ellipse at center, rgba(201, 169, 110, 0.07) 0%, transparent 60%); z-index: -1; pointer-events: none; }
+
+        /* Scroll reveal animaties — CLS-veilig via transform only */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .reveal { opacity: 0; }
+        .reveal.visible { animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        @media (prefers-reduced-motion: reduce) { .reveal, .reveal.visible { animation: none; opacity: 1; } }
 
         .app-container { max-width: 500px; margin: 0 auto; padding: 24px 16px calc(100px + var(--safe-bottom)); position: relative; }
 
         header { margin-bottom: 24px; text-align: center; }
         .logo { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-        .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--gold-primary), var(--peach)); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(212, 165, 116, 0.4); }
-        .logo-icon svg { width: 24px; height: 24px; stroke: white; fill: none; stroke-width: 2; }
-        h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
+        .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--navy), var(--navy-light)); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(27, 43, 75, 0.25); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .logo-icon:hover { transform: rotate(-3deg) scale(1.05); box-shadow: 0 6px 24px rgba(27, 43, 75, 0.3); }
+        .logo-icon svg { width: 24px; height: 24px; stroke: var(--gold-light); fill: none; stroke-width: 2; }
+        h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; color: var(--navy); }
         .sub-head { font-size: 14px; color: var(--ink-muted); font-weight: 500; }
 
         .glass-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; box-shadow: var(--card-shadow); }
         .location-section { padding: 20px; margin-bottom: 20px; }
-        .location-label { font-size: 12px; font-weight: 600; color: var(--gold-dark); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+        .location-label { font-size: 11px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
         .location-input-wrapper { display: flex; gap: 10px; align-items: center; }
         .location-input { flex: 1; padding: 14px 16px; background: var(--bg-ivory); border: 1px solid var(--card-border); border-radius: 12px; font-size: 16px; font-family: inherit; color: var(--ink); transition: all 0.2s ease; }
         .location-input::placeholder { color: var(--ink-muted); }
@@ -61,12 +94,12 @@
         }
         .icon-btn:active { transform: scale(0.96); background: var(--bg-cream); }
         .icon-btn svg { stroke: var(--ink-light); fill: none; stroke-width: 2; width: 22px; height: 22px; }
-        .icon-btn.primary { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); border-color: transparent; }
-        .icon-btn.primary svg { stroke: white; }
+        .icon-btn.primary { background: var(--navy); border-color: transparent; }
+        .icon-btn.primary svg { stroke: var(--gold-light); }
         @media (hover: hover) {
-            .icon-btn.primary:hover { background: linear-gradient(135deg, var(--gold-dark), #E8955F); box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4); }
+            .icon-btn.primary:hover { background: var(--navy-light); box-shadow: 0 4px 15px rgba(27, 43, 75, 0.3); }
         }
-        .icon-btn.primary:active { background: var(--gold-dark); }
+        .icon-btn.primary:active { background: var(--navy-light); }
 
         .gps-status { font-size: 13px; color: var(--ink-light); margin-top: 12px; display: flex; align-items: center; gap: 8px; padding: 0 4px; }
         .gps-status.loading::before { content: ''; width: 14px; height: 14px; border: 2px solid var(--card-border); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -80,14 +113,14 @@
             .tag-pill:hover { background: var(--bg-cream); border-color: var(--gold-light); }
         }
         .tag-pill:active { background: var(--bg-cream); transform: scale(0.98); }
-        .tag-pill.active { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); color: white; border-color: transparent; box-shadow: 0 4px 15px rgba(212, 165, 116, 0.3); }
+        .tag-pill.active { background: var(--navy); color: white; border-color: transparent; box-shadow: 0 4px 15px rgba(27, 43, 75, 0.25); }
 
         .results-list { display: flex; flex-direction: column; gap: 16px; }
-        .result-card { padding: 20px; transition: all 0.3s ease; animation: cardEnter 0.4s ease backwards; touch-action: manipulation; }
-        @keyframes cardEnter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .result-card { padding: 20px; transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease; touch-action: manipulation; border-left: 3px solid transparent; }
         @media (hover: hover) {
-            .result-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(45, 42, 38, 0.12); border-color: var(--gold-light); }
+            .result-card:hover { transform: translateY(-3px); box-shadow: var(--card-shadow-hover); border-color: var(--gold-primary); border-left-color: var(--navy); }
         }
+        .result-card:active { transform: scale(0.99); }
 
         .meta-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
         .meta-left { display: flex; flex-direction: column; gap: 6px; }
@@ -110,7 +143,7 @@
         /* Touch friendly tooltip: also show on active */
         .badge-wrapper:active .tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-4px); }
 
-        .name { font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; color: var(--ink); }
+        .name { font-size: 19px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; color: var(--navy); line-height: 1.3; }
         .desc { font-size: 14px; color: var(--ink-light); margin-bottom: 18px; line-height: 1.6; }
 
         .actions { display: flex; gap: 10px; }
@@ -120,11 +153,11 @@
             .btn:hover { background: var(--bg-cream); border-color: var(--gold-light); }
         }
         .btn:active { background: var(--bg-cream); transform: scale(0.98); }
-        .btn-primary { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); color: white; border-color: transparent; }
+        .btn-primary { background: var(--navy); color: white; border-color: transparent; font-weight: 600; letter-spacing: 0.01em; }
         @media (hover: hover) {
-            .btn-primary:hover { background: linear-gradient(135deg, var(--gold-dark), #E8955F); box-shadow: 0 4px 15px rgba(212, 165, 116, 0.4); }
+            .btn-primary:hover { background: var(--navy-light); box-shadow: 0 4px 16px rgba(27, 43, 75, 0.3); transform: translateY(-1px); }
         }
-        .btn-primary:active { background: var(--gold-dark); }
+        .btn-primary:active { background: var(--navy-light); transform: scale(0.98); }
 
         .hidden { display: none !important; }
         .loader { text-align: center; padding: 60px 20px; font-weight: 500; color: var(--ink-muted); }
@@ -354,7 +387,7 @@
                 const travelTimeHtml = travelInfo ? `<div class="travel-time ${travelInfo.estimated ? 'estimated' : ''}"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>${travelInfo.duration}</div>` : (userLocation ? '<div class="travel-time calculating"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Reistijd...</div>' : '');
                 const isFav = isFavorite(item.id);
                 const favIcon = isFav ? 'fill: var(--peach); stroke: var(--peach);' : 'fill: none; stroke: var(--ink-muted);';
-                const card = document.createElement('div'); card.className = 'result-card glass-card'; card.style.animationDelay = `${index * 0.05}s`;
+                const card = document.createElement('div'); card.className = 'result-card glass-card reveal'; card.style.animationDelay = `${Math.min(index * 0.06, 0.4)}s`;
                 card.innerHTML = `
                     <div class="meta-top">
                         <div class="meta-left">
@@ -447,6 +480,28 @@
             } finally {
                 btn.disabled = false;
             }
+        }
+
+        // Scroll-reveal: CLS-veilig via IntersectionObserver (alleen transform + opacity)
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+
+        function observeCards() {
+            document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+        }
+
+        // Observer na elke render-cyclus aanroepen
+        const _origRenderCards = renderCards;
+        // Patch: na render, observe nieuwe cards
+        const resultsContainer = document.getElementById('results-container');
+        if (resultsContainer) {
+            new MutationObserver(() => observeCards()).observe(resultsContainer, { childList: true });
         }
     </script>
 </body>
