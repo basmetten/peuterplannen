@@ -1,0 +1,346 @@
+{
+  "batch": "51-70",
+  "verified_at": "2026-02-26T05:28:00Z",
+  "locaties": [
+    {
+      "id": 51,
+      "naam": "Anne Frank Huis",
+      "adres": "Prinsengracht 263-267 (ingang Westermarkt 20), 1016 GV Amsterdam",
+      "gps": {
+        "lat": 52.3752,
+        "lng": 4.8840
+      },
+      "website": "https://www.annefrank.org",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": true
+      },
+      "beschrijving": "Museum in het huis waar Anne Frank haar dagboek schreef tijdens de Tweede Wereldoorlog. Aanbevolen leeftijd vanaf 10 jaar."
+    },
+    {
+      "id": 52,
+      "naam": "Het Scheepvaartmuseum",
+      "adres": "Kattenburgerplein 1, 1018 KK Amsterdam",
+      "gps": {
+        "lat": 52.3717,
+        "lng": 4.9149
+      },
+      "website": "https://www.hetscheepvaartmuseum.nl",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "Nationaal museum voor de maritieme geschiedenis van Nederland, gevestigd in het historische Zeemagazijn."
+    },
+    {
+      "id": 53,
+      "naam": "Verzetsmuseum",
+      "adres": "Plantage Kerklaan 61, 1018 CX Amsterdam",
+      "gps": {
+        "lat": 52.3678,
+        "lng": 4.9127
+      },
+      "website": "https://www.verzetsmuseum.org",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": true
+      },
+      "beschrijving": "Museum over het Nederlandse verzet tijdens de Tweede Wereldoorlog en de Holocaust."
+    },
+    {
+      "id": 54,
+      "naam": "Tropenmuseum",
+      "adres": "Linnaeusstraat 2, 1092 CK Amsterdam",
+      "gps": {
+        "lat": 52.3627,
+        "lng": 4.9225
+      },
+      "website": "https://www.tropenmuseum.nl",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "Museum over wereldculturen, nu onderdeel van Wereldmuseum. Heeft een fraaie permanente collectie en wisselende tentoonstellingen."
+    },
+    {
+      "id": 55,
+      "naam": "Het Grachtenhuis",
+      "adres": "Herengracht 386, 1016 CJ Amsterdam",
+      "gps": {
+        "lat": 52.3677,
+        "lng": 4.8861
+      },
+      "website": "https://www.grachten.museum",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": false,
+        "alcohol": false,
+        "diaper": false
+      },
+      "beschrijving": "Multimediaal museum over de Amsterdamse grachtengordel in een prachtig grachtenpand."
+    },
+    {
+      "id": 56,
+      "naam": "Museum Het Schip",
+      "adres": "Oostzaanstraat 45, 1013 WG Amsterdam",
+      "gps": {
+        "lat": 52.3922,
+        "lng": 4.8736
+      },
+      "website": "https://www.hetschip.nl",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": false
+      },
+      "beschrijving": "Museum gewijd aan de Amsterdamse School, gevestigd in een iconisch gebouw in de Spaarndammerbuurt."
+    },
+    {
+      "id": 57,
+      "naam": "Museum Willet-Holthuysen",
+      "adres": "Herengracht 605, 1017 CE Amsterdam",
+      "gps": {
+        "lat": 52.3656,
+        "lng": 4.8989
+      },
+      "website": "https://www.willetholthuysen.nl",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": false,
+        "alcohol": false,
+        "diaper": false
+      },
+      "beschrijving": "Authentiek 18e-eeuws grachtenpand met originele inrichting en fraaie tuin aan de Herengracht."
+    },
+    {
+      "id": 58,
+      "naam": "Foam",
+      "adres": "Keizersgracht 609, 1017 DS Amsterdam",
+      "gps": {
+        "lat": 52.3658,
+        "lng": 4.8889
+      },
+      "website": "https://www.foam.org",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": false
+      },
+      "beschrijving": "Fotografiemuseum met wisselende tentoonstellingen van internationale fotografen in een grachtenpand."
+    },
+    {
+      "id": 59,
+      "naam": "Eye Filmmuseum",
+      "adres": "IJpromenade 1, 1031 KT Amsterdam",
+      "gps": {
+        "lat": 52.3844,
+        "lng": 4.9006
+      },
+      "website": "https://www.eyefilm.nl",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "Filmmuseum met vier zalen, permanente collectie en restaurant met panoramisch uitzicht over het IJ."
+    },
+    {
+      "id": 60,
+      "naam": "Joods Museum",
+      "adres": "Nieuwe Amstelstraat 1, 1011 PL Amsterdam",
+      "gps": {
+        "lat": 52.3669,
+        "lng": 4.9040
+      },
+      "website": "https://jck.nl/nl/locatie/joods-museum",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": true
+      },
+      "beschrijving": "Museum over Joodse cultuur, religie en geschiedenis in Nederland, onderdeel van het Joods Cultureel Kwartier."
+    },
+    {
+      "id": 61,
+      "naam": "Spoorwegmuseum",
+      "adres": "Maliebaanstation 16, 3581 XW Utrecht",
+      "gps": {
+        "lat": 52.0880,
+        "lng": 5.1312
+      },
+      "website": "https://www.spoorwegmuseum.nl",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": true
+      },
+      "beschrijving": "Interactief museum over de spoorweggeschiedenis van Nederland, zeer geschikt voor kinderen met speeltuin en treinritten."
+    },
+    {
+      "id": 62,
+      "naam": "Castellum Hoge Woerd",
+      "adres": "Hoge Woerdplein 1, 3454 PB De Meern (Utrecht)",
+      "gps": {
+        "lat": 52.0872,
+        "lng": 5.0424
+      },
+      "website": "https://www.castellumhogewoerd.nl",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": true
+      },
+      "beschrijving": "Archeologisch museum in een reconstructie van een Romeins castellum met stadsboerderij en theater."
+    },
+    {
+      "id": 63,
+      "naam": "Sonnenborgh Museum & Sterrenwacht",
+      "adres": "Zonnenburg 2, 3512 NL Utrecht",
+      "gps": {
+        "lat": 52.0854,
+        "lng": 5.1291
+      },
+      "website": "https://www.sonnenborgh.nl",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": false,
+        "alcohol": false,
+        "diaper": false
+      },
+      "beschrijving": "Museum en sterrenwacht in een 19e-eeuws fort over sterrenkunde en weerkunde met openbare sterrenkijkavonden."
+    },
+    {
+      "id": 64,
+      "naam": "Maritiem Museum Rotterdam",
+      "adres": "Leuvehaven 1, 3011 EA Rotterdam",
+      "gps": {
+        "lat": 51.9174,
+        "lng": 4.4821
+      },
+      "website": "https://www.maritiemmuseum.nl",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "Museum over de maritieme geschiedenis van Rotterdam met historische schepen in de buitenhaven."
+    },
+    {
+      "id": 65,
+      "naam": "SS Rotterdam",
+      "adres": "3e Katendrechtsehoofd 25, 3072 AM Rotterdam",
+      "gps": {
+        "lat": 51.8920,
+        "lng": 4.4712
+      },
+      "website": "https://ssrotterdam.nl",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "Het voormalige vlaggenschip van de Holland-Amerika Lijn, nu te bezichtigen als drijvend museum en hotel."
+    },
+    {
+      "id": 66,
+      "naam": "Wereldmuseum Rotterdam",
+      "adres": "Willemskade 25, 3016 DM Rotterdam",
+      "gps": {
+        "lat": 51.9079,
+        "lng": 4.4804
+      },
+      "website": "https://rotterdam.wereldmuseum.nl",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": true,
+        "diaper": true
+      },
+      "beschrijving": "Museum over wereldculturen gevestigd in een monumentaal pand aan de Maaskade met uitzicht op de rivier."
+    },
+    {
+      "id": 67,
+      "naam": "Miniworld Rotterdam",
+      "adres": "Weena 745, 3013 AL Rotterdam",
+      "gps": {
+        "lat": 51.9228,
+        "lng": 4.4651
+      },
+      "website": "https://www.miniworldrotterdam.com",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": true
+      },
+      "beschrijving": "Grootste miniatuurwereld van Nederland met modeltreinen en hologrammen van Rotterdam en omgeving."
+    },
+    {
+      "id": 68,
+      "naam": "Natuurhistorisch Museum Rotterdam",
+      "adres": "Westzeedijk 345, 3015 AA Rotterdam",
+      "gps": {
+        "lat": 51.9108,
+        "lng": 4.4725
+      },
+      "website": "https://www.hetnatuurhistorisch.nl",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": true
+      },
+      "beschrijving": "Museum over de natuur van Nederland met een indrukwekkende collectie dieren en fossielen, inclusief de beroemde olifant Ramon."
+    },
+    {
+      "id": 69,
+      "naam": "Kunsthal Rotterdam",
+      "adres": "Westzeedijk 341, 3015 AA Rotterdam",
+      "gps": {
+        "lat": 51.9108,
+        "lng": 4.4737
+      },
+      "website": "https://www.kunsthal.nl",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": true
+      },
+      "beschrijving": "Tentoonstellingsgebouw in het Museumpark met wisselende exposities van fotografie, mode, design en beeldende kunst."
+    },
+    {
+      "id": 70,
+      "naam": "Belasting & Douane Museum",
+      "adres": "Parklaan 14-16, 3016 BB Rotterdam",
+      "gps": {
+        "lat": 51.9076,
+        "lng": 4.4765
+      },
+      "website": "https://www.bdmuseum.nl",
+      "type": "museum",
+      "faciliteiten": {
+        "coffee": true,
+        "alcohol": false,
+        "diaper": false
+      },
+      "beschrijving": "Een van de oudste musea van Rotterdam over de geschiedenis van belastingen en douane, met aandacht voor smokkel."
+    }
+  ]
+}
