@@ -317,7 +317,7 @@
             const container = document.getElementById('results-container'), loader = document.getElementById('loader'), error = document.getElementById('error');
             container.innerHTML = ''; loader.classList.remove('hidden'); error.classList.add('hidden');
             try {
-                let url = SB_URL + "?select=*";
+                let url = SB_URL + "?select=id,name,type,description,website,lat,lng,region,coffee,alcohol,diaper,place_id";
                 if (activeTag !== 'all' && activeTag !== 'favorites') url += "&type=eq." + activeTag;
                 url += "&order=created_at.desc";
                 const response = await fetch(url, { method: 'GET', headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" } });
@@ -335,6 +335,18 @@
                 if (userLocation) { allLocations.forEach(item => { item.distanceKm = calculateDistance(userLocation.lat, userLocation.lng, item.lat, item.lng); }); allLocations.sort((a, b) => a.distanceKm - b.distanceKm); }
                 renderCards(allLocations, {}); if (userLocation) { const travelTimes = await calculateTravelTimes(allLocations); renderCards(allLocations, travelTimes); }
             } catch (e) { console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.textContent = 'Kon data niet laden. Vernieuw de pagina.'; }
+        }
+
+        function buildMapsUrl(item) {
+            // Gebruik Place ID voor exacte officiële bedrijfspagina (geen "dropped pin")
+            if (item.place_id) {
+                const name = encodeURIComponent(item.name);
+                const origin = userLocation ? `&origin=${userLocation.lat},${userLocation.lng}` : '';
+                return `https://www.google.com/maps/dir/?api=1${origin}&destination=${encodeURIComponent(item.name)}&destination_place_id=${item.place_id}`;
+            }
+            // Fallback: coördinaten als Place ID ontbreekt
+            const origin = userLocation ? `&origin=${userLocation.lat},${userLocation.lng}` : '';
+            return `https://www.google.com/maps/dir/?api=1${origin}&destination=${item.lat},${item.lng}`;
         }
 
         function renderCards(locations, travelTimes) {
@@ -366,7 +378,7 @@
                     <div class="name">${item.name}</div>
                     <div class="desc">${item.description || ''}</div>
                     <div class="actions">
-                        <a href="https://www.google.com/maps/dir/?api=1&origin=${userLocation ? userLocation.lat + ',' + userLocation.lng : ''}&destination=${item.lat},${item.lng}" target="_blank" class="btn btn-primary"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>Route</a>
+                        <a href="${buildMapsUrl(item)}" target="_blank" class="btn btn-primary"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>Route</a>
                         ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Website</a>` : ''}
                         <button onclick="shareLocation('${item.name}', ${item.lat}, ${item.lng})" class="btn" title="Delen"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>
                     </div>

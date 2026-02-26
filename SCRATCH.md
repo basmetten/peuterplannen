@@ -1,35 +1,45 @@
-# SCRATCH.md — PeuterPlannen FINAL REPORT
-Laatste update: 2026-02-26T05:42:00Z (UTC) / 06:42 local
+# SCRATCH.md — PeuterPlannen
+Laatste update: 2026-02-26T09:15:00Z
 
-## ✅ DEADLINE 07:00 GEHAALD
+## ACTIEVE TAKEN
 
-### 📊 EINDSTAND DATASET
-| Batch | Status | Aantal | Highlights |
-|-------|--------|--------|------------|
-| 1-30 | ✅ | ~50 | Amsterdam, Rotterdam, Utrecht basis |
-| 31-40 | ✅ | 10 | Efteling, Julianatoren, Rijksmuseum, Van Gogh |
-| 41-50 | ✅ | 10 | Zaanse Schans, Muiderslot, Keukenhof |
-| 51-70 | ✅ | 20 | Amsterdam/Utrecht/Rotterdam musea |
-| 71-90 | ✅ | 20 | Utrecht/Rotterdam horeca & speeltuinen |
+### IN PROGRESS
+- [ ] **V1-9:** Place ID verificatie alle 177 locaties
+  - Batch 1-60: running (session tidy-shell)
+  - Batch 61-120: running (session crisp-otter)
+  - Batch 121-177: running (session calm-shore)
+  - Gestart: 09:15
+  - Methode: Google Places API → findplacefromtext + nearbysearch fallback
+  - Rate limit: 50ms tussen calls
+  - Resultaat: wordt live geschreven naar Supabase
 
-**🎯 TOTAAL: ~110 locaties live in Supabase**
+### TODO (na Place ID verificatie)
+- [ ] **APP1:** app.html Route knop updaten om place_id te gebruiken
+  - Huidige URL: `https://www.google.com/maps/dir/?api=1&...&destination=LAT,LNG`
+  - Nieuwe URL: `https://www.google.com/maps/search/?api=1&query=NAME&query_place_id=PLACE_ID`
+- [ ] **APP2:** Fallback in code als place_id leeg is
+- [ ] **DB1:** Controleer locaties waar Place ID niet gevonden werd
+- [ ] **DB2:** Handmatig corrigeren van mismatches (bijv. "De Kleine Parade — kinderkapper")
 
-### ✅ FEATURES AFGELEVERD
-- Golden Hour design (luxe + vrolijk)
-- 4-pagina website laag
-- Favorieten systeem
-- Delen knop
-- Suggestie systeem
-- GPS + reistijd berekening
+## DONE
+- [x] `place_id` + `last_verified_at` kolom toegevoegd via Management API ✅
+- [x] verify_place_ids.js script geschreven en getest
+- [x] Test batch 1-5: alle 5 locaties succesvol geverifieerd
+- [x] Migration file opgeslagen: supabase_project/supabase/migrations/20260226000000_add_place_id.sql
 
-### 🔗 LIVE URLS
-- **Home:** https://basmetten.github.io/peuterplannen/
-- **App:** https://basmetten.github.io/peuterplannen/app.html
-- **About:** https://basmetten.github.io/peuterplannen/about.html
-- **Contact:** https://basmetten.github.io/peuterplannen/contact.html
+## CREDENTIALS (alle werkend)
+- SUPABASE_ACCESS_TOKEN: [zie .supabase_env]
+- SUPABASE_MGMT_API: https://api.supabase.com/v1/projects/piujsvgbfflrrvauzsxe/database/query ✅
+- PROJECT_ID: piujsvgbfflrrvauzsxe
+- SUPABASE_SERVICE_KEY: [zie .supabase_env]
+- GOOGLE_MAPS_API_KEY: AIzaSyAw0UlkShhJ_FQUG1ibkMidUhvEFC23jb4
+- GitHub: basmetten/peuterplannen
 
-### 📈 GITHUB COMMITS
-10+ commits met alle wijzigingen van vannacht.
+## DATABASE STATUS
+- Tabel: public.locations
+- Rijen: 177
+- Kolommen: id, created_at, name, region, type, description, website, lat, lng, coffee, diaper, alcohol, weather, place_id ✅, last_verified_at ✅
 
----
-**Status: KLAAR VOOR GEBRUIK** 🚀
+## LIVE URLS
+- Home: https://basmetten.github.io/peuterplannen/
+- App: https://basmetten.github.io/peuterplannen/app.html
