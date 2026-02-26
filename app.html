@@ -26,6 +26,118 @@
       "operatingSystem": "Any",
       "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}
     }
+
+
+        // === SPA View Switching ===
+        let currentView = 'home';
+
+        function switchView(view) {
+            // Close info panel if open
+            if (view !== 'info') closeInfoPanel();
+
+            // Update bottom nav active state
+            document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
+            const tab = document.getElementById('tab-' + view);
+            if (tab) tab.classList.add('active');
+
+            currentView = view;
+
+            switch(view) {
+                case 'home':
+                    // Reset to default browse view
+                    activeTag = 'all';
+                    activeWeather = null;
+                    document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
+                    document.querySelector('.chip').classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    // Add fade transition
+                    const results = document.getElementById('results-container');
+                    results.classList.add('view-enter');
+                    setTimeout(() => results.classList.remove('view-enter'), 200);
+                    loadLocations();
+                    break;
+
+                case 'search':
+                    // Scroll to search and focus input
+                    const searchSection = document.querySelector('.search-section');
+                    searchSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => {
+                        const input = document.getElementById('location-input');
+                        input.focus();
+                        input.select();
+                    }, 350);
+                    break;
+
+                case 'favorites':
+                    // Switch to favorites filter
+                    activeTag = 'favorites';
+                    activeWeather = null;
+                    document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
+                    // Activate the favorites chip
+                    const favChip = Array.from(document.querySelectorAll('.chip')).find(ch => ch.textContent === 'Favorieten');
+                    if (favChip) favChip.classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    const resultsF = document.getElementById('results-container');
+                    resultsF.classList.add('view-enter');
+                    setTimeout(() => resultsF.classList.remove('view-enter'), 200);
+                    loadLocations();
+                    break;
+
+                case 'info':
+                    openInfoPanel();
+                    break;
+            }
+        }
+
+        function openInfoPanel() {
+            document.getElementById('info-overlay').classList.add('open');
+            document.getElementById('info-panel').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeInfoPanel() {
+            document.getElementById('info-overlay').classList.remove('open');
+            document.getElementById('info-panel').classList.remove('open');
+            document.body.style.overflow = '';
+            // Restore active tab to previous view if we were on info
+            if (currentView === 'info') {
+                currentView = 'home';
+                document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
+                document.getElementById('tab-home').classList.add('active');
+            }
+        }
+
+        // Swipe-down to close info panel
+        let touchStartY = 0;
+        document.getElementById('info-panel').addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        document.getElementById('info-panel').addEventListener('touchmove', (e) => {
+            const deltaY = e.touches[0].clientY - touchStartY;
+            if (deltaY > 80 && document.getElementById('info-panel').scrollTop === 0) {
+                closeInfoPanel();
+            }
+        }, { passive: true });
+
+        // ESC to close info panel
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeInfoPanel();
+        });
+
+        // Also update toggleTag to sync bottom nav state
+        const _origToggleTag = toggleTag;
+        toggleTag = function(tag) {
+            // Update bottom nav active state
+            document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
+            if (tag === 'favorites') {
+                document.getElementById('tab-favorites').classList.add('active');
+                currentView = 'favorites';
+            } else {
+                document.getElementById('tab-home').classList.add('active');
+                currentView = 'home';
+            }
+            _origToggleTag(tag);
+        };
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -171,7 +283,7 @@
 
         /* Bottom nav (mobile) */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid rgba(42, 157, 143, 0.1); padding: 8px 0; padding-bottom: calc(8px + var(--safe-bottom)); display: flex; justify-content: space-around; z-index: 100; box-shadow: 0 -2px 12px rgba(38, 70, 83, 0.06); }
-        .bnav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 16px; text-decoration: none; font-size: 10px; font-weight: 600; color: var(--text-muted); transition: color 0.2s; }
+        .bnav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 16px; text-decoration: none; font-size: 10px; font-weight: 600; color: var(--text-muted); transition: color 0.2s; background: none; border: none; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; }
         .bnav-item.active { color: var(--primary); }
         .bnav-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; }
         @media (min-width: 768px) { .bottom-nav { display: none; } body { padding-bottom: 0; } }
@@ -193,6 +305,40 @@
 
         /* Noscript fallback */
         noscript div { max-width: 800px; margin: 80px auto; padding: 24px; font-family: sans-serif; }
+
+        /* Info panel (slide-up bottom sheet) */
+        .info-overlay { position: fixed; inset: 0; background: rgba(38,70,83,0.4); z-index: 200; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+        .info-overlay.open { opacity: 1; visibility: visible; }
+        .info-panel { position: fixed; bottom: 0; left: 0; right: 0; max-height: 85vh; background: var(--surface); border-radius: 20px 20px 0 0; z-index: 201; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); overflow-y: auto; overscroll-behavior: contain; padding-bottom: calc(20px + var(--safe-bottom)); }
+        .info-panel.open { transform: translateY(0); }
+        .info-handle { display: flex; justify-content: center; padding: 12px 0 8px; cursor: pointer; }
+        .info-handle::before { content: ''; width: 36px; height: 4px; border-radius: 2px; background: var(--text-muted); opacity: 0.3; }
+        .info-header { display: flex; justify-content: space-between; align-items: center; padding: 0 24px 16px; border-bottom: 1px solid rgba(42,157,143,0.1); }
+        .info-header h2 { font-family: var(--font-heading); font-size: 22px; font-weight: 800; color: var(--text); }
+        .info-close { background: var(--bg); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; }
+        .info-close:hover { background: var(--primary-light); }
+        .info-close svg { width: 18px; height: 18px; stroke: var(--text-secondary); fill: none; stroke-width: 2; }
+        .info-body { padding: 20px 24px; }
+        .info-body p { color: var(--text-secondary); font-size: 15px; line-height: 1.7; margin-bottom: 16px; }
+        .info-body a { color: var(--primary-dark); font-weight: 600; text-decoration: none; }
+        .info-body a:hover { text-decoration: underline; }
+        .info-stats { display: flex; gap: 12px; margin: 20px 0; }
+        .info-stat { flex: 1; background: var(--primary-light); border-radius: 12px; padding: 16px; text-align: center; }
+        .info-stat strong { display: block; font-family: var(--font-heading); font-size: 24px; font-weight: 800; color: var(--primary-dark); }
+        .info-stat span { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+        .info-links { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .info-link { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--bg); border-radius: 12px; text-decoration: none; color: var(--text); font-weight: 600; font-size: 15px; transition: background 0.2s; }
+        .info-link:hover { background: var(--primary-light); }
+        .info-link svg { width: 20px; height: 20px; stroke: var(--primary); fill: none; stroke-width: 2; flex-shrink: 0; }
+        .info-link span { color: var(--text-secondary); font-weight: 400; font-size: 13px; }
+
+        /* View transition */
+        @keyframes viewFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .view-enter { animation: viewFadeIn 0.15s ease forwards; }
+
+        /* Active bottom nav indicator dot */
+        .bnav-item { position: relative; }
+        .bnav-item.active::after { content: ''; position: absolute; bottom: -2px; width: 4px; height: 4px; border-radius: 50%; background: var(--primary); }
     </style>
 </head>
 <body>
@@ -268,24 +414,72 @@
         <div id="error" class="error-msg hidden"></div>
     </div>
 
+
+    <!-- Info panel (slide-up bottom sheet) -->
+    <div class="info-overlay" id="info-overlay" onclick="closeInfoPanel()"></div>
+    <div class="info-panel" id="info-panel">
+        <div class="info-handle" onclick="closeInfoPanel()"></div>
+        <div class="info-header">
+            <h2>Over PeuterPlannen</h2>
+            <button class="info-close" onclick="closeInfoPanel()">
+                <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div class="info-body">
+            <p>PeuterPlannen helpt ouders met jonge kinderen de leukste uitjes te vinden in de Randstad en Utrechtse Heuvelrug. Alle locaties zijn geverifieerd op kindvriendelijkheid.</p>
+
+            <div class="info-stats">
+                <div class="info-stat">
+                    <strong>195+</strong>
+                    <span>Locaties</span>
+                </div>
+                <div class="info-stat">
+                    <strong>7</strong>
+                    <span>Regio's</span>
+                </div>
+                <div class="info-stat">
+                    <strong>5</strong>
+                    <span>Categorieën</span>
+                </div>
+            </div>
+
+            <p>Ontworpen door een vader van twee peuters die simpelweg betere tooling wilde. Geen startup, geen VC-geld — gewoon een tool die werkt.</p>
+
+            <div class="info-links">
+                <a href="about.html" class="info-link">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                    <div>Lees het hele verhaal<br><span>Over PeuterPlannen</span></div>
+                </a>
+                <a href="mailto:basmetten@gmail.com" class="info-link">
+                    <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+                    <div>Contact<br><span>basmetten@gmail.com</span></div>
+                </a>
+                <a href="index.html" class="info-link">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                    <div>Homepage<br><span>Bekijk alle steden en categorieën</span></div>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Mobile bottom navigation -->
-    <nav class="bottom-nav">
-        <a href="/" class="bnav-item">
+    <nav class="bottom-nav" id="bottom-nav">
+        <button class="bnav-item active" onclick="switchView('home')" id="tab-home">
             <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
             <span>Home</span>
-        </a>
-        <a href="app.html" class="bnav-item active">
+        </button>
+        <button class="bnav-item" onclick="switchView('search')" id="tab-search">
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             <span>Zoeken</span>
-        </a>
-        <button class="bnav-item" onclick="toggleTag('favorites')" style="background:none;border:none;cursor:pointer;">
+        </button>
+        <button class="bnav-item" onclick="switchView('favorites')" id="tab-favorites">
             <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             <span>Favorieten</span>
         </button>
-        <a href="about.html" class="bnav-item">
+        <button class="bnav-item" onclick="switchView('info')" id="tab-info">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
             <span>Info</span>
-        </a>
+        </button>
     </nav>
 
     <script>
@@ -540,6 +734,118 @@
                 document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
             }).observe(resultsContainer, { childList: true });
         }
+
+
+        // === SPA View Switching ===
+        let currentView = 'home';
+
+        function switchView(view) {
+            // Close info panel if open
+            if (view !== 'info') closeInfoPanel();
+
+            // Update bottom nav active state
+            document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
+            const tab = document.getElementById('tab-' + view);
+            if (tab) tab.classList.add('active');
+
+            currentView = view;
+
+            switch(view) {
+                case 'home':
+                    // Reset to default browse view
+                    activeTag = 'all';
+                    activeWeather = null;
+                    document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
+                    document.querySelector('.chip').classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    // Add fade transition
+                    const results = document.getElementById('results-container');
+                    results.classList.add('view-enter');
+                    setTimeout(() => results.classList.remove('view-enter'), 200);
+                    loadLocations();
+                    break;
+
+                case 'search':
+                    // Scroll to search and focus input
+                    const searchSection = document.querySelector('.search-section');
+                    searchSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => {
+                        const input = document.getElementById('location-input');
+                        input.focus();
+                        input.select();
+                    }, 350);
+                    break;
+
+                case 'favorites':
+                    // Switch to favorites filter
+                    activeTag = 'favorites';
+                    activeWeather = null;
+                    document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
+                    // Activate the favorites chip
+                    const favChip = Array.from(document.querySelectorAll('.chip')).find(ch => ch.textContent === 'Favorieten');
+                    if (favChip) favChip.classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    const resultsF = document.getElementById('results-container');
+                    resultsF.classList.add('view-enter');
+                    setTimeout(() => resultsF.classList.remove('view-enter'), 200);
+                    loadLocations();
+                    break;
+
+                case 'info':
+                    openInfoPanel();
+                    break;
+            }
+        }
+
+        function openInfoPanel() {
+            document.getElementById('info-overlay').classList.add('open');
+            document.getElementById('info-panel').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeInfoPanel() {
+            document.getElementById('info-overlay').classList.remove('open');
+            document.getElementById('info-panel').classList.remove('open');
+            document.body.style.overflow = '';
+            // Restore active tab to previous view if we were on info
+            if (currentView === 'info') {
+                currentView = 'home';
+                document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
+                document.getElementById('tab-home').classList.add('active');
+            }
+        }
+
+        // Swipe-down to close info panel
+        let touchStartY = 0;
+        document.getElementById('info-panel').addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        document.getElementById('info-panel').addEventListener('touchmove', (e) => {
+            const deltaY = e.touches[0].clientY - touchStartY;
+            if (deltaY > 80 && document.getElementById('info-panel').scrollTop === 0) {
+                closeInfoPanel();
+            }
+        }, { passive: true });
+
+        // ESC to close info panel
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeInfoPanel();
+        });
+
+        // Also update toggleTag to sync bottom nav state
+        const _origToggleTag = toggleTag;
+        toggleTag = function(tag) {
+            // Update bottom nav active state
+            document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
+            if (tag === 'favorites') {
+                document.getElementById('tab-favorites').classList.add('active');
+                currentView = 'favorites';
+            } else {
+                document.getElementById('tab-home').classList.add('active');
+                currentView = 'home';
+            }
+            _origToggleTag(tag);
+        };
     </script>
 </body>
 </html>
