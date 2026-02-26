@@ -413,15 +413,21 @@
                     allLocations = allLocations.filter(item => favorites.includes(item.id));
                 }
                 
-                loader.classList.add('hidden');
-                if (allLocations.length === 0) { container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>Probeer een andere categorie</div>'; return; }
+                if (allLocations.length === 0) { loader.classList.add('hidden'); container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>Probeer een andere categorie</div>'; return; }
                 
-                // Sorteer op afstand van stadscentrum (default)
-                allLocations.sort((a, b) => (a.distance_from_city_center_km || 999) - (b.distance_from_city_center_km || 999));
-                renderCards(allLocations, {}); 
-                
-                // Als user GPS inschakelt: reistijden berekenen en opnieuw sorteren
-                if (userLocation) { const travelTimes = await calculateTravelTimes(allLocations); allLocations.sort((a, b) => (travelTimes[a.id]?.durationValue || 999999) - (travelTimes[b.id]?.durationValue || 999999)); renderCards(allLocations, travelTimes); }
+                // Als user GPS/zoekin heeft: EERST reistijden berekenen, dan renderen
+                if (userLocation) { 
+                    console.log('User location active, calculating travel times...');
+                    const travelTimes = await calculateTravelTimes(allLocations); 
+                    allLocations.sort((a, b) => (travelTimes[a.id]?.durationValue || 999999) - (travelTimes[b.id]?.durationValue || 999999)); 
+                    loader.classList.add('hidden');
+                    renderCards(allLocations, travelTimes); 
+                } else {
+                    // Fallback: sorteer op afstand van stadscentrum
+                    allLocations.sort((a, b) => (a.distance_from_city_center_km || 999) - (b.distance_from_city_center_km || 999));
+                    loader.classList.add('hidden');
+                    renderCards(allLocations, {}); 
+                }
             } catch (e) { console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.textContent = 'Kon data niet laden. Vernieuw de pagina.'; }
         }
 
