@@ -4,54 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact — PeuterPlannen</title>
+    <meta name="description" content="Neem contact op met PeuterPlannen. Locatie suggereren, fout melden of samenwerken? We horen het graag.">
+    <link rel="canonical" href="https://peuterplannen.nl/contact.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-warm: #FAFAF8;
-            --bg-cream: #F0EDE8;
-            --navy: #1B2B4B;
-            --navy-light: #2C3E6B;
-            --gold-primary: #C9A96E;
-            --gold-dark: #A8864A;
-            --peach: #E8956D;
-            --ink: #1B2B4B;
-            --ink-light: #4A5568;
-            --ink-muted: #8896A8;
-            --card-bg: rgba(255, 253, 249, 0.95);
-            --card-border: rgba(212, 165, 116, 0.3);
-            --card-shadow: 0 2px 16px rgba(27, 43, 75, 0.07);
+            --primary: #2A9D8F;
+            --primary-light: #E6F5F3;
+            --primary-dark: #1E7A6E;
+            --accent: #E76F51;
+            --accent-light: #FDF0EC;
+            --navy: #264653;
+            --bg: #FEFBF6;
+            --bg-cream: #FFF8F0;
+            --ink: #264653;
+            --ink-light: #5A7A84;
+            --ink-muted: #94A3B0;
+            --card-bg: #FFFFFF;
+            --card-border: rgba(42, 157, 143, 0.15);
+            --card-shadow: 0 4px 12px rgba(38, 70, 83, 0.10);
+            --font-heading: 'Nunito', sans-serif;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-warm); color: var(--ink); line-height: 1.6; }
-        
-        nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(253, 248, 243, 0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid var(--card-border); }
-        .nav-container { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
-        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; color: var(--ink); text-decoration: none; }
-        .nav-logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--gold-primary), var(--peach)); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-        .nav-logo-icon svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
-        .nav-links { display: flex; gap: 32px; }
-        .nav-links a { color: var(--ink-light); text-decoration: none; font-weight: 500; font-size: 15px; }
-        .nav-links a:hover { color: var(--gold-dark); }
-        .nav-cta { background: var(--navy); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+        h1, h2, h3, h4 { font-family: var(--font-heading); }
 
-        .content { max-width: 600px; margin: 0 auto; padding: 140px 24px 80px; }
-        h1 { font-size: 42px; font-weight: 700; margin-bottom: 16px; }
+        nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(254, 251, 246, 0.96); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid var(--card-border); }
+        .nav-inner { max-width: 1100px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; font-family: var(--font-heading); }
+        .nav-logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 28px; }
+        .nav-links a { color: var(--ink-light); text-decoration: none; font-weight: 500; font-size: 15px; }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-cta { background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; }
+        .nav-cta:hover { background: var(--primary-dark); }
+
+        .content { max-width: 600px; margin: 0 auto; padding: 120px 24px 80px; }
+        h1 { font-size: 42px; font-weight: 800; margin-bottom: 16px; line-height: 1.2; }
         .subtitle { color: var(--ink-muted); font-size: 18px; margin-bottom: 40px; }
-        
-        .contact-option { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 28px; margin-bottom: 20px; box-shadow: var(--card-shadow); }
-        .contact-option h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+
+        .contact-option { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 28px; margin-bottom: 20px; box-shadow: var(--card-shadow); transition: transform 0.2s; }
+        .contact-option:hover { transform: translateY(-2px); }
+        .contact-option h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
         .contact-option p { color: var(--ink-light); margin-bottom: 16px; }
-        .contact-btn { display: inline-block; background: var(--bg-cream); color: var(--ink); padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; border: 1px solid var(--card-border); transition: all 0.2s; }
-        .contact-btn:hover { background: var(--gold-primary); color: white; border-color: var(--gold-primary); }
-        
-        .email-box { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); border-radius: 16px; padding: 32px; text-align: center; color: white; margin-top: 32px; }
+        .contact-btn { display: inline-block; background: var(--primary-light); color: var(--primary-dark); padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; border: 1px solid rgba(42,157,143,0.2); transition: all 0.2s; }
+        .contact-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .email-box { background: var(--primary); border-radius: 16px; padding: 32px; text-align: center; color: white; margin-top: 32px; }
         .email-box h3 { font-size: 20px; margin-bottom: 8px; }
         .email-box a { color: white; font-size: 18px; font-weight: 600; text-decoration: none; }
+        .email-box p { color: rgba(255,255,255,0.85); }
 
-        footer { background: var(--ink); color: white; padding: 40px 24px; text-align: center; margin-top: 60px; }
-        footer a { color: var(--gold-light); text-decoration: none; }
+        footer { background: var(--navy); color: rgba(255,255,255,0.6); padding: 32px 24px; text-align: center; font-size: 14px; margin-top: 60px; }
+        footer a { color: var(--primary); text-decoration: none; }
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
@@ -61,13 +68,8 @@
 </head>
 <body>
     <nav>
-        <div class="nav-container">
-            <a href="index.html" class="nav-logo">
-                <div class="nav-logo-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                </div>
-                PeuterPlannen
-            </a>
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">Peuter<span>Plannen</span></a>
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="about.html">Over</a>
@@ -82,32 +84,32 @@
         <p class="subtitle">Heb je een vraag, suggestie of gewoon zin om te klagen over je nachtrust? We horen het graag.</p>
 
         <div class="contact-option">
-            <h3>💡 Locatie suggestie</h3>
+            <h3>Locatie suggestie</h3>
             <p>Weet je een geweldige plek die nog niet in de app staat? Laat het ons weten en we checken het uit.</p>
             <a href="app.html" class="contact-btn">Suggestie insturen (via app)</a>
         </div>
 
         <div class="contact-option">
-            <h3>🐛 Fout gevonden?</h3>
+            <h3>Fout gevonden?</h3>
             <p>Is er iets mis met een locatie? Verkeerde openingstijden, gesloten, of toch geen verschoonplek?</p>
-            <a href="mailto:hallo@peuterplannen.nl?subject=Fout%20in%20locatie" class="contact-btn">Mail ons</a>
+            <a href="mailto:basmetten@gmail.com?subject=Fout%20in%20locatie" class="contact-btn">Mail ons</a>
         </div>
 
         <div class="contact-option">
-            <h3>🤝 Samenwerken</h3>
+            <h3>Samenwerken</h3>
             <p>Ben je een restaurant of attractie en wil je opvallen in onze app? We praten graag mee.</p>
-            <a href="mailto:hallo@peuterplannen.nl?subject=Samenwerking" class="contact-btn">Stuur een mail</a>
+            <a href="mailto:basmetten@gmail.com?subject=Samenwerking" class="contact-btn">Stuur een mail</a>
         </div>
 
         <div class="email-box">
             <h3>Direct contact</h3>
-            <a href="mailto:hallo@peuterplannen.nl">hallo@peuterplannen.nl</a>
-            <p style="margin-top: 12px; opacity: 0.9; font-size: 14px;">We reageren meestal binnen 24 uur (tenzij de kids weer eens vroeg wakker zijn)</p>
+            <a href="mailto:basmetten@gmail.com">basmetten@gmail.com</a>
+            <p style="margin-top: 12px; font-size: 14px;">We reageren meestal binnen 24 uur (tenzij de kids weer eens vroeg wakker zijn)</p>
         </div>
     </div>
 
     <footer>
-        <p>© 2025 PeuterPlannen — <a href="index.html">Terug naar home</a></p>
+        <p>&copy; 2026 PeuterPlannen &middot; <a href="index.html">Home</a> &middot; <a href="app.html">App</a> &middot; <a href="contact.html">Contact</a> &middot; <a href="about.html">Over ons</a></p>
     </footer>
 </body>
 </html>

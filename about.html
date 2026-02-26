@@ -4,62 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Over PeuterPlannen — Het verhaal</title>
+    <meta name="description" content="PeuterPlannen helpt ouders met peuters de leukste uitjes te vinden in de Randstad. 195+ geverifieerde locaties in 7 regio's.">
+    <link rel="canonical" href="https://peuterplannen.nl/about.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-warm: #FAFAF8;
-            --bg-cream: #F0EDE8;
-            --navy: #1B2B4B;
-            --navy-light: #2C3E6B;
-            --gold-primary: #C9A96E;
-            --gold-dark: #A8864A;
-            --peach: #E8956D;
-            --ink: #1B2B4B;
-            --ink-light: #4A5568;
-            --ink-muted: #8896A8;
-            --card-bg: rgba(255, 253, 249, 0.95);
-            --card-border: rgba(212, 165, 116, 0.3);
-            --card-shadow: 0 2px 16px rgba(27, 43, 75, 0.07);
+            --primary: #2A9D8F;
+            --primary-light: #E6F5F3;
+            --primary-dark: #1E7A6E;
+            --accent: #E76F51;
+            --accent-light: #FDF0EC;
+            --navy: #264653;
+            --bg: #FEFBF6;
+            --bg-cream: #FFF8F0;
+            --ink: #264653;
+            --ink-light: #5A7A84;
+            --ink-muted: #94A3B0;
+            --card-bg: #FFFFFF;
+            --card-border: rgba(42, 157, 143, 0.15);
+            --card-shadow: 0 4px 12px rgba(38, 70, 83, 0.10);
+            --font-heading: 'Nunito', sans-serif;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-warm); color: var(--ink); line-height: 1.7; }
-        
-        nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(253, 248, 243, 0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid var(--card-border); }
-        .nav-container { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
-        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; color: var(--ink); text-decoration: none; }
-        .nav-logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg, var(--gold-primary), var(--peach)); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-        .nav-logo-icon svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
-        .nav-links { display: flex; gap: 32px; }
-        .nav-links a { color: var(--ink-light); text-decoration: none; font-weight: 500; font-size: 15px; }
-        .nav-links a:hover { color: var(--gold-dark); }
-        .nav-cta { background: var(--navy); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.7; }
+        h1, h2, h3, h4 { font-family: var(--font-heading); }
 
-        .content { max-width: 800px; margin: 0 auto; padding: 140px 24px 80px; }
-        h1 { font-size: 42px; font-weight: 700; margin-bottom: 32px; }
-        h2 { font-size: 28px; font-weight: 600; margin: 48px 0 20px; }
-        p { margin-bottom: 20px; font-size: 17px; color: var(--ink-light); }
-        .highlight { background: linear-gradient(135deg, var(--gold-primary), var(--peach)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600; }
-        
-        footer { background: var(--ink); color: white; padding: 40px 24px; text-align: center; }
-        footer a { color: var(--gold-light); text-decoration: none; }
+        nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(254, 251, 246, 0.96); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid var(--card-border); }
+        .nav-inner { max-width: 1100px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; font-family: var(--font-heading); }
+        .nav-logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 28px; }
+        .nav-links a { color: var(--ink-light); text-decoration: none; font-weight: 500; font-size: 15px; }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-cta { background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; }
+        .nav-cta:hover { background: var(--primary-dark); }
+
+        .content { max-width: 760px; margin: 0 auto; padding: 120px 24px 80px; }
+        h1 { font-size: 42px; font-weight: 800; margin-bottom: 32px; line-height: 1.2; }
+        h2 { font-size: 26px; font-weight: 700; margin: 48px 0 20px; color: var(--navy); }
+        p { margin-bottom: 20px; font-size: 17px; color: var(--ink-light); line-height: 1.8; }
+        .highlight { color: var(--primary); font-weight: 600; }
+
+        .check-list { margin: 24px 0 32px; padding: 24px 28px; background: var(--primary-light); border-radius: 12px; border-left: 4px solid var(--primary); }
+        .check-list p { margin-bottom: 8px; font-size: 16px; color: var(--ink); }
+
+        .stats-row { display: flex; gap: 16px; margin: 32px 0; flex-wrap: wrap; }
+        .stat-card { flex: 1; min-width: 140px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 20px; text-align: center; box-shadow: var(--card-shadow); }
+        .stat-card strong { display: block; font-size: 28px; font-weight: 800; color: var(--primary); font-family: var(--font-heading); }
+        .stat-card span { font-size: 14px; color: var(--ink-muted); }
+
+        .cta-box { background: var(--primary); border-radius: 16px; padding: 36px 32px; text-align: center; margin-top: 48px; color: white; }
+        .cta-box h3 { font-size: 22px; margin-bottom: 12px; }
+        .cta-box p { color: rgba(255,255,255,0.85); margin-bottom: 20px; }
+        .cta-box a { background: white; color: var(--primary); padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; }
+        .cta-box a:hover { background: #f0f0f0; }
+
+        footer { background: var(--navy); color: rgba(255,255,255,0.6); padding: 32px 24px; text-align: center; font-size: 14px; }
+        footer a { color: var(--primary); text-decoration: none; }
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
             h1 { font-size: 32px; }
+            .stats-row { gap: 12px; }
+            .stat-card { min-width: 100px; padding: 16px; }
         }
     </style>
 </head>
 <body>
     <nav>
-        <div class="nav-container">
-            <a href="index.html" class="nav-logo">
-                <div class="nav-logo-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                </div>
-                PeuterPlannen
-            </a>
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">Peuter<span>Plannen</span></a>
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="about.html">Over</a>
@@ -71,32 +87,53 @@
 
     <div class="content">
         <h1>Het verhaal achter <span class="highlight">PeuterPlannen</span></h1>
-        
-        <p>PeuterPlannen is ontstaan uit frustratie. De frustratie dat je, als ouder van een peuter, constant aan het speuren bent naar plekken waar je kind zich kan uitleven én jij een bak koffie kan drinken zonder dat iemand je aankijkt alsof je een crimineel bent.</p>
 
-        <p>Je kent het wel: het is zondagochtend, je kind is om 6:30 wakker (want weekend is geen bestaand concept), en je moet ergens heen. Maar waar? Google Maps geeft je "kindvriendelijk" restaurants die in werkelijkheid één plastic stoeltje hebben en een speelhoek van 2 vierkante meter.</p>
+        <p>PeuterPlannen is ontstaan uit frustratie. De frustratie dat je, als ouder van een peuter, constant aan het speuren bent naar plekken waar je kind zich kan uitleven en jij een bak koffie kan drinken zonder dat iemand je aankijkt alsof je een crimineel bent.</p>
+
+        <p>Je kent het wel: het is zondagochtend, je kind is om 6:30 wakker (want weekend is geen bestaand concept), en je moet ergens heen. Maar waar? Google Maps geeft je "kindvriendelijk" restaurants die in werkelijkheid een plastic stoeltje hebben en een speelhoek van 2 vierkante meter.</p>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <strong>195+</strong>
+                <span>Locaties</span>
+            </div>
+            <div class="stat-card">
+                <strong>7</strong>
+                <span>Regio's</span>
+            </div>
+            <div class="stat-card">
+                <strong>5</strong>
+                <span>Categorieën</span>
+            </div>
+        </div>
 
         <h2>Onze missie</h2>
         <p>Wij geloven dat ouders <span class="highlight">echte informatie</span> verdienen. Geen marketing-praatjes, geen "familievriendelijk" labels die niets betekenen. Wij checken zelf:</p>
-        
-        <p>✓ Is er een verschoonplek?<br>
-        ✓ Kan je er een biertje drinken terwijl je kind speelt?<br>
-        ✓ Is het geschikt voor een 2-jarige of alleen voor schoolkinderen?<br>
-        ✓ Hoe is de parkeersituatie? (cruciaal met een slapende peuter in de auto)</p>
+
+        <div class="check-list">
+            <p>&#10003; Is er een verschoonplek?</p>
+            <p>&#10003; Kan je er koffie (of een biertje) drinken terwijl je kind speelt?</p>
+            <p>&#10003; Is het geschikt voor een 2-jarige of alleen voor schoolkinderen?</p>
+            <p>&#10003; Is het binnen, buiten, of allebei?</p>
+        </div>
 
         <h2>Hoe het werkt</h2>
-        <p>Onze AI-agent (ja, echt) struint dagelijks het web af naar nieuwe locaties. Maar voordat iets in de app komt, wordt het handmatig geverifieerd. We bellen, we checken Google Reviews, we kijken naar foto's.</p>
+        <p>Onze AI-agent struint dagelijks het web af naar nieuwe locaties. Maar voordat iets in de app komt, wordt het geverifieerd via Google Places. We checken of het bestaat, of het nog open is, en of het echt kindvriendelijk is.</p>
 
-        <p>En jij? Jij kunt gewoon <span class="highlight">"Restaurant Heidezicht Bussum"</span> typen in het suggestieveld. Onze AI pakt het op, checkt of het bestaat en of het in onze database past. Zo groeit PeuterPlannen organisch met de community.</p>
+        <p>En jij? Jij kunt gewoon een locatie suggereren via de app. Onze AI pakt het op, verifieert het, en voegt het toe als het past. Zo groeit PeuterPlannen organisch met de community.</p>
 
         <h2>Over de maker</h2>
         <p>PeuterPlannen is gebouwd door een vader van twee peuters die simpelweg betere tooling wilde. Geen startup, geen VC-geld, geen groei-hack-strategie. Gewoon een tool die werkt.</p>
 
-        <p style="margin-top: 40px;"><a href="app.html" class="nav-cta" style="padding: 14px 28px; font-size: 16px;">Probeer de app →</a></p>
+        <div class="cta-box">
+            <h3>Probeer het zelf</h3>
+            <p>Ontdek de leukste uitjes bij jou in de buurt.</p>
+            <a href="app.html">Open de app</a>
+        </div>
     </div>
 
     <footer>
-        <p>© 2025 PeuterPlannen — <a href="index.html">Terug naar home</a></p>
+        <p>&copy; 2026 PeuterPlannen &middot; <a href="index.html">Home</a> &middot; <a href="app.html">App</a> &middot; <a href="contact.html">Contact</a> &middot; <a href="about.html">Over ons</a></p>
     </footer>
 </body>
 </html>
