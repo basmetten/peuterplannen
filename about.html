@@ -70,12 +70,31 @@
             .stats-row { gap: 12px; }
             .stat-card { min-width: 100px; padding: 16px; }
         }
+
+        /* Premium touches */
+        html { scroll-behavior: smooth; }
+        ::selection { background: rgba(42, 157, 143, 0.2); }
+        body { -webkit-font-smoothing: antialiased; }
+        .nav-links a { position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--primary); border-radius: 1px; transition: width 0.3s ease; }
+        .nav-links a:hover::after { width: 100%; }
+        .stat-card { position: relative; overflow: hidden; }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; }
+        .stat-card:hover::before { transform: scaleX(1); }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(38,70,83,0.12); }
+        .stat-card { transition: all 0.25s ease; }
+        :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
     </style>
 </head>
 <body>
     <nav>
         <div class="nav-inner">
-            <a href="index.html" class="nav-logo">Peuter<span>Plannen</span></a>
+            <a href="index.html" class="nav-logo" style="display:flex;align-items:center;gap:10px;">
+                <div style="width:32px;height:32px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                Peuter<span>Plannen</span>
+            </a>
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="about.html">Over</a>

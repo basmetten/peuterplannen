@@ -64,12 +64,29 @@
             .nav-links { display: none; }
             h1 { font-size: 32px; }
         }
+
+        /* Premium touches */
+        html { scroll-behavior: smooth; }
+        ::selection { background: rgba(42, 157, 143, 0.2); }
+        body { -webkit-font-smoothing: antialiased; }
+        .nav-links a { position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--primary); border-radius: 1px; transition: width 0.3s ease; }
+        .nav-links a:hover::after { width: 100%; }
+        .contact-option { position: relative; overflow: hidden; }
+        .contact-option::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; border-radius: 16px 16px 0 0; }
+        .contact-option:hover::before { transform: scaleX(1); }
+        :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
     </style>
 </head>
 <body>
     <nav>
         <div class="nav-inner">
-            <a href="index.html" class="nav-logo">Peuter<span>Plannen</span></a>
+            <a href="index.html" class="nav-logo" style="display:flex;align-items:center;gap:10px;">
+                <div style="width:32px;height:32px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                Peuter<span>Plannen</span>
+            </a>
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="about.html">Over</a>
@@ -84,19 +101,19 @@
         <p class="subtitle">Heb je een vraag, suggestie of gewoon zin om te klagen over je nachtrust? We horen het graag.</p>
 
         <div class="contact-option">
-            <h3>Locatie suggestie</h3>
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Locatie suggestie</h3>
             <p>Weet je een geweldige plek die nog niet in de app staat? Laat het ons weten en we checken het uit.</p>
             <a href="app.html" class="contact-btn">Suggestie insturen (via app)</a>
         </div>
 
         <div class="contact-option">
-            <h3>Fout gevonden?</h3>
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg> Fout gevonden?</h3>
             <p>Is er iets mis met een locatie? Verkeerde openingstijden, gesloten, of toch geen verschoonplek?</p>
             <a href="mailto:basmetten@gmail.com?subject=Fout%20in%20locatie" class="contact-btn">Mail ons</a>
         </div>
 
         <div class="contact-option">
-            <h3>Samenwerken</h3>
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Samenwerken</h3>
             <p>Ben je een restaurant of attractie en wil je opvallen in onze app? We praten graag mee.</p>
             <a href="mailto:basmetten@gmail.com?subject=Samenwerking" class="contact-btn">Stuur een mail</a>
         </div>

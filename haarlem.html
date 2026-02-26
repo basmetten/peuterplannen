@@ -274,6 +274,17 @@
     footer { background: var(--navy); color: rgba(255,255,255,0.6); padding: 32px 24px; text-align: center; font-size: 14px; }
     footer a { color: var(--primary); text-decoration: none; }
 
+
+    /* Premium polish */
+    html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+    ::selection { background: rgba(42, 157, 143, 0.2); color: var(--text); }
+    body { -webkit-font-smoothing: antialiased; }
+    h1, h2, h3, h4 { font-family: var(--font-heading); }
+    .hero h1 { letter-spacing: -0.02em; }
+    .loc-item { position: relative; overflow: hidden; }
+    .loc-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), #E76F51); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; border-radius: 12px 12px 0 0; }
+    .loc-item:hover::before { transform: scaleX(1); }
+    :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
     @media (max-width: 600px) { .loc-list { grid-template-columns: 1fr; } .hero { padding: 90px 16px 40px; } }
   </style>
 </head>
@@ -281,7 +292,12 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">Peuter<span>Plannen</span></a>
+    <a href="index.html" class="nav-logo" style="display:flex;align-items:center;gap:8px;">
+      <div style="width:28px;height:28px;background:var(--primary);border-radius:7px;display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      Peuter<span>Plannen</span>
+    </a>
     <a href="app.html?regio=Haarlem" class="nav-cta">Zoek in Haarlem</a>
   </div>
 </nav>

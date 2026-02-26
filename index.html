@@ -159,10 +159,11 @@
 
         footer { background: var(--ink); color: white; padding: 60px 24px 40px; margin-top: 60px; }
         .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
+        .footer-brand strong { font-family: var(--font-heading); }
         .footer-brand p { color: rgba(255,255,255,0.7); margin-top: 12px; font-size: 15px; }
         .footer-links h4 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; color: var(--gold-light); }
         .footer-links a { display: block; color: rgba(255,255,255,0.7); text-decoration: none; margin-bottom: 10px; font-size: 15px; transition: color 0.2s; }
-        .footer-links a:hover { color: white; }
+        .footer-links a:hover { color: white; padding-left: 4px; }
         .footer-bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: rgba(255,255,255,0.5); font-size: 14px; }
 
         @media (max-width: 768px) {
@@ -178,10 +179,63 @@
         .section-sub { color: var(--ink-light); text-align: center; font-size: 17px; margin-bottom: 40px; }
         .container { max-width: 1100px; margin: 0 auto; }
         .cities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
-        .city-card { background: white; border-radius: 12px; padding: 24px 20px; text-align: center; text-decoration: none; border: 1px solid rgba(201,169,110,0.2); box-shadow: 0 2px 12px rgba(27,43,75,0.06); transition: all 0.25s; display: flex; flex-direction: column; gap: 6px; }
+        .city-card { background: white; border-radius: 12px; padding: 24px 20px; text-align: center; text-decoration: none; border: 1px solid var(--card-border); box-shadow: 0 2px 12px rgba(27,43,75,0.06); transition: all 0.25s; display: flex; flex-direction: column; gap: 6px; }
         .city-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(38,70,83,0.13); border-color: var(--primary); }
         .city-card strong { font-size: 17px; font-weight: 700; color: var(--navy); }
         .city-card span { font-size: 13px; color: var(--ink-muted); }
+
+        .hero-icons { display: flex; gap: 32px; justify-content: center; align-items: center; }
+        .hero-icon-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .hero-icon-item svg { width: 64px; height: 64px; color: var(--primary); padding: 16px; background: var(--primary-light); border-radius: 16px; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); }
+        .hero-icon-item:hover svg { transform: scale(1.08) translateY(-4px); }
+        .hero-icon-item.hero-icon-accent svg { color: var(--accent); background: var(--accent-light); }
+        .hero-icon-item span { font-size: 13px; font-weight: 600; color: var(--ink-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+
+        /* Smooth scroll */
+        html { scroll-behavior: smooth; }
+
+        /* Premium: smooth scroll with nav offset */
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        ::selection { background: rgba(42, 157, 143, 0.2); color: var(--navy); }
+        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+        /* Premium: hero floating blobs */
+        .hero { position: relative; overflow: hidden; }
+        .hero::before, .hero::after { content: ''; position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+        .hero::before { width: 400px; height: 400px; background: rgba(42,157,143,0.08); top: -120px; right: -60px; animation: heroFloat 8s ease-in-out infinite; }
+        .hero::after { width: 300px; height: 300px; background: rgba(231,111,81,0.06); bottom: -80px; left: -80px; animation: heroFloat 8s ease-in-out infinite 4s; }
+        @keyframes heroFloat { 0%,100% { transform: translate(0,0); } 50% { transform: translate(20px,-20px); } }
+        .hero > * { position: relative; z-index: 1; }
+
+        /* Premium: nav link underline on hover */
+        .nav-links a { position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--primary); border-radius: 1px; transition: width 0.3s cubic-bezier(0.4,0,0.2,1); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Premium: card gradient top border on hover */
+        .city-card { position: relative; overflow: hidden; }
+        .city-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); border-radius: 12px 12px 0 0; }
+        .city-card:hover::before { transform: scaleX(1); }
+
+        /* Premium: feature card gradient top border on hover */
+        .feature-card { position: relative; overflow: hidden; }
+        .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); border-radius: 20px 20px 0 0; }
+        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(38,70,83,0.12); }
+        .feature-card:hover::before { transform: scaleX(1); }
+
+        /* Premium: stat numbers use heading font */
+        .stat-number { font-family: var(--font-heading); }
+
+        /* Premium: section titles tighter tracking */
+        .section-title { letter-spacing: -0.02em; }
+        .features-header h2 { letter-spacing: -0.02em; }
+        .hero-content h1 { letter-spacing: -0.03em; }
+
+        /* Premium: nav shadow on scroll (JS-toggled) */
+        nav.scrolled { box-shadow: 0 1px 12px rgba(38,70,83,0.06); }
+
+        /* Premium: focus-visible for accessibility */
+        :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -189,7 +243,7 @@
         <div class="nav-container">
             <a href="index.html" class="nav-logo">
                 <div class="nav-logo-icon">
-                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                 </div>
                 PeuterPlannen
             </a>
@@ -212,8 +266,20 @@
             </div>
         </div>
         <div class="hero-visual" style="text-align: center;">
-            <div style="font-size: 100px; line-height: 1.2;">🌿🏠🎨</div>
-            <div style="font-size: 14px; color: var(--ink-muted); margin-top: 8px;">Natuur · Horeca · Musea</div>
+            <div class="hero-icons">
+                <div class="hero-icon-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66L7 18h4l-1 6 2-2 2 2-1-6h4l1.25 4 1.89-.66C18.1 16.17 15.9 10 17 8z"/><path d="M12 2a3 3 0 0 0 0 6 3 3 0 0 0 0-6z"/></svg>
+                    <span>Natuur</span>
+                </div>
+                <div class="hero-icon-item hero-icon-accent">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+                    <span>Horeca</span>
+                </div>
+                <div class="hero-icon-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/><path d="M12 7v7"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/></svg>
+                    <span>Musea</span>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -250,14 +316,14 @@
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
                     </div>
                     <h3>Echte info</h3>
                     <p>Wij checken elke locatie. Is er een verschoonplek? Mag er een biertje? Met welke leeftijd is het geschikt?</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v4"/><path d="M14 10V4a2 2 0 0 0-4 0v7"/><path d="M10 10.5V5a2 2 0 0 0-4 0v9"/><path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L8 15"/></svg>
                     </div>
                     <h3>One-hand UX</h3>
                     <p>Ontworpen voor ouders die een kind vasthouden. Grote knoppen, duidelijke contrasten, geen gedoe.</p>
@@ -275,23 +341,23 @@
             <div class="cities-grid">
                 <a href="speeltuinen.html" class="city-card">
                     <strong>Speeltuinen</strong>
-                    <span>40 locaties</span>
+                    <span>48 locaties</span>
                 </a>
                 <a href="natuur.html" class="city-card">
                     <strong>Natuur</strong>
-                    <span>37 locaties</span>
+                    <span>46 locaties</span>
                 </a>
                 <a href="musea.html" class="city-card">
                     <strong>Musea</strong>
-                    <span>36 locaties</span>
+                    <span>41 locaties</span>
                 </a>
                 <a href="horeca.html" class="city-card">
                     <strong>Restaurants</strong>
-                    <span>38 locaties</span>
+                    <span>40 locaties</span>
                 </a>
                 <a href="pannenkoeken.html" class="city-card">
                     <strong>Pannenkoeken</strong>
-                    <span>16 locaties</span>
+                    <span>20 locaties</span>
                 </a>
             </div>
         </div>
@@ -319,7 +385,7 @@
                 </a>
                 <a href="haarlem.html" class="city-card">
                     <strong>Haarlem</strong>
-                    <span>5 locaties</span>
+                    <span>8 locaties</span>
                 </a>
                 <a href="leiden.html" class="city-card">
                     <strong>Leiden</strong>
@@ -354,11 +420,17 @@
             </div>
         </div>
         <div class="footer-bottom">
-            © 2026 PeuterPlannen — Gemaakt met ☕ en 😴 in Amsterdam
+            © 2026 PeuterPlannen — Gemaakt in Amsterdam
         </div>
     </footer>
 
 <script>
+// Nav shadow on scroll
+const navEl = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  navEl.classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
 }, {threshold: 0.1, rootMargin: '0px 0px -30px 0px'});
