@@ -247,3 +247,294 @@
         <div id="loader" class="loader">Locaties laden...</div>
         <div id="error" class="error-msg hidden"></div>
 
+        <!-- Suggestie Sectie -->
+        <div class="suggestion-section glass-card" style="margin-top: 40px; padding: 20px;">
+            <div class="location-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7-7-7M5 12h14"/></svg>
+                Locatie toevoegen
+            </div>
+            <p style="font-size: 13px; color: var(--ink-muted); margin-bottom: 12px;">Mist er een pareltje? Typ de naam of website en onze AI regelt de rest.</p>
+            <div class="location-input-wrapper">
+                <input type="text" id="suggestion-input" class="location-input" placeholder="Bijv: Restaurant Heidezicht Bussum">
+                <button class="icon-btn primary" onclick="submitSuggestion()" id="suggestion-btn">
+                    <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                </button>
+            </div>
+            <div id="suggestion-status" class="gps-status hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase Config
+        const SB_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/locations";
+        const SB_KEY = atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5CcGRXcHpkbWRpWm1ac2NuSjJZWFY2YzNobElpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpJd05ETXhOekFzSW1WNGNDSTZNakE0TnpZeE9URTNNSDAuNXkzZ3FpUGZWdnB2ZmFEWUFfUGdxRS1LVHZ1ZjZ6Z042dkd6cWZVcGVTbw==");
+
+        let activeTag = 'all';
+        let userLocation = null;
+        let allLocations = [];
+        let autocomplete;
+        
+        // Favorieten uit localStorage
+        function getFavorites() {
+            return JSON.parse(localStorage.getItem('peuterplannen_favorites') || '[]');
+        }
+        
+        function toggleFavorite(locationId) {
+            const favorites = getFavorites();
+            const index = favorites.indexOf(locationId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(locationId);
+            }
+            localStorage.setItem('peuterplannen_favorites', JSON.stringify(favorites));
+            loadLocations(); // Re-render om hartje te updaten
+        }
+        
+        function isFavorite(locationId) {
+            return getFavorites().includes(locationId);
+        }
+
+        function initAutocomplete() {
+            const input = document.getElementById('location-input');
+            autocomplete = new google.maps.places.Autocomplete(input, {
+                types: ['geocode'],
+                componentRestrictions: { country: 'nl' },
+                fields: ['geometry', 'formatted_address', 'name']
+            });
+            autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace();
+                if (place.geometry) {
+                    userLocation = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), name: place.formatted_address || place.name };
+                    loadLocations();
+                }
+            });
+        }
+
+        async function getCurrentLocation() {
+            const statusEl = document.getElementById('gps-status'), input = document.getElementById('location-input');
+            if (!navigator.geolocation) { showGpsStatus('GPS niet beschikbaar', 'error'); return; }
+            showGpsStatus('Locatie ophalen...', 'loading');
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                userLocation = { lat: position.coords.latitude, lng: position.coords.longitude, name: 'Mijn locatie' };
+                try {
+                    const geocoder = new google.maps.Geocoder();
+                    const result = await new Promise((resolve, reject) => {
+                        geocoder.geocode({ location: { lat: userLocation.lat, lng: userLocation.lng } }, (results, status) => {
+                            if (status === 'OK' && results[0]) resolve(results[0]); else reject(status);
+                        });
+                    });
+                    const locality = result.address_components.find(c => c.types.includes('locality') || c.types.includes('sublocality'));
+                    userLocation.name = locality ? locality.long_name : result.formatted_address;
+                    input.value = userLocation.name;
+                    showGpsStatus(`Locatie: ${userLocation.name}`, '');
+                    setTimeout(() => statusEl.classList.add('hidden'), 2000);
+                    loadLocations();
+                } catch (err) { input.value = 'Mijn locatie'; showGpsStatus('Locatie gevonden', ''); setTimeout(() => statusEl.classList.add('hidden'), 2000); loadLocations(); }
+            }, (err) => { let msg = 'Locatie niet beschikbaar'; if (err.code === 1) msg = 'Toestemming geweigerd'; if (err.code === 2) msg = 'Locatie niet gevonden'; if (err.code === 3) msg = 'Timeout'; showGpsStatus(msg, 'error'); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+        }
+
+        function showGpsStatus(message, type) { const el = document.getElementById('gps-status'); el.textContent = message; el.className = 'gps-status ' + type; }
+
+        async function updateLocation() {
+            const input = document.getElementById('location-input').value.trim(); if (!input) return;
+            const geocoder = new google.maps.Geocoder();
+            try {
+                const result = await new Promise((resolve, reject) => {
+                    geocoder.geocode({ address: input + ', Nederland' }, (results, status) => { if (status === 'OK' && results[0]) resolve(results[0]); else reject(status); });
+                });
+                userLocation = { lat: result.geometry.location.lat(), lng: result.geometry.location.lng(), name: input };
+                loadLocations();
+            } catch (err) { showGpsStatus('Locatie niet gevonden', 'error'); }
+        }
+
+        function calculateDistance(lat1, lng1, lat2, lng2) {
+            const R = 6371, dLat = (lat2 - lat1) * Math.PI / 180, dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng/2) * Math.sin(dLng/2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        }
+
+        async function calculateTravelTimes(destinations) {
+            if (!userLocation || destinations.length === 0) return {};
+            const service = new google.maps.DistanceMatrixService(), batchSize = 25, results = {};
+            for (let i = 0; i < destinations.length; i += batchSize) {
+                const batch = destinations.slice(i, i + batchSize);
+                try {
+                    const response = await new Promise((resolve, reject) => {
+                        service.getDistanceMatrix({ origins: [{ lat: userLocation.lat, lng: userLocation.lng }], destinations: batch.map(d => ({ lat: d.lat, lng: d.lng })), travelMode: google.maps.TravelMode.DRIVING, unitSystem: google.maps.UnitSystem.METRIC }, (result, status) => { if (status === 'OK') resolve(result); else reject(status); });
+                    });
+                    batch.forEach((dest, idx) => {
+                        const element = response.rows[0].elements[idx];
+                        if (element.status === 'OK') results[dest.id] = { duration: element.duration.text, durationValue: element.duration.value, distance: element.distance.text };
+                        else { const dist = calculateDistance(userLocation.lat, userLocation.lng, dest.lat, dest.lng), mins = Math.round(dist * 1.5); results[dest.id] = { duration: `~${mins} min`, durationValue: mins * 60, distance: `${dist.toFixed(1)} km`, estimated: true }; }
+                    });
+                } catch (err) { batch.forEach(dest => { const dist = calculateDistance(userLocation.lat, userLocation.lng, dest.lat, dest.lng), mins = Math.round(dist * 1.5); results[dest.id] = { duration: `~${mins} min`, durationValue: mins * 60, distance: `${dist.toFixed(1)} km`, estimated: true }; }); }
+            }
+            return results;
+        }
+
+        async function loadLocations() {
+            const container = document.getElementById('results-container'), loader = document.getElementById('loader'), error = document.getElementById('error');
+            container.innerHTML = ''; loader.classList.remove('hidden'); error.classList.add('hidden');
+            try {
+                let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id";
+                if (activeTag !== 'all' && activeTag !== 'favorites') url += "&type=eq." + activeTag;
+                url += "&order=created_at.desc";
+                const response = await fetch(url, { method: 'GET', headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" } });
+                if (!response.ok) throw new Error('Fetch failed: ' + response.status);
+                allLocations = await response.json();
+                
+                // Filter favorites als dat de actieve tag is
+                if (activeTag === 'favorites') {
+                    const favorites = getFavorites();
+                    allLocations = allLocations.filter(item => favorites.includes(item.id));
+                }
+                
+                loader.classList.add('hidden');
+                if (allLocations.length === 0) { container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>Probeer een andere categorie</div>'; return; }
+                
+                // Eerst sorteren op afstand van stadscentrum
+                if (userLocation) { allLocations.forEach(item => { item.distanceKm = calculateDistance(userLocation.lat, userLocation.lng, item.lat, item.lng); }); allLocations.sort((a, b) => a.distanceKm - b.distanceKm); }
+                renderCards(allLocations, {}); 
+                
+                // Dan reistijden berekenen en opnieuw sorteren
+                if (userLocation) { const travelTimes = await calculateTravelTimes(allLocations); allLocations.sort((a, b) => (travelTimes[a.id]?.durationValue || 999999) - (travelTimes[b.id]?.durationValue || 999999)); renderCards(allLocations, travelTimes); }
+            } catch (e) { console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.textContent = 'Kon data niet laden. Vernieuw de pagina.'; }
+        }
+
+        function buildMapsUrl(item) {
+            // iOS/Android compatible: plaats openen in Google Maps
+            // iOS: Google Maps app (comgooglemaps://) of Safari fallback
+            // Android: Google Maps app of browser
+            if (item.place_id) {
+                // Primair: Google Maps web search (werkt op beide platforms)
+                return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}`;
+            }
+            return `https://www.google.com/maps`;
+        }
+
+        function renderCards(locations, travelTimes = {}) {
+            const container = document.getElementById('results-container'); container.innerHTML = '';
+            locations.forEach((item, index) => {
+                const travelInfo = travelTimes[item.id];
+                const distanceText = userLocation && travelInfo ? `${travelInfo.duration}` : (item.distance_from_city_center_km ? `${item.distance_from_city_center_km} km van centrum` : (item.region || 'Randstad'));
+                const isFav = isFavorite(item.id);
+                const favIcon = isFav ? 'fill: var(--peach); stroke: var(--peach);' : 'fill: none; stroke: var(--ink-muted);';
+                const card = document.createElement('div'); card.className = 'result-card glass-card reveal'; card.style.animationDelay = `${Math.min(index * 0.06, 0.4)}s`;
+                card.innerHTML = `
+                    <div class="meta-top">
+                        <div class="meta-left">
+                            <div class="distance">${distanceText}</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <button onclick="toggleFavorite(${item.id})" style="background: none; border: none; padding: 4px; cursor: pointer;" title="${isFav ? 'Verwijder uit favorieten' : 'Toevoegen aan favorieten'}">
+                                <svg width="22" height="22" viewBox="0 0 24 24" style="${favIcon} stroke-width: 2; transition: all 0.2s;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                            </button>
+                            <div class="badges">
+                                ${item.coffee ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg><span class="tooltip">Koffie beschikbaar</span></div>' : ''}
+                                ${item.alcohol ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 3h10v9a5 5 0 0 1-10 0V3z"/></svg><span class="tooltip">Alcohol beschikbaar</span></div>' : ''}
+                                ${item.diaper ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v2a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3V7a5 5 0 0 1 5-5z"/><path d="M9 12v8a3 3 0 0 0 6 0v-8"/></svg><span class="tooltip">Verschoonplek</span></div>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="name">${item.name}</div>
+                    <div class="desc">${item.description || ''}</div>
+                    <div class="actions">
+                        <a href="${buildMapsUrl(item)}" target="_blank" class="maps-button" title="Open in Google Maps"><svg viewBox="0 0 24 24" class="maps-icon" width="24" height="24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="16" cy="13" r="1.5" fill="currentColor"/><path d="M8 8L12 14L16 13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                        ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Website</a>` : ''}
+                        <button onclick="shareLocation('${item.name}', ${item.lat}, ${item.lng})" class="btn" title="Delen"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+        
+        // Deel functie
+        function shareLocation(name, lat, lng) {
+            const url = `https://www.google.com/maps/?q=${lat},${lng}`;
+            const text = `Bekijk ${name} op PeuterPlannen: ${url}`;
+            if (navigator.share) {
+                navigator.share({ title: name, text: text, url: url });
+            } else {
+                // WhatsApp deeplink fallback
+                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+                window.open(whatsappUrl, '_blank');
+            }
+        }
+
+        function toggleTag(tag) {
+            activeTag = tag;
+            document.querySelectorAll('.tag-pill').forEach(p => p.classList.remove('active'));
+            event.target.classList.add('active');
+            loadLocations();
+        }
+
+        document.getElementById('location-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') updateLocation(); });
+        document.getElementById('suggestion-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') submitSuggestion(); });
+        window.addEventListener('load', () => { initAutocomplete(); loadLocations(); });
+
+        // Suggestie functionaliteit
+        async function submitSuggestion() {
+            const input = document.getElementById('suggestion-input');
+            const statusEl = document.getElementById('suggestion-status');
+            const btn = document.getElementById('suggestion-btn');
+            const value = input.value.trim();
+            
+            if (!value) return;
+            
+            btn.disabled = true;
+            statusEl.className = 'gps-status loading';
+            statusEl.textContent = 'Suggestie versturen...';
+            
+            try {
+                const response = await fetch('https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/suggestions', {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SB_KEY,
+                        'Authorization': 'Bearer ' + SB_KEY,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ input: value, status: 'pending' })
+                });
+                
+                if (response.ok) {
+                    statusEl.className = 'gps-status';
+                    statusEl.style.color = 'var(--success)';
+                    statusEl.textContent = '✓ Dankjewel! We checken het uit.';
+                    input.value = '';
+                    setTimeout(() => { statusEl.classList.add('hidden'); statusEl.style.color = ''; }, 3000);
+                } else {
+                    throw new Error('Failed to submit');
+                }
+            } catch (e) {
+                statusEl.className = 'gps-status error';
+                statusEl.textContent = 'Kon niet versturen. Probeer later opnieuw.';
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // Scroll-reveal: CLS-veilig via IntersectionObserver (alleen transform + opacity)
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+
+        function observeCards() {
+            document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+        }
+
+        // Observer na elke render-cyclus aanroepen
+        const _origRenderCards = renderCards;
+        // Patch: na render, observe nieuwe cards
+        const resultsContainer = document.getElementById('results-container');
+        if (resultsContainer) {
+            new MutationObserver(() => observeCards()).observe(resultsContainer, { childList: true });
+        }
+    </script>
+</body>
+</html>

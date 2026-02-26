@@ -12,3 +12,4 @@ batch_*.json
 alcohol_age_check.js
 generate_city_pages.js
 generate_type_pages.js
+process_suggestions.js
