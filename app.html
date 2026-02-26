@@ -84,7 +84,7 @@
         .location-section { padding: 20px; margin-bottom: 20px; }
         .location-label { font-size: 11px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
         .location-input-wrapper { display: flex; gap: 10px; align-items: center; }
-        .location-input-wrapper button { display: none; }
+        .location-input-wrapper button { display: flex; }
         .location-input { flex: 1; padding: 14px 16px; background: var(--bg-ivory); border: 1px solid var(--card-border); border-radius: 12px; font-size: 16px; font-family: inherit; color: var(--ink); transition: all 0.2s ease; }
         .location-input::placeholder { color: var(--ink-muted); }
         .location-input:focus { outline: none; border-color: var(--gold-primary); box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.15); }
@@ -149,9 +149,9 @@
 
         .actions { display: flex; gap: 10px; }
         .btn { flex: 1; padding: 12px; text-align: center; text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 10px; border: 1px solid var(--card-border); color: var(--ink); transition: all 0.2s ease; cursor: pointer; background: var(--bg-ivory); display: flex; align-items: center; justify-content: center; gap: 6px; touch-action: manipulation; }
-        .maps-button { width: 48px; height: 48px; padding: 0; border-radius: 12px; background: var(--navy); border: none; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s ease; touch-action: manipulation; flex: 0 0 auto; }
+        .maps-button { width: 48px; height: 48px; padding: 0; border-radius: 12px; background: var(--navy); border: none; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s ease; touch-action: manipulation; flex: 0 0 auto; color: var(--gold-light); }
         .maps-button:hover { background: var(--navy-light); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(27, 43, 75, 0.25); }
-        .maps-icon { stroke: var(--gold-light); fill: var(--gold-light); width: 24px; height: 24px; }
+        .maps-icon { width: 20px; height: 20px; color: inherit; }
         .btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
         @media (hover: hover) {
             .btn:hover { background: var(--bg-cream); border-color: var(--gold-light); }
@@ -222,7 +222,7 @@
                 In de buurt van
             </div>
             <div class="location-input-wrapper">
-                <input type="text" id="location-input" class="location-input" placeholder="Sortering: afstand van centrum" value="" disabled style="opacity: 0.6;">
+                <input type="text" id="location-input" class="location-input" placeholder="Typ je stad of adres..." value="">
                 <button class="icon-btn" onclick="getCurrentLocation()" title="Gebruik mijn locatie">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg>
                 </button>
@@ -392,9 +392,13 @@
                 
                 loader.classList.add('hidden');
                 if (allLocations.length === 0) { container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>Probeer een andere categorie</div>'; return; }
-                // Sorteer op afstand van stadscentrum
-                allLocations.sort((a, b) => (a.distance_from_city_center_km || 999) - (b.distance_from_city_center_km || 999));
-                renderCards(allLocations);
+                
+                // Eerst sorteren op afstand van stadscentrum
+                if (userLocation) { allLocations.forEach(item => { item.distanceKm = calculateDistance(userLocation.lat, userLocation.lng, item.lat, item.lng); }); allLocations.sort((a, b) => a.distanceKm - b.distanceKm); }
+                renderCards(allLocations, {}); 
+                
+                // Dan reistijden berekenen en opnieuw sorteren
+                if (userLocation) { const travelTimes = await calculateTravelTimes(allLocations); allLocations.sort((a, b) => (travelTimes[a.id]?.durationValue || 999999) - (travelTimes[b.id]?.durationValue || 999999)); renderCards(allLocations, travelTimes); }
             } catch (e) { console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.textContent = 'Kon data niet laden. Vernieuw de pagina.'; }
         }
 
@@ -409,10 +413,11 @@
             return `https://www.google.com/maps`;
         }
 
-        function renderCards(locations) {
+        function renderCards(locations, travelTimes = {}) {
             const container = document.getElementById('results-container'); container.innerHTML = '';
             locations.forEach((item, index) => {
-                const distanceText = item.distance_from_city_center_km ? `${item.distance_from_city_center_km} km van centrum` : (item.region || 'Randstad');
+                const travelInfo = travelTimes[item.id];
+                const distanceText = userLocation && travelInfo ? `${travelInfo.duration}` : (item.distance_from_city_center_km ? `${item.distance_from_city_center_km} km van centrum` : (item.region || 'Randstad'));
                 const isFav = isFavorite(item.id);
                 const favIcon = isFav ? 'fill: var(--peach); stroke: var(--peach);' : 'fill: none; stroke: var(--ink-muted);';
                 const card = document.createElement('div'); card.className = 'result-card glass-card reveal'; card.style.animationDelay = `${Math.min(index * 0.06, 0.4)}s`;
@@ -435,7 +440,7 @@
                     <div class="name">${item.name}</div>
                     <div class="desc">${item.description || ''}</div>
                     <div class="actions">
-                        <a href="${buildMapsUrl(item)}" target="_blank" class="maps-button" title="Open in Google Maps"><svg viewBox="0 0 24 24" class="maps-icon" width="24" height="24"><path d="M12 0C7.58 0 4 3.58 4 8c0 5.25 8 14 8 14s8-8.75 8-14c0-4.42-3.58-8-8-8zm0 11c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/></svg></a>
+                        <a href="${buildMapsUrl(item)}" target="_blank" class="maps-button" title="Open in Google Maps"><svg viewBox="0 0 24 24" class="maps-icon" width="24" height="24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="16" cy="13" r="1.5" fill="currentColor"/><path d="M8 8L12 14L16 13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
                         ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Website</a>` : ''}
                         <button onclick="shareLocation('${item.name}', ${item.lat}, ${item.lng})" class="btn" title="Delen"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>
                     </div>
