@@ -463,14 +463,14 @@
                             <div class="badges">
                                 ${item.coffee ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg><span class="tooltip">Koffie beschikbaar</span></div>' : ''}
                                 ${item.alcohol ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 3h10v9a5 5 0 0 1-10 0V3z"/></svg><span class="tooltip">Alcohol beschikbaar</span></div>' : ''}
-                                ${item.diaper ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v2a3 3 0 0 1-3 3h-4a3 3 0 0 1-3-3V7a5 5 0 0 1 5-5z"/><path d="M9 12v8a3 3 0 0 0 6 0v-8"/></svg><span class="tooltip">Verschoonplek</span></div>' : ''}
+                                ${item.diaper ? '<div class="badge-wrapper"><svg class="badge-icon" viewBox="0 0 24 24"><path d="M8 2h8v2H8V2zm2 4h4v2h-4V6zm-2 2h10v1H8v-1zm1 2h8v10H9V10zm3 2h2v6h-2v-6zm4 0h2v6h-2v-6z" fill="currentColor"/></svg><span class="tooltip">Verschoonplek</span></div>' : ''}
                             </div>
                         </div>
                     </div>
                     <div class="name">${item.name}</div>
                     <div class="desc">${item.description || ''}</div>
                     <div class="actions">
-                        <a href="${buildMapsUrl(item)}" target="_blank" class="maps-button" title="Open in Google Maps"><svg viewBox="0 0 24 24" class="maps-icon" width="20" height="20"><path d="M12 2C7.59 2 4 5.59 4 10c0 5.5 8 11 8 11s8-5.5 8-11c0-4.41-3.59-8-8-8zm0 12c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" fill="#EA4335"/><circle cx="12" cy="10" r="2.5" fill="white"/></svg></a>
+                        <a href="${buildMapsUrl(item)}" target="_blank" class="maps-button" title="Open in Google Maps"><svg viewBox="0 0 192 192" class="maps-icon" width="20" height="20"><defs><linearGradient id="gmapsGrad1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#EA4335;stop-opacity:1" /><stop offset="50%" style="stop-color:#FBBC04;stop-opacity:1" /><stop offset="100%" style="stop-color:#34A853;stop-opacity:1" /></linearGradient></defs><path fill="url(#gmapsGrad1)" d="M96 0C60.654 0 32 28.654 32 64c0 47.25 64 128 64 128s64-80.75 64-128c0-35.346-28.654-64-64-64zm0 88c-13.255 0-24-10.745-24-24s10.745-24 24-24 24 10.745 24 24-10.745 24-24 24z"/></svg></a>
                         ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Website</a>` : ''}
                         <button onclick="shareLocation('${item.name}', ${item.lat}, ${item.lng})" class="btn" title="Delen"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>
                     </div>
