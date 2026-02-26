@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://basmetten.github.io/peuterplannen/sitemap.xml
+
+# Geen indexering van data-bestanden
+Disallow: /*.json$
