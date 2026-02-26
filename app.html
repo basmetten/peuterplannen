@@ -82,7 +82,7 @@
         .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--navy), var(--navy-light)); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(27, 43, 75, 0.25); transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .logo-icon:hover { transform: rotate(-3deg) scale(1.05); box-shadow: 0 6px 24px rgba(27, 43, 75, 0.3); }
         .logo-icon svg { width: 24px; height: 24px; stroke: var(--gold-light); fill: none; stroke-width: 2; }
-        h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; color: var(--navy); }
+        h1 { font-size: 32px; letter-spacing: -0.03em; font-weight: 700; letter-spacing: -0.02em; color: var(--navy); }
         .sub-head { font-size: 14px; color: var(--ink-muted); font-weight: 500; }
 
         .glass-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; box-shadow: var(--card-shadow); }
@@ -269,6 +269,13 @@
             return JSON.parse(localStorage.getItem('peuterplannen_favorites') || '[]');
         }
         
+        function showToast(msg) {
+            let t = document.getElementById("toast");
+            if (!t) { t = document.createElement("div"); t.id = "toast"; t.className = "toast"; document.body.appendChild(t); }
+            t.textContent = msg; t.classList.add("show");
+            setTimeout(() => t.classList.remove("show"), 3000);
+        }
+
         function toggleFavorite(locationId) {
             const favorites = getFavorites();
             const index = favorites.indexOf(locationId);
@@ -486,3 +493,6 @@
     </script>
 </body>
 </html>
+        /* Toast notifications */
+        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--navy); color: white; padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 500; box-shadow: 0 8px 32px rgba(27, 43, 75, 0.3); z-index: 1000; opacity: 0; transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1); pointer-events: none; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
