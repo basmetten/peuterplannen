@@ -83,7 +83,8 @@
         .glass-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; box-shadow: var(--card-shadow); }
         .location-section { padding: 20px; margin-bottom: 20px; }
         .location-label { font-size: 11px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-        .location-input-wrapper { display: none; gap: 10px; align-items: center; }
+        .location-input-wrapper { display: flex; gap: 10px; align-items: center; }
+        .location-input-wrapper button { display: none; }
         .location-input { flex: 1; padding: 14px 16px; background: var(--bg-ivory); border: 1px solid var(--card-border); border-radius: 12px; font-size: 16px; font-family: inherit; color: var(--ink); transition: all 0.2s ease; }
         .location-input::placeholder { color: var(--ink-muted); }
         .location-input:focus { outline: none; border-color: var(--gold-primary); box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.15); }
@@ -221,7 +222,7 @@
                 In de buurt van
             </div>
             <div class="location-input-wrapper">
-                <input type="text" id="location-input" class="location-input" placeholder="Typ je stad of postcode..." value="">
+                <input type="text" id="location-input" class="location-input" placeholder="Sortering: afstand van centrum" value="" disabled style="opacity: 0.6;">
                 <button class="icon-btn" onclick="getCurrentLocation()" title="Gebruik mijn locatie">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg>
                 </button>
@@ -434,7 +435,7 @@
                     <div class="name">${item.name}</div>
                     <div class="desc">${item.description || ''}</div>
                     <div class="actions">
-                        <a href="${buildMapsUrl(item)}" target="_blank" class="maps-button" title="Open in Google Maps"><svg viewBox="0 0 24 24" class="maps-icon" width="24" height="24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5z"/></svg></a>
+                        <a href="${buildMapsUrl(item)}" target="_blank" class="maps-button" title="Open in Google Maps"><svg viewBox="0 0 24 24" class="maps-icon" width="24" height="24"><path d="M12 0C7.58 0 4 3.58 4 8c0 5.25 8 14 8 14s8-8.75 8-14c0-4.42-3.58-8-8-8zm0 11c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/></svg></a>
                         ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" class="btn"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Website</a>` : ''}
                         <button onclick="shareLocation('${item.name}', ${item.lat}, ${item.lng})" class="btn" title="Delen"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>
                     </div>
