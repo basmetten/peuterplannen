@@ -67,6 +67,13 @@
   </url>
 
 
+  <url>
+    <loc>https://peuterplannen.nl/utrechtse-heuvelrug</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
   <!-- Type-landingspagina's -->
   <url>
     <loc>https://peuterplannen.nl/speeltuinen</loc>
