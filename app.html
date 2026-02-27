@@ -285,14 +285,9 @@
         /* Accessibility */
         :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
 
-        /* View toggle bar */
-        .view-toggle-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-        .results-count { font-size: 13px; color: var(--text-muted); font-weight: 500; }
-        .view-toggle { display: flex; background: var(--surface); border-radius: 12px; border: 1.5px solid rgba(42, 157, 143, 0.15); overflow: hidden; box-shadow: var(--shadow-sm); }
-        .view-toggle-btn { display: flex; align-items: center; gap: 5px; padding: 8px 14px; font-size: 12px; font-weight: 600; font-family: inherit; color: var(--text-secondary); background: none; border: none; cursor: pointer; transition: all 0.2s; touch-action: manipulation; white-space: nowrap; }
-        .view-toggle-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
-        .view-toggle-btn.active { background: var(--primary); color: white; }
-        .view-toggle-btn.active svg { stroke: white; }
+        /* Results count */
+        .results-count { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-bottom: 10px; }
+        .results-count:empty { display: none; }
 
         /* Map container */
         .map-container { width: calc(100% + 32px); margin-left: -16px; height: calc(100vh - 240px); min-height: 400px; max-height: 700px; position: relative; border-top: 1px solid rgba(42, 157, 143, 0.1); }
@@ -398,19 +393,7 @@
             <button class="chip" onclick="toggleFacility('diaper', event)" aria-selected="false">Verschonen</button>
         </div>
 
-        <div class="view-toggle-bar">
-            <span class="results-count" id="results-count"></span>
-            <div class="view-toggle">
-                <button class="view-toggle-btn active" id="toggle-list" onclick="setDisplayMode('list')">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-                    Lijst
-                </button>
-                <button class="view-toggle-btn" id="toggle-map" onclick="setDisplayMode('map')">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
-                    Kaart
-                </button>
-            </div>
-        </div>
+        <div class="results-count" id="results-count"></div>
 
         <div id="results-container" class="results-list" role="feed" aria-label="Locaties"></div>
 
@@ -492,6 +475,10 @@
         <button class="bnav-item" onclick="switchView('search')" id="tab-search" aria-label="Zoeken">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             <span>Zoeken</span>
+        </button>
+        <button class="bnav-item" onclick="switchView('map')" id="tab-map" aria-label="Kaart">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+            <span>Kaart</span>
         </button>
         <button class="bnav-item" onclick="switchView('favorites')" id="tab-favorites" aria-label="Favorieten">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -857,6 +844,9 @@
             const tab = document.getElementById('tab-' + view);
             if (tab) tab.classList.add('active');
 
+            // Hide map when switching to a non-map view
+            if (view !== 'map' && currentDisplayMode === 'map') setDisplayMode('list');
+
             currentView = view;
 
             switch(view) {
@@ -880,6 +870,11 @@
                         input.focus();
                         input.select();
                     }, 350);
+                    break;
+
+                case 'map':
+                    setDisplayMode('map');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     break;
 
                 case 'favorites':
@@ -949,6 +944,8 @@
         // Sync toggleTag with bottom nav state
         const _origToggleTag = toggleTag;
         toggleTag = function(tag, evt) {
+            // Switch back to list when changing filters from map view
+            if (currentDisplayMode === 'map') setDisplayMode('list');
             document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
             if (tag === 'favorites') {
                 document.getElementById('tab-favorites').classList.add('active');
@@ -970,8 +967,9 @@
                 script.async = true;
                 script.onload = () => { mapLibreReady = true; resolve(); };
                 script.onerror = () => {
-                    // Hide map toggle on CDN failure
-                    document.querySelector('.view-toggle').style.display = 'none';
+                    // Hide map tab on CDN failure
+                    const mapTab = document.getElementById('tab-map');
+                    if (mapTab) mapTab.style.display = 'none';
                     reject(new Error('MapLibre CDN unavailable'));
                 };
                 document.head.appendChild(script);
@@ -1141,15 +1139,11 @@
 
         function setDisplayMode(mode) {
             currentDisplayMode = mode;
-            const listBtn = document.getElementById('toggle-list');
-            const mapBtn = document.getElementById('toggle-map');
             const resultsContainer = document.getElementById('results-container');
             const loader = document.getElementById('loader');
             const mapContainer = document.getElementById('map-container');
 
             if (mode === 'map') {
-                listBtn.classList.remove('active');
-                mapBtn.classList.add('active');
                 resultsContainer.classList.add('map-active');
                 loader.classList.add('map-active');
                 mapContainer.classList.remove('hidden');
@@ -1159,15 +1153,16 @@
                         initMap();
                     }).catch(err => {
                         console.warn('Map unavailable:', err);
-                        setDisplayMode('list');
+                        // Hide map tab on CDN failure
+                        const mapTab = document.getElementById('tab-map');
+                        if (mapTab) mapTab.style.display = 'none';
+                        switchView('home');
                     });
                 } else {
                     mapInstance.resize();
                     fitMapToMarkers();
                 }
             } else {
-                listBtn.classList.add('active');
-                mapBtn.classList.remove('active');
                 resultsContainer.classList.remove('map-active');
                 loader.classList.remove('map-active');
                 mapContainer.classList.add('hidden');
