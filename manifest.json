@@ -1,0 +1,26 @@
+{
+  "name": "PeuterPlannen",
+  "short_name": "PeuterPlannen",
+  "description": "Vind kindvriendelijke uitjes bij jou in de buurt. 195 geverifieerde locaties in de Randstad.",
+  "start_url": "/app.html",
+  "display": "standalone",
+  "background_color": "#FEFBF6",
+  "theme_color": "#2A9D8F",
+  "orientation": "portrait-primary",
+  "lang": "nl",
+  "categories": ["lifestyle", "kids"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
