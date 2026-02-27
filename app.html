@@ -197,6 +197,10 @@
         .pill-weather svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
         .pill-distance { background: rgba(82, 183, 136, 0.1); color: #2D8B5E; font-weight: 700; }
         .pill-region { background: var(--bg-warm); color: var(--text-muted); }
+        .pill-verified { background: rgba(82, 183, 136, 0.1); color: #2D8B5E; }
+        .age-range { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
+        .age-range::before { content: '\1F476'; font-size: 11px; }
+        .card-highlight { font-size: 13px; color: var(--primary-dark); font-weight: 500; margin-bottom: 12px; padding: 8px 12px; background: var(--primary-light); border-radius: 8px; line-height: 1.5; }
 
         .card-fav { background: none; border: none; padding: 6px; cursor: pointer; transition: transform 0.2s; touch-action: manipulation; border-radius: 50%; }
         .card-fav:hover { background: var(--accent-light); }
@@ -642,7 +646,7 @@
             const container = document.getElementById('results-container'), loader = document.getElementById('loader'), error = document.getElementById('error');
             container.innerHTML = ''; loader.classList.remove('hidden'); error.classList.add('hidden');
             try {
-                let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather";
+                let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight";
                 if (activeTag !== 'all' && activeTag !== 'favorites') url += "&type=eq." + activeTag;
                 if (activeWeather) { if (activeWeather === "indoor") url += "&weather=in.(indoor,hybrid,both)"; else if (activeWeather === "outdoor") url += "&weather=in.(outdoor,hybrid,both)"; else url += "&weather=eq." + activeWeather; }
                 if (activeFacilities.coffee) url += "&coffee=eq.true";
@@ -698,6 +702,13 @@
                     distancePill = `<span class="pill pill-region">${item.region}</span>`;
                 }
 
+                const verifiedPill = item.last_verified ?
+                    `<span class="pill pill-verified" title="Gecheckt op ${item.last_verified}">&#10003; Gecheckt</span>` : '';
+                const ageInfo = (item.min_age !== null && item.max_age !== null) ?
+                    `<span class="age-range">${item.min_age}-${item.max_age} jaar</span>` : '';
+                const highlight = item.toddler_highlight ?
+                    `<p class="card-highlight">${escapeHtml(item.toddler_highlight)}</p>` : '';
+
                 const facilities = [];
                 if (item.coffee) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>Koffie</span>');
                 if (item.diaper) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5z"/><path d="M6 9.01V9"/></svg>Verschonen</span>');
@@ -712,13 +723,16 @@
                             <span class="pill pill-type">${typeLabel}</span>
                             ${weatherLabel ? `<span class="pill pill-weather">${weatherIcon}${weatherLabel}</span>` : ''}
                             ${distancePill}
+                            ${verifiedPill}
                         </div>
                         <button class="card-fav" onclick="toggleFavorite(${item.id}, this)" title="${isFav ? 'Verwijder favoriet' : 'Opslaan'}" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
                             <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                         </button>
                     </div>
+                    ${ageInfo}
                     <h2 class="card-name">${escapeHtml(item.name)}</h2>
                     <p class="card-desc">${escapeHtml(item.description || '')}</p>
+                    ${highlight}
                     ${facilities.length ? `<div class="card-facilities">${facilities.join('')}</div>` : ''}
                     <div class="card-actions">
                         <a href="${buildMapsUrl(item)}" target="_blank" rel="noopener" class="btn btn-maps">
