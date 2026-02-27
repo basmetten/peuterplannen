@@ -596,8 +596,8 @@
 
         // === Maps URL ===
         function buildMapsUrl(item) {
+            if (item.place_id) return `https://www.google.com/maps/place/?q=place_id:${item.place_id}`;
             if (item.lat && item.lng) return `https://www.google.com/maps/search/?api=1&query=${item.lat},${item.lng}`;
-            if (item.place_id) return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}&query_place_id=${item.place_id}`;
             return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}`;
         }
 
@@ -645,7 +645,7 @@
                     <div class="card-actions">
                         <a href="${buildMapsUrl(item)}" target="_blank" rel="noopener" class="btn btn-maps">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                            Route
+                            Open in Maps
                         </a>
                         ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" rel="noopener" class="btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
                         <button onclick="shareLocation('${item.name.replace(/'/g, "\\'")}', ${item.lat}, ${item.lng})" class="btn btn-share" title="Delen" aria-label="Deel ${item.name}">
