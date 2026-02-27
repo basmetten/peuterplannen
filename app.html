@@ -24,7 +24,11 @@
     <meta property="og:title" content="PeuterPlannen — Kindvriendelijke uitjes in de buurt">
     <meta property="og:description" content="195 geverifieerde locaties: speeltuinen, restaurants, musea en natuur voor gezinnen in de Randstad en Utrechtse Heuvelrug.">
     <meta property="og:locale" content="nl_NL">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
+    <meta property="og:image:width" content="1408">
+    <meta property="og:image:height" content="768">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
     <meta name="twitter:title" content="PeuterPlannen — Uitjes voor kinderen">
     <meta name="twitter:description" content="Vind kindvriendelijke locaties bij jou in de buurt.">
 
@@ -329,18 +333,18 @@
             <div id="gps-status" class="gps-status hidden" role="status" aria-live="polite"></div>
         </div>
 
-        <div class="filter-chips" role="tablist" aria-label="Filter categorieën">
-            <button class="chip active" onclick="toggleTag('all')" role="tab" aria-selected="true">Alles</button>
-            <button class="chip" onclick="toggleTag('favorites')" role="tab" aria-selected="false">Favorieten</button>
+        <div class="filter-chips" role="toolbar" aria-label="Filter categorieën">
+            <button class="chip active" onclick="toggleTag('all', event)" aria-selected="true">Alles</button>
+            <button class="chip" onclick="toggleTag('favorites', event)" aria-selected="false">Favorieten</button>
             <div class="chip-divider" aria-hidden="true"></div>
-            <button class="chip" onclick="toggleTag('play')" role="tab" aria-selected="false">Speeltuin</button>
-            <button class="chip" onclick="toggleTag('nature')" role="tab" aria-selected="false">Natuur</button>
-            <button class="chip" onclick="toggleTag('horeca')" role="tab" aria-selected="false">Horeca</button>
-            <button class="chip" onclick="toggleTag('museum')" role="tab" aria-selected="false">Museum</button>
-            <button class="chip" onclick="toggleTag('pancake')" role="tab" aria-selected="false">Pannenkoeken</button>
+            <button class="chip" onclick="toggleTag('play', event)" aria-selected="false">Speeltuin</button>
+            <button class="chip" onclick="toggleTag('nature', event)" aria-selected="false">Natuur</button>
+            <button class="chip" onclick="toggleTag('horeca', event)" aria-selected="false">Horeca</button>
+            <button class="chip" onclick="toggleTag('museum', event)" aria-selected="false">Museum</button>
+            <button class="chip" onclick="toggleTag('pancake', event)" aria-selected="false">Pannenkoeken</button>
             <div class="chip-divider" aria-hidden="true"></div>
-            <button class="chip" onclick="toggleWeather('indoor')" role="tab" aria-selected="false">Binnen</button>
-            <button class="chip" onclick="toggleWeather('outdoor')" role="tab" aria-selected="false">Buiten</button>
+            <button class="chip" onclick="toggleWeather('indoor', event)" aria-selected="false">Binnen</button>
+            <button class="chip" onclick="toggleWeather('outdoor', event)" aria-selected="false">Buiten</button>
         </div>
 
         <div id="results-container" class="results-list" role="feed" aria-label="Locaties"></div>
@@ -420,6 +424,18 @@
         const SB_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/locations";
         const SB_KEY = atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5CcGRXcHpkbWRpWm1ac2NuSjJZWFY2YzNobElpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpJd05ETXhOekFzSW1WNGNDSTZNakE0TnpZeE9URTNNSDAuNXkzZ3FpUGZWdnB2ZmFEWUFfUGdxRS1LVHZ1ZjZ6Z042dkd6cWZVcGVTbw==");
 
+
+        // === Security Helpers ===
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+        }
+        function safeUrl(url) {
+            if (!url || url === '-') return null;
+            try { const u = new URL(url); return ['http:', 'https:'].includes(u.protocol) ? url : null; }
+            catch { return null; }
+        }
+
         let activeTag = 'all';
         let activeWeather = null;
         let userLocation = null;
@@ -428,11 +444,12 @@
         let mapsLoaded = false;
 
         const TYPE_LABELS = { play: 'Speeltuin', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', pancake: 'Pannenkoeken' };
-        const WEATHER_LABELS = { indoor: 'Binnen', outdoor: 'Buiten', both: 'Binnen & buiten' };
+        const WEATHER_LABELS = { indoor: 'Binnen', outdoor: 'Buiten', both: 'Binnen & buiten', hybrid: 'Binnen & buiten' };
         const WEATHER_ICONS = {
             indoor: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
             outdoor: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
-            both: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="14" r="3"/></svg>'
+            both: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="14" r="3"/></svg>',
+            hybrid: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="14" r="3"/></svg>'
         };
 
         // === Google Maps Lazy Loading ===
@@ -451,40 +468,52 @@
         }
 
         // === Favorites ===
-        function getFavorites() { return JSON.parse(localStorage.getItem('peuterplannen_favorites') || '[]'); }
+        function getFavorites() { try { return JSON.parse(localStorage.getItem('peuterplannen_favorites') || '[]'); } catch { return []; } }
         function isFavorite(id) { return getFavorites().includes(id); }
 
         function toggleFavorite(locationId, btn) {
             const favorites = getFavorites();
             const index = favorites.indexOf(locationId);
             if (index > -1) favorites.splice(index, 1); else favorites.push(locationId);
-            localStorage.setItem('peuterplannen_favorites', JSON.stringify(favorites));
+            try { localStorage.setItem('peuterplannen_favorites', JSON.stringify(favorites)); } catch(e) { /* storage unavailable */ }
             if (btn) { btn.classList.add('heart-pop'); setTimeout(() => btn.classList.remove('heart-pop'), 400); }
-            loadLocations();
+            if (activeTag === 'favorites') {
+                const filtered = allLocations.filter(item => getFavorites().includes(item.id));
+                renderCards(filtered, {});
+            } else {
+                // Just update the heart icon in-place
+                if (btn) {
+                    const isFav = getFavorites().includes(locationId);
+                    const svg = btn.querySelector('svg');
+                    if (svg) svg.style.cssText = isFav ? 'fill: #E76F51; stroke: #E76F51;' : 'fill: none; stroke: #94A3B0;';
+                    btn.title = isFav ? 'Verwijder favoriet' : 'Opslaan';
+                    btn.setAttribute('aria-label', isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet');
+                }
+            }
         }
 
         // === Filters ===
-        function toggleWeather(weather) {
+        function toggleWeather(weather, evt) {
             if (activeWeather === weather) { activeWeather = null; } else { activeWeather = weather; }
             document.querySelectorAll('.chip').forEach(c => {
                 if (c.textContent === 'Binnen' || c.textContent === 'Buiten') c.classList.remove('active');
             });
-            if (activeWeather && event && event.target) event.target.classList.add('active');
+            if (activeWeather && evt && evt.target) evt.target.classList.add('active');
             loadLocations();
         }
 
-        function toggleTag(tag) {
+        function toggleTag(tag, evt) {
             activeTag = tag;
             activeWeather = null;
             document.querySelectorAll('.chip').forEach(p => p.classList.remove('active'));
-            if (event && event.target) event.target.classList.add('active');
+            if (evt && evt.target) evt.target.classList.add('active');
             else document.querySelector('.chip').classList.add('active');
             loadLocations();
         }
 
         // === Location Search ===
         async function initAutocomplete() {
-            await loadGoogleMaps();
+            try { await loadGoogleMaps(); } catch(e) { console.warn('Google Maps unavailable:', e); showGpsStatus('Google Maps niet beschikbaar', 'error'); return; }
             const input = document.getElementById('location-input');
             autocomplete = new google.maps.places.Autocomplete(input, {
                 types: ['geocode'], componentRestrictions: { country: 'nl' }, fields: ['geometry', 'formatted_address', 'name']
@@ -526,7 +555,7 @@
 
         async function updateLocation() {
             const input = document.getElementById('location-input').value.trim(); if (!input) return;
-            await loadGoogleMaps();
+            try { await loadGoogleMaps(); } catch(e) { showGpsStatus('Google Maps niet beschikbaar', 'error'); return; }
             const geocoder = new google.maps.Geocoder();
             try {
                 const result = await new Promise((resolve, reject) => {
@@ -562,15 +591,18 @@
         }
 
         // === Data Loading ===
+        let currentAbort = null;
         async function loadLocations() {
+            if (currentAbort) currentAbort.abort();
+            currentAbort = new AbortController();
             const container = document.getElementById('results-container'), loader = document.getElementById('loader'), error = document.getElementById('error');
             container.innerHTML = ''; loader.classList.remove('hidden'); error.classList.add('hidden');
             try {
                 let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather";
                 if (activeTag !== 'all' && activeTag !== 'favorites') url += "&type=eq." + activeTag;
-                if (activeWeather) url += "&weather=eq." + activeWeather;
+                if (activeWeather) { if (activeWeather === "indoor") url += "&weather=in.(indoor,hybrid,both)"; else if (activeWeather === "outdoor") url += "&weather=in.(outdoor,hybrid,both)"; else url += "&weather=eq." + activeWeather; }
                 url += "&order=created_at.desc";
-                const response = await fetch(url, { method: 'GET', headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" } });
+                const response = await fetch(url, { method: 'GET', signal: currentAbort.signal, headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" } });
                 if (!response.ok) throw new Error('Fetch failed: ' + response.status);
                 allLocations = await response.json();
 
@@ -579,7 +611,7 @@
                     allLocations = allLocations.filter(item => favorites.includes(item.id));
                 }
 
-                if (allLocations.length === 0) { loader.classList.add('hidden'); container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>Probeer een andere categorie of filter</div>'; return; }
+                if (allLocations.length === 0) { loader.classList.add('hidden'); container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong><br>Probeer een andere categorie of filter</div>'; return; }
 
                 if (userLocation) {
                     const travelTimes = await calculateTravelTimes(allLocations);
@@ -591,7 +623,7 @@
                     loader.classList.add('hidden');
                     renderCards(allLocations, {});
                 }
-            } catch (e) { console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.textContent = 'Kon data niet laden. Vernieuw de pagina.'; }
+            } catch (e) { if (e.name === 'AbortError') return; console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.innerHTML = 'Kon data niet laden. <button onclick="loadLocations()" style="margin-left:8px;padding:6px 16px;border-radius:8px;border:1px solid var(--primary);color:var(--primary);background:white;cursor:pointer;font-family:var(--font-body)">Probeer opnieuw</button>'; }
         }
 
         // === Maps URL ===
@@ -639,15 +671,15 @@
                             <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                         </button>
                     </div>
-                    <h2 class="card-name">${item.name}</h2>
-                    <p class="card-desc">${item.description || ''}</p>
+                    <h2 class="card-name">${escapeHtml(item.name)}</h2>
+                    <p class="card-desc">${escapeHtml(item.description || '')}</p>
                     ${facilities.length ? `<div class="card-facilities">${facilities.join('')}</div>` : ''}
                     <div class="card-actions">
                         <a href="${buildMapsUrl(item)}" target="_blank" rel="noopener" class="btn btn-maps">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                             Open in Maps
                         </a>
-                        ${item.website && item.website !== '-' ? `<a href="${item.website}" target="_blank" rel="noopener" class="btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
+                        ${safeUrl(item.website) ? `<a href="${safeUrl(item.website)}" target="_blank" rel="noopener" class="btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
                         <button onclick="shareLocation('${item.name.replace(/'/g, "\\'")}', ${item.lat}, ${item.lng})" class="btn btn-share" title="Delen" aria-label="Deel ${item.name}">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                         </button>
@@ -659,7 +691,7 @@
 
         // === Share ===
         function shareLocation(name, lat, lng) {
-            const url = `https://www.google.com/maps/?q=${lat},${lng}`;
+            const url = (lat && lng) ? `https://www.google.com/maps/?q=${lat},${lng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}`;
             const text = `Bekijk ${name} op PeuterPlannen: ${url}`;
             if (navigator.share) { navigator.share({ title: name, text: text, url: url }); }
             else { window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'); }
@@ -800,7 +832,7 @@
 
         // Register service worker for offline support
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(() => {});
+            navigator.serviceWorker.register('sw.js').catch(e => console.warn('SW:', e));
         }
     </script>
 </body>

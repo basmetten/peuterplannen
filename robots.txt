@@ -4,4 +4,4 @@ Allow: /
 Sitemap: https://peuterplannen.nl/sitemap.xml
 
 # Geen indexering van data-bestanden
-Disallow: /*.json$
+Disallow: /*.json
