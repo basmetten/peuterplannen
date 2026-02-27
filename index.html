@@ -131,7 +131,7 @@
         .nav-cta { background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s; letter-spacing: 0.01em; }
         .nav-cta:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(27, 43, 75, 0.25); }
 
-        .hero { padding: 140px 24px 80px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .hero { padding: 140px 24px 80px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center; }
         .hero-content h1 { font-size: 52px; font-weight: 700; line-height: 1.15; margin-bottom: 20px; letter-spacing: -0.02em; }
         .hero-content h1 { color: var(--navy); } .hero-content h1 span { color: var(--primary); }
         .hero-content p { font-size: 20px; color: var(--ink-light); margin-bottom: 32px; max-width: 480px; }
@@ -139,6 +139,39 @@
         .hero-cta-primary { background: var(--primary); color: white; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 20px rgba(27,43,75,0.25); transition: all 0.25s cubic-bezier(0.22,1,0.36,1); letter-spacing: 0.01em; }
         .hero-cta-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(27,43,75,0.3); }
         .hero-cta-secondary { background: var(--bg-ivory); color: var(--ink); padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; border: 1px solid var(--card-border); }
+
+        /* Premium Hero Image */
+        .hero-visual { position: relative; width: 100%; height: 500px; display: flex; align-items: center; justify-content: center; }
+        .hero-image-wrapper { position: relative; width: 100%; height: 100%; border-radius: 40px; overflow: hidden; box-shadow: 0 20px 40px rgba(38,70,83,0.1); }
+        .hero-image { width: 100%; height: 100%; object-fit: cover; filter: saturate(1.1) brightness(1.02); }
+        
+        /* Advanced Fade & Masking */
+        .hero-image-mask {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 30%, var(--bg-warm) 85%);
+            pointer-events: none;
+        }
+        
+        /* Floating Animation */
+        .hero-visual { animation: heroDrift 12s ease-in-out infinite; }
+        @keyframes heroDrift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(10px, -15px) rotate(1deg); }
+            66% { transform: translate(-8px, 10px) rotate(-0.5deg); }
+        }
+
+        /* Ambient glow behind image */
+        .hero-visual::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            filter: blur(100px);
+            opacity: 0.15;
+            z-index: -1;
+        }
 
         .stats { padding: 60px 24px; }
         .stats-container { max-width: 800px; margin: 0 auto; display: flex; justify-content: space-around; text-align: center; }
@@ -265,19 +298,20 @@
                 <a href="about.html" class="hero-cta-secondary">Lees meer</a>
             </div>
         </div>
-        <div class="hero-visual" style="text-align: center;">
-            <div class="hero-icons">
-                <div class="hero-icon-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66L7 18h4l-1 6 2-2 2 2-1-6h4l1.25 4 1.89-.66C18.1 16.17 15.9 10 17 8z"/><path d="M12 2a3 3 0 0 0 0 6 3 3 0 0 0 0-6z"/></svg>
-                    <span>Natuur</span>
+        <div class="hero-visual">
+            <div class="hero-image-wrapper">
+                <img src="homepage_hero_ai.jpeg" alt="Sfeerbeeld kindvriendelijk uitje" class="hero-image">
+                <div class="hero-image-mask"></div>
+            </div>
+            <!-- Organic Icons Overlay (Elegant) -->
+            <div style="position: absolute; bottom: 40px; right: -20px; z-index: 10;">
+                <div class="hero-icon-item hero-icon-accent" style="background: white; padding: 16px; border-radius: 24px; box-shadow: var(--shadow-md); transform: rotate(5deg);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px;"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66L7 18h4l-1 6 2-2 2 2-1-6h4l1.25 4 1.89-.66C18.1 16.17 15.9 10 17 8z"/><path d="M12 2a3 3 0 0 0 0 6 3 3 0 0 0 0-6z"/></svg>
                 </div>
-                <div class="hero-icon-item hero-icon-accent">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
-                    <span>Horeca</span>
-                </div>
-                <div class="hero-icon-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/><path d="M12 7v7"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/></svg>
-                    <span>Musea</span>
+            </div>
+            <div style="position: absolute; top: 20px; left: -20px; z-index: 10;">
+                <div class="hero-icon-item" style="background: white; padding: 16px; border-radius: 24px; box-shadow: var(--shadow-md); transform: rotate(-8deg);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px;"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/><path d="M12 7v7"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/></svg>
                 </div>
             </div>
         </div>
