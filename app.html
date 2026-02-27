@@ -61,6 +61,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://piujsvgbfflrrvauzsxe.supabase.co">
     <link rel="dns-prefetch" href="https://maps.googleapis.com">
+    <link rel="dns-prefetch" href="https://tiles.openfreemap.org">
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.css" />
 
     <!-- Fonts (swap for faster paint) -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -282,6 +284,47 @@
 
         /* Accessibility */
         :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
+
+        /* View toggle bar */
+        .view-toggle-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .results-count { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+        .view-toggle { display: flex; background: var(--surface); border-radius: 12px; border: 1.5px solid rgba(42, 157, 143, 0.15); overflow: hidden; box-shadow: var(--shadow-sm); }
+        .view-toggle-btn { display: flex; align-items: center; gap: 5px; padding: 8px 14px; font-size: 12px; font-weight: 600; font-family: inherit; color: var(--text-secondary); background: none; border: none; cursor: pointer; transition: all 0.2s; touch-action: manipulation; white-space: nowrap; }
+        .view-toggle-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+        .view-toggle-btn.active { background: var(--primary); color: white; }
+        .view-toggle-btn.active svg { stroke: white; }
+
+        /* Map container */
+        .map-container { width: calc(100% + 32px); margin-left: -16px; height: calc(100vh - 240px); min-height: 400px; max-height: 700px; position: relative; border-top: 1px solid rgba(42, 157, 143, 0.1); }
+        .map-canvas { width: 100%; height: 100%; }
+        .map-recenter { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; background: var(--surface); border: 1px solid rgba(42, 157, 143, 0.15); border-radius: 10px; box-shadow: var(--shadow-md); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; z-index: 2; touch-action: manipulation; }
+        .map-recenter:active { transform: scale(0.94); }
+        .map-recenter svg { width: 20px; height: 20px; stroke: var(--text-secondary); fill: none; stroke-width: 2; }
+        .map-container.hidden { display: none; }
+
+        /* MapLibre overrides */
+        .maplibregl-ctrl-attrib { font-size: 10px !important; opacity: 0.6; }
+        .maplibregl-popup { display: none; }
+
+        /* Location bottom sheet */
+        .loc-sheet { position: fixed; bottom: 0; left: 0; right: 0; max-height: 70vh; background: var(--surface); border-radius: 20px 20px 0 0; z-index: 201; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); overflow-y: auto; overscroll-behavior: contain; padding-bottom: calc(20px + var(--safe-bottom)); }
+        .loc-sheet.open { transform: translateY(0); }
+        .loc-sheet-content { padding: 0 20px 20px; }
+        .loc-sheet-content .card-top { margin-bottom: 8px; }
+        .loc-sheet-content .card-name { font-size: 20px; }
+        .loc-sheet-content .card-desc { font-size: 14px; margin-bottom: 12px; }
+        .loc-sheet-content .card-actions { margin-top: 14px; }
+
+        /* User location dot */
+        .user-location-dot { width: 16px; height: 16px; background: #4285F4; border: 2.5px solid white; border-radius: 50%; box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.25), var(--shadow-sm); }
+
+        /* Map active hides list */
+        #results-container.map-active { display: none !important; }
+        #loader.map-active { display: none !important; }
+
+        /* Map no results overlay */
+        .map-no-results { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--text-muted); background: rgba(254, 251, 246, 0.92); padding: 24px 32px; border-radius: var(--radius); box-shadow: var(--shadow-md); z-index: 2; pointer-events: none; }
+        .map-no-results strong { display: block; color: var(--text); margin-bottom: 4px; font-size: 16px; font-family: var(--font-heading); }
     </style>
 </head>
 <body>
@@ -355,7 +398,33 @@
             <button class="chip" onclick="toggleFacility('diaper', event)" aria-selected="false">Verschonen</button>
         </div>
 
+        <div class="view-toggle-bar">
+            <span class="results-count" id="results-count"></span>
+            <div class="view-toggle">
+                <button class="view-toggle-btn active" id="toggle-list" onclick="setDisplayMode('list')">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+                    Lijst
+                </button>
+                <button class="view-toggle-btn" id="toggle-map" onclick="setDisplayMode('map')">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                    Kaart
+                </button>
+            </div>
+        </div>
+
         <div id="results-container" class="results-list" role="feed" aria-label="Locaties"></div>
+
+        <div id="map-container" class="map-container hidden">
+            <div id="map" class="map-canvas"></div>
+            <button class="map-recenter" onclick="fitMapToMarkers()" title="Alle locaties in beeld" aria-label="Alle locaties in beeld">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+            <div id="map-no-results" class="map-no-results hidden">
+                <strong>Geen locaties gevonden</strong>
+                Probeer een andere categorie of filter
+            </div>
+        </div>
+
         <div id="loader" class="loader" role="status" aria-label="Laden">Locaties laden...</div>
         <div id="error" class="error-msg hidden" role="alert"></div>
     </div>
@@ -405,6 +474,13 @@
                 </a>
             </div>
         </div>
+    </div>
+
+    <!-- Location bottom sheet (map view) -->
+    <div id="loc-overlay" class="info-overlay" onclick="closeLocSheet()" aria-hidden="true"></div>
+    <div id="loc-sheet" class="loc-sheet" role="dialog" aria-label="Locatie details" aria-hidden="true">
+        <div class="info-handle" onclick="closeLocSheet()"></div>
+        <div id="loc-sheet-content" class="loc-sheet-content"></div>
     </div>
 
     <!-- Mobile bottom navigation -->
@@ -476,6 +552,12 @@
         let allLocations = [];
         let autocomplete;
         let mapsLoaded = false;
+        let currentDisplayMode = 'list';
+        let mapInstance = null;
+        let mapLoaded = false;
+        let mapLibreReady = false;
+        let activeLocSheet = null;
+        let userLocationMarker = null;
 
         const TYPE_LABELS = { play: 'Speeltuin', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', pancake: 'Pannenkoeken' };
         const WEATHER_LABELS = { indoor: 'Binnen', outdoor: 'Buiten', both: 'Binnen & buiten', hybrid: 'Binnen & buiten' };
@@ -484,6 +566,11 @@
             outdoor: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
             both: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="14" r="3"/></svg>',
             hybrid: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="14" r="3"/></svg>'
+        };
+
+        const TYPE_COLORS = {
+            play: '#52B788', nature: '#2D6A4F', horeca: '#E76F51',
+            museum: '#7B2D8B', pancake: '#E9C46A'
         };
 
         // === Google Maps Lazy Loading ===
@@ -570,7 +657,7 @@
                 const place = autocomplete.getPlace();
                 if (place.geometry) {
                     userLocation = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), name: place.formatted_address || place.name };
-                    loadLocations();
+                    loadLocations(); updateUserLocationOnMap();
                 }
             });
         }
@@ -594,8 +681,8 @@
                     input.value = userLocation.name;
                     showGpsStatus(`Locatie: ${userLocation.name}`, '');
                     setTimeout(() => statusEl.classList.add('hidden'), 2000);
-                    loadLocations();
-                } catch (err) { input.value = 'Mijn locatie'; showGpsStatus('Locatie gevonden', ''); setTimeout(() => statusEl.classList.add('hidden'), 2000); loadLocations(); }
+                    loadLocations(); updateUserLocationOnMap();
+                } catch (err) { input.value = 'Mijn locatie'; showGpsStatus('Locatie gevonden', ''); setTimeout(() => statusEl.classList.add('hidden'), 2000); loadLocations(); updateUserLocationOnMap(); }
             }, (err) => { let msg = 'Locatie niet beschikbaar'; if (err.code === 1) msg = 'Toestemming geweigerd'; if (err.code === 2) msg = 'Locatie niet gevonden'; if (err.code === 3) msg = 'Timeout'; showGpsStatus(msg, 'error'); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
         }
 
@@ -613,7 +700,7 @@
                 });
                 userLocation = { lat: result.geometry.location.lat(), lng: result.geometry.location.lng(), name: input };
                 showGpsStatus(`Zoeken bij ${input}...`, 'active');
-                loadLocations();
+                loadLocations(); updateUserLocationOnMap();
             } catch (err) { showGpsStatus('Locatie niet gevonden', 'error'); }
         }
 
@@ -661,17 +748,19 @@
                     allLocations = allLocations.filter(item => favorites.includes(item.id));
                 }
 
-                if (allLocations.length === 0) { loader.classList.add('hidden'); container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong><br>Probeer een andere categorie of filter</div>'; return; }
+                if (allLocations.length === 0) { loader.classList.add('hidden'); container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong><br>Probeer een andere categorie of filter</div>'; updateMapMarkers([]); updateResultsCount(0); return; }
 
                 if (userLocation) {
                     const travelTimes = await calculateTravelTimes(allLocations);
                     allLocations.sort((a, b) => (travelTimes[a.id]?.durationValue || 999999) - (travelTimes[b.id]?.durationValue || 999999));
                     loader.classList.add('hidden');
                     renderCards(allLocations, travelTimes);
+                    updateMapMarkers(allLocations); updateResultsCount(allLocations.length);
                 } else {
                     allLocations.sort((a, b) => (a.distance_from_city_center_km || 999) - (b.distance_from_city_center_km || 999));
                     loader.classList.add('hidden');
                     renderCards(allLocations, {});
+                    updateMapMarkers(allLocations); updateResultsCount(allLocations.length);
                 }
             } catch (e) { if (e.name === 'AbortError') return; console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.innerHTML = 'Kon data niet laden. <button onclick="loadLocations()" style="margin-left:8px;padding:6px 16px;border-radius:8px;border:1px solid var(--primary);color:var(--primary);background:white;cursor:pointer;font-family:var(--font-body)">Probeer opnieuw</button>'; }
         }
@@ -761,6 +850,7 @@
         let currentView = 'home';
 
         function switchView(view) {
+            closeLocSheet();
             if (view !== 'info') closeInfoPanel();
 
             document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
@@ -848,9 +938,12 @@
             }
         }, { passive: true });
 
-        // ESC to close info panel
+        // ESC to close panels
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeInfoPanel();
+            if (e.key === 'Escape') {
+                if (activeLocSheet !== null) closeLocSheet();
+                else closeInfoPanel();
+            }
         });
 
         // Sync toggleTag with bottom nav state
@@ -867,6 +960,325 @@
             _origToggleTag(tag, evt);
         };
 
+        // === MapLibre Map View ===
+        function loadMapLibre() {
+            if (mapLibreReady) return Promise.resolve();
+            return new Promise((resolve, reject) => {
+                if (window.maplibregl) { mapLibreReady = true; resolve(); return; }
+                const script = document.createElement('script');
+                script.src = 'https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.js';
+                script.async = true;
+                script.onload = () => { mapLibreReady = true; resolve(); };
+                script.onerror = () => {
+                    // Hide map toggle on CDN failure
+                    document.querySelector('.view-toggle').style.display = 'none';
+                    reject(new Error('MapLibre CDN unavailable'));
+                };
+                document.head.appendChild(script);
+            });
+        }
+
+        function initMap() {
+            if (mapInstance) return;
+            const container = document.getElementById('map');
+            mapInstance = new maplibregl.Map({
+                container: container,
+                style: 'https://tiles.openfreemap.org/styles/positron',
+                center: [5.1, 52.1], // Netherlands center
+                zoom: 7,
+                attributionControl: true
+            });
+
+            mapInstance.on('load', () => {
+                mapLoaded = true;
+
+                // Add GeoJSON source with clustering
+                mapInstance.addSource('locations', {
+                    type: 'geojson',
+                    data: buildGeoJSON(allLocations),
+                    cluster: true,
+                    clusterMaxZoom: 13,
+                    clusterRadius: 45
+                });
+
+                // Cluster circles
+                mapInstance.addLayer({
+                    id: 'clusters',
+                    type: 'circle',
+                    source: 'locations',
+                    filter: ['has', 'point_count'],
+                    paint: {
+                        'circle-color': '#2A9D8F',
+                        'circle-radius': ['step', ['get', 'point_count'], 18, 10, 24, 50, 32],
+                        'circle-stroke-width': 2,
+                        'circle-stroke-color': '#ffffff'
+                    }
+                });
+
+                // Cluster count labels
+                mapInstance.addLayer({
+                    id: 'cluster-count',
+                    type: 'symbol',
+                    source: 'locations',
+                    filter: ['has', 'point_count'],
+                    layout: {
+                        'text-field': '{point_count_abbreviated}',
+                        'text-size': 13,
+                        'text-font': ['Noto Sans Regular']
+                    },
+                    paint: {
+                        'text-color': '#ffffff'
+                    }
+                });
+
+                // Unclustered points colored by type
+                mapInstance.addLayer({
+                    id: 'unclustered-point',
+                    type: 'circle',
+                    source: 'locations',
+                    filter: ['!', ['has', 'point_count']],
+                    paint: {
+                        'circle-color': ['match', ['get', 'type'],
+                            'play', '#52B788',
+                            'nature', '#2D6A4F',
+                            'horeca', '#E76F51',
+                            'museum', '#7B2D8B',
+                            'pancake', '#E9C46A',
+                            '#2A9D8F'
+                        ],
+                        'circle-radius': 9,
+                        'circle-stroke-width': 2.5,
+                        'circle-stroke-color': '#ffffff'
+                    }
+                });
+
+                // Click cluster → zoom in
+                mapInstance.on('click', 'clusters', (e) => {
+                    const features = mapInstance.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+                    const clusterId = features[0].properties.cluster_id;
+                    mapInstance.getSource('locations').getClusterExpansionZoom(clusterId).then(zoom => {
+                        mapInstance.easeTo({ center: features[0].geometry.coordinates, zoom: zoom });
+                    });
+                });
+
+                // Click point → open loc sheet
+                mapInstance.on('click', 'unclustered-point', (e) => {
+                    const props = e.features[0].properties;
+                    openLocSheet(props.id);
+                });
+
+                // Click empty → close sheet
+                mapInstance.on('click', (e) => {
+                    const features = mapInstance.queryRenderedFeatures(e.point, { layers: ['clusters', 'unclustered-point'] });
+                    if (features.length === 0) closeLocSheet();
+                });
+
+                // Cursor hints
+                mapInstance.on('mouseenter', 'clusters', () => { mapInstance.getCanvas().style.cursor = 'pointer'; });
+                mapInstance.on('mouseleave', 'clusters', () => { mapInstance.getCanvas().style.cursor = ''; });
+                mapInstance.on('mouseenter', 'unclustered-point', () => { mapInstance.getCanvas().style.cursor = 'pointer'; });
+                mapInstance.on('mouseleave', 'unclustered-point', () => { mapInstance.getCanvas().style.cursor = ''; });
+
+                // Update with current data
+                updateMapMarkers(allLocations);
+                updateUserLocationOnMap();
+            });
+        }
+
+        function buildGeoJSON(locations) {
+            return {
+                type: 'FeatureCollection',
+                features: locations
+                    .filter(loc => loc.lat && loc.lng)
+                    .map(loc => ({
+                        type: 'Feature',
+                        geometry: { type: 'Point', coordinates: [loc.lng, loc.lat] },
+                        properties: { id: loc.id, name: loc.name, type: loc.type }
+                    }))
+            };
+        }
+
+        function updateMapMarkers(locations) {
+            if (!mapInstance || !mapLoaded) return;
+            const source = mapInstance.getSource('locations');
+            if (source) source.setData(buildGeoJSON(locations));
+
+            const noResults = document.getElementById('map-no-results');
+            const hasResults = locations.filter(l => l.lat && l.lng).length > 0;
+            noResults.classList.toggle('hidden', hasResults);
+
+            if (currentDisplayMode === 'map' && hasResults) fitMapToMarkers();
+        }
+
+        function fitMapToMarkers() {
+            if (!mapInstance || !mapLoaded) return;
+            const locs = allLocations.filter(l => l.lat && l.lng);
+            if (locs.length === 0) return;
+
+            if (locs.length === 1) {
+                mapInstance.easeTo({ center: [locs[0].lng, locs[0].lat], zoom: 14, duration: 600 });
+                return;
+            }
+
+            const bounds = new maplibregl.LngLatBounds();
+            locs.forEach(l => bounds.extend([l.lng, l.lat]));
+            if (userLocation) bounds.extend([userLocation.lng, userLocation.lat]);
+
+            mapInstance.fitBounds(bounds, { padding: { top: 50, bottom: 60, left: 40, right: 40 }, duration: 600, maxZoom: 15 });
+        }
+
+        function updateUserLocationOnMap() {
+            if (!mapInstance || !mapLoaded) return;
+            if (userLocationMarker) { userLocationMarker.remove(); userLocationMarker = null; }
+            if (!userLocation) return;
+
+            const el = document.createElement('div');
+            el.className = 'user-location-dot';
+            userLocationMarker = new maplibregl.Marker({ element: el })
+                .setLngLat([userLocation.lng, userLocation.lat])
+                .addTo(mapInstance);
+        }
+
+        function setDisplayMode(mode) {
+            currentDisplayMode = mode;
+            const listBtn = document.getElementById('toggle-list');
+            const mapBtn = document.getElementById('toggle-map');
+            const resultsContainer = document.getElementById('results-container');
+            const loader = document.getElementById('loader');
+            const mapContainer = document.getElementById('map-container');
+
+            if (mode === 'map') {
+                listBtn.classList.remove('active');
+                mapBtn.classList.add('active');
+                resultsContainer.classList.add('map-active');
+                loader.classList.add('map-active');
+                mapContainer.classList.remove('hidden');
+
+                if (!mapInstance) {
+                    loadMapLibre().then(() => {
+                        initMap();
+                    }).catch(err => {
+                        console.warn('Map unavailable:', err);
+                        setDisplayMode('list');
+                    });
+                } else {
+                    mapInstance.resize();
+                    fitMapToMarkers();
+                }
+            } else {
+                listBtn.classList.add('active');
+                mapBtn.classList.remove('active');
+                resultsContainer.classList.remove('map-active');
+                loader.classList.remove('map-active');
+                mapContainer.classList.add('hidden');
+                closeLocSheet();
+            }
+        }
+
+        function openLocSheet(locationId) {
+            const loc = allLocations.find(l => l.id === locationId);
+            if (!loc) return;
+            activeLocSheet = locationId;
+
+            const isFav = isFavorite(loc.id);
+            const favStyle = isFav ? 'fill: #E76F51; stroke: #E76F51;' : 'fill: none; stroke: #94A3B0;';
+            const typeLabel = TYPE_LABELS[loc.type] || loc.type;
+            const weatherLabel = WEATHER_LABELS[loc.weather] || '';
+            const weatherIcon = WEATHER_ICONS[loc.weather] || '';
+
+            let distancePill = '';
+            if (userLocation && loc.lat && loc.lng) {
+                const dist = calculateDistance(userLocation.lat, userLocation.lng, loc.lat, loc.lng);
+                const mins = Math.round(dist * 1.3);
+                distancePill = `<span class="pill pill-distance">${mins < 60 ? mins + ' min' : Math.floor(mins/60) + 'u ' + (mins%60) + 'm'}</span>`;
+            } else if (loc.region) {
+                distancePill = `<span class="pill pill-region">${loc.region}</span>`;
+            }
+
+            const verifiedPill = loc.last_verified ?
+                `<span class="pill pill-verified" title="Gecheckt op ${loc.last_verified}">&#10003; Gecheckt</span>` : '';
+            const ageInfo = (loc.min_age !== null && loc.max_age !== null) ?
+                `<span class="age-range">${loc.min_age}-${loc.max_age} jaar</span>` : '';
+            const highlight = loc.toddler_highlight ?
+                `<p class="card-highlight">${escapeHtml(loc.toddler_highlight)}</p>` : '';
+
+            const facilities = [];
+            if (loc.coffee) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>Koffie</span>');
+            if (loc.diaper) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5z"/><path d="M6 9.01V9"/></svg>Verschonen</span>');
+            if (loc.alcohol) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 3h10v9a5 5 0 0 1-10 0V3z"/></svg>Alcohol</span>');
+
+            const content = document.getElementById('loc-sheet-content');
+            content.innerHTML = `
+                <div class="card-top">
+                    <div class="card-pills">
+                        <span class="pill pill-type">${typeLabel}</span>
+                        ${weatherLabel ? `<span class="pill pill-weather">${weatherIcon}${weatherLabel}</span>` : ''}
+                        ${distancePill}
+                        ${verifiedPill}
+                    </div>
+                    <button class="card-fav" onclick="toggleFavoriteFromSheet(${loc.id}, this)" title="${isFav ? 'Verwijder favoriet' : 'Opslaan'}" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
+                        <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    </button>
+                </div>
+                ${ageInfo}
+                <h2 class="card-name">${escapeHtml(loc.name)}</h2>
+                <p class="card-desc">${escapeHtml(loc.description || '')}</p>
+                ${highlight}
+                ${facilities.length ? `<div class="card-facilities">${facilities.join('')}</div>` : ''}
+                <div class="card-actions">
+                    <a href="${buildMapsUrl(loc)}" target="_blank" rel="noopener" class="btn btn-maps">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        Open in Maps
+                    </a>
+                    ${safeUrl(loc.website) ? `<a href="${safeUrl(loc.website)}" target="_blank" rel="noopener" class="btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
+                    <button onclick="shareLocation('${loc.name.replace(/'/g, "\\'")}', '${(loc.region || '').replace(/'/g, "\\'")}')" class="btn btn-share" title="Delen" aria-label="Deel ${escapeHtml(loc.name)}">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                    </button>
+                </div>
+            `;
+
+            const overlay = document.getElementById('loc-overlay');
+            const sheet = document.getElementById('loc-sheet');
+            overlay.classList.add('open');
+            overlay.setAttribute('aria-hidden', 'false');
+            sheet.classList.add('open');
+            sheet.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLocSheet() {
+            activeLocSheet = null;
+            const overlay = document.getElementById('loc-overlay');
+            const sheet = document.getElementById('loc-sheet');
+            overlay.classList.remove('open');
+            overlay.setAttribute('aria-hidden', 'true');
+            sheet.classList.remove('open');
+            sheet.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        function toggleFavoriteFromSheet(locationId, btn) {
+            toggleFavorite(locationId, btn);
+            // Re-render sheet to reflect updated state
+            if (activeLocSheet === locationId) openLocSheet(locationId);
+        }
+
+        function updateResultsCount(count) {
+            const el = document.getElementById('results-count');
+            if (el) el.textContent = count + ' locatie' + (count !== 1 ? 's' : '');
+        }
+
+        // Swipe-down to close loc sheet
+        (function() {
+            const sheet = document.getElementById('loc-sheet');
+            let startY = 0;
+            sheet.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, { passive: true });
+            sheet.addEventListener('touchmove', (e) => {
+                const deltaY = e.touches[0].clientY - startY;
+                if (deltaY > 80 && sheet.scrollTop === 0) closeLocSheet();
+            }, { passive: true });
+        })();
+
         // === Init ===
         document.getElementById('location-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') updateLocation(); });
 
@@ -877,6 +1289,13 @@
 
         // Start loading data immediately
         loadLocations();
+
+        // Preload MapLibre in background
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => loadMapLibre(), { timeout: 5000 });
+        } else {
+            setTimeout(() => loadMapLibre(), 3000);
+        }
 
         // Scroll-reveal observer
         const revealObserver = new IntersectionObserver((entries) => {

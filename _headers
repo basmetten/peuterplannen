@@ -3,4 +3,4 @@
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), payment=(), interest-cohort=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://maps.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*.googleapis.com https://*.gstatic.com; connect-src 'self' https://piujsvgbfflrrvauzsxe.supabase.co https://maps.googleapis.com; frame-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src https://fonts.gstatic.com https://tiles.openfreemap.org; img-src 'self' data: blob: https://*.googleapis.com https://*.gstatic.com https://tiles.openfreemap.org https://*.openfreemap.org; connect-src 'self' https://piujsvgbfflrrvauzsxe.supabase.co https://maps.googleapis.com https://tiles.openfreemap.org https://*.openfreemap.org; worker-src blob:; child-src blob:; frame-src 'none'
