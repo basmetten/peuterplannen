@@ -630,7 +630,7 @@
         // === Maps URL ===
         function buildMapsUrl(item) {
             if (item.place_id) return `https://www.google.com/maps/place/?q=place_id:${item.place_id}`;
-            if (item.lat && item.lng) return `https://www.google.com/maps/search/?api=1&query=${item.lat},${item.lng}`;
+            if (item.lat && item.lng) return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name + ", " + (item.region || ""))}`;
             return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}`;
         }
 
@@ -681,7 +681,7 @@
                             Open in Maps
                         </a>
                         ${safeUrl(item.website) ? `<a href="${safeUrl(item.website)}" target="_blank" rel="noopener" class="btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
-                        <button onclick="shareLocation('${item.name.replace(/'/g, "\\'")}', ${item.lat}, ${item.lng})" class="btn btn-share" title="Delen" aria-label="Deel ${item.name}">
+                        <button onclick="shareLocation('${item.name.replace(/'/g, "\\'")}', '${(item.region || '').replace(/'/g, "\\'")}')"  class="btn btn-share" title="Delen" aria-label="Deel ${item.name}">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                         </button>
                     </div>
@@ -691,8 +691,8 @@
         }
 
         // === Share ===
-        function shareLocation(name, lat, lng) {
-            const url = (lat && lng) ? `https://www.google.com/maps/?q=${lat},${lng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}`;
+        function shareLocation(name, region) {
+            const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + (region ? ", " + region : ""))}`;
             const text = `Bekijk ${name} op PeuterPlannen: ${url}`;
             if (navigator.share) { navigator.share({ title: name, text: text, url: url }); }
             else { window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'); }

@@ -1,15 +1,49 @@
+# Secrets
 .supabase_env
+
+# Workspace state
 SCRATCH.md
 memory/
 peuterplannen/
-dedup_locations.js
-fix_incomplete_locations.js
-add_new_locations.js
-verify_place_ids.js
+.openclaw/
+
+# Bot workspace files
+AGENTS.md
+BACKLOG.md
+BOOT.md
+HEARTBEAT.md
+IDENTITY.md
+SOUL.md
+TOOLS.md
+USER.md
+
+# Archive
+.archive/
+
+# Root-level one-off scripts
+/dedup_locations.js
+/fix_incomplete_locations.js
+/add_new_locations.js
+/verify_place_ids.js
+/alcohol_age_check.js
+/process_suggestions.js
+
+# Data files
 all_locations_for_verification.json
 all_locations_raw.json
 batch_*.json
-alcohol_age_check.js
-generate_city_pages.js
-generate_type_pages.js
-process_suggestions.js
+
+# Scripts with secrets (keep generators!)
+.scripts/fetch_batch_full.js
+.scripts/inject_71_90.js
+.scripts/insert_batch_*.js
+.scripts/insert_museums.js
+.scripts/sync_supabase.py
+.scripts/manage_supabase.py
+.scripts/deep_audit.js
+.scripts/deep_verify.js
+.scripts/database.js
+.scripts/test_sql.js
+.scripts/check_table_structure.js
+.scripts/create_suggestions_table.js
+.scripts/calculate_city_distances.js
