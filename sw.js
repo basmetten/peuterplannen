@@ -1,4 +1,4 @@
-const CACHE_NAME = 'peuterplannen-v1';
+const CACHE_NAME = 'peuterplannen-v2';
 const STATIC_ASSETS = [
   '/',
   '/app.html',
@@ -26,23 +26,40 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch: network-first for API, cache-first for static
+// Fetch: stale-while-revalidate for known static assets only
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Skip non-GET requests
+  // Only handle GET requests
   if (event.request.method !== 'GET') return;
 
-  // API calls: network only (always fresh data)
-  if (url.hostname.includes('supabase.co') || url.hostname.includes('googleapis.com')) {
+  // Only handle same-origin requests
+  if (url.origin !== self.location.origin) return;
+
+  // Only handle known static asset paths
+  const path = url.pathname;
+  if (!STATIC_ASSETS.includes(path)) return;
+
+  // Skip navigate requests to avoid caching redirects
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).then(response => {
+        // Only cache non-redirected, OK responses
+        if (response.ok && !response.redirected) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        }
+        return response;
+      }).catch(() => caches.match(event.request))
+    );
     return;
   }
 
-  // Static assets: stale-while-revalidate
+  // Sub-resources: stale-while-revalidate
   event.respondWith(
     caches.match(event.request).then(cached => {
       const fetched = fetch(event.request).then(response => {
-        if (response.ok) {
+        if (response.ok && !response.redirected) {
           const clone = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         }
