@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>PeuterPlannen — Vind kindvriendelijke uitjes bij jou in de buurt</title>
-    <meta name="description" content="Zoek op locatie en vind de beste kindvriendelijke speeltuinen, restaurants, musea en natuur. Gratis, snel, 239 geverifieerde plekken.">
+    <meta name="description" content="Zoek op locatie en vind de beste kindvriendelijke speeltuinen, restaurants, musea en natuur. Gratis, snel, 273 geverifieerde plekken.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://peuterplannen.nl/app.html">
 
@@ -22,7 +22,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://peuterplannen.nl/app.html">
     <meta property="og:title" content="PeuterPlannen — Kindvriendelijke uitjes in de buurt">
-    <meta property="og:description" content="239 geverifieerde locaties: speeltuinen, restaurants, musea en natuur voor gezinnen in de Randstad en Utrechtse Heuvelrug.">
+    <meta property="og:description" content="273 geverifieerde locaties: speeltuinen, restaurants, musea en natuur voor gezinnen in de Randstad en Utrechtse Heuvelrug.">
     <meta property="og:locale" content="nl_NL">
     <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
     <meta property="og:image:width" content="1408">
@@ -287,13 +287,13 @@
     <p>195 geverifieerde uitjes voor gezinnen met jonge kinderen.</p>
     <h2>Per stad</h2>
     <ul>
-      <li><a href="amsterdam.html">Amsterdam (42 locaties)</a></li>
-      <li><a href="utrecht.html">Utrecht (39 locaties)</a></li>
-      <li><a href="rotterdam.html">Rotterdam (28 locaties)</a></li>
-      <li><a href="den-haag.html">Den Haag (23 locaties)</a></li>
-      <li><a href="haarlem.html">Haarlem (8 locaties)</a></li>
-      <li><a href="leiden.html">Leiden (9 locaties)</a></li>
-      <li><a href="utrechtse-heuvelrug.html">Utrechtse Heuvelrug (31 locaties)</a></li>
+      <li><a href="amsterdam.html">Amsterdam (64 locaties)</a></li>
+      <li><a href="utrecht.html">Utrecht (54 locaties)</a></li>
+      <li><a href="rotterdam.html">Rotterdam (27 locaties)</a></li>
+      <li><a href="den-haag.html">Den Haag (28 locaties)</a></li>
+      <li><a href="haarlem.html">Haarlem (16 locaties)</a></li>
+      <li><a href="leiden.html">Leiden (22 locaties)</a></li>
+      <li><a href="utrechtse-heuvelrug.html">Utrechtse Heuvelrug (55 locaties)</a></li>
     </ul>
     <h2>Per type</h2>
     <ul>
@@ -346,6 +346,9 @@
             <div class="chip-divider" aria-hidden="true"></div>
             <button class="chip" onclick="toggleWeather('indoor', event)" aria-selected="false">Binnen</button>
             <button class="chip" onclick="toggleWeather('outdoor', event)" aria-selected="false">Buiten</button>
+            <div class="chip-divider" aria-hidden="true"></div>
+            <button class="chip" onclick="toggleFacility('coffee', event)" aria-selected="false">Koffie</button>
+            <button class="chip" onclick="toggleFacility('diaper', event)" aria-selected="false">Verschonen</button>
         </div>
 
         <div id="results-container" class="results-list" role="feed" aria-label="Locaties"></div>
@@ -439,6 +442,32 @@
 
         let activeTag = 'all';
         let activeWeather = null;
+
+        // Parse URL parameters (from quick-action buttons on homepage)
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('weather')) {
+                activeWeather = params.get('weather');
+                // Activate the corresponding chip
+                setTimeout(() => {
+                    document.querySelectorAll('.chip').forEach(c => {
+                        if (c.textContent.trim() === 'Binnen' && activeWeather === 'indoor') c.classList.add('active');
+                        if (c.textContent.trim() === 'Buiten' && activeWeather === 'outdoor') c.classList.add('active');
+                    });
+                }, 0);
+            }
+            if (params.get('type') && params.get('type') !== 'all') {
+                activeTag = params.get('type');
+                setTimeout(() => {
+                    document.querySelector('.chip.active')?.classList.remove('active');
+                    document.querySelectorAll('.chip').forEach(c => {
+                        const map = {'play':'Speeltuin','nature':'Natuur','horeca':'Horeca','museum':'Museum','pancake':'Pannenkoeken'};
+                        if (c.textContent.trim() === map[activeTag]) c.classList.add('active');
+                    });
+                }, 0);
+            }
+        })();
+        let activeFacilities = { coffee: false, diaper: false };
         let userLocation = null;
         let allLocations = [];
         let autocomplete;
@@ -509,6 +538,20 @@
             document.querySelectorAll('.chip').forEach(p => p.classList.remove('active'));
             if (evt && evt.target) evt.target.classList.add('active');
             else document.querySelector('.chip').classList.add('active');
+            // Re-apply active class to facility chips that are still active
+            document.querySelectorAll('.chip').forEach(c => {
+                if (c.textContent === 'Koffie' && activeFacilities.coffee) c.classList.add('active');
+                if (c.textContent === 'Verschonen' && activeFacilities.diaper) c.classList.add('active');
+            });
+            loadLocations();
+        }
+
+        function toggleFacility(facility, evt) {
+            activeFacilities[facility] = !activeFacilities[facility];
+            if (evt && evt.target) {
+                evt.target.classList.toggle('active', activeFacilities[facility]);
+                evt.target.setAttribute('aria-selected', activeFacilities[facility] ? 'true' : 'false');
+            }
             loadLocations();
         }
 
@@ -602,6 +645,8 @@
                 let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather";
                 if (activeTag !== 'all' && activeTag !== 'favorites') url += "&type=eq." + activeTag;
                 if (activeWeather) { if (activeWeather === "indoor") url += "&weather=in.(indoor,hybrid,both)"; else if (activeWeather === "outdoor") url += "&weather=in.(outdoor,hybrid,both)"; else url += "&weather=eq." + activeWeather; }
+                if (activeFacilities.coffee) url += "&coffee=eq.true";
+                if (activeFacilities.diaper) url += "&diaper=eq.true";
                 url += "&order=created_at.desc";
                 const response = await fetch(url, { method: 'GET', signal: currentAbort.signal, headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" } });
                 if (!response.ok) throw new Error('Fetch failed: ' + response.status);
