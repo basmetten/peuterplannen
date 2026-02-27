@@ -796,7 +796,7 @@
 
         // Sync toggleTag with bottom nav state
         const _origToggleTag = toggleTag;
-        toggleTag = function(tag) {
+        toggleTag = function(tag, evt) {
             document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
             if (tag === 'favorites') {
                 document.getElementById('tab-favorites').classList.add('active');
@@ -805,7 +805,7 @@
                 document.getElementById('tab-home').classList.add('active');
                 currentView = 'home';
             }
-            _origToggleTag(tag);
+            _origToggleTag(tag, evt);
         };
 
         // === Init ===
