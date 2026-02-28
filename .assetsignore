@@ -1,0 +1,9 @@
+node_modules/
+.git/
+.github/
+.scripts/
+content/
+supabase_project/
+*.md
+package.json
+package-lock.json
