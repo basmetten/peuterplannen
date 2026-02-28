@@ -8,11 +8,12 @@
   --navy: #264653;
   --navy-light: #2C3E6B;
   --gold: #E9C46A;
+  --gold-text: #8B6914;
   --bg: #FEFBF6;
   --bg-cream: #FFF8F0;
   --bg-warm: #FEF6EE;
   --text: #264653;
-  --text-muted: #5A7A84;
+  --text-muted: #4A6670;
   --card-shadow: 0 4px 12px rgba(38,70,83,0.10);
   --font-heading: 'Nunito', sans-serif;
 }
@@ -31,7 +32,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
 nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(250,250,248,0.96); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid rgba(42,157,143,0.15); }
 .nav-inner { max-width: 1100px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
 .nav-logo { font-weight: 700; font-size: 18px; color: var(--navy); text-decoration: none; display: flex; align-items: center; gap: 8px; }
-.nav-logo span { color: var(--gold); }
+.nav-logo span { color: var(--gold-text); }
 .nav-logo-icon { width: 28px; height: 28px; background: var(--primary); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
 .nav-links { display: flex; align-items: center; gap: 20px; }
 .nav-link { color: var(--navy); text-decoration: none; font-weight: 500; font-size: 14px; }
@@ -80,11 +81,16 @@ main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
 .loc-item h3 a { color: var(--navy); text-decoration: none; }
 .loc-item h3 a:hover { text-decoration: underline; }
 .loc-item p { font-size: 14px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.6; }
-.loc-region { font-size: 11px; font-weight: 600; color: var(--gold); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.loc-region { font-size: 11px; font-weight: 600; color: var(--gold-text); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
 .loc-meta { font-size: 13px !important; }
 .loc-meta a { color: var(--navy); font-weight: 500; text-decoration: none; }
 .loc-meta a:hover { text-decoration: underline; }
-.badges { color: var(--text-muted); font-style: italic; font-size: 12px; }
+.badges { color: var(--text-muted); font-style: italic; font-size: 12px; margin-bottom: 12px; display: block; }
+.loc-actions { display: flex; gap: 8px; margin-top: 12px; }
+.loc-detail-btn { display: inline-block; padding: 8px 18px; background: var(--primary); color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 13px; transition: background 0.2s; }
+.loc-detail-btn:hover { background: var(--primary-dark); }
+.loc-website-btn { display: inline-block; padding: 8px 18px; background: var(--bg); border: 1px solid rgba(42,157,143,0.2); color: var(--navy); border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 13px; transition: all 0.2s; }
+.loc-website-btn:hover { border-color: var(--primary); background: var(--primary-light); }
 
 /* Other cities / nearby */
 .other-cities { background: var(--bg-cream); border-radius: 12px; padding: 24px 28px; margin-top: 48px; }
@@ -228,6 +234,12 @@ footer a:hover { text-decoration: underline; }
   text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; }
 .btn-support:hover { background: #f0f0f0; }
 
+/* City page CTA */
+.city-app-cta { display: flex; align-items: center; justify-content: space-between; gap: 16px; background: var(--primary-light); border-radius: 12px; padding: 16px 24px; margin-bottom: 40px; }
+.city-app-cta span { font-size: 15px; color: var(--text); font-weight: 500; }
+.btn-app-cta { flex-shrink: 0; background: var(--primary); color: white; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: background 0.2s; }
+.btn-app-cta:hover { background: var(--primary-dark); }
+
 /* Responsive */
 @media (max-width: 600px) {
   .loc-list { grid-template-columns: 1fr; }
@@ -237,4 +249,5 @@ footer a:hover { text-decoration: underline; }
   .location-info { grid-template-columns: 1fr; }
   .location-actions { flex-direction: column; }
   .nav-links { gap: 12px; }
+  .city-app-cta { flex-direction: column; text-align: center; gap: 12px; padding: 20px; }
 }

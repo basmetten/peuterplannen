@@ -91,8 +91,9 @@
             --surface: #FFFFFF;
             --text: #264653;
             --text-secondary: #5A7A84;
-            --text-muted: #94A3B0;
+            --text-muted: #6B7F88;
             --gold: #E9C46A;
+            --gold-text: #8B6914;
             --success: #52B788;
             --shadow-sm: 0 1px 3px rgba(38, 70, 83, 0.08);
             --shadow-md: 0 4px 12px rgba(38, 70, 83, 0.10);
@@ -180,6 +181,10 @@
         .chip:active { transform: scale(0.96); }
         .chip.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(42, 157, 143, 0.3); }
         .chip-divider { flex-shrink: 0; width: 1px; height: 24px; background: rgba(42, 157, 143, 0.15); align-self: center; }
+        .chip-label { flex-shrink: 0; font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; align-self: center; padding: 0 2px 0 8px; }
+        .active-filters { display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; margin-bottom: 10px; background: var(--primary-light); border-radius: 10px; font-size: 13px; color: var(--primary-dark); font-weight: 600; }
+        .active-filters button { background: none; border: none; color: var(--accent); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; }
+        .active-filters button:hover { background: rgba(231, 111, 81, 0.1); }
 
         /* Results */
         .results-list { display: flex; flex-direction: column; gap: 14px; }
@@ -231,6 +236,9 @@
         .btn { flex: 1; padding: 12px 14px; font-size: 14px; font-weight: 600; text-align: center; text-decoration: none; border-radius: 12px; border: 1.5px solid rgba(42, 157, 143, 0.2); color: var(--text); background: var(--surface); display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: all 0.2s; touch-action: manipulation; font-family: inherit; }
         .btn:active { transform: scale(0.98); }
         .btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+        .btn-detail { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-detail:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+        .btn-detail svg { stroke: white; }
         .btn-maps { color: var(--primary-dark); border-color: rgba(42, 157, 143, 0.3); }
         .btn-maps:hover { background: var(--primary-light); border-color: var(--primary); }
         .btn-share { padding: 12px; flex: 0; min-width: 44px; }
@@ -411,18 +419,23 @@
         <div class="filter-chips" role="toolbar" aria-label="Filter categorieën">
             <button class="chip active" onclick="toggleTag('all', event)" aria-selected="true">Alles</button>
             <button class="chip" onclick="toggleTag('favorites', event)" aria-selected="false">Favorieten</button>
-            <div class="chip-divider" aria-hidden="true"></div>
+            <span class="chip-label">Type:</span>
             <button class="chip" onclick="toggleTag('play', event)" aria-selected="false">Speeltuin</button>
             <button class="chip" onclick="toggleTag('nature', event)" aria-selected="false">Natuur</button>
             <button class="chip" onclick="toggleTag('horeca', event)" aria-selected="false">Horeca</button>
             <button class="chip" onclick="toggleTag('museum', event)" aria-selected="false">Museum</button>
             <button class="chip" onclick="toggleTag('pancake', event)" aria-selected="false">Pannenkoeken</button>
-            <div class="chip-divider" aria-hidden="true"></div>
+            <span class="chip-label">Weer:</span>
             <button class="chip" onclick="toggleWeather('indoor', event)" aria-selected="false">Binnen</button>
             <button class="chip" onclick="toggleWeather('outdoor', event)" aria-selected="false">Buiten</button>
-            <div class="chip-divider" aria-hidden="true"></div>
+            <span class="chip-label">Extra:</span>
             <button class="chip" onclick="toggleFacility('coffee', event)" aria-selected="false">Koffie</button>
             <button class="chip" onclick="toggleFacility('diaper', event)" aria-selected="false">Verschonen</button>
+        </div>
+
+        <div class="active-filters" id="active-filters" style="display:none;">
+            <span id="filter-count"></span>
+            <button onclick="resetAllFilters()">Wis filters</button>
         </div>
 
         <div class="results-count" id="results-count"></div>
@@ -644,6 +657,7 @@
                 if (c.textContent === 'Binnen' || c.textContent === 'Buiten') c.classList.remove('active');
             });
             if (activeWeather && evt && evt.target) evt.target.classList.add('active');
+            updateFilterCount();
             loadLocations();
         }
 
@@ -658,6 +672,7 @@
                 if (c.textContent === 'Koffie' && activeFacilities.coffee) c.classList.add('active');
                 if (c.textContent === 'Verschonen' && activeFacilities.diaper) c.classList.add('active');
             });
+            updateFilterCount();
             loadLocations();
         }
 
@@ -667,6 +682,33 @@
                 evt.target.classList.toggle('active', activeFacilities[facility]);
                 evt.target.setAttribute('aria-selected', activeFacilities[facility] ? 'true' : 'false');
             }
+            updateFilterCount();
+            loadLocations();
+        }
+
+        function updateFilterCount() {
+            let count = 0;
+            if (activeTag !== 'all') count++;
+            if (activeWeather) count++;
+            if (activeFacilities.coffee) count++;
+            if (activeFacilities.diaper) count++;
+            const bar = document.getElementById('active-filters');
+            const label = document.getElementById('filter-count');
+            if (count > 0) {
+                bar.style.display = 'flex';
+                label.textContent = count + ' filter' + (count !== 1 ? 's' : '') + ' actief';
+            } else {
+                bar.style.display = 'none';
+            }
+        }
+
+        function resetAllFilters() {
+            activeTag = 'all';
+            activeWeather = null;
+            activeFacilities = { coffee: false, diaper: false };
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            document.querySelector('.chip').classList.add('active');
+            updateFilterCount();
             loadLocations();
         }
 
@@ -790,6 +832,16 @@
             } catch (e) { if (e.name === 'AbortError') return; console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.innerHTML = 'Kon data niet laden. <button onclick="loadLocations()" style="margin-left:8px;padding:6px 16px;border-radius:8px;border:1px solid var(--primary);color:var(--primary);background:white;cursor:pointer;font-family:var(--font-body)">Probeer opnieuw</button>'; }
         }
 
+        // === Detail URL ===
+        function buildDetailUrl(item) {
+            if (!item.region) return null;
+            const slugify = (s) => s.toLowerCase()
+                .replace(/['']/g, '')
+                .replace(/\s+/g, '-')
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            return `/${slugify(item.region)}/${slugify(item.name)}/`;
+        }
+
         // === Maps URL ===
         function buildMapsUrl(item) {
             if (item.place_id) return `https://www.google.com/maps/place/?q=place_id:${item.place_id}`;
@@ -873,9 +925,13 @@
                     ${highlight}
                     ${facilities.length ? `<div class="card-facilities">${facilities.join('')}</div>` : ''}
                     <div class="card-actions">
+                        ${buildDetailUrl(item) ? `<a href="${buildDetailUrl(item)}" class="btn btn-detail">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                            Meer info
+                        </a>` : ''}
                         <a href="${buildMapsUrl(item)}" target="_blank" rel="noopener" class="btn btn-maps">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                            Open in Maps
+                            Route
                         </a>
                         ${safeUrl(item.website) ? `<a href="${safeUrl(item.website)}" target="_blank" rel="noopener" class="btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
                         <button onclick="shareLocation('${item.name.replace(/'/g, "\\'")}', '${(item.region || '').replace(/'/g, "\\'")}')"  class="btn btn-share" title="Delen" aria-label="Deel ${item.name}">
@@ -1283,9 +1339,13 @@
                 ${highlight}
                 ${facilities.length ? `<div class="card-facilities">${facilities.join('')}</div>` : ''}
                 <div class="card-actions">
+                    ${buildDetailUrl(loc) ? `<a href="${buildDetailUrl(loc)}" class="btn btn-detail">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                        Meer info
+                    </a>` : ''}
                     <a href="${buildMapsUrl(loc)}" target="_blank" rel="noopener" class="btn btn-maps">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                        Open in Maps
+                        Route
                     </a>
                     ${safeUrl(loc.website) ? `<a href="${safeUrl(loc.website)}" target="_blank" rel="noopener" class="btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
                     <button onclick="shareLocation('${loc.name.replace(/'/g, "\\'")}', '${(loc.region || '').replace(/'/g, "\\'")}')" class="btn btn-share" title="Delen" aria-label="Deel ${escapeHtml(loc.name)}">

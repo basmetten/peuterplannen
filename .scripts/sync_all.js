@@ -563,17 +563,21 @@ function updateManifest(data) {
 
 function locationHTML_city(loc) {
   const locationUrl = loc.pageUrl || '#';
-  const websiteLink = loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener">Website</a> &middot; ` : '';
+  const websiteLink = loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="loc-website-btn">Website</a>` : '';
   const badges = [];
   if (loc.coffee) badges.push('Koffie');
   if (loc.alcohol) badges.push('Alcohol');
   if (loc.diaper) badges.push('Luierruimte');
-  const badgeStr = badges.length ? ` &middot; <span class="badges">${badges.join(' &middot; ')}</span>` : '';
+  const badgeStr = badges.length ? `<span class="badges">${badges.join(' &middot; ')}</span>` : '';
   return `
       <article class="loc-item">
         <h3><a href="${locationUrl}">${escapeHtml(loc.name)}</a></h3>
         <p>${escapeHtml(loc.description || '')}</p>
-        <p class="loc-meta">${websiteLink}<a href="${locationUrl}">Bekijk details</a>${badgeStr}</p>
+        ${badgeStr}
+        <div class="loc-actions">
+          <a href="${locationUrl}" class="loc-detail-btn">Bekijk details</a>
+          ${websiteLink}
+        </div>
       </article>`;
 }
 
@@ -672,6 +676,11 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
     <p>${region.blurb} ${weatherNote}Op deze pagina vind je <strong>${locs.length} geverifieerde locaties</strong> in ${region.name} — allemaal gecontroleerd op adres, openingstijden en kindvriendelijkheid.</p>
   </div>
 
+  <div class="city-app-cta">
+    <span>Zoek op jouw locatie en ontdek wat dichtbij is</span>
+    <a href="/app.html?regio=${encodeURIComponent(region.name)}" class="btn-app-cta">Open de app</a>
+  </div>
+
   ${sectionsHTML}
 
   ${newsletterHTML()}
@@ -712,19 +721,23 @@ function generateCityPages(data) {
 
 function locationHTML_type(loc) {
   const locationUrl = loc.pageUrl || '#';
-  const websiteLink = loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener">Website</a> &middot; ` : '';
+  const websiteLink = loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="loc-website-btn">Website</a>` : '';
   const badges = [];
   if (loc.coffee) badges.push('Koffie');
   if (loc.diaper) badges.push('Luierruimte');
   if (loc.alcohol) badges.push('Alcohol');
-  const badgeStr = badges.length ? ` &middot; <span class="badges">${badges.join(' &middot; ')}</span>` : '';
+  const badgeStr = badges.length ? `<span class="badges">${badges.join(' &middot; ')}</span>` : '';
   const regionLabel = loc.region === 'Overig' ? 'Randstad' : loc.region;
   return `
       <article class="loc-item">
         <div class="loc-region">${regionLabel}</div>
         <h3><a href="${locationUrl}">${escapeHtml(loc.name)}</a></h3>
         <p>${escapeHtml(loc.description || '')}</p>
-        <p class="loc-meta">${websiteLink}<a href="${locationUrl}">Bekijk details</a>${badgeStr}</p>
+        ${badgeStr}
+        <div class="loc-actions">
+          <a href="${locationUrl}" class="loc-detail-btn">Bekijk details</a>
+          ${websiteLink}
+        </div>
       </article>`;
 }
 
