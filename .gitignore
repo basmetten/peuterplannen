@@ -28,6 +28,9 @@ USER.md
 /alcohol_age_check.js
 /process_suggestions.js
 
+# Dependencies
+node_modules/
+
 # Data files
 all_locations_for_verification.json
 all_locations_raw.json

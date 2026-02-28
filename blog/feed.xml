@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PeuterPlannen Blog</title>
+    <link>https://peuterplannen.nl/blog/</link>
+    <description>Tips en inspiratie voor uitjes met peuters in Nederland</description>
+    <language>nl</language>
+    <lastBuildDate>Sat, 28 Feb 2026 19:37:29 GMT</lastBuildDate>
+    <atom:link href="https://peuterplannen.nl/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Kinderboerderijen in en rond Utrecht: de complete gids</title>
+      <link>https://peuterplannen.nl/blog/kinderboerderijen-utrecht/</link>
+      <description>Alle kinderboerderijen in de regio Utrecht op een rij. Gratis én betaald, met openingstijden en peutertips.</description>
+      <pubDate>Fri, 20 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://peuterplannen.nl/blog/kinderboerderijen-utrecht/</guid>
+    </item>
+    <item>
+      <title>De 8 beste speeltuinen in Rotterdam voor peuters</title>
+      <link>https://peuterplannen.nl/blog/beste-speeltuinen-rotterdam-peuters/</link>
+      <description>Van Plaswijckpark tot indoor speelparadijzen: de leukste speeltuinen in Rotterdam voor kinderen van 1-5 jaar.</description>
+      <pubDate>Sun, 15 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://peuterplannen.nl/blog/beste-speeltuinen-rotterdam-peuters/</guid>
+    </item>
+    <item>
+      <title>Dagje uit met een dreumes: 20 activiteiten voor 1-2 jaar</title>
+      <link>https://peuterplannen.nl/blog/dagje-uit-met-dreumes/</link>
+      <description>Wat kun je doen met een dreumes van 1-2 jaar? 20 leuke activiteiten speciaal voor de allerkleinsten.</description>
+      <pubDate>Tue, 10 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://peuterplannen.nl/blog/dagje-uit-met-dreumes/</guid>
+    </item>
+    <item>
+      <title>10 Gratis peuteruitjes in Amsterdam</title>
+      <link>https://peuterplannen.nl/blog/gratis-peuteruitjes-amsterdam/</link>
+      <description>Amsterdam hoeft niet duur te zijn met kinderen. Deze 10 gratis uitjes zijn perfect voor een dagje uit met je peuter.</description>
+      <pubDate>Thu, 05 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://peuterplannen.nl/blog/gratis-peuteruitjes-amsterdam/</guid>
+    </item>
+    <item>
+      <title>15 Leuke uitjes met je peuter bij regen</title>
+      <link>https://peuterplannen.nl/blog/uitjes-met-peuter-bij-regen/</link>
+      <description>Op zoek naar indoor activiteiten met je peuter? Deze 15 uitjes zijn perfect voor een regenachtige dag — van speelparadijzen tot musea.</description>
+      <pubDate>Sun, 01 Mar 2026 00:00:00 GMT</pubDate>
+      <guid>https://peuterplannen.nl/blog/uitjes-met-peuter-bij-regen/</guid>
+    </item>
+  </channel>
+</rss>
