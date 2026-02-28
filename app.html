@@ -127,12 +127,12 @@
 
         .app-container { max-width: 540px; margin: 0 auto; padding: 0 16px calc(80px + var(--safe-bottom)); position: relative; }
 
-        /* Header with Atmosphere */
+        /* Header — compact */
         header {
             position: relative;
             background: var(--bg-warm);
-            padding: 24px 20px 28px;
-            margin: 0 -16px 20px;
+            padding: 14px 20px 14px;
+            margin: 0 -16px 16px;
             text-align: center;
             overflow: hidden;
             border-bottom: 1px solid rgba(42, 157, 143, 0.1);
@@ -149,11 +149,11 @@
             transform: scale(1.1);
         }
         header > * { position: relative; z-index: 1; }
-        .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; margin-bottom: 4px; }
-        .logo-icon { width: 40px; height: 40px; background: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(42, 157, 143, 0.3); }
-        .logo-icon svg { width: 22px; height: 22px; stroke: white; fill: none; stroke-width: 2; }
-        h1 { font-family: var(--font-heading); font-size: 28px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
-        .sub-head { font-size: 15px; color: var(--text-secondary); font-weight: 500; margin-top: 2px; }
+        .logo { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: inherit; margin-bottom: 0; }
+        .logo-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 12px rgba(42, 157, 143, 0.25); }
+        .logo-icon svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
+        h1 { font-family: var(--font-heading); font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+        .sub-head { font-size: 13px; color: var(--text-secondary); font-weight: 500; margin-top: 0; }
 
         /* Search card */
         .search-section { background: var(--surface); border: 1px solid rgba(42, 157, 143, 0.15); border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 20px; margin-bottom: 16px; }
@@ -836,7 +836,8 @@
             if (currentAbort) currentAbort.abort();
             currentAbort = new AbortController();
             const container = document.getElementById('results-container'), loader = document.getElementById('loader'), error = document.getElementById('error');
-            container.innerHTML = ''; loader.classList.remove('hidden'); error.classList.add('hidden');
+            if (currentDisplayMode !== 'map') { container.innerHTML = ''; loader.classList.remove('hidden'); }
+            error.classList.add('hidden');
             try {
                 let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight";
                 if (activeTag !== 'all' && activeTag !== 'favorites') url += "&type=eq." + activeTag;
@@ -931,8 +932,6 @@
                     distancePill = `<span class="pill pill-region">${item.region}</span>`;
                 }
 
-                const verifiedPill = item.last_verified ?
-                    `<span class="pill pill-verified" title="Gecheckt op ${item.last_verified}">&#10003; Gecheckt</span>` : '';
                 const ageInfo = (item.min_age !== null && item.max_age !== null) ?
                     `<span class="age-range">${item.min_age}-${item.max_age} jaar</span>` : '';
                 const highlight = item.toddler_highlight ?
@@ -952,7 +951,7 @@
                             <span class="pill pill-type">${typeLabel}</span>
                             ${weatherLabel ? `<span class="pill pill-weather">${weatherIcon}${weatherLabel}</span>` : ''}
                             ${distancePill}
-                            ${verifiedPill}
+
                         </div>
                         <button class="card-fav" onclick="toggleFavorite(${item.id}, this)" title="${isFav ? 'Verwijder favoriet' : 'Opslaan'}" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
                             <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -1339,8 +1338,6 @@
                 distancePill = `<span class="pill pill-region">${loc.region}</span>`;
             }
 
-            const verifiedPill = loc.last_verified ?
-                `<span class="pill pill-verified" title="Gecheckt op ${loc.last_verified}">&#10003; Gecheckt</span>` : '';
             const ageInfo = (loc.min_age !== null && loc.max_age !== null) ?
                 `<span class="age-range">${loc.min_age}-${loc.max_age} jaar</span>` : '';
             const highlight = loc.toddler_highlight ?
@@ -1358,7 +1355,6 @@
                         <span class="pill pill-type">${typeLabel}</span>
                         ${weatherLabel ? `<span class="pill pill-weather">${weatherIcon}${weatherLabel}</span>` : ''}
                         ${distancePill}
-                        ${verifiedPill}
                     </div>
                     <button class="card-fav" onclick="toggleFavoriteFromSheet(${loc.id}, this)" title="${isFav ? 'Verwijder favoriet' : 'Opslaan'}" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
                         <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
