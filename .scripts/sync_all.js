@@ -226,14 +226,7 @@ function footerHTML() {
 }
 
 function newsletterHTML() {
-  return `<section class="newsletter-signup">
-  <h3>Wekelijks de leukste peuteruitjes in je mail?</h3>
-  <form id="newsletter-form" action="#" method="post">
-    <input type="email" name="email" placeholder="je@email.nl" required>
-    <label><input type="checkbox" required> Ik ga akkoord met het <a href="/privacy/">privacybeleid</a></label>
-    <button type="submit">Aanmelden</button>
-  </form>
-</section>`;
+  return '';
 }
 
 function headCommon(extra = '') {
