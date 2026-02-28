@@ -224,6 +224,18 @@ footer a:hover { text-decoration: underline; }
 .legal-content li { margin-bottom: 6px; }
 .legal-content a { color: var(--primary); }
 
+/* Support / Tikkie section */
+.support-section {
+  background: linear-gradient(135deg, #E76F51, #d4573d);
+  color: white; border-radius: 16px;
+  padding: 36px 32px; text-align: center; margin: 48px 0;
+}
+.support-section h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+.support-section p { opacity: 0.9; margin-bottom: 20px; font-size: 15px; max-width: 480px; margin-left: auto; margin-right: auto; }
+.btn-support { background: white; color: #E76F51; padding: 14px 28px; border-radius: 10px;
+  text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; }
+.btn-support:hover { background: #f0f0f0; }
+
 /* Responsive */
 @media (max-width: 600px) {
   .loc-list { grid-template-columns: 1fr; }

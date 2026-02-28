@@ -150,6 +150,8 @@ const AFFILIATE_TYPE_MAP = {
   nature: { key: 'bol-peuterboeken', label: 'Leuk voor onderweg' },
 };
 
+const TIKKIE_URL = 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO';
+
 const WEATHER_LABELS = {
   indoor: 'Overdekt (indoor)',
   outdoor: 'Buiten (outdoor)',
@@ -221,12 +223,23 @@ function navHTML(ctaText = 'Open App', ctaHref = '/app.html') {
 
 function footerHTML() {
   return `<footer>
-  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Blog</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Blog</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over ons</a> &middot; <a href="${TIKKIE_URL}" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
 </footer>`;
 }
 
 function newsletterHTML() {
   return '';
+}
+
+function supportHTML() {
+  return `<section class="support-section">
+    <h3>Vond je dit handig?</h3>
+    <p>PeuterPlannen is gratis en wordt met liefde onderhouden.
+       Trakteer de maker op een koffie (of biertje) om de site draaiende te houden!</p>
+    <a href="${TIKKIE_URL}" target="_blank" rel="noopener" class="btn-support">
+      Trakteer via Tikkie
+    </a>
+  </section>`;
 }
 
 function headCommon(extra = '') {
@@ -678,6 +691,8 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
     <a href="/app.html?regio=${encodeURIComponent(region.name)}">Open de app voor ${region.name}</a>
   </div>
 
+  ${supportHTML()}
+
   <div class="other-cities">
     <h3>Peuteruitjes in de buurt</h3>
     ${nearbyLinks || '<a href="/">Bekijk alle steden</a>'}
@@ -840,6 +855,8 @@ ${navHTML()}
     <p>Filter op type, regio of faciliteiten — en laat de app de dichtstbijzijnde locaties tonen.</p>
     <a href="/app.html">Open PeuterPlannen</a>
   </div>
+
+  ${supportHTML()}
 
   <div class="nav-links-box">
     <h3>Andere typen uitjes</h3>
@@ -1072,6 +1089,8 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 
   ${similarHTML}
 
+  ${supportHTML()}
+
   <div class="other-cities" style="margin-top: 32px;">
     <h3>Meer peuteruitjes in ${region.name}</h3>
     <a href="/${region.slug}.html">Bekijk alle ${region.name} locaties &rarr;</a>
@@ -1246,6 +1265,8 @@ ${navHTML()}
     <p>Ontdek ${data.total}+ geverifieerde locaties op PeuterPlannen.</p>
     <a href="/app.html">Open de app</a>
   </div>
+
+  ${supportHTML()}
 </main>
 
 ${footerHTML()}
