@@ -1,46 +1,122 @@
 /**
- * PeuterPlannen — Nieuwe locaties toevoegen
+ * PeuterPlannen — Nieuwe locaties toevoegen (Batch 2 - Dataset Uitbreiding)
  * Zoekt via Google Places API + voegt toe aan Supabase
+ * 67 kandidaten uit research agents, alle 17 regio's
  */
 
 const { readFileSync } = require('fs');
 const env = readFileSync('.supabase_env', 'utf8');
 const SB_KEY = env.match(/SUPABASE_SERVICE_KEY=(.+)/)?.[1]?.trim();
-const MGMT_TOKEN = env.match(/SUPABASE_ACCESS_TOKEN=(.+)/)?.[1]?.trim();
-const GOOGLE_KEY = process.env.GOOGLE_MAPS_KEY || require('fs').readFileSync('.supabase_env', 'utf8').match(/GOOGLE_MAPS_KEY=(.+)/)?.[1]?.trim();
+const GOOGLE_KEY = env.match(/GOOGLE_MAPS_KEY=(.+)/)?.[1]?.trim();
 const SB_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/locations";
-const MGMT_URL = "https://api.supabase.com/v1/projects/piujsvgbfflrrvauzsxe/database/query";
 
-// Kandidaten voor toevoeging — gefocust op zwakke regio's
 const candidates = [
-    // Rotterdam nature (0 entries nu)
-    { name: "Arboretum Trompenburg", region: "Rotterdam", type: "nature", coffee: true, diaper: true, alcohol: false, weather: "outdoor" },
-    { name: "Kinderboerderij Vroesenpark", region: "Rotterdam", type: "nature", coffee: false, diaper: true, alcohol: false, weather: "outdoor" },
-    { name: "Heemtuin Rotterdam", region: "Rotterdam", type: "nature", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
-    { name: "Vroesenpark Rotterdam", region: "Rotterdam", type: "nature", coffee: true, diaper: true, alcohol: false, weather: "outdoor" },
-    { name: "Kinderboerderij Pendrecht", region: "Rotterdam", type: "nature", coffee: false, diaper: true, alcohol: false, weather: "outdoor" },
+    // === AMERSFOORT (13 nieuwe — van 10 → 23) ===
+    // Horeca (was 0!)
+    { name: "Coffee Corazon", region: "Amersfoort", type: "horeca", coffee: true, diaper: true, alcohol: true, weather: "indoor" },
+    { name: "Parkhuis Amersfoort", region: "Amersfoort", type: "horeca", coffee: true, diaper: true, alcohol: true, weather: "hybrid" },
+    { name: "Dikke Dirck", region: "Amersfoort", type: "horeca", coffee: true, diaper: false, alcohol: true, weather: "indoor" },
+    { name: "Centraal Ketelhuis", region: "Amersfoort", type: "horeca", coffee: true, diaper: false, alcohol: true, weather: "hybrid" },
+    { name: "KROAST Amersfoort", region: "Amersfoort", type: "horeca", coffee: true, diaper: true, alcohol: true, weather: "indoor" },
+    // Museum (was 1)
+    { name: "Mondriaanhuis", region: "Amersfoort", type: "museum", coffee: false, diaper: false, alcohol: false, weather: "indoor" },
+    { name: "Kunsthal KAdE", region: "Amersfoort", type: "museum", coffee: false, diaper: false, alcohol: false, weather: "indoor" },
+    // Pancake (was 1)
+    { name: "Pannenkoekenhuis De Kabouterhut", region: "Amersfoort", type: "pancake", coffee: true, diaper: false, alcohol: true, weather: "hybrid" },
+    { name: "HEY!Pannenkoek", region: "Amersfoort", type: "pancake", coffee: true, diaper: false, alcohol: false, weather: "hybrid" },
+    { name: "Pannekoekenhuys Den Potsenmaeker", region: "Amersfoort", type: "pancake", coffee: true, diaper: false, alcohol: true, weather: "indoor" },
+    // Nature
+    { name: "Natuurboerderij De Brinkhorst", region: "Amersfoort", type: "nature", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
+    // Play
+    { name: "Speeltuin Rivierenwijk", region: "Amersfoort", type: "play", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
+    { name: "Speeltuin Soesterkwartier", region: "Amersfoort", type: "play", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
 
-    // Rotterdam horeca (slechts 3)
-    { name: "Fenix Food Factory", region: "Rotterdam", type: "horeca", coffee: true, diaper: true, alcohol: true, weather: "hybrid" },
-    { name: "De Ballentent Rotterdam", region: "Rotterdam", type: "horeca", coffee: true, diaper: true, alcohol: true, weather: "hybrid" },
-    { name: "Brasserie Fenix", region: "Rotterdam", type: "horeca", coffee: true, diaper: true, alcohol: true, weather: "hybrid" },
+    // === HAARLEM (8 nieuwe — van 16 → 24) ===
+    // Horeca (was 2)
+    { name: "Meneer Paprika", region: "Haarlem", type: "horeca", coffee: true, diaper: false, alcohol: false, weather: "indoor" },
+    { name: "Brownies & downieS Haarlem", region: "Haarlem", type: "horeca", coffee: true, diaper: false, alcohol: false, weather: "indoor" },
+    { name: "Kweekcafé", region: "Haarlem", type: "horeca", coffee: true, diaper: false, alcohol: false, weather: "hybrid" },
+    { name: "Het Veerkwartier", region: "Haarlem", type: "horeca", coffee: true, diaper: false, alcohol: true, weather: "hybrid" },
+    // Museum (was 1)
+    { name: "Archeologisch Museum Haarlem", region: "Haarlem", type: "museum", coffee: false, diaper: false, alcohol: false, weather: "indoor" },
+    { name: "Frans Hals Museum", region: "Haarlem", type: "museum", coffee: true, diaper: false, alcohol: false, weather: "indoor" },
+    // Nature
+    { name: "Haarlemmer Kweektuin", region: "Haarlem", type: "nature", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
+    { name: "De Hertenkamp Bloemendaal", region: "Haarlem", type: "nature", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
 
-    // Rotterdam pancake (slechts 1)
-    { name: "De Pannenkoekenboot Rotterdam", region: "Rotterdam", type: "pancake", coffee: true, diaper: true, alcohol: true, weather: "indoor" },
-    { name: "Pannenkoekenhuis De Ruygtenberg", region: "Rotterdam", type: "pancake", coffee: true, diaper: true, alcohol: true, weather: "hybrid" },
+    // === ALMERE (3 nieuwe) ===
+    { name: "Almere Jungle", region: "Almere", type: "nature", coffee: true, diaper: true, alcohol: false, weather: "hybrid" },
+    { name: "Lunchroom Tante Truus", region: "Almere", type: "horeca", coffee: true, diaper: false, alcohol: false, weather: "indoor" },
+    { name: "Natuurlijk Spelen Cascadepark", region: "Almere", type: "play", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
 
-    // Den Haag nature (slechts 1)
-    { name: "Westduinpark Den Haag", region: "Den Haag", type: "nature", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
-    { name: "Madestein Den Haag", region: "Den Haag", type: "nature", coffee: true, diaper: true, alcohol: false, weather: "hybrid" },
-    { name: "Kinderboerderij Leyweg", region: "Den Haag", type: "nature", coffee: false, diaper: true, alcohol: false, weather: "outdoor" },
-    { name: "Ockenburgh Den Haag", region: "Den Haag", type: "nature", coffee: true, diaper: true, alcohol: false, weather: "hybrid" },
+    // === GRONINGEN (4 nieuwe) ===
+    { name: "OERRR Speelnatuur Kardinge", region: "Groningen", type: "nature", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
+    { name: "Cantina Mexicana", region: "Groningen", type: "horeca", coffee: true, diaper: false, alcohol: true, weather: "indoor" },
+    { name: "Stadsrestaurant Het Oude Politiebureau", region: "Groningen", type: "horeca", coffee: true, diaper: true, alcohol: true, weather: "indoor" },
+    { name: "Dierenweide Eelderbaan", region: "Groningen", type: "nature", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
 
-    // Den Haag horeca (slechts 3)
-    { name: "Kindercafé Kikker en de Kraanvogel", region: "Den Haag", type: "horeca", coffee: true, diaper: true, alcohol: false, weather: "indoor" },
-    { name: "Restaurant Zeezout Den Haag", region: "Den Haag", type: "horeca", coffee: true, diaper: true, alcohol: true, weather: "indoor" },
+    // === EINDHOVEN (3 nieuwe) ===
+    { name: "Speeltuinvereniging Philipsdorp", region: "Eindhoven", type: "play", coffee: true, diaper: false, alcohol: false, weather: "outdoor" },
+    { name: "Grand Café De Lichttoren", region: "Eindhoven", type: "horeca", coffee: true, diaper: true, alcohol: true, weather: "hybrid" },
+    { name: "Speeltuin Sint Joseph", region: "Eindhoven", type: "play", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
 
-    // Den Haag pancake (slechts 1)
-    { name: "Pannenkoekenhuis Malieveld", region: "Den Haag", type: "pancake", coffee: true, diaper: true, alcohol: true, weather: "hybrid" },
+    // === TILBURG (3 nieuwe) ===
+    { name: "Kinderspeelboerderij De Gerrithoeve", region: "Tilburg", type: "play", coffee: true, diaper: true, alcohol: false, weather: "hybrid" },
+    { name: "Stadscafé De Spaarbank", region: "Tilburg", type: "horeca", coffee: true, diaper: false, alcohol: true, weather: "hybrid" },
+    { name: "BAM! Brood Brunch Borrel", region: "Tilburg", type: "horeca", coffee: true, diaper: false, alcohol: false, weather: "indoor" },
+
+    // === BREDA (4 nieuwe) ===
+    { name: "IKEK (In Kannen en Kruiken)", region: "Breda", type: "horeca", coffee: true, diaper: false, alcohol: true, weather: "hybrid" },
+    { name: "Eetcafé de 7 Heuveltjes", region: "Breda", type: "horeca", coffee: true, diaper: true, alcohol: true, weather: "hybrid" },
+    { name: "T-Huis", region: "Breda", type: "horeca", coffee: true, diaper: false, alcohol: true, weather: "hybrid" },
+    { name: "Dierenweide De Bunderij", region: "Breda", type: "nature", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
+
+    // === 'S-HERTOGENBOSCH (4 nieuwe) ===
+    { name: "Foodmarkt DE FAM", region: "'s-Hertogenbosch", type: "horeca", coffee: true, diaper: false, alcohol: true, weather: "indoor" },
+    { name: "Anne&Max Den Bosch", region: "'s-Hertogenbosch", type: "horeca", coffee: true, diaper: false, alcohol: true, weather: "indoor" },
+    { name: "Boefjes en Barista's", region: "'s-Hertogenbosch", type: "play", coffee: true, diaper: true, alcohol: false, weather: "indoor" },
+    { name: "Dierenweide 't Wikkie", region: "'s-Hertogenbosch", type: "nature", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
+
+    // === ARNHEM (3 nieuwe) ===
+    { name: "Museum Arnhem", region: "Arnhem", type: "museum", coffee: true, diaper: true, alcohol: true, weather: "hybrid" },
+    { name: "You Jump Arnhem", region: "Arnhem", type: "play", coffee: true, diaper: true, alcohol: false, weather: "indoor" },
+    { name: "Zwembad De Grote Koppel", region: "Arnhem", type: "play", coffee: true, diaper: true, alcohol: false, weather: "indoor" },
+
+    // === NIJMEGEN (4 nieuwe) ===
+    { name: "LUX", region: "Nijmegen", type: "museum", coffee: true, diaper: true, alcohol: true, weather: "indoor" },
+    { name: "Kinderboerderij Lindenholt", region: "Nijmegen", type: "nature", coffee: false, diaper: true, alcohol: false, weather: "outdoor" },
+    { name: "Speeltuin De Blije Dries", region: "Nijmegen", type: "play", coffee: true, diaper: true, alcohol: false, weather: "outdoor" },
+    { name: "Sprokkelbos Lent", region: "Nijmegen", type: "nature", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
+
+    // === APELDOORN (3 nieuwe) ===
+    { name: "Speeltuin Kindervreugd", region: "Apeldoorn", type: "play", coffee: true, diaper: false, alcohol: false, weather: "outdoor" },
+    { name: "Waterspeelplaats Matenpark", region: "Apeldoorn", type: "nature", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
+    { name: "Buds Tolhuis No.11", region: "Apeldoorn", type: "horeca", coffee: true, diaper: true, alcohol: true, weather: "hybrid" },
+
+    // === LEIDEN (3 nieuwe) ===
+    { name: "Wereldmuseum Leiden", region: "Leiden", type: "museum", coffee: true, diaper: true, alcohol: false, weather: "indoor" },
+    { name: "Theehuis De Leidsehout", region: "Leiden", type: "horeca", coffee: true, diaper: false, alcohol: true, weather: "hybrid" },
+    { name: "Pannenkoekenrestaurant De Beslagkom", region: "Leiden", type: "pancake", coffee: true, diaper: true, alcohol: false, weather: "hybrid" },
+
+    // === ROTTERDAM (5 nieuwe) ===
+    { name: "CROOS", region: "Rotterdam", type: "horeca", coffee: true, diaper: true, alcohol: true, weather: "hybrid" },
+    { name: "Speelparadijs Bungelland", region: "Rotterdam", type: "play", coffee: true, diaper: true, alcohol: false, weather: "indoor" },
+    { name: "Kinderboerderij De Blijde Wei", region: "Rotterdam", type: "nature", coffee: true, diaper: true, alcohol: false, weather: "outdoor" },
+    { name: "Kinderboerderij De Kraal", region: "Rotterdam", type: "nature", coffee: true, diaper: false, alcohol: false, weather: "outdoor" },
+    { name: "Supermercado", region: "Rotterdam", type: "horeca", coffee: false, diaper: true, alcohol: true, weather: "indoor" },
+
+    // === UTRECHT (1 nieuwe) ===
+    { name: "Nijntje Speeltuin Julianapark", region: "Utrecht", type: "play", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
+
+    // === AMSTERDAM (1 nieuwe) ===
+    { name: "Lunchroom Lastig", region: "Amsterdam", type: "horeca", coffee: true, diaper: true, alcohol: false, weather: "indoor" },
+
+    // === DEN HAAG (5 nieuwe) ===
+    { name: "Binkies Den Haag", region: "Den Haag", type: "horeca", coffee: true, diaper: true, alcohol: true, weather: "indoor" },
+    { name: "Koffie & Kind", region: "Den Haag", type: "horeca", coffee: true, diaper: true, alcohol: false, weather: "hybrid" },
+    { name: "Familiepark Drievliet", region: "Den Haag", type: "play", coffee: true, diaper: true, alcohol: true, weather: "outdoor" },
+    { name: "Stadsboerderij de Woelige Stal", region: "Den Haag", type: "nature", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
+    { name: "Stadsboerderij de Gagelhoeve", region: "Den Haag", type: "nature", coffee: false, diaper: false, alcohol: false, weather: "outdoor" },
 ];
 
 async function findPlace(name, region) {
@@ -81,7 +157,8 @@ async function insertLocation(loc) {
 }
 
 async function main() {
-    console.log('\n➕ Nieuwe locaties toevoegen\n');
+    console.log('\n➕ Nieuwe locaties toevoegen (Batch 2 — Dataset Uitbreiding)\n');
+    console.log(`   ${candidates.length} kandidaten\n`);
     const now = new Date().toISOString();
     const stats = { added: 0, notFound: 0, skipped: 0 };
 
@@ -110,7 +187,7 @@ async function main() {
             name: candidate.name,
             region: candidate.region,
             type: candidate.type,
-            description: null, // wordt later ingevuld
+            description: null,
             website,
             lat: place.geometry.location.lat,
             lng: place.geometry.location.lng,
