@@ -1,7 +1,7 @@
 /**
  * sync_all.js — Unified build script for PeuterPlannen
  *
- * Generates city pages, type pages, location pages, blog, affiliate redirects, and sitemap.
+ * Generates city pages, type pages, location pages, blog, and sitemap.
  * Single source of truth: Supabase regions + locations tables.
  *
  * Usage: node .scripts/sync_all.js
@@ -143,11 +143,6 @@ const NEARBY_CITIES = {
   'arnhem': ['nijmegen', 'apeldoorn', 'amersfoort'],
   'apeldoorn': ['arnhem', 'amersfoort', 'utrecht'],
   's-hertogenbosch': ['eindhoven', 'tilburg', 'nijmegen'],
-};
-
-const AFFILIATE_TYPE_MAP = {
-  play: { key: 'bol-buitenspeelgoed', label: 'Handig voor de speeltuin' },
-  nature: { key: 'bol-peuterboeken', label: 'Leuk voor onderweg' },
 };
 
 const TIKKIE_URL = 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO';
@@ -597,10 +592,6 @@ function generateCityPage(region, locs, allRegions) {
         ${byType[t].map(locationHTML_city).join('')}
       </div>
     </section>`;
-      // Ad container after 2nd category
-      if (i === 1 && typesWithLocs.length > 2) {
-        section += '\n    <div class="ad-container"></div>';
-      }
       return section;
     }).join('');
 
@@ -888,7 +879,7 @@ function generateTypePages(data) {
 
 // === 7. Generate location pages ===
 
-function locationPageHTML(loc, region, similarLocs, affiliates) {
+function locationPageHTML(loc, region, similarLocs) {
   const fullUrl = `https://peuterplannen.nl${loc.pageUrl}`;
   const typeLabel = TYPE_MAP[loc.type]?.label || loc.type;
   const metaDesc = (loc.description || '').slice(0, 155);
@@ -915,27 +906,6 @@ function locationPageHTML(loc, region, similarLocs, affiliates) {
   // Share
   const shareText = encodeURIComponent(`${loc.name} — Peuteruitje in ${loc.region}`);
   const shareUrl = encodeURIComponent(fullUrl);
-
-  // Affiliate block
-  const affInfo = AFFILIATE_TYPE_MAP[loc.type];
-  let affiliateHTML = '';
-  if (affInfo && affiliates[affInfo.key]) {
-    affiliateHTML = `
-  <div class="affiliate-block">
-    <h4>${affInfo.label}</h4>
-    <a href="/go/${affInfo.key}/" target="_blank" rel="noopener">${affiliates[affInfo.key].label} &rarr;</a>
-    <p class="affiliate-disclaimer">* Affiliate link — <a href="/disclaimer/">meer info</a></p>
-  </div>`;
-  }
-  // Extra affiliate for outdoor locations
-  if (loc.weather === 'outdoor' && affiliates['bol-regenkleding-kind']) {
-    affiliateHTML += `
-  <div class="affiliate-block">
-    <h4>Voorbereid op regen?</h4>
-    <a href="/go/bol-regenkleding-kind/" target="_blank" rel="noopener">${affiliates['bol-regenkleding-kind'].label} &rarr;</a>
-    <p class="affiliate-disclaimer">* Affiliate link — <a href="/disclaimer/">meer info</a></p>
-  </div>`;
-  }
 
   // Similar locations
   const similarHTML = similarLocs.length > 0
@@ -1072,8 +1042,6 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 
   ${infoItems.length > 0 ? `<div class="location-info">\n    ${infoItems.join('\n    ')}\n  </div>` : ''}
 
-  <div class="ad-container"></div>
-
   <div class="location-actions">
     ${routeUrl ? `<a href="${routeUrl}" target="_blank" rel="noopener" class="btn-route">Route plannen</a>` : ''}
   </div>
@@ -1083,9 +1051,8 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
     <button class="share-native" onclick="shareNative()">Delen</button>
   </div>
 
-  ${affiliateHTML}
-
-  ${(loc.lat && loc.lng) ? `<div class="location-map" id="map-container"><div id="map"></div></div>` : ''}
+  ${(loc.lat && loc.lng) ? `<div class="location-map" id="map-container"><div id="map"></div></div>
+  <p class="map-attribution">Kaart: &copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>` : ''}
 
   ${similarHTML}
 
@@ -1107,7 +1074,7 @@ ${shareScript}
 </html>`;
 }
 
-function generateLocationPages(data, affiliates) {
+function generateLocationPages(data) {
   const { regions, locations } = data;
   const regionMap = {};
   regions.forEach(r => { regionMap[r.slug] = r; });
@@ -1132,7 +1099,7 @@ function generateLocationPages(data, affiliates) {
       const otherType = locs.filter(l => l !== loc && l.type !== loc.type).slice(0, 6 - sameType.length);
       const similar = [...sameType, ...otherType].slice(0, 6);
 
-      const html = locationPageHTML(loc, region, similar, affiliates);
+      const html = locationPageHTML(loc, region, similar);
 
       const locDir = path.join(regionDir, loc.locSlug);
       if (!fs.existsSync(locDir)) fs.mkdirSync(locDir, { recursive: true });
@@ -1194,16 +1161,7 @@ function buildBlog(data) {
     const postDir = path.join(blogDir, slug);
     if (!fs.existsSync(postDir)) fs.mkdirSync(postDir, { recursive: true });
 
-    // Insert ad container after 2nd h2
     let processedContent = htmlContent;
-    let h2Count = 0;
-    processedContent = processedContent.replace(/<\/h2>/g, (match) => {
-      h2Count++;
-      if (h2Count === 2) {
-        return `${match}\n<div class="ad-container"></div>`;
-      }
-      return match;
-    });
 
     const postHTML = `<!DOCTYPE html>
 <html lang="nl">
@@ -1255,8 +1213,6 @@ ${navHTML()}
   <div class="blog-content">
     ${processedContent}
   </div>
-
-  <div class="ad-container"></div>
 
   ${newsletterHTML()}
 
@@ -1367,47 +1323,7 @@ function formatDateNL(date) {
   return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 
-// === 9. Affiliate redirect pages ===
-
-function buildAffiliateRedirects() {
-  const affiliatesPath = path.join(ROOT, 'data', 'affiliates.json');
-  if (!fs.existsSync(affiliatesPath)) {
-    console.log('  No data/affiliates.json found, skipping');
-    return {};
-  }
-
-  const affiliates = JSON.parse(fs.readFileSync(affiliatesPath, 'utf8'));
-  const goDir = path.join(ROOT, 'go');
-  if (!fs.existsSync(goDir)) fs.mkdirSync(goDir, { recursive: true });
-
-  let count = 0;
-  for (const [key, info] of Object.entries(affiliates)) {
-    const redirectDir = path.join(goDir, key);
-    if (!fs.existsSync(redirectDir)) fs.mkdirSync(redirectDir, { recursive: true });
-
-    const html = `<!DOCTYPE html>
-<html lang="nl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="robots" content="noindex, nofollow">
-  <meta http-equiv="refresh" content="0; url=${escapeHtml(info.url)}">
-  <title>Doorverwijzing naar ${escapeHtml(info.label)}</title>
-</head>
-<body>
-  <p>Je wordt doorgestuurd naar <a href="${escapeHtml(info.url)}">${escapeHtml(info.label)}</a>...</p>
-  <script>window.location.replace(${JSON.stringify(info.url)});</script>
-</body>
-</html>`;
-
-    fs.writeFileSync(path.join(redirectDir, 'index.html'), html);
-    count++;
-  }
-
-  console.log(`Generated ${count} affiliate redirect pages`);
-  return affiliates;
-}
-
-// === 10. Generate sitemap.xml ===
+// === 9. Generate sitemap.xml ===
 
 function generateSitemap(data, blogPosts) {
   const { regions, locations } = data;
@@ -1494,11 +1410,8 @@ async function main() {
   console.log('\nGenerating type pages...');
   generateTypePages(data);
 
-  console.log('\nBuilding affiliate redirects...');
-  const affiliates = buildAffiliateRedirects();
-
   console.log('\nGenerating location pages...');
-  generateLocationPages(data, affiliates);
+  generateLocationPages(data);
 
   console.log('\nBuilding blog...');
   const blogPosts = buildBlog(data);

@@ -332,6 +332,14 @@
         /* Map no results overlay */
         .map-no-results { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--text-muted); background: rgba(254, 251, 246, 0.92); padding: 24px 32px; border-radius: var(--radius); box-shadow: var(--shadow-md); z-index: 2; pointer-events: none; }
         .map-no-results strong { display: block; color: var(--text); margin-bottom: 4px; font-size: 16px; font-family: var(--font-heading); }
+
+        /* Ad / promo cards */
+        .ad-card { background: var(--bg-cream); border: 1px dashed rgba(42, 157, 143, 0.3); }
+        .ad-card::before { display: none; }
+        .ad-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+        .ad-card .card-name { font-size: 16px; color: var(--navy); margin-bottom: 8px; }
+        .ad-card .card-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.6; }
+        .ad-card .card-actions { margin-top: auto; }
     </style>
 </head>
 <body>
@@ -790,10 +798,34 @@
         }
 
         // === Card Rendering ===
+        const PROMO_ITEMS = [
+            { title: 'PeuterPlannen handig?', text: 'Trakteer ons op een koffie en help ons gratis te blijven!', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun ons' },
+            { title: 'Ken je een leuk uitje?', text: 'Weet jij een kindvriendelijke plek die we missen? Laat het ons weten!', url: '/contact.html', cta: 'Tip ons' },
+            { title: 'Uitjes bij regen', text: 'Lees onze tips voor de leukste uitjes met je peuter als het regent.', url: '/blog/uitjes-met-peuter-bij-regen/', cta: 'Lees meer' },
+            { title: 'Bekijk alle steden', text: 'Ontdek kindvriendelijke uitjes in meer dan 60 steden door heel Nederland.', url: '/', cta: 'Alle steden' },
+        ];
+
         function renderCards(locations, travelTimes = {}) {
             const container = document.getElementById('results-container');
             container.innerHTML = '';
+            let promoIndex = 0;
             locations.forEach((item, index) => {
+                if ((index + 1) % 8 === 0) {
+                    const promo = PROMO_ITEMS[promoIndex % PROMO_ITEMS.length];
+                    promoIndex++;
+                    const adCard = document.createElement('article');
+                    adCard.className = 'loc-card ad-card reveal';
+                    adCard.style.animationDelay = `${Math.min(index * 0.05, 0.3)}s`;
+                    adCard.innerHTML = `
+                        <div class="ad-label">Tip</div>
+                        <h2 class="card-name">${promo.title}</h2>
+                        <p class="card-desc">${promo.text}</p>
+                        <div class="card-actions">
+                            <a href="${promo.url}" class="btn btn-maps">${promo.cta}</a>
+                        </div>
+                    `;
+                    container.appendChild(adCard);
+                }
                 const travelInfo = travelTimes[item.id];
                 const isFav = isFavorite(item.id);
                 const favStyle = isFav ? 'fill: #E76F51; stroke: #E76F51;' : 'fill: none; stroke: #94A3B0;';
