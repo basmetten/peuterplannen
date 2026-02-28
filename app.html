@@ -341,13 +341,26 @@
         .map-no-results { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: var(--text-muted); background: rgba(254, 251, 246, 0.92); padding: 24px 32px; border-radius: var(--radius); box-shadow: var(--shadow-md); z-index: 2; pointer-events: none; }
         .map-no-results strong { display: block; color: var(--text); margin-bottom: 4px; font-size: 16px; font-family: var(--font-heading); }
 
-        /* Ad / promo cards */
-        .ad-card { background: var(--bg-cream); border: 1px dashed rgba(42, 157, 143, 0.3); }
-        .ad-card::before { display: none; }
-        .ad-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-        .ad-card .card-name { font-size: 16px; color: var(--navy); margin-bottom: 8px; }
-        .ad-card .card-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.6; }
-        .ad-card .card-actions { margin-top: auto; }
+        /* Weather suggestion banner */
+        .weather-banner { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-radius: 12px; margin-bottom: 16px; cursor: pointer; transition: all 0.2s; }
+        .weather-banner:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        .weather-banner.indoor { background: linear-gradient(135deg, #E8F0FE, #D4E4FC); }
+        .weather-banner.outdoor { background: linear-gradient(135deg, #FEF6E4, #FCF0D4); }
+        .weather-banner-icon { font-size: 28px; flex-shrink: 0; line-height: 1; }
+        .weather-banner-text { flex: 1; font-size: 14px; font-weight: 500; color: var(--text); }
+        .weather-banner-text strong { font-weight: 700; }
+        .weather-banner-arrow { flex-shrink: 0; color: var(--primary); font-weight: 700; font-size: 18px; }
+
+        /* Promo banner (visually distinct from location cards) */
+        .promo-banner { background: linear-gradient(135deg, var(--primary-light), var(--bg-warm)); border: none; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 16px; }
+        .promo-banner::before { display: none; }
+        .promo-banner:hover, .promo-banner:active { transform: none; box-shadow: var(--shadow-md); }
+        .promo-icon { flex-shrink: 0; width: 44px; height: 44px; background: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+        .promo-icon svg { width: 22px; height: 22px; stroke: white; fill: none; stroke-width: 2; }
+        .promo-body { flex: 1; min-width: 0; }
+        .promo-body .card-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+        .promo-body .card-desc { font-size: 13px; margin-bottom: 0; }
+        .promo-cta { flex-shrink: 0; padding: 8px 16px; background: var(--primary); color: white; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap; }
     </style>
 </head>
 <body>
@@ -438,6 +451,8 @@
             <button onclick="resetAllFilters()">Wis filters</button>
         </div>
 
+        <div id="weather-banner"></div>
+
         <div class="results-count" id="results-count"></div>
 
         <div id="results-container" class="results-list" role="feed" aria-label="Locaties"></div>
@@ -515,13 +530,9 @@
 
     <!-- Mobile bottom navigation -->
     <nav class="bottom-nav" id="bottom-nav" aria-label="Navigatie">
-        <button class="bnav-item active" onclick="switchView('home')" id="tab-home" aria-label="Home">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-            <span>Home</span>
-        </button>
-        <button class="bnav-item" onclick="switchView('search')" id="tab-search" aria-label="Zoeken">
+        <button class="bnav-item active" onclick="switchView('home')" id="tab-home" aria-label="Ontdek">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <span>Zoeken</span>
+            <span>Ontdek</span>
         </button>
         <button class="bnav-item" onclick="switchView('map')" id="tab-map" aria-label="Kaart">
             <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
@@ -791,6 +802,34 @@
             return results;
         }
 
+        // === Weather Banner ===
+        async function checkWeather() {
+            try {
+                const lat = userLocation ? userLocation.lat : 52.37;
+                const lng = userLocation ? userLocation.lng : 4.90;
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=weather_code,temperature_2m`);
+                if (!res.ok) return;
+                const data = await res.json();
+                const code = data.current.weather_code;
+                const temp = Math.round(data.current.temperature_2m);
+                const banner = document.getElementById('weather-banner');
+                // Weather codes: 0-3 clear/cloudy, 45-48 fog, 51+ rain/snow
+                if (code >= 51) {
+                    banner.innerHTML = `<div class="weather-banner indoor" onclick="toggleWeather('indoor', null); document.querySelectorAll('.chip').forEach(c => { if(c.textContent==='Binnen') c.classList.add('active'); });">
+                        <span class="weather-banner-icon">\u{1F327}\uFE0F</span>
+                        <span class="weather-banner-text"><strong>${temp}°C en regen</strong> — bekijk indoor uitjes</span>
+                        <span class="weather-banner-arrow">\u203A</span>
+                    </div>`;
+                } else if (code <= 3 && temp >= 14) {
+                    banner.innerHTML = `<div class="weather-banner outdoor" onclick="toggleWeather('outdoor', null); document.querySelectorAll('.chip').forEach(c => { if(c.textContent==='Buiten') c.classList.add('active'); });">
+                        <span class="weather-banner-icon">\u2600\uFE0F</span>
+                        <span class="weather-banner-text"><strong>${temp}°C en droog</strong> — ontdek buitenactiviteiten</span>
+                        <span class="weather-banner-arrow">\u203A</span>
+                    </div>`;
+                }
+            } catch(e) { /* Weather banner is non-critical */ }
+        }
+
         // === Data Loading ===
         let currentAbort = null;
         async function loadLocations() {
@@ -851,10 +890,10 @@
 
         // === Card Rendering ===
         const PROMO_ITEMS = [
-            { title: 'PeuterPlannen handig?', text: 'Trakteer ons op een koffie en help ons gratis te blijven!', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun ons' },
-            { title: 'Ken je een leuk uitje?', text: 'Weet jij een kindvriendelijke plek die we missen? Laat het ons weten!', url: '/contact.html', cta: 'Tip ons' },
-            { title: 'Uitjes bij regen', text: 'Lees onze tips voor de leukste uitjes met je peuter als het regent.', url: '/blog/uitjes-met-peuter-bij-regen/', cta: 'Lees meer' },
-            { title: 'Bekijk alle steden', text: 'Ontdek kindvriendelijke uitjes in meer dan 60 steden door heel Nederland.', url: '/', cta: 'Alle steden' },
+            { title: 'PeuterPlannen handig?', text: 'Steun ons met een koffie!', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun ons', icon: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>' },
+            { title: 'Ken je een leuk uitje?', text: 'Laat het ons weten!', url: '/contact.html', cta: 'Tip ons', icon: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>' },
+            { title: 'Uitjes bij regen', text: 'Tips voor als het regent.', url: '/blog/uitjes-met-peuter-bij-regen/', cta: 'Lees meer', icon: '<path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 1 0 4 14.9"/><path d="M16 14v6M8 14v6M12 12v6"/>' },
+            { title: 'Bekijk alle steden', text: 'Uitjes door heel Nederland.', url: '/', cta: 'Ontdek', icon: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>' },
         ];
 
         function renderCards(locations, travelTimes = {}) {
@@ -866,15 +905,15 @@
                     const promo = PROMO_ITEMS[promoIndex % PROMO_ITEMS.length];
                     promoIndex++;
                     const adCard = document.createElement('article');
-                    adCard.className = 'loc-card ad-card reveal';
+                    adCard.className = 'loc-card promo-banner reveal';
                     adCard.style.animationDelay = `${Math.min(index * 0.05, 0.3)}s`;
                     adCard.innerHTML = `
-                        <div class="ad-label">Tip</div>
-                        <h2 class="card-name">${promo.title}</h2>
-                        <p class="card-desc">${promo.text}</p>
-                        <div class="card-actions">
-                            <a href="${promo.url}" class="btn btn-maps">${promo.cta}</a>
+                        <div class="promo-icon"><svg viewBox="0 0 24 24" aria-hidden="true">${promo.icon}</svg></div>
+                        <div class="promo-body">
+                            <h2 class="card-name">${promo.title}</h2>
+                            <p class="card-desc">${promo.text}</p>
                         </div>
+                        <a href="${promo.url}" class="promo-cta">${promo.cta}</a>
                     `;
                     container.appendChild(adCard);
                 }
@@ -971,23 +1010,15 @@
                 case 'home':
                     activeTag = 'all';
                     activeWeather = null;
+                    activeFacilities = { coffee: false, diaper: false };
                     document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
                     document.querySelector('.chip').classList.add('active');
+                    updateFilterCount();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     const results = document.getElementById('results-container');
                     results.classList.add('view-enter');
                     setTimeout(() => results.classList.remove('view-enter'), 200);
                     loadLocations();
-                    break;
-
-                case 'search':
-                    const searchSection = document.querySelector('.search-section');
-                    searchSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    setTimeout(() => {
-                        const input = document.getElementById('location-input');
-                        input.focus();
-                        input.select();
-                    }, 350);
                     break;
 
                 case 'map':
@@ -1406,6 +1437,7 @@
 
         // Start loading data immediately
         loadLocations();
+        checkWeather();
 
         // Preload MapLibre in background
         if ('requestIdleCallback' in window) {
