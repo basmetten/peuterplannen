@@ -22,7 +22,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://peuterplannen.nl/app.html">
     <meta property="og:title" content="PeuterPlannen — Kindvriendelijke uitjes in de buurt">
-    <meta property="og:description" content="273 geverifieerde locaties: speeltuinen, restaurants, musea en natuur voor gezinnen in de Randstad en Utrechtse Heuvelrug.">
+    <meta property="og:description" content="283 geverifieerde locaties: speeltuinen, restaurants, musea en natuur voor gezinnen in de Randstad en Utrechtse Heuvelrug.">
     <meta property="og:locale" content="nl_NL">
     <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
     <meta property="og:image:width" content="1408">
@@ -32,6 +32,7 @@
     <meta name="twitter:title" content="PeuterPlannen — Uitjes voor kinderen">
     <meta name="twitter:description" content="Vind kindvriendelijke locaties bij jou in de buurt.">
 
+    <!-- BEGIN:JSONLD_APP -->
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
@@ -46,15 +47,17 @@
       "author": {"@type": "Person", "name": "Bas Metten"},
       "areaServed": [
         {"@type": "City", "name": "Amsterdam"},
-        {"@type": "City", "name": "Utrecht"},
         {"@type": "City", "name": "Rotterdam"},
         {"@type": "City", "name": "Den Haag"},
+        {"@type": "City", "name": "Utrecht"},
         {"@type": "City", "name": "Haarlem"},
+        {"@type": "City", "name": "Amersfoort"},
         {"@type": "City", "name": "Leiden"},
         {"@type": "AdministrativeArea", "name": "Utrechtse Heuvelrug"}
       ]
     }
     </script>
+<!-- END:JSONLD_APP -->
 
     <!-- Preconnect & DNS Prefetch -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -323,6 +326,7 @@
     </style>
 </head>
 <body>
+<!-- BEGIN:NOSCRIPT -->
 <noscript>
   <div>
     <h1>PeuterPlannen</h1>
@@ -330,10 +334,11 @@
     <h2>Per stad</h2>
     <ul>
       <li><a href="amsterdam.html">Amsterdam (64 locaties)</a></li>
-      <li><a href="utrecht.html">Utrecht (54 locaties)</a></li>
       <li><a href="rotterdam.html">Rotterdam (27 locaties)</a></li>
       <li><a href="den-haag.html">Den Haag (28 locaties)</a></li>
+      <li><a href="utrecht.html">Utrecht (54 locaties)</a></li>
       <li><a href="haarlem.html">Haarlem (16 locaties)</a></li>
+      <li><a href="amersfoort.html">Amersfoort (10 locaties)</a></li>
       <li><a href="leiden.html">Leiden (22 locaties)</a></li>
       <li><a href="utrechtse-heuvelrug.html">Utrechtse Heuvelrug (55 locaties)</a></li>
     </ul>
@@ -347,6 +352,7 @@
     </ul>
   </div>
 </noscript>
+<!-- END:NOSCRIPT -->
 
     <div class="app-container">
         <header>
@@ -425,13 +431,14 @@
         <div class="info-body">
             <p>PeuterPlannen helpt ouders met jonge kinderen de leukste uitjes te vinden in de Randstad en Utrechtse Heuvelrug. Alle locaties zijn geverifieerd op kindvriendelijkheid.</p>
 
+            <!-- BEGIN:INFO_STATS -->
             <div class="info-stats">
                 <div class="info-stat">
                     <strong>283+</strong>
                     <span>Locaties</span>
                 </div>
                 <div class="info-stat">
-                    <strong>7</strong>
+                    <strong>8</strong>
                     <span>Regio's</span>
                 </div>
                 <div class="info-stat">
@@ -439,6 +446,7 @@
                     <span>Categorieën</span>
                 </div>
             </div>
+<!-- END:INFO_STATS -->
 
             <p>Ontworpen door een vader van twee peuters die simpelweg betere tooling wilde. Geen startup, geen VC-geld — gewoon een tool die werkt.</p>
 
@@ -509,13 +517,13 @@
 
         let activeTag = 'all';
         let activeWeather = null;
+        let activeRegion = null;
 
-        // Parse URL parameters (from quick-action buttons on homepage)
+        // Parse URL parameters (from quick-action buttons on homepage and city pages)
         (function() {
             const params = new URLSearchParams(window.location.search);
             if (params.get('weather')) {
                 activeWeather = params.get('weather');
-                // Activate the corresponding chip
                 setTimeout(() => {
                     document.querySelectorAll('.chip').forEach(c => {
                         if (c.textContent.trim() === 'Binnen' && activeWeather === 'indoor') c.classList.add('active');
@@ -532,6 +540,9 @@
                         if (c.textContent.trim() === map[activeTag]) c.classList.add('active');
                     });
                 }, 0);
+            }
+            if (params.get('regio')) {
+                activeRegion = params.get('regio');
             }
         })();
         let activeFacilities = { coffee: false, diaper: false };
@@ -725,6 +736,7 @@
                 if (activeWeather) { if (activeWeather === "indoor") url += "&weather=in.(indoor,hybrid,both)"; else if (activeWeather === "outdoor") url += "&weather=in.(outdoor,hybrid,both)"; else url += "&weather=eq." + activeWeather; }
                 if (activeFacilities.coffee) url += "&coffee=eq.true";
                 if (activeFacilities.diaper) url += "&diaper=eq.true";
+                if (activeRegion) url += "&region=eq." + encodeURIComponent(activeRegion);
                 url += "&order=created_at.desc";
                 const response = await fetch(url, { method: 'GET', signal: currentAbort.signal, headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" } });
                 if (!response.ok) throw new Error('Fetch failed: ' + response.status);

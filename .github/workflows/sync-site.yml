@@ -1,0 +1,28 @@
+name: Sync PeuterPlannen Data
+on:
+  schedule:
+    - cron: '0 6 * * *'       # dagelijks 07:00 CET
+  workflow_dispatch:            # handmatige trigger
+  repository_dispatch:
+    types: [data-changed]       # webhook trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node .scripts/sync_all.js
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+      - name: Commit & push if changed
+        run: |
+          git diff --quiet && exit 0
+          git config user.name "PeuterPlannen Bot"
+          git config user.email "bot@peuterplannen.nl"
+          git add -A
+          git commit -m "Auto-sync: update data $(date +%Y-%m-%d)"
+          git push
