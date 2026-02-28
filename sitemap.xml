@@ -110,6 +110,24 @@
     <priority>0.75</priority>
   </url>
   <url>
+    <loc>https://peuterplannen.nl/arnhem.html</loc>
+    <lastmod>2026-02-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/apeldoorn.html</loc>
+    <lastmod>2026-02-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/s-hertogenbosch.html</loc>
+    <lastmod>2026-02-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
     <loc>https://peuterplannen.nl/speeltuinen.html</loc>
     <lastmod>2026-02-28</lastmod>
     <changefreq>weekly</changefreq>
