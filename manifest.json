@@ -4,8 +4,8 @@
   "description": "Vind kindvriendelijke uitjes bij jou in de buurt. 544 geverifieerde locaties in de Randstad.",
   "start_url": "/app.html",
   "display": "standalone",
-  "background_color": "#FFF9F2",
-  "theme_color": "#C96B4F",
+  "background_color": "#FAF7F2",
+  "theme_color": "#D4775A",
   "orientation": "portrait-primary",
   "lang": "nl",
   "categories": [

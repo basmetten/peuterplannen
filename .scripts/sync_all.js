@@ -31,28 +31,34 @@ const ROOT = path.resolve(__dirname, '..');
 
 const TYPE_MAP = {
   play: { label: 'Speeltuinen', slug: 'speeltuinen', labelSingle: 'Speeltuinen' },
+  farm: { label: 'Kinderboerderijen', slug: 'kinderboerderijen', labelSingle: 'Kinderboerderijen' },
   nature: { label: 'Natuur', slug: 'natuur', labelSingle: 'Natuur' },
   museum: { label: 'Musea', slug: 'musea', labelSingle: 'Musea' },
-  horeca: { label: 'Restaurants', slug: 'horeca', labelSingle: 'Horeca' },
+  swim: { label: 'Zwemmen', slug: 'zwemmen', labelSingle: 'Zwemmen' },
   pancake: { label: 'Pannenkoeken', slug: 'pannenkoeken', labelSingle: 'Pannenkoeken' },
+  horeca: { label: 'Horeca', slug: 'horeca', labelSingle: 'Horeca' },
 };
 
 const TYPE_LABELS_CITY = {
   play: 'Speeltuinen & Speelparadijzen',
-  nature: 'Natuur & Kinderboerderijen',
-  museum: 'Musea',
-  horeca: 'Kindvriendelijke Horeca',
+  farm: 'Kinderboerderijen & Dieren',
+  nature: 'Natuur & Buiten',
+  museum: 'Musea & Ontdekken',
+  swim: 'Zwembaden & Waterplezier',
   pancake: 'Pannenkoekenrestaurants',
+  horeca: 'Kindvriendelijke Horeca',
 };
 
-const TYPE_ORDER = ['play', 'nature', 'museum', 'pancake', 'horeca'];
+const TYPE_ORDER = ['play', 'farm', 'nature', 'museum', 'swim', 'pancake', 'horeca'];
 
 const TYPE_IMAGES = {
   play: '/images/categories/speeltuinen.png',
+  farm: '/images/categories/kinderboerderijen.png',
   nature: '/images/categories/natuur.png',
   museum: '/images/categories/musea.png',
-  horeca: '/images/categories/horeca.png',
+  swim: '/images/categories/zwemmen.png',
   pancake: '/images/categories/pannenkoeken.png',
+  horeca: '/images/categories/horeca.png',
 };
 
 const TYPE_PAGES = [
@@ -71,9 +77,23 @@ const TYPE_PAGES = [
     ]
   },
   {
+    slug: 'kinderboerderijen', dbType: 'farm',
+    title: 'Kinderboerderijen voor peuters in Nederland',
+    metaTitle: 'Kinderboerderijen voor peuters, gratis en betaald | PeuterPlannen',
+    metaDesc: 'De leukste kinderboerderijen en stadsboerderijen voor peuters in 17 regio\'s door heel Nederland. Gratis, met dieren aaien en speeltuinen.',
+    h1: 'Kinderboerderijen voor peuters in Nederland',
+    intro: `Kinderboerderijen zijn de ideale uitjes voor peuters. Dieren aaien, geiten voeren, kippen bekijken en ondertussen lekker buiten spelen. De meeste stadsboerderijen in Nederland zijn gratis toegankelijk en hebben ook een zandbak of speeltuintje.\n\nVan **Kinderboerderij Westerpark** in Amsterdam tot **Stadsboerderij De Veldhoeve** in Utrecht en **Kinderboerderij Vroesenpark** in Rotterdam — er is altijd een kinderboerderij in de buurt. Veel boerderijen hebben ook een terrasje waar ouders een kop koffie kunnen drinken.`,
+    sectionLabel: 'Kinderboerderijen',
+    faqItems: [
+      { q: 'Zijn kinderboerderijen gratis?', a: 'De meeste stadsboerderijen zijn gratis toegankelijk. Sommige grotere dierenweides vragen een klein bedrag (1-3 euro). Dierenvoer koop je vaak los voor 50 cent tot 1 euro.' },
+      { q: 'Vanaf welke leeftijd kunnen peuters naar een kinderboerderij?', a: 'Kinderboerderijen zijn geschikt vanaf ongeveer 1 jaar. De kleinste kinderen vinden het al leuk om de dieren te bekijken. Vanaf 2 jaar kunnen ze vaak zelf voeren onder begeleiding.' },
+      { q: 'Welke kinderboerderijen hebben koffie voor ouders?', a: 'Veel stadsboerderijen hebben een klein cafe of terras. Boerderij Meerzicht en Speelboerderij Elsenhove in Amsterdam, Geertjes Hoeve bij Utrecht en De Veldhoeve in Utrecht zijn populaire opties.' },
+    ]
+  },
+  {
     slug: 'musea', dbType: 'museum',
     title: 'Musea voor peuters in Nederland',
-    metaTitle: 'Musea voor peuters, interactief en kindvriendelijk | PeuterPlannen',
+    metaTitle: 'Musea voor peuters, interactief en ontdekkend | PeuterPlannen',
     metaDesc: 'Welke musea zijn echt leuk voor peuters? 60+ kindvriendelijke musea in 17 regio\'s door heel Nederland. Met leeftijdsadvies.',
     h1: 'Musea voor peuters in Nederland',
     intro: `De meeste musea zijn niets voor peuters. "Niet aankomen" en "stil zijn" werkt niet met een tweejarige. Maar een handvol musea in Nederland snapt dat wel: lage vitrines, knoppen om op te drukken, en dingen die tegen een stootje kunnen.\n\nDe toppers: het **Nijntje Museum** in Utrecht (0–6 jaar, alles op kruiphoogte), **NEMO** in Amsterdam (water, licht, geluid) en **Villa Zebra** in Rotterdam (kunst waarbij je mag kliederen). Musea als het Anne Frank Huis of het Verzetsmuseum? Bewaar die voor als ze 10 zijn.`,
@@ -101,15 +121,29 @@ const TYPE_PAGES = [
   {
     slug: 'natuur', dbType: 'nature',
     title: 'Natuur met peuters in Nederland',
-    metaTitle: 'Natuur met peuters, parken, bossen en kinderboerderijen | PeuterPlannen',
-    metaDesc: 'Kinderboerderijen, stadsparken, duinen en bossen voor peuters in 17 regio\'s door heel Nederland. Gratis en betaald, binnen en buiten.',
+    metaTitle: 'Natuur met peuters, parken, bossen en duinen | PeuterPlannen',
+    metaDesc: 'Stadsparken, duinen, bossen en natuurspeelplaatsen voor peuters in 17 regio\'s door heel Nederland. Gratis en betaald, altijd buiten.',
     h1: 'Natuur met peuters in Nederland',
-    intro: `Kinderboerderijen staan bovenaan. Logisch: dieren aaien, een geit voeren, zandbak erbij, en de meeste stadsboerderijen zijn gewoon gratis. Voor peuters van 1 tot 4 jaar is er weinig dat beter werkt.\n\nDaarnaast: **stadsparken** voor een rustige ochtend met een picknick, **duinen** bij Den Haag of het **Nationaal Park Zuid-Kennemerland** bij Haarlem voor als je iets avontuurlijkers wilt. En het mooie is dat je hier nauwelijks geld aan kwijt bent.`,
+    intro: `Naar buiten met je peuter hoeft niet ingewikkeld te zijn. Een stadspark met een zandbak, een bos met een klauterparcours, of de duinen met een picknick — kinderen vermaken zich overal waar ze kunnen rennen, graven en ontdekken.\n\n**Stadsparken** voor een rustige ochtend met een picknick, **duinen** bij Den Haag of het **Nationaal Park Zuid-Kennemerland** bij Haarlem voor als je iets avontuurlijkers wilt, of **natuurspeelplaatsen** waar kinderen met water, zand en hout kunnen spelen. En het mooie is dat je hier nauwelijks geld aan kwijt bent.`,
     sectionLabel: 'Natuur',
     faqItems: [
-      { q: 'Welke kinderboerderijen zijn gratis in Nederland?', a: 'De meeste stadsboerderijen zijn gratis. Denk aan Griftsteede in Utrecht, Kinderboerderij Westerpark in Amsterdam, Kinderboerderij Vroesenpark in Rotterdam en BuurtBoerderij De Nijkamphoeve in Den Haag. Ook in Eindhoven, Groningen en andere steden.' },
       { q: 'Welk natuurgebied is het geschiktst voor peuters?', a: 'Vlakke parken met wandelpaden werken het best voor de allerkleinsten: Vondelpark (Amsterdam), Maximapark (Utrecht) of Vroesenpark (Rotterdam). Oudere peuters (3–5) kunnen ook de duinen aan.' },
-      { q: 'Zijn er kinderboerderijen met koffie voor ouders?', a: 'Ja, best veel. Boerderij Meerzicht en Speelboerderij Elsenhove in Amsterdam hebben allebei een cafe, net als Geertjes Hoeve bij Utrecht.' },
+      { q: 'Zijn er natuurspeelplaatsen voor peuters?', a: 'Ja, steeds meer! Natuurspeelplaatsen met water, zand en boomstammen zijn ideaal voor peuters. Het Amsterdamse Bos, de Utrechtse Heuvelrug en diverse stadsparken hebben natuurspeelplekken.' },
+      { q: 'Wat neem je mee naar een dagje natuur met peuters?', a: 'Reservekleren (modder!), water, snacks, zonnebrand of regenkleding. Een buggy met grote wielen of een draagzak werkt beter dan een kinderwagen op onverharde paden.' },
+    ]
+  },
+  {
+    slug: 'zwemmen', dbType: 'swim',
+    title: 'Zwemmen met peuters in Nederland',
+    metaTitle: 'Zwemmen met peuters, zwembaden en waterplezier | PeuterPlannen',
+    metaDesc: 'Zwembaden en waterplezier voor peuters in heel Nederland. Peuterbaden, subtropische zwemparadijzen en buitenzwembaden met peutergedeelte.',
+    h1: 'Zwemmen met peuters in Nederland',
+    intro: `Zwemmen is een van de leukste activiteiten voor peuters — en een van de vermoeiendste (voor de ouders). Veel zwembaden in Nederland hebben speciale peuterbaden met warm water, ondiepe gedeeltes en glijbaantjes op peuterhoogte.\n\n**Let op:** deze categorie is nieuw en wordt actief aangevuld met locaties. Ken je een goed zwembad voor peuters? Laat het ons weten via de app! Subtropische zwemparadijzen als **Center Parcs** en **De Tongelreep** in Eindhoven zijn populaire opties, maar ook veel gemeentelijke zwembaden hebben uitstekende peutervoorzieningen.`,
+    sectionLabel: 'Zwemmen',
+    faqItems: [
+      { q: 'Vanaf welke leeftijd kunnen peuters zwemmen?', a: 'De meeste peuterbaden zijn geschikt vanaf 0 jaar met begeleiding. Babyzwemmen kan al vanaf 3 maanden. Voor zelfstandig spelen in het peuterbad is 1-2 jaar een goed startpunt.' },
+      { q: 'Hebben zwembaden luierruimtes en verschoonplekken?', a: 'Vrijwel alle zwembaden met peutervoorzieningen hebben verschoonplekken in de kleedkamers. Veel hebben ook gezinskleedkamers met extra ruimte voor de kinderwagen.' },
+      { q: 'Moet ik een zwemluier gebruiken voor mijn peuter?', a: 'Ja, de meeste zwembaden vereisen een zwemluier voor kinderen die nog niet zindelijk zijn. Je kunt herbruikbare zwemluiers kopen of wegwerpzwemluiers gebruiken.' },
     ]
   },
   {
@@ -201,7 +235,7 @@ async function fetchJSON(endpoint, query = '') {
 
 // === Reusable HTML Snippets ===
 
-const NAV_LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" fill="none" class="nav-logo-svg" aria-hidden="true"><circle cx="22" cy="14" r="10" fill="#C96B4F"/><path d="M14 24C14 22 18 21 23 21C28 21 31 22 31 24L32 40 34 52C36 58 38 62 37 64C36 66 33 66 32 64C30 60 29 54 28 48L26 44 20 44 18 48C17 54 15 60 13 64C12 66 9 66 8 64C7 62 9 58 12 52L14 40Z" fill="#C96B4F"/><ellipse cx="9.5" cy="64.5" rx="4" ry="2.5" fill="#C96B4F"/><ellipse cx="36" cy="64.5" rx="4" ry="2.5" fill="#C96B4F"/><path d="M15 27C10 33 7 40 10 43C12 44 15 42 16 37L17 30Z" fill="#C96B4F"/><path d="M30 26L42 16C44 14.5 45.5 16 44 18L33 28Z" fill="#C96B4F"/><path d="M55 3C49 3 44 8 44 14.5C44 22 55 32 55 32S66 22 66 14.5C66 8 61 3 55 3Z" fill="#7BA68C"/><circle cx="55" cy="14" r="4.5" fill="white"/><circle cx="43" cy="17" r="2.5" fill="#F2C94C"/></svg>';
+const NAV_LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" class="nav-logo-svg" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>';
 
 function navHTML(ctaText = 'Open App', ctaHref = '/app.html') {
   return `<a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
@@ -243,13 +277,13 @@ function supportHTML() {
 function headCommon(extra = '') {
   return `  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#C96B4F">
+  <meta name="theme-color" content="#D4775A">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">${extra}`;
 }
 
@@ -462,10 +496,12 @@ ${noscriptCities}
     <h2>Per type</h2>
     <ul>
       <li><a href="speeltuinen.html">Speeltuinen</a></li>
-      <li><a href="musea.html">Musea</a></li>
+      <li><a href="kinderboerderijen.html">Kinderboerderijen</a></li>
       <li><a href="natuur.html">Natuur</a></li>
-      <li><a href="horeca.html">Restaurants</a></li>
+      <li><a href="musea.html">Musea</a></li>
+      <li><a href="zwemmen.html">Zwemmen</a></li>
       <li><a href="pannenkoeken.html">Pannenkoeken</a></li>
+      <li><a href="horeca.html">Horeca</a></li>
     </ul>
   </div>
 </noscript>`;
@@ -543,7 +579,7 @@ function updateAbout(data) {
                 <span>Regio's</span>
             </div>
             <div class="stat-card">
-                <strong>5</strong>
+                <strong>7</strong>
                 <span>Categorieën</span>
             </div>
         </div>`;
@@ -1020,7 +1056,7 @@ function locationPageHTML(loc, region, similarLocs) {
           zoom: 14,
           attributionControl: false
         });
-        new maplibregl.Marker({ color: '#C96B4F' }).setLngLat([${loc.lng}, ${loc.lat}]).addTo(map);
+        new maplibregl.Marker({ color: '#D4775A' }).setLngLat([${loc.lng}, ${loc.lat}]).addTo(map);
       };
       document.head.appendChild(s);
     }

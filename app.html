@@ -9,7 +9,7 @@
     <link rel="canonical" href="https://peuterplannen.nl/app.html">
 
     <!-- PWA & Mobile -->
-    <meta name="theme-color" content="#C96B4F">
+    <meta name="theme-color" content="#D4775A">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="PeuterPlannen">
@@ -77,38 +77,38 @@
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.css" />
 
     <!-- Fonts (swap for faster paint) -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #C96B4F;
-            --primary-light: #FDF0EC;
-            --primary-dark: #A8523B;
-            --accent: #F2C94C;
+            --primary: #D4775A;
+            --primary-light: #FDF1ED;
+            --primary-dark: #B35D42;
+            --accent: #F0C75E;
             --accent-light: #FEF8E7;
-            --secondary: #7BA68C;
-            --bg: #FFF9F2;
+            --secondary: #7A9E72;
+            --bg: #FAF7F2;
             --bg-warm: #FFF5EB;
             --surface: #FFFFFF;
-            --text: #3D2C2E;
+            --text: #2D2926;
             --text-secondary: #7A5E60;
-            --text-muted: #9B8688;
-            --gold: #F2C94C;
+            --text-muted: #A39490;
+            --gold: #F0C75E;
             --gold-text: #8B6914;
-            --success: #7BA68C;
-            --shadow-sm: 0 1px 3px rgba(61, 44, 46, 0.08);
-            --shadow-md: 0 4px 12px rgba(61, 44, 46, 0.10);
-            --shadow-lg: 0 8px 30px rgba(61, 44, 46, 0.12);
-            --shadow-hover: 0 12px 40px rgba(61, 44, 46, 0.15);
+            --success: #7A9E72;
+            --shadow-sm: 0 1px 3px rgba(45, 41, 38, 0.08);
+            --shadow-md: 0 4px 12px rgba(45, 41, 38, 0.10);
+            --shadow-lg: 0 8px 30px rgba(45, 41, 38, 0.12);
+            --shadow-hover: 0 12px 40px rgba(45, 41, 38, 0.15);
             --font-heading: 'Plus Jakarta Sans', sans-serif;
-            --font-body: 'Inter', -apple-system, sans-serif;
+            --font-body: 'DM Sans', -apple-system, sans-serif;
             --safe-bottom: env(safe-area-inset-bottom, 20px);
             --radius: 16px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         html { height: 100%; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        ::selection { background: rgba(201, 107, 79, 0.2); color: var(--text); }
+        ::selection { background: rgba(212, 119, 90, 0.2); color: var(--text); }
         body { font-family: var(--font-body); min-height: 100%; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
 
         /* Skeleton loader */
@@ -136,7 +136,7 @@
             margin: 0 -16px 16px;
             text-align: center;
             overflow: hidden;
-            border-bottom: 1px solid rgba(201, 107, 79, 0.1);
+            border-bottom: 1px solid rgba(212, 119, 90, 0.1);
         }
         header::before {
             content: '';
@@ -157,14 +157,14 @@
         .sub-head { font-size: 13px; color: var(--text-secondary); font-weight: 500; margin-top: 0; }
 
         /* Search card */
-        .search-section { background: var(--surface); border: 1px solid rgba(201, 107, 79, 0.15); border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 20px; margin-bottom: 16px; }
+        .search-section { background: var(--surface); border: 1px solid rgba(212, 119, 90, 0.15); border-radius: var(--radius); box-shadow: var(--shadow-md); padding: 20px; margin-bottom: 16px; }
         .search-label { font-family: var(--font-heading); font-size: 12px; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
         .search-input-wrapper { display: flex; gap: 8px; align-items: center; }
         .search-input { flex: 1; padding: 14px 16px; background: var(--bg); border: 2px solid transparent; border-radius: 12px; font-size: 16px; font-family: inherit; color: var(--text); transition: all 0.2s; }
         .search-input::placeholder { color: var(--text-muted); }
-        .search-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(201, 107, 79, 0.1); }
+        .search-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(212, 119, 90, 0.1); }
 
-        .icon-btn { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: var(--bg); border: 1px solid rgba(201, 107, 79, 0.15); border-radius: 12px; cursor: pointer; transition: all 0.2s; touch-action: manipulation; }
+        .icon-btn { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: var(--bg); border: 1px solid rgba(212, 119, 90, 0.15); border-radius: 12px; cursor: pointer; transition: all 0.2s; touch-action: manipulation; }
         .icon-btn:active { transform: scale(0.96); }
         .icon-btn svg { stroke: var(--text-secondary); fill: none; stroke-width: 2; width: 22px; height: 22px; }
         .icon-btn.primary { background: var(--primary); border-color: transparent; }
@@ -172,16 +172,16 @@
         .icon-btn.primary:active { background: var(--primary-dark); }
 
         .gps-status { font-size: 13px; color: var(--text-secondary); margin-top: 10px; display: flex; align-items: center; gap: 8px; }
-        .gps-status.loading::before { content: ''; width: 14px; height: 14px; border: 2px solid rgba(201,107,79,0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        .gps-status.loading::before { content: ''; width: 14px; height: 14px; border: 2px solid rgba(212,119,90,0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
         .gps-status.error { color: var(--accent); }
 
         /* Filter chips */
         .filter-chips { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 4px 0 16px; position: sticky; top: 0; z-index: 10; background: var(--bg); margin: 0 -4px; padding-left: 4px; padding-right: 4px; }
         .filter-chips::-webkit-scrollbar { display: none; }
-        .chip { flex-shrink: 0; scroll-snap-align: start; padding: 10px 16px; border-radius: 24px; border: 1.5px solid rgba(201, 107, 79, 0.2); background: var(--surface); font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--text-secondary); white-space: nowrap; cursor: pointer; transition: all 0.2s; touch-action: manipulation; box-shadow: var(--shadow-sm); }
+        .chip { flex-shrink: 0; scroll-snap-align: start; padding: 10px 16px; border-radius: 24px; border: 1.5px solid rgba(212, 119, 90, 0.2); background: var(--surface); font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--text-secondary); white-space: nowrap; cursor: pointer; transition: all 0.2s; touch-action: manipulation; box-shadow: var(--shadow-sm); }
         .chip:active { transform: scale(0.96); }
-        .chip.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(201, 107, 79, 0.3); }
-        .chip-divider { flex-shrink: 0; width: 1px; height: 24px; background: rgba(201, 107, 79, 0.15); align-self: center; }
+        .chip.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(212, 119, 90, 0.3); }
+        .chip-divider { flex-shrink: 0; width: 1px; height: 24px; background: rgba(212, 119, 90, 0.15); align-self: center; }
         .chip-label { flex-shrink: 0; font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; align-self: center; padding: 0 2px 0 8px; }
         .active-filters { display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; margin-bottom: 10px; background: var(--primary-light); border-radius: 10px; font-size: 13px; color: var(--primary-dark); font-weight: 600; }
         .active-filters button { background: none; border: none; color: var(--accent); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; }
@@ -193,7 +193,7 @@
         /* Location card */
         .loc-card {
             background: var(--surface);
-            border: 1px solid rgba(201, 107, 79, 0.12);
+            border: 1px solid rgba(212, 119, 90, 0.12);
             border-radius: var(--radius);
             padding: 18px 20px;
             box-shadow: var(--shadow-md);
@@ -234,25 +234,25 @@
         .facility svg { width: 14px; height: 14px; stroke: var(--primary); fill: none; stroke-width: 2; }
 
         .card-actions { display: flex; gap: 8px; }
-        .btn { flex: 1; padding: 12px 14px; font-size: 14px; font-weight: 600; text-align: center; text-decoration: none; border-radius: 12px; border: 1.5px solid rgba(201, 107, 79, 0.2); color: var(--text); background: var(--surface); display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: all 0.2s; touch-action: manipulation; font-family: inherit; }
+        .btn { flex: 1; padding: 12px 14px; font-size: 14px; font-weight: 600; text-align: center; text-decoration: none; border-radius: 12px; border: 1.5px solid rgba(212, 119, 90, 0.2); color: var(--text); background: var(--surface); display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: all 0.2s; touch-action: manipulation; font-family: inherit; }
         .btn:active { transform: scale(0.98); }
         .btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
         .btn-detail { background: var(--primary); color: white; border-color: var(--primary); }
         .btn-detail:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
         .btn-detail svg { stroke: white; }
-        .btn-maps { color: var(--primary-dark); border-color: rgba(201, 107, 79, 0.3); }
+        .btn-maps { color: var(--primary-dark); border-color: rgba(212, 119, 90, 0.3); }
         .btn-maps:hover { background: var(--primary-light); border-color: var(--primary); }
         .btn-share { padding: 12px; flex: 0; min-width: 44px; }
 
         .hidden { display: none !important; }
         .loader { text-align: center; padding: 60px 20px; font-weight: 500; color: var(--text-muted); font-family: var(--font-heading); font-size: 16px; }
-        .loader::before { content: ''; display: block; width: 40px; height: 40px; margin: 0 auto 16px; border: 3px solid rgba(201,107,79,0.15); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        .loader::before { content: ''; display: block; width: 40px; height: 40px; margin: 0 auto 16px; border: 3px solid rgba(212,119,90,0.15); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
         .error-msg { text-align: center; padding: 40px; color: var(--accent); font-size: 14px; background: var(--accent-light); border-radius: var(--radius); margin: 20px 0; }
         .no-results { text-align: center; padding: 60px 20px; color: var(--text-muted); }
         .no-results strong { display: block; color: var(--text); margin-bottom: 8px; font-size: 18px; font-family: var(--font-heading); }
 
         /* Bottom nav (mobile) */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid rgba(201, 107, 79, 0.1); padding: 8px 0; padding-bottom: calc(8px + var(--safe-bottom)); display: flex; justify-content: space-around; z-index: 100; box-shadow: 0 -2px 12px rgba(61, 44, 46, 0.06); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid rgba(212, 119, 90, 0.1); padding: 8px 0; padding-bottom: calc(8px + var(--safe-bottom)); display: flex; justify-content: space-around; z-index: 100; box-shadow: 0 -2px 12px rgba(45, 41, 38, 0.06); }
         .bnav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 16px; text-decoration: none; font-size: 10px; font-weight: 600; color: var(--text-muted); transition: color 0.2s; background: none; border: none; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; position: relative; }
         .bnav-item.active { color: var(--primary-dark); }
         .bnav-item.active::after { content: ''; position: absolute; bottom: -2px; width: 4px; height: 4px; border-radius: 50%; background: var(--primary); }
@@ -260,15 +260,15 @@
         @media (min-width: 768px) { .bottom-nav { display: none; } body { padding-bottom: 0; } }
 
         /* Skeleton cards */
-        .skeleton-card { background: var(--surface); border-radius: var(--radius); padding: 18px 20px; border: 1px solid rgba(201,107,79,0.08); }
+        .skeleton-card { background: var(--surface); border-radius: var(--radius); padding: 18px 20px; border: 1px solid rgba(212,119,90,0.08); }
         .skel-line { height: 12px; margin-bottom: 10px; border-radius: 6px; }
         .skel-title { height: 20px; width: 70%; margin-bottom: 10px; border-radius: 6px; }
         .skel-pills { display: flex; gap: 8px; margin-bottom: 14px; }
         .skel-pill { width: 60px; height: 24px; border-radius: 8px; }
 
         /* Google Autocomplete styling */
-        .pac-container { background: var(--surface) !important; border: 1px solid rgba(201,107,79,0.15) !important; border-radius: 12px !important; box-shadow: var(--shadow-lg) !important; font-family: inherit !important; margin-top: 8px !important; }
-        .pac-item { padding: 12px 16px !important; font-family: inherit !important; font-size: 14px !important; color: var(--text) !important; border-bottom: 1px solid rgba(201,107,79,0.08) !important; }
+        .pac-container { background: var(--surface) !important; border: 1px solid rgba(212,119,90,0.15) !important; border-radius: 12px !important; box-shadow: var(--shadow-lg) !important; font-family: inherit !important; margin-top: 8px !important; }
+        .pac-item { padding: 12px 16px !important; font-family: inherit !important; font-size: 14px !important; color: var(--text) !important; border-bottom: 1px solid rgba(212,119,90,0.08) !important; }
         .pac-item:hover { background: var(--primary-light) !important; }
         .pac-item-query { color: var(--text) !important; font-weight: 600; }
         .pac-matched { color: var(--primary-dark) !important; }
@@ -278,13 +278,13 @@
         noscript div { max-width: 800px; margin: 80px auto; padding: 24px; font-family: sans-serif; }
 
         /* Info panel (slide-up bottom sheet) */
-        .info-overlay { position: fixed; inset: 0; background: rgba(61,44,46,0.4); z-index: 200; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+        .info-overlay { position: fixed; inset: 0; background: rgba(45,41,38,0.4); z-index: 200; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
         .info-overlay.open { opacity: 1; visibility: visible; }
         .info-panel { position: fixed; bottom: 0; left: 0; right: 0; max-height: 85vh; background: var(--surface); border-radius: 20px 20px 0 0; z-index: 201; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1); overflow-y: auto; overscroll-behavior: contain; padding-bottom: calc(20px + var(--safe-bottom)); }
         .info-panel.open { transform: translateY(0); }
         .info-handle { display: flex; justify-content: center; padding: 12px 0 8px; cursor: pointer; }
         .info-handle::before { content: ''; width: 36px; height: 4px; border-radius: 2px; background: var(--text-muted); opacity: 0.3; }
-        .info-header { display: flex; justify-content: space-between; align-items: center; padding: 0 24px 16px; border-bottom: 1px solid rgba(201,107,79,0.1); }
+        .info-header { display: flex; justify-content: space-between; align-items: center; padding: 0 24px 16px; border-bottom: 1px solid rgba(212,119,90,0.1); }
         .info-header h2 { font-family: var(--font-heading); font-size: 22px; font-weight: 800; color: var(--text); }
         .info-close { background: var(--bg); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; }
         .info-close:hover { background: var(--primary-light); }
@@ -311,9 +311,9 @@
         .results-count:empty { display: none; }
 
         /* Map container */
-        .map-container { width: calc(100% + 32px); margin-left: -16px; height: calc(100vh - 240px); min-height: 400px; max-height: 700px; position: relative; border-top: 1px solid rgba(201, 107, 79, 0.1); }
+        .map-container { width: calc(100% + 32px); margin-left: -16px; height: calc(100vh - 240px); min-height: 400px; max-height: 700px; position: relative; border-top: 1px solid rgba(212, 119, 90, 0.1); }
         .map-canvas { width: 100%; height: 100%; }
-        .map-recenter { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; background: var(--surface); border: 1px solid rgba(201, 107, 79, 0.15); border-radius: 10px; box-shadow: var(--shadow-md); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; z-index: 2; touch-action: manipulation; }
+        .map-recenter { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; background: var(--surface); border: 1px solid rgba(212, 119, 90, 0.15); border-radius: 10px; box-shadow: var(--shadow-md); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; z-index: 2; touch-action: manipulation; }
         .map-recenter:active { transform: scale(0.94); }
         .map-recenter svg { width: 20px; height: 20px; stroke: var(--text-secondary); fill: none; stroke-width: 2; }
         .map-container.hidden { display: none; }
@@ -393,10 +393,12 @@
     <h2>Per type</h2>
     <ul>
       <li><a href="speeltuinen.html">Speeltuinen</a></li>
-      <li><a href="musea.html">Musea</a></li>
+      <li><a href="kinderboerderijen.html">Kinderboerderijen</a></li>
       <li><a href="natuur.html">Natuur</a></li>
-      <li><a href="horeca.html">Restaurants</a></li>
+      <li><a href="musea.html">Musea</a></li>
+      <li><a href="zwemmen.html">Zwemmen</a></li>
       <li><a href="pannenkoeken.html">Pannenkoeken</a></li>
+      <li><a href="horeca.html">Horeca</a></li>
     </ul>
   </div>
 </noscript>
@@ -406,7 +408,7 @@
         <header>
             <a href="/" class="logo" aria-label="PeuterPlannen homepage">
                 <div class="logo-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" fill="none" style="width:40px;height:40px" aria-hidden="true"><circle cx="22" cy="14" r="10" fill="#C96B4F"/><path d="M14 24C14 22 18 21 23 21C28 21 31 22 31 24L32 40 34 52C36 58 38 62 37 64C36 66 33 66 32 64C30 60 29 54 28 48L26 44 20 44 18 48C17 54 15 60 13 64C12 66 9 66 8 64C7 62 9 58 12 52L14 40Z" fill="#C96B4F"/><ellipse cx="9.5" cy="64.5" rx="4" ry="2.5" fill="#C96B4F"/><ellipse cx="36" cy="64.5" rx="4" ry="2.5" fill="#C96B4F"/><path d="M15 27C10 33 7 40 10 43C12 44 15 42 16 37L17 30Z" fill="#C96B4F"/><path d="M30 26L42 16C44 14.5 45.5 16 44 18L33 28Z" fill="#C96B4F"/><path d="M55 3C49 3 44 8 44 14.5C44 22 55 32 55 32S66 22 66 14.5C66 8 61 3 55 3Z" fill="#7BA68C"/><circle cx="55" cy="14" r="4.5" fill="white"/><circle cx="43" cy="17" r="2.5" fill="#F2C94C"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" class="nav-logo-svg" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>
                 </div>
                 <h1>Peuter<span style="color:var(--primary)">Plannen</span></h1>
             </a>
@@ -435,10 +437,12 @@
             <button class="chip" onclick="toggleTag('favorites', event)" aria-selected="false">Favorieten</button>
             <span class="chip-label">Type:</span>
             <button class="chip" onclick="toggleTag('play', event)" aria-selected="false">Speeltuin</button>
+            <button class="chip" onclick="toggleTag('farm', event)" aria-selected="false">Boerderij</button>
             <button class="chip" onclick="toggleTag('nature', event)" aria-selected="false">Natuur</button>
-            <button class="chip" onclick="toggleTag('horeca', event)" aria-selected="false">Horeca</button>
             <button class="chip" onclick="toggleTag('museum', event)" aria-selected="false">Museum</button>
+            <button class="chip" onclick="toggleTag('swim', event)" aria-selected="false">Zwemmen</button>
             <button class="chip" onclick="toggleTag('pancake', event)" aria-selected="false">Pannenkoeken</button>
+            <button class="chip" onclick="toggleTag('horeca', event)" aria-selected="false">Horeca</button>
             <span class="chip-label">Weer:</span>
             <button class="chip" onclick="toggleWeather('indoor', event)" aria-selected="false">Binnen</button>
             <button class="chip" onclick="toggleWeather('outdoor', event)" aria-selected="false">Buiten</button>
@@ -587,7 +591,7 @@
                 setTimeout(() => {
                     document.querySelector('.chip.active')?.classList.remove('active');
                     document.querySelectorAll('.chip').forEach(c => {
-                        const map = {'play':'Speeltuin','nature':'Natuur','horeca':'Horeca','museum':'Museum','pancake':'Pannenkoeken'};
+                        const map = {'play':'Speeltuin','farm':'Boerderij','nature':'Natuur','horeca':'Horeca','museum':'Museum','swim':'Zwemmen','pancake':'Pannenkoeken'};
                         if (c.textContent.trim() === map[activeTag]) c.classList.add('active');
                     });
                 }, 0);
@@ -608,7 +612,7 @@
         let activeLocSheet = null;
         let userLocationMarker = null;
 
-        const TYPE_LABELS = { play: 'Speeltuin', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', pancake: 'Pannenkoeken' };
+        const TYPE_LABELS = { play: 'Speeltuin', farm: 'Boerderij', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', swim: 'Zwemmen', pancake: 'Pannenkoeken' };
         const WEATHER_LABELS = { indoor: 'Binnen', outdoor: 'Buiten', both: 'Binnen & buiten', hybrid: 'Binnen & buiten' };
         const WEATHER_ICONS = {
             indoor: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
@@ -618,8 +622,8 @@
         };
 
         const TYPE_COLORS = {
-            play: '#7BA68C', nature: '#5F8A6F', horeca: '#C96B4F',
-            museum: '#8B6688', pancake: '#F2C94C'
+            play: '#7A9E72', farm: '#8B7355', nature: '#5C8654', horeca: '#D4775A',
+            museum: '#8B6688', swim: '#5B9EC4', pancake: '#F0C75E'
         };
 
         // === Google Maps Lazy Loading ===
@@ -655,7 +659,7 @@
                 if (btn) {
                     const isFav = getFavorites().includes(locationId);
                     const svg = btn.querySelector('svg');
-                    if (svg) svg.style.cssText = isFav ? 'fill: #C96B4F; stroke: #C96B4F;' : 'fill: none; stroke: #9B8688;';
+                    if (svg) svg.style.cssText = isFav ? 'fill: #D4775A; stroke: #D4775A;' : 'fill: none; stroke: #9B8688;';
                     btn.title = isFav ? 'Verwijder favoriet' : 'Opslaan';
                     btn.setAttribute('aria-label', isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet');
                 }
@@ -921,7 +925,7 @@
                 }
                 const travelInfo = travelTimes[item.id];
                 const isFav = isFavorite(item.id);
-                const favStyle = isFav ? 'fill: #C96B4F; stroke: #C96B4F;' : 'fill: none; stroke: #9B8688;';
+                const favStyle = isFav ? 'fill: #D4775A; stroke: #D4775A;' : 'fill: none; stroke: #9B8688;';
                 const typeLabel = TYPE_LABELS[item.type] || item.type;
                 const weatherLabel = WEATHER_LABELS[item.weather] || '';
                 const weatherIcon = WEATHER_ICONS[item.weather] || '';
@@ -1155,7 +1159,7 @@
                     source: 'locations',
                     filter: ['has', 'point_count'],
                     paint: {
-                        'circle-color': '#C96B4F',
+                        'circle-color': '#D4775A',
                         'circle-radius': ['step', ['get', 'point_count'], 18, 10, 24, 50, 32],
                         'circle-stroke-width': 2,
                         'circle-stroke-color': '#ffffff'
@@ -1186,12 +1190,14 @@
                     filter: ['!', ['has', 'point_count']],
                     paint: {
                         'circle-color': ['match', ['get', 'type'],
-                            'play', '#7BA68C',
-                            'nature', '#5F8A6F',
-                            'horeca', '#C96B4F',
+                            'play', '#7A9E72',
+                            'farm', '#8B7355',
+                            'nature', '#5C8654',
+                            'horeca', '#D4775A',
                             'museum', '#8B6688',
-                            'pancake', '#F2C94C',
-                            '#C96B4F'
+                            'swim', '#5B9EC4',
+                            'pancake', '#F0C75E',
+                            '#D4775A'
                         ],
                         'circle-radius': 9,
                         'circle-stroke-width': 2.5,
@@ -1325,7 +1331,7 @@
             activeLocSheet = locationId;
 
             const isFav = isFavorite(loc.id);
-            const favStyle = isFav ? 'fill: #C96B4F; stroke: #C96B4F;' : 'fill: none; stroke: #9B8688;';
+            const favStyle = isFav ? 'fill: #D4775A; stroke: #D4775A;' : 'fill: none; stroke: #9B8688;';
             const typeLabel = TYPE_LABELS[loc.type] || loc.type;
             const weatherLabel = WEATHER_LABELS[loc.weather] || '';
             const weatherIcon = WEATHER_ICONS[loc.weather] || '';

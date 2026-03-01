@@ -1,18 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
-  <rect width="512" height="512" rx="96" fill="#C96B4F"/>
-  <g transform="translate(100, 60) scale(4.3)">
-    <circle cx="22" cy="14" r="10" fill="white"/>
-    <path d="M14 24 C14 22, 18 21, 23 21 C28 21, 31 22, 31 24
-             L32 40 L34 52 C36 58, 38 62, 37 64 C36 66, 33 66, 32 64 C30 60, 29 54, 28 48
-             L26 44 L20 44
-             L18 48 C17 54, 15 60, 13 64 C12 66, 9 66, 8 64 C7 62, 9 58, 12 52
-             L14 40 Z" fill="white"/>
-    <ellipse cx="9.5" cy="64.5" rx="4" ry="2.5" fill="white"/>
-    <ellipse cx="36" cy="64.5" rx="4" ry="2.5" fill="white"/>
-    <path d="M15 27 C10 33, 7 40, 10 43 C12 44, 15 42, 16 37 L17 30 Z" fill="white"/>
-    <path d="M30 26 L42 16 C44 14.5, 45.5 16, 44 18 L33 28 Z" fill="white"/>
-    <path d="M55 3 C49 3, 44 8, 44 14.5 C44 22, 55 32, 55 32 S66 22, 66 14.5 C66 8, 61 3, 55 3 Z" fill="white"/>
-    <circle cx="55" cy="14" r="4.5" fill="#C96B4F"/>
-    <circle cx="43" cy="17" r="2.5" fill="white" opacity="0.7"/>
-  </g>
+  <!-- Companion icon: stylized location pin with "p" integrated -->
+  <rect width="512" height="512" rx="112" fill="#D4775A"/>
+  <!-- Location pin shape -->
+  <path d="M256 60c-72 0-130 58-130 130 0 90 130 262 130 262s130-172 130-262c0-72-58-130-130-130z" fill="white"/>
+  <!-- Inner dot -->
+  <circle cx="256" cy="190" r="50" fill="#D4775A"/>
 </svg>
