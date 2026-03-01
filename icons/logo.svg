@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" fill="none">
+  <!-- Walking toddler reaching for location pin - refined variant -->
+
+  <!-- Head (large, toddler proportions) -->
+  <circle cx="22" cy="14" r="10" fill="#C96B4F"/>
+
+  <!-- Unified body + legs (clean walking silhouette) -->
+  <path d="M14 24 C14 22, 18 21, 23 21 C28 21, 31 22, 31 24
+           L32 40 L34 52 C36 58, 38 62, 37 64 C36 66, 33 66, 32 64 C30 60, 29 54, 28 48
+           L26 44 L20 44
+           L18 48 C17 54, 15 60, 13 64 C12 66, 9 66, 8 64 C7 62, 9 58, 12 52
+           L14 40 Z" fill="#C96B4F"/>
+
+  <!-- Left foot -->
+  <ellipse cx="9.5" cy="64.5" rx="4" ry="2.5" fill="#C96B4F"/>
+
+  <!-- Right foot -->
+  <ellipse cx="36" cy="64.5" rx="4" ry="2.5" fill="#C96B4F"/>
+
+  <!-- Left arm (relaxed, hanging slightly back) -->
+  <path d="M15 27 C10 33, 7 40, 10 43 C12 44, 15 42, 16 37 L17 30 Z" fill="#C96B4F"/>
+
+  <!-- Right arm (reaching up to pin) -->
+  <path d="M30 26 L42 16 C44 14.5, 45.5 16, 44 18 L33 28 Z" fill="#C96B4F"/>
+
+  <!-- Location pin (sage green) -->
+  <path d="M55 3 C49 3, 44 8, 44 14.5 C44 22, 55 32, 55 32 S66 22, 66 14.5 C66 8, 61 3, 55 3 Z" fill="#7BA68C"/>
+  <circle cx="55" cy="14" r="4.5" fill="white"/>
+
+  <!-- Bracelet (gold) -->
+  <circle cx="43" cy="17" r="2.5" fill="#F2C94C"/>
+</svg>

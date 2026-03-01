@@ -142,8 +142,11 @@
         nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(255, 249, 242, 0.96); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid var(--card-border); }
         .nav-container { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
         .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; color: var(--navy); text-decoration: none; }
-        .nav-logo img { width: 32px; height: 32px; display: block; transition: transform 0.2s; }
-        .nav-logo img:hover { transform: rotate(-5deg); }
+        .nav-logo-svg { width: 40px; height: 40px; display: block; flex-shrink: 0; transition: transform 0.2s; }
+        .nav-logo-svg:hover { transform: rotate(-5deg); }
+        .logo-text { display: flex; flex-direction: column; line-height: 1.15; font-size: 15px; }
+        .logo-top { font-weight: 700; }
+        .logo-bottom { font-weight: 800; color: var(--primary); }
         .nav-links { display: flex; gap: 32px; }
         .nav-links a { color: var(--ink-light); text-decoration: none; font-weight: 500; font-size: 15px; transition: color 0.2s; }
         .nav-links a:hover { color: var(--navy); }
@@ -301,8 +304,8 @@
     <nav>
         <div class="nav-container">
             <a href="index.html" class="nav-logo">
-                <img src="icons/logo-nav.png" alt="" width="32" height="32">
-                PeuterPlannen
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" fill="none" class="nav-logo-svg" aria-hidden="true"><circle cx="22" cy="14" r="10" fill="#C96B4F"/><path d="M14 24C14 22 18 21 23 21C28 21 31 22 31 24L32 40 34 52C36 58 38 62 37 64C36 66 33 66 32 64C30 60 29 54 28 48L26 44 20 44 18 48C17 54 15 60 13 64C12 66 9 66 8 64C7 62 9 58 12 52L14 40Z" fill="#C96B4F"/><ellipse cx="9.5" cy="64.5" rx="4" ry="2.5" fill="#C96B4F"/><ellipse cx="36" cy="64.5" rx="4" ry="2.5" fill="#C96B4F"/><path d="M15 27C10 33 7 40 10 43C12 44 15 42 16 37L17 30Z" fill="#C96B4F"/><path d="M30 26L42 16C44 14.5 45.5 16 44 18L33 28Z" fill="#C96B4F"/><path d="M55 3C49 3 44 8 44 14.5C44 22 55 32 55 32S66 22 66 14.5C66 8 61 3 55 3Z" fill="#7BA68C"/><circle cx="55" cy="14" r="4.5" fill="white"/><circle cx="43" cy="17" r="2.5" fill="#F2C94C"/></svg>
+                <span class="logo-text"><span class="logo-top">Peuter</span><span class="logo-bottom">Plannen</span></span>
             </a>
             <div class="nav-links">
                 <a href="index.html">Home</a>

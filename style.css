@@ -35,8 +35,10 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
 nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,249,242,0.96); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid rgba(201,107,79,0.15); }
 .nav-inner { max-width: 1100px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
 .nav-logo { font-weight: 700; font-size: 18px; color: var(--navy); text-decoration: none; display: flex; align-items: center; gap: 8px; }
-.nav-logo span { color: var(--gold-text); }
-.nav-logo img { width: 32px; height: 32px; display: block; }
+.nav-logo-svg { width: 40px; height: 40px; display: block; flex-shrink: 0; }
+.logo-text { display: flex; flex-direction: column; line-height: 1.15; font-size: 15px; }
+.logo-top { font-weight: 700; }
+.logo-bottom { font-weight: 800; color: var(--primary); }
 .nav-links { display: flex; align-items: center; gap: 20px; }
 .nav-link { color: var(--navy); text-decoration: none; font-weight: 500; font-size: 14px; }
 .nav-link:hover { color: var(--primary); }
