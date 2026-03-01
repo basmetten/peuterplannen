@@ -50,3 +50,10 @@ batch_*.json
 .scripts/check_table_structure.js
 .scripts/create_suggestions_table.js
 .scripts/calculate_city_distances.js
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
