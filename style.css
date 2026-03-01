@@ -244,7 +244,8 @@ footer a:hover { text-decoration: underline; }
 .btn-app-cta:hover { background: var(--primary-dark); }
 
 /* Category icons in section headers */
-.category-icon { width: 40px; height: 40px; vertical-align: middle; margin-right: 8px; border-radius: 8px; }
+.type-section h2, .region-section h2 { display: flex; align-items: center; gap: 10px; }
+.category-icon { width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; }
 
 /* Responsive */
 @media (max-width: 600px) {
