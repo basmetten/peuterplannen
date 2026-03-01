@@ -4,6 +4,7 @@ description: "Op zoek naar indoor activiteiten met je peuter? Deze 15 uitjes zij
 date: 2026-03-01
 tags: ["indoor", "regen", "tips"]
 related_regions: ["amsterdam", "rotterdam", "utrecht"]
+featured_image: /images/blog/uitjes-met-peuter-bij-regen.jpg
 ---
 
 Het regent, je peuter heeft energie voor tien en het huis voelt steeds kleiner. Herkenbaar? Gelukkig zijn er door heel Nederland genoeg plekken waar je peuter zich kan uitleven terwijl jij rustig een kop koffie drinkt. 15 indoor uitjes voor regenachtige dagen, verdeeld over categorieën zodat je snel iets vindt dat past.

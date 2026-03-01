@@ -101,30 +101,32 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-warm: #FEFBF6;
-            --bg-cream: #FFF8F0;
+            --bg-warm: #FFF9F2;
+            --bg-cream: #FFF5EB;
             --bg-ivory: #FFFFFF;
-            --primary: #2A9D8F;
-            --primary-light: #E6F5F3;
-            --primary-dark: #1E7A6E;
-            --accent: #E76F51;
-            --accent-light: #FDF0EC;
-            --navy: #264653;
-            --navy-light: #2C3E6B;
-            --gold: #E9C46A;
-            --gold-light: #F4D984;
-            --gold-dark: #A8864A;
-            --peach: #E76F51;
-            --ink: #264653;
-            --ink-light: #5A7A84;
-            --ink-muted: #94A3B0;
+            --primary: #C96B4F;
+            --primary-light: #FDF0EC;
+            --primary-dark: #A8523B;
+            --accent: #F2C94C;
+            --accent-light: #FEF8E7;
+            --secondary: #7BA68C;
+            --secondary-light: #EDF5F0;
+            --navy: #3D2C2E;
+            --navy-light: #5C3D3F;
+            --gold: #F2C94C;
+            --gold-light: #F7DA6E;
+            --gold-dark: #D4A843;
+            --peach: #C96B4F;
+            --ink: #3D2C2E;
+            --ink-light: #7A5E60;
+            --ink-muted: #9B8688;
             --card-bg: #FFFFFF;
-            --card-border: rgba(42, 157, 143, 0.15);
-            --card-shadow: 0 4px 12px rgba(38, 70, 83, 0.10);
-            --font-heading: 'Nunito', sans-serif;
+            --card-border: rgba(201, 107, 79, 0.15);
+            --card-shadow: 0 4px 12px rgba(61, 44, 46, 0.10);
+            --font-heading: 'Plus Jakarta Sans', sans-serif;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -137,7 +139,7 @@
         .reveal.visible { animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
         @media (prefers-reduced-motion: reduce) { .reveal, .reveal.visible { animation: none; opacity: 1; } }
 
-        nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(250, 250, 248, 0.96); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid var(--card-border); }
+        nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(255, 249, 242, 0.96); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid var(--card-border); }
         .nav-container { max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
         .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; color: var(--navy); text-decoration: none; }
         .nav-logo img { width: 32px; height: 32px; display: block; transition: transform 0.2s; }
@@ -153,13 +155,13 @@
         .hero-content h1 { color: var(--navy); } .hero-content h1 span { color: var(--primary); }
         .hero-content p { font-size: 20px; color: var(--ink-light); margin-bottom: 32px; max-width: 480px; }
         .hero-cta { display: flex; gap: 16px; }
-        .hero-cta-primary { background: var(--primary); color: white; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 20px rgba(27,43,75,0.25); transition: all 0.25s cubic-bezier(0.22,1,0.36,1); letter-spacing: 0.01em; }
-        .hero-cta-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(27,43,75,0.3); }
+        .hero-cta-primary { background: var(--primary); color: white; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 20px rgba(61,44,46,0.25); transition: all 0.25s cubic-bezier(0.22,1,0.36,1); letter-spacing: 0.01em; }
+        .hero-cta-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(61,44,46,0.3); }
         .hero-cta-secondary { background: var(--bg-ivory); color: var(--ink); padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; border: 1px solid var(--card-border); }
 
         /* Premium Hero Image */
         .hero-visual { position: relative; width: 100%; height: 500px; display: flex; align-items: center; justify-content: center; }
-        .hero-image-wrapper { position: relative; width: 100%; height: 100%; border-radius: 40px; overflow: hidden; box-shadow: 0 20px 40px rgba(38,70,83,0.1); }
+        .hero-image-wrapper { position: relative; width: 100%; height: 100%; border-radius: 40px; overflow: hidden; box-shadow: 0 20px 40px rgba(61,44,46,0.1); }
         .hero-image { width: 100%; height: 100%; object-fit: cover; filter: saturate(1.1) brightness(1.02); }
         
         /* Advanced Fade & Masking */
@@ -202,7 +204,7 @@
         .features-header p { font-size: 18px; color: var(--ink-light); }
         .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
         .feature-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 32px; box-shadow: var(--card-shadow); }
-        .feature-icon { width: 48px; height: 48px; background: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(27,43,75,0.2); }
+        .feature-icon { width: 48px; height: 48px; background: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(61,44,46,0.2); }
         .feature-icon svg { width: 24px; height: 24px; stroke: white; fill: none; stroke-width: 2; }
         .feature-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 10px; }
         .feature-card p { color: var(--ink-light); font-size: 15px; }
@@ -229,8 +231,8 @@
         .section-sub { color: var(--ink-light); text-align: center; font-size: 17px; margin-bottom: 40px; }
         .container { max-width: 1100px; margin: 0 auto; }
         .cities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
-        .city-card { background: white; border-radius: 12px; padding: 24px 20px; text-align: center; text-decoration: none; border: 1px solid var(--card-border); box-shadow: 0 2px 12px rgba(27,43,75,0.06); transition: all 0.25s; display: flex; flex-direction: column; gap: 6px; }
-        .city-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(38,70,83,0.13); border-color: var(--primary); }
+        .city-card { background: white; border-radius: 12px; padding: 24px 20px; text-align: center; text-decoration: none; border: 1px solid var(--card-border); box-shadow: 0 2px 12px rgba(61,44,46,0.06); transition: all 0.25s; display: flex; flex-direction: column; gap: 6px; }
+        .city-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(61,44,46,0.13); border-color: var(--primary); }
         .city-card strong { font-size: 17px; font-weight: 700; color: var(--navy); }
         .city-card span { font-size: 13px; color: var(--ink-muted); }
 
@@ -246,14 +248,14 @@
 
         /* Premium: smooth scroll with nav offset */
         html { scroll-behavior: smooth; scroll-padding-top: 80px; }
-        ::selection { background: rgba(42, 157, 143, 0.2); color: var(--navy); }
+        ::selection { background: rgba(201, 107, 79, 0.2); color: var(--navy); }
         body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
         /* Premium: hero floating blobs */
         .hero { position: relative; overflow: hidden; }
         .hero::before, .hero::after { content: ''; position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
-        .hero::before { width: 400px; height: 400px; background: rgba(42,157,143,0.08); top: -120px; right: -60px; animation: heroFloat 8s ease-in-out infinite; }
-        .hero::after { width: 300px; height: 300px; background: rgba(231,111,81,0.06); bottom: -80px; left: -80px; animation: heroFloat 8s ease-in-out infinite 4s; }
+        .hero::before { width: 400px; height: 400px; background: rgba(201,107,79,0.08); top: -120px; right: -60px; animation: heroFloat 8s ease-in-out infinite; }
+        .hero::after { width: 300px; height: 300px; background: rgba(242,201,76,0.06); bottom: -80px; left: -80px; animation: heroFloat 8s ease-in-out infinite 4s; }
         @keyframes heroFloat { 0%,100% { transform: translate(0,0); } 50% { transform: translate(20px,-20px); } }
         .hero > * { position: relative; z-index: 1; }
 
@@ -270,7 +272,7 @@
         /* Premium: feature card gradient top border on hover */
         .feature-card { position: relative; overflow: hidden; }
         .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); border-radius: 20px 20px 0 0; }
-        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(38,70,83,0.12); }
+        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(61,44,46,0.12); }
         .feature-card:hover::before { transform: scaleX(1); }
 
         /* Premium: stat numbers use heading font */
@@ -282,16 +284,16 @@
         .hero-content h1 { letter-spacing: -0.03em; }
 
         /* Premium: nav shadow on scroll (JS-toggled) */
-        nav.scrolled { box-shadow: 0 1px 12px rgba(38,70,83,0.06); }
+        nav.scrolled { box-shadow: 0 1px 12px rgba(61,44,46,0.06); }
 
         /* Premium: focus-visible for accessibility */
         :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
 
         /* Support / donate section */
-        .support-section { background: linear-gradient(135deg, #E76F51, #d4573d); color: white; border-radius: 16px; padding: 36px 32px; text-align: center; }
+        .support-section { background: linear-gradient(135deg, #7BA68C, #5F8A6F); color: white; border-radius: 16px; padding: 36px 32px; text-align: center; }
         .support-section h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; font-family: var(--font-heading); }
         .support-section p { opacity: 0.9; margin-bottom: 20px; font-size: 15px; max-width: 480px; margin-left: auto; margin-right: auto; }
-        .btn-support { background: white; color: #E76F51; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; }
+        .btn-support { background: white; color: #7BA68C; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; }
         .btn-support:hover { background: #f0f0f0; }
     </style>
 </head>
@@ -419,22 +421,27 @@
             <p class="section-sub">Weet je al wat voor dag het wordt? Zoek direct op type uitje.</p>
             <div class="cities-grid">
                 <a href="speeltuinen.html" class="city-card">
+                    <img src="/images/categories/speeltuinen.png" alt="" width="48" height="48" style="border-radius:10px;margin-bottom:8px;" loading="lazy">
                     <strong>Speeltuinen</strong>
                     <span>136 locaties</span>
                 </a>
                 <a href="natuur.html" class="city-card">
+                    <img src="/images/categories/natuur.png" alt="" width="48" height="48" style="border-radius:10px;margin-bottom:8px;" loading="lazy">
                     <strong>Natuur</strong>
                     <span>158 locaties</span>
                 </a>
                 <a href="musea.html" class="city-card">
+                    <img src="/images/categories/musea.png" alt="" width="48" height="48" style="border-radius:10px;margin-bottom:8px;" loading="lazy">
                     <strong>Musea</strong>
                     <span>65 locaties</span>
                 </a>
                 <a href="horeca.html" class="city-card">
+                    <img src="/images/categories/horeca.png" alt="" width="48" height="48" style="border-radius:10px;margin-bottom:8px;" loading="lazy">
                     <strong>Restaurants</strong>
                     <span>119 locaties</span>
                 </a>
                 <a href="pannenkoeken.html" class="city-card">
+                    <img src="/images/categories/pannenkoeken.png" alt="" width="48" height="48" style="border-radius:10px;margin-bottom:8px;" loading="lazy">
                     <strong>Pannenkoeken</strong>
                     <span>66 locaties</span>
                 </a>

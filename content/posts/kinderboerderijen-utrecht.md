@@ -4,6 +4,7 @@ description: "Alle kinderboerderijen in de regio Utrecht op een rij. Gratis én 
 date: 2026-03-20
 tags: ["utrecht", "natuur", "kinderboerderij", "gratis"]
 related_regions: ["utrecht", "utrechtse-heuvelrug"]
+featured_image: /images/blog/kinderboerderijen-utrecht.jpg
 ---
 
 De regio Utrecht zit vol kinderboerderijen, van kleine stadsboerderijen tot uitgebreide boerenerven op het platteland. Dieren aaien, hooi ruiken en misschien een geitje een flesje geven: peuters vinden het geweldig. Hier staan de beste kinderboerderijen in en rond [Utrecht](/utrecht.html) op een rij, met praktische informatie en peutertips.

@@ -4,6 +4,7 @@ description: "Wat kun je doen met een dreumes van 1-2 jaar? 20 leuke activiteite
 date: 2026-03-10
 tags: ["dreumes", "tips", "1-2 jaar"]
 related_regions: ["amsterdam", "utrecht", "rotterdam", "den-haag"]
+featured_image: /images/blog/dagje-uit-met-dreumes.jpg
 ---
 
 Een dagje uit met een dreumes is anders dan met een peuter van drie of vier. Je kind loopt misschien net, heeft een kort aandachtsspannetje en stopt nog van alles in de mond. Maar er is genoeg te doen met kinderen van 1 tot 2 jaar, als je weet waar je moet zoeken. Het draait om zintuiglijke ervaringen: voelen, ruiken, zien en ontdekken. Hier zijn 20 activiteiten die bij deze leeftijd passen.

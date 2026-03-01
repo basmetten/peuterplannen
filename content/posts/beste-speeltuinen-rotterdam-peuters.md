@@ -4,6 +4,7 @@ description: "Van Plaswijckpark tot indoor speelparadijzen: de leukste speeltuin
 date: 2026-03-15
 tags: ["rotterdam", "speeltuinen", "outdoor"]
 related_regions: ["rotterdam"]
+featured_image: /images/blog/beste-speeltuinen-rotterdam.jpg
 ---
 
 Rotterdam heeft voor gezinnen met jonge kinderen veel te bieden. Hier zijn acht speeltuinen die echt werken voor peuters: van grote stadsparken tot gezellige buurtspeeltuinen en indoor speelparadijzen. Per speeltuin lees je wat je kunt verwachten en voor welke leeftijd het geschikt is.

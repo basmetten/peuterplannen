@@ -47,6 +47,14 @@ const TYPE_LABELS_CITY = {
 
 const TYPE_ORDER = ['play', 'nature', 'museum', 'pancake', 'horeca'];
 
+const TYPE_IMAGES = {
+  play: '/images/categories/speeltuinen.png',
+  nature: '/images/categories/natuur.png',
+  museum: '/images/categories/musea.png',
+  horeca: '/images/categories/horeca.png',
+  pancake: '/images/categories/pannenkoeken.png',
+};
+
 const TYPE_PAGES = [
   {
     slug: 'speeltuinen', dbType: 'play',
@@ -235,13 +243,13 @@ function supportHTML() {
 function headCommon(extra = '') {
   return `  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#2A9D8F">
+  <meta name="theme-color" content="#C96B4F">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">${extra}`;
 }
 
@@ -355,7 +363,8 @@ function updateIndex(data) {
   // TYPE_GRID
   const typeCards = Object.entries(TYPE_MAP).map(([type, info]) => {
     const count = typeCounts[type] || 0;
-    return `                <a href="${info.slug}.html" class="city-card">
+    const img = TYPE_IMAGES[type] ? `\n                    <img src="${TYPE_IMAGES[type]}" alt="" width="48" height="48" style="border-radius:10px;margin-bottom:8px;" loading="lazy">` : '';
+    return `                <a href="${info.slug}.html" class="city-card">${img}
                     <strong>${info.label}</strong>
                     <span>${count} locaties</span>
                 </a>`;
@@ -585,9 +594,10 @@ function generateCityPage(region, locs, allRegions) {
   const typesWithLocs = TYPE_ORDER.filter(t => byType[t].length > 0);
   const sectionsHTML = typesWithLocs
     .map((t, i) => {
+      const typeImg = TYPE_IMAGES[t] ? `<img src="${TYPE_IMAGES[t]}" alt="" class="category-icon" width="40" height="40" loading="lazy">` : '';
       let section = `
     <section class="type-section">
-      <h2>${TYPE_LABELS_CITY[t]}</h2>
+      <h2>${typeImg}${TYPE_LABELS_CITY[t]}</h2>
       <div class="loc-list">
         ${byType[t].map(locationHTML_city).join('')}
       </div>
@@ -1010,7 +1020,7 @@ function locationPageHTML(loc, region, similarLocs) {
           zoom: 14,
           attributionControl: false
         });
-        new maplibregl.Marker({ color: '#2A9D8F' }).setLngLat([${loc.lng}, ${loc.lat}]).addTo(map);
+        new maplibregl.Marker({ color: '#C96B4F' }).setLngLat([${loc.lng}, ${loc.lat}]).addTo(map);
       };
       document.head.appendChild(s);
     }
@@ -1190,6 +1200,7 @@ function buildBlog(data) {
       dateDisplay,
       tags: fm.tags || [],
       related_regions: fm.related_regions || [],
+      featured_image: fm.featured_image || '',
       content: htmlContent,
     });
 
@@ -1211,12 +1222,13 @@ ${headCommon()}
   <meta property="og:url" content="https://peuterplannen.nl/blog/${slug}/">
   <meta property="og:type" content="article">
   <meta property="og:locale" content="nl_NL">
-  <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
+  <meta property="og:image" content="https://peuterplannen.nl/${fm.featured_image ? fm.featured_image.replace(/^\//, '') : 'homepage_hero_ai.jpeg'}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${escapeHtml(fm.title)}">
   <meta name="twitter:description" content="${escapeHtml(fm.description || '')}">
+  <meta name="twitter:image" content="https://peuterplannen.nl/${fm.featured_image ? fm.featured_image.replace(/^\//, '') : 'homepage_hero_ai.jpeg'}">
   <script type="application/ld+json">
 ${JSON.stringify({
   "@context": "https://schema.org",
@@ -1235,7 +1247,8 @@ ${JSON.stringify({
 
 ${navHTML()}
 
-<div class="hero" style="padding: 100px 24px 40px;">
+${fm.featured_image ? `<div class="blog-hero-img" style="max-width:1100px;margin:80px auto 0;padding:0 24px;"><img src="${fm.featured_image}" alt="${escapeHtml(fm.title)}" style="width:100%;height:auto;border-radius:16px;max-height:400px;object-fit:cover;" loading="eager"></div>` : ''}
+<div class="hero" style="padding: ${fm.featured_image ? '24px' : '100px'} 24px 40px;">
   <h1>${escapeHtml(fm.title)}</h1>
 </div>
 
@@ -1276,6 +1289,7 @@ ${footerHTML()}
   // Generate blog index
   const postCards = posts.map(p => `
     <article class="blog-card">
+      ${p.featured_image ? `<a href="/blog/${p.slug}/"><img src="${p.featured_image}" alt="" class="blog-card-thumb" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:16px;" loading="lazy"></a>` : ''}
       <h2><a href="/blog/${p.slug}/">${escapeHtml(p.title)}</a></h2>
       <p class="blog-date">${p.dateDisplay}</p>
       <p class="blog-excerpt">${escapeHtml(p.description)}</p>

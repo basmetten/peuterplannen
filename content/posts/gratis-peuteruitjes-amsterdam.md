@@ -4,6 +4,7 @@ description: "Amsterdam hoeft niet duur te zijn met kinderen. Deze 10 gratis uit
 date: 2026-03-05
 tags: ["amsterdam", "gratis", "tips"]
 related_regions: ["amsterdam"]
+featured_image: /images/blog/gratis-peuteruitjes-amsterdam.jpg
 ---
 
 Amsterdam staat bekend als een dure stad, maar met een peuter hoef je echt niet diep in de buidel te tasten. De stad zit vol gratis parken, kinderboerderijen, bibliotheken en museumplekjes waar je peuter zich prima vermaakt. Hier zijn tien favorieten waarmee je een heel seizoen vooruit kunt.
