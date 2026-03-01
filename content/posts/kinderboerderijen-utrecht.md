@@ -6,7 +6,7 @@ tags: ["utrecht", "natuur", "kinderboerderij", "gratis"]
 related_regions: ["utrecht", "utrechtse-heuvelrug"]
 ---
 
-De regio Utrecht is gezegend met een groot aantal kinderboerderijen, van kleine stadsboerderijen tot uitgebreide boerenerven op het platteland. Dieren aaien, hooi ruiken en misschien een geitje een flesje geven: peuters vinden het geweldig. In deze gids zetten we de beste kinderboerderijen in en rond [Utrecht](/utrecht.html) op een rij, met praktische informatie en peutertips.
+De regio Utrecht zit vol kinderboerderijen, van kleine stadsboerderijen tot uitgebreide boerenerven op het platteland. Dieren aaien, hooi ruiken en misschien een geitje een flesje geven: peuters vinden het geweldig. Hier staan de beste kinderboerderijen in en rond [Utrecht](/utrecht.html) op een rij, met praktische informatie en peutertips.
 
 ## Kinderboerderijen in de stad Utrecht
 
@@ -14,7 +14,7 @@ De regio Utrecht is gezegend met een groot aantal kinderboerderijen, van kleine 
 
 [Kinderboerderij Griftsteede](/utrecht/griftsteede/) ligt in het Grifpark, op loopafstand van het centrum. Het is een van de meest bezochte kinderboerderijen van Utrecht en dat is niet zonder reden.
 
-**Wat kun je verwachten:** Geiten, schapen, kippen, konijnen, varkens en soms lammetjes in het voorjaar. Er is een moestuin waar peuters mogen kijken. De boerderij is compact maar goed onderhouden.
+Geiten, schapen, kippen, konijnen, varkens en soms lammetjes in het voorjaar. Er is een moestuin waar peuters mogen kijken. De boerderij is compact maar goed onderhouden.
 
 - **Leeftijd:** Geschikt vanaf 0 jaar, het leukst vanaf **1 jaar** als je kind kan staan en aaien.
 - **Faciliteiten:** Toiletten, beperkte verschoonmogelijkheid, kleine speelplek, bankjes voor ouders.
@@ -26,7 +26,7 @@ De regio Utrecht is gezegend met een groot aantal kinderboerderijen, van kleine 
 
 De Eilandsteede ligt op het Eiland van Kanaleneiland en is een rustige, kleine stadsboerderij. Het is minder bekend dan Griftsteede en daardoor vaak lekker rustig.
 
-**Wat kun je verwachten:** De gebruikelijke boerderijdieren plus een bijenstal en een kruidentuin. Er worden regelmatig peuteractiviteiten georganiseerd.
+De gebruikelijke boerderijdieren plus een bijenstal en een kruidentuin. Er worden regelmatig peuteractiviteiten georganiseerd.
 
 - **Leeftijd:** Geschikt voor alle leeftijden, fijn voor dreumesen door de **overzichtelijke omvang**.
 - **Faciliteiten:** Toiletten, klein speelveldje, bankjes.
@@ -38,7 +38,7 @@ De Eilandsteede ligt op het Eiland van Kanaleneiland en is een rustige, kleine s
 
 In de wijk Lunetten vind je Kinderboerderij Koppeldijk. Deze boerderij is populair bij buurtbewoners en heeft een gezellige, dorpse sfeer ondanks de stedelijke omgeving.
 
-**Wat kun je verwachten:** Naast de standaard boerderijdieren heeft Koppeldijk een grote buitenspeelplaats met een zandbak, een waterpompje en klimboomstammen.
+Naast de standaard boerderijdieren heeft Koppeldijk een grote buitenspeelplaats met een zandbak, een waterpompje en klimboomstammen.
 
 - **Leeftijd:** **1-6 jaar** is de ideale leeftijd.
 - **Faciliteiten:** Toiletten, koffiepunt (vrijwilligers), ruime speeltuin, fietsenstalling.
@@ -52,7 +52,7 @@ In de wijk Lunetten vind je Kinderboerderij Koppeldijk. Deze boerderij is popula
 
 [Geertjes Hoeve](/utrechtse-heuvelrug/geertjes-hoeve/) in Haarzuilens (vlak bij Utrecht) is meer dan een kinderboerderij. Het is een volwaardig dagje uit voor het hele gezin. De boerderij ligt op een prachtige plek aan de rand van het landgoed van Kasteel de Haar.
 
-**Wat kun je verwachten:** Een grote boerderij met koeien, paarden, geiten, varkens, kippen en konijnen. Daarnaast een hooiberg, maisdoolhof (zomer/herfst), tractorritten en een speeltuin. Voor peuters is er een **speciale dreumeshoek** met kleine diertjes en een zandbak.
+**Wat is er te doen:** Een grote boerderij met koeien, paarden, geiten, varkens, kippen en konijnen. Daarnaast een hooiberg, maisdoolhof (zomer/herfst), tractorritten en een speeltuin. Voor peuters is er een **speciale dreumeshoek** met kleine diertjes en een zandbak.
 
 - **Leeftijd:** Geschikt voor **0-10 jaar**, maar peuters van 1-4 jaar vermaken zich hier het beste.
 - **Faciliteiten:** Restaurant met lunch en pannenkoeken, verschoonruimte, ruime parkeerplaats (gratis), buggy-toegankelijk.
@@ -64,7 +64,7 @@ In de wijk Lunetten vind je Kinderboerderij Koppeldijk. Deze boerderij is popula
 
 Hoewel het geen kinderboerderij is in de traditionele zin, heeft [Dierenpark Amersfoort](/utrecht/dierenpark-amersfoort/) een uitgebreid kinderboerderijgedeelte: DierenPark Boerderij. Hier kunnen peuters dieren aaien en voeren in een beschutte omgeving.
 
-**Wat kun je verwachten:** Naast de boerderij-afdeling kun je de rest van het dierenpark bezoeken. De speeltuin is groot en heeft een apart peutergedeelte. Het is een **uitgebreider dagje uit** dan een kinderboerderij alleen.
+Naast de boerderij-afdeling kun je de rest van het dierenpark bezoeken. De speeltuin is groot en heeft een apart peutergedeelte. Het is een uitgebreider dagje uit dan een kinderboerderij alleen.
 
 - **Leeftijd:** Alle leeftijden. De boerderij is fijn vanaf **1 jaar**.
 - **Faciliteiten:** Restaurants, verschoonruimtes, ruime parkeerplaats, buggy-vriendelijke paden.
@@ -75,7 +75,7 @@ Hoewel het geen kinderboerderij is in de traditionele zin, heeft [Dierenpark Ame
 
 In het landgoedgebied Rhijnauwen, net ten zuidoosten van Utrecht, vind je een pannenkoekenboerderij met dieren in een prachtige omgeving langs de Kromme Rijn.
 
-**Wat kun je verwachten:** Een handvol boerderijdieren in combinatie met een pannenkoekenrestaurant. De omgeving is het echte hoogtepunt: wandelen langs de rivier en door het bos.
+Een handvol boerderijdieren in combinatie met een pannenkoekenrestaurant. De omgeving is het echte hoogtepunt: wandelen langs de rivier en door het bos.
 
 - **Leeftijd:** Alle leeftijden, leuk vanaf **1 jaar**.
 - **Faciliteiten:** Restaurant, parkeerplaats, verschoonruimte, wandelpaden.
@@ -112,14 +112,12 @@ Naast kinderboerderijen biedt de regio Utrecht nog meer natuurervaringen voor pe
 
 Bekijk de [pagina over de Utrechtse Heuvelrug](/utrechtse-heuvelrug.html) voor meer natuuruitjes in de regio.
 
-## Praktische tips voor een kinderboerderijbezoek met je peuter
+## Voor je gaat
 
-- **Was handen na het aaien.** De meeste kinderboerderijen hebben wasbakken bij de uitgang. Gebruik ze altijd, want dieren kunnen bacterien dragen.
-- **Neem geen eigen eten mee voor de dieren.** Brood en sla zijn niet goed voor ze. Veel boerderijen verkopen **diervriendelijk voer** voor een klein bedrag.
-- **Draag oude kleren.** Modder, hooi en dierenhaar zijn onvermijdelijk.
-- **Ga in het voorjaar.** Van maart tot mei zijn er vaak lammetjes, geitjes en kuikentjes. Dit is de mooiste tijd om een kinderboerderij te bezoeken met een peuter.
-- **Respecteer de dieren.** Leer je peuter voorzichtig te aaien. Niet trekken aan staarten of oren. De meeste kinderboerderijen hebben begeleiders die hierbij helpen.
+- Was handen na het aaien. De meeste kinderboerderijen hebben wasbakken bij de uitgang. Dieren kunnen bacterien dragen.
+- Neem geen eigen eten mee voor de dieren. Brood en sla zijn niet goed voor ze. Veel boerderijen verkopen diervriendelijk voer voor een klein bedrag.
+- Draag oude kleren. Modder, hooi en dierenhaar zijn onvermijdelijk.
+- De mooiste tijd is het voorjaar: van maart tot mei zijn er lammetjes, geitjes en kuikentjes.
+- Leer je peuter voorzichtig te aaien. Niet trekken aan staarten of oren. De begeleiders helpen hier graag bij.
 
-## Tot slot
-
-De regio Utrecht is een paradijs voor peuterfamilies die van dieren en natuur houden. Of je nu kiest voor [Griftsteede](/utrecht/griftsteede/), [Geertjes Hoeve](/utrechtse-heuvelrug/geertjes-hoeve/) of een wandeling over de [Utrechtse Heuvelrug](/utrechtse-heuvelrug.html): er is voor elk budget iets te doen. Bekijk onze [Utrecht-pagina](/utrecht.html) en de [natuurpagina](/natuur.html) voor meer inspiratie.
+Bekijk onze [Utrecht-pagina](/utrecht.html) en de [natuurpagina](/natuur.html) voor meer uitjes in de regio.

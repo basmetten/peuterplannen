@@ -6,21 +6,21 @@ tags: ["amsterdam", "gratis", "tips"]
 related_regions: ["amsterdam"]
 ---
 
-Amsterdam staat bekend als een dure stad, maar met een peuter hoef je echt niet diep in de buidel te tasten. Er zijn verrassend veel gratis activiteiten die perfect zijn voor jonge kinderen. Van uitgestrekte parken en kinderboerderijen tot bibliotheken en gratis museumplekjes: wij zetten tien favorieten voor je op een rij. Zo kun je regelmatig een leuk dagje uit plannen zonder dat het je iets kost.
+Amsterdam staat bekend als een dure stad, maar met een peuter hoef je echt niet diep in de buidel te tasten. De stad zit vol gratis parken, kinderboerderijen, bibliotheken en museumplekjes waar je peuter zich prima vermaakt. Hier zijn tien favorieten waarmee je een heel seizoen vooruit kunt.
 
 ## 1. Vondelpark
 
-Het [Vondelpark](/amsterdam/vondelpark/) is de bekendste groene plek van [Amsterdam](/amsterdam.html) en met goede reden. Voor peuters is er genoeg te beleven: meerdere speeltuinen, een grote zandbak, eendjes voeren bij de vijver en in de zomer een gratis kinderprogramma bij het openluchttheater. De grote speeltuin bij het Melkhuis heeft klimtoestellen die ook geschikt zijn voor de allerkleinsten. **Tip:** de speeltuin aan de kant van de Amstelveenseweg is rustiger en overzichtelijker voor peuters dan de grote speeltuin in het midden.
+Het [Vondelpark](/amsterdam/vondelpark/) is de bekendste groene plek van [Amsterdam](/amsterdam.html) en met goede reden. Voor peuters is er genoeg te beleven: meerdere speeltuinen, een grote zandbak, eendjes voeren bij de vijver en in de zomer een gratis kinderprogramma bij het openluchttheater. De grote speeltuin bij het Melkhuis heeft klimtoestellen die ook geschikt zijn voor de allerkleinsten. De speeltuin aan de kant van de Amstelveenseweg is trouwens rustiger en overzichtelijker dan de grote in het midden.
 
 Het park is het hele jaar open en vrij toegankelijk. Er zijn meerdere horecagelegenheden waar je een koffie kunt halen terwijl je peuter speelt.
 
 ## 2. Kinderboerderij De Pijp
 
-Midden in de drukke Pijp vind je [Kinderboerderij De Pijp](/amsterdam/kinderboerderij-de-pijp/), een oase van rust. Peuters kunnen hier geiten aaien, kippen bekijken en konijnen bewonderen. De boerderij is **gratis toegankelijk** en heeft een kleine speeltuin met een zandbak. Er zijn vaste voedertijden waar je peuter de dieren mag helpen voeren. Check de website voor actuele tijden.
+Midden in de drukke Pijp vind je [Kinderboerderij De Pijp](/amsterdam/kinderboerderij-de-pijp/), een oase van rust. Peuters kunnen hier geiten aaien, kippen bekijken en konijnen bewonderen. De boerderij is **gratis toegankelijk** en heeft een kleine speeltuin met een zandbak. Er zijn vaste voedertijden waar je peuter de dieren mag helpen voeren.
 
 ## 3. Kinderboerderij Zimmerhoeve
 
-Iets buiten het centrum, in Amsterdam-Noord, ligt de [Zimmerhoeve](/amsterdam/zimmerhoeve/). Deze kinderboerderij is ruimer opgezet dan veel stadsboerderijen en heeft naast de gebruikelijke boerderijdieren ook een moestuin en een natuurspeeltuin. **Toegang is gratis.** Er zijn verschoonfaciliteiten aanwezig en je kunt er koffie en thee krijgen.
+Iets buiten het centrum, in Amsterdam-Noord, ligt de [Zimmerhoeve](/amsterdam/zimmerhoeve/). Ruimer dan veel stadsboerderijen, met naast de gebruikelijke boerderijdieren ook een moestuin en een natuurspeeltuin. Toegang is gratis, er zijn verschoonfaciliteiten en je kunt er koffie en thee krijgen.
 
 ## 4. Speeltuin Rivierenbuurt
 
@@ -30,7 +30,7 @@ Andere goede opties zijn de Speeltuin op het Beatrixpark en TunFun (let op: TunF
 
 ## 5. Westerpark en de Westergasfabriek
 
-Het [Westerpark](/amsterdam/westerpark/) is een veelzijdig park met meerdere speeltuinen, een kinderboerderij, waterpartijen en grasvelden. Bij de Westergasfabriek worden regelmatig gratis evenementen georganiseerd, waaronder kinderbraderieen en festivals. De speeltuin naast het park heeft een goede peutersectie met lage glijbanen en veerelementen. **In de zomer** is er een waterspeelplek waar peuters heerlijk kunnen plonzen.
+Het [Westerpark](/amsterdam/westerpark/) is een veelzijdig park met meerdere speeltuinen, een kinderboerderij, waterpartijen en grasvelden. Bij de Westergasfabriek worden regelmatig gratis evenementen georganiseerd, waaronder kinderbraderieen en festivals. De speeltuin naast het park heeft een goede peutersectie met lage glijbanen en veerelementen. In de zomer is er een waterspeelplek waar peuters heerlijk kunnen plonzen.
 
 ## 6. NEMO dakterras
 
@@ -44,7 +44,7 @@ De [OBA](/amsterdam/oba-centrale/) aan het Oosterdokseiland is veel meer dan een
 
 Het [Amsterdamse Bos](/amsterdam/amsterdamse-bos/) is een enorm stadspark aan de zuidkant van de stad. Voor peuters zijn er meerdere speelplekken, waaronder een avontuurlijke natuurspeeltuin en de populaire [Ridammerhoeve](/amsterdam/ridammerhoeve/), een geitenboerderij waar je **gratis** naar binnen kunt. Je kunt er pannenkoeken eten en geitenkaas kopen, maar rondkijken en de dieren aaien kost niets. Het bos heeft ook een groot grasveld dat perfect is voor een picknick.
 
-**Tip voor het Amsterdamse Bos:** het is groot, dus kies van tevoren welk deel je wilt bezoeken. Met een peuter in de buggy zijn de verharde paden het makkelijkst.
+Het bos is groot, dus kies van tevoren welk deel je wilt bezoeken. Met een peuter in de buggy zijn de verharde paden het makkelijkst.
 
 ## 9. Noorderpark en de Vogelbuurt
 
@@ -52,16 +52,14 @@ Amsterdam-Noord is de afgelopen jaren flink veranderd en het [Noorderpark](/amst
 
 ## 10. Markten bezoeken
 
-Een marktbezoek is gratis en voor peuters verrassend leuk. De kleuren, geuren en geluiden zijn een feest voor de zintuigen. De **Albert Cuypmarkt** is het bekendst, maar met een buggy kan het daar smal zijn. Rustiger alternatieven zijn de Noordermarkt op zaterdagochtend en de Dappermarkt. Peuters vinden het vaak heerlijk om een stukje fruit of een kaasblokje te proeven bij de kraampjes.
+Een marktbezoek is gratis en peuters vinden het geweldig. De kleuren, geuren en geluiden zijn een feest voor de zintuigen. De **Albert Cuypmarkt** is het bekendst, maar met een buggy kan het daar smal zijn. Rustiger alternatieven zijn de Noordermarkt op zaterdagochtend en de Dappermarkt. Peuters vinden het vaak heerlijk om een stukje fruit of een kaasblokje te proeven bij de kraampjes.
 
-## Praktische tips voor gratis uitjes in Amsterdam
+## Goed om te weten
 
-- **Combineer activiteiten.** Een ochtend in het park en een middagbezoek aan de kinderboerderij maakt een volledig dagje uit zonder dat het iets kost.
-- **Neem je eigen eten mee.** Horecaprijzen in Amsterdam zijn flink. Een broodtrommel en een thermoskan besparen al snel tien tot vijftien euro.
-- **Reis met het OV.** Kinderen tot en met 3 jaar reizen gratis met het openbaar vervoer. Vanaf 4 jaar kun je een Kids Vrij-abonnement overwegen.
-- **Check gratis momenten.** Sommige musea en attracties hebben gratis dagdelen of toegang op bepaalde feestdagen. Het Rijksmuseum is bijvoorbeeld gratis voor kinderen tot 18 jaar (al is het voor peuters minder geschikt).
-- **Gebruik de Stadspas.** Woon je in Amsterdam en heb je een laag inkomen? Met de Stadspas krijg je extra korting of gratis toegang tot veel activiteiten.
+- Combineer activiteiten: een ochtend in het park en een middagbezoek aan de kinderboerderij maakt een volledig dagje uit zonder dat het iets kost.
+- Neem je eigen eten mee. Horecaprijzen in Amsterdam zijn flink. Een broodtrommel en een thermoskan besparen al snel tien tot vijftien euro.
+- Kinderen tot en met 3 jaar reizen gratis met het openbaar vervoer. Vanaf 4 jaar kun je een Kids Vrij-abonnement overwegen.
+- Sommige musea en attracties hebben gratis dagdelen of toegang op bepaalde feestdagen. Het Rijksmuseum is bijvoorbeeld gratis voor kinderen tot 18 jaar (al is het voor peuters minder geschikt).
+- Woon je in Amsterdam en heb je een laag inkomen? Met de **Stadspas** krijg je extra korting of gratis toegang tot veel activiteiten.
 
-## Tot slot
-
-Een dagje Amsterdam met je peuter hoeft niets te kosten. De stad barst van de parken, speeltuinen en kinderboerderijen die gratis toegankelijk zijn. Door slim te combineren en je eigen eten mee te nemen, kun je een heel seizoen lang leuke uitjes doen zonder budget. Bekijk onze [Amsterdam-pagina](/amsterdam.html) voor nog meer inspiratie en ontdek alle peuteruitjes in de hoofdstad.
+Meer inspiratie? Bekijk onze [Amsterdam-pagina](/amsterdam.html) voor alle peuteruitjes in de hoofdstad.

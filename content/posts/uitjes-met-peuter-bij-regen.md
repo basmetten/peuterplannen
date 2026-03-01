@@ -6,7 +6,7 @@ tags: ["indoor", "regen", "tips"]
 related_regions: ["amsterdam", "rotterdam", "utrecht"]
 ---
 
-Het regent, je peuter heeft energie voor tien en het huis voelt steeds kleiner. Herkenbaar? Je bent niet de enige. Gelukkig zijn er door heel Nederland genoeg plekken waar je peuter zich kan uitleven terwijl jij rustig een kop koffie drinkt. In dit artikel delen we 15 leuke indoor uitjes voor regenachtige dagen, verdeeld over handige categorieën. Zo vind je snel iets dat bij jullie past.
+Het regent, je peuter heeft energie voor tien en het huis voelt steeds kleiner. Herkenbaar? Gelukkig zijn er door heel Nederland genoeg plekken waar je peuter zich kan uitleven terwijl jij rustig een kop koffie drinkt. 15 indoor uitjes voor regenachtige dagen, verdeeld over categorieën zodat je snel iets vindt dat past.
 
 ## Binnenspeeltuinen en speelparadijzen
 
@@ -30,7 +30,7 @@ Naast de grote ketens zijn er overal lokale binnenspeeltuinen. Deze zijn vaak ru
 
 ## Musea voor peuters
 
-Musea en peuters: het klinkt misschien als een moeilijke combinatie, maar er zijn in Nederland verrassend veel musea die speciaal op jonge kinderen zijn ingericht.
+Musea en peuters: het klinkt als een moeilijke combinatie. Maar er zijn in Nederland meer musea die op jonge kinderen zijn ingericht dan je zou denken.
 
 ### 5. NEMO Science Museum
 
@@ -84,15 +84,13 @@ Onderschat de bibliotheek niet. Veel bibliotheken hebben een uitgebreide kinderh
 
 Voor peuters vanaf 2 jaar kan een voorstelling in een kindertheater een bijzondere ervaring zijn. Kies voor korte voorstellingen van maximaal **30 tot 45 minuten**, met veel interactie. Poppentheaters zijn vaak kleinschalig en daardoor minder overweldigend dan grote theaterzalen.
 
-## Praktische tips voor indoor uitjes bij regen
+## Checklist
 
-- **Ga vroeg.** Regenachtige dagen zijn druk bij indoor locaties. Probeer bij opening te zijn.
-- **Neem extra kleren mee.** Bij zwemmen, waterspelen of knutselen is natte of vieze kleding onvermijdelijk.
-- **Check openingstijden.** Sommige locaties hanteren aangepaste tijden op feestdagen of in de vakantie.
-- **Reserveer vooraf.** Populaire plekken zoals het Nijntje Museum en NEMO werken met tijdsloten. Reserveer online om teleurstelling te voorkomen.
-- **Hou het kort.** Peuters hebben een beperkte aandachtsspanne. Een uurtje of twee is vaak genoeg. Plan liever twee korte activiteiten dan een lange.
-- **Denk aan de autostoel.** Na een actief uitje vallen peuters vaak in slaap. Handig als je met de auto gaat.
+- Ga vroeg. Regenachtige dagen zijn druk bij indoor locaties. Bij opening is het rustiger.
+- Neem extra kleren mee. Bij zwemmen, waterspelen of knutselen is natte kleding onvermijdelijk.
+- Check openingstijden, sommige locaties hanteren aangepaste tijden op feestdagen of in de vakantie.
+- Reserveer vooraf bij plekken als het Nijntje Museum en NEMO. Die werken met tijdsloten.
+- Hou het kort. Een uurtje of twee is voor peuters vaak genoeg. Liever twee korte activiteiten dan een lange.
+- Na een actief uitje vallen peuters vaak in slaap in de auto. Handig om te weten.
 
-## Tot slot
-
-Regen hoeft geen spelbreker te zijn. Met deze 15 indoor uitjes heb je altijd een plan B achter de hand. Of je nu in [Amsterdam](/amsterdam.html), [Rotterdam](/rotterdam.html) of [Utrecht](/utrecht.html) woont, er is altijd iets leuks te doen met je peuter. Blader door onze regiopagina's voor meer inspiratie bij jou in de buurt en maak van een regendag een avontuur.
+Regen hoeft geen spelbreker te zijn. Of je nu in [Amsterdam](/amsterdam.html), [Rotterdam](/rotterdam.html) of [Utrecht](/utrecht.html) woont, er is altijd iets te doen. Blader door onze regiopagina's voor meer inspiratie bij jou in de buurt.

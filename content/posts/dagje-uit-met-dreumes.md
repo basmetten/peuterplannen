@@ -6,13 +6,13 @@ tags: ["dreumes", "tips", "1-2 jaar"]
 related_regions: ["amsterdam", "utrecht", "rotterdam", "den-haag"]
 ---
 
-Een dagje uit met een dreumes is anders dan met een peuter van drie of vier. Je kind loopt misschien net, heeft een kort aandachtsspannetje en stopt nog van alles in de mond. Toch zijn er verrassend veel leuke dingen om te doen met kinderen van 1 tot 2 jaar. Het draait vooral om zintuiglijke ervaringen: voelen, ruiken, zien en ontdekken. Hier vind je 20 activiteiten die perfect passen bij deze leeftijd.
+Een dagje uit met een dreumes is anders dan met een peuter van drie of vier. Je kind loopt misschien net, heeft een kort aandachtsspannetje en stopt nog van alles in de mond. Maar er is genoeg te doen met kinderen van 1 tot 2 jaar, als je weet waar je moet zoeken. Het draait om zintuiglijke ervaringen: voelen, ruiken, zien en ontdekken. Hier zijn 20 activiteiten die bij deze leeftijd passen.
 
 ## Natuur en dieren
 
 ### 1. Kinderboerderij bezoeken
 
-De absolute nummer een voor dreumesen. Kinderboerderijen zijn overal in Nederland te vinden, vaak gratis, en bieden precies wat een dreumes nodig heeft: dieren die je kunt aaien, ruimte om te lopen en een zandbak om in te spelen. In [Utrecht](/utrecht.html) is [Kinderboerderij Griftsteede](/utrecht/griftsteede/) een aanrader, en in [Amsterdam](/amsterdam.html) zijn er tientallen stadsboerderijen. **Tip:** ga rond voedertijd, dan zijn de dieren het actiefst en mag je dreumes vaak meehelpen.
+De absolute nummer een voor dreumesen. Kinderboerderijen zijn overal in Nederland te vinden, vaak gratis, en bieden precies wat een dreumes nodig heeft: dieren die je kunt aaien, ruimte om te lopen en een zandbak om in te spelen. In [Utrecht](/utrecht.html) is [Kinderboerderij Griftsteede](/utrecht/griftsteede/) een aanrader, en in [Amsterdam](/amsterdam.html) zijn er tientallen stadsboerderijen. Ga rond voedertijd, dan zijn de dieren het actiefst en mag je dreumes vaak meehelpen.
 
 ### 2. Eendjes voeren in het park
 
@@ -30,11 +30,11 @@ Een tuin vol geuren en kleuren is fascinerend voor een dreumes. Botanische tuine
 
 ### 5. Peuterbinnenspeeltuin
 
-Steeds meer binnenspeeltuinen hebben een speciaal gedeelte voor kinderen onder de twee. Hier staan zachte blokken, lage glijbaantjes en ballenbaden met kleine ballen. [Ballorig](/utrecht/ballorig/) en [Monkey Town](/amsterdam/monkey-town/) hebben aparte dreumeshoeken. **Let op leeftijdsgrenzen:** bij sommige speeltuinen is de minimumleeftijd 1 jaar.
+Steeds meer binnenspeeltuinen hebben een speciaal gedeelte voor kinderen onder de twee. Hier staan zachte blokken, lage glijbaantjes en ballenbaden met kleine ballen. [Ballorig](/utrecht/ballorig/) en [Monkey Town](/amsterdam/monkey-town/) hebben aparte dreumeshoeken. Let op leeftijdsgrenzen: bij sommige speeltuinen is de minimumleeftijd 1 jaar.
 
-### 6. Speeltuin met babyschaommel
+### 6. Speeltuin met babyschommel
 
-Niet elke speeltuin is geschikt voor dreumesen. Zoek specifiek naar speeltuinen met een **babyschaommel** (met beugeltje), een zandbak en lage klimtoestellen. De meeste gemeenten hebben overzichtelijke buurt-speeltuinen die perfect zijn voor de allerkleinsten.
+Niet elke speeltuin is geschikt voor dreumesen. Zoek specifiek naar speeltuinen met een **babyschommel** (met beugeltje), een zandbak en lage klimtoestellen. De meeste gemeenten hebben overzichtelijke buurt-speeltuinen die perfect zijn voor de allerkleinsten.
 
 ### 7. Babyzwemmen of peuterzwemmen
 
@@ -62,7 +62,7 @@ Van Muziekids tot lokale muziekscholen: er zijn veel opties voor muziekles met j
 
 ### 12. Nijntje Museum
 
-Het [Nijntje Museum](/utrecht/nijntje-museum/) in [Utrecht](/utrecht.html) is een van de weinige musea in Nederland die echt geschikt zijn voor kinderen vanaf **1 jaar**. Alles is op dreumeshoogte, interactief en stevig. Je kind kan rondlopen in het huisje van Nijntje, spelen in de tuin en boodschappen doen in de winkel. **Reserveer vooraf** want het is populair.
+Het [Nijntje Museum](/utrecht/nijntje-museum/) in [Utrecht](/utrecht.html) is een van de weinige musea in Nederland die echt geschikt zijn voor kinderen vanaf **1 jaar**. Alles is op dreumeshoogte, interactief en stevig. Je kind kan rondlopen in het huisje van Nijntje, spelen in de tuin en boodschappen doen in de winkel. Reserveer vooraf, want het is populair.
 
 ### 13. Ontdekmuseum of science center
 
@@ -76,7 +76,7 @@ Een subtropisch zwemparadijs met een dreumes kan heel leuk zijn, mits je de rust
 
 ### 15. Waterspeelplek
 
-In de zomer zijn waterspeelplekken ideaal voor dreumesen. Veel stadsparken hebben fonteinen of ondiepe waterloopjes waar kinderen in kunnen plonzen. In [Rotterdam](/rotterdam.html) en [Den Haag](/den-haag.html) vind je er meerdere. **Neem extra kleren mee** want je dreumes wordt gegarandeerd drijfnat.
+In de zomer zijn waterspeelplekken ideaal voor dreumesen. Veel stadsparken hebben fonteinen of ondiepe waterloopjes waar kinderen in kunnen plonzen. In [Rotterdam](/rotterdam.html) en [Den Haag](/den-haag.html) vind je er meerdere. Neem extra kleren mee, want je dreumes wordt gegarandeerd drijfnat.
 
 ### 16. Strand
 
@@ -100,14 +100,12 @@ Soms hoef je niet ver te zoeken. Een bankje in het stadspark en een dreumes die 
 
 Het klinkt gek, maar een ritje in de trein of bus is voor veel dreumesen een opwindende ervaring. Alles beweegt, er zijn mensen om naar te kijken en de trein maakt geluid. Kies een kort ritje (twee of drie haltes) en maak er een uitje van. **Kinderen tot en met 3 jaar reizen gratis** met het openbaar vervoer.
 
-## Tips voor een dagje uit met je dreumes
+## Overlevingstips
 
-- **Pas je verwachtingen aan.** Een dreumes heeft geen behoefte aan een vol programma. Een of twee activiteiten per dag is meer dan genoeg.
-- **Houd rekening met slaaptijden.** Plan activiteiten rond het dutje, niet ertegen in. Een uitgerust kind is een blij kind.
-- **Neem genoeg mee.** Luiers, snacks, water, extra kleren en een favoriete knuffel.
-- **Kies voor de ochtend.** Dreumesen zijn 's ochtends meestal op hun best. Na de lunch wordt het lastiger.
-- **Wees flexibel.** Soms heeft je dreumes meer plezier in het oprapen van steentjes op de parkeerplaats dan in de attractie waarvoor je gekomen bent. Dat is prima.
+- Pas je verwachtingen aan. Een dreumes heeft geen behoefte aan een vol programma. Een of twee activiteiten per dag is meer dan genoeg.
+- Plan activiteiten rond het dutje, niet ertegen in. Een uitgerust kind is een blij kind.
+- Neem genoeg mee: luiers, snacks, water, extra kleren en een favoriete knuffel.
+- Dreumesen zijn 's ochtends op hun best. Na de lunch wordt het lastiger.
+- Soms heeft je dreumes meer plezier in het oprapen van steentjes op de parkeerplaats dan in de attractie waarvoor je gekomen bent. Dat is prima.
 
-## Tot slot
-
-Een dagje uit met een dreumes draait niet om spectaculaire attracties, maar om samen ontdekken. Of je nu een kinderboerderij bezoekt, in het park wandelt of naar het Nijntje Museum gaat: het gaat om samen de wereld verkennen. Bekijk onze stadspagina's van [Amsterdam](/amsterdam.html), [Rotterdam](/rotterdam.html), [Utrecht](/utrecht.html) en [Den Haag](/den-haag.html) voor meer uitjes bij jou in de buurt.
+Bekijk onze stadspagina's van [Amsterdam](/amsterdam.html), [Rotterdam](/rotterdam.html), [Utrecht](/utrecht.html) en [Den Haag](/den-haag.html) voor meer uitjes bij jou in de buurt.

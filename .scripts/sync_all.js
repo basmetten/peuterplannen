@@ -51,75 +51,70 @@ const TYPE_PAGES = [
   {
     slug: 'speeltuinen', dbType: 'play',
     title: 'Speeltuinen voor peuters in Nederland',
-    metaTitle: 'Speeltuinen voor peuters — indoor & outdoor | PeuterPlannen',
-    metaDesc: 'De beste speeltuinen en speelparadijzen voor peuters in heel Nederland. Van Amsterdam tot Groningen, van Eindhoven tot Arnhem. Indoor en outdoor, geverifieerd en actueel.',
+    metaTitle: 'Speeltuinen voor peuters, indoor en outdoor | PeuterPlannen',
+    metaDesc: 'Speeltuinen en speelparadijzen voor peuters in 17 regio\'s door heel Nederland. Indoor en outdoor, gecheckt en actueel.',
     h1: 'Speeltuinen voor peuters in Nederland',
-    intro: `Een goede speeltuin maakt een dagje uit simpel en onvergetelijk. Voor peuters (1–5 jaar) is het belangrijk dat de toestellen op maat zijn: laag genoeg, veilig, en bij voorkeur met zand of water. Door heel Nederland zijn tientallen speeltuinen en speelparadijzen speciaal geschikt voor de allerkleinsten.\n\nWe onderscheiden twee typen: **buitenspeeltuinen** (gratis, lekker in de zon) en **indoor speelparadijzen** (ideaal bij regen of kou). Bekende ketens als Monkey Town en Ballorig hebben meerdere vestigingen door het land — handig als je op reis bent.`,
-    keywords: 'speeltuin peuter amsterdam, indoor speelparadijs kinderen, speeltuin utrecht, monkey town, ballorig, speeltuin rotterdam, speelparadijs den haag, speeltuin eindhoven, speeltuin groningen, speeltuin arnhem',
+    intro: `Niet elke speeltuin werkt voor peuters. Een klimrek van twee meter hoog en een schommel zonder beugel: leuk voor een zesjarige, niet voor je dreumes. De speeltuinen op deze pagina zijn allemaal gecheckt op geschiktheid voor kinderen van 1 tot 5 jaar.\n\nGrofweg twee smaken: **buitenspeeltuinen** (gratis, lekker in de zon) en **indoor speelparadijzen** (redding bij regen). Ketens als Monkey Town en Ballorig zitten door het hele land, wat handig is als je weet wat je kunt verwachten.`,
     sectionLabel: 'Speeltuinen',
     faqItems: [
-      { q: 'Wat is een goede speeltuin voor peuters van 1–3 jaar?', a: 'Voor de allerkleinsten zijn speeltuinen met laag speelgoed, zandbakken en waterpartijen het geschiktst. Indoor speelparadijzen zoals Monkey Town en Ballorig hebben door heel Nederland vestigingen met speciale peuterhoeken voor kinderen vanaf 1 jaar.' },
-      { q: 'Zijn indoor speelparadijzen ook geschikt bij slecht weer?', a: 'Ja, dat is juist het voordeel. Indoor speelparadijzen zoals Monkey Town, Ballorig en CROOS zijn volledig overdekt en ideaal voor regenachtige dagen.' },
-      { q: 'Wat kosten speeltuinen voor peuters gemiddeld?', a: 'Openbare speeltuinen zijn gratis. Indoor speelparadijzen kosten doorgaans 5-12 euro per kind. Sommige locaties bieden koffie of lunch voor ouders inbegrepen.' },
+      { q: 'Wat is een goede speeltuin voor peuters van 1–3 jaar?', a: 'Zoek naar speeltuinen met lage toestellen, zandbakken en waterpartijen. Monkey Town en Ballorig hebben in de meeste vestigingen aparte peuterhoeken voor kinderen vanaf 1 jaar.' },
+      { q: 'Zijn indoor speelparadijzen ook geschikt bij slecht weer?', a: 'Dat is precies waarvoor ze bedoeld zijn. Monkey Town, Ballorig en CROOS zijn volledig overdekt.' },
+      { q: 'Wat kosten speeltuinen voor peuters gemiddeld?', a: 'Openbare speeltuinen zijn gratis. Indoor speelparadijzen rekenen meestal 5 tot 12 euro per kind, soms inclusief koffie voor ouders.' },
     ]
   },
   {
     slug: 'musea', dbType: 'museum',
     title: 'Musea voor peuters in Nederland',
-    metaTitle: 'Musea voor peuters — interactief en kindvriendelijk | PeuterPlannen',
-    metaDesc: 'Welke musea zijn echt leuk voor peuters? Overzicht van 60+ kindvriendelijke musea in heel Nederland — van Amsterdam en Utrecht tot Eindhoven en Groningen. Met leeftijdsadvies.',
+    metaTitle: 'Musea voor peuters, interactief en kindvriendelijk | PeuterPlannen',
+    metaDesc: 'Welke musea zijn echt leuk voor peuters? 60+ kindvriendelijke musea in 17 regio\'s door heel Nederland. Met leeftijdsadvies.',
     h1: 'Musea voor peuters in Nederland',
-    intro: `Niet elk museum is geschikt voor kleine kinderen — maar er zijn door heel Nederland tientallen musea die speciaal zijn ingericht voor peuters en kleuters. Het geheim: interactieve elementen, laag tentoongesteld materiaal, en ruimte om te bewegen.\n\nToppers voor de allerkleinsten zijn het **Nijntje Museum** in Utrecht (speciaal voor 0–6 jaar), **NEMO** in Amsterdam (hands-on experimenten) en **Villa Zebra** in Rotterdam (kunst voor 2–12 jaar). Let op: musea zoals het Verzetsmuseum en het Anne Frank Huis zijn inhoudelijk zwaar — aanbevolen leeftijd 8–10 jaar.`,
-    keywords: 'museum peuter amsterdam, museum kleuter utrecht, nemo museum kinderen, nijntje museum, villa zebra rotterdam, kindvriendelijk museum den haag, museum kinderen eindhoven, museum peuter groningen',
+    intro: `De meeste musea zijn niets voor peuters. "Niet aankomen" en "stil zijn" werkt niet met een tweejarige. Maar een handvol musea in Nederland snapt dat wel: lage vitrines, knoppen om op te drukken, en dingen die tegen een stootje kunnen.\n\nDe toppers: het **Nijntje Museum** in Utrecht (0–6 jaar, alles op kruiphoogte), **NEMO** in Amsterdam (water, licht, geluid) en **Villa Zebra** in Rotterdam (kunst waarbij je mag kliederen). Musea als het Anne Frank Huis of het Verzetsmuseum? Bewaar die voor als ze 10 zijn.`,
     sectionLabel: 'Musea',
     faqItems: [
-      { q: 'Welk museum is het leukst voor peuters van 2–4 jaar?', a: 'Het Nijntje Museum in Utrecht is speciaal ingericht voor 0–6 jaar en daarmee de aanrader voor de allerkleinsten. NEMO in Amsterdam en Villa Zebra in Rotterdam zijn ook uitstekend voor deze leeftijdsgroep.' },
-      { q: 'Zijn musea gratis voor peuters?', a: 'Veel musea laten kinderen tot 4 jaar gratis binnen. NEMO, Naturalis en het Nijntje Museum hebben speciale peuter-tarieven. Check altijd de website voor actuele prijzen.' },
-      { q: 'Welke musea zijn NIET geschikt voor jonge kinderen?', a: 'Het Anne Frank Huis (aanbevolen 10+), het Verzetsmuseum (8+) en Foam (wisselende tentoonstellingen) zijn minder geschikt voor peuters.' },
+      { q: 'Welk museum is het leukst voor peuters van 2–4 jaar?', a: 'Het Nijntje Museum in Utrecht is speciaal gemaakt voor 0–6 jaar. NEMO in Amsterdam en Villa Zebra in Rotterdam werken ook goed voor deze leeftijd.' },
+      { q: 'Zijn musea gratis voor peuters?', a: 'Vaak wel. Veel musea laten kinderen tot 4 jaar gratis binnen. NEMO, Naturalis en het Nijntje Museum hebben aparte peuter-tarieven. Check de website, want dit verandert regelmatig.' },
+      { q: 'Welke musea zijn NIET geschikt voor jonge kinderen?', a: 'Het Anne Frank Huis (aanbevolen 10+), het Verzetsmuseum (8+) en Foam zijn minder geschikt voor peuters.' },
     ]
   },
   {
     slug: 'pannenkoeken', dbType: 'pancake',
     title: 'Pannenkoekenrestaurants voor kinderen in Nederland',
-    metaTitle: 'Pannenkoekenrestaurants voor kinderen — heel Nederland | PeuterPlannen',
-    metaDesc: 'De beste pannenkoekenrestaurants voor gezinnen met jonge kinderen in heel Nederland. Van Amsterdam en Utrecht tot Eindhoven en Arnhem. Met kindvriendelijkheid, terras en luierruimte.',
+    metaTitle: 'Pannenkoekenrestaurants voor kinderen, heel Nederland | PeuterPlannen',
+    metaDesc: 'Pannenkoekenrestaurants voor gezinnen met jonge kinderen in 17 regio\'s door heel Nederland. Met info over kindvriendelijkheid, terras en luierruimte.',
     h1: 'Pannenkoekenrestaurants voor kinderen in Nederland',
-    intro: `Pannenkoeken eten is voor veel peuters een feest — en gelukkig heeft Nederland een rijk aanbod van kindvriendelijke pannenkoekenrestaurants. Van een historisch huisje aan het water tot een pannenkoekenboot op de rivier: er is voor elk gezin iets te vinden.\n\nWat maakt een goed pannenkoekenrestaurant voor peuters? **Ruimte voor kinderwagens**, een **kindermenu met kleine pannenkoeken**, en bij voorkeur een **speelhoek of terras**. Ketens als **Pannenkoe** (meerdere vestigingen) zijn specifiek op gezinnen gericht. Zelfstandige restaurants als **De Nachtegaal** in Rotterdam of **Oudt Leyden** bij Leiden zijn iconische klassiekers.`,
-    keywords: 'pannenkoekenrestaurant kinderen amsterdam, pannenkoe utrecht, pannenkoeken peuter, kindvriendelijk pannenkoekenrestaurant nederland, pannenkoekenboot rotterdam, pannenkoeken kinderen eindhoven',
+    intro: `Pannenkoeken zijn de veiligste gok als je uit eten gaat met een peuter. Bijna elk kind lust ze, je hoeft niet lang te wachten, en het maakt niet uit als de helft op de grond belandt. Nederland zit vol met pannenkoekenrestaurants, van een hutje in het bos tot een boot op de rivier.\n\nWaar let je op? **Ruimte voor de kinderwagen**, een **kindermenu met kleine pannenkoeken** (scheelt knoeien), en het liefst een **speelhoek of terras**. Ketens als **Pannenkoe** zijn specifiek op gezinnen gericht. Klassiekers als **De Nachtegaal** in Rotterdam of **Oudt Leyden** bij Leiden bestaan al tientallen jaren.`,
     sectionLabel: 'Pannenkoeken',
     faqItems: [
-      { q: 'Welk pannenkoekenrestaurant is het kindvriendelijkst?', a: 'De Pannenkoe-keten is speciaal ontworpen voor gezinnen met kinderen, met kleine pannenkoekjes op het kindermenu en speelhoeken. Pannekoekhuis De Nachtegaal in Rotterdam en het Nijntje-gerelateerde restaurant in Utrecht zijn ook aanraders.' },
-      { q: 'Moet je reserveren bij een pannenkoekenrestaurant met kinderen?', a: 'Op zaterdagen en in vakanties: ja, zeker bij populaire locaties. Pannenkoekenhuis Upstairs in Amsterdam heeft bijvoorbeeld maar 6 tafeltjes — reserveren is essentieel.' },
-      { q: 'Hebben pannenkoekenrestaurants luierruimtes?', a: 'De meeste kindvriendelijke pannenkoekenrestaurants hebben een luierruimte of voldoende ruimte op het toilet. Check de badges op onze locatiekaarten.' },
+      { q: 'Welk pannenkoekenrestaurant is het kindvriendelijkst?', a: 'De Pannenkoe-keten is ingericht op gezinnen: kleine pannenkoekjes op het kindermenu en speelhoeken. Pannekoekhuis De Nachtegaal in Rotterdam is ook een aanrader.' },
+      { q: 'Moet je reserveren bij een pannenkoekenrestaurant met kinderen?', a: 'Op zaterdagen en in vakanties wel, vooral bij populaire locaties. Pannenkoekenhuis Upstairs in Amsterdam heeft maar 6 tafeltjes, dus daar zeker.' },
+      { q: 'Hebben pannenkoekenrestaurants luierruimtes?', a: 'De meeste kindvriendelijke pannenkoekenrestaurants hebben een luierruimte of genoeg ruimte op het toilet. Check de badges op onze locatiekaarten.' },
     ]
   },
   {
     slug: 'natuur', dbType: 'nature',
     title: 'Natuur met peuters in Nederland',
-    metaTitle: 'Natuur met peuters — parken, bossen en kinderboerderijen | PeuterPlannen',
-    metaDesc: 'Kinderboerderijen, stadsparken, duinen en bossen voor peuters in heel Nederland. Van Amsterdam en Utrecht tot Arnhem en Groningen. Gratis en betaald, binnen en buiten.',
+    metaTitle: 'Natuur met peuters, parken, bossen en kinderboerderijen | PeuterPlannen',
+    metaDesc: 'Kinderboerderijen, stadsparken, duinen en bossen voor peuters in 17 regio\'s door heel Nederland. Gratis en betaald, binnen en buiten.',
     h1: 'Natuur met peuters in Nederland',
-    intro: `Buiten zijn doet peuters goed. Door heel Nederland zijn verrassend veel groene plekken te vinden die perfect zijn voor jonge kinderen. Van de Amsterdamse Bos tot de Kennemerduinen, van een stadsboerderij om de hoek tot een uitgestrekt duinlandschap.\n\n**Kinderboerderijen** zijn de absolute favoriet voor 1–4 jaar: dieren voeren, kijken hoe een geit eet, en altijd een zandbak in de buurt. De meeste stadboerderijen zijn **gratis**. **Stadsparken** zijn ideaal voor een rustige ochtend met een picknick. En voor een groter avontuur zijn de **duinen bij Den Haag** of het **Nationaal Park Zuid-Kennemerland** bij Haarlem onverslaanbaar.`,
-    keywords: 'kinderboerderij amsterdam, natuur peuter utrecht, stadspark kindvriendelijk, duinen kinderen den haag, bos peuter nederland, gratis uitje kinderen, natuur kinderen eindhoven, kinderboerderij groningen',
+    intro: `Kinderboerderijen staan bovenaan. Logisch: dieren aaien, een geit voeren, zandbak erbij, en de meeste stadsboerderijen zijn gewoon gratis. Voor peuters van 1 tot 4 jaar is er weinig dat beter werkt.\n\nDaarnaast: **stadsparken** voor een rustige ochtend met een picknick, **duinen** bij Den Haag of het **Nationaal Park Zuid-Kennemerland** bij Haarlem voor als je iets avontuurlijkers wilt. En het mooie is dat je hier nauwelijks geld aan kwijt bent.`,
     sectionLabel: 'Natuur',
     faqItems: [
-      { q: 'Welke kinderboerderijen zijn gratis in Nederland?', a: 'De meeste stadsboerderijen zijn gratis toegankelijk. Voorbeelden: Stadsboerderij Griftsteede en Geertjes Hoeve in Utrecht, Kinderboerderij Westerpark in Amsterdam, Kinderboerderij Vroesenpark in Rotterdam en BuurtBoerderij De Nijkamphoeve in Den Haag. Ook in Eindhoven, Groningen en andere steden vind je gratis kinderboerderijen.' },
-      { q: 'Welk natuurgebied is het geschiktst voor peuters?', a: 'Voor de allerkleinsten zijn vlakke parken met wandelpaden het prettigst, zoals het Vondelpark (Amsterdam), Maximapark (Utrecht) of Vroesenpark (Rotterdam). Oudere peuters (3–5) kunnen ook de duinen aan, zoals Nationaal Park Zuid-Kennemerland of Westduinpark Den Haag.' },
-      { q: 'Zijn er kinderboerderijen met koffie voor ouders?', a: 'Ja, veel kinderboerderijen hebben een theehuis of cafe. Boerderij Meerzicht en Speelboerderij Elsenhove in Amsterdam, en Geertjes Hoeve in Utrecht zijn bekende voorbeelden.' },
+      { q: 'Welke kinderboerderijen zijn gratis in Nederland?', a: 'De meeste stadsboerderijen zijn gratis. Denk aan Griftsteede in Utrecht, Kinderboerderij Westerpark in Amsterdam, Kinderboerderij Vroesenpark in Rotterdam en BuurtBoerderij De Nijkamphoeve in Den Haag. Ook in Eindhoven, Groningen en andere steden.' },
+      { q: 'Welk natuurgebied is het geschiktst voor peuters?', a: 'Vlakke parken met wandelpaden werken het best voor de allerkleinsten: Vondelpark (Amsterdam), Maximapark (Utrecht) of Vroesenpark (Rotterdam). Oudere peuters (3–5) kunnen ook de duinen aan.' },
+      { q: 'Zijn er kinderboerderijen met koffie voor ouders?', a: 'Ja, best veel. Boerderij Meerzicht en Speelboerderij Elsenhove in Amsterdam hebben allebei een cafe, net als Geertjes Hoeve bij Utrecht.' },
     ]
   },
   {
     slug: 'horeca', dbType: 'horeca',
     title: 'Kindvriendelijke restaurants en cafes in Nederland',
-    metaTitle: 'Kindvriendelijke horeca voor gezinnen — heel Nederland | PeuterPlannen',
-    metaDesc: 'Kindvriendelijke restaurants en cafes in heel Nederland. Van Amsterdam en Utrecht tot Eindhoven en Nijmegen. Met speelhoek, kindermenu, terras en luierruimte. Geverifieerd.',
+    metaTitle: 'Kindvriendelijke horeca voor gezinnen, heel Nederland | PeuterPlannen',
+    metaDesc: 'Kindvriendelijke restaurants en cafes in 17 regio\'s door heel Nederland. Met speelhoek, kindermenu, terras en luierruimte. Gecheckt op kindvriendelijkheid.',
     h1: 'Kindvriendelijke restaurants en cafes in Nederland',
-    intro: `Uit eten met een peuter stelt specifieke eisen: er moet ruimte zijn voor een kinderwagen, een kindermenu of kleine porties, en idealiter een speelhoek of terras waar de kinderen even kunnen rennen. Door heel Nederland zijn tientallen restaurants en cafes die echt kindvriendelijk zijn — niet alleen het vinkje, maar echt ingericht op jonge gezinnen.\n\nVan een **kindercafe** (speciaal ingericht voor ouders met baby's en peuters) tot een **grand cafe met groot terras**, van een **pannenkoekenboot** tot een **strandpaviljoen**: de keuze is groot. Let op onze badge-iconen: koffie, luierruimte en alcohol — zodat je weet wat je kunt verwachten.`,
-    keywords: 'kindvriendelijk restaurant amsterdam, kindercafe utrecht, eten met peuter rotterdam, kindvriendelijk cafe den haag, restaurant baby peuter nederland, kindvriendelijk restaurant eindhoven',
+    intro: `Uit eten met een peuter is een sport. De kinderwagen moet ergens staan, er moet iets op de kaart staan dat ze lusten, en het liefst is er een speelhoek zodat jij je koffie op kunt drinken. Niet elk restaurant kan dat. De plekken op deze pagina wel.\n\nVan **kindercafes** (speciaal voor ouders met baby's en peuters) tot een **grand cafe met groot terras**, van een **pannenkoekenboot** tot een **strandpaviljoen**. We checken op de dingen die ertoe doen: koffie, luierruimte, en of er ook een biertje kan.`,
     sectionLabel: 'Horeca',
     faqItems: [
-      { q: 'Wat is een kindercafe en is dat anders dan een gewoon restaurant?', a: 'Een kindercafe is specifiek ingericht voor ouders met baby\'s en peuters: zachte vloeren, laag meubilair, speelgoed en vaak een speelhoek. Voorbeelden zijn Kindercafe Kikker en de Kraanvogel in Den Haag en Wonderpark Cafe in Amsterdam.' },
-      { q: 'Moet ik reserveren bij kindvriendelijke restaurants?', a: 'Op drukke momenten (zaterdag lunch, schoolvakanties) is reserveren sterk aangeraden. Veel restaurants hebben beperkte ruimte voor kinderwagens.' },
+      { q: 'Wat is een kindercafe en is dat anders dan een gewoon restaurant?', a: 'Een kindercafe is ingericht op ouders met baby\'s en peuters: zachte vloeren, laag meubilair, speelgoed en een speelhoek. Kindercafe Kikker in Den Haag en Wonderpark Cafe in Amsterdam zijn voorbeelden.' },
+      { q: 'Moet ik reserveren bij kindvriendelijke restaurants?', a: 'Op drukke momenten (zaterdag lunch, schoolvakanties) is het slim om te reserveren. Veel restaurants hebben beperkte ruimte voor kinderwagens.' },
       { q: 'Welke restaurants hebben een buitenspeeltuin of terras?', a: 'Parkrestaurant Anafora in Utrecht, Boerderij Meerzicht in Amsterdam, en Strandpaviljoen Zuid in Den Haag hebben buitenruimte waar kinderen kunnen bewegen terwijl ouders eten.' },
     ]
   },
@@ -252,13 +247,13 @@ function headCommon(extra = '') {
 
 // Fallback regions when the DB table doesn't exist yet
 const FALLBACK_REGIONS = [
-  { name: 'Amsterdam', slug: 'amsterdam', blurb: 'Amsterdam heeft een verrassend rijk aanbod voor ouders met jonge kinderen. Van het Vondelpark tot NEMO, van de Amsterdamse Bos tot een pannenkoekenbootje op het IJ — er is altijd iets te doen.', display_order: 1, population: 942000, tier: 'primary', schema_type: 'City', is_active: true },
+  { name: 'Amsterdam', slug: 'amsterdam', blurb: 'Amsterdam heeft een groot aanbod voor ouders met jonge kinderen. Van het Vondelpark tot NEMO, van de Amsterdamse Bos tot een pannenkoekenbootje op het IJ.', display_order: 1, population: 942000, tier: 'primary', schema_type: 'City', is_active: true },
   { name: 'Rotterdam', slug: 'rotterdam', blurb: 'Rotterdam verrast jonge gezinnen keer op keer. Diergaarde Blijdorp, Villa Zebra, de Pannenkoekenboot en Plaswijckpark zorgen voor een gevuld dagprogramma, binnen en buiten.', display_order: 2, population: 675000, tier: 'primary', schema_type: 'City', is_active: true },
   { name: 'Den Haag', slug: 'den-haag', blurb: 'Den Haag combineert strand, cultuur en natuur op loopafstand van elkaar. Madurodam, het Kunstmuseum, Scheveningen en Westduinpark zijn klassiekers voor een uitje met peuters.', display_order: 3, population: 569000, tier: 'primary', schema_type: 'City', is_active: true },
   { name: 'Utrecht', slug: 'utrecht', blurb: 'Utrecht is een van de kindvriendelijkste steden van Nederland. Het Nijntje Museum, de Griftsteede, het Spoorwegmuseum en tientallen speeltuinen maken de stad ideaal voor een dagje uit met peuters.', display_order: 4, population: 378000, tier: 'primary', schema_type: 'City', is_active: true },
-  { name: 'Haarlem', slug: 'haarlem', blurb: 'Haarlem is compact en groen — perfect voor een relaxt dagje uit met jonge kinderen. Het Teylers Museum, het Reinaldapark en de Kennemerduinen liggen op fietsafstand van het centrum.', display_order: 5, population: 169000, tier: 'standard', schema_type: 'City', is_active: true },
-  { name: 'Amersfoort', slug: 'amersfoort', blurb: 'Amersfoort is een gezellige middeleeuwse stad met verrassend veel te doen voor peuters. Dierenpark Amersfoort, kinderboerderijen en het buitengebied van de Utrechtse Heuvelrug liggen om de hoek.', display_order: 6, population: 164000, tier: 'standard', schema_type: 'City', is_active: true },
-  { name: 'Leiden', slug: 'leiden', blurb: 'Leiden is een compacte universiteitsstad met verrassend veel te doen voor peuters. Van het Naturalis tot kinderboerderijen en een pannenkoekenrestaurant aan het water.', display_order: 7, population: 130000, tier: 'standard', schema_type: 'City', is_active: true },
+  { name: 'Haarlem', slug: 'haarlem', blurb: 'Haarlem is compact en groen, fijn voor een relaxt dagje uit met jonge kinderen. Het Teylers Museum, het Reinaldapark en de Kennemerduinen liggen op fietsafstand van het centrum.', display_order: 5, population: 169000, tier: 'standard', schema_type: 'City', is_active: true },
+  { name: 'Amersfoort', slug: 'amersfoort', blurb: 'Amersfoort is een gezellige middeleeuwse stad met genoeg te doen voor peuters. Dierenpark Amersfoort, kinderboerderijen en het buitengebied van de Utrechtse Heuvelrug liggen om de hoek.', display_order: 6, population: 164000, tier: 'standard', schema_type: 'City', is_active: true },
+  { name: 'Leiden', slug: 'leiden', blurb: 'Leiden is een compacte universiteitsstad met meer te doen voor peuters dan je zou denken. Van Naturalis tot kinderboerderijen en een pannenkoekenrestaurant aan het water.', display_order: 7, population: 130000, tier: 'standard', schema_type: 'City', is_active: true },
   { name: 'Utrechtse Heuvelrug', slug: 'utrechtse-heuvelrug', blurb: 'De Utrechtse Heuvelrug is een schatkamer voor gezinnen met peuters. Kastelen, kinderboerderijen, pannenkoekenrestaurants in het bos en prachtige natuurspeelplaatsen — hier combineer je natuur met avontuur op loopafstand.', display_order: 8, population: 50000, tier: 'region', schema_type: 'AdministrativeArea', is_active: true },
 ];
 
@@ -389,7 +384,7 @@ ${typeCards}
   const cityGridHTML = `    <section class="cities-section">
         <div class="container">
             <h2 class="section-title">Uitjes per stad</h2>
-            <p class="section-sub">Bekijk alle kindvriendelijke locaties per regio — geverifieerd en actueel.</p>
+            <p class="section-sub">Bekijk alle kindvriendelijke locaties per regio. Gecheckt en actueel.</p>
             <div class="cities-grid">
 ${cityCards}
             </div>
@@ -569,10 +564,11 @@ function locationHTML_city(loc) {
   if (loc.alcohol) badges.push('Alcohol');
   if (loc.diaper) badges.push('Luierruimte');
   const badgeStr = badges.length ? `<span class="badges">${badges.join(' &middot; ')}</span>` : '';
+  const desc = isFillerDescription(loc.description) ? '' : (loc.description || '');
   return `
       <article class="loc-item">
         <h3><a href="${locationUrl}">${escapeHtml(loc.name)}</a></h3>
-        <p>${escapeHtml(loc.description || '')}</p>
+        ${desc ? `<p>${escapeHtml(desc)}</p>` : ''}
         ${badgeStr}
         <div class="loc-actions">
           <a href="${locationUrl}" class="loc-detail-btn">Bekijk details</a>
@@ -638,7 +634,6 @@ function generateCityPage(region, locs, allRegions) {
 ${headCommon()}
   <title>${region.name} met peuters — speeltuinen, musea & restaurants | PeuterPlannen</title>
   <meta name="description" content="Ontdek de beste uitjes voor peuters in ${region.name}. ${locs.length} kindvriendelijke locaties: speeltuinen, musea, pannenkoeken en natuur. Geverifieerd en actueel.">
-  <meta name="keywords" content="uitjes peuters ${region.name}, wat te doen met peuter ${region.name}, dagje weg ${region.name} kinderen, kindvriendelijk ${region.name}, peuter activiteiten ${region.name}">
   <link rel="canonical" href="https://peuterplannen.nl/${region.slug}.html">
   <meta property="og:title" content="${region.name} met peuters | PeuterPlannen">
   <meta property="og:description" content="${locs.length} geverifieerde uitjes voor peuters in ${region.name}: speeltuinen, musea, natuur en kindvriendelijke horeca.">
@@ -728,11 +723,12 @@ function locationHTML_type(loc) {
   if (loc.alcohol) badges.push('Alcohol');
   const badgeStr = badges.length ? `<span class="badges">${badges.join(' &middot; ')}</span>` : '';
   const regionLabel = loc.region === 'Overig' ? 'Overig Nederland' : loc.region;
+  const desc = isFillerDescription(loc.description) ? '' : (loc.description || '');
   return `
       <article class="loc-item">
         <div class="loc-region">${regionLabel}</div>
         <h3><a href="${locationUrl}">${escapeHtml(loc.name)}</a></h3>
-        <p>${escapeHtml(loc.description || '')}</p>
+        ${desc ? `<p>${escapeHtml(desc)}</p>` : ''}
         ${badgeStr}
         <div class="loc-actions">
           <a href="${locationUrl}" class="loc-detail-btn">Bekijk details</a>
@@ -810,7 +806,6 @@ function generateTypePage(page, locs, regions) {
 ${headCommon()}
   <title>${page.metaTitle}</title>
   <meta name="description" content="${page.metaDesc}">
-  <meta name="keywords" content="${page.keywords}">
   <link rel="canonical" href="https://peuterplannen.nl/${page.slug}.html">
   <meta property="og:title" content="${page.metaTitle}">
   <meta property="og:description" content="${page.metaDesc}">
@@ -833,7 +828,7 @@ ${navHTML()}
 
 <div class="hero">
   <h1>${page.h1.replace('Nederland', '<span>Nederland</span>')}</h1>
-  <p>${locs.length} geverifieerde locaties — ${regionNamesStr}</p>
+  <p>${locs.length} geverifieerde locaties in ${regionNamesStr}</p>
 </div>
 
 <div class="breadcrumb">
@@ -892,12 +887,35 @@ function generateTypePages(data) {
 
 // === 7. Generate location pages ===
 
+// Helper: fix truncated toddler highlights (missing final punctuation)
+function cleanToddlerHighlight(text) {
+  if (!text) return '';
+  text = text.trim();
+  // If it already ends with proper punctuation, return as-is
+  if (/[.!?]$/.test(text)) return text;
+  // Try to truncate to last complete sentence
+  const lastSentenceEnd = Math.max(text.lastIndexOf('. '), text.lastIndexOf('! '), text.lastIndexOf('? '));
+  if (lastSentenceEnd > text.length * 0.5) {
+    return text.slice(0, lastSentenceEnd + 1);
+  }
+  // Otherwise just add a period
+  return text + '.';
+}
+
+// Helper: detect filler descriptions
+function isFillerDescription(desc) {
+  if (!desc || !desc.trim()) return true;
+  if (/^Geverifieerde vestiging van .+\. Altijd een veilige keuze voor peuters\.?$/.test(desc.trim())) return true;
+  return false;
+}
+
 function locationPageHTML(loc, region, similarLocs) {
   const fullUrl = `https://peuterplannen.nl${loc.pageUrl}`;
   const typeLabel = TYPE_MAP[loc.type]?.label || loc.type;
   const typeLabel_meta = TYPE_MAP[loc.type]?.label || loc.type;
-  const metaDesc = (loc.description || '').slice(0, 155)
-    || `${loc.name} in ${region.name} — een ${typeLabel_meta.toLowerCase()} voor gezinnen met jonge kinderen. Bekijk faciliteiten, route en tips op PeuterPlannen.`;
+  const rawDesc = isFillerDescription(loc.description) ? '' : (loc.description || '');
+  const metaDesc = rawDesc.slice(0, 155)
+    || `${loc.name} in ${region.name}, een ${typeLabel_meta.toLowerCase()} voor gezinnen met jonge kinderen. Bekijk faciliteiten, route en tips op PeuterPlannen.`;
 
   // Weather
   const weatherLabel = WEATHER_LABELS[loc.weather] || '';
@@ -927,11 +945,14 @@ function locationPageHTML(loc, region, similarLocs) {
     ? `<div class="similar-locations">
     <h2>Vergelijkbare locaties in ${region.name}</h2>
     <div class="loc-list">
-      ${similarLocs.map(s => `
+      ${similarLocs.map(s => {
+        const sDesc = isFillerDescription(s.description) ? '' : (s.description || '');
+        return `
       <article class="loc-item">
         <h3><a href="${s.pageUrl}">${escapeHtml(s.name)}</a></h3>
-        <p>${escapeHtml((s.description || '').slice(0, 120))}${(s.description || '').length > 120 ? '...' : ''}</p>
-      </article>`).join('')}
+        ${sDesc ? `<p>${escapeHtml(sDesc.slice(0, 120))}${sDesc.length > 120 ? '...' : ''}</p>` : ''}
+      </article>`;
+      }).join('')}
     </div>
   </div>` : '';
 
@@ -1051,9 +1072,9 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
     <p class="location-subtitle">${typeLabel} in ${region.name}</p>
   </div>
 
-  <p class="location-description">${escapeHtml(loc.description || '')}</p>
+  ${!isFillerDescription(loc.description) ? `<p class="location-description">${escapeHtml(loc.description)}</p>` : ''}
 
-  ${loc.toddler_highlight ? `<div class="location-highlight"><strong>Peutertip:</strong> ${escapeHtml(loc.toddler_highlight)}</div>` : ''}
+  ${loc.toddler_highlight ? `<div class="location-highlight"><strong>Peutertip:</strong> ${escapeHtml(cleanToddlerHighlight(loc.toddler_highlight))}</div>` : ''}
 
   ${infoItems.length > 0 ? `<div class="location-info">\n    ${infoItems.join('\n    ')}\n  </div>` : ''}
 
