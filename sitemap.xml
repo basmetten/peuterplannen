@@ -4556,18 +4556,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/blog/kinderboerderijen-utrecht/</loc>
-    <lastmod>2026-03-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.65</priority>
-  </url>
-  <url>
-    <loc>https://peuterplannen.nl/blog/beste-speeltuinen-rotterdam-peuters/</loc>
-    <lastmod>2026-03-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.65</priority>
-  </url>
-  <url>
     <loc>https://peuterplannen.nl/blog/dagje-uit-met-dreumes/</loc>
     <lastmod>2026-03-10</lastmod>
     <changefreq>monthly</changefreq>
@@ -4580,8 +4568,44 @@
     <priority>0.65</priority>
   </url>
   <url>
+    <loc>https://peuterplannen.nl/blog/pannenkoekenboerderijen-utrecht-heuvelrug/</loc>
+    <lastmod>2026-02-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
     <loc>https://peuterplannen.nl/blog/uitjes-met-peuter-bij-regen/</loc>
-    <lastmod>2026-03-01</lastmod>
+    <lastmod>2026-02-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/blog/den-haag-met-peuters/</loc>
+    <lastmod>2026-02-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/blog/haarlem-met-peuters/</loc>
+    <lastmod>2026-02-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/blog/kinderboerderijen-utrecht/</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/blog/beste-speeltuinen-rotterdam-peuters/</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/blog/goedkoop-op-stap-peuters/</loc>
+    <lastmod>2026-01-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.65</priority>
   </url>

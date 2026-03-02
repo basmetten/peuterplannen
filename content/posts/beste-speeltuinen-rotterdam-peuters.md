@@ -1,13 +1,13 @@
 ---
 title: "De 8 beste speeltuinen in Rotterdam voor peuters"
 description: "Van Plaswijckpark tot indoor speelparadijzen: de leukste speeltuinen in Rotterdam voor kinderen van 1-5 jaar."
-date: 2026-03-15
+date: 2026-01-20
 tags: ["rotterdam", "speeltuinen", "outdoor"]
 related_regions: ["rotterdam"]
 featured_image: /images/blog/beste-speeltuinen-rotterdam.jpg
 ---
 
-Rotterdam heeft voor gezinnen met jonge kinderen veel te bieden. Hier zijn acht speeltuinen die echt werken voor peuters: van grote stadsparken tot gezellige buurtspeeltuinen en indoor speelparadijzen. Per speeltuin lees je wat je kunt verwachten en voor welke leeftijd het geschikt is.
+Rotterdam heeft voor gezinnen met jonge kinderen meer te bieden dan de meeste mensen denken. De stad heeft een paar buitengewoon goede speeltuinen — en ook een paar die er op Google Maps goed uitzien maar in de praktijk tegenvallen. Hier staan de acht plekken die het echt waard zijn, met eerlijke info over wat je kunt verwachten.
 
 ## 1. Plaswijckpark
 

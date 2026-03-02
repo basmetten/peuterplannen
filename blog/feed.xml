@@ -5,22 +5,8 @@
     <link>https://peuterplannen.nl/blog/</link>
     <description>Tips en inspiratie voor uitjes met peuters in Nederland</description>
     <language>nl</language>
-    <lastBuildDate>Mon, 02 Mar 2026 20:48:47 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 02 Mar 2026 21:18:30 GMT</lastBuildDate>
     <atom:link href="https://peuterplannen.nl/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <item>
-      <title>Kinderboerderijen in en rond Utrecht: de complete gids</title>
-      <link>https://peuterplannen.nl/blog/kinderboerderijen-utrecht/</link>
-      <description>Alle kinderboerderijen in de regio Utrecht op een rij. Gratis én betaald, met openingstijden en peutertips.</description>
-      <pubDate>Fri, 20 Mar 2026 00:00:00 GMT</pubDate>
-      <guid>https://peuterplannen.nl/blog/kinderboerderijen-utrecht/</guid>
-    </item>
-    <item>
-      <title>De 8 beste speeltuinen in Rotterdam voor peuters</title>
-      <link>https://peuterplannen.nl/blog/beste-speeltuinen-rotterdam-peuters/</link>
-      <description>Van Plaswijckpark tot indoor speelparadijzen: de leukste speeltuinen in Rotterdam voor kinderen van 1-5 jaar.</description>
-      <pubDate>Sun, 15 Mar 2026 00:00:00 GMT</pubDate>
-      <guid>https://peuterplannen.nl/blog/beste-speeltuinen-rotterdam-peuters/</guid>
-    </item>
     <item>
       <title>Dagje uit met een dreumes: 20 activiteiten voor 1-2 jaar</title>
       <link>https://peuterplannen.nl/blog/dagje-uit-met-dreumes/</link>
@@ -36,11 +22,53 @@
       <guid>https://peuterplannen.nl/blog/gratis-peuteruitjes-amsterdam/</guid>
     </item>
     <item>
-      <title>15 Leuke uitjes met je peuter bij regen</title>
+      <title>Pannenkoekenboerderijen rondom Utrecht en de Heuvelrug</title>
+      <link>https://peuterplannen.nl/blog/pannenkoekenboerderijen-utrecht-heuvelrug/</link>
+      <description>De beste pannenkoekenboerderijen en -restaurants voor gezinnen met peuters in en rond Utrecht. Met dieren, speeltuinen en bos.</description>
+      <pubDate>Sun, 22 Feb 2026 00:00:00 GMT</pubDate>
+      <guid>https://peuterplannen.nl/blog/pannenkoekenboerderijen-utrecht-heuvelrug/</guid>
+    </item>
+    <item>
+      <title>Uitjes met je peuter bij regen: wat werkt en wat niet</title>
       <link>https://peuterplannen.nl/blog/uitjes-met-peuter-bij-regen/</link>
-      <description>Op zoek naar indoor activiteiten met je peuter? Deze 15 uitjes zijn perfect voor een regenachtige dag — van speelparadijzen tot musea.</description>
-      <pubDate>Sun, 01 Mar 2026 00:00:00 GMT</pubDate>
+      <description>Op zoek naar indoor activiteiten met je peuter? Van speelparadijzen tot musea — wat werkt echt op een regenachtige dag en wat valt tegen.</description>
+      <pubDate>Sun, 15 Feb 2026 00:00:00 GMT</pubDate>
       <guid>https://peuterplannen.nl/blog/uitjes-met-peuter-bij-regen/</guid>
+    </item>
+    <item>
+      <title>Den Haag met peuters: strand, Madurodam en wat je beter kunt overslaan</title>
+      <link>https://peuterplannen.nl/blog/den-haag-met-peuters/</link>
+      <description>Praktische gids voor een dagje Den Haag met jonge kinderen. Wat werkt, wat valt tegen, en waarom Kijkduin beter is dan Scheveningen.</description>
+      <pubDate>Sun, 08 Feb 2026 00:00:00 GMT</pubDate>
+      <guid>https://peuterplannen.nl/blog/den-haag-met-peuters/</guid>
+    </item>
+    <item>
+      <title>Haarlem met peuters: klein stad, veel te doen</title>
+      <link>https://peuterplannen.nl/blog/haarlem-met-peuters/</link>
+      <description>Haarlem is compacter dan Amsterdam maar heeft genoeg voor een dagje uit met jonge kinderen. Duinen, speeltuinen en goed koffie.</description>
+      <pubDate>Sun, 01 Feb 2026 00:00:00 GMT</pubDate>
+      <guid>https://peuterplannen.nl/blog/haarlem-met-peuters/</guid>
+    </item>
+    <item>
+      <title>Kinderboerderijen in en rond Utrecht: de complete gids</title>
+      <link>https://peuterplannen.nl/blog/kinderboerderijen-utrecht/</link>
+      <description>Alle kinderboerderijen in de regio Utrecht op een rij. Gratis én betaald, met openingstijden en peutertips.</description>
+      <pubDate>Wed, 28 Jan 2026 00:00:00 GMT</pubDate>
+      <guid>https://peuterplannen.nl/blog/kinderboerderijen-utrecht/</guid>
+    </item>
+    <item>
+      <title>De 8 beste speeltuinen in Rotterdam voor peuters</title>
+      <link>https://peuterplannen.nl/blog/beste-speeltuinen-rotterdam-peuters/</link>
+      <description>Van Plaswijckpark tot indoor speelparadijzen: de leukste speeltuinen in Rotterdam voor kinderen van 1-5 jaar.</description>
+      <pubDate>Tue, 20 Jan 2026 00:00:00 GMT</pubDate>
+      <guid>https://peuterplannen.nl/blog/beste-speeltuinen-rotterdam-peuters/</guid>
+    </item>
+    <item>
+      <title>Goedkoop op stap met peuters: uitjes voor minder dan €5</title>
+      <link>https://peuterplannen.nl/blog/goedkoop-op-stap-peuters/</link>
+      <description>Lekker erop uit met jonge kinderen zonder er veel geld aan uit te geven. Gratis kinderboerderijen, parken en andere uitjes door heel Nederland.</description>
+      <pubDate>Sat, 10 Jan 2026 00:00:00 GMT</pubDate>
+      <guid>https://peuterplannen.nl/blog/goedkoop-op-stap-peuters/</guid>
     </item>
   </channel>
 </rss>
