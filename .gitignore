@@ -31,6 +31,9 @@ USER.md
 # Dependencies
 node_modules/
 
+# Build artifacts / pipeline output
+output/
+
 # Data files
 all_locations_for_verification.json
 all_locations_raw.json
