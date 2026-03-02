@@ -327,7 +327,10 @@
         </div>
         <div class="hero-visual">
             <div class="hero-image-wrapper">
-                <img src="homepage_hero_ai.jpeg" alt="Sfeerbeeld kindvriendelijk uitje" class="hero-image" width="1408" height="768" fetchpriority="high" decoding="async">
+                <picture>
+                    <source type="image/webp" srcset="homepage_hero_ai-400w.webp 400w, homepage_hero_ai-800w.webp 800w, homepage_hero_ai-1200w.webp 1200w" sizes="(max-width: 768px) 100vw, 50vw">
+                    <img src="homepage_hero_ai.jpeg" alt="Sfeerbeeld kindvriendelijk uitje" class="hero-image" width="1408" height="768" fetchpriority="high" decoding="async">
+                </picture>
                 <div class="hero-image-mask"></div>
             </div>
             <!-- Organic Icons Overlay (Elegant) -->
@@ -592,5 +595,6 @@ document.querySelectorAll('.feature-card, .stat-item, .hero-content, .hero-visua
   observer.observe(el);
 });
 </script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
 </html>

@@ -29,6 +29,11 @@ const SB_URL = process.env.SUPABASE_URL || SB_PROJECT;
 const SB_KEY = process.env.SUPABASE_SERVICE_KEY || Buffer.from('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5CcGRXcHpkbWRpWm1ac2NuSjJZWFY2YzNobElpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpJd05ETXhOekFzSW1WNGNDSTZNakE0TnpZeE9URTNNSDAuNXkzZ3FpUGZWdnB2ZmFEWUFfUGdxRS1LVHZ1ZjZ6Z042dkd6cWZVcGVTbw==', 'base64').toString('utf8');
 const ROOT = path.resolve(__dirname, '..');
 
+const CF_ANALYTICS_TOKEN = '74c21d127cea482bb454b6c85071a46f';
+function analyticsHTML() {
+  return `<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"${CF_ANALYTICS_TOKEN}"}'></script>`;
+}
+
 const TYPE_MAP = {
   play: { label: 'Speeltuinen', slug: 'speeltuinen', labelSingle: 'Speeltuinen' },
   farm: { label: 'Kinderboerderijen', slug: 'kinderboerderijen', labelSingle: 'Kinderboerderijen' },
@@ -239,7 +244,7 @@ const NAV_LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40
 
 function navHTML(ctaText = 'Open App', ctaHref = '/app.html') {
   return `<a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
-<nav>
+<nav aria-label="Hoofdnavigatie">
   <div class="nav-inner">
     <a href="/" class="nav-logo">
       ${NAV_LOGO_SVG}
@@ -255,7 +260,9 @@ function navHTML(ctaText = 'Open App', ctaHref = '/app.html') {
 
 function footerHTML() {
   return `<footer>
+  <nav aria-label="Footernavigatie">
   <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Blog</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over ons</a> &middot; <a href="${TIKKIE_URL}" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  </nav>
 </footer>`;
 }
 
@@ -284,7 +291,7 @@ function headCommon(extra = '') {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css">${extra}`;
+  <link rel="stylesheet" href="/style.min.css">${extra}`;
 }
 
 // Fallback regions when the DB table doesn't exist yet
@@ -397,7 +404,8 @@ function updateIndex(data) {
   // TYPE_GRID
   const typeCards = Object.entries(TYPE_MAP).map(([type, info]) => {
     const count = typeCounts[type] || 0;
-    const img = TYPE_IMAGES[type] ? `\n                    <img src="${TYPE_IMAGES[type]}" alt="" width="48" height="48" style="border-radius:10px;margin-bottom:8px;" loading="lazy">` : '';
+    const imgSrc = TYPE_IMAGES[type];
+    const img = imgSrc ? `\n                    <picture><source type="image/webp" srcset="${imgSrc.replace('.png', '.webp')}"><img src="${imgSrc}" alt="" width="48" height="48" style="border-radius:10px;margin-bottom:8px;" loading="lazy"></picture>` : '';
     return `                <a href="${info.slug}.html" class="city-card">${img}
                     <strong>${info.label}</strong>
                     <span>${count} locaties</span>
@@ -603,7 +611,7 @@ function updateManifest(data) {
 
 function locationHTML_city(loc) {
   const locationUrl = loc.pageUrl || '#';
-  const websiteLink = loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="loc-website-btn">Website</a>` : '';
+  const websiteLink = loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van ${escapeHtml(loc.name)}">Website</a>` : '';
   const badges = [];
   if (loc.coffee) badges.push('Koffie');
   if (loc.alcohol) badges.push('Alcohol');
@@ -630,7 +638,8 @@ function generateCityPage(region, locs, allRegions) {
   const typesWithLocs = TYPE_ORDER.filter(t => byType[t].length > 0);
   const sectionsHTML = typesWithLocs
     .map((t, i) => {
-      const typeImg = TYPE_IMAGES[t] ? `<img src="${TYPE_IMAGES[t]}" alt="" class="category-icon" width="40" height="40" loading="lazy">` : '';
+      const typeImgSrc = TYPE_IMAGES[t];
+      const typeImg = typeImgSrc ? `<picture><source type="image/webp" srcset="${typeImgSrc.replace('.png', '.webp')}"><img src="${typeImgSrc}" alt="" class="category-icon" width="40" height="40" loading="lazy"></picture>` : '';
       let section = `
     <section class="type-section">
       <h2>${typeImg}${TYPE_LABELS_CITY[t]}</h2>
@@ -708,9 +717,9 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
   </div>
 </div>
 
-<div class="breadcrumb">
+<nav aria-label="Kruimelpad" class="breadcrumb">
   <a href="/">PeuterPlannen</a> &rsaquo; ${region.name}
-</div>
+</nav>
 
 <main id="main-content">
   <div class="intro-box">
@@ -742,6 +751,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 
 ${footerHTML()}
 
+${analyticsHTML()}
 </body>
 </html>`;
 }
@@ -762,7 +772,7 @@ function generateCityPages(data) {
 
 function locationHTML_type(loc) {
   const locationUrl = loc.pageUrl || '#';
-  const websiteLink = loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="loc-website-btn">Website</a>` : '';
+  const websiteLink = loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van ${escapeHtml(loc.name)}">Website</a>` : '';
   const badges = [];
   if (loc.coffee) badges.push('Koffie');
   if (loc.diaper) badges.push('Luierruimte');
@@ -877,9 +887,9 @@ ${navHTML()}
   <p>${locs.length} geverifieerde locaties in ${regionNamesStr}</p>
 </div>
 
-<div class="breadcrumb">
+<nav aria-label="Kruimelpad" class="breadcrumb">
   <a href="/">PeuterPlannen</a> &rsaquo; ${page.title}
-</div>
+</nav>
 
 <main id="main-content">
   <div class="intro-box">
@@ -915,6 +925,7 @@ ${navHTML()}
 
 ${footerHTML()}
 
+${analyticsHTML()}
 </body>
 </html>`;
 }
@@ -1007,7 +1018,7 @@ function locationPageHTML(loc, region, similarLocs) {
   if (weatherLabel) infoItems.push(`<div class="info-item"><div><div class="info-label">Weer</div><div class="info-value">${weatherLabel}</div></div></div>`);
   if (ageLabel) infoItems.push(`<div class="info-item"><div><div class="info-label">Leeftijd</div><div class="info-value">${ageLabel}</div></div></div>`);
   facilities.forEach(f => infoItems.push(`<div class="info-item"><div><div class="info-label">Faciliteit</div><div class="info-value">${f}</div></div></div>`));
-  if (loc.website) infoItems.push(`<div class="info-item"><div><div class="info-label">Website</div><div class="info-value"><a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener">${escapeHtml(loc.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''))}</a></div></div></div>`);
+  if (loc.website) infoItems.push(`<div class="info-item"><div><div class="info-label">Website</div><div class="info-value"><a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" aria-label="Website van ${escapeHtml(loc.name)}">${escapeHtml(loc.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''))}</a></div></div></div>`);
 
   // JSON-LD
   const jsonLd = JSON.stringify({
@@ -1108,9 +1119,9 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
   <p>${typeLabel} in ${region.name}</p>
 </div>
 
-<div class="breadcrumb">
+<nav aria-label="Kruimelpad" class="breadcrumb">
   <a href="/">PeuterPlannen</a> &rsaquo; <a href="/${region.slug}.html">${region.name}</a> &rsaquo; ${escapeHtml(loc.name)}
-</div>
+</nav>
 
 <main id="main-content">
   <div class="location-header">
@@ -1152,6 +1163,7 @@ ${footerHTML()}
 ${mapScript}
 ${shareScript}
 
+${analyticsHTML()}
 </body>
 </html>`;
 }
@@ -1283,14 +1295,14 @@ ${JSON.stringify({
 
 ${navHTML()}
 
-${fm.featured_image ? `<div class="blog-hero-img" style="max-width:1100px;margin:80px auto 0;padding:0 24px;"><img src="${fm.featured_image}" alt="${escapeHtml(fm.title)}" style="width:100%;height:auto;border-radius:16px;max-height:400px;object-fit:cover;" loading="eager"></div>` : ''}
+${fm.featured_image ? `<div class="blog-hero-img" style="max-width:1100px;margin:80px auto 0;padding:0 24px;"><picture><source type="image/webp" srcset="${fm.featured_image.replace(/\.jpe?g$/, '.webp')}"><img src="${fm.featured_image}" alt="${escapeHtml(fm.title)}" style="width:100%;height:auto;border-radius:16px;max-height:400px;object-fit:cover;" loading="eager"></picture></div>` : ''}
 <div class="hero" style="padding: ${fm.featured_image ? '24px' : '100px'} 24px 40px;">
   <h1>${escapeHtml(fm.title)}</h1>
 </div>
 
-<div class="breadcrumb">
+<nav aria-label="Kruimelpad" class="breadcrumb">
   <a href="/">PeuterPlannen</a> &rsaquo; <a href="/blog/">Blog</a> &rsaquo; ${escapeHtml(fm.title)}
-</div>
+</nav>
 
 <main id="main-content">
   <p class="blog-meta">${dateDisplay}${fm.tags?.length ? ' &middot; ' + fm.tags.join(', ') : ''}</p>
@@ -1312,6 +1324,7 @@ ${fm.featured_image ? `<div class="blog-hero-img" style="max-width:1100px;margin
 
 ${footerHTML()}
 
+${analyticsHTML()}
 </body>
 </html>`;
 
@@ -1325,7 +1338,7 @@ ${footerHTML()}
   // Generate blog index
   const postCards = posts.map(p => `
     <article class="blog-card">
-      ${p.featured_image ? `<a href="/blog/${p.slug}/"><img src="${p.featured_image}" alt="" class="blog-card-thumb" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:16px;" loading="lazy"></a>` : ''}
+      ${p.featured_image ? `<a href="/blog/${p.slug}/"><picture><source type="image/webp" srcset="${p.featured_image.replace(/\.jpe?g$/, '-400w.webp')} 400w, ${p.featured_image.replace(/\.jpe?g$/, '.webp')}" sizes="(max-width: 768px) 100vw, 400px"><img src="${p.featured_image}" alt="${escapeHtml(p.title)}" class="blog-card-thumb" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:16px;" loading="lazy"></picture></a>` : ''}
       <h2><a href="/blog/${p.slug}/">${escapeHtml(p.title)}</a></h2>
       <p class="blog-date">${p.dateDisplay}</p>
       <p class="blog-excerpt">${escapeHtml(p.description)}</p>
@@ -1356,9 +1369,9 @@ ${navHTML()}
   <p>Tips, inspiratie en praktische gidsen voor uitjes met peuters</p>
 </div>
 
-<div class="breadcrumb">
+<nav aria-label="Kruimelpad" class="breadcrumb">
   <a href="/">PeuterPlannen</a> &rsaquo; Blog
-</div>
+</nav>
 
 <main id="main-content">
   <div class="blog-grid">
@@ -1370,6 +1383,7 @@ ${navHTML()}
 
 ${footerHTML()}
 
+${analyticsHTML()}
 </body>
 </html>`;
 
@@ -1504,6 +1518,27 @@ async function main() {
 
   console.log('\nGenerating sitemap...');
   generateSitemap(data, blogPosts);
+
+  // CSS minification
+  console.log('\nMinifying CSS...');
+  try {
+    const CleanCSS = require('clean-css');
+    const cssSource = fs.readFileSync(path.join(ROOT, 'style.css'), 'utf8');
+    const minified = new CleanCSS({ level: 2 }).minify(cssSource);
+    if (minified.errors.length > 0) {
+      console.error('  CSS minification errors:', minified.errors);
+    } else {
+      fs.writeFileSync(path.join(ROOT, 'style.min.css'), minified.styles);
+      const savings = ((1 - minified.styles.length / cssSource.length) * 100).toFixed(1);
+      console.log(`  style.css (${cssSource.length}B) → style.min.css (${minified.styles.length}B) — ${savings}% smaller`);
+    }
+  } catch (e) {
+    console.log('  Skipped CSS minification (install clean-css first). Copying style.css as fallback.');
+    const cssPath = path.join(ROOT, 'style.css');
+    if (fs.existsSync(cssPath)) {
+      fs.copyFileSync(cssPath, path.join(ROOT, 'style.min.css'));
+    }
+  }
 
   console.log(`\nDone! Laatst bijgewerkt: ${today()}`);
   console.log('Review changes with: git diff');

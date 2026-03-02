@@ -4,12 +4,14 @@
   "private": true,
   "description": "PeuterPlannen — Leuke uitjes voor kinderen",
   "scripts": {
-    "build": "node .scripts/sync_all.js",
+    "build": "node .scripts/optimize_images.js && node .scripts/sync_all.js",
     "discover": "node .scripts/discover_horeca.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
+    "clean-css": "^5.3.3",
     "gray-matter": "^4.0.3",
-    "marked": "^12.0.0"
+    "marked": "^12.0.0",
+    "sharp": "^0.33.2"
   }
 }
