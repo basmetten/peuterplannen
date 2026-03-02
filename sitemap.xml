@@ -320,13 +320,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/almere/ballorig-almere/</loc>
+    <loc>https://peuterplannen.nl/utrecht/ballorig-almere/</loc>
     <lastmod>2026-02-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/utrecht/ballorig-almere/</loc>
+    <loc>https://peuterplannen.nl/almere/ballorig-almere/</loc>
     <lastmod>2026-02-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -836,6 +836,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://peuterplannen.nl/amsterdam/de-eendracht/</loc>
+    <lastmod>2026-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://peuterplannen.nl/eindhoven/de-genneper-hoeve/</loc>
     <lastmod>2026-02-28</lastmod>
     <changefreq>monthly</changefreq>
@@ -1118,6 +1124,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://peuterplannen.nl/amsterdam/eetlokaal/</loc>
+    <lastmod>2026-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://peuterplannen.nl/eindhoven/eigen-wijs-boerderij/</loc>
     <lastmod>2026-02-28</lastmod>
     <changefreq>monthly</changefreq>
@@ -1204,6 +1216,12 @@
   <url>
     <loc>https://peuterplannen.nl/amsterdam/fruittuin-van-west/</loc>
     <lastmod>2026-02-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/amsterdam/fumi/</loc>
+    <lastmod>2026-03-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -1311,6 +1329,12 @@
   </url>
   <url>
     <loc>https://peuterplannen.nl/groningen/hao2go/</loc>
+    <lastmod>2026-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/amsterdam/happy-italy/</loc>
     <lastmod>2026-03-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -1964,13 +1988,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/arnhem/landerij-de-park/</loc>
+    <loc>https://peuterplannen.nl/nijmegen/landerij-de-park/</loc>
     <lastmod>2026-02-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/nijmegen/landerij-de-park/</loc>
+    <loc>https://peuterplannen.nl/arnhem/landerij-de-park/</loc>
     <lastmod>2026-02-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -2150,13 +2174,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/utrecht/monkey-town-amersfoort/</loc>
+    <loc>https://peuterplannen.nl/amersfoort/monkey-town-amersfoort/</loc>
     <lastmod>2026-02-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/amersfoort/monkey-town-amersfoort/</loc>
+    <loc>https://peuterplannen.nl/utrecht/monkey-town-amersfoort/</loc>
     <lastmod>2026-02-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
