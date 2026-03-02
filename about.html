@@ -91,6 +91,18 @@
         .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,41,38,0.12); }
         .stat-card { transition: all 0.25s ease; }
         :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+
+        .support-about-section { background: linear-gradient(135deg, #7A9E72, #5C8654); color: white; border-radius: 16px; padding: 36px 32px; text-align: center; margin: 48px 0; }
+        .support-about-inner { max-width: 480px; margin: 0 auto; }
+        .support-about-section h2 { font-size: 22px; font-weight: 700; margin-bottom: 12px; color: white; margin-top: 0; }
+        .support-about-section p { color: rgba(255,255,255,0.9); margin-bottom: 16px; font-size: 16px; }
+        .support-about-amounts { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .support-about-pill { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: 20px; padding: 6px 16px; font-size: 14px; font-weight: 600; }
+        .support-about-pill-mid { background: white; color: #5C8654; border-color: white; }
+        .support-about-cta { background: white; color: #5C8654; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; transition: transform 0.15s ease, background 0.15s ease; }
+        .support-about-cta:hover { background: #f0f0f0; transform: translateY(-1px); }
+        .support-about-subline { font-size: 14px; opacity: 0.75; margin-top: 16px; margin-bottom: 0; }
+        @media (max-width: 600px) { .support-about-section { padding: 28px 20px; } }
     </style>
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
@@ -155,6 +167,21 @@
         <h2>Over de maker</h2>
         <p>PeuterPlannen is gebouwd door een vader van twee peuters die simpelweg betere tooling wilde. Geen startup, geen VC-geld, geen groei-hack-strategie. Gewoon een tool die werkt.</p>
 
+        <!-- BEGIN:SUPPORT_ABOUT -->
+        <div class="support-about-section">
+            <div class="support-about-inner">
+                <h2>Steun PeuterPlannen</h2>
+                <p>Dit bouw ik in mijn vrije tijd, vanuit Utrecht. Geen team, geen investors, geen advertenties. Wat er binnenkomt gaat naar serverkosten (~€10/maand) en nieuwe functies. De rest doe ik erbij. 627+ locaties beschikbaar, voor iedereen gratis.</p>
+                <div class="support-about-amounts">
+                    <span class="support-about-pill">€2</span>
+                    <span class="support-about-pill support-about-pill-mid">€5</span>
+                    <span class="support-about-pill">€10</span>
+                </div>
+                <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener" class="support-about-cta">Stuur een bijdrage via betaalverzoek</a>
+                <p class="support-about-subline">Elk bedrag is welkom.</p>
+            </div>
+        </div>
+<!-- END:SUPPORT_ABOUT -->
 
         <h2 id="privacy">Privacy</h2>
         <p>PeuterPlannen respecteert je privacy. Punt. Geen kleine lettertjes, geen verborgen tracking, geen "we verkopen je data aan adverteerders". Gewoon eerlijk.</p>

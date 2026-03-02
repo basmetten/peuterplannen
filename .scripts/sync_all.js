@@ -188,6 +188,7 @@ const NEARBY_CITIES = {
 };
 
 const TIKKIE_URL = 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO';
+let LOCATION_COUNT = 0; // wordt gezet in main() na Supabase-fetch
 
 const WEATHER_LABELS = {
   indoor: 'Overdekt (indoor)',
@@ -284,15 +285,40 @@ function revealScript() {
 </script>`;
 }
 
-function supportHTML() {
-  return `<section class="support-section">
-    <h3>Vond je dit handig?</h3>
-    <p>PeuterPlannen is gratis en wordt met liefde onderhouden.
-       Trakteer de maker op een koffie (of biertje) om de site draaiende te houden!</p>
+function supportHTML(variant = 'default') {
+  const count = LOCATION_COUNT > 0 ? LOCATION_COUNT : 660;
+  if (variant === 'category') {
+    return `<section class="support-section">
+  <div class="support-inner">
+    <h3>Gratis voor jou, niet voor mij</h3>
+    <p>Dit is een hobbyproject uit Utrecht — geen team, geen advertenties, wel ${count}+ uitjes in Nederland. Als jij dit handig vindt, is een bijdrage welkom.</p>
+    <div class="support-amounts">
+      <span class="support-pill">€2</span>
+      <span class="support-pill support-pill-mid">€5</span>
+      <span class="support-pill">€10</span>
+    </div>
     <a href="${TIKKIE_URL}" target="_blank" rel="noopener" class="btn-support">
-      Trakteer via Tikkie
+      Steun PeuterPlannen
     </a>
-  </section>`;
+  </div>
+</section>`;
+  }
+  return `<section class="support-section">
+  <div class="support-inner">
+    <h3>Iets nuttigs gevonden?</h3>
+    <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>
+    <p class="support-count">${count}+ locaties beschikbaar in heel Nederland.</p>
+    <div class="support-amounts">
+      <span class="support-pill">€2</span>
+      <span class="support-pill support-pill-mid">€5</span>
+      <span class="support-pill">€10</span>
+    </div>
+    <p class="support-impact">De server kost ~€10 per maand. Elk beetje telt.</p>
+    <a href="${TIKKIE_URL}" target="_blank" rel="noopener" class="btn-support">
+      Stuur een bijdrage
+    </a>
+  </div>
+</section>`;
 }
 
 function headCommon(extra = '') {
@@ -607,6 +633,23 @@ function updateAbout(data) {
         </div>`;
   content = replaceMarker(content, 'STATS_ABOUT', statsHTML);
 
+  // SUPPORT_ABOUT
+  const count = LOCATION_COUNT > 0 ? LOCATION_COUNT : total;
+  const supportAboutHTML = `        <div class="support-about-section">
+            <div class="support-about-inner">
+                <h2>Steun PeuterPlannen</h2>
+                <p>Dit bouw ik in mijn vrije tijd, vanuit Utrecht. Geen team, geen investors, geen advertenties. Wat er binnenkomt gaat naar serverkosten (~€10/maand) en nieuwe functies. De rest doe ik erbij. ${count}+ locaties beschikbaar, voor iedereen gratis.</p>
+                <div class="support-about-amounts">
+                    <span class="support-about-pill">€2</span>
+                    <span class="support-about-pill support-about-pill-mid">€5</span>
+                    <span class="support-about-pill">€10</span>
+                </div>
+                <a href="${TIKKIE_URL}" target="_blank" rel="noopener" class="support-about-cta">Stuur een bijdrage via betaalverzoek</a>
+                <p class="support-about-subline">Elk bedrag is welkom.</p>
+            </div>
+        </div>`;
+  content = replaceMarker(content, 'SUPPORT_ABOUT', supportAboutHTML);
+
   fs.writeFileSync(path.join(ROOT, 'about.html'), content);
   console.log(`Updated about.html (${total}+ locaties, ${regions.length} regio's)`);
 }
@@ -916,7 +959,7 @@ ${navHTML()}
     <a href="/app.html">Open PeuterPlannen</a>
   </div>
 
-  ${supportHTML()}
+  ${supportHTML('category')}
 
   <div class="nav-links-box">
     <h3>Andere typen uitjes</h3>
@@ -1501,6 +1544,7 @@ async function main() {
   console.log('=== PeuterPlannen sync_all.js ===\n');
 
   const data = await fetchData();
+  LOCATION_COUNT = data.locations.length;
 
   console.log('Computing slugs...');
   computeSlugs(data);

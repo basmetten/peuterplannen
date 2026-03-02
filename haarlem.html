@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/style.min.css">
   <title>Haarlem met peuters — speeltuinen, musea & restaurants | PeuterPlannen</title>
   <meta name="description" content="Ontdek de beste uitjes voor peuters in Haarlem. 24 kindvriendelijke locaties: speeltuinen, musea, pannenkoeken en natuur. Geverifieerd en actueel.">
   <link rel="canonical" href="https://peuterplannen.nl/haarlem.html">
@@ -565,7 +565,7 @@
 <body>
 
 <a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
-<nav>
+<nav aria-label="Hoofdnavigatie">
   <div class="nav-inner">
     <a href="/" class="nav-logo">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" class="nav-logo-svg" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>
@@ -589,9 +589,9 @@
   </div>
 </div>
 
-<div class="breadcrumb">
+<nav aria-label="Kruimelpad" class="breadcrumb">
   <a href="/">PeuterPlannen</a> &rsaquo; Haarlem
-</div>
+</nav>
 
 <main id="main-content">
   <div class="intro-box">
@@ -605,16 +605,16 @@
 
   
     <section class="type-section">
-      <h2><img src="/images/categories/speeltuinen.png" alt="" class="category-icon" width="40" height="40" loading="lazy">Speeltuinen & Speelparadijzen</h2>
+      <h2><picture><source type="image/webp" srcset="/images/categories/speeltuinen.webp"><img src="/images/categories/speeltuinen.png" alt="" class="category-icon" width="36" height="36" loading="lazy"></picture>Speeltuinen & Speelparadijzen</h2>
       <div class="loc-list">
         
       <article class="loc-item">
         <h3><a href="/haarlem/haarlem-centrum-speeltuinen/">Haarlem Centrum - Speeltuinen</a></h3>
         <p>Meerdere speeltuinen in centrum waaronder De Glasblazers aan het Spaarne met houten klimschip, en Het Paradijsje in de binnenstad.</p>
-        <span class="badges">Koffie &middot; Luierruimte</span>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
           <a href="/haarlem/haarlem-centrum-speeltuinen/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.speeltuinhetparadijsje.nl/" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://www.speeltuinhetparadijsje.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Haarlem Centrum - Speeltuinen">Website</a>
         </div>
       </article>
       <article class="loc-item">
@@ -623,7 +623,7 @@
         
         <div class="loc-actions">
           <a href="/haarlem/speeltuin-brouwersplein/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.speeltuinbrouwersplein.nl" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://www.speeltuinbrouwersplein.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Speeltuin Brouwersplein">Website</a>
         </div>
       </article>
       <article class="loc-item">
@@ -632,13 +632,13 @@
         
         <div class="loc-actions">
           <a href="/haarlem/speeltuin-dvs/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.speeltuin-dvs.nl" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://www.speeltuin-dvs.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Speeltuin DVS">Website</a>
         </div>
       </article>
       <article class="loc-item">
         <h3><a href="/haarlem/speeltuin-frederikspark/">Speeltuin Frederikspark</a></h3>
         <p>Historische speeltuin in Frederikspark met originele speeltoestellen uit 1920. Kindvriendelijk en sfeervol.</p>
-        <span class="badges">Luierruimte</span>
+        <span class="badges"><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
           <a href="/haarlem/speeltuin-frederikspark/" class="loc-detail-btn">Bekijk details</a>
           
@@ -650,7 +650,7 @@
         
         <div class="loc-actions">
           <a href="/haarlem/speeltuin-jeugdland/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.jeugdlandhaarlem.nl" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://www.jeugdlandhaarlem.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Speeltuin Jeugdland">Website</a>
         </div>
       </article>
       <article class="loc-item">
@@ -659,13 +659,13 @@
         
         <div class="loc-actions">
           <a href="/haarlem/speeltuin-ramplaankwartier/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://ramplaankwartier.info/speeltuin/" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://ramplaankwartier.info/speeltuin/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Speeltuin Ramplaankwartier">Website</a>
         </div>
       </article>
       </div>
     </section>
     <section class="type-section">
-      <h2><img src="/images/categories/kinderboerderijen.png" alt="" class="category-icon" width="40" height="40" loading="lazy">Kinderboerderijen & Dieren</h2>
+      <h2><picture><source type="image/webp" srcset="/images/categories/kinderboerderijen.webp"><img src="/images/categories/kinderboerderijen.png" alt="" class="category-icon" width="36" height="36" loading="lazy"></picture>Kinderboerderijen & Dieren</h2>
       <div class="loc-list">
         
       <article class="loc-item">
@@ -674,7 +674,7 @@
         
         <div class="loc-actions">
           <a href="/haarlem/boerderij-zorgvrij-spaarnwoude/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.spaarnwoudepark.nl/zorgvrij" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://www.spaarnwoudepark.nl/zorgvrij" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Boerderij Zorgvrij Spaarnwoude">Website</a>
         </div>
       </article>
       <article class="loc-item">
@@ -689,16 +689,16 @@
       <article class="loc-item">
         <h3><a href="/haarlem/kinderboerderij-haarlem/">Kinderboerderij Haarlem</a></h3>
         <p>Kleine stadsboerderij in het centrum van Haarlem met geiten, schapen en konijnen. Gratis toegang.</p>
-        <span class="badges">Luierruimte</span>
+        <span class="badges"><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
           <a href="/haarlem/kinderboerderij-haarlem/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.kinderboerderijhaarlem.nl" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://www.kinderboerderijhaarlem.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Kinderboerderij Haarlem">Website</a>
         </div>
       </article>
       </div>
     </section>
     <section class="type-section">
-      <h2><img src="/images/categories/natuur.png" alt="" class="category-icon" width="40" height="40" loading="lazy">Natuur & Buiten</h2>
+      <h2><picture><source type="image/webp" srcset="/images/categories/natuur.webp"><img src="/images/categories/natuur.png" alt="" class="category-icon" width="36" height="36" loading="lazy"></picture>Natuur & Buiten</h2>
       <div class="loc-list">
         
       <article class="loc-item">
@@ -707,31 +707,31 @@
         
         <div class="loc-actions">
           <a href="/haarlem/haarlemmer-kweektuin/" class="loc-detail-btn">Bekijk details</a>
-          <a href="http://www.haarlemmerkweektuin.nl/" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="http://www.haarlemmerkweektuin.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Haarlemmer Kweektuin">Website</a>
         </div>
       </article>
       <article class="loc-item">
         <h3><a href="/haarlem/nationaal-park-zuid-kennemerland/">Nationaal Park Zuid-Kennemerland</a></h3>
         <p>Duinen, strand en bos vlak bij Haarlem en Zandvoort. Uitstekend voor een dagje buiten met kinderen.</p>
-        <span class="badges">Koffie &middot; Luierruimte</span>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
           <a href="/haarlem/nationaal-park-zuid-kennemerland/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.np-zuidkennemerland.nl/" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://www.np-zuidkennemerland.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Nationaal Park Zuid-Kennemerland">Website</a>
         </div>
       </article>
       <article class="loc-item">
         <h3><a href="/haarlem/speelbos-haarlemmermeerse-bos/">Speelbos Haarlemmermeerse Bos</a></h3>
         <p>Avontuurlijk speelbos in het Haarlemmermeerse Bos bij Hoofddorp met houten speelkasteel, touwbaan en klimbomen. Gratis toegankelijk, ideaal voor actieve peuters.</p>
-        <span class="badges">Koffie</span>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span></span>
         <div class="loc-actions">
           <a href="/haarlem/speelbos-haarlemmermeerse-bos/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://visithaarlemmermeer.nl/zien-doen/actief-natuur/haarlemmermeerse-bos" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://visithaarlemmermeer.nl/zien-doen/actief-natuur/haarlemmermeerse-bos" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Speelbos Haarlemmermeerse Bos">Website</a>
         </div>
       </article>
       </div>
     </section>
     <section class="type-section">
-      <h2><img src="/images/categories/musea.png" alt="" class="category-icon" width="40" height="40" loading="lazy">Musea & Ontdekken</h2>
+      <h2><picture><source type="image/webp" srcset="/images/categories/musea.webp"><img src="/images/categories/musea.png" alt="" class="category-icon" width="36" height="36" loading="lazy"></picture>Musea & Ontdekken</h2>
       <div class="loc-list">
         
       <article class="loc-item">
@@ -740,118 +740,118 @@
         
         <div class="loc-actions">
           <a href="/haarlem/archeologisch-museum-haarlem/" class="loc-detail-btn">Bekijk details</a>
-          <a href="http://www.archeologischmuseumhaarlem.nl/" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="http://www.archeologischmuseumhaarlem.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Archeologisch Museum Haarlem">Website</a>
         </div>
       </article>
       <article class="loc-item">
         <h3><a href="/haarlem/frans-hals-museum/">Frans Hals Museum</a></h3>
         
-        <span class="badges">Koffie</span>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span></span>
         <div class="loc-actions">
           <a href="/haarlem/frans-hals-museum/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://franshalsmuseum.nl/nl" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://franshalsmuseum.nl/nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Frans Hals Museum">Website</a>
         </div>
       </article>
       <article class="loc-item">
         <h3><a href="/haarlem/teylers-museum-haarlem/">Teylers Museum Haarlem</a></h3>
         <p>Oudste museum van Nederland met fossielen, mineralen en historische instrumenten. Kinderen worden er stil van.</p>
-        <span class="badges">Koffie &middot; Luierruimte</span>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
           <a href="/haarlem/teylers-museum-haarlem/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.teylersmuseum.nl/nl/" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://www.teylersmuseum.nl/nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Teylers Museum Haarlem">Website</a>
         </div>
       </article>
       </div>
     </section>
     <section class="type-section">
-      <h2><img src="/images/categories/pannenkoeken.png" alt="" class="category-icon" width="40" height="40" loading="lazy">Pannenkoekenrestaurants</h2>
+      <h2><picture><source type="image/webp" srcset="/images/categories/pannenkoeken.webp"><img src="/images/categories/pannenkoeken.png" alt="" class="category-icon" width="36" height="36" loading="lazy"></picture>Pannenkoekenrestaurants</h2>
       <div class="loc-list">
         
       <article class="loc-item">
         <h3><a href="/haarlem/kraantje-lek/">Kraantje Lek</a></h3>
         <p>Historisch pannenkoekenrestaurant (al since 1739) aan de rand van de duinen van Overveen. Grote speeltuin en terras in het groen, een familieklassieker vlakbij Haarlem.</p>
-        <span class="badges">Koffie &middot; Alcohol</span>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
         <div class="loc-actions">
           <a href="/haarlem/kraantje-lek/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://kraantjelek.nl" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://kraantjelek.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Kraantje Lek">Website</a>
         </div>
       </article>
       <article class="loc-item">
         <h3><a href="/haarlem/pannenkoeken-paradijs-haarlem/">Pannenkoeken Paradijs Haarlem</a></h3>
         <p>Pannenkoekrestaurant in het Reinaldapark in Haarlem, midden in de natuur met speelgelegenheid buiten.</p>
-        <span class="badges">Koffie &middot; Luierruimte</span>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
           <a href="/haarlem/pannenkoeken-paradijs-haarlem/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.pannenkoekenparadijs.nl/" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://www.pannenkoekenparadijs.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Pannenkoeken Paradijs Haarlem">Website</a>
         </div>
       </article>
       <article class="loc-item">
         <h3><a href="/haarlem/restaurant-de-vogelensangh/">Restaurant De Vogelensangh</a></h3>
         <p>Sfeervolle pannenkoekentent aan de rand van de Amsterdamse Waterleidingduinen met handgemaakte pannenkoeken en een speelhoek voor kinderen. Rondom prachtige natuur.</p>
-        <span class="badges">Koffie &middot; Alcohol</span>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
         <div class="loc-actions">
           <a href="/haarlem/restaurant-de-vogelensangh/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.kidsproof.nl/haarlem/blog/pannenkoek-pannekoek-uit-eten-kindvriendelijk-restaurant/" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://www.kidsproof.nl/haarlem/blog/pannenkoek-pannekoek-uit-eten-kindvriendelijk-restaurant/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Restaurant De Vogelensangh">Website</a>
         </div>
       </article>
       </div>
     </section>
     <section class="type-section">
-      <h2><img src="/images/categories/horeca.png" alt="" class="category-icon" width="40" height="40" loading="lazy">Kindvriendelijke Horeca</h2>
+      <h2><picture><source type="image/webp" srcset="/images/categories/horeca.webp"><img src="/images/categories/horeca.png" alt="" class="category-icon" width="36" height="36" loading="lazy"></picture>Kindvriendelijke Horeca</h2>
       <div class="loc-list">
         
       <article class="loc-item">
         <h3><a href="/haarlem/brouwkip/">Brouwkip</a></h3>
         <p>Gezellige brouwerij in Haarlem Centrum met speelruimte voor kinderen en goed bier voor ouders.</p>
-        <span class="badges">Koffie &middot; Alcohol &middot; Luierruimte</span>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
           <a href="/haarlem/brouwkip/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.jopenkerk.nl/haarlem/" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://www.jopenkerk.nl/haarlem/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Brouwkip">Website</a>
         </div>
       </article>
       <article class="loc-item">
         <h3><a href="/haarlem/brownies-downies-haarlem/">Brownies &amp; downieS Haarlem</a></h3>
         
-        <span class="badges">Koffie</span>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span></span>
         <div class="loc-actions">
           <a href="/haarlem/brownies-downies-haarlem/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.browniesanddownieshaarlem.nl/" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://www.browniesanddownieshaarlem.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Brownies &amp; downieS Haarlem">Website</a>
         </div>
       </article>
       <article class="loc-item">
         <h3><a href="/haarlem/het-veerkwartier/">Het Veerkwartier</a></h3>
         
-        <span class="badges">Koffie &middot; Alcohol</span>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
         <div class="loc-actions">
           <a href="/haarlem/het-veerkwartier/" class="loc-detail-btn">Bekijk details</a>
-          <a href="http://www.veerkwartier.nl/" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="http://www.veerkwartier.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Het Veerkwartier">Website</a>
         </div>
       </article>
       <article class="loc-item">
         <h3><a href="/haarlem/kweekcafe/">Kweekcafé</a></h3>
         
-        <span class="badges">Koffie</span>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span></span>
         <div class="loc-actions">
           <a href="/haarlem/kweekcafe/" class="loc-detail-btn">Bekijk details</a>
-          <a href="http://kweekcafe.nl/" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="http://kweekcafe.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Kweekcafé">Website</a>
         </div>
       </article>
       <article class="loc-item">
         <h3><a href="/haarlem/meneer-paprika/">Meneer Paprika</a></h3>
         
-        <span class="badges">Koffie</span>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span></span>
         <div class="loc-actions">
           <a href="/haarlem/meneer-paprika/" class="loc-detail-btn">Bekijk details</a>
-          <a href="http://www.meneerpaprika.nl/" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="http://www.meneerpaprika.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Meneer Paprika">Website</a>
         </div>
       </article>
       <article class="loc-item">
         <h3><a href="/haarlem/theehuis-de-haarlemmerhout/">Theehuis De Haarlemmerhout</a></h3>
         <p>Charmant theehuis midden in stadspark De Haarlemmerhout, direct tegenover de kinderboerderij. Gezellig terras in het groen, perfect voor koffie na het dieren kijken.</p>
-        <span class="badges">Koffie &middot; Alcohol</span>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
         <div class="loc-actions">
           <a href="/haarlem/theehuis-de-haarlemmerhout/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.dehaarlemmerhout.nl" target="_blank" rel="noopener" class="loc-website-btn">Website</a>
+          <a href="https://www.dehaarlemmerhout.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Theehuis De Haarlemmerhout">Website</a>
         </div>
       </article>
       </div>
@@ -866,13 +866,21 @@
   </div>
 
   <section class="support-section">
-    <h3>Vond je dit handig?</h3>
-    <p>PeuterPlannen is gratis en wordt met liefde onderhouden.
-       Trakteer de maker op een koffie (of biertje) om de site draaiende te houden!</p>
+  <div class="support-inner">
+    <h3>Iets nuttigs gevonden?</h3>
+    <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>
+    <p class="support-count">627+ locaties beschikbaar in heel Nederland.</p>
+    <div class="support-amounts">
+      <span class="support-pill">€2</span>
+      <span class="support-pill support-pill-mid">€5</span>
+      <span class="support-pill">€10</span>
+    </div>
+    <p class="support-impact">De server kost ~€10 per maand. Elk beetje telt.</p>
     <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener" class="btn-support">
-      Trakteer via Tikkie
+      Stuur een bijdrage
     </a>
-  </section>
+  </div>
+</section>
 
   <div class="other-cities">
     <h3>Peuteruitjes in de buurt</h3>
@@ -881,8 +889,14 @@
 </main>
 
 <footer>
+  <nav aria-label="Footernavigatie">
   <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Blog</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over ons</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  </nav>
 </footer>
 
+<script>
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(i){if(i.isIntersecting){i.target.classList.add('visible');o.unobserve(i.target);}});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.loc-item,.type-section,.region-section,.blog-card,.cta-block,.support-section,.faq-section').forEach(function(el,i){el.classList.add('reveal');el.style.animationDelay=(i*0.04)+'s';o.observe(el);});})();
+</script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
 </html>

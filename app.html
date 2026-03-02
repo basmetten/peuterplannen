@@ -362,6 +362,12 @@
         .promo-body .card-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
         .promo-body .card-desc { font-size: 13px; margin-bottom: 0; }
         .promo-cta { flex-shrink: 0; padding: 8px 16px; background: var(--primary); color: white; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+        .loc-card.promo-banner.promo-donation { background: linear-gradient(135deg, #7A9E72, #5C8654); }
+        .loc-card.promo-banner.promo-donation .card-name,
+        .loc-card.promo-banner.promo-donation .card-desc { color: white; }
+        .loc-card.promo-banner.promo-donation .promo-cta { background: white; color: #5C8654; }
+        .loc-card.promo-banner.promo-donation .promo-icon { background: rgba(255,255,255,0.25); }
+        .loc-card.promo-banner.promo-donation .promo-icon svg { stroke: white; }
     </style>
 </head>
 <body>
@@ -896,10 +902,10 @@
 
         // === Card Rendering ===
         const PROMO_ITEMS = [
-            { title: 'PeuterPlannen handig?', text: 'Steun ons met een koffie!', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun ons', icon: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>' },
-            { title: 'Ken je een leuk uitje?', text: 'Laat het ons weten!', url: '/contact.html', cta: 'Tip ons', icon: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>' },
-            { title: 'Uitjes bij regen', text: 'Tips voor als het regent.', url: '/blog/uitjes-met-peuter-bij-regen/', cta: 'Lees meer', icon: '<path d="M20 16.2A4.5 4.5 0 0 0 17.5 8h-1.8A7 7 0 1 0 4 14.9"/><path d="M16 14v6M8 14v6M12 12v6"/>' },
-            { title: 'Bekijk alle steden', text: 'Uitjes door heel Nederland.', url: '/', cta: 'Ontdek', icon: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>' },
+            { title: 'Dit is een hobbyproject', text: 'Geen team, geen budget. Wel 660+ uitjes in Nederland. Stuur een koffie. ☕', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun PeuterPlannen', icon: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>', donation: true },
+            { title: 'De server betaalt zichzelf niet', text: '€10/maand om dit gratis te houden. Wil jij helpen?', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Stuur een bijdrage', icon: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>', donation: true },
+            { title: 'Iets nuttigs gevonden?', text: 'PeuterPlannen is gratis. Een kleine bijdrage houdt het zo.', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Trakteer de maker', icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>', donation: true },
+            { title: '660+ locaties, gratis', text: 'Gemaakt voor ouders in Nederland. Help het gratis te houden.', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun via betaalverzoek', icon: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>', donation: true },
         ];
 
         function renderCards(locations, travelTimes = {}) {
@@ -907,11 +913,11 @@
             container.innerHTML = '';
             let promoIndex = 0;
             locations.forEach((item, index) => {
-                if ((index + 1) % 8 === 0) {
+                if ((index + 1) % 6 === 0) {
                     const promo = PROMO_ITEMS[promoIndex % PROMO_ITEMS.length];
                     promoIndex++;
                     const adCard = document.createElement('article');
-                    adCard.className = 'loc-card promo-banner reveal';
+                    adCard.className = 'loc-card promo-banner' + (promo.donation ? ' promo-donation' : '') + ' reveal';
                     adCard.style.animationDelay = `${Math.min(index * 0.05, 0.3)}s`;
                     adCard.innerHTML = `
                         <div class="promo-icon"><svg viewBox="0 0 24 24" aria-hidden="true">${promo.icon}</svg></div>

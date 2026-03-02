@@ -237,17 +237,26 @@ footer a:hover { text-decoration: underline; }
 .legal-content li { margin-bottom: 6px; }
 .legal-content a { color: var(--primary); }
 
-/* Support / Tikkie section */
+/* Support section */
 .support-section {
   background: linear-gradient(135deg, #7A9E72, #5C8654);
   color: white; border-radius: 16px;
   padding: 36px 32px; text-align: center; margin: 48px 0;
 }
+.support-inner { max-width: 480px; margin: 0 auto; }
 .support-section h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
-.support-section p { opacity: 0.9; margin-bottom: 20px; font-size: 15px; max-width: 480px; margin-left: auto; margin-right: auto; }
-.btn-support { background: white; color: #7A9E72; padding: 14px 28px; border-radius: 10px;
-  text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; }
-.btn-support:hover { background: #f0f0f0; }
+.support-section p { opacity: 0.9; margin-bottom: 16px; font-size: 15px; }
+.support-count { font-size: 13px; opacity: 0.75; margin-bottom: 20px; }
+.support-impact { font-style: italic; font-size: 13px; opacity: 0.8; margin-bottom: 20px; }
+.support-amounts { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+.support-pill { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: 20px; padding: 6px 16px; font-size: 14px; font-weight: 600; }
+.support-pill-mid { background: white; color: #5C8654; border-color: white; }
+.btn-support { background: white; color: #5C8654; padding: 14px 28px; border-radius: 10px;
+  text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; transition: transform 0.15s ease, background 0.15s ease; }
+.btn-support:hover { background: #f0f0f0; transform: translateY(-1px); }
+@media (max-width: 600px) {
+  .support-section { padding: 28px 20px; }
+}
 
 /* City page CTA */
 .city-app-cta { display: flex; align-items: center; justify-content: space-between; gap: 16px; background: var(--primary-light); border-radius: 12px; padding: 16px 24px; margin-bottom: 40px; }
