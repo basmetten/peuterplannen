@@ -341,7 +341,7 @@ const FALLBACK_REGIONS = [
   { name: 'Rotterdam', slug: 'rotterdam', blurb: 'Rotterdam verrast jonge gezinnen keer op keer. Diergaarde Blijdorp, Villa Zebra, de Pannenkoekenboot en Plaswijckpark zorgen voor een gevuld dagprogramma, binnen en buiten.', display_order: 2, population: 675000, tier: 'primary', schema_type: 'City', is_active: true },
   { name: 'Den Haag', slug: 'den-haag', blurb: 'Den Haag combineert strand, cultuur en natuur op loopafstand van elkaar. Madurodam, het Kunstmuseum, Scheveningen en Westduinpark zijn klassiekers voor een uitje met peuters.', display_order: 3, population: 569000, tier: 'primary', schema_type: 'City', is_active: true },
   { name: 'Utrecht', slug: 'utrecht', blurb: 'Utrecht is een van de kindvriendelijkste steden van Nederland. Het Nijntje Museum, de Griftsteede, het Spoorwegmuseum en tientallen speeltuinen maken de stad ideaal voor een dagje uit met peuters.', display_order: 4, population: 378000, tier: 'primary', schema_type: 'City', is_active: true },
-  { name: 'Haarlem', slug: 'haarlem', blurb: 'Haarlem is compact en groen, fijn voor een relaxt dagje uit met jonge kinderen. Het Teylers Museum, het Reinaldapark en de Kennemerduinen liggen op fietsafstand van het centrum.', display_order: 5, population: 169000, tier: 'standard', schema_type: 'City', is_active: true },
+  { name: 'Haarlem', slug: 'haarlem', subtitleLabel: 'Regio Haarlem', blurb: 'Haarlem is compact en groen, fijn voor een relaxt dagje uit met jonge kinderen. Het Teylers Museum, het Reinaldapark en de Kennemerduinen liggen op fietsafstand van het centrum.', display_order: 5, population: 169000, tier: 'standard', schema_type: 'City', is_active: true },
   { name: 'Amersfoort', slug: 'amersfoort', blurb: 'Amersfoort is een gezellige middeleeuwse stad met genoeg te doen voor peuters. Dierenpark Amersfoort, kinderboerderijen en het buitengebied van de Utrechtse Heuvelrug liggen om de hoek.', display_order: 6, population: 164000, tier: 'standard', schema_type: 'City', is_active: true },
   { name: 'Leiden', slug: 'leiden', blurb: 'Leiden is een compacte universiteitsstad met meer te doen voor peuters dan je zou denken. Van Naturalis tot kinderboerderijen en een pannenkoekenrestaurant aan het water.', display_order: 7, population: 130000, tier: 'standard', schema_type: 'City', is_active: true },
   { name: 'Utrechtse Heuvelrug', slug: 'utrechtse-heuvelrug', blurb: 'De Utrechtse Heuvelrug is een schatkamer voor gezinnen met peuters. Kastelen, kinderboerderijen, pannenkoekenrestaurants in het bos en prachtige natuurspeelplaatsen — hier combineer je natuur met avontuur op loopafstand.', display_order: 8, population: 50000, tier: 'region', schema_type: 'AdministrativeArea', is_active: true },
@@ -1020,6 +1020,7 @@ function locationPageHTML(loc, region, similarLocs) {
   const fullUrl = `https://peuterplannen.nl${loc.pageUrl}`;
   const typeLabel = TYPE_MAP[loc.type]?.label || loc.type;
   const typeLabel_meta = TYPE_MAP[loc.type]?.label || loc.type;
+  const regionDisplayName = region.subtitleLabel || region.name;
   const rawDesc = isFillerDescription(loc.description) ? '' : (loc.description || '');
   const metaDesc = rawDesc.slice(0, 155)
     || `${loc.name} in ${region.name}, een ${typeLabel_meta.toLowerCase()} voor gezinnen met jonge kinderen. Bekijk faciliteiten, route en tips op PeuterPlannen.`;
@@ -1166,7 +1167,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 
 <div class="hero" style="padding: 100px 24px 40px;">
   <h1>${escapeHtml(loc.name)}</h1>
-  <p>${typeLabel} in ${region.name}</p>
+  <p>${typeLabel} in ${regionDisplayName}</p>
 </div>
 
 <nav aria-label="Kruimelpad" class="breadcrumb">
@@ -1176,7 +1177,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 <main id="main-content">
   <div class="location-header">
     <h1>${escapeHtml(loc.name)}</h1>
-    <p class="location-subtitle">${typeLabel} in ${region.name}</p>
+    <p class="location-subtitle">${typeLabel} in ${regionDisplayName}</p>
   </div>
 
   ${!isFillerDescription(loc.description) ? `<p class="location-description">${escapeHtml(loc.description)}</p>` : ''}
@@ -1230,8 +1231,12 @@ function generateLocationPages(data) {
     regionGroups[loc.regionSlug].push(loc);
   });
 
+  const subtitleLabelMap = {};
+  FALLBACK_REGIONS.forEach(r => { if (r.subtitleLabel) subtitleLabelMap[r.slug] = r.subtitleLabel; });
+
   for (const [rSlug, locs] of Object.entries(regionGroups)) {
-    const region = regionMap[rSlug] || { name: locs[0]?.region || rSlug, slug: rSlug, blurb: '' };
+    const regionBase = regionMap[rSlug] || { name: locs[0]?.region || rSlug, slug: rSlug, blurb: '' };
+    const region = { ...regionBase, subtitleLabel: subtitleLabelMap[rSlug] };
 
     // Create region directory
     const regionDir = path.join(ROOT, rSlug);

@@ -33,6 +33,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
 
 /* Nav */
 nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(250,247,242,0.96); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid rgba(212,119,90,0.15); }
+footer nav, nav.breadcrumb { position: static; background: none; backdrop-filter: none; border-bottom: none; z-index: auto; left: auto; right: auto; top: auto; }
 .nav-inner { max-width: 1100px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
 .nav-logo { font-weight: 700; font-size: 18px; color: var(--navy); text-decoration: none; display: flex; align-items: center; gap: 8px; }
 .nav-logo-svg { width: 40px; height: 40px; display: block; flex-shrink: 0; }
