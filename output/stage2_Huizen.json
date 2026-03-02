@@ -1,0 +1,892 @@
+[
+  {
+    "osm_id": 1969386181,
+    "osm_type": "node",
+    "name": "Dickens",
+    "amenity": "restaurant",
+    "lat": 52.3097757,
+    "lng": 5.243356,
+    "address": "Havenstraat 315",
+    "city": "Huizen",
+    "website": "https://www.dickens.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": "Mo-Su 11:30+; Oct-Feb Mo off",
+    "scrape": {
+      "success": false,
+      "error": "fetch failed"
+    }
+  },
+  {
+    "osm_id": 1969388345,
+    "osm_type": "node",
+    "name": "PorterHouse",
+    "amenity": "restaurant",
+    "lat": 52.3097115,
+    "lng": 5.2437631,
+    "address": "Vaarboom 1",
+    "city": "Huizen",
+    "website": "https://porterhouse.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": "Mo-Su 11:00+",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "baby"
+      ],
+      "snippet": "k &amp; geniet! samen. vieren, netwerken of lanceren . van klein tot groot. intiem of uitbundig. voor particuliere feesten en partijen, tot business events. een verjaardag, personeelsfeest, huwelijk, babyshower of jubileum. voor elke gelegenheid en ieder budget . groups reserveren porterhouse naarden porterhouse weesp kadobon good food gift card onze dinerbonnen zijn verkrijgbaar vanaf €25 en in veelvouden daarvan, te besteden bij alle porterhouse-locaties. social media volg ons op facebook &amp",
+      "textLength": 3246
+    }
+  },
+  {
+    "osm_id": 2843922079,
+    "osm_type": "node",
+    "name": "bambi",
+    "amenity": "restaurant",
+    "lat": 52.2990095,
+    "lng": 5.2361454,
+    "address": "Havenstraat 22",
+    "city": "Huizen",
+    "website": "https://www.facebook.com/bambi.huizen",
+    "phone": "+31 35 525 3428",
+    "cuisine": "burger",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Su",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 15
+    }
+  },
+  {
+    "osm_id": 2870779203,
+    "osm_type": "node",
+    "name": "Loetje",
+    "amenity": "restaurant",
+    "lat": 52.3065906,
+    "lng": 5.2412912,
+    "address": "Havenstraat 81",
+    "city": "Huizen",
+    "website": "https://www.loetje.nl/locaties/huizen/",
+    "phone": "+31 35 5240369",
+    "cuisine": "steak_house",
+    "outdoor_seating": null,
+    "wheelchair": "yes",
+    "opening_hours": "Mo-Th,Su 11:30-21:30; Fr 11:30-22:00; Sa 11:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kindvriendelijk",
+        "kindermenu"
+      ],
+      "snippet": "servering maken kan eenvoudig en snel via onze website. is er ook een kindermenu? bij loetje denken we ook aan onze jonge gasten. voor de kleine loetjes hebben we een speciaal kindermenu met lekkere, kindvriendelijke gerechten waar ze van kunnen smullen. je kunt het volledige kindermenu hier bekijken. kan ik gratis parkeren bij loetje huizen? ja, dat kan! je kunt direct voor de deur parkeren, en achter het pand is er ook een parkeerplaats voor gasten beschikbaar. vanaf hier is het slechts enkele",
+      "textLength": 12047
+    }
+  },
+  {
+    "osm_id": 2870807189,
+    "osm_type": "node",
+    "name": "El Greco",
+    "amenity": "restaurant",
+    "lat": 52.3057078,
+    "lng": 5.2580124,
+    "address": "Zomerkade 164",
+    "city": "Huizen",
+    "website": "https://www.elgreco-huizen.nl/",
+    "phone": "+31 35 785 7134",
+    "cuisine": "greek",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Tu-Su 17:00-21:30",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 5724
+    }
+  },
+  {
+    "osm_id": 2870807194,
+    "osm_type": "node",
+    "name": "Eetcafe The Beach",
+    "amenity": "cafe",
+    "lat": 52.3056768,
+    "lng": 5.2582422,
+    "address": "Zomerkade 168",
+    "city": "Huizen",
+    "website": "https://www.facebook.com/TheBeachHuizen",
+    "phone": "+31 35 524 4132",
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Th 15:00-01:00; Fr,Sa 15:00-02:00; Su 14:00-01:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 10
+    }
+  },
+  {
+    "osm_id": 2870807411,
+    "osm_type": "node",
+    "name": "Hokkaido",
+    "amenity": "restaurant",
+    "lat": 52.3052906,
+    "lng": 5.2586546,
+    "address": "Wedekuil 17",
+    "city": "Huizen",
+    "website": "https://www.hokkaido.nl",
+    "phone": null,
+    "cuisine": "japanese",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Tu-Su 17:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "gezin"
+      ],
+      "snippet": "contact sushi &amp; grill hokkaido japanse keuken waar kwaliteit op nummer 1 staat! menu reserveren hokkaido ons verhaal hokkaido is in 2003 aan de wedekuil 17 in huizen opgericht door een liefdevol gezin. en sindsdien al een begrip in huizen. al meer dan 20 jaar serveert restaurant hokkaido haar klanten producten van de best mogelijke kwaliteit en het plan is om dat nog vele jaren te blijven doen. reserveren u kunt ons ook vinden op: uitgelichte gerechten altijd vers bereid rainbow roll inside",
+      "textLength": 1369
+    }
+  },
+  {
+    "osm_id": 2870807420,
+    "osm_type": "node",
+    "name": "Aan de Kade",
+    "amenity": "restaurant",
+    "lat": 52.3056282,
+    "lng": 5.2584625,
+    "address": "Zomerkade 176",
+    "city": "Huizen",
+    "website": "https://www.aan-de-kade.nl/",
+    "phone": "+31 35 208 2918",
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Tu-Su 12:00-20:30",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "gezin",
+        "gezinnen",
+        "kindermenu",
+        "pannenkoek"
+      ],
+      "snippet": "n lekker en betaalbaar eten. met gezonde en smakelijke gerechten, speciale borrelarrangementen, brede keuze aan kindermenu’s en zoete en hartige pannenkoeken! dit maakt ons het ideale restaurant voor gezinnen en gezelschappen. heb je iets te vieren? wij maken er een écht feest van. kom gezellig bij ons eten! » aan de kade ligt aan het mooie strand van het gooimeer &#8220;heerlijk om even na het eten langs het water te lopen of in de zomer lekker op te frissen aan het water&#8221; cadeaubon altij",
+      "textLength": 5170
+    }
+  },
+  {
+    "osm_id": 2870807423,
+    "osm_type": "node",
+    "name": "Mazzel",
+    "amenity": "restaurant",
+    "lat": 52.3055736,
+    "lng": 5.2586553,
+    "address": "Zomerkade 178",
+    "city": "Huizen",
+    "website": "https://www.mazzel-huizen.nl/",
+    "phone": "+31 35 524 0900",
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 16:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kindermenu"
+      ],
+      "snippet": "llen in huizen menukaart beoordelingen contact colofon mazzel huizen warme voorgerechten koude voorgerechten salades pasta pasta's uit de oven pizza steaks shoarma gerechten kipgerechten visgerechten kindermenu's extra's frisdranken alcoholische dranken warme voorgerechten antipasti caldi nacho's nacho-tortilla chips met kaas, bonen, yoghurt en guacamole € 6,50 incl. statiegeld (€ 0,00) chicken wings gegrilde chicken wings € 5,50 incl. statiegeld (€ 0,00) maïskolf gegrilde maïskolf € 4,50 incl.",
+      "textLength": 11220
+    }
+  },
+  {
+    "osm_id": 2870807531,
+    "osm_type": "node",
+    "name": "Sabbio D'Oro",
+    "amenity": "restaurant",
+    "lat": 52.3053692,
+    "lng": 5.2586896,
+    "address": "Wedekuil 21",
+    "city": "Huizen",
+    "website": "https://www.sabbia-doro.nl/",
+    "phone": "+31 35 526 2517",
+    "cuisine": "italian",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 16:00-21:45",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kindermenu"
+      ],
+      "snippet": "'oro driegangenmenu salades warme voorgerechten koude voorgerechten kapsalon kaaspizza's vegetarische pizza's vleespizza's vispizza's calzone's pasta's combi schotels vleesgerechten broodjes schotels kindermenu extra's dessert frisdranken alcoholische dranken driegangenmenu driegangenmenu € 25,65 incl. statiegeld (€ 0,15) salades insalatas insalata formaggio gemengde salade met fetakaas € 8,50 incl. statiegeld (€ 0,00) insalata tonno gemengde salade met tonijn € 8,50 incl. statiegeld (€ 0,00) in",
+      "textLength": 18232
+    }
+  },
+  {
+    "osm_id": 2871017387,
+    "osm_type": "node",
+    "name": "Golden City",
+    "amenity": "restaurant",
+    "lat": 52.2940074,
+    "lng": 5.2643526,
+    "address": "Oostermeent-Zuid 23",
+    "city": "Huizen",
+    "website": "https://www.goldencityhuizen.nl",
+    "phone": "+31 35 525 8860",
+    "cuisine": "chinese",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Th 16:00-21:00; Fr-Su 12:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1481
+    }
+  },
+  {
+    "osm_id": 2871019140,
+    "osm_type": "node",
+    "name": "Kippie",
+    "amenity": "fast_food",
+    "lat": 52.294588,
+    "lng": 5.2632665,
+    "address": "Oostermeent-Zuid 5",
+    "city": "Huizen",
+    "website": "https://www.kippie.nl/winkels/huizen",
+    "phone": "+31 35 5256911",
+    "cuisine": "chicken",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Th 09:00-18:00; Fr 09:00-19:00; Sa 09:00-17:00; Su off",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 2864
+    }
+  },
+  {
+    "osm_id": 2871070511,
+    "osm_type": "node",
+    "name": "San Giorgio",
+    "amenity": "restaurant",
+    "lat": 52.3026396,
+    "lng": 5.2536143,
+    "address": "Holleblok 34",
+    "city": "Huizen",
+    "website": "https://restaurantsangiorgio.nl/",
+    "phone": "+31 35 302 0019",
+    "cuisine": "italian",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "We-Su 16:00-21:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1492
+    }
+  },
+  {
+    "osm_id": 2871070586,
+    "osm_type": "node",
+    "name": "Snackland Huizen",
+    "amenity": "fast_food",
+    "lat": 52.3026956,
+    "lng": 5.2534035,
+    "address": "Holleblok 40",
+    "city": "Huizen",
+    "website": "http://snacklandhuizen.com/",
+    "phone": "+31 35 526 0995",
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 12:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1877
+    }
+  },
+  {
+    "osm_id": 2871217680,
+    "osm_type": "node",
+    "name": "Õ Donder",
+    "amenity": "restaurant",
+    "lat": 52.29871,
+    "lng": 5.2343037,
+    "address": "Voorbaan 42",
+    "city": "Huizen",
+    "website": "http://www.odonder.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Tu-Su 16:00-24:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 3133
+    }
+  },
+  {
+    "osm_id": 2871365766,
+    "osm_type": "node",
+    "name": "Kambur",
+    "amenity": "restaurant",
+    "lat": 52.2989656,
+    "lng": 5.2418145,
+    "address": "Plein 2000 15",
+    "city": "Huizen",
+    "website": "http://www.kambur.nl/",
+    "phone": "+31 35 525 8804",
+    "cuisine": "turkish",
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 12:00-23:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1669
+    }
+  },
+  {
+    "osm_id": 2871366208,
+    "osm_type": "node",
+    "name": "Pizzeria Marino",
+    "amenity": "restaurant",
+    "lat": 52.2990436,
+    "lng": 5.2418029,
+    "address": "Plein 2000 17",
+    "city": "Huizen",
+    "website": "https://www.pizzeria-marino-huizen.nl/",
+    "phone": "+31 35 525 9899",
+    "cuisine": "pizza",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 17:00-21:00",
+    "scrape": {
+      "success": false,
+      "error": "fetch failed"
+    }
+  },
+  {
+    "osm_id": 2871434174,
+    "osm_type": "node",
+    "name": "Warung Abadi",
+    "amenity": "restaurant",
+    "lat": 52.2918028,
+    "lng": 5.2538062,
+    "address": "Kostmand 14",
+    "city": "Huizen",
+    "website": "http://warungabadi.nl/",
+    "phone": "+31 35 888 5416",
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Sa 12:00-20:00; Fr 12:00-21:00; Su 15:00-20:00",
+    "scrape": {
+      "success": false,
+      "error": "HTTP 500"
+    }
+  },
+  {
+    "osm_id": 2871435477,
+    "osm_type": "node",
+    "name": "Grillroom Dudu",
+    "amenity": "restaurant",
+    "lat": 52.2916646,
+    "lng": 5.2540059,
+    "address": "Kostmand 18",
+    "city": "Huizen",
+    "website": "https://www.facebook.com/Grillroomdudu/",
+    "phone": "+31 35 533 7440",
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Sa 12:00-22:00; Su 15:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 10
+    }
+  },
+  {
+    "osm_id": 2871442341,
+    "osm_type": "node",
+    "name": "Cafetaria De Griek",
+    "amenity": "restaurant",
+    "lat": 52.2921004,
+    "lng": 5.2539747,
+    "address": "Kostmand 4",
+    "city": "Huizen",
+    "website": "https://www.cafetariadegriek-huizen.nl/",
+    "phone": "+31 35 524 3820",
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 16:30-20:30",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kids"
+      ],
+      "snippet": "rgsla. daarnaast een portie friet met tzatzikisaus en een griekse salade € 17,40 incl. statiegeld (€ 0,00) menu's menu kipschnitzel kipschnitzel met salade en frites € 13,50 incl. statiegeld (€ 0,00) kidsbox kidsbox gevuld met een verrassing, een drankje, een snack, frites en saus naar keuze € 6,85 incl. statiegeld (€ 0,00) menu halve kip halve kip met salade en frites € 13,50 incl. statiegeld (€ 0,00) menu gegrilde kipsaté drie spiesjes kipfilet van de grill met daaroverheen satésaus met daarbi",
+      "textLength": 13356
+    }
+  },
+  {
+    "osm_id": 5636343912,
+    "osm_type": "node",
+    "name": "BOOT eten & drinken",
+    "amenity": "restaurant",
+    "lat": 52.3094257,
+    "lng": 5.2473085,
+    "address": "Ambachtsweg 67",
+    "city": "Huizen",
+    "website": "https://www.boothuizen.com/",
+    "phone": "+31 6 27285010",
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": "no",
+    "opening_hours": "Tu-Su 11:00-21:30; PH off",
+    "scrape": {
+      "success": false,
+      "error": "HTTP 404"
+    }
+  },
+  {
+    "osm_id": 1969388344,
+    "osm_type": "node",
+    "name": "J Restaurant",
+    "amenity": "restaurant",
+    "lat": 52.3101648,
+    "lng": 5.2435448,
+    "address": "Mastspoor 3",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871015571,
+    "osm_type": "node",
+    "name": "Pizzeria Steakhouse Roma",
+    "amenity": "restaurant",
+    "lat": 52.2954346,
+    "lng": 5.2652916,
+    "address": "Oostkade 10",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871016242,
+    "osm_type": "node",
+    "name": "Frietland Huizen",
+    "amenity": "fast_food",
+    "lat": 52.294452,
+    "lng": 5.2634647,
+    "address": "Oostermeent-Zuid 13",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871016671,
+    "osm_type": "node",
+    "name": "Cafetaria De Buren",
+    "amenity": "cafe",
+    "lat": 52.2953754,
+    "lng": 5.2634638,
+    "address": "Monnickskamp 16",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": "friture",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871018037,
+    "osm_type": "node",
+    "name": "De Verborgen Parel",
+    "amenity": "restaurant",
+    "lat": 52.2949763,
+    "lng": 5.2643768,
+    "address": "Oostermeent-Noord 3",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": "italian",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871019110,
+    "osm_type": "node",
+    "name": "Kapadokya",
+    "amenity": "cafe",
+    "lat": 52.2956039,
+    "lng": 5.2654751,
+    "address": "Oostkade 48",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871019518,
+    "osm_type": "node",
+    "name": "Lunchroom 't Gooi",
+    "amenity": "cafe",
+    "lat": 52.2948927,
+    "lng": 5.2639307,
+    "address": "Oostermeent-Noord 58",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871019519,
+    "osm_type": "node",
+    "name": "Mama Mia",
+    "amenity": "restaurant",
+    "lat": 52.2943772,
+    "lng": 5.2641759,
+    "address": "Oostermeent-Oost 58",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": "italian",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871020734,
+    "osm_type": "node",
+    "name": "Sundaes IJssalon",
+    "amenity": "ice_cream",
+    "lat": 52.2949843,
+    "lng": 5.2647983,
+    "address": "Oostermeent-Oost 80",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871070388,
+    "osm_type": "node",
+    "name": "Waroeng Depok",
+    "amenity": "restaurant",
+    "lat": 52.3026275,
+    "lng": 5.2536792,
+    "address": "Holleblok 32",
+    "city": "Huizen",
+    "website": null,
+    "phone": "+31 35 621 5761",
+    "cuisine": "indonesian",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Tu-Sa 14:00-20:00; Su 16:00-20:00",
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871287288,
+    "osm_type": "node",
+    "name": "La Casina",
+    "amenity": "restaurant",
+    "lat": 52.2975606,
+    "lng": 5.2354796,
+    "address": "Oude Raadhuisplein 12",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": "italian",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871287907,
+    "osm_type": "node",
+    "name": "Domino's",
+    "amenity": "fast_food",
+    "lat": 52.2973728,
+    "lng": 5.232982,
+    "address": "Kerkstraat 14",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": "pizza",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871288889,
+    "osm_type": "node",
+    "name": "Friethuis 't Ouwe Dorp",
+    "amenity": "fast_food",
+    "lat": 52.2980668,
+    "lng": 5.2348945,
+    "address": "Voorbaan 4",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": "friture;snackbar",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871289329,
+    "osm_type": "node",
+    "name": "Sushi Omakase",
+    "amenity": "restaurant",
+    "lat": 52.2971766,
+    "lng": 5.2353049,
+    "address": "Lindenlaan 5b",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": "sushi",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871289381,
+    "osm_type": "node",
+    "name": "Insolar",
+    "amenity": "restaurant",
+    "lat": 52.2977472,
+    "lng": 5.2356198,
+    "address": "Oude Raadhuisplein 9",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871349702,
+    "osm_type": "node",
+    "name": "Chielato's",
+    "amenity": "ice_cream",
+    "lat": 52.297393,
+    "lng": 5.2313408,
+    "address": "Naarderstraat 2a",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2871366285,
+    "osm_type": "node",
+    "name": "Kwalitaria",
+    "amenity": "fast_food",
+    "lat": 52.2991147,
+    "lng": 5.2417867,
+    "address": "Plein 2000 21",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": "friture",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 3817314421,
+    "osm_type": "node",
+    "name": "Vie - Food & drinks",
+    "amenity": "restaurant",
+    "lat": 52.2981979,
+    "lng": 5.2365084,
+    "address": null,
+    "city": null,
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 7042378569,
+    "osm_type": "node",
+    "name": "Cafe Restaurant De Krachtcentrale",
+    "amenity": "restaurant",
+    "lat": 52.3040787,
+    "lng": 5.2402895,
+    "address": "Havenstraat 76",
+    "city": "Huizen",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  }
+]

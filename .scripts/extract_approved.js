@@ -4,7 +4,12 @@
 const fs = require('fs');
 const path = require('path');
 
-const regions = ['Utrecht', 'Groningen', 'Bunnik', 'De Bilt', 'Zeist', 'Houten', 'Nieuwegein', 'IJsselstein', 'Woerden', 'Utrechtse Heuvelrug'];
+const regions = [
+  'Utrecht', 'Groningen', 'Bunnik', 'De Bilt', 'Zeist', 'Houten',
+  'Nieuwegein', 'IJsselstein', 'Woerden', 'Utrechtse Heuvelrug',
+  'Hilversum', 'Gooise Meren', 'Huizen', 'Blaricum', 'Laren',
+  'Wijdemeren', 'Eemnes', 'Soest', 'Baarn', 'Wijk bij Duurstede', 'Leusden',
+];
 
 const skipPatterns = [
   /mcdonald/i,

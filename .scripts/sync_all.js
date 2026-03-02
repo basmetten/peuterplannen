@@ -168,14 +168,14 @@ const TYPE_PAGES = [
 ];
 
 const NEARBY_CITIES = {
-  'amsterdam': ['haarlem', 'utrecht', 'almere'],
+  'amsterdam': ['haarlem', 'utrecht', 'almere', 'gooi-en-vechtstreek'],
   'rotterdam': ['den-haag', 'breda', 'leiden'],
   'den-haag': ['rotterdam', 'leiden', 'haarlem'],
-  'utrecht': ['amsterdam', 'amersfoort', 'utrechtse-heuvelrug'],
+  'utrecht': ['amsterdam', 'amersfoort', 'utrechtse-heuvelrug', 'gooi-en-vechtstreek'],
   'haarlem': ['amsterdam', 'leiden', 'den-haag'],
-  'amersfoort': ['utrecht', 'apeldoorn', 'arnhem'],
+  'amersfoort': ['utrecht', 'apeldoorn', 'arnhem', 'gooi-en-vechtstreek'],
   'leiden': ['den-haag', 'haarlem', 'rotterdam'],
-  'utrechtse-heuvelrug': ['utrecht', 'amersfoort', 'arnhem'],
+  'utrechtse-heuvelrug': ['utrecht', 'amersfoort', 'arnhem', 'gooi-en-vechtstreek'],
   'eindhoven': ['tilburg', 's-hertogenbosch', 'breda'],
   'groningen': ['apeldoorn', 'arnhem', 'amersfoort'],
   'almere': ['amsterdam', 'utrecht', 'amersfoort'],
@@ -185,6 +185,7 @@ const NEARBY_CITIES = {
   'arnhem': ['nijmegen', 'apeldoorn', 'amersfoort'],
   'apeldoorn': ['arnhem', 'amersfoort', 'utrecht'],
   's-hertogenbosch': ['eindhoven', 'tilburg', 'nijmegen'],
+  'gooi-en-vechtstreek': ['amsterdam', 'utrecht', 'amersfoort', 'utrechtse-heuvelrug'],
 };
 
 const TIKKIE_URL = 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO';

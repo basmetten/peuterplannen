@@ -1,0 +1,39 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[6] Kwalitaria | fast_food / friture | Maximaplein 78, Leusden
+  Keywords: kindermenu
+  Fragment: aantal producten in winkelmand: 0 bekijk winkelmand () mijn kudos : 0 ons seizoen menu's burgers friet snacks salades vegetarisch dranken sauzen ijs ons seizoen menu's burgermenu maaltijden snackmenu kindermenu burgers friet snacks snacks mini snacks salades vegetarisch menu's burgers snacks dranken milkshakes frisdranken sauzen ijs vestigingen kwalitaria leusden zuid, leusden ...geen standaard sn
+
+[8] Bella Venezia 2 | restaurant / italian | Kromhoutplaats 1, Leusden
+  Keywords: kindermenu
+  Fragment: nbsp; 16:00 - 20:30 bella venezia 2 kromhoutplaats 1 +31 33 494 7059 pizza&#39;s antipasto caldo antipasto freddo zuppa insalata grillgerechten carne pesce risotto pasta gerechten pasta deeggerechten kindermenu sauzen en extra&#39;s dranken meer &nbsp;&nbsp;actiecode check code korting: &euro; 0,00 de korting wordt automatisch verrekend met het totaalbedrag. filters allergenen zoeken helaas geen p
+
+[18] Plan B | restaurant / international | De Biezenkamp 4D, Leusden
+  Keywords: kinderen, kindermenu
+  Fragment: gebakken ui vega hoofdgerechten cannelloni 24,50 vulling van paddenstoelen en roquefort | cèpesaus | rucola beyond meat burger 20.50 plant-based burger | veganistische cheddar | uien chutney | aioli kinderen kindermenu 2 10,75 frikandel, bitterballen of kipnuggets met frites, mayonaise en appelmoes kindermenu 1 15,75 kleine saté, gebakken visje of een ½ sparerib nagerechten espresso martini 9.75 
+
+[29] Pluktuin en theehuis | cafe | Stoutenburgerlaan 6, Stoutenburg
+  Keywords: kinderen
+  Fragment: aat ook een plank met gaten, waarin u het bindpunt van uw bos bloemen kunt meten. zo weet u snel wat de prijs van uw boeket is, dit varieert van €5,00 tot €22,50 en alles wat daar tussen zit. voor de kinderen is er een kinderpluktuin. hierin staan bloemen in allerlei kleuren, zoals wit, lime, geel, oranje,rood en paars. kinderen kunnen hier een kinderhand vol bloemen plukken voor een kinderprijsje
+
+[36] Hoeve Ruitenbeek | ice_cream | Arnhemseweg 9, Leusden
+  Keywords: kinderen
+  Fragment: boerderij de hoeve ruitenbeek &nbsp; familie verweij woont en werkt al 4 generaties lang, ruim 100 jaar op deze mooie boerderij in leusden.&nbsp; wij zijn gert en annette verweij en zijn ouders van 5 kinderen en een hoop lieve kleinkinderen. wij werken samen met (zoon) aart en (schoondochter) arthanja in het bedrijf.&nbsp; &nbsp; onze boerderij op deze pagina willen we jullie graag meer vertellen 
+
+[42] Pannenkoe | restaurant / pancake | Waarden 25c, Leusden
+  Keywords: speeltuin, kinderen, kindvriendelijk, pannenkoek
+  Fragment: thuis voelt. of je nu komt voor een kop koffie, ontspannen lunch of heerlijke pannenkoek: bij ons ben je van harte welkom! kindvriendelijk genieten voor kinderen is er volop plezier! naast de buiten speeltuin op het terras hebben we een overdekte binnenspeeltuin met de beroemde glijbaan , zodat de kinderen zich lekker kunnen uitleven terwijl ouders ontspannen genieten. daarnaast bieden we leuke ki
+
+JSON array (6 objecten):

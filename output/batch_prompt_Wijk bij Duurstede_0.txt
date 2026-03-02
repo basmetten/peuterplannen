@@ -1,0 +1,23 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[10] Dorestad | restaurant / regional | Markt 11b, Wijk bij Duurstede
+  Keywords: kinderkaart
+  Fragment: en geniet u in een warme, gezellige en sfeervolle brasserie. ons terras ligt mooi gelegen op de markt, met zicht op de kerk en de gezellige binnenstad van wijk bij duurstede. ook hebben wij een leuke kinderkaart zodat ook de kleine gasten zeer welkom zijn. kom en geniet van de lunch of diner in de ongedwongen, fijne en warme sfeer! graag verwelkomen wij u 7 dagen in de week, tot snel! openingstijd
+
+[19] De Veldpoort | restaurant / fish;friture;sandwich | Veldpoortstraat 21, Wijk bij Duurstede
+  Keywords: kids, pannenkoek
+  Fragment: geitenkaas (groot) € 20,40 geitenkaas (midden) € 12,00 gerookte zalm met roomkaas (groot) € 20,40 gerookte zalm met roomkaas (midden) € 12,00 pittige kip (groot) € 20,40 pittige kip (midden) € 12,00 kids friet met kroket, frikandel of kipnuggets € 8,40 + limonade en ijsbeker € 4,15 bijgerechten groene salade € 3,20 groente van het moment € 4,20 friet met mayonaise (groot) € 5,25 friet met mayonais
+
+JSON array (2 objecten):

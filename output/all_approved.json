@@ -123,26 +123,6 @@
     "region": "Groningen",
     "score": 8,
     "data": {
-      "name": "Bodega y Tapas",
-      "region": "Groningen",
-      "type": "horeca",
-      "description": "Bodega y Tapas aan Damsterdiep biedt gratis maaltijden voor peuters onder 4 jaar.",
-      "website": "https://www.bodega-y-tapas.nl/vestigingen/damsterdiep/",
-      "lat": 53.2174756,
-      "lng": 6.5752688,
-      "coffee": true,
-      "diaper": false,
-      "alcohol": true,
-      "weather": "indoor",
-      "toddler_highlight": "Kinderen jonger dan 4 jaar eten volledig gratis.",
-      "last_verified_at": "2026-03-02T14:21:50.294Z",
-      "verification_source": "osm_discovery"
-    }
-  },
-  {
-    "region": "Groningen",
-    "score": 8,
-    "data": {
       "name": "Artsy Avenue",
       "region": "Groningen",
       "type": "horeca",
@@ -155,26 +135,6 @@
       "alcohol": false,
       "weather": "indoor",
       "toddler_highlight": "Kinderen zijn van harte welkom; perfect voor samen creatief bezig zijn.",
-      "last_verified_at": "2026-03-02T14:21:50.294Z",
-      "verification_source": "osm_discovery"
-    }
-  },
-  {
-    "region": "Groningen",
-    "score": 8,
-    "data": {
-      "name": "Bodega y Tapas",
-      "region": "Groningen",
-      "type": "horeca",
-      "description": "Bodega y Tapas in Haren biedt gratis maaltijden voor peuters onder 4 jaar.",
-      "website": "https://www.bodega-y-tapas.nl/vestigingen/haren/",
-      "lat": 53.1737746,
-      "lng": 6.6018499,
-      "coffee": true,
-      "diaper": false,
-      "alcohol": true,
-      "weather": "indoor",
-      "toddler_highlight": "Kinderen jonger dan 4 jaar eten volledig gratis.",
       "last_verified_at": "2026-03-02T14:21:50.294Z",
       "verification_source": "osm_discovery"
     }
@@ -576,6 +536,306 @@
       "weather": "indoor",
       "toddler_highlight": "Kinderkaart met poffertjes en beperkte porties.",
       "last_verified_at": "2026-03-02T14:11:11.467Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Hilversum",
+    "score": 9,
+    "data": {
+      "name": "'t Bospandje",
+      "region": "Gooi en Vechtstreek",
+      "type": "pancake",
+      "description": "'t Bospandje is een pannenkoekenzaak met ruime speelruimte, speelgoed voor alle leeftijden en een verschoontafel.",
+      "website": "https://bospandje.nl/",
+      "lat": 52.2483881,
+      "lng": 5.1609571,
+      "coffee": true,
+      "diaper": true,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Ruime speelruimte en speelgoed voor urenlang vermaak van peuters.",
+      "last_verified_at": "2026-03-02T17:00:43.984Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Gooise Meren",
+    "score": 9,
+    "data": {
+      "name": "LEUK",
+      "region": "Gooi en Vechtstreek",
+      "type": "pancake",
+      "description": "LEUK is een zeer kindvriendelijk pannenkoeken- en speelrestaurant met Wii's, PlayStations, airhockeytafel, speelhoek en altijd een oppas aanwezig.",
+      "website": "https://restaurantleuk.nl/",
+      "lat": 52.2739541,
+      "lng": 5.1648436,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Grote speelhoek met puzzels, duplotafel, keukentje, winkeltje en altijd een oppas aanwezig.",
+      "last_verified_at": "2026-03-02T17:00:44.035Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Gooise Meren",
+    "score": 8,
+    "data": {
+      "name": "De Leeuwenkuil",
+      "region": "Gooi en Vechtstreek",
+      "type": "pancake",
+      "description": "De Leeuwenkuil biedt een speeltuin voor de allerkleinsten en pannenkoeken op een zonneterras met uitzicht op meer en strand.",
+      "website": "https://midgetgolfbaan.nl",
+      "lat": 52.328446,
+      "lng": 5.1223808,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": false,
+      "weather": "both",
+      "toddler_highlight": "Speeltuin waar peuters fijn kunnen spelen terwijl ouders op het terras toezicht houden.",
+      "last_verified_at": "2026-03-02T17:00:44.035Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Gooise Meren",
+    "score": 8,
+    "data": {
+      "name": "Paviljoen Heidezicht",
+      "region": "Gooi en Vechtstreek",
+      "type": "horeca",
+      "description": "Paviljoen Heidezicht heeft een grote speeltuin met klimtoestellen en is ideaal voor gezinnen die willen fietsen of wandelen.",
+      "website": "https://heidezicht.com",
+      "lat": 52.2646135,
+      "lng": 5.1825529,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Grote speeltuin aanwezig waar peuters kunnen spelen en klimmen.",
+      "last_verified_at": "2026-03-02T17:00:44.035Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Gooise Meren",
+    "score": 8,
+    "data": {
+      "name": "Grande Selene",
+      "region": "Gooi en Vechtstreek",
+      "type": "horeca",
+      "description": "Grande Selene is een Italiaans familierestaurant met een speelkamer waar kinderen naar hartenlust kunnen spelen.",
+      "website": "http://grandeselene.nl",
+      "lat": 52.2795772,
+      "lng": 5.1579875,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Speelkamer waar kinderen naar hartenlust kunnen spelen terwijl ouders eten.",
+      "last_verified_at": "2026-03-02T17:00:44.035Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Gooise Meren",
+    "score": 8,
+    "data": {
+      "name": "Dekselz",
+      "region": "Gooi en Vechtstreek",
+      "type": "horeca",
+      "description": "Dekselz is kindvriendelijk ingericht met diverse speelgoed, spelletjes en een zonnig terras.",
+      "website": "https://dekselz.nl/",
+      "lat": 52.2743067,
+      "lng": 5.1641292,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Diverse speelgoed en spelletjes beschikbaar om kinderen bezig te houden.",
+      "last_verified_at": "2026-03-02T17:00:44.035Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Huizen",
+    "score": 9,
+    "data": {
+      "name": "Aan de Kade",
+      "region": "Gooi en Vechtstreek",
+      "type": "pancake",
+      "description": "Aan de Kade is het ideale restaurant voor gezinnen, met brede kindermenu's en zoete en hartige pannenkoeken aan het Gooimeer.",
+      "website": "https://www.aan-de-kade.nl/",
+      "lat": 52.3056282,
+      "lng": 5.2584625,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Uitgebreide kindermenu's en pannenkoeken aan het strand van het Gooimeer.",
+      "last_verified_at": "2026-03-02T17:00:44.076Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Huizen",
+    "score": 8,
+    "data": {
+      "name": "Loetje",
+      "region": "Gooi en Vechtstreek",
+      "type": "horeca",
+      "description": "Loetje Huizen heeft een speciaal kindermenu met lekkere, kindvriendelijke gerechten speciaal voor jonge gasten.",
+      "website": "https://www.loetje.nl/locaties/huizen/",
+      "lat": 52.3065906,
+      "lng": 5.2412912,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Speciaal kindermenu beschikbaar voor kleine loetjes.",
+      "last_verified_at": "2026-03-02T17:00:44.076Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Laren",
+    "score": 8,
+    "data": {
+      "name": "La Vespa",
+      "region": "Gooi en Vechtstreek",
+      "type": "horeca",
+      "description": "La Vespa pizzeria in Laren is expliciet kindvriendelijk ingericht met makkelijke toegang en parkeermogelijkheden voor de deur.",
+      "website": "https://www.lavespa.nl",
+      "lat": 52.2583226,
+      "lng": 5.2235051,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kindvriendelijk ingerichte pizzeria met houtoven en aanpasbare pizza's.",
+      "last_verified_at": "2026-03-02T17:00:44.158Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Wijdemeren",
+    "score": 8,
+    "data": {
+      "name": "Spiegelhuys",
+      "region": "Gooi en Vechtstreek",
+      "type": "pancake",
+      "description": "Spiegelhuys is een pannenkoekenhuis met een aangesloten indoorspeeltuin waar kinderen volop plezier hebben terwijl ouders kunnen genieten.",
+      "website": "https://www.spieghelhuys.nl",
+      "lat": 52.264166,
+      "lng": 5.0456725,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Indoorspeeltuin direct naast het pannenkoekenhuys voor peuters.",
+      "last_verified_at": "2026-03-02T17:00:44.200Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Eemnes",
+    "score": 8,
+    "data": {
+      "name": "Theetuin Eemnes / Brave Hendrik",
+      "region": "Gooi en Vechtstreek",
+      "type": "horeca",
+      "description": "Sprookjesachtige tuin met speelplaats en theehuis, zeer geschikt voor gezinnen met peuters.",
+      "website": "https://www.theetuineemnes.nl/",
+      "lat": 52.2801402,
+      "lng": 5.2752216,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Avontuurlijke speelplaats speciaal voor kinderen in een sfeervol tuinomgeving.",
+      "last_verified_at": "2026-03-02T17:00:44.242Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Soest",
+    "score": 10,
+    "data": {
+      "name": "Pannenkoekenboerderij De Smickel",
+      "region": "Utrechtse Heuvelrug",
+      "type": "pancake",
+      "description": "Pannenkoekenboerderij De Smickel is ideaal voor gezinnen met peuters met meerdere speelmogelijkheden binnen en buiten, inclusief videokelder, speurtocht en dagverse pannenkoeken met aangepaste beslag.",
+      "website": "https://www.smickel.nl",
+      "lat": 52.1834297,
+      "lng": 5.3044973,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Speelhoek, videokelder en speurtocht maken dit een topkeuze voor peuters.",
+      "last_verified_at": "2026-03-02T17:00:44.288Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Baarn",
+    "score": 8,
+    "data": {
+      "name": "'t Jagershuis",
+      "region": "Utrechtse Heuvelrug",
+      "type": "pancake",
+      "description": "'t Jagershuis is een gezellig en kindvriendelijk pannenkoekrestaurant met een grote natuurspeeltuin, huiselijke sfeer en bosligging.",
+      "website": "https://www.jagershuislagevuursche.nl/",
+      "lat": 52.1794589,
+      "lng": 5.2225922,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Grote natuurspeeltuin en kindvriendelijke sfeer in het bos.",
+      "last_verified_at": "2026-03-02T17:00:44.331Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Baarn",
+    "score": 8,
+    "data": {
+      "name": "De Vuursche Boer",
+      "region": "Utrechtse Heuvelrug",
+      "type": "pancake",
+      "description": "De Vuursche Boer is een gezinsvriendelijk pannenkoekrestaurant met speciale baby-verschoonplek en volledig rolstoeltoegankelijk.",
+      "website": "https://devuurscheboer.nl/",
+      "lat": 52.1788121,
+      "lng": 5.2220962,
+      "coffee": true,
+      "diaper": true,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Extra baby-verschoonplek speciaal voor peuters en baby's.",
+      "last_verified_at": "2026-03-02T17:00:44.331Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Leusden",
+    "score": 9,
+    "data": {
+      "name": "Pannenkoe",
+      "region": "Utrechtse Heuvelrug",
+      "type": "pancake",
+      "description": "Pannenkoekzaak met overdekte binnenspeeltuin inclusief glijbaan en buiten speeltuin op het terras, speciaal ontworpen voor kinderen om zich uit te leven.",
+      "website": "https://www.pannenkoe.nl/leusden/",
+      "lat": 52.1324931,
+      "lng": 5.4414521,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Overdekte binnenspeeltuin met glijbaan en buiten speeltuin waar peuters zich prima kunnen vermaken terwijl ouders ontspannen genieten.",
+      "last_verified_at": "2026-03-02T17:00:44.413Z",
       "verification_source": "osm_discovery"
     }
   }

@@ -65,6 +65,19 @@ const REGIONS = {
   'Nieuwegein':          { osmName: 'Nieuwegein',   adminLevel: 8, supabaseRegion: 'Utrecht' },
   'IJsselstein':         { osmName: 'IJsselstein',  adminLevel: 8, supabaseRegion: 'Utrecht' },
   'Woerden':             { osmName: 'Woerden',      adminLevel: 8, supabaseRegion: 'Utrecht' },
+  // Gooi en Vechtstreek (officiële 7 gemeenten; Weesp is per 2022 onderdeel van Amsterdam)
+  'Hilversum':          { osmName: 'Hilversum',          adminLevel: 8, supabaseRegion: 'Gooi en Vechtstreek' },
+  'Gooise Meren':       { osmName: 'Gooise Meren',       adminLevel: 8, supabaseRegion: 'Gooi en Vechtstreek' },
+  'Huizen':             { osmName: 'Huizen',             adminLevel: 8, supabaseRegion: 'Gooi en Vechtstreek' },
+  'Blaricum':           { osmName: 'Blaricum',           adminLevel: 8, supabaseRegion: 'Gooi en Vechtstreek' },
+  'Laren':              { osmName: 'Laren',              adminLevel: 8, supabaseRegion: 'Gooi en Vechtstreek' },
+  'Wijdemeren':         { osmName: 'Wijdemeren',         adminLevel: 8, supabaseRegion: 'Gooi en Vechtstreek' },
+  'Eemnes':             { osmName: 'Eemnes',             adminLevel: 8, supabaseRegion: 'Gooi en Vechtstreek' },
+  // Utrechtse Heuvelrug aanvullende gemeenten
+  'Soest':              { osmName: 'Soest',              adminLevel: 8, supabaseRegion: 'Utrechtse Heuvelrug' },
+  'Baarn':              { osmName: 'Baarn',              adminLevel: 8, supabaseRegion: 'Utrechtse Heuvelrug' },
+  'Wijk bij Duurstede': { osmName: 'Wijk bij Duurstede', adminLevel: 8, supabaseRegion: 'Utrechtse Heuvelrug' },
+  'Leusden':            { osmName: 'Leusden',            adminLevel: 8, supabaseRegion: 'Utrechtse Heuvelrug' },
 };
 
 // ─── CLI args ──────────────────────────────────────────────────────────────

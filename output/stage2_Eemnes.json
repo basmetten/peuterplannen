@@ -1,0 +1,50 @@
+[
+  {
+    "osm_id": 2734536835,
+    "osm_type": "node",
+    "name": "Theetuin Eemnes / Brave Hendrik",
+    "amenity": "restaurant",
+    "lat": 52.2801402,
+    "lng": 5.2752216,
+    "address": "Meentweg 131",
+    "city": "Eemnes",
+    "website": "https://www.theetuineemnes.nl/",
+    "phone": "+31 35 538 9643",
+    "cuisine": "tea",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Tu-Th 10:00-17:00; Fr-Su 10:00-19:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kinderen",
+        "kids",
+        "gezin"
+      ],
+      "snippet": "emnes | brave hendrik een sprookjesachtige tuin met zitjes, een knus theehuis, sfeervol ingerichte kassen voor gezelschappen, een open haard om bij weg te dromen en een avontuurlijke speelplaats voor kinderen. voor iedereen is er een passende plek in theetuin eemnes | brave hendrik. of je nu met z ’ n twee ë n bent of met 100 mensen, van 0 tot 100 jaar, mogelijkheden volop. sander en hester molenaar heten jullie van dinsdag tot en met zondag van harte welkom, samen met hun enthousiaste team. hon",
+      "textLength": 6369
+    }
+  },
+  {
+    "osm_id": 2735725961,
+    "osm_type": "node",
+    "name": "By Ingo",
+    "amenity": "restaurant",
+    "lat": 52.2320291,
+    "lng": 5.3074582,
+    "address": "Eemweg 112",
+    "city": "Eemnes",
+    "website": "https://www.byingo.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Tu-Fr 12:00-22:00; Sa-Su 10:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 3267
+    }
+  }
+]

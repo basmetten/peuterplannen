@@ -1,0 +1,59 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[0] Het Vuursche Bos | restaurant / pancake | Dorpsstraat 25, Lage Vuursche
+  Keywords: pannenkoek
+  Fragment: restaurant het vuursche bos - lage vuursche ga naar de inhoud vacatures openingstijden facebook-f instagram hoofdmenu home menu’s ijssalon zakelijk groepen high tea lunchen borrelen pannenkoeken over geschiedenis honden wandelen fietsen leuke uitjes faciliteiten parkeren contact reserveren welkom bij restaurant het vuursche bos welkom bij het mooiste restaurant van de dorpsstraat bij het vuursche 
+
+[9] Stoer en Lekker | restaurant / burger | Laanstraat 113, Baarn
+  Keywords: kindermenu
+  Fragment: stoer & lekker - eten bestellen in baarn menukaart beoordelingen contact colofon stoer & lekker broodjes burgers classic burgers xl salades wereldburgers menu's / schotels vis menu's / schotels kindermenu maaltijdsalades snacks frites toppings sauzen dranken broodjes italiaanse bollen broodje boerenham warme boerenham, champignons, ui en mosterdsaus € 6,45 incl. statiegeld (€ 0,00) broodje pulled 
+
+[10] Grand Café de Kerkbrink | restaurant | Brink 12, Baarn
+  Keywords: kinderen, gezin, kindermenu
+  Fragment: nieuwe interieur en onze vriendelijk geprijsde nieuwe menukaart vol smakelijke gerechten met verse producten. kom gerust met uw familie of gezin, want we hebben ook een kindermenu met verrassing waar kinderen graag voor terug willen komen. geniet op ons zonnige terras van het uitzicht op de mooie brink in het hart van baarn. wij heten u van harte welkom. lunchkaart dinerkaart ~ openingstijden ~ ma
+
+[17] Bazam Grillmeesters | fast_food / turkish;burger;snac | Reigerstraat 16, Baarn
+  Keywords: kindermenu
+  Fragment: in baarn menukaart beoordelingen contact colofon bazam grillmeesters maaltijdsalades turkse pizza's dürüm broodjes bazam box kapsalon vleesgerechten shoarmaschotels met extra's vegetarische gerechten kindermenu's warme hapjes snacks snacks met broodje patat extra's sauzen nagerechten frisdranken maaltijdsalades tonijn salade € 17,00 incl. statiegeld (€ 0,00) gegrilde kip salade € 17,00 incl. stati
+
+[20] 't Jagershuis | restaurant / pancake | Dorpsstraat 11, Lage Vuursche
+  Keywords: speeltuin, kindvriendelijk, gezin, gezinnen, pannenkoek
+  Fragment: een gezellig en kindvriendelijk restaurant aan de rand van het bos. geniet van ambachtelijke pannenkoeken, lunchgerechten en een huisgemaakt diner in een warme, huiselijke sfeer. met een grote natuurspeeltuin, een sfeervol terras en een ligging midden in de utrechtse natuur is ’t jagershuis de ideale plek voor gezinnen, wandelaars en fietsers. reserveren menukaart toon meer contactgegevens familie
+
+[22] de Bosrand | restaurant / pancake | Dorpsstraat 33, Lage Vuursche
+  Keywords: kinderen, kindermenu, pannenkoek
+  Fragment: ke pannenkoeken, diverse lunchgerechten en een uitgebreid à la carte diner in een warme, huiselijke sfeer. ons ruime terras biedt een perfecte plek om te ontspannen na een boswandeling of fietstocht. kinderen zijn van harte welkom en kunnen genieten van onze speciale kindermenu&#8217;s. gelegen aan de dorpsstraat 33, 3749 ac lage vuursche. © copyright – restaurant buitengewoon de bosrand | webtail
+
+[23] De Vuursche Boer | restaurant / pancake | Dorpsstraat 34, Lage Vuursche
+  Keywords: gezin, gezinnen, verschoonplek, baby, pannenkoek
+  Fragment: nodig. en tot 25 personen is reserveren mogelijk in de bovenzaal (ma-vr, tussen november en april). neem hiervoor gerust contact op! is de vuursche boer toegankelijk voor rolstoelen en geschikt voor gezinnen? absoluut! het restaurant is rolstoeltoegankelijk, heeft een mindervaliden toilet én een extra baby verschoonplek ook voor de &#8220;moderne&#8221; papa&#8217;s. tevens zijn ook honden van har
+
+[25] de Wildenburg | restaurant / crepe | Wildenburglaan 9, Baarn
+  Keywords: verschoonplek, pannenkoek, pannenkoekenrestaurant
+  Fragment: g (1 januari) koningsdag (27 april) kerstavond, na 16 uur (24 december) eerste kerstdag (25 december) oudjaarsdag (31 december) volg onze kanalen: toegankelijkheid rolstoelvriendelijk invalidentoilet verschoonplek honden aangelijnd welkom 4 fiets oplaadpunten ruime indeling grote parkeerplaats, met 2 plaatsen voor invaliden @ de wildenburg | ontwerp: studio bosgra page load link ga naar de bovenka
+
+[26] Grand Cafe Groeneveld | restaurant / international | Groeneveld 2, Baarn
+  Keywords: kids
+  Fragment: grand café groeneveld in baarn - koffie, lunch of high tea | grand cafe groeneveld home high tea - high wine kabouterbos take-away manden barbecue particulier wandelingen & fietsroutes kids vacatures duurzaamheid over het grand café contact menu grand café groeneveld high tea - high wine kabouterbos take-away manden barbecue particulier wandelingen & fietsroutes kids zakelijk zalen grand caf&eacut
+
+[27] Paviljoen Buiten in de Kuil | restaurant | Zevenlindenweg 9, Lage Vuursche
+  Keywords: speeltuin, kinderen
+  Fragment: home - buiten in de kuil kom ook genieten van deze buiten plek, met eerlijk eten en de natuur als speeltuin 035 - 6 312 012 lage vuursche kuil van drakensteyn home menu groepen team energizers zakelijk particulier route spelregels openingstijden activiteiten over buiten foto’s geschiedenis hut 2.0 honden &#038; paarden wandelen &#038; fietsen parkeren collega&#8217;s gezocht contact reserveren -
+
+[28] Volkslust de Vuurse Steeg | restaurant / coffee_shop;burger;sandwich;tea;diner;lunch;breakfast;brasserie;brunch | Vuursche Steeg 3, Lage Vuursche
+  Keywords: kinderen, kindvriendelijk, gezin
+  Fragment: erugbrengt naar ons restaurant. onze locatie in lage vuursche is geschikt voor groepen tot 150 personen. reserveren kindvriendelijk genieten ruimte, speelplezier &amp; ontspanning voor het hele gezin kinderen zijn bij ons van harte welkom! het bos achter ons en het ruime veld voor het café-restaurant bieden volop ruimte om lekker vrij te spelen en avonturen te beleven. terwijl de kinderen zich ver
+
+JSON array (11 objecten):

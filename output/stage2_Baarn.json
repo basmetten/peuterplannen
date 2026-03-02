@@ -1,0 +1,847 @@
+[
+  {
+    "osm_id": 361167183,
+    "osm_type": "node",
+    "name": "Het Vuursche Bos",
+    "amenity": "restaurant",
+    "lat": 52.1789055,
+    "lng": 5.2227278,
+    "address": "Dorpsstraat 25",
+    "city": "Lage Vuursche",
+    "website": "https://www.hetvuurschebos.nl/",
+    "phone": null,
+    "cuisine": "pancake",
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "pannenkoek"
+      ],
+      "snippet": "restaurant het vuursche bos - lage vuursche ga naar de inhoud vacatures openingstijden facebook-f instagram hoofdmenu home menu’s ijssalon zakelijk groepen high tea lunchen borrelen pannenkoeken over geschiedenis honden wandelen fietsen leuke uitjes faciliteiten parkeren contact reserveren welkom bij restaurant het vuursche bos welkom bij het mooiste restaurant van de dorpsstraat bij het vuursche bos zijn we vanaf 09:30u geopend. kom langs voor ontbijt, een goede kop koffie met",
+      "textLength": 3257
+    }
+  },
+  {
+    "osm_id": 460036462,
+    "osm_type": "node",
+    "name": "Chinees afhaalcentrum Hong Kong",
+    "amenity": "restaurant",
+    "lat": 52.207311,
+    "lng": 5.2948465,
+    "address": "Oosterstraat 33",
+    "city": "Baarn",
+    "website": "https://www.hongkongbaarn.nl/",
+    "phone": "+31 35 541 5644",
+    "cuisine": "chinese",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 16:00-21:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 580
+    }
+  },
+  {
+    "osm_id": 489738436,
+    "osm_type": "node",
+    "name": "De Generaal",
+    "amenity": "restaurant",
+    "lat": 52.2070576,
+    "lng": 5.2831813,
+    "address": "Luitenant Generaal van Heutszlaan 5",
+    "city": "Baarn",
+    "website": "https://degeneraal.nl",
+    "phone": "+31 35 542 1784",
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": "limited",
+    "opening_hours": "Mo-We 08:00-23:00, Th-Sa 08:00-24:00, Su 09:00-23:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 2882
+    }
+  },
+  {
+    "osm_id": 633372235,
+    "osm_type": "node",
+    "name": "Theehuis 't Hooge Erf",
+    "amenity": "cafe",
+    "lat": 52.2017182,
+    "lng": 5.2324557,
+    "address": "Hoge Vuurseweg 11",
+    "city": "Lage Vuursche",
+    "website": "https://www.theehuislagevuursche.nl/",
+    "phone": "+31 35 646 8212",
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": "Mo-Sa 10:00-17:00;Su 10:00-19:00",
+    "scrape": {
+      "success": false,
+      "error": "This operation was aborted"
+    }
+  },
+  {
+    "osm_id": 1701443585,
+    "osm_type": "node",
+    "name": "Kastanjehof",
+    "amenity": "restaurant",
+    "lat": 52.1805703,
+    "lng": 5.2221851,
+    "address": null,
+    "city": null,
+    "website": "https://dekastanjehof.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 3183
+    }
+  },
+  {
+    "osm_id": 1701443589,
+    "osm_type": "node",
+    "name": "De Stal",
+    "amenity": "restaurant",
+    "lat": 52.1799059,
+    "lng": 5.2217988,
+    "address": null,
+    "city": null,
+    "website": "https://www.vuursche.nl/gezelschappen/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": "yes",
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 35669
+    }
+  },
+  {
+    "osm_id": 2411594893,
+    "osm_type": "node",
+    "name": "La Place",
+    "amenity": "restaurant",
+    "lat": 52.2230725,
+    "lng": 5.2566829,
+    "address": "Minervaweg 3",
+    "city": "Baarn",
+    "website": "https://laplaceinfo.nl",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 9862
+    }
+  },
+  {
+    "osm_id": 2678725581,
+    "osm_type": "node",
+    "name": "Cafeteria Hartje Baarn",
+    "amenity": "fast_food",
+    "lat": 52.2038717,
+    "lng": 5.2971215,
+    "address": "Reigerstraat 2",
+    "city": "Baarn",
+    "website": "http://cafetariabaarn.nl",
+    "phone": null,
+    "cuisine": "snack",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1738
+    }
+  },
+  {
+    "osm_id": 2740237502,
+    "osm_type": "node",
+    "name": "Prins Heerlijk",
+    "amenity": "restaurant",
+    "lat": 52.2115266,
+    "lng": 5.2843473,
+    "address": "Prins Hendriklaan 1",
+    "city": "Baarn",
+    "website": "https://www.cafeph.nl/",
+    "phone": null,
+    "cuisine": "tapas",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Tu 15:00-24:00, We 15:00-01:00, Th-Sa 15:00-02:00; Su,Mo off",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 2620
+    }
+  },
+  {
+    "osm_id": 2740244439,
+    "osm_type": "node",
+    "name": "Stoer en Lekker",
+    "amenity": "restaurant",
+    "lat": 52.2123979,
+    "lng": 5.2837601,
+    "address": "Laanstraat 113",
+    "city": "Baarn",
+    "website": "https://www.stoer-lekker.nl/",
+    "phone": null,
+    "cuisine": "burger",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Tu-Fr 16:30-22:00; Sa,Su 16:00-22:00; Mo off",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kindermenu"
+      ],
+      "snippet": "stoer & lekker - eten bestellen in baarn menukaart beoordelingen contact colofon stoer & lekker broodjes burgers classic burgers xl salades wereldburgers menu's / schotels vis menu's / schotels kindermenu maaltijdsalades snacks frites toppings sauzen dranken broodjes italiaanse bollen broodje boerenham warme boerenham, champignons, ui en mosterdsaus € 6,45 incl. statiegeld (€ 0,00) broodje pulled pork super mals gegaard vlees € 7,95 incl. statiegeld (€ 0,00) broodje thaise kip lekkere gema",
+      "textLength": 10145
+    }
+  },
+  {
+    "osm_id": 2740244786,
+    "osm_type": "node",
+    "name": "Grand Café de Kerkbrink",
+    "amenity": "restaurant",
+    "lat": 52.2123205,
+    "lng": 5.2921734,
+    "address": "Brink 12",
+    "city": "Baarn",
+    "website": "https://www.dekerkbrink.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kinderen",
+        "gezin",
+        "kindermenu"
+      ],
+      "snippet": "nieuwe interieur en onze vriendelijk geprijsde nieuwe menukaart vol smakelijke gerechten met verse producten. kom gerust met uw familie of gezin, want we hebben ook een kindermenu met verrassing waar kinderen graag voor terug willen komen. geniet op ons zonnige terras van het uitzicht op de mooie brink in het hart van baarn. wij heten u van harte welkom. lunchkaart dinerkaart ~ openingstijden ~ maandag 10.00 tot 22.00 dinsdag 10.00 tot 22.00 woensdag 10.00 tot 22.00 donderdag 10.00 tot 22.00 vri",
+      "textLength": 1376
+    }
+  },
+  {
+    "osm_id": 2740258471,
+    "osm_type": "node",
+    "name": "Grieks Restaurant Olympia",
+    "amenity": "restaurant",
+    "lat": 52.2131881,
+    "lng": 5.2828804,
+    "address": "Nieuw Baarnstraat 18",
+    "city": "Baarn",
+    "website": "http://www.olympiabaarn.nl/",
+    "phone": null,
+    "cuisine": "greek",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "We-Su 17:00-21:30; Mo,Tu off",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1670
+    }
+  },
+  {
+    "osm_id": 2740259288,
+    "osm_type": "node",
+    "name": "De Smaecken van Hamelink",
+    "amenity": "restaurant",
+    "lat": 52.2116106,
+    "lng": 5.2910488,
+    "address": "Laanstraat 19",
+    "city": "Baarn",
+    "website": "https://de-smaecken.nl",
+    "phone": "+31 35 542 65 30",
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 11043
+    }
+  },
+  {
+    "osm_id": 2740308457,
+    "osm_type": "node",
+    "name": "Peking",
+    "amenity": "restaurant",
+    "lat": 52.2104344,
+    "lng": 5.2921505,
+    "address": "Stationsweg 39",
+    "city": "Baarn",
+    "website": "https://peking-baarn.nl/",
+    "phone": "+31 35 541 3953",
+    "cuisine": "chinese;indian",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Tu-Sa 12:00-21:30",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1460
+    }
+  },
+  {
+    "osm_id": 2740352334,
+    "osm_type": "node",
+    "name": "Uniek",
+    "amenity": "restaurant",
+    "lat": 52.2120758,
+    "lng": 5.2854288,
+    "address": "Laanstraat 89",
+    "city": "Baarn",
+    "website": "https://uniekbaarn.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 2729
+    }
+  },
+  {
+    "osm_id": 2742717787,
+    "osm_type": "node",
+    "name": "Da Nino",
+    "amenity": "restaurant",
+    "lat": 52.2112195,
+    "lng": 5.2933168,
+    "address": "Bosstraat 1B",
+    "city": "Baarn",
+    "website": "https://www.daninopizza.nl/",
+    "phone": null,
+    "cuisine": "pizza",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 25105
+    }
+  },
+  {
+    "osm_id": 2742726109,
+    "osm_type": "node",
+    "name": "Eemlust",
+    "amenity": "restaurant",
+    "lat": 52.2166302,
+    "lng": 5.305436,
+    "address": "Eemweg 72",
+    "city": "Baarn",
+    "website": "https://restauranteemlust.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": "yes",
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 11129
+    }
+  },
+  {
+    "osm_id": 2742892948,
+    "osm_type": "node",
+    "name": "Bazam Grillmeesters",
+    "amenity": "fast_food",
+    "lat": 52.2034536,
+    "lng": 5.2965028,
+    "address": "Reigerstraat 16",
+    "city": "Baarn",
+    "website": "https://www.bazamgrillmeestersbaarn.nl",
+    "phone": "+31 35 7853170",
+    "cuisine": "turkish;burger;snac",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo 12:00-21:00; We-Su 12:00-21:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kindermenu"
+      ],
+      "snippet": "in baarn menukaart beoordelingen contact colofon bazam grillmeesters maaltijdsalades turkse pizza's dürüm broodjes bazam box kapsalon vleesgerechten shoarmaschotels met extra's vegetarische gerechten kindermenu's warme hapjes snacks snacks met broodje patat extra's sauzen nagerechten frisdranken maaltijdsalades tonijn salade € 17,00 incl. statiegeld (€ 0,00) gegrilde kip salade € 17,00 incl. statiegeld (€ 0,00) griekse salade met fetakaas € 15,00 incl. statiegeld (€ 0,00) turkse pizza's turkse p",
+      "textLength": 10421
+    }
+  },
+  {
+    "osm_id": 2742894028,
+    "osm_type": "node",
+    "name": "Cafetaria Sofie",
+    "amenity": "fast_food",
+    "lat": 52.2051259,
+    "lng": 5.2935783,
+    "address": "Pompstraat 2",
+    "city": "Baarn",
+    "website": "https://www.cafetariasofie.nl/foodticket",
+    "phone": null,
+    "cuisine": "snack",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "fetch failed"
+    }
+  },
+  {
+    "osm_id": 2742899268,
+    "osm_type": "node",
+    "name": "Cafetaria Bij Jansen",
+    "amenity": "fast_food",
+    "lat": 52.203159,
+    "lng": 5.2901061,
+    "address": "Torenlaan 71",
+    "city": "Baarn",
+    "website": "https://www.cafetariabijjansen.nl/",
+    "phone": "+31 35 523 8052",
+    "cuisine": "friture;ice_cream;pastry;sandwich",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 0
+    }
+  },
+  {
+    "osm_id": 3004278836,
+    "osm_type": "node",
+    "name": "'t Jagershuis",
+    "amenity": "restaurant",
+    "lat": 52.1794589,
+    "lng": 5.2225922,
+    "address": "Dorpsstraat 11",
+    "city": "Lage Vuursche",
+    "website": "https://www.jagershuislagevuursche.nl/",
+    "phone": null,
+    "cuisine": "pancake",
+    "outdoor_seating": null,
+    "wheelchair": "yes",
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "speeltuin",
+        "kindvriendelijk",
+        "gezin",
+        "gezinnen",
+        "pannenkoek"
+      ],
+      "snippet": "een gezellig en kindvriendelijk restaurant aan de rand van het bos. geniet van ambachtelijke pannenkoeken, lunchgerechten en een huisgemaakt diner in een warme, huiselijke sfeer. met een grote natuurspeeltuin, een sfeervol terras en een ligging midden in de utrechtse natuur is ’t jagershuis de ideale plek voor gezinnen, wandelaars en fietsers. reserveren menukaart toon meer contactgegevens familierestaurant ’t jagershuis dorpsstraat 11 3749 ac lage vuursche t: 035-6668202 e: info@jagershuislage",
+      "textLength": 2055
+    }
+  },
+  {
+    "osm_id": 3004287011,
+    "osm_type": "node",
+    "name": "De Laage Vuursche",
+    "amenity": "restaurant",
+    "lat": 52.1800882,
+    "lng": 5.2219891,
+    "address": "Dorpsstraat 2",
+    "city": "Lage Vuursche",
+    "website": "https://www.vuursche.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 2953
+    }
+  },
+  {
+    "osm_id": 3004296843,
+    "osm_type": "node",
+    "name": "de Bosrand",
+    "amenity": "restaurant",
+    "lat": 52.1786603,
+    "lng": 5.2228424,
+    "address": "Dorpsstraat 33",
+    "city": "Lage Vuursche",
+    "website": "https://bosrandlagevuursche.nl/",
+    "phone": null,
+    "cuisine": "pancake",
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kinderen",
+        "kindermenu",
+        "pannenkoek"
+      ],
+      "snippet": "ke pannenkoeken, diverse lunchgerechten en een uitgebreid à la carte diner in een warme, huiselijke sfeer. ons ruime terras biedt een perfecte plek om te ontspannen na een boswandeling of fietstocht. kinderen zijn van harte welkom en kunnen genieten van onze speciale kindermenu&#8217;s. gelegen aan de dorpsstraat 33, 3749 ac lage vuursche. © copyright – restaurant buitengewoon de bosrand | webtail | made by tom facebook instagram scroll naar bovenzijde",
+      "textLength": 3171
+    }
+  },
+  {
+    "osm_id": 3004296886,
+    "osm_type": "node",
+    "name": "De Vuursche Boer",
+    "amenity": "restaurant",
+    "lat": 52.1788121,
+    "lng": 5.2220962,
+    "address": "Dorpsstraat 34",
+    "city": "Lage Vuursche",
+    "website": "https://devuurscheboer.nl/",
+    "phone": null,
+    "cuisine": "pancake",
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": "Mo-Su,PH 10:00-20:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "gezin",
+        "gezinnen",
+        "verschoonplek",
+        "baby",
+        "pannenkoek"
+      ],
+      "snippet": "nodig. en tot 25 personen is reserveren mogelijk in de bovenzaal (ma-vr, tussen november en april). neem hiervoor gerust contact op! is de vuursche boer toegankelijk voor rolstoelen en geschikt voor gezinnen? absoluut! het restaurant is rolstoeltoegankelijk, heeft een mindervaliden toilet én een extra baby verschoonplek ook voor de &#8220;moderne&#8221; papa&#8217;s. tevens zijn ook honden van harte welkom. parkeren is gratis in de lage vuursche en voor de deur van de vuursche boer zijn ook spe",
+      "textLength": 6161
+    }
+  },
+  {
+    "osm_id": 3018739950,
+    "osm_type": "node",
+    "name": "Dorsthuys Demmers & Spijslokaal",
+    "amenity": "restaurant",
+    "lat": 52.2123062,
+    "lng": 5.2923088,
+    "address": "Brink 4",
+    "city": "Baarn",
+    "website": "https://www.dorsthuysdemmers.nl/",
+    "phone": "+31 35 541 4387",
+    "cuisine": "french;regional",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "fetch failed"
+    }
+  },
+  {
+    "osm_id": 3898394679,
+    "osm_type": "node",
+    "name": "de Wildenburg",
+    "amenity": "restaurant",
+    "lat": 52.2185853,
+    "lng": 5.2433027,
+    "address": "Wildenburglaan 9",
+    "city": "Baarn",
+    "website": "https://www.dewildenburg.nl/",
+    "phone": "+31 35 542 9225",
+    "cuisine": "crepe",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 12:00-21:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "verschoonplek",
+        "pannenkoek",
+        "pannenkoekenrestaurant"
+      ],
+      "snippet": "g (1 januari) koningsdag (27 april) kerstavond, na 16 uur (24 december) eerste kerstdag (25 december) oudjaarsdag (31 december) volg onze kanalen: toegankelijkheid rolstoelvriendelijk invalidentoilet verschoonplek honden aangelijnd welkom 4 fiets oplaadpunten ruime indeling grote parkeerplaats, met 2 plaatsen voor invaliden @ de wildenburg | ontwerp: studio bosgra page load link ga naar de bovenkant",
+      "textLength": 1445
+    }
+  },
+  {
+    "osm_id": 3957139995,
+    "osm_type": "node",
+    "name": "Grand Cafe Groeneveld",
+    "amenity": "restaurant",
+    "lat": 52.2185308,
+    "lng": 5.2555603,
+    "address": "Groeneveld 2",
+    "city": "Baarn",
+    "website": "https://grandcafegroeneveld.com/",
+    "phone": "+31 35 542 1192",
+    "cuisine": "international",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kids"
+      ],
+      "snippet": "grand café groeneveld in baarn - koffie, lunch of high tea | grand cafe groeneveld home high tea - high wine kabouterbos take-away manden barbecue particulier wandelingen & fietsroutes kids vacatures duurzaamheid over het grand café contact menu grand café groeneveld high tea - high wine kabouterbos take-away manden barbecue particulier wandelingen & fietsroutes kids zakelijk zalen grand caf&eacute; groeneveld &amp; menu bij grand caf&eacute; groeneveld in baarn ben je 6 dagen per",
+      "textLength": 3930
+    }
+  },
+  {
+    "osm_id": 4547799705,
+    "osm_type": "node",
+    "name": "Paviljoen Buiten in de Kuil",
+    "amenity": "restaurant",
+    "lat": 52.1861993,
+    "lng": 5.2333478,
+    "address": "Zevenlindenweg 9",
+    "city": "Lage Vuursche",
+    "website": "https://www.buitenindekuil.nl/",
+    "phone": "+31 35 631 2012",
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "speeltuin",
+        "kinderen"
+      ],
+      "snippet": "home - buiten in de kuil kom ook genieten van deze buiten plek, met eerlijk eten en de natuur als speeltuin 035 - 6 312 012 lage vuursche kuil van drakensteyn home menu groepen team energizers zakelijk particulier route spelregels openingstijden activiteiten over buiten foto’s geschiedenis hut 2.0 honden &#038; paarden wandelen &#038; fietsen parkeren collega&#8217;s gezocht contact reserveren -",
+      "textLength": 2401
+    }
+  },
+  {
+    "osm_id": 12512965552,
+    "osm_type": "node",
+    "name": "Volkslust de Vuurse Steeg",
+    "amenity": "restaurant",
+    "lat": 52.1670223,
+    "lng": 5.225334,
+    "address": "Vuursche Steeg 3",
+    "city": "Lage Vuursche",
+    "website": "https://www.vuurse-steeg.nl/",
+    "phone": "+31 30 3036409",
+    "cuisine": "coffee_shop;burger;sandwich;tea;diner;lunch;breakfast;brasserie;brunch",
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": "Mo-Th 10:00-17:00; Fr 10:00-21:00; Sa 09:00-21:00; Su 09:00-20:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kinderen",
+        "kindvriendelijk",
+        "gezin"
+      ],
+      "snippet": "erugbrengt naar ons restaurant. onze locatie in lage vuursche is geschikt voor groepen tot 150 personen. reserveren kindvriendelijk genieten ruimte, speelplezier &amp; ontspanning voor het hele gezin kinderen zijn bij ons van harte welkom! het bos achter ons en het ruime veld voor het café-restaurant bieden volop ruimte om lekker vrij te spelen en avonturen te beleven. terwijl de kinderen zich vermaken, kunt u ontspannen op ons zonnige terras met een heerlijk drankje en onze huisgemaakte bites.",
+      "textLength": 13150
+    }
+  },
+  {
+    "osm_id": 269022547,
+    "osm_type": "way",
+    "name": "Restaurant Vuur",
+    "amenity": "restaurant",
+    "lat": 52.2022593,
+    "lng": 5.2476907,
+    "address": null,
+    "city": null,
+    "website": "https://www.restaurantvuur.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "fetch failed"
+    }
+  },
+  {
+    "osm_id": 459164444,
+    "osm_type": "node",
+    "name": "Petershof",
+    "amenity": "cafe",
+    "lat": 52.2136089,
+    "lng": 5.2857857,
+    "address": "Nieuwstraat 2",
+    "city": "Baarn",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2740244390,
+    "osm_type": "node",
+    "name": "Proeflokaal Alberto",
+    "amenity": "restaurant",
+    "lat": 52.21238,
+    "lng": 5.2838186,
+    "address": "Laanstraat 111",
+    "city": "Baarn",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "We-Sa 15:00-23:00; Tu 15:00-20:00; Su,Mo off",
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2740284750,
+    "osm_type": "node",
+    "name": "De Ronde Hoek",
+    "amenity": "fast_food",
+    "lat": 52.2116689,
+    "lng": 5.2934172,
+    "address": "Brink 28",
+    "city": "Baarn",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2740324624,
+    "osm_type": "node",
+    "name": "A-Fusion",
+    "amenity": "restaurant",
+    "lat": 52.2122899,
+    "lng": 5.2835994,
+    "address": "Nieuw Baarnstraat 4E",
+    "city": "Baarn",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "We-Mo 17:00-22:30; Tu off",
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2740345342,
+    "osm_type": "node",
+    "name": "Stationshuiskamer",
+    "amenity": "cafe",
+    "lat": 52.2082798,
+    "lng": 5.2818385,
+    "address": "Stationsplein 68",
+    "city": "Baarn",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Fr 06:00-18:30; Sa 08:00-16:00; Su 09:00-16:30",
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 3018374584,
+    "osm_type": "node",
+    "name": "Poffertjeskraam",
+    "amenity": "restaurant",
+    "lat": 52.2096221,
+    "lng": 5.2930213,
+    "address": null,
+    "city": null,
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 5981584585,
+    "osm_type": "node",
+    "name": "Oranjerie",
+    "amenity": "cafe",
+    "lat": 52.1947555,
+    "lng": 5.2784537,
+    "address": "Amsterdamsestraatweg 1",
+    "city": "Baarn",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  }
+]

@@ -1,0 +1,36 @@
+[
+  {
+    "name": "Spiegelhuys",
+    "address": "",
+    "lat": 52.264166,
+    "lng": 5.0456725,
+    "website": "https://www.spieghelhuys.nl",
+    "score": 8,
+    "confidence": "high",
+    "reasoning": "Pannenkoekenhuis met expliciete indoorspeeltuin voor kinderen genoemd.",
+    "has_play_area": true,
+    "has_kids_menu": true,
+    "has_high_chairs": null,
+    "has_diaper_changing": null,
+    "weather": "both",
+    "description": "Spiegelhuys is een pannenkoekenhuis met een aangesloten indoorspeeltuin waar kinderen volop plezier hebben terwijl ouders kunnen genieten.",
+    "toddler_highlight": "Indoorspeeltuin direct naast het pannenkoekenhuys voor peuters.",
+    "is_pancake_restaurant": true,
+    "supabase_ready": {
+      "name": "Spiegelhuys",
+      "region": "Gooi en Vechtstreek",
+      "type": "pancake",
+      "description": "Spiegelhuys is een pannenkoekenhuis met een aangesloten indoorspeeltuin waar kinderen volop plezier hebben terwijl ouders kunnen genieten.",
+      "website": "https://www.spieghelhuys.nl",
+      "lat": 52.264166,
+      "lng": 5.0456725,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Indoorspeeltuin direct naast het pannenkoekenhuys voor peuters.",
+      "last_verified_at": "2026-03-02T17:00:44.200Z",
+      "verification_source": "osm_discovery"
+    }
+  }
+]
