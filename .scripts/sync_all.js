@@ -282,7 +282,7 @@ function badgeHTML(loc) {
 
 function revealScript() {
   return `<script>
-(function(){var o=new IntersectionObserver(function(e){e.forEach(function(i){if(i.isIntersecting){i.target.classList.add('visible');o.unobserve(i.target);}});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.loc-item,.type-section,.region-section,.blog-card,.cta-block,.support-section,.faq-section').forEach(function(el,i){el.classList.add('reveal');el.style.animationDelay=(i*0.04)+'s';o.observe(el);});})();
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(i){if(i.isIntersecting){i.target.classList.add('visible');o.unobserve(i.target);}});},{threshold:0,rootMargin:'0px 0px 300px 0px'});document.querySelectorAll('.loc-item,.type-section,.region-section,.blog-card,.cta-block,.support-section,.faq-section').forEach(function(el,i){el.classList.add('reveal');el.style.animationDelay=Math.min(i*0.03,0.15)+'s';o.observe(el);});})();
 </script>`;
 }
 
