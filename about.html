@@ -204,9 +204,7 @@
         <p>We horen graag van je! Of het nu een vraag, suggestie, of gewoon een compliment is (die zijn ook welkom, hoor).</p>
 
         <div class="check-list">
-            <p>&#9993; Email: <a href="mailto:hoi@peuterplannen.nl" style="color: var(--primary); font-weight: 600;">hoi@peuterplannen.nl</a></p>
-            <p>&#127760; Social media: nog niet, maar we groeien!</p>
-            <p>&#127970; KvK: In oprichting</p>
+            <p>&#9993; Bereikbaar via het <a href="contact.html" style="color: var(--primary); font-weight: 600;">contactformulier</a></p>
         </div>
 
         <h3 style="font-size: 20px; margin: 32px 0 12px; color: var(--navy);">Locatie suggereren of fout melden</h3>
@@ -243,7 +241,7 @@
                     input.value = '';
                 } else { throw new Error('HTTP ' + res.status); }
             } catch(err) {
-                status.innerHTML = 'Oeps, er ging iets mis. Probeer het later of mail <a href="mailto:hoi@peuterplannen.nl" style="color:var(--primary)">hoi@peuterplannen.nl</a>';
+                status.textContent = 'Oeps, er ging iets mis. Probeer het later opnieuw.';
                 status.style.color = 'var(--accent)';
             }
         });
