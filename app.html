@@ -119,7 +119,7 @@
         /* Animations */
         @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
         .reveal { opacity: 0; }
-        .reveal.visible { animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        .reveal.visible { animation: fadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
         @media (prefers-reduced-motion: reduce) { .reveal, .reveal.visible { animation: none; opacity: 1; } }
         @keyframes heartPop { 0% { transform: scale(1); } 30% { transform: scale(1.3); } 60% { transform: scale(0.95); } 100% { transform: scale(1); } }
         .heart-pop { animation: heartPop 0.4s ease; }
@@ -237,7 +237,7 @@
         .card-actions { display: flex; gap: 8px; }
         .btn { flex: 1; padding: 12px 14px; font-size: 14px; font-weight: 600; text-align: center; text-decoration: none; border-radius: 12px; border: 1.5px solid rgba(212, 119, 90, 0.2); color: var(--text); background: var(--surface); display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: all 0.2s; touch-action: manipulation; font-family: inherit; }
         .btn:active { transform: scale(0.98); }
-        .btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+        .btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         .btn-detail { background: var(--primary); color: white; border-color: var(--primary); }
         .btn-detail:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
         .btn-detail svg { stroke: white; }
@@ -255,9 +255,9 @@
         /* Bottom nav (mobile) */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid rgba(212, 119, 90, 0.1); padding: 8px 0; padding-bottom: calc(8px + var(--safe-bottom)); display: flex; justify-content: space-around; z-index: 100; box-shadow: 0 -2px 12px rgba(45, 41, 38, 0.06); }
         .bnav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 16px; text-decoration: none; font-size: 10px; font-weight: 600; color: var(--text-muted); transition: color 0.2s; background: none; border: none; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; position: relative; }
-        .bnav-item.active { color: var(--primary-dark); }
-        .bnav-item.active::after { content: ''; position: absolute; bottom: -2px; width: 4px; height: 4px; border-radius: 50%; background: var(--primary); }
-        .bnav-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; }
+        .bnav-item.active { color: var(--primary-dark); background: rgba(212, 119, 90, 0.12); border-radius: 12px; }
+        .bnav-item.active::after { content: ''; position: absolute; top: 0; width: 24px; height: 3px; border-radius: 0 0 3px 3px; background: var(--primary); }
+        .bnav-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         @media (min-width: 768px) { .bottom-nav { display: none; } body { padding-bottom: 0; } }
 
         /* Skeleton cards */
@@ -544,7 +544,7 @@
     <!-- Mobile bottom navigation -->
     <nav class="bottom-nav" id="bottom-nav" aria-label="Navigatie">
         <button class="bnav-item active" onclick="switchView('home')" id="tab-home" aria-label="Ontdek">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
             <span>Ontdek</span>
         </button>
         <button class="bnav-item" onclick="switchView('map')" id="tab-map" aria-label="Kaart">
@@ -910,17 +910,40 @@
             { title: '660+ locaties, gratis', text: 'Gemaakt voor ouders in Nederland. Help het gratis te houden.', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun via betaalverzoek', icon: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>', donation: true },
         ];
 
+        // === Batch rendering state ===
+        const BATCH_SIZE = 20;
+        let batchLocations = [];
+        let batchTravelTimes = {};
+        let batchPromoIndex = 0;
+        let batchRenderedCount = 0;
+        let batchSentinelObserver = null;
+
         function renderCards(locations, travelTimes = {}) {
+            batchLocations = locations;
+            batchTravelTimes = travelTimes;
+            batchRenderedCount = 0;
+            batchPromoIndex = 0;
+            if (batchSentinelObserver) { batchSentinelObserver.disconnect(); batchSentinelObserver = null; }
             const container = document.getElementById('results-container');
             container.innerHTML = '';
-            let promoIndex = 0;
-            locations.forEach((item, index) => {
+            appendBatch();
+        }
+
+        function appendBatch() {
+            const container = document.getElementById('results-container');
+            const start = batchRenderedCount;
+            const end = Math.min(start + BATCH_SIZE, batchLocations.length);
+            const oldSentinel = document.getElementById('load-sentinel');
+            if (oldSentinel) oldSentinel.remove();
+
+            for (let index = start; index < end; index++) {
+                const batchIdx = index - start;
                 if ((index + 1) % 6 === 0) {
-                    const promo = PROMO_ITEMS[promoIndex % PROMO_ITEMS.length];
-                    promoIndex++;
+                    const promo = PROMO_ITEMS[batchPromoIndex % PROMO_ITEMS.length];
+                    batchPromoIndex++;
                     const adCard = document.createElement('article');
                     adCard.className = 'loc-card promo-banner' + (promo.donation ? ' promo-donation' : '') + ' reveal';
-                    adCard.style.animationDelay = `${Math.min(index * 0.05, 0.3)}s`;
+                    adCard.style.animationDelay = `${Math.min(batchIdx * 0.04, 0.2)}s`;
                     adCard.innerHTML = `
                         <div class="promo-icon"><svg viewBox="0 0 24 24" aria-hidden="true">${promo.icon}</svg></div>
                         <div class="promo-body">
@@ -931,7 +954,8 @@
                     `;
                     container.appendChild(adCard);
                 }
-                const travelInfo = travelTimes[item.id];
+                const item = batchLocations[index];
+                const travelInfo = batchTravelTimes[item.id];
                 const isFav = isFavorite(item.id);
                 const favStyle = isFav ? 'fill: #D4775A; stroke: #D4775A;' : 'fill: none; stroke: #9B8688;';
                 const typeLabel = TYPE_LABELS[item.type] || item.type;
@@ -957,14 +981,13 @@
 
                 const card = document.createElement('article');
                 card.className = 'loc-card reveal';
-                card.style.animationDelay = `${Math.min(index * 0.05, 0.3)}s`;
+                card.style.animationDelay = `${Math.min(batchIdx * 0.04, 0.2)}s`;
                 card.innerHTML = `
                     <div class="card-top">
                         <div class="card-pills">
                             <span class="pill pill-type">${typeLabel}</span>
                             ${weatherLabel ? `<span class="pill pill-weather">${weatherIcon}${weatherLabel}</span>` : ''}
                             ${distancePill}
-
                         </div>
                         <button class="card-fav" onclick="toggleFavorite(${item.id}, this)" title="${isFav ? 'Verwijder favoriet' : 'Opslaan'}" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
                             <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -991,7 +1014,23 @@
                     </div>
                 `;
                 container.appendChild(card);
-            });
+            }
+
+            batchRenderedCount = end;
+            if (batchRenderedCount < batchLocations.length) {
+                const sentinel = document.createElement('div');
+                sentinel.id = 'load-sentinel';
+                sentinel.style.cssText = 'height: 1px; margin: 0;';
+                container.appendChild(sentinel);
+                batchSentinelObserver = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting) {
+                        batchSentinelObserver.disconnect();
+                        batchSentinelObserver = null;
+                        appendBatch();
+                    }
+                }, { rootMargin: '0px 0px 150px 0px' });
+                batchSentinelObserver.observe(sentinel);
+            }
         }
 
         // === Share ===
@@ -1460,7 +1499,7 @@
         // Scroll-reveal observer
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } });
-        }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+        }, { threshold: 0.08, rootMargin: '0px 0px 100px 0px' });
 
         const resultsContainer = document.getElementById('results-container');
         if (resultsContainer) {

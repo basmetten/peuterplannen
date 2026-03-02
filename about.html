@@ -20,9 +20,9 @@
             --primary: #D4775A;
             --primary-light: #FDF1ED;
             --primary-dark: #B35D42;
-            --accent: #F0C75E;
-            --accent-light: #FEF8E7;
-            --secondary: #7A9E72;
+            --accent: #C8864A;
+            --accent-light: #FDF2E2;
+            --secondary: #7A8B65;
             --navy: #2D2926;
             --bg: #FAF7F2;
             --bg-cream: #FFF5EB;
@@ -40,8 +40,11 @@
 
         nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(250, 247, 242, 0.96); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid var(--card-border); }
         .nav-inner { max-width: 1100px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; }
-        .nav-logo { font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; font-family: var(--font-heading); }
-        .nav-logo span { color: var(--primary); }
+        .nav-logo { font-weight: 700; font-size: 18px; color: var(--navy); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .nav-logo-svg { width: 40px; height: 40px; display: block; flex-shrink: 0; }
+        .logo-text { display: flex; flex-direction: column; line-height: 1.15; font-size: 15px; }
+        .logo-top { font-weight: 700; }
+        .logo-bottom { font-weight: 800; color: var(--primary); }
         .nav-links { display: flex; gap: 28px; }
         .nav-links a { color: var(--ink-light); text-decoration: none; font-weight: 500; font-size: 15px; }
         .nav-links a:hover { color: var(--primary); }
@@ -92,14 +95,14 @@
         .stat-card { transition: all 0.25s ease; }
         :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
 
-        .support-about-section { background: linear-gradient(135deg, #7A9E72, #5C8654); color: white; border-radius: 16px; padding: 36px 32px; text-align: center; margin: 48px 0; }
+        .support-about-section { background: linear-gradient(135deg, #7A8B65, #5C6E4F); color: white; border-radius: 16px; padding: 36px 32px; text-align: center; margin: 48px 0; }
         .support-about-inner { max-width: 480px; margin: 0 auto; }
         .support-about-section h2 { font-size: 22px; font-weight: 700; margin-bottom: 12px; color: white; margin-top: 0; }
         .support-about-section p { color: rgba(255,255,255,0.9); margin-bottom: 16px; font-size: 16px; }
         .support-about-amounts { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
         .support-about-pill { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: 20px; padding: 6px 16px; font-size: 14px; font-weight: 600; }
-        .support-about-pill-mid { background: white; color: #5C8654; border-color: white; }
-        .support-about-cta { background: white; color: #5C8654; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; transition: transform 0.15s ease, background 0.15s ease; }
+        .support-about-pill-mid { background: white; color: #5C6E4F; border-color: white; }
+        .support-about-cta { background: white; color: #5C6E4F; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; transition: transform 0.15s ease, background 0.15s ease; }
         .support-about-cta:hover { background: #f0f0f0; transform: translateY(-1px); }
         .support-about-subline { font-size: 14px; opacity: 0.75; margin-top: 16px; margin-bottom: 0; }
         @media (max-width: 600px) { .support-about-section { padding: 28px 20px; } }
