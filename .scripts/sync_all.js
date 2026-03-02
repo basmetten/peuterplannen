@@ -188,6 +188,15 @@ const NEARBY_CITIES = {
   'gooi-en-vechtstreek': ['amsterdam', 'utrecht', 'amersfoort', 'utrechtse-heuvelrug'],
 };
 
+const MUNICIPALITY_COVERAGE = {
+  'amsterdam':           ['Amstelveen', 'Zaandam', 'Haarlemmermeer', 'Diemen', 'Purmerend'],
+  'den-haag':            ['Delft', 'Westland', 'Rijswijk', 'Zoetermeer', 'Wassenaar', 'Leidschendam-Voorburg', 'Pijnacker-Nootdorp'],
+  'utrecht':             ['De Bilt', 'Houten', 'Nieuwegein', 'IJsselstein', 'Woerden'],
+  'haarlem':             ['Heemstede', 'Bloemendaal', 'Zandvoort', 'Velsen', 'Beverwijk'],
+  'utrechtse-heuvelrug': ['Soest', 'Baarn', 'Wijk bij Duurstede', 'Leusden', 'Zeist', 'Bunnik'],
+  'gooi-en-vechtstreek': ['Hilversum', 'Gooise Meren', 'Huizen', 'Blaricum', 'Laren', 'Wijdemeren', 'Eemnes'],
+};
+
 const TIKKIE_URL = 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO';
 let LOCATION_COUNT = 0; // wordt gezet in main() na Supabase-fetch
 
@@ -475,8 +484,8 @@ ${typeCards}
 
   const cityGridHTML = `    <section class="cities-section">
         <div class="container">
-            <h2 class="section-title">Uitjes per stad</h2>
-            <p class="section-sub">Bekijk alle kindvriendelijke locaties per regio. Gecheckt en actueel.</p>
+            <h2 class="section-title">Uitjes per regio</h2>
+            <p class="section-sub">Elke regio omvat de stad én omliggende gemeenten. Gecheckt en actueel.</p>
             <div class="cities-grid">
 ${cityCards}
             </div>
@@ -754,6 +763,15 @@ function generateCityPage(region, locs, allRegions) {
     ? 'Bij slecht weer raden we speelparadijzen zoals Monkey Town of Ballorig aan. '
     : '';
 
+  const coverage = MUNICIPALITY_COVERAGE[region.slug];
+  const CITY_SLUGS = new Set(['amsterdam','den-haag','utrecht','haarlem','rotterdam','leiden',
+    'amersfoort','groningen','almere','eindhoven','tilburg','breda','nijmegen','arnhem',
+    'apeldoorn','s-hertogenbosch']);
+  const omgevingLabel = (coverage && CITY_SLUGS.has(region.slug)) ? ' en omgeving' : '';
+  const coverageNote = coverage
+    ? ` Inclusief locaties in ${coverage.slice(0, 4).join(', ')}${coverage.length > 4 ? ' en meer' : ''}.`
+    : '';
+
   const jsonLdItems = locs.map((loc, i) => ({
     "@type": "ListItem",
     "position": i + 1,
@@ -802,7 +820,7 @@ ${jsonLd}
 ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region.name)}`)}
 
 <div class="hero">
-  <h1>Uitjes met peuters in <span>${region.name}</span></h1>
+  <h1>Uitjes met peuters in <span>${region.name}${omgevingLabel}</span></h1>
   <p>${region.blurb}</p>
   <div class="hero-stats">
     <div class="hero-stat"><strong>${locs.length}</strong><span>locaties</span></div>
@@ -818,7 +836,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 
 <main id="main-content">
   <div class="intro-box">
-    <p>${region.blurb} ${weatherNote}Op deze pagina vind je <strong>${locs.length} geverifieerde locaties</strong> in ${region.name} — allemaal gecontroleerd op adres, openingstijden en kindvriendelijkheid.</p>
+    <p>${region.blurb} ${weatherNote}Op deze pagina vind je <strong>${locs.length} geverifieerde locaties</strong> in de regio ${region.name}.${coverageNote} Allemaal gecontroleerd op adres, openingstijden en kindvriendelijkheid.</p>
   </div>
 
   <div class="city-app-cta">
