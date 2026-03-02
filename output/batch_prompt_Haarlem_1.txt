@@ -1,0 +1,83 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[156] Alexandria | fast_food / shoarma;pizza;doner | Generaal Cronjéstraat 106, Haarlem
+  Keywords: kindermenu
+  Fragment: 532 4892 populaire gerechten salade antipasti kapsalon turkse pizza pizza&#39;s 33 cm pizza&#39;s 26 cm vleespizza&#39;s vegetarische pizza&#39;s vispizza&#39;s schotels carne pesce pasta&#39;s snack kindermenu&#39;s broodjes nagerechten soepen dranken meer &nbsp;&nbsp;actiecode check code korting: &euro; 0,00 de korting wordt automatisch verrekend met het totaalbedrag. filters allergenen zoeken h
+
+[159] Café Lief | restaurant / brunch;breakfast;coffee_shop | Julianapark 14, Haarlem
+  Keywords: kinderen, kids
+  Fragment: find out more! what customers say ... heerlijke (vegan) lunch bereid met verse producten en goede koffie. gemoedelijke sfeer en er is een leuke zithoek voor als je een drankje komt drinken met kleine kinderen. &#8211; maaike schillemans &#8211; ik ging naar een van de gemeenschapsdiners bij cafe lief en het eten was heerlijk! vooral de paddenstoelenravioli die vol van smaak was. naast het diner se
+
+[161] Kwalitaria | fast_food / friture | Generaal Cronjéstraat 164, Haarlem
+  Keywords: kindermenu
+  Fragment: aantal producten in winkelmand: 0 bekijk winkelmand () mijn kudos : 0 ons seizoen menu's burgers friet snacks salades vegetarisch dranken sauzen ijs ons seizoen menu's burgermenu maaltijden snackmenu kindermenu burgers friet snacks snacks mini snacks salades vegetarisch menu's burgers snacks dranken milkshakes frisdranken sauzen ijs vestigingen kwalitaria reko, haarlem ...een bijzondere snackbar i
+
+[165] FEBO | fast_food / friture | Paul Krugerstraat 11, Haarlem
+  Keywords: family
+  Fragment: s only today, a greek dish with a discount we're very sorry, but due an electronic issue our restaurant is closed today. we should be back up and running tomorrow. thanks! --> meatless monday 🌱 febo family burger deals 🍔 febo family snack deals 🍟 family kip deals 🍗 febo acties febo snacks febo broodjes febo burgers febo vega febo verse kip specialiteiten febo frites febo borrelbox febo mini sn
+
+[168] Schouten | restaurant / asian;burger;chicken;friture | Generaal Cronjéstraat 31, Haarlem
+  Keywords: kindermenu
+  Fragment: tellen in haarlem menukaart beoordelingen contact colofon lunchroom partyservice schouten combi meals nasi gerechten bami gerechten specials maaltijden patat hamburgers salades maaltijdsalades snacks kindermenu belegde broodjes warm belegde broodjes extra's sauzen ijsbekers ijsjes milkshakes dranken bier ben & jerry's 100ml ben & jerry's 465ml combi meals babi spek met lipton ice tea 330ml en ben 
+
+[172] Miami | fast_food / pizza;doner;shoarma | Schoterweg 41, Haarlem
+  Keywords: kindermenu
+  Fragment: 2025 2026 2031 2032 2033 2034 2035 2051 2061 of voer uw postcode in : --> menukaart: selecteer een categorie: populaire gerechten kapsalon fingerfood italiaanse pizza's 32cm schotels broodjes salades kindermenu turkse pizza's extra's dranken onze site gebruikt cookies voor het verbeteren van het afrekenen en ter verbetering van onze advertenties. meer info / instellingen akkoord deze dienst wordt 
+
+[186] Merdane | restaurant / mediterranean | Rijksstraatweg 360, Haarlem
+  Keywords: family
+  Fragment: sdag gesloten woensdag 17:00–23:00 donderdag 17:00–23:00 vrijdag 17:00–23:00 zaterdag 17:00–23:00 zondag 17:00–23:00 onze keuken is open tot 22:00 uur. instagram restaurantmerdane #kerst #kerstdiner #familydining #kerstmis #family #restauranthaarlem #haarlem #restaurantmerdane #re #restauranthaarlem #haarlem #restaurantmerdane #ra #restauranthaarlem #restaurantamsterdam #restauran meer laden volg 
+
+[193] Buns of Glory | cafe | Gedempte Oude Gracht 139, Haarlem
+  Keywords: pancake
+  Fragment: 615273150163 11 0 open bericht door yourbunsworld met id 18088902565844095 25 0 open bericht door yourbunsworld met id 17845636905660650 @yourbunsworld onze favorieten vanaf € 11,50 homemade seasonal pancakes online bestellen vanaf € 13,50 philly cheesesteak online bestellen vanaf € 13,50 fried chicken burger online bestellen vanaf € 9,50 single smashburger online bestellen vanaf € 14,50 chicken b
+
+[194] Roast Chicken Bar & The Egg Store | cafe | Turfmarkt 26, Haarlem
+  Keywords: speeltuin, kids, baby
+  Fragment: favorite smoking hot beers & bbq bar roast begon niet met een businessplan, maar met een honger naar &eacute;chte smaak. een oude garage in het centrum van haarlem werd onze keuken, onze bar en onze speeltuin. hier draait alles om bbq, bier, vrijheid en vrienden. wij volgen geen etiquette, wij volgen ons gevoel. vooral geen gedoe. &quot;let&#039;s roast some more stuff&quot; welkom bij roast bar h
+
+[199] De Beren | restaurant / burger;chicken;grill | Hortusplein 3, Haarlem
+  Keywords: gezin
+  Fragment: dag : 11.30 - 22.00 uur dagmenu&#39;s de dagmenu’s zijn er weer! heb je enorme trek? wil je weer eens uitgebreid bijpraten met vrienden? of gewoon behoefte aan een makkelijke, gezellige avond met het gezin? dan ben je bij ons op de juiste plek. maandag en dinsdag schuif je voor €22,50 p.p. bij ons aan voor onbeperkt spareribs. woensdag en donderdag kun je bij ons onbeperkt genieten van kip-, varke
+
+[207] 't Teylertje | cafe | onbekend
+  Keywords: kinderen, kids
+  Fragment: dagbesteding bieden. ook zij geven u van woensdag tot en met zondag een warm welkom. krantje lezen bij de koffie? deze liggen voor u klaar! een zakelijke lunch of een broodje eten met vrienden of de kinderen, een glas wijn na bezoek aan de stad of het teylers museum, alles is bij ons mogelijk. zo gauw het zonnetje schijnt kunt u heerlijk op ons intieme terras genieten van de goede dingen des leven
+
+[210] De Volkslust | restaurant | Kruisweg 67, Haarlem
+  Keywords: kinderen, baby
+  Fragment: en we hebben een onvergetelijke dag gehad, alles was tot in de puntjes geregeld. eerst koffie met wat lekkers, dat was inderdaad erg lekker. op de boot lekkere hapjes en drankjes, mooie rondvaart. de kinderen aan het roer. was super gezellig en goed geregeld. daarna in de volkslust een heerlijk diner. voor ons onvergetelijk. super gastvrij en iedereen even vriendelijk. dank jullie wel. ... --> fra
+
+[212] Jippies catcafe | cafe | Keizerstraat 10, Haarlem
+  Keywords: kinderen
+  Fragment: jippies kattencafe in haarlem | noord-holland --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> --> skip to content home over ons onze katten kinderen waar vind je ons? menu high tea reserveren media faq contact login openingsdagen maandag gesloten dinsdag 10.00 &#8211; 16.00 uur woensdag 10.00 &#8211; 16.00 uur donderdag gesloten vrijdag 10.00 &#8211; 16.00 uur zaterdag 10.00 &#8211; 17
+
+[232] IKEA Restaurant | restaurant / breakfast;brunch;sandwich;european;swedish | onbekend
+  Keywords: speelruimte, speelplek, kinderen, gezin, family, gezinnen, kindermenu, kinderstoel, kinderstoelen, baby
+  Fragment: derstaande link ikea for business direct een afspraak maken? klik op de onderstaande link afspraak inplannen ikea haarlem heeft speciaal voor de allerkleinsten: babyverzorgingsruimtes kinderwagentjes speelruimtes door de hele winkel småland, een leuke speelplek voor kinderen een speurtocht door de afdeling woonaccessoires (begane grond) een speciaal kindermenu , babyvoeding, kinderstoelen en een m
+
+[233] Halal Fried Chicken | fast_food / chicken | Californiëplein 140, Haarlem
+  Keywords: kids, gezin, family
+  Fragment: e brengen. € 55.80 combo's hfc special 1 beef burger, 1 kipstuk 3 spicy wings, 2 tenders 1 friet en 1 frisdrank € 19.50 2/1 box 3 tenders 5 nuggets € 8.30 chicken combo 1 kipstuk 3 spicy wings € 7.50 kids menu 1 small beef burger of 4 nuggets 1 kleine frietjes 1 drankje 1 saus 1 speeltje € 7.50 fried chicken spicy wings (4 stuks) geniet van 4 spicy wings, heerlijk knapperig en doordrenkt met pitti
+
+[243] ti bisous crêpes boutique | restaurant / french | Korte Houtstraat 4, Haarlem
+  Keywords: family
+  Fragment: close at the end of july. it breaks my heart to share this with you, just as it did to tell my amazing, loyal team. ❤️ ti bisou was more than a dream — it became a strong brand, a reference point, a family. born from zero restaurant experience but built from scratch with a big heart, an incredible team, a loving and supporting family, faithful friends, and you, our amazing guests… and most of all:
+
+[245] Kaneda | restaurant / sushi | Andalusië 9A, Haarlem
+  Keywords: kids, family
+  Fragment: oll ( avocado, zalm, japanse mayo en furikake kruiden) € 35.00 sake & maguro box (18 stuks) 2 sake nigiri 2 maguro nigiri 4 sake maki 4 tekka maki 3 sake sashimi 3 maguro sashimi € 21.50 menu kodomo (kids) box (20 stuks) 4 sake maki 4 kappa maki 4 kani maki 4 tamago maki 4 crunch mayo roll (tempura, komkommer, japanse mayo en furikake kruiden) € 12.00 veggie box (20 stuks) 4 avocado maki 4 kappa m
+
+JSON array (17 objecten):

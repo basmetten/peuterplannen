@@ -1,0 +1,71 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[0] 't Pannenland | restaurant / pancake;regional;breakfast;brunch;diner;lunch | Vogelenzangseduinweg 4, Vogelenzang
+  Keywords: pannenkoek
+  Fragment: uter mien nieuws contact contact vacatures home historie menukaart menukaart tapbier informatie informatie kabouter mien nieuws contact contact vacatures welkom bij 't panneland smul van de heerlijke pannenkoeken, broodjes of heksensoep &#8217;t panneland is al jaren een van de geliefde plekken aan de rand van de duinen. de locatie is absoluut uniek en de sfeer bijzonder. wat is er prettiger dan n
+
+[9] Nieuw Vreeburg Bistrobar | restaurant / french | Kerkplein 16, Bloemendaal
+  Keywords: kids
+  Fragment: uw vreeburg kerkplein 16 2061 jd bloemendaal dinsdag-zondag 12:00 - 00:00 uur keuken open tot 22:00 uur 023 74 30 125 info@nieuwvreeburg.nl eten lunch soep & salade voorgerecht hoofdgerecht nagerecht kids snacks &amp; drinken mousserende wijn rosé witte wijn rode wijn bier cocktails nieuw vreeburg bistro bar bloemendaal kerkplein 16 2061 jd bloemendaal google maps privacy policy online concept &am
+
+[15] Monte Pelmo | ice_cream | Bloemendaalseweg 74a, Bloemendaal
+  Keywords: kinderen
+  Fragment: atiegeld (€ 0,00) losse oublies kinderpunt dubbel kinderhoorntje met dubbele opening — ruimte voor twee bolletjes ijs € 0,80 incl. statiegeld (€ 0,00) kinderpunt klein hoorntje, speciaal formaat voor kinderen € 0,80 incl. statiegeld (€ 0,00) lepel herbruikbare lepel, duurzaam en prettig in gebruik € 0,10 incl. statiegeld (€ 0,00) bekers handig bekertje om je ijs te serveren € 1,00 incl. statiegeld
+
+[18] Paviljoen Het Witte Huis | restaurant / pancake;diner;lunch | Zeeweg 3, Overveen
+  Keywords: kinderen, kindvriendelijk, pannenkoek
+  Fragment: en hebben wij de 3-gangen deal voor de vaste prijs van €29,50! reviews wat zeggen onze gasten? "er is een goede sfeer met een vriendelijke bediening. wij vonden het een geslaagde maaltijd met de kleinkinderen in een goed en gezellige restaurant." jos pletser google reviews "we hebben pannenkoeken gegeten met de lunch. de pannenkoeken waren erg snel aan tafel en dat vonden we heel fijn. pannenkoeke
+
+[19] Parnassia aan zee | restaurant / breakfast;burger;coffee_shop;fish;friture;international | Parnassiaweg 1, Overveen
+  Keywords: gezin
+  Fragment: end voorstel. particulier bruiloften meetings &nbsp; zakelijk&nbsp; seizoensmomenten &amp; events aan zee paasbrunch 2026 bij parnassia vier pasen 2026 bij parnassia aan zee pasen vieren met het hele gezin? dat doe je... bekijk evenement lees meer over paasbrunch 2026 bij parnassia blijf op de hoogte van het laatste nieuws van parnassia aan zee schrijf je in voor de nieuwsbrief en je bent er als e
+
+[22] De Vogelensangh | restaurant | Vogelenzangseweg 182, Vogelenzang
+  Keywords: baby
+  Fragment: j een geliefde culinaire bestemming zijn in vogelenzang. menukaart iets te vieren? wij zijn gek op feestjes! onze locatie is uitermate geschikt voor het vieren van een verjaardag, jubileum, trouwdag, babyshower, (zakelijke) borrel of een gezellig samen zijn. geniet bijvoorbeeld van onze befaamde “12 uurtjes” lunch, high tea, verrassend walking diner, op maat gemaakte borrel of een diner in de vorm
+
+[23] Loetje | restaurant / steak_house | Bloemendaalseweg 260, Overveen
+  Keywords: kindvriendelijk, gezin, kindermenu, kinderstoel
+  Fragment: servering maken kan eenvoudig en snel via onze website. is er ook een kindermenu? bij loetje denken we ook aan onze jonge gasten. voor de kleine loetjes hebben we een speciaal kindermenu met lekkere, kindvriendelijke gerechten waar ze van kunnen smullen. je kunt het volledige kindermenu hier bekijken. kan ik gratis parkeren bij loetje overveen? ja, je kunt gratis parkeren bij loetje overveen. je k
+
+[26] San Blas | restaurant / regional | Zeeweg 86, Overveen
+  Keywords: families
+  Fragment: 8220;één voor elke dag van het jaar&#8221; volgens de lokale bewoners. wil je een keertje naar de echte san blas eilanden in panama toe? check www.oceantrips.com . de eilandjes zijn bewoond door kuna families die de kokosnoten oogsten, ze leven het hele jaar buiten. 365 dagen per jaar geopend dit gevoel wilden frank en martine naar nederland halen; na jarenlang een vast gezicht te zijn geweest op 
+
+[28] Duincafé de Kennemerduinen | restaurant | Zeeweg 12, Overveen
+  Keywords: speeltuin
+  Fragment: et duincafé prive/zakelijk kennemerduin zaal prive/zakelijk andere locatie prive/zakelijk kom binnen tot rust in ons sfeervolle café of geniet van de buitenlucht op het terras. kom ravotten in de zandspeeltuin voor de deur, of neem een kijkje bij het bezoekerscentrum. naast ons café gedeelte hebben wij in de weekenden ook de beschikking over een prachtige zaal mét exclusief terras , de ideale loca
+
+[32] Republiek Bloemendaal | cafe / regional | Zeeweg 94, Overveen
+  Keywords: baby
+  Fragment: over de juiste contacten en diverse extra mogelijkheden om de gelegenheid uniek te maken. mail naar events@republiekbloemendaal.nl , dan nemen wij zo snel mogelijk contact met jou op. het houden van babyshowers, bruiloften of vrijgezellen in thema is bij ons niet mogelijk. huwelijksfeesten en pre-diners zijn wel mogelijk. neem contact op zeeweg 94 blm 1 2051ec overveen reserveringen@republiekbloem
+
+[35] Orangerie Elswout | restaurant / fine_dining | Elswoutslaan 22, Overveen
+  Keywords: kinderen, family, kindermenu
+  Fragment: zeer tevreden over de kwaliteit van de lunch, en dat vonden de gasten ook. ook de geselecteerde wijnen waren uitstekend. het personeel was zeer vriendelijke en behulpzaam. het kindermenu voor de twee kinderen werd zeer gewaardeerd. enige puntje: het aankomen van de bijzondere menu&#8217;s was soms wat rommelig/verlaat. verder heel tevreden, ik kijk terug op een geslaagd feest, ook de hulp bij het 
+
+[43] Brasserie Cheers | restaurant | onbekend
+  Keywords: speeltuin, kinderen
+  Fragment: ag 15 september sluiten wij de deuren en zit het zwemseizoen er voor dit jaar op. in 2026 hopen we je vanaf medio mei – afhankelijk van de weersomstandigheden – weer te mogen verwelkomen. op het park speeltuin de kinderen hoeven zich niet te vervelen. op ons park vind je namelijk een sportveld, jeu-de-boule banen en een speeltuin met diverse speeltoestellen. op het park fietsverhuur op ons park ku
+
+[44] Kraantje Lek | restaurant / pancake | Duinlustweg 22, Overveen
+  Keywords: speeltuin, kids, baby, pannenkoek
+  Fragment: 24 && (opensubmenu = index)" @mouseleave="window.innerwidth >= 1024 && (opensubmenu = null)"> trouwen = 1024 && (opensubmenu = index)" @mouseleave="window.innerwidth >= 1024 && (opensubmenu = null)"> speeltuin menukaart duinlustweg 22 2051 ab overveen 0235241266 contact@kraantjelek.nl bel 0235241266 kaart menukaart menu sluiten midden in de natuur, tussen strand en stad , dé oase van overveen. wel
+
+[46] Gestrand | restaurant | Zeeweg 60
+  Keywords: speeltuin, kinderen, kids, gezin
+  Fragment: ement bruiloft kerst- nieuwjaarsborrel voor kinderen spelen kinderfeestje over ons contact impressie werken bij.... duits engels nederlands menu prachtige locatie kinderactiviteiten groot terras gave speeltuin genieten &amp; spelen bij restaurant gestrand restaurant gestrand is gelegen op camping de lakens en is regulier open van eind maart tot eind oktober. het mooie open restaurant heeft prachti
+
+JSON array (14 objecten):

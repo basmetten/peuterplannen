@@ -1,0 +1,1236 @@
+[
+  {
+    "osm_id": 279803122,
+    "osm_type": "node",
+    "name": "'t Pannenland",
+    "amenity": "restaurant",
+    "lat": 52.3309016,
+    "lng": 4.5663578,
+    "address": "Vogelenzangseduinweg 4",
+    "city": "Vogelenzang",
+    "website": "https://t-panneland.nl",
+    "phone": "+31 23 584 7309",
+    "cuisine": "pancake;regional;breakfast;brunch;diner;lunch",
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "We-Mo 09:00-20:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "pannenkoek"
+      ],
+      "snippet": "uter mien nieuws contact contact vacatures home historie menukaart menukaart tapbier informatie informatie kabouter mien nieuws contact contact vacatures welkom bij 't panneland smul van de heerlijke pannenkoeken, broodjes of heksensoep &#8217;t panneland is al jaren een van de geliefde plekken aan de rand van de duinen. de locatie is absoluut uniek en de sfeer bijzonder. wat is er prettiger dan na een flinke wandeling in de amsterdamse waterleidingduinen, een 3600 ha groot natuurgebied, een gla",
+      "textLength": 1752
+    }
+  },
+  {
+    "osm_id": 885826766,
+    "osm_type": "node",
+    "name": "de Wachtkamer",
+    "amenity": "restaurant",
+    "lat": 52.3239233,
+    "lng": 4.5875168,
+    "address": null,
+    "city": null,
+    "website": "https://dewachtkamer.com/",
+    "phone": null,
+    "cuisine": "regional",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "This operation was aborted"
+    }
+  },
+  {
+    "osm_id": 1974050267,
+    "osm_type": "node",
+    "name": "Zen",
+    "amenity": "restaurant",
+    "lat": 52.3248855,
+    "lng": 4.5949555,
+    "address": "Rijksstraatweg 51",
+    "city": "Bennebroek",
+    "website": "https://www.zenrestaurant.nl/",
+    "phone": null,
+    "cuisine": "asian",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1196
+    }
+  },
+  {
+    "osm_id": 2275918683,
+    "osm_type": "node",
+    "name": "'t Eindpunt",
+    "amenity": "restaurant",
+    "lat": 52.4023521,
+    "lng": 4.5443491,
+    "address": "Zeeweg 82",
+    "city": "Overveen",
+    "website": "http://eindpunt.nl",
+    "phone": "+31 23 573 2170",
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "fetch failed"
+    }
+  },
+  {
+    "osm_id": 2275918701,
+    "osm_type": "node",
+    "name": "Blazee",
+    "amenity": "fast_food",
+    "lat": 52.4017119,
+    "lng": 4.5434717,
+    "address": "Zeeweg 96",
+    "city": "Overveen",
+    "website": "https://blazee.nl",
+    "phone": "+31 23 583 5069",
+    "cuisine": "regional",
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": "Mo-Su 10:00-20:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1101
+    }
+  },
+  {
+    "osm_id": 2714787985,
+    "osm_type": "node",
+    "name": "STACH",
+    "amenity": "restaurant",
+    "lat": 52.3880221,
+    "lng": 4.6075453,
+    "address": "Zandvoorterpad 1",
+    "city": "Overveen",
+    "website": "https://stach-food.nl/",
+    "phone": "+31 23 737 0024",
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "Mo-Sa 08:00-18:00; Su 09:00-18:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 5441
+    }
+  },
+  {
+    "osm_id": 2714789144,
+    "osm_type": "node",
+    "name": "Borski",
+    "amenity": "restaurant",
+    "lat": 52.3878071,
+    "lng": 4.6090181,
+    "address": "Zijlweg 22",
+    "city": "Overveen",
+    "website": "https://houseofborski.com/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 16:00-00:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1984
+    }
+  },
+  {
+    "osm_id": 2714790044,
+    "osm_type": "node",
+    "name": "Nolita",
+    "amenity": "restaurant",
+    "lat": 52.3885656,
+    "lng": 4.6081968,
+    "address": "Bloemendaalseweg 333",
+    "city": "Overveen",
+    "website": "https://nolita.nl/overveen/",
+    "phone": "+31 23 576 8062",
+    "cuisine": "pizza",
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "Tu-Su 17:00-21:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 3264
+    }
+  },
+  {
+    "osm_id": 2720743532,
+    "osm_type": "node",
+    "name": "Locael",
+    "amenity": "restaurant",
+    "lat": 52.4011149,
+    "lng": 4.616778,
+    "address": "Bloemendaalseweg 141",
+    "city": "Bloemendaal",
+    "website": "https://www.locael.nl/bloemendaal",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 4030
+    }
+  },
+  {
+    "osm_id": 2761671987,
+    "osm_type": "node",
+    "name": "Nieuw Vreeburg Bistrobar",
+    "amenity": "restaurant",
+    "lat": 52.4067953,
+    "lng": 4.6223373,
+    "address": "Kerkplein 16",
+    "city": "Bloemendaal",
+    "website": "https://nieuwvreeburg.nl/",
+    "phone": "+31 23 743 0125",
+    "cuisine": "french",
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "Su-Th 11:00-24:00; Tu off; Fr-Sa 11:00-01:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kids"
+      ],
+      "snippet": "uw vreeburg kerkplein 16 2061 jd bloemendaal dinsdag-zondag 12:00 - 00:00 uur keuken open tot 22:00 uur 023 74 30 125 info@nieuwvreeburg.nl eten lunch soep & salade voorgerecht hoofdgerecht nagerecht kids snacks &amp; drinken mousserende wijn rosé witte wijn rode wijn bier cocktails nieuw vreeburg bistro bar bloemendaal kerkplein 16 2061 jd bloemendaal google maps privacy policy online concept &amp; webcontrol © caprea media",
+      "textLength": 3774
+    }
+  },
+  {
+    "osm_id": 2761672082,
+    "osm_type": "node",
+    "name": "Éclusier",
+    "amenity": "restaurant",
+    "lat": 52.4067322,
+    "lng": 4.622309,
+    "address": "Kerkplein 16a",
+    "city": "Bloemendaal",
+    "website": "https://restauranteclusier.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 5874
+    }
+  },
+  {
+    "osm_id": 2761672878,
+    "osm_type": "node",
+    "name": "Picobello",
+    "amenity": "fast_food",
+    "lat": 52.4050428,
+    "lng": 4.6209567,
+    "address": "Bloemendaalseweg 24",
+    "city": "Bloemendaal",
+    "website": "https://snackbarenlunchroompicobello.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 12
+    }
+  },
+  {
+    "osm_id": 2761673866,
+    "osm_type": "node",
+    "name": "La Capaninna",
+    "amenity": "restaurant",
+    "lat": 52.4049612,
+    "lng": 4.6208553,
+    "address": "Bloemendaalseweg 28",
+    "city": "Bloemendaal",
+    "website": "http://www.lacapannina.nl/",
+    "phone": null,
+    "cuisine": "italian",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1104
+    }
+  },
+  {
+    "osm_id": 2761674237,
+    "osm_type": "node",
+    "name": "Noor",
+    "amenity": "restaurant",
+    "lat": 52.405127,
+    "lng": 4.6214696,
+    "address": "Bloemendaalseweg 35",
+    "city": "Bloemendaal",
+    "website": "https://www.restaurantnoor.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 737
+    }
+  },
+  {
+    "osm_id": 2761676733,
+    "osm_type": "node",
+    "name": "Ron Gastrobar Indonesia",
+    "amenity": "restaurant",
+    "lat": 52.4100567,
+    "lng": 4.6042622,
+    "address": "Hoge Duin en Daalseweg 6",
+    "city": "Bloemendaal",
+    "website": "https://rongastrobar.nl/restaurants/ron-gastrobar-indonesia-bloemendaal",
+    "phone": "+31 23 888 23 03",
+    "cuisine": "indonesian",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "We 17:00-22:30; Th-Su 11:00-22:30",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 7346
+    }
+  },
+  {
+    "osm_id": 2761677597,
+    "osm_type": "node",
+    "name": "Monte Pelmo",
+    "amenity": "ice_cream",
+    "lat": 52.4039474,
+    "lng": 4.6197413,
+    "address": "Bloemendaalseweg 74a",
+    "city": "Bloemendaal",
+    "website": "https://www.monte-pelmo-bloemendaal.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kinderen"
+      ],
+      "snippet": "atiegeld (€ 0,00) losse oublies kinderpunt dubbel kinderhoorntje met dubbele opening — ruimte voor twee bolletjes ijs € 0,80 incl. statiegeld (€ 0,00) kinderpunt klein hoorntje, speciaal formaat voor kinderen € 0,80 incl. statiegeld (€ 0,00) lepel herbruikbare lepel, duurzaam en prettig in gebruik € 0,10 incl. statiegeld (€ 0,00) bekers handig bekertje om je ijs te serveren € 1,00 incl. statiegeld (€ 0,00) choco oublie € 1,00 incl. statiegeld (€ 0,00) slagroomwafel 2x 2x oubliewafel om je eigen",
+      "textLength": 4111
+    }
+  },
+  {
+    "osm_id": 2761947046,
+    "osm_type": "node",
+    "name": "IJssalon Luciano",
+    "amenity": "ice_cream",
+    "lat": 52.3910915,
+    "lng": 4.6096068,
+    "address": "Bloemendaalseweg 267",
+    "city": "Overveen",
+    "website": "https://ijssalonluciano.nl/vestigingen/overveen",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Fr 12:00-21:00; Sa 11:00-21:00; Su 12:00-21:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 3887
+    }
+  },
+  {
+    "osm_id": 2761947105,
+    "osm_type": "node",
+    "name": "Tong Ah",
+    "amenity": "restaurant",
+    "lat": 52.3910372,
+    "lng": 4.6096274,
+    "address": "Bloemendaalseweg 271",
+    "city": "Overveen",
+    "website": "https://www.restaurant-tongah.nl/",
+    "phone": null,
+    "cuisine": "chinese",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Tu-Su 16:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 743
+    }
+  },
+  {
+    "osm_id": 2761947436,
+    "osm_type": "node",
+    "name": "Paviljoen Het Witte Huis",
+    "amenity": "restaurant",
+    "lat": 52.3928356,
+    "lng": 4.6001443,
+    "address": "Zeeweg 3",
+    "city": "Overveen",
+    "website": "https://www.paviljoenhetwittehuis.nl",
+    "phone": "+31 23 888 5886",
+    "cuisine": "pancake;diner;lunch",
+    "outdoor_seating": null,
+    "wheelchair": "yes",
+    "opening_hours": "Mo-Su 12:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kinderen",
+        "kindvriendelijk",
+        "pannenkoek"
+      ],
+      "snippet": "en hebben wij de 3-gangen deal voor de vaste prijs van €29,50! reviews wat zeggen onze gasten? \"er is een goede sfeer met een vriendelijke bediening. wij vonden het een geslaagde maaltijd met de kleinkinderen in een goed en gezellige restaurant.\" jos pletser google reviews \"we hebben pannenkoeken gegeten met de lunch. de pannenkoeken waren erg snel aan tafel en dat vonden we heel fijn. pannenkoeken voor kinderen lijken ook minder dik. bovendien was de kaas krokant gebakken en erg lekker! zeker e",
+      "textLength": 4138
+    }
+  },
+  {
+    "osm_id": 2762213448,
+    "osm_type": "node",
+    "name": "Parnassia aan zee",
+    "amenity": "restaurant",
+    "lat": 52.4182454,
+    "lng": 4.5542645,
+    "address": "Parnassiaweg 1",
+    "city": "Overveen",
+    "website": "https://www.parnassiaaanzee.nl/",
+    "phone": "+31 23 573 2140",
+    "cuisine": "breakfast;burger;coffee_shop;fish;friture;international",
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "Mo-Su,PH 09:00-sunset",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "gezin"
+      ],
+      "snippet": "end voorstel. particulier bruiloften meetings &nbsp; zakelijk&nbsp; seizoensmomenten &amp; events aan zee paasbrunch 2026 bij parnassia vier pasen 2026 bij parnassia aan zee pasen vieren met het hele gezin? dat doe je... bekijk evenement lees meer over paasbrunch 2026 bij parnassia blijf op de hoogte van het laatste nieuws van parnassia aan zee schrijf je in voor de nieuwsbrief en je bent er als eerste bij:) e-mailadres houd me op de hoogte informatie hondenstrand parkeren fietsroutes wandelrout",
+      "textLength": 4948
+    }
+  },
+  {
+    "osm_id": 2762358654,
+    "osm_type": "node",
+    "name": "Mio's Tea & Lunchroom",
+    "amenity": "cafe",
+    "lat": 52.3215632,
+    "lng": 4.6004688,
+    "address": "Bennebroekerlaan 77",
+    "city": "Bennebroek",
+    "website": "http://www.miotearoom.nl",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "fetch failed"
+    }
+  },
+  {
+    "osm_id": 2762475369,
+    "osm_type": "node",
+    "name": "Buitenplaats Plantage",
+    "amenity": "restaurant",
+    "lat": 52.3299585,
+    "lng": 4.5821838,
+    "address": null,
+    "city": null,
+    "website": "https://www.buitenplaatsplantage.nl/",
+    "phone": "+31 85 999 11 21",
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "closed \"until January 2026\"",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 3236
+    }
+  },
+  {
+    "osm_id": 2762480758,
+    "osm_type": "node",
+    "name": "De Vogelensangh",
+    "amenity": "restaurant",
+    "lat": 52.3310925,
+    "lng": 4.579423,
+    "address": "Vogelenzangseweg 182",
+    "city": "Vogelenzang",
+    "website": "https://www.devogelensangh.nl/",
+    "phone": "+31 23 743 2712",
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 09:00-21:30",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "baby"
+      ],
+      "snippet": "j een geliefde culinaire bestemming zijn in vogelenzang. menukaart iets te vieren? wij zijn gek op feestjes! onze locatie is uitermate geschikt voor het vieren van een verjaardag, jubileum, trouwdag, babyshower, (zakelijke) borrel of een gezellig samen zijn. geniet bijvoorbeeld van onze befaamde “12 uurtjes” lunch, high tea, verrassend walking diner, op maat gemaakte borrel of een diner in de vorm van een keuzemenu of buffet. onze verschillende ruimtes bieden diverse mogelijkheden. onze serre he",
+      "textLength": 4105
+    }
+  },
+  {
+    "osm_id": 3395396183,
+    "osm_type": "node",
+    "name": "Loetje",
+    "amenity": "restaurant",
+    "lat": 52.3884439,
+    "lng": 4.6074288,
+    "address": "Bloemendaalseweg 260",
+    "city": "Overveen",
+    "website": "https://www.loetje.nl/locaties/overveen/",
+    "phone": "+31 23 527 7457",
+    "cuisine": "steak_house",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-We,Su 10:00-21:30; Th-Sa 10:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kindvriendelijk",
+        "gezin",
+        "kindermenu",
+        "kinderstoel"
+      ],
+      "snippet": "servering maken kan eenvoudig en snel via onze website. is er ook een kindermenu? bij loetje denken we ook aan onze jonge gasten. voor de kleine loetjes hebben we een speciaal kindermenu met lekkere, kindvriendelijke gerechten waar ze van kunnen smullen. je kunt het volledige kindermenu hier bekijken. kan ik gratis parkeren bij loetje overveen? ja, je kunt gratis parkeren bij loetje overveen. je kunt terecht op ons naastgelegen parkeerterrein. hier parkeer je zonder kosten en sta je direct naast",
+      "textLength": 10831
+    }
+  },
+  {
+    "osm_id": 4141755704,
+    "osm_type": "node",
+    "name": "Bon Vivant!",
+    "amenity": "restaurant",
+    "lat": 52.3229826,
+    "lng": 4.5979532,
+    "address": null,
+    "city": null,
+    "website": "http://www.grandcafebonvivant.com",
+    "phone": null,
+    "cuisine": "french",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "fetch failed"
+    }
+  },
+  {
+    "osm_id": 4142662125,
+    "osm_type": "node",
+    "name": "Alexandria Bennebroek",
+    "amenity": "fast_food",
+    "lat": 52.3256259,
+    "lng": 4.5956056,
+    "address": null,
+    "city": null,
+    "website": "https://www.alexandria-bennebroek.nl/",
+    "phone": null,
+    "cuisine": "kebab",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "fetch failed"
+    }
+  },
+  {
+    "osm_id": 4949575295,
+    "osm_type": "node",
+    "name": "San Blas",
+    "amenity": "restaurant",
+    "lat": 52.4032979,
+    "lng": 4.5437092,
+    "address": "Zeeweg 86",
+    "city": "Overveen",
+    "website": "https://www.sanblas.nl",
+    "phone": "+31 23 573 2172",
+    "cuisine": "regional",
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": "Mo-Fr 10:00-22:00; Sa, Su 09:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "families"
+      ],
+      "snippet": "8220;één voor elke dag van het jaar&#8221; volgens de lokale bewoners. wil je een keertje naar de echte san blas eilanden in panama toe? check www.oceantrips.com . de eilandjes zijn bewoond door kuna families die de kokosnoten oogsten, ze leven het hele jaar buiten. 365 dagen per jaar geopend dit gevoel wilden frank en martine naar nederland halen; na jarenlang een vast gezicht te zijn geweest op bloemendaal aan zee sluit beachclub lido zijn deuren. met de opening van san blas is een nieuw hoofd",
+      "textLength": 2056
+    }
+  },
+  {
+    "osm_id": 5141212059,
+    "osm_type": "node",
+    "name": "Gasterij Leyduin",
+    "amenity": "restaurant",
+    "lat": 52.3421953,
+    "lng": 4.5945665,
+    "address": null,
+    "city": null,
+    "website": "http://www.gasterijleyduin.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 4154
+    }
+  },
+  {
+    "osm_id": 5501090924,
+    "osm_type": "node",
+    "name": "Duincafé de Kennemerduinen",
+    "amenity": "restaurant",
+    "lat": 52.396172,
+    "lng": 4.5923119,
+    "address": "Zeeweg 12",
+    "city": "Overveen",
+    "website": "https://www.duincafedekennemerduinen.nl/",
+    "phone": "+31 23 525 6822",
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": "yes",
+    "opening_hours": "Mo-Su 09:00-17:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "speeltuin"
+      ],
+      "snippet": "et duincafé prive/zakelijk kennemerduin zaal prive/zakelijk andere locatie prive/zakelijk kom binnen tot rust in ons sfeervolle café of geniet van de buitenlucht op het terras. kom ravotten in de zandspeeltuin voor de deur, of neem een kijkje bij het bezoekerscentrum. naast ons café gedeelte hebben wij in de weekenden ook de beschikking over een prachtige zaal mét exclusief terras , de ideale locatie voor al je speciale gelegenheden. met karmeliet catering brengen we de smaak van het duincafé bi",
+      "textLength": 2017
+    }
+  },
+  {
+    "osm_id": 5569757238,
+    "osm_type": "node",
+    "name": "Lokaal 72",
+    "amenity": "restaurant",
+    "lat": 52.3913632,
+    "lng": 4.609615,
+    "address": "Bloemendaalseweg 257",
+    "city": "Overveen",
+    "website": "https://lokaal72overveen.nl/",
+    "phone": null,
+    "cuisine": "fries;burger",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 486
+    }
+  },
+  {
+    "osm_id": 5569757300,
+    "osm_type": "node",
+    "name": "Toko Vonn",
+    "amenity": "restaurant",
+    "lat": 52.4024452,
+    "lng": 4.6181656,
+    "address": "Bloemendaalseweg 112",
+    "city": "Bloemendaal",
+    "website": "https://www.tokovonn.nl/",
+    "phone": null,
+    "cuisine": "indonesian",
+    "outdoor_seating": "no",
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 16:00-19:30",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 554
+    }
+  },
+  {
+    "osm_id": 7124541137,
+    "osm_type": "node",
+    "name": "Renato's",
+    "amenity": "restaurant",
+    "lat": 52.4013953,
+    "lng": 4.5434583,
+    "address": null,
+    "city": null,
+    "website": "https://www.renatos.nl/nl/renatos-bloemendaal-aan-zee/",
+    "phone": "+31 23 207 1550",
+    "cuisine": "italian",
+    "outdoor_seating": "terrace",
+    "wheelchair": "limited",
+    "opening_hours": "Mo-Su 12:00-24:00",
+    "scrape": {
+      "success": false,
+      "error": "HTTP 404"
+    }
+  },
+  {
+    "osm_id": 7315951783,
+    "osm_type": "node",
+    "name": "Republiek Bloemendaal",
+    "amenity": "cafe",
+    "lat": 52.4013046,
+    "lng": 4.5425025,
+    "address": "Zeeweg 94",
+    "city": "Overveen",
+    "website": "https://www.republiekbloemendaal.nl",
+    "phone": "+31 23 573 0730",
+    "cuisine": "regional",
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 09:00-23:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "baby"
+      ],
+      "snippet": "over de juiste contacten en diverse extra mogelijkheden om de gelegenheid uniek te maken. mail naar events@republiekbloemendaal.nl , dan nemen wij zo snel mogelijk contact met jou op. het houden van babyshowers, bruiloften of vrijgezellen in thema is bij ons niet mogelijk. huwelijksfeesten en pre-diners zijn wel mogelijk. neem contact op zeeweg 94 blm 1 2051ec overveen reserveringen@republiekbloemendaal.nl 023-5730730 openingstijden maandag: 09:00 &#8211; 22:30 dinsdag: 09:00 &#8211; 22:30 woen",
+      "textLength": 2399
+    }
+  },
+  {
+    "osm_id": 9760950355,
+    "osm_type": "node",
+    "name": "Bronze Beach",
+    "amenity": "restaurant",
+    "lat": 52.4050157,
+    "lng": 4.5448128,
+    "address": "Zeeweg 86B",
+    "city": "Overveen",
+    "website": "https://bronzebeach.nl/",
+    "phone": "+31 6 38372511",
+    "cuisine": "international",
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 10:00-21:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1029
+    }
+  },
+  {
+    "osm_id": 9763883629,
+    "osm_type": "node",
+    "name": "Braserie",
+    "amenity": "restaurant",
+    "lat": 52.4009083,
+    "lng": 4.5449478,
+    "address": "Zeeweg 97",
+    "city": "Overveen",
+    "website": "https://www.qurios.nl/vakantie-bloemendaal-aan-zee/brasserie",
+    "phone": "+31 23 205 0213",
+    "cuisine": "pizza;burger",
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 13:30-21:00",
+    "scrape": {
+      "success": false,
+      "error": "This operation was aborted"
+    }
+  },
+  {
+    "osm_id": 13022902176,
+    "osm_type": "node",
+    "name": "Orangerie Elswout",
+    "amenity": "restaurant",
+    "lat": 52.3783529,
+    "lng": 4.5970789,
+    "address": "Elswoutslaan 22",
+    "city": "Overveen",
+    "website": "https://www.orangerie-elswout.nl/",
+    "phone": "+31 23 524 2639",
+    "cuisine": "fine_dining",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Su 10:30-17:30",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kinderen",
+        "family",
+        "kindermenu"
+      ],
+      "snippet": "zeer tevreden over de kwaliteit van de lunch, en dat vonden de gasten ook. ook de geselecteerde wijnen waren uitstekend. het personeel was zeer vriendelijke en behulpzaam. het kindermenu voor de twee kinderen werd zeer gewaardeerd. enige puntje: het aankomen van de bijzondere menu&#8217;s was soms wat rommelig/verlaat. verder heel tevreden, ik kijk terug op een geslaagd feest, ook de hulp bij het wegbrengen van de cadeautjes werd gewaardeerd. frans willem lantink elswout is een prachtige locatie",
+      "textLength": 50000
+    }
+  },
+  {
+    "osm_id": 13198544899,
+    "osm_type": "node",
+    "name": "De Bokkedoorns",
+    "amenity": "restaurant",
+    "lat": 52.3982515,
+    "lng": 4.5662127,
+    "address": "Zeeweg 53",
+    "city": "Overveen",
+    "website": "https://www.bokkedoorns.nl",
+    "phone": "+31 23 526 3600",
+    "cuisine": "french",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Tu-Su 12:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 3035
+    }
+  },
+  {
+    "osm_id": 52487719,
+    "osm_type": "way",
+    "name": "'t Pannekoekenhuisje",
+    "amenity": "restaurant",
+    "lat": 52.4051503,
+    "lng": 4.6130325,
+    "address": "Mollaan 2",
+    "city": "Bloemendaal",
+    "website": "http://www.kidshen.nl",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": "no",
+    "opening_hours": "Fr-Su 12:00-21:00",
+    "scrape": {
+      "success": false,
+      "error": "fetch failed"
+    }
+  },
+  {
+    "osm_id": 52488567,
+    "osm_type": "way",
+    "name": "Bartje Bloemendaal",
+    "amenity": "restaurant",
+    "lat": 52.4132545,
+    "lng": 4.6162126,
+    "address": "Brederodelaan 80",
+    "city": "2061JS",
+    "website": "https://bartjebloemendaal.nl",
+    "phone": "+31 23 526 1505",
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": "limited",
+    "opening_hours": "10:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 3212
+    }
+  },
+  {
+    "osm_id": 157415661,
+    "osm_type": "way",
+    "name": "Santos",
+    "amenity": "restaurant",
+    "lat": 52.408988,
+    "lng": 4.6066527,
+    "address": "Hoge Duin en Daalseweg 5",
+    "city": "Bloemendaal",
+    "website": "https://www.santos-bloemendaal.nl",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1736
+    }
+  },
+  {
+    "osm_id": 271062253,
+    "osm_type": "way",
+    "name": "Woodstock '69",
+    "amenity": "restaurant",
+    "lat": 52.4055712,
+    "lng": 4.5451557,
+    "address": "Zeeweg 94-BL10",
+    "city": "Overveen",
+    "website": "https://woodstock69.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 5102
+    }
+  },
+  {
+    "osm_id": 271062258,
+    "osm_type": "way",
+    "name": "Later Aan Zee",
+    "amenity": "restaurant",
+    "lat": 52.4038132,
+    "lng": 4.5440787,
+    "address": "Zeeweg 94-BLM7",
+    "city": "Overveen",
+    "website": "https://www.lateraanzee.nl/",
+    "phone": "+31 6 15547500",
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 11:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 2619
+    }
+  },
+  {
+    "osm_id": 271062259,
+    "osm_type": "way",
+    "name": "Fuel",
+    "amenity": "restaurant",
+    "lat": 52.404481,
+    "lng": 4.5444876,
+    "address": "Zeeweg 94-BLM8",
+    "city": "Overveen",
+    "website": "https://www.beachclubfuel.nl",
+    "phone": "+31 23 573 6433",
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 10:00-21:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1385
+    }
+  },
+  {
+    "osm_id": 271296195,
+    "osm_type": "way",
+    "name": "Brasserie Cheers",
+    "amenity": "restaurant",
+    "lat": 52.3211874,
+    "lng": 4.5630688,
+    "address": null,
+    "city": null,
+    "website": "https://www.marinaparken.nl/residentie-bloemendaal/faciliteiten/brasserie-cheers",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "speeltuin",
+        "kinderen"
+      ],
+      "snippet": "ag 15 september sluiten wij de deuren en zit het zwemseizoen er voor dit jaar op. in 2026 hopen we je vanaf medio mei – afhankelijk van de weersomstandigheden – weer te mogen verwelkomen. op het park speeltuin de kinderen hoeven zich niet te vervelen. op ons park vind je namelijk een sportveld, jeu-de-boule banen en een speeltuin met diverse speeltoestellen. op het park fietsverhuur op ons park kun je terecht voor de fietsverhuur. verken het prachtige duinlandschap of fiets naar nabijgelegen ste",
+      "textLength": 6964
+    }
+  },
+  {
+    "osm_id": 307634870,
+    "osm_type": "way",
+    "name": "Kraantje Lek",
+    "amenity": "restaurant",
+    "lat": 52.3827993,
+    "lng": 4.591455,
+    "address": "Duinlustweg 22",
+    "city": "Overveen",
+    "website": "https://www.kraantjelek.nl",
+    "phone": "+31 23 524 1266",
+    "cuisine": "pancake",
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 09:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "speeltuin",
+        "kids",
+        "baby",
+        "pannenkoek"
+      ],
+      "snippet": "24 && (opensubmenu = index)\" @mouseleave=\"window.innerwidth >= 1024 && (opensubmenu = null)\"> trouwen = 1024 && (opensubmenu = index)\" @mouseleave=\"window.innerwidth >= 1024 && (opensubmenu = null)\"> speeltuin menukaart duinlustweg 22 2051 ab overveen 0235241266 contact@kraantjelek.nl bel 0235241266 kaart menukaart menu sluiten midden in de natuur, tussen strand en stad , dé oase van overveen. welkom sinds 1739 welkom bij kraantje lek , de iconische herberg aan de rand van de duinen bij haarlem.",
+      "textLength": 4850
+    }
+  },
+  {
+    "osm_id": 307653623,
+    "osm_type": "way",
+    "name": "Brouwerskolkje",
+    "amenity": "restaurant",
+    "lat": 52.3887691,
+    "lng": 4.5982429,
+    "address": "Brouwerskolkweg 5",
+    "city": "Overveen",
+    "website": "http://www.restaurantbrouwerskolkje.nl",
+    "phone": "+31 23 521 9134",
+    "cuisine": "regional",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "fetch failed"
+    }
+  },
+  {
+    "osm_id": 582355124,
+    "osm_type": "way",
+    "name": "Gestrand",
+    "amenity": "restaurant",
+    "lat": 52.4079772,
+    "lng": 4.5535739,
+    "address": "Zeeweg 60",
+    "city": null,
+    "website": "https://restaurantgestrand.nl",
+    "phone": "+31 6 13130605",
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "Mo-Th 08:00-20:00; Fr-Su 08:00-21:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "speeltuin",
+        "kinderen",
+        "kids",
+        "gezin"
+      ],
+      "snippet": "ement bruiloft kerst- nieuwjaarsborrel voor kinderen spelen kinderfeestje over ons contact impressie werken bij.... duits engels nederlands menu prachtige locatie kinderactiviteiten groot terras gave speeltuin genieten &amp; spelen bij restaurant gestrand restaurant gestrand is gelegen op camping de lakens en is regulier open van eind maart tot eind oktober. het mooie open restaurant heeft prachtig uitzicht &nbsp;op het duingebied. vanaf het&nbsp; terras &nbsp;kijk je uit over de&nbsp; gave spee",
+      "textLength": 3515
+    }
+  },
+  {
+    "osm_id": 885813778,
+    "osm_type": "node",
+    "name": "Dragon Garden",
+    "amenity": "restaurant",
+    "lat": 52.3214051,
+    "lng": 4.6007422,
+    "address": "Bennebroekerlaan 85",
+    "city": "Bennebroek",
+    "website": null,
+    "phone": null,
+    "cuisine": "chinese",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 1324281859,
+    "osm_type": "node",
+    "name": "Klein Centraal",
+    "amenity": "restaurant",
+    "lat": 52.3909807,
+    "lng": 4.6077871,
+    "address": "Tetterodeweg 4",
+    "city": "Overveen",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "We-Mo 10:00-22:00",
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2268034149,
+    "osm_type": "node",
+    "name": "Bennie's Burger",
+    "amenity": "restaurant",
+    "lat": 52.3259038,
+    "lng": 4.5980631,
+    "address": null,
+    "city": null,
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": "yes",
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2761674383,
+    "osm_type": "node",
+    "name": "Fleurie",
+    "amenity": "restaurant",
+    "lat": 52.4057296,
+    "lng": 4.6215327,
+    "address": "Bloemendaalseweg 4",
+    "city": "Bloemendaal",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2762290709,
+    "osm_type": "node",
+    "name": "De Oase",
+    "amenity": "restaurant",
+    "lat": 52.3461452,
+    "lng": 4.5830529,
+    "address": "1e Leijweg 9",
+    "city": "Vogelenzang",
+    "website": null,
+    "phone": null,
+    "cuisine": "regional",
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 4141755712,
+    "osm_type": "node",
+    "name": "Meerburcht",
+    "amenity": "fast_food",
+    "lat": 52.3213047,
+    "lng": 4.6009365,
+    "address": null,
+    "city": null,
+    "website": null,
+    "phone": null,
+    "cuisine": "burger",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 4143903197,
+    "osm_type": "node",
+    "name": "Centenbrug",
+    "amenity": "fast_food",
+    "lat": 52.3262887,
+    "lng": 4.5905417,
+    "address": null,
+    "city": null,
+    "website": null,
+    "phone": null,
+    "cuisine": "burger",
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 7796425785,
+    "osm_type": "node",
+    "name": "Mifune",
+    "amenity": "restaurant",
+    "lat": 52.4085739,
+    "lng": 4.5470842,
+    "address": null,
+    "city": null,
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  }
+]

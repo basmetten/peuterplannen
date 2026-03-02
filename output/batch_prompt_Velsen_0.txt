@@ -1,0 +1,55 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[2] Fontana | restaurant / chinese | Velserbroekse Dreef 1, Velserbroek
+  Keywords: kindermenu
+  Fragment: ompleet gerechten mihoen of chinese bami gerechten eiergerechten groentegerechten vleesgerechten kip gerechten ossenhaas gerechten chinese garnalen gerechten indische gerechten vegetarische gerechten kindermenu's diverse rijsttafels speciale authentieke chinese schotels szechuan keuken mini menu's met witte rijst dranken samen tegen verspilling ik wil geen sambal ontvangen bij mijn bestelling € 0,
+
+[5] Pannenkoekenboerderij Onder De Platanen | restaurant / pancake | Genieweg 50B, Velsen-Zuid
+  Keywords: pannenkoek
+  Fragment: of u kunt bellen naar (023)539-6059 over ons bekijk het menu wie zijn wij? als 15 jarige jongetje wilde vilmar leraar worden en stephan wilde gewoon lekker werken. naarmate wij ouder werden en bij de pannenkoekenboerderij onder de platanen gingen werken, raakten we &ldquo;verliefd&rsquo;&rsquo; op odp. de dag dat vilmar begon bij odp stelde hij zijn dromen bij, want de horeca had zijn hart gestole
+
+[10] Paviljoen Nova Zembla | restaurant | Kennemermeer 25, IJmuiden
+  Keywords: gezin
+  Fragment: verbeteren. dit doen we al meer dan veertig jaar. familie & vrienden of het nu gaat om een weekend naar de ardennen met vrienden, een skivakantie met familie of een dagje naar het forteiland met het gezin. teampbn zorgt ervoor dat iedereen op zijn eigen manier wordt uitgedaagd. kerst events ideeën voor een onvergetelijk jaarafsluiting locaties forteiland ijmuiden paviljoen nova zembla ardennen 360
+
+[17] Duin- en Kruidberg | restaurant / fine_dining | Duin- en Kruidbergerweg 60, Santpoort-Noord
+  Keywords: baby
+  Fragment: uin &amp; kruidberg van dichtbij te beleven. u kunt genieten van deze feestelijke lunch voor 65 euro per persoon. reserveren kan eenvoudig via de knop hieronder. reserveren menu vieren&nbsp; jubilea, babyshower, priv&eacute;diner en meer...&nbsp; het leven zit vol mooie momenten die het waard zijn om gevierd te worden. of het nu gaat om een jubileum, verjaardag, bruiloft, babyshower of een intiem 
+
+[20] Mr. Shi | restaurant / chinese;burger | Zeewijkplein 161;127, IJmuiden
+  Keywords: kindermenu
+  Fragment: witte rijst) kip gerechten (met witte rijst) garnalen gerechten (met witte rijst) combinatie gerechten speciaal aanbevolen vegetarische schotels een persoon menu frites snacks kippenboutje uitsmijter kindermenu plate service broodjes milkshake frisdranken warme dranken dranken dessert sauzen bubble tea meer &nbsp;&nbsp;actiecode check code korting: &euro; 0,00 de korting wordt automatisch verreken
+
+[22] Rhodos | restaurant / greek | Plein 1945 4, IJmuiden
+  Keywords: kindermenu
+  Fragment: urant heeft een uitgebreide menukaart met traditionele gerechten zoals souvlaki, gyros, moussaka en tzatziki, maar biedt ook vegetarische en veganistische opties. daarnaast bieden ze ook een speciaal kindermenu en hebben ze een uitgebreide selectie aan griekse wijnen en dranken. 0 dagspecialiteit 0 chef 0 hoofdgerecht onze heerlijke smaken proeven in een prachtige sfeer. een onvergetelijke maaltij
+
+[27] Frederik ambachtelijke friet | restaurant / fries | Marktplein 60, IJmuiden
+  Keywords: gezin
+  Fragment: 15 incl. statiegeld (€ 0,00) grote friet zaanse mayonaise grote portie verse friet met de bekende zaanse mayonaise € 4,60 incl. statiegeld (€ 0,00) grote friet zonder € 3,80 incl. statiegeld (€ 0,00) gezinszak groot familiezak verse friet, 4x grote friet € 15,20 incl. statiegeld (€ 0,00) grote friet truffel mayonaise grote portie verse friet met truffelmayonaise van oliehoorn € 4,75 incl. statiege
+
+[28] SushiPoint | fast_food / sushi | Kennemerlaan 63, IJmuiden
+  Keywords: gezin
+  Fragment: l uw bestelling gewoon aan uw voordeur in ijmuiden en omliggende plaatsen zoals velsen noord, velsen zuid, bloemendaal en velserbroek. u bent thuis terwijl u verder werkt, ontspant of bijpraat met uw gezin of gasten. bestel uw favoriete sushi snel via onze website. sushi bezorgen – sushipoint bellen! sushi catering&nbsp;&nbsp; een goede catering komt tot leven met het serveren van diverse schotels
+
+[33] De Dolfijn | restaurant / fish | Halkade 25, IJmuiden
+  Keywords: kinderen
+  Fragment: otte resetten. a lettertype grootte vergroten. home uitagenda bezoeken avontuur bereikbaarheid &#038; parkeren city guide velsen cultuur eten &#038; drinken evenementen havens &#038; vis insider tips kinderen mindervaliden &#038; strandrolstoel natuur overnachten strand tours wandelen &#038; fietsen winkelen zeesluis ijmuiden zwemmen wonen eten &#038; drinken leren sporten winkelen werken meeting 
+
+[40] Kinko | restaurant / japanese | onbekend
+  Keywords: kids
+  Fragment: t diner* (2.5 uur) *dranken zijn niet inbegrepen. tenminste één (fris)drank consumptie per persoon verplicht. dinsdag t/m woensdag €34,95 €34,95 donderdag t/m zondag €36,95 €36,95 dinsdag t/m zondag (kids 4-10 jaar) €17,95 €17,95 feestdagen** €36,95 €36,95 **dit geldt voor oudejaarsdag, nieuwjaarsdag, valentijnsdag, pasen, koningsdag en pinksteren. voor kerst hanteren wij afwijkende tarieven. houd
+
+JSON array (10 objecten):

@@ -1,0 +1,115 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[0] McDonald's | fast_food / burger | Grote Houtstraat 75, Haarlem
+  Keywords: baby
+  Fragment: resgegevens grote houtstraat 75 grote houtstraat 75 2011 sg haarlem telefoon: 023-5314923 plan route services in dit restaurant bekijk onze services mccafé mcdelivery glutenvrije producten creditcard babyruimte myorder dichtstbijzijnde restaurants mcdonald&#039;s santpoort-noord mcdonald&#039;s haarlem casablancastraat werken bij mcdonald&#039;s haarlem grote houtstraat ben jij minstens 15 jaar en
+
+[1] Parck | restaurant / french | Frederikspark 2, Haarlem
+  Keywords: kids, kindermenu
+  Fragment: parck heeft een bistrokaart met gerechten waarin iedereen zich kan vinden. de kaart maakt het u makkelijk en biedt een uitgebreide keuze aan à la carte gerechten. dinerkaart &nbsp; lunchkaart &nbsp; kidskaart &nbsp; wijnkaart reviews mickey we enjoyed a lovely early dinner on a rainy afternoon they got busy, so it's probably wise to make a reservation for this delightful parkside location with exc
+
+[6] Delphi | restaurant / greek | Gravinnesteeg 2, Haarlem
+  Keywords: family
+  Fragment: ellenfeesten • verjaardagen • bruiloften • kerstdiners • andere privégelegenheden contact taverna delphi gravinnesteeg 2 2011 dg haarlem telefoon 023-5323914 about taverna delphi since 1980 the greek family restaurant of haarlem. vind ons adres gravinnesteeg 2 2011dg haarlem telefoonnummer 023-5323914 openingstijden maandag gesloten dinsdag &#8211; zondag 17.00 &#8211; 22.00 &nbsp; zoeken zoeken n
+
+[9] Flamboyant | restaurant / indonesian | Kleine Houtstraat 3-ZW, Haarlem
+  Keywords: kinderen, pannenkoek
+  Fragment: vegetarisch en vegan specialist bekijk menu eigenzinnig javaans vegetarisch en vegan specialist indonesisch restaurant in haarlem het restaurant is opgericht in 1991 door theo en mildred samen met de kinderen, met liefde en passie hebben zij van de naam flamboyant een begrip gemaakt in de regio haarlem en omstreken. inmiddels heeft kenneth het stokje overgenomen. niet alleen dankzij de heerlijke a
+
+[20] Loetje | restaurant / steak_house | Riviervismarkt 1, Haarlem
+  Keywords: kindvriendelijk, kids, kindermenu
+  Fragment: servering maken kan eenvoudig en snel via onze website. is er ook een kindermenu? bij loetje denken we ook aan onze jonge gasten. voor de kleine loetjes hebben we een speciaal kindermenu met lekkere, kindvriendelijke gerechten waar ze van kunnen smullen. je kunt het volledige kindermenu hier bekijken. kan ik gratis parkeren bij loetje haarlem? helaas is gratis parkeren bij loetje haarlem niet moge
+
+[26] San Lorenzo | restaurant / pizza;italian | Leidsevaart 338, Haarlem
+  Keywords: gezin
+  Fragment: atsen en zijn zowel voor grote als kleine groepen zeer geschikt. ons restaurant is een ideale plek voor uw bedrijfs-, personeels- ,en zakendiners en is een gezellige omgeving om samen met uw partner, gezin of vrienden te dineren. als u met grote groepen komt kan iedereen gewoon uit de kaart kiezen. wij serveren een heel uitgebreide menukaart. op ons menu staan diverse vlees-, vis-, en vegetarische
+
+[29] Bambu | restaurant / asian | Grote Markt 12, Haarlem
+  Keywords: pancake
+  Fragment: ele menu zien? klik dan op de button eronder! lunch broodje kip bumbu bali 14,5 atjar, kerrie brioche steak tartaar 16,5 okonomiyaki, truffelmayo beef ribs menu 19,5 shortribs, kimchi koolsla, frites pancakes peking eend 16,5 hoisin, komkommer, lente ui, chinese vijf kruiden din sum siu mai 10 handgemaakte kip dumplings, chinese shiitake, zwarte knoflook parels, lente ui samurai gyoza 9 japanse ve
+
+[35] DejiMa | fast_food / sushi | De Ruijterweg 26, Haarlem
+  Keywords: kids, family
+  Fragment: hicken, 5 fry maki cheese, 5 fry maki veggie, 5 fry maki salmon € 24.95 80. special maki box- 32 pcs 8 dejima rainbow maki, 8 tiger-avocado maki, 8 unagi special maki, 8 salmon torch maki € 59.95 82. kids menu box- 15 pcs 6 kapper maki, 3 tamago maki, 6 ebi hosomaki € 6.00 66. salmon box- 18 pcs 4 salmon avocado uramaki, 6 salmon hosomaki, 4 salmon nigiri, 4 salmon sashimi € 22.95 67. tuna box- 18
+
+[62] Queens | cafe / british;teahouse | Kruisstraat 31, Haarlem
+  Keywords: family, baby
+  Fragment: glish tea room where you can experience a little holiday right here in the centre of haarlem. indulge in our renowned afternoon tea extravaganza and savor our famous scones crafted from our treasured family recipe. come, treat yourself to a taste of tradition! at queens, we take pride in curating an unforgettable afternoon tea affair, inspired by the aristocratic tradition dating back to 1840. joi
+
+[69] Il Fratelli | restaurant / italian | Zijlweg 86-ZW, Haarlem
+  Keywords: kinderen
+  Fragment: jke italiaanse gerechten? u kunt naast bellen ook eenvoudig via onze website reserveren. dan bent u altijd verzekerd van een... lees meer kinderfeestje? workshop pizza bakken! er is niets leuker voor kinderen dan zelf pizza bakken in een echte keuken. meer informatie in het restaurant. bekijk de foto's en video &copy; 2026 privacy policy
+
+[71] Chidóz | fast_food / mexican | Kruisweg 50, Haarlem
+  Keywords: kids
+  Fragment: and super friendly guy behind the counter, he automatically changed his gloves when handling my wife&rsquo;s vegan burrito! child friendly restaurant as well if you&rsquo;re planning to go with your kids. chidoz eindhoven pedro carmezim 10 really cool experience.. great food..it is actually legendary. kind and warm welcome.. thank you chidoz utrecht hans 7 het eten was lekker en het was vlot klaar
+
+[85] Venezia | restaurant / pizza | Verwulft 7, Haarlem
+  Keywords: kinderen
+  Fragment: al onze voorgerechten bezorgd worden.&nbsp; bekijk onze voorgerechten pasta en vleesgerechten bij al onze pastagerechten kun je kiezen uit spaghetti, penne, tagliatelle of glutenvrije pasta. voor de kinderen bereiden we graag kleinere porties, zodat iedereen kan genieten van een gerecht dat precies bij hem of haar past. natuurlijk kunnen al onze pasta’s ook gewoon bij je thuis worden bezorgd. de i
+
+[88] Jansje | cafe | Grote Houtstraat 45, Haarlem
+  Keywords: speelgoed, baby
+  Fragment: r het oog. jansje is een spraakmakend concept en verzacht de stad. producten wonen cadeau tips tot &euro; 10,- verzorgingsproducten baby kraamcadeau cadeaubon food high tea borrelboxen boeken kantoor speelgoed sieraden kaarten haarlem cadeaubon 10 euro. € 10,00 lees meer caroussel dodgy tabby katten € 10,25 lees meer caroussel katten familie € 10,25 lees meer carrousel nijntje met ballon € 10,25 l
+
+[98] Jerusalem | restaurant / grill | Spaarnwouderstraat 97-ZW, Haarlem
+  Keywords: kindermenu
+  Fragment: jerusalem haarlem - eten bestellen in haarlem menukaart beoordelingen contact colofon jerusalem haarlem voorgerechten broodjes schotels kindermenu extra's dranken bier voorgerechten hollandse gemengde salade € 5,00 incl. statiegeld (€ 0,00) hollandse gemengde salade groot € 6,50 incl. statiegeld (€ 0,00) humus versgemalen kikkererwtenpasta € 6,00 incl. statiegeld (€ 0,00) seizoensoep € 6,00 incl. 
+
+[101] Pizzeria Valentino | fast_food / pizza | Amsterdamstraat 23C, Haarlem
+  Keywords: kindermenu
+  Fragment: iscount we're very sorry, but due an electronic issue our restaurant is closed today. we should be back up and running tomorrow. thanks! --> voorgerechten pizza's calzones pasta's pasta's uit de oven kindermenu salades sauzen nagerechten frisdranken ben & jerry's 465 ml order meal delivery or pickup no delivery --> pasta dag! (elke woensdag) 20% korting op alle pasta's. alle medium pizza's € 9,50 
+
+[108] Teds | cafe | Spaarne 94, Haarlem
+  Keywords: family, baby
+  Fragment: tality, and an all-around great time. we’re always on the hunt for kitchen rockstars, culinary ninjas, guest happiness heroes, and all-around freakin’ awesome hospitality champions to join our brunch family! kitchen support you’re the quiet hero, chopping, prepping, cleaning, without you, no brunch could happen. explore catch us on the ’gram follow teds for deliciously messy, seriously tasty stuff
+
+[112] The Coffee Spot | cafe | Spaarne 38, Haarlem
+  Keywords: family
+  Fragment: ein 10a (kiosk) onze take-away kiosk in de bomenbuurt . snel, gezellig en perfect voor onderweg met dezelfde specialty coffee kwaliteit die je van ons kent. vier locaties, vier sferen één coffee spot family. waar je ook binnenstapt: je bent welkom. gallery openingstijden spaarne 38 maandag t/m zondag: 08:00 – 17:00 turfmarkt 16 maandag t/m vrijdag: 07:00 – 16:00 zaterdag &amp; zondag: 08:00 – 17:0
+
+[118] Rood | restaurant | Gedempte Oude Gracht 11, Haarlem
+  Keywords: gezin
+  Fragment: nproevers bij rood draait alles om meer dan alleen lekker eten. het is een plek waar persoonlijke aandacht, warme gastvrijheid en een familiaire sfeer samenkomen. onze menu's, geïnspireerd door eigen gezin, vrienden en ervaringen, beloven een culinaire reis die je keer op keer wilt beleven. onze chef, met als bijnaam "rood", brengt zijn passie en creativiteit tot leven in elk gerecht. met een zeer
+
+[122] New Vegas | restaurant | Koningstraat 5, Haarlem
+  Keywords: kids
+  Fragment: inschrijving, dank je! naam e-mail abonneer referenties de mening van onze gasten &ldquo;high quality food with very kind staff&rdquo; &ldquo;we were curious about vegan food and it tasted great. the kids did not even taste a difference when eating the burger. we will order again or hopefully be able to eat in the cozy restaurant when possible again.&rdquo; jens wemheuer &ldquo;dit restaurant is e
+
+[125] ML | restaurant / european | Damstraat 1, Haarlem
+  Keywords: family
+  Fragment: national monument on klokhuisplein. the restaurant is situated in the courtyard of the former printer johan ensched&eacute; and in the old drawing room of the former residence of the ensched&eacute; family. chef mark gratama's elegant cuisine is bold with exciting flavor combinations. the decor is sleek and modern, providing an excellent backdrop for the culinary sensations presented by chef mark 
+
+[132] Rubens Burger | fast_food / burger | Drossestraat 3, Haarlem
+  Keywords: kids
+  Fragment: rubens burger - rubens burger ga naar inhoud rubens burger admin 2025-12-21t09:27:46+00:00 toggle navigation ons verhaal menu glutenvrij kidspartijtjes cadeaubon franchise vacatures gastronomische hamburgers rund. kip. vega. de beste burgers van haarlem wij bouwen gastronomische hamburgers op kwaliteit en originaliteit. op het menu een feest van bijzondere burgers in de varianten; vlees, kip en ve
+
+[148] La Dolce Vita | restaurant / pizza | Schotersingel 131, Haarlem
+  Keywords: kids
+  Fragment: - haarlem city blog info@haarlemcityblog.nl nieuwsbrief over ons contact home eten &#038; drinken ontbijt lunch koffie high tea diner borrelen shoppen mode lifestyle delicatessen hobby voor hem voor kids lifestyle beauty &#038; wellness sport &#038; gezondheid uitjes events werken &#038; leren wonen strand kids slapen lijstjes haarlem city mag haarlem city taste over ons dit zijn wij! over hcb sam
+
+[149] Home Pizza | fast_food / pizza | Kleverparkweg 20, Haarlem
+  Keywords: baby
+  Fragment: te olijven en kappertjes keuze uit: champignons, paprika, uien, zwarte olijven, verse tomaat, broccoli en meer. &euro; 14,45 &euro; 14,45 pescatore (geen kaas) belegd met mosselen, garnalen, inktvis, babymosselen, tomaat en knoflook keuze uit: champignons, paprika, uien, zwarte olijven, verse tomaat, broccoli en meer. &euro; 14,45 &euro; 14,45 shoarma special (new) tomaat, kaas, shoarma, uien, pap
+
+[150] ZAP Thai by J&C | restaurant / thai | Kleverparkweg 21C, Haarlem
+  Keywords: gezin
+  Fragment: 8211; terry lekker gegeten we hebben lekker gegeten bij zap thai. de prijs-kwaliteitsverhouding is zeer gunstig, de bediening heel vriendelijk en mocht ik nog een keer overnachten in haarlem met mijn gezin, vrienden of collega&#8217;s dan is het dineren bij zap thai zeker voor herhaling vatbaar. &#8211; karel openingstijden woensdag t/m zondag 16.00 - 20.30 uur bezorgtijden woensdag t/m zondag 17.
+
+[155] Hayai Sushi | fast_food / japanese;sushi | Generaal Cronjéstraat 101, Haarlem
+  Keywords: family
+  Fragment: onder extra ijsje, ben & jerry's cookie dough 100ml, ben & jerry's chocolate fudge brownie 100ml, ben & jerry's strawberry cheesecake 100ml, ben & jerry's caramel chew chew 100ml en meer... € 49,95 | family box supreme ii " > (64 stuks) - 12 stuks sashimi salmon - 12 stuks sashimi tuna - 8 stuks california roll - 8 stuks tempura ebi roll - 8 stuks yakitori roll - 8 stuks maguro roll - 8 stuks la r
+
+JSON array (25 objecten):

@@ -513,7 +513,49 @@ ${areaServed}
       }
     }
     </script>`;
-  content = replaceMarker(content, 'JSONLD_INDEX', jsonldHTML);
+  const brandSchemaHTML = `
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "PeuterPlannen",
+    "url": "https://peuterplannen.nl/",
+    "description": "De beste uitjes voor peuters in heel Nederland. ${total} geverifieerde locaties in ${regions.length} regio's.",
+    "inLanguage": "nl-NL",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://peuterplannen.nl/app.html?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "PeuterPlannen",
+    "url": "https://peuterplannen.nl/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://peuterplannen.nl/icons/apple-touch-icon.png",
+      "width": 180,
+      "height": 180
+    },
+    "description": "PeuterPlannen helpt ouders met peuters de leukste uitjes te vinden in Nederland. Geverifieerde speeltuinen, kinderboerderijen, musea en restaurants.",
+    "foundingDate": "2025",
+    "areaServed": {"@type": "Country", "name": "Nederland"},
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "hoi@peuterplannen.nl",
+      "contactType": "customer support",
+      "availableLanguage": "Dutch"
+    }
+  }
+  </script>`;
+  content = replaceMarker(content, 'JSONLD_INDEX', jsonldHTML + brandSchemaHTML);
 
   // Also update OG/Twitter descriptions with correct count
   content = content.replace(/\d+ geverifieerde kindvriendelijke locaties/g, `${total} geverifieerde kindvriendelijke locaties`);
@@ -1016,14 +1058,30 @@ function isFillerDescription(desc) {
   return false;
 }
 
+const TYPE_SINGULAR = {
+  play:    'speeltuin',
+  farm:    'kinderboerderij',
+  nature:  'natuurgebied',
+  museum:  'museum',
+  swim:    'zwem- of waterlocatie',
+  pancake: 'pannenkoekenrestaurant',
+  horeca:  'kindvriendelijk café of restaurant'
+};
+
+function truncateDesc(text, max = 155) {
+  if (!text || text.length <= max) return text;
+  const cut = text.lastIndexOf(' ', max);
+  return (cut > 80 ? text.slice(0, cut) : text.slice(0, max)) + '…';
+}
+
 function locationPageHTML(loc, region, similarLocs) {
   const fullUrl = `https://peuterplannen.nl${loc.pageUrl}`;
   const typeLabel = TYPE_MAP[loc.type]?.label || loc.type;
   const typeLabel_meta = TYPE_MAP[loc.type]?.label || loc.type;
   const regionDisplayName = region.subtitleLabel || region.name;
   const rawDesc = isFillerDescription(loc.description) ? '' : (loc.description || '');
-  const metaDesc = rawDesc.slice(0, 155)
-    || `${loc.name} in ${region.name}, een ${typeLabel_meta.toLowerCase()} voor gezinnen met jonge kinderen. Bekijk faciliteiten, route en tips op PeuterPlannen.`;
+  const metaDesc = truncateDesc(rawDesc)
+    || `${loc.name} in ${region.name} is een ${TYPE_SINGULAR[loc.type] || 'uitje'} voor gezinnen met jonge kinderen. Bekijk faciliteiten, route en openingstijden op PeuterPlannen.`;
 
   // Weather
   const weatherLabel = WEATHER_LABELS[loc.weather] || '';
@@ -1082,7 +1140,12 @@ function locationPageHTML(loc, region, similarLocs) {
     ...(loc.lat && loc.lng && {
       "geo": { "@type": "GeoCoordinates", "latitude": loc.lat, "longitude": loc.lng }
     }),
-    "address": { "@type": "PostalAddress", "addressLocality": region.name, "addressCountry": "NL" }
+    "address": { "@type": "PostalAddress", "addressLocality": region.name, "addressCountry": "NL" },
+    ...(facilities.length > 0 && {
+      "amenityFeature": facilities.map(f => ({ "@type": "LocationFeatureSpecification", "name": f, "value": true }))
+    }),
+    "audience": { "@type": "Audience", "audienceType": "Gezinnen met jonge kinderen (0-7 jaar)" },
+    "touristType": "Gezinnen met peuters"
   }, null, 2);
 
   const breadcrumbLd = JSON.stringify({
@@ -1166,7 +1229,7 @@ ${breadcrumbLd}
 ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region.name)}`)}
 
 <div class="hero" style="padding: 100px 24px 40px;">
-  <h1>${escapeHtml(loc.name)}</h1>
+  <p class="hero-location-title">${escapeHtml(loc.name)}</p>
   <p>${typeLabel} in ${regionDisplayName}</p>
 </div>
 

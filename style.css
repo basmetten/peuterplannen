@@ -143,6 +143,7 @@ footer a:hover { text-decoration: underline; }
 
 /* === Location page specific === */
 
+.hero-location-title { font-size: clamp(24px, 4vw, 36px); font-weight: 700; color: white; margin-bottom: 8px; font-family: var(--font-heading); line-height: 1.2; }
 .location-header { margin-bottom: 32px; }
 .location-header h1 { font-size: clamp(24px, 4vw, 36px); font-weight: 700; color: var(--navy); margin-bottom: 8px; }
 .location-subtitle { font-size: 16px; color: var(--text-muted); margin-bottom: 0; }

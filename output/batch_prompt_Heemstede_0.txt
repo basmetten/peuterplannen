@@ -1,0 +1,51 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[6] Brasserie Boudewijn | restaurant / french | Jan van Goyenstraat 31, Heemstede
+  Keywords: kindermenu
+  Fragment: brasserie boudewijn - brasserie boudewijn brasserie boudewijn menu kindermenu wijnkaart blogs vacatures contact menu menu link naar facebook link naar instagram vorige vorige vorige volgende volgende volgende welkom bij brasserie boudewijn smaakvol genieten in een warme, gastvrije sfeer ben je op zoek naar een gezellige plek waar je écht lekker kunt eten in een ong
+
+[8] China Palace | restaurant / chinese | Bartoklaan 1, Heemstede
+  Keywords: kinderen
+  Fragment: erschillende voor-, hoofd- en nagerechten! tevens ook een assortiment aan sushi.(wij hebben geen wok &amp; bakplaat meer!) 》 ontspannen genieten zonder tijdslimiet voor een vaste prijs van: € 31,95 》 kinderen (0 t/m 3 jaar): gratis (4 t/m 8 jaar) € 18,95 (9 t/m 12 jaar €21,95 》 senioren (65+): € 29,95 》 prijzen zijn exclusief drank. 》 op feestdagen kunnen er andere prijzen gelden. 》 reserveer tijd
+
+[12] Family | fast_food / burger | Binnenweg 124, Heemstede
+  Keywords: family
+  Fragment: home | family heemstede werken bij heemstede onze menu&#39;s over ons bestel direct bestel direct schuif je ook aan bij family heemstede adres binnenweg 124 2101 jn heemstede 023-5284858 openingstijden family heemstede zien we je snel? eethuis maandag 10:00 - 20:00 dinsdag gesloten woensdag 10:00 - 20:00 d
+
+[19] Bistro Deux | restaurant / regional | Binnenweg 25, Heemstede
+  Keywords: kindermenu, pannenkoek
+  Fragment: 5 | piri piri | heeft u een allergie meld het ons! bijgerechten friet | zaanse mayonaise €4,50 gepofte aardappel | sambucasaus €4,50 schaaltje roergebakken groenten €6,50 gemengde groene salade €4,50 kindermenu kroket met friet €8,5 frikandel met friet €8,5 kipnuggets met friet €8,5 kleine saté met friet en salade €14,75 kleine spareribs met friet en salade €14,75 kleine zalmfilet met friet en sal
+
+[27] Asian Delight | restaurant / chinese | Roemer Visscherplein 25, Heemstede
+  Keywords: family, kindermenu, pannenkoek
+  Fragment: g saus € 3,80 incl. statiegeld (€ 0,00) gebakken garnalen € 7,00 incl. statiegeld (€ 0,00) chicken wings vier stuks € 5,50 incl. statiegeld (€ 0,00) cashewnoten € 3,00 incl. statiegeld (€ 0,00) happy family dim sum 20 stuks- vier chicken wings- vier pangsit goreng, kip- vier gebakken garnalen- vier tja siu maai, varken- vier mini loempia's, vegetarisch € 17,00 incl. statiegeld (€ 0,00) dim sum pak
+
+[29] Pannenkoekenrestaurant De Konijnenberg | restaurant / pancake;regional | Herenweg 33, Heemstede
+  Keywords: speeltuin, kids, pannenkoek
+  Fragment: staurant de konijnenberg waar zijn we ? in heemstede &#8211; wandelbos groenendaal makkelijk en gratis parkeren. centraal gelegen aan de doorgaande weg n208 tussen haarlem , bennebroek, 500 meter van speeltuin linnaeushof https://www.linnaeushof.nl/ , de keukenhof in lisse, schiphol , zandvoort , noordwijk amsterdam, allemaal vlakbij….lekker uit eten met de hele familie, de konijnenberg is al jare
+
+[32] Smaakvol | restaurant | Raadhuisstraat 28, Heemstede
+  Keywords: baby
+  Fragment: n ruime keuze aan gerechten, desserts en dranken. turkse specialiteiten elke dag vers jouw speciale moment verdient een sfeervolle viering iedere gelegenheid verdient een feest. of het nu gaat om een babyshower, verjaardag, vrijgezellenfeest of trouwdag, bij ons vind je alles onder één dak om jouw speciale moment zorgeloos én gezellig te vieren. wat je mag verwachten: sfeervolle en stijlvolle loca
+
+[36] La Rosario | restaurant / argetijns | Raadhuisstraat 58, Heemstede
+  Keywords: kindermenu
+  Fragment: ro mooie kleine lamskoteletjes € 26,50 54. filet de pollo gemarineerde kipfilet € 21,50 55. costilla de cerdo keuze uit vier soorten spareribs: naturel, zoet, knoflook, pittig € 23,50 56. la rosario (kindermenu tot 12 jaar) keuze uit: biefsteak, spareribs of kip inclusief salade, frites, mayo, appelmoes en een ijsje € 16,50 57. combinación crillo mixto 150gr entrecote en 150gr rib-eye € 32,50 58. 
+
+[38] Nishiki Sushi | fast_food / sushi | Raadhuisstraat 9, Heemstede
+  Keywords: family
+  Fragment: hi boxen, maki, nigiri en meer! toggle navigation &times; home menu bestellen contact login login bestelling 0,00 &rsaquo; --> bestel direct --> deze week: futo krab van €12,25 naar €9,95&nbsp; happy family box van&nbsp; € 68,50 naar&nbsp; €65,50 deluxe box van €7 8,50 naar&nbsp; €75,50 deze week hebben wij ook blue fin tuna! in het weekend een uur wachttijd i.v.m. drukte. bestel direct --> afhale
+
+JSON array (9 objecten):
