@@ -10,6 +10,7 @@ const regions = [
   'Hilversum', 'Gooise Meren', 'Huizen', 'Blaricum', 'Laren',
   'Wijdemeren', 'Eemnes', 'Soest', 'Baarn', 'Wijk bij Duurstede', 'Leusden',
   'Amsterdam', 'Amstelveen', 'Zaanstad', 'Haarlemmermeer', 'Diemen', 'Purmerend',
+  'Haarlem', 'Heemstede', 'Bloemendaal', 'Zandvoort', 'Velsen', 'Beverwijk',
 ];
 
 const skipPatterns = [

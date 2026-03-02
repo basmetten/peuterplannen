@@ -84,6 +84,12 @@ const REGIONS = {
   'Haarlemmermeer':     { osmName: 'Haarlemmermeer',     adminLevel: 8, supabaseRegion: 'Amsterdam' },
   'Diemen':             { osmName: 'Diemen',             adminLevel: 8, supabaseRegion: 'Amsterdam' },
   'Purmerend':          { osmName: 'Purmerend',          adminLevel: 8, supabaseRegion: 'Amsterdam' },
+  // Haarlem omliggende gemeenten
+  'Heemstede':          { osmName: 'Heemstede',          adminLevel: 8, supabaseRegion: 'Haarlem' },
+  'Bloemendaal':        { osmName: 'Bloemendaal',        adminLevel: 8, supabaseRegion: 'Haarlem' },
+  'Zandvoort':          { osmName: 'Zandvoort',          adminLevel: 8, supabaseRegion: 'Haarlem' },
+  'Velsen':             { osmName: 'Velsen',             adminLevel: 8, supabaseRegion: 'Haarlem' },
+  'Beverwijk':          { osmName: 'Beverwijk',          adminLevel: 8, supabaseRegion: 'Haarlem' },
 };
 
 // ─── CLI args ──────────────────────────────────────────────────────────────

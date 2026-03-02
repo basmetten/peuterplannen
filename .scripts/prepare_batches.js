@@ -15,7 +15,8 @@ const REGIONS = process.argv[2] === 'all'
      'Utrechtse Heuvelrug','Utrecht','Groningen',
      'Hilversum','Gooise Meren','Huizen','Blaricum','Laren',
      'Wijdemeren','Eemnes','Soest','Baarn','Wijk bij Duurstede','Leusden',
-     'Amsterdam','Amstelveen','Zaanstad','Haarlemmermeer','Diemen','Purmerend']
+     'Amsterdam','Amstelveen','Zaanstad','Haarlemmermeer','Diemen','Purmerend',
+     'Haarlem','Heemstede','Bloemendaal','Zandvoort','Velsen','Beverwijk']
   : process.argv.slice(2);
 
 function isInteresting(c) {

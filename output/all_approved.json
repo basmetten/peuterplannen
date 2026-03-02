@@ -123,6 +123,26 @@
     "region": "Groningen",
     "score": 8,
     "data": {
+      "name": "Bodega y Tapas",
+      "region": "Groningen",
+      "type": "horeca",
+      "description": "Bodega y Tapas aan Damsterdiep biedt gratis maaltijden voor peuters onder 4 jaar.",
+      "website": "https://www.bodega-y-tapas.nl/vestigingen/damsterdiep/",
+      "lat": 53.2174756,
+      "lng": 6.5752688,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kinderen jonger dan 4 jaar eten volledig gratis.",
+      "last_verified_at": "2026-03-02T14:21:50.294Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Groningen",
+    "score": 8,
+    "data": {
       "name": "Artsy Avenue",
       "region": "Groningen",
       "type": "horeca",
@@ -135,6 +155,26 @@
       "alcohol": false,
       "weather": "indoor",
       "toddler_highlight": "Kinderen zijn van harte welkom; perfect voor samen creatief bezig zijn.",
+      "last_verified_at": "2026-03-02T14:21:50.294Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Groningen",
+    "score": 8,
+    "data": {
+      "name": "Bodega y Tapas",
+      "region": "Groningen",
+      "type": "horeca",
+      "description": "Bodega y Tapas in Haren biedt gratis maaltijden voor peuters onder 4 jaar.",
+      "website": "https://www.bodega-y-tapas.nl/vestigingen/haren/",
+      "lat": 53.1737746,
+      "lng": 6.6018499,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kinderen jonger dan 4 jaar eten volledig gratis.",
       "last_verified_at": "2026-03-02T14:21:50.294Z",
       "verification_source": "osm_discovery"
     }
@@ -720,6 +760,26 @@
     }
   },
   {
+    "region": "Laren",
+    "score": 8,
+    "data": {
+      "name": "Loetje",
+      "region": "Gooi en Vechtstreek",
+      "type": "horeca",
+      "description": "Loetje Laren heeft een speciaal kindermenu met lekkere, kindvriendelijke gerechten voor jonge gasten.",
+      "website": "https://www.loetje.nl/locaties/laren/",
+      "lat": 52.2537651,
+      "lng": 5.2280802,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Speciaal kindermenu beschikbaar voor kleine loetjes.",
+      "last_verified_at": "2026-03-02T17:00:44.158Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
     "region": "Wijdemeren",
     "score": 8,
     "data": {
@@ -1023,6 +1083,46 @@
     "region": "Amsterdam",
     "score": 8,
     "data": {
+      "name": "Loetje",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Loetje steakhouse met speciaal kindermenu met lekkere, kindvriendelijke gerechten voor de kleine loetjes.",
+      "website": "https://www.loetje.nl/locaties/amsterdam-oost/",
+      "lat": 52.3571616,
+      "lng": 4.9082709,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Speciaal kindermenu speciaal ontworpen voor jonge gasten.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
+      "name": "Loetje",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Loetje biedt een speciaal kindermenu met kindvriendelijke gerechten speciaal ontworpen voor kleine gasten.",
+      "website": "https://www.loetje.nl/locaties/amsterdam-aan-t-ij/",
+      "lat": 52.4029151,
+      "lng": 4.8856352,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Speciaal kindermenu met lekker kindvriendelijke gerechten.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
       "name": "Roezemoes",
       "region": "Amsterdam",
       "type": "pancake",
@@ -1063,6 +1163,26 @@
     "region": "Amsterdam",
     "score": 8,
     "data": {
+      "name": "Loetje",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Steakhouse met kindermenu en ruimte om kinderen te verschonen, nette toiletten.",
+      "website": "https://www.loetje.nl/locaties/amsterdam-de-pijp/",
+      "lat": 52.3503436,
+      "lng": 4.8912939,
+      "coffee": true,
+      "diaper": true,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Verzorgingsruimte en accommodatie voor jonge kinderen aanwezig.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
       "name": "Kaap Amsterdam",
       "region": "Amsterdam",
       "type": "pancake",
@@ -1075,6 +1195,26 @@
       "alcohol": true,
       "weather": "both",
       "toddler_highlight": "Pannenkoeken, speelruimte en oneindig limonade voor kinderen.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
+      "name": "Loetje",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Loetje biedt een speciaal kindermenu met kindvriendelijke gerechten voor de jonge gasten.",
+      "website": "https://www.loetje.nl/locaties/amsterdam-zuidas/",
+      "lat": 52.3355616,
+      "lng": 4.8693094,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Dedicated kindermenu met gerechten speciaal voor kleine kinderen.",
       "last_verified_at": "2026-03-02T17:21:01.904Z",
       "verification_source": "osm_discovery"
     }
@@ -1175,6 +1315,26 @@
       "alcohol": false,
       "weather": "indoor",
       "toddler_highlight": "Gespecialiseerd in vers gebakken pannenkoeken, perfect voor peuters.",
+      "last_verified_at": "2026-03-02T17:21:01.948Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amstelveen",
+    "score": 8,
+    "data": {
+      "name": "Loetje",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Loetje heeft een speciaal kindermenu met kindvriendelijke gerechten voor jonge gasten.",
+      "website": "https://www.loetje.nl/locaties/amstelveen/",
+      "lat": 52.2969113,
+      "lng": 4.9001795,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Speciaal kindermenu beschikbaar met lekkere, kindvriendelijke gerechten.",
       "last_verified_at": "2026-03-02T17:21:01.948Z",
       "verification_source": "osm_discovery"
     }
@@ -1336,6 +1496,266 @@
       "weather": "indoor",
       "toddler_highlight": "Kinderstoelen en kleurplaten beschikbaar voor peuters.",
       "last_verified_at": "2026-03-02T17:21:02.122Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Haarlem",
+    "score": 9,
+    "data": {
+      "name": "IKEA Restaurant",
+      "region": "Haarlem",
+      "type": "horeca",
+      "description": "IKEA Restaurant is uitermate kindvriendelijk met babyverzorgingsruimtes, speelplekken (småland), kindermenu, kinderstoelen en alle nodige voorzieningen.",
+      "website": "https://www.ikea.com/nl/nl/stores/haarlem/",
+      "lat": 52.3850772,
+      "lng": 4.6694936,
+      "coffee": true,
+      "diaper": true,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Småland speelplek, babyverzorgingsruimtes en kinderstoelen specifiek voor peuters.",
+      "last_verified_at": "2026-03-02T17:41:55.033Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Haarlem",
+    "score": 8,
+    "data": {
+      "name": "Loetje",
+      "region": "Haarlem",
+      "type": "horeca",
+      "description": "Loetje heeft een speciaal kindermenu met lekkere, kindvriendelijke gerechten voor jonge gasten.",
+      "website": "https://www.loetje.nl/locaties/haarlem/",
+      "lat": 52.381417,
+      "lng": 4.6376121,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Speciaal kindermenu afgestemd op kleine kinderen.",
+      "last_verified_at": "2026-03-02T17:41:55.033Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Heemstede",
+    "score": 9,
+    "data": {
+      "name": "Pannenkoekenrestaurant De Konijnenberg",
+      "region": "Haarlem",
+      "type": "pancake",
+      "description": "Pannenkoekenrestaurant De Konijnenberg is speciaal gericht op families, heeft gratis parkeren en ligt op 500m van speeltuin Linnaeushof.",
+      "website": "https://www.dekonijnenberg.nl",
+      "lat": 52.3400923,
+      "lng": 4.6052617,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Familierestaurant met pannenkoeken en dicht bij Linnaeushof speeltuin voor extra activiteiten.",
+      "last_verified_at": "2026-03-02T17:41:55.114Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Heemstede",
+    "score": 8,
+    "data": {
+      "name": "China Palace",
+      "region": "Haarlem",
+      "type": "horeca",
+      "description": "China Palace biedt gratis eten voor peuters (0-3 jaar) en all-you-can-eat zonder tijdslimiet, perfect voor ontspannen familiedines.",
+      "website": "https://www.chinapalace-heemstede.nl",
+      "lat": 52.35296,
+      "lng": 4.6333099,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Gratis toegang voor kinderen 0-3 jaar bij all-you-can-eat.",
+      "last_verified_at": "2026-03-02T17:41:55.114Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Bloemendaal",
+    "score": 8,
+    "data": {
+      "name": "Paviljoen Het Witte Huis",
+      "region": "Haarlem",
+      "type": "pancake",
+      "description": "Pannenkoekrestaurant met gezellige sfeer, vriendelijke bediening en specifiek genoemd als geschikt voor kleinkinderen.",
+      "website": "https://www.paviljoenhetwittehuis.nl",
+      "lat": 52.3928356,
+      "lng": 4.6001443,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Snel serveerde pannenkoeken in een gezellige, kindvriendelijke omgeving.",
+      "last_verified_at": "2026-03-02T17:41:55.199Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Bloemendaal",
+    "score": 8,
+    "data": {
+      "name": "Duincafé de Kennemerduinen",
+      "region": "Haarlem",
+      "type": "horeca",
+      "description": "Café met zandspeeltuin direct voor de deur en sfeervolle buitenterras voor gezinsbezoek.",
+      "website": "https://www.duincafedekennemerduinen.nl/",
+      "lat": 52.396172,
+      "lng": 4.5923119,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Zandspeeltuin en gemakkelijk bereikbare speelruimte voor peuters.",
+      "last_verified_at": "2026-03-02T17:41:55.199Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Bloemendaal",
+    "score": 8,
+    "data": {
+      "name": "Brasserie Cheers",
+      "region": "Haarlem",
+      "type": "horeca",
+      "description": "Brasserie met groot park en speeltuin met diverse speeltoestellen waar kinderen niet vervelen.",
+      "website": "https://www.marinaparken.nl/residentie-bloemendaal/faciliteiten/brasserie-cheers",
+      "lat": 52.3211874,
+      "lng": 4.5630688,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Diverse speeltoestellen en groot park met speelterreinen.",
+      "last_verified_at": "2026-03-02T17:41:55.199Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Bloemendaal",
+    "score": 8,
+    "data": {
+      "name": "Kraantje Lek",
+      "region": "Haarlem",
+      "type": "pancake",
+      "description": "Pannenkoekrestaurant midden in de natuur met eigen speeltuin, ideaal voor gezinnen met kinderen.",
+      "website": "https://www.kraantjelek.nl",
+      "lat": 52.3827993,
+      "lng": 4.591455,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Pannenkoeken met speeltuin in natural setting tussen strand en stad.",
+      "last_verified_at": "2026-03-02T17:41:55.199Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Bloemendaal",
+    "score": 8,
+    "data": {
+      "name": "Gestrand",
+      "region": "Haarlem",
+      "type": "horeca",
+      "description": "Restaurant op camping met gave speeltuin en kinderactiviteiten, groot terras en prachtige locatie.",
+      "website": "https://restaurantgestrand.nl",
+      "lat": 52.4079772,
+      "lng": 4.5535739,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Gave speeltuin en kinderactiviteiten in open restaurant.",
+      "last_verified_at": "2026-03-02T17:41:55.199Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Zandvoort",
+    "score": 9,
+    "data": {
+      "name": "Ons Paviljoen 11",
+      "region": "Haarlem",
+      "type": "horeca",
+      "description": "Ons Paviljoen 11 is een gespecialiseerd familiepaviljoen met speeltuin inclusief speeltoestellen en springkussen direct naast het terras.",
+      "website": "https://www.onspaviljoen.nl/",
+      "lat": 52.3741271,
+      "lng": 4.5252659,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": false,
+      "weather": "both",
+      "toddler_highlight": "Speeltuin met springkussen en speeltoestellen met zicht vanaf het terras.",
+      "last_verified_at": "2026-03-02T17:41:55.280Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Velsen",
+    "score": 8,
+    "data": {
+      "name": "Pannenkoekenboerderij Onder De Platanen",
+      "region": "Haarlem",
+      "type": "pancake",
+      "description": "Pannenkoekenboerderij Onder De Platanen is een gezellige familiezaak waar pannenkoeken centraal staan, perfect voor peuters.",
+      "website": "https://www.onderdeplatanen.nl/",
+      "lat": 52.4297152,
+      "lng": 4.6849701,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Pannenkoeken zijn ideaal voor jonge kinderen en deze boerderij specialiseert zich hierin.",
+      "last_verified_at": "2026-03-02T17:41:55.362Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Beverwijk",
+    "score": 8,
+    "data": {
+      "name": "Brasserie Grand-Café De Smaeckkamer",
+      "region": "Haarlem",
+      "type": "horeca",
+      "description": "Brasserie Grand-Café De Smaeckkamer biedt een speeltuin en kinderkamer waar peuters zich kunnen vermaken terwijl ouders genieten van eten en drinken.",
+      "website": "https://www.desmaeckkamer.nl/",
+      "lat": 52.4838314,
+      "lng": 4.6436225,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Speeltuin en kinderkamer beschikbaar, ideaal voor peuters.",
+      "last_verified_at": "2026-03-02T17:41:55.445Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Beverwijk",
+    "score": 8,
+    "data": {
+      "name": "Wereldrestaurant Beverhof",
+      "region": "Haarlem",
+      "type": "horeca",
+      "description": "Wereldrestaurant Beverhof is ontworpen als kindvriendelijke plek met speelhoek en kindvriendelijk buffet waar peuters welkom zijn.",
+      "website": "https://wereldrestaurantbeverhof.nl/",
+      "lat": 52.4829898,
+      "lng": 4.6601276,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Gezellige speelhoek en kindvriendelijk buffet voor peuters.",
+      "last_verified_at": "2026-03-02T17:41:55.445Z",
       "verification_source": "osm_discovery"
     }
   }
