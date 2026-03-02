@@ -1,0 +1,809 @@
+[
+  {
+    "osm_id": 1079745547,
+    "osm_type": "node",
+    "name": "Happy Food and Happy Ribs",
+    "amenity": "fast_food",
+    "lat": 52.0100875,
+    "lng": 5.0400545,
+    "address": "Boedapestlaan 1",
+    "city": "IJsselstein",
+    "website": "https://happyfoodijsselstein.nl/",
+    "phone": "+31 30 688 0112",
+    "cuisine": "steak_house;burger;chicken;kebab;friture;snackbar",
+    "outdoor_seating": null,
+    "wheelchair": "yes",
+    "opening_hours": "Mo-Su 12:00-22:30",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "baby"
+      ],
+      "snippet": "t kies jij? of neem je liever topped fries, zoals bijvoorbeeld de kapsalon? kan jij kiezen? happy burger kies uit ons uitgebreide assortiment juicy burgers, beef, chicken of veggie. happy ice ice ice baby, schepijs, shakes, luxe shakes, sundae’s, razzle of gewoon lekker likken aan een softijsje. alles om jou happy te maken. lekker makkelijk online bestellen laat je verrassen hoe gemakkelijk je online kunt bestellen bij ons! probeer het eens en laat je verrassen hoe makkelijk het werkt. van verse",
+      "textLength": 2326
+    }
+  },
+  {
+    "osm_id": 1272005199,
+    "osm_type": "node",
+    "name": "De Roozeboom",
+    "amenity": "restaurant",
+    "lat": 52.0388904,
+    "lng": 5.0352831,
+    "address": "Noord IJsseldijk 89",
+    "city": "IJsselstein",
+    "website": "https://www.pannenkoeken.org/",
+    "phone": null,
+    "cuisine": "crepe",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "speelhoek",
+        "speeltuin",
+        "kinderen",
+        "kindvriendelijk",
+        "kids",
+        "gezin",
+        "pannenkoek",
+        "pannenkoekenrestaurant"
+      ],
+      "snippet": "t bos. speel een potje mini- of crazygolf en sluit af met een lekker borrelplateau of ijscoupe. of kom gezellig een hapje eten met de hele familie, terwijl de kids zich vermaken in de speeltuin of de speelhoek. onze collega’s staan te springen om u een geweldige dag te laten beleven! meer weten? neem contact met ons op r pannenkoeken midgetgolf \"de roozeboom\" pannenkoeken-midgetgolf de roozeboom noord ijsseldijk 89 3402 pg ijsselstein 0306880195 deroozeboom@gmail.com openingstijden woensdag tot",
+      "textLength": 6450
+    }
+  },
+  {
+    "osm_id": 2517845803,
+    "osm_type": "node",
+    "name": "Cafetaria de Clinckhoeff",
+    "amenity": "fast_food",
+    "lat": 52.0270669,
+    "lng": 5.0472307,
+    "address": "De Clinckhoeff 7",
+    "city": "IJsselstein",
+    "website": "http://www.declinckhoeff.nl",
+    "phone": null,
+    "cuisine": "burger;snackbar",
+    "outdoor_seating": null,
+    "wheelchair": "yes",
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 346
+    }
+  },
+  {
+    "osm_id": 2916032797,
+    "osm_type": "node",
+    "name": "Rivers Marnemoende",
+    "amenity": "restaurant",
+    "lat": 52.0454296,
+    "lng": 5.0190456,
+    "address": "Noord IJsseldijk 107d",
+    "city": "IJsselstein",
+    "website": "https://www.riversmarnemoende.nl",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": "Tu-Fr 11:00-24:00; Sa,Su 00:00-01:00,10:00-24:00 \"Kitchen open until 21:30\"",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 518
+    }
+  },
+  {
+    "osm_id": 2916124619,
+    "osm_type": "node",
+    "name": "Foe Wah",
+    "amenity": "restaurant",
+    "lat": 52.0271125,
+    "lng": 5.0473749,
+    "address": "De Clinckhoeff 3",
+    "city": "IJsselstein",
+    "website": "http://www.foewah.nl",
+    "phone": null,
+    "cuisine": "chinese",
+    "outdoor_seating": null,
+    "wheelchair": "yes",
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "fetch failed"
+    }
+  },
+  {
+    "osm_id": 2919320629,
+    "osm_type": "node",
+    "name": "McDonald's IJsselstein",
+    "amenity": "fast_food",
+    "lat": 52.0149705,
+    "lng": 5.0626822,
+    "address": "Lorentzlaan 1",
+    "city": "IJsselstein",
+    "website": "https://www.mcdonalds.com/nl/nl-nl/location/ijsselstein/mcdonalds-ijsselstein/lorentzlaan-1/850168.html",
+    "phone": "+31 30 687 4893",
+    "cuisine": "burger",
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": "07:00-23:00 open \"Restaurant\" || 07:00-02:00; Fr-Sa 07:00-04:00 open \"McDrive\"",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 2757
+    }
+  },
+  {
+    "osm_id": 2920809282,
+    "osm_type": "node",
+    "name": "Domino's",
+    "amenity": "fast_food",
+    "lat": 52.0183475,
+    "lng": 5.0397276,
+    "address": "Achtersloot 3",
+    "city": "IJsselstein",
+    "website": "https://www.dominos.nl/winkel/nl-ijsselstein-30780",
+    "phone": "+31 30 410 0999",
+    "cuisine": "pizza",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 16:00 - 22:00",
+    "scrape": {
+      "success": false,
+      "error": "HTTP 403"
+    }
+  },
+  {
+    "osm_id": 2921210772,
+    "osm_type": "node",
+    "name": "Eten van de Vos",
+    "amenity": "cafe",
+    "lat": 52.0197956,
+    "lng": 5.0458351,
+    "address": "Voorstraat 1",
+    "city": "IJsselstein",
+    "website": "https://www.etenvandevos.nl/",
+    "phone": "+31 30 662 8972",
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Fr 11:00 - 18:00; Sa 11:00 - 16:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 2480
+    }
+  },
+  {
+    "osm_id": 2921211215,
+    "osm_type": "node",
+    "name": "Jannis Fastfood",
+    "amenity": "fast_food",
+    "lat": 52.0189868,
+    "lng": 5.0441844,
+    "address": "Weidstraat 13",
+    "city": "IJsselstein",
+    "website": "https://www.jannisfastfood.nl/",
+    "phone": null,
+    "cuisine": "greek",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "HTTP 404"
+    }
+  },
+  {
+    "osm_id": 2921211249,
+    "osm_type": "node",
+    "name": "Bahn Khoen Ying",
+    "amenity": "restaurant",
+    "lat": 52.0201465,
+    "lng": 5.0457982,
+    "address": "Agterhof 14",
+    "city": "IJsselstein",
+    "website": "https://www.bkying.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1289
+    }
+  },
+  {
+    "osm_id": 2921211445,
+    "osm_type": "node",
+    "name": "Restaurant Insho Sushi & Grill",
+    "amenity": "restaurant",
+    "lat": 52.0207206,
+    "lng": 5.0459198,
+    "address": "Utrechtsestraat 13",
+    "city": "IJsselstein",
+    "website": "https://www.insho.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 4041
+    }
+  },
+  {
+    "osm_id": 2921211795,
+    "osm_type": "node",
+    "name": "KingsDish",
+    "amenity": "restaurant",
+    "lat": 52.0208418,
+    "lng": 5.0471777,
+    "address": "IJsselstraat 2",
+    "city": "IJsselstein",
+    "website": "https://www.kingsdish.nl",
+    "phone": "+31 6 44640991",
+    "cuisine": "indian",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kinderen"
+      ],
+      "snippet": "estaurant kingsdish in het brandspuithuisje ijsselstein is open op reservering van vrijdag t/m zondag. diner vanaf 18.30 uur. inloop tussen 18.00 en 18.30 uur. (ons restaurant is minder geschikt voor kinderen) recente recensie 29 juni 2024 meer informatie https://www.kingsdish.nl/kingsdish-ijsselstein/ recensies over dit indisch restaurant we krijgen veel goede recensies!!&nbsp; recensies van bezoekers staan op de volgende sites: tripadvisor facebook google wij ontvangen u graag, meerten huisman",
+      "textLength": 2013
+    }
+  },
+  {
+    "osm_id": 2921213554,
+    "osm_type": "node",
+    "name": "Tik's Thai Food",
+    "amenity": "restaurant",
+    "lat": 52.0200106,
+    "lng": 5.0454572,
+    "address": "Kerkstraat 24",
+    "city": "IJsselstein",
+    "website": "https://tiksthaifood.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 6456
+    }
+  },
+  {
+    "osm_id": 2921213858,
+    "osm_type": "node",
+    "name": "Restaurant Azië",
+    "amenity": "restaurant",
+    "lat": 52.0201798,
+    "lng": 5.0454535,
+    "address": "Kerkstraat 27",
+    "city": "IJsselstein",
+    "website": "https://www.azie-ijsselstein.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": "limited",
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 10880
+    }
+  },
+  {
+    "osm_id": 2921214873,
+    "osm_type": "node",
+    "name": "Brasserie 1560",
+    "amenity": "restaurant",
+    "lat": 52.019219,
+    "lng": 5.0437929,
+    "address": "Weidstraat 3",
+    "city": "IJsselstein",
+    "website": "https://www.brasserie1560.nl/",
+    "phone": "+31 30 687 1560",
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": "no",
+    "opening_hours": "We-Su 11:30-15:30, 17:00-20:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 4366
+    }
+  },
+  {
+    "osm_id": 2921215236,
+    "osm_type": "node",
+    "name": "Sunita's Restaurant",
+    "amenity": "restaurant",
+    "lat": 52.0202042,
+    "lng": 5.0445231,
+    "address": "Utrechtsestraat 34",
+    "city": "IJsselstein",
+    "website": "https://sunitarestaurant.nl/",
+    "phone": null,
+    "cuisine": "surinam;indian",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 3890
+    }
+  },
+  {
+    "osm_id": 2921215310,
+    "osm_type": "node",
+    "name": "Santa Maria",
+    "amenity": "fast_food",
+    "lat": 52.0211036,
+    "lng": 5.0401478,
+    "address": "Kasteellaan 37",
+    "city": "IJsselstein",
+    "website": "https://www.pizzeria-santamaria.nl",
+    "phone": null,
+    "cuisine": "pizza;italian_pizza;italian;pasta;friture",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Mo-Su 17:00-22:00",
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 15369
+    }
+  },
+  {
+    "osm_id": 2921215311,
+    "osm_type": "node",
+    "name": "El Greco",
+    "amenity": "restaurant",
+    "lat": 52.0199869,
+    "lng": 5.0456801,
+    "address": "Kerkstraat 37",
+    "city": "IJsselstein",
+    "website": "https://www.pizzeria-elgreco.nl/",
+    "phone": null,
+    "cuisine": "pizza",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 20957
+    }
+  },
+  {
+    "osm_id": 2921215474,
+    "osm_type": "node",
+    "name": "Café Bakkers",
+    "amenity": "cafe",
+    "lat": 52.0191225,
+    "lng": 5.0446452,
+    "address": "Voorstraat 41",
+    "city": "IJsselstein",
+    "website": "https://cafebakkers.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "This operation was aborted"
+    }
+  },
+  {
+    "osm_id": 2921215499,
+    "osm_type": "node",
+    "name": "Brasserie de Kloostertuin",
+    "amenity": "restaurant",
+    "lat": 52.0193964,
+    "lng": 5.0426393,
+    "address": "Benschopperstraat 43",
+    "city": "IJsselstein",
+    "website": "https://brasseriekloostertuin.nl/",
+    "phone": "+31 30 688 1317",
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 2918
+    }
+  },
+  {
+    "osm_id": 2921215612,
+    "osm_type": "node",
+    "name": "De IJsselsteinse Frietzaak",
+    "amenity": "fast_food",
+    "lat": 52.0190823,
+    "lng": 5.0445816,
+    "address": "Voorstraat 43",
+    "city": "IJsselstein",
+    "website": "https://www.de-ijsselsteinse-frietzaak-ijsselstein.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 9120
+    }
+  },
+  {
+    "osm_id": 2921215723,
+    "osm_type": "node",
+    "name": "Stafili",
+    "amenity": "restaurant",
+    "lat": 52.0199028,
+    "lng": 5.0439405,
+    "address": "Utrechtsestraat 48",
+    "city": "IJsselstein",
+    "website": "https://www.stafili.nl/",
+    "phone": "+31 30 633 2984",
+    "cuisine": "greek;mediterranean",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1087
+    }
+  },
+  {
+    "osm_id": 2921215785,
+    "osm_type": "node",
+    "name": "Loft88",
+    "amenity": "restaurant",
+    "lat": 52.0180271,
+    "lng": 5.0420113,
+    "address": "Molenstraat 5",
+    "city": "IJsselstein",
+    "website": "https://loft88.nl/",
+    "phone": "+31 85 04 02 100",
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": "Mo-Th 10:00-23:00; Fr-Sa 10:00-24:00; Su 10:00-23:00",
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kids"
+      ],
+      "snippet": "loft88 menu home menu menu &#8211; english lunch &#038; dinner kids menu borrel en drinks werken bij loft vestigingen contact algemeen aanvragen cadeaubon kopen loft 88 loft 88 is een urban oase met een boho vibe. wij zijn een gezellige ongedwongen plek om lekker met je familie of vrienden te eten en te drinken. het is stoer met een heerlijke beach vibe. onze k",
+      "textLength": 835
+    }
+  },
+  {
+    "osm_id": 2921216508,
+    "osm_type": "node",
+    "name": "La Cosina",
+    "amenity": "restaurant",
+    "lat": 52.0197096,
+    "lng": 5.0444664,
+    "address": "Vingerhoekhof 8",
+    "city": "IJsselstein",
+    "website": "https://la-cosina.nl/",
+    "phone": null,
+    "cuisine": "spanish",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 1294
+    }
+  },
+  {
+    "osm_id": 2921216569,
+    "osm_type": "node",
+    "name": "Snack-Grillbar Braadspit",
+    "amenity": "restaurant",
+    "lat": 52.0185569,
+    "lng": 5.0415627,
+    "address": "Benschopperstraat 9",
+    "city": "IJsselstein",
+    "website": "https://www.snackbarbraadspit.nl/",
+    "phone": null,
+    "cuisine": "snackbar",
+    "outdoor_seating": null,
+    "wheelchair": "limited",
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "gezin"
+      ],
+      "snippet": "en pindasaus € 7.50 loempia € 5.30 patat frites patat frites standaard saus in een apart bakje € 3.20 kinderpatat standaard saus over de patat € 2.90 dubbel patat standaard saus over de patat € 6.40 gezinszak patat frites per persoon gezinszakken zijn verkrijgbaar vanaf 2 personen, geef bij aantal aan voor hoeveel personen je wilt bestellen. € 3.20 menu menu frikandel patat frites met 2 frikandellen met fritessaus en appelmoes of rauwkost € 8.90 menu kroket patat frites met 2 kroketten met frit",
+      "textLength": 8967
+    }
+  },
+  {
+    "osm_id": 4627934371,
+    "osm_type": "node",
+    "name": "Robuust",
+    "amenity": "restaurant",
+    "lat": 52.0155844,
+    "lng": 5.059689,
+    "address": "Boerhaaveweg 43",
+    "city": "IJsselstein",
+    "website": "https://robuust-ijsselstein.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kinderen"
+      ],
+      "snippet": "pen zakelijk events contact &#038; reserveren welkom in de wereld van robuust even genieten van het moment en het nu. hoe vaak doen we dat? weg uit de drukte en tijd voor jezelf, partner, vrienden of kinderen maken. robuust koestert dit soort momenten en zorgt dat alle zintuigen ook écht genieten; van ons sfeervolle ambiance tot vernieuwend en culinair assortiment. menu reserveren overheerlijke menu's robuust staat voor eigentijds, toegankelijk, goede prijsstelling, bereikbaar en de kwaliteit en",
+      "textLength": 8520
+    }
+  },
+  {
+    "osm_id": 4991156221,
+    "osm_type": "node",
+    "name": "Luigi's IJssalon",
+    "amenity": "ice_cream",
+    "lat": 52.0179408,
+    "lng": 5.0422651,
+    "address": "Schuttersgracht 26",
+    "city": "IJsselstein",
+    "website": "https://www.ijssalonluigi.nl",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": "yes",
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [],
+      "snippet": null,
+      "textLength": 4771
+    }
+  },
+  {
+    "osm_id": 5135999450,
+    "osm_type": "node",
+    "name": "Bagels & More",
+    "amenity": "cafe",
+    "lat": 52.018179,
+    "lng": 5.0427082,
+    "address": "Schuttersgracht 18a",
+    "city": "IJsselstein",
+    "website": "https://bagelsandmore.nl",
+    "phone": "+31 30 7116838",
+    "cuisine": "bagel",
+    "outdoor_seating": "yes",
+    "wheelchair": "yes",
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "kids"
+      ],
+      "snippet": "&nbsp;bestellen bagles & more - ijsselstein heerlijke broodjes, lunchgerechten en bagles. nu bestellen categorieën selecteer en bekijk categorieën alle categorieën ontbijt bagels vegan bagels tostis kids bagels soep sweet mezze tafel salade&#039;s koude dranken warme dranken high tea cadeaubonnen borrelhapjes feestdagen vegan high tea limburgsche vlaaien bekijk volledige menu specialiteiten bekijk volledige menu bestel hier je vlaai tafel reserveren reserveer nu openingstijden bezorging bezorge",
+      "textLength": 2258
+    }
+  },
+  {
+    "osm_id": 5135999480,
+    "osm_type": "node",
+    "name": "Mr. Sushi",
+    "amenity": "restaurant",
+    "lat": 52.018754,
+    "lng": 5.0437503,
+    "address": "Schuttersgracht 8",
+    "city": "IJsselstein",
+    "website": "https://ijsselstein.mrsushi.nl/",
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": "no",
+    "wheelchair": "no",
+    "opening_hours": null,
+    "scrape": {
+      "success": true,
+      "keywords": [
+        "family"
+      ],
+      "snippet": "€ 33.50 sushi de luxe california roll (8pc) tempura ebi roll (8pc) maki mix (24pc) nigiri sake (4pc) nigiri maguro (4pc) nigiri ebi (4pc) nigiri kani(4pc) nigiri inari (4pc) (52pc) - 3 pers. € 52.50 family sushi box california roll (16pc) tempura ebi roll (8pc) maki mix (24pc) nigiri sake (4pc) nigiri maguro (4pc) nigiri ebi (4pc) nigiri kani(4pc) nigiri inari (4pc) nigiri tamago (4pc) (72pc) - 4 pers. € 59.95 poke bowl poke bowl crab crabstick mayonnaise cucumber avocado edamame masago € 14.95",
+      "textLength": 18279
+    }
+  },
+  {
+    "osm_id": 2914253185,
+    "osm_type": "node",
+    "name": "Kwalitaria",
+    "amenity": "fast_food",
+    "lat": 52.0220691,
+    "lng": 5.0279123,
+    "address": "de Biezen 19",
+    "city": "IJsselstein",
+    "website": null,
+    "phone": null,
+    "cuisine": "friture",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2916122548,
+    "osm_type": "node",
+    "name": "Havana Burger & Doner",
+    "amenity": "fast_food",
+    "lat": 52.027412,
+    "lng": 5.0469274,
+    "address": "De Clinckhoeff 10",
+    "city": "IJsselstein",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2921213149,
+    "osm_type": "node",
+    "name": "Melviénne",
+    "amenity": "fast_food",
+    "lat": 52.0188416,
+    "lng": 5.0423892,
+    "address": "Benschopperstraat 22",
+    "city": "IJsselstein",
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 2921215315,
+    "osm_type": "node",
+    "name": "Koffiebar POM",
+    "amenity": "cafe",
+    "lat": 52.020246,
+    "lng": 5.0448758,
+    "address": "Utrechtsestraat 37",
+    "city": "IJsselstein",
+    "website": null,
+    "phone": null,
+    "cuisine": "coffee_shop",
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": "Tu-Sa 08:30-17:00",
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 10964815882,
+    "osm_type": "node",
+    "name": "Rustpunt De Lage Linde",
+    "amenity": "cafe",
+    "lat": 52.000699,
+    "lng": 5.060062,
+    "address": null,
+    "city": null,
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": "only",
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 13146904660,
+    "osm_type": "node",
+    "name": "De Stadskamer",
+    "amenity": "restaurant",
+    "lat": 52.0192359,
+    "lng": 5.0427424,
+    "address": null,
+    "city": null,
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": "yes",
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  },
+  {
+    "osm_id": 13188508726,
+    "osm_type": "node",
+    "name": "Famie",
+    "amenity": "restaurant",
+    "lat": 52.0187184,
+    "lng": 5.0437112,
+    "address": null,
+    "city": null,
+    "website": null,
+    "phone": null,
+    "cuisine": null,
+    "outdoor_seating": null,
+    "wheelchair": null,
+    "opening_hours": null,
+    "scrape": {
+      "success": false,
+      "error": "no_website",
+      "keywords": [],
+      "snippet": null
+    }
+  }
+]

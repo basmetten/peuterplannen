@@ -1,0 +1,582 @@
+[
+  {
+    "region": "Utrecht",
+    "score": 9,
+    "data": {
+      "name": "Miyabi",
+      "region": "Utrecht",
+      "type": "horeca",
+      "description": "Aziatisch restaurant met gratis kindermenu voor peuters (0-4 jaar), zeer doelgericht.",
+      "website": "https://miyabi-asian-cuisine.eatbu.com",
+      "lat": 52.0978024,
+      "lng": 5.0633946,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Gratis kindermenu voor kinderen 0-4 jaar.",
+      "last_verified_at": "2026-03-02T14:21:50.248Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Utrecht",
+    "score": 9,
+    "data": {
+      "name": "Molencafé",
+      "region": "Utrecht",
+      "type": "horeca",
+      "description": "Molencafé biedt een speeltuintje voor kleintjes en lieve dieren op het erf, ideaal voor peuters die willen spelen.",
+      "website": "https://www.molendester.nu/molencafe/",
+      "lat": 52.0897095,
+      "lng": 5.1005359,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": false,
+      "weather": "outdoor",
+      "toddler_highlight": "Speeltuintje en dieren maken het aantrekkelijk voor peuters.",
+      "last_verified_at": "2026-03-02T14:21:50.248Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Utrecht",
+    "score": 8,
+    "data": {
+      "name": "Humphrey's",
+      "region": "Utrecht",
+      "type": "horeca",
+      "description": "Humphrey's biedt een aangepast kindermenu zodat iedereen kan genieten van een gezellig avondje uit.",
+      "website": "https://humphreys.nl/onze-restaurants/humphreys-utrecht/",
+      "lat": 52.0918278,
+      "lng": 5.1190352,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kindermenu speciaal ontworpen voor jonge diners.",
+      "last_verified_at": "2026-03-02T14:21:50.248Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Utrecht",
+    "score": 8,
+    "data": {
+      "name": "De Hondekop",
+      "region": "Utrecht",
+      "type": "horeca",
+      "description": "De Hondekop heeft kinderstoelen en een luierstation, plus enkele spellen voor kinderen.",
+      "website": "https://dehondekop.nl",
+      "lat": 52.1002732,
+      "lng": 5.0955097,
+      "coffee": true,
+      "diaper": true,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kinderstoelen en luierstation aanwezig.",
+      "last_verified_at": "2026-03-02T14:21:50.248Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Utrecht",
+    "score": 8,
+    "data": {
+      "name": "Lunet IV",
+      "region": "Utrecht",
+      "type": "horeca",
+      "description": "Lunet IV biedt speelmateriaal en een wandelspeurtocht met kabouterpad speciaal voor kleine kinderen.",
+      "website": "https://fortlunet4.nl/",
+      "lat": 52.0687719,
+      "lng": 5.1336284,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "outdoor",
+      "toddler_highlight": "Speelmateriaal en interactief kabouterpad.",
+      "last_verified_at": "2026-03-02T14:21:50.248Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Groningen",
+    "score": 8,
+    "data": {
+      "name": "Bodega y Tapas",
+      "region": "Groningen",
+      "type": "horeca",
+      "description": "Bodega y Tapas aan Nieuwe Ebbingestraat biedt gratis maaltijden voor peuters onder 4 jaar.",
+      "website": "https://www.bodega-y-tapas.nl/vestigingen/noorderplantsoen/",
+      "lat": 53.2274602,
+      "lng": 6.560655,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kinderen jonger dan 4 jaar eten volledig gratis.",
+      "last_verified_at": "2026-03-02T14:21:50.294Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Groningen",
+    "score": 8,
+    "data": {
+      "name": "Bodega y Tapas",
+      "region": "Groningen",
+      "type": "horeca",
+      "description": "Bodega y Tapas aan Damsterdiep biedt gratis maaltijden voor peuters onder 4 jaar.",
+      "website": "https://www.bodega-y-tapas.nl/vestigingen/damsterdiep/",
+      "lat": 53.2174756,
+      "lng": 6.5752688,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kinderen jonger dan 4 jaar eten volledig gratis.",
+      "last_verified_at": "2026-03-02T14:21:50.294Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Groningen",
+    "score": 8,
+    "data": {
+      "name": "Artsy Avenue",
+      "region": "Groningen",
+      "type": "horeca",
+      "description": "Artsy Avenue is expliciet kindvriendelijk en biedt creatieve bezigheden voor kinderen.",
+      "website": "https://artsy-avenue.nl/",
+      "lat": 53.218841,
+      "lng": 6.5651288,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": false,
+      "weather": "indoor",
+      "toddler_highlight": "Kinderen zijn van harte welkom; perfect voor samen creatief bezig zijn.",
+      "last_verified_at": "2026-03-02T14:21:50.294Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Groningen",
+    "score": 8,
+    "data": {
+      "name": "Bodega y Tapas",
+      "region": "Groningen",
+      "type": "horeca",
+      "description": "Bodega y Tapas in Haren biedt gratis maaltijden voor peuters onder 4 jaar.",
+      "website": "https://www.bodega-y-tapas.nl/vestigingen/haren/",
+      "lat": 53.1737746,
+      "lng": 6.6018499,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kinderen jonger dan 4 jaar eten volledig gratis.",
+      "last_verified_at": "2026-03-02T14:21:50.294Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Groningen",
+    "score": 8,
+    "data": {
+      "name": "Eethuys Stadspark",
+      "region": "Groningen",
+      "type": "horeca",
+      "description": "Eethuys Stadspark biedt kinderboerderij; combinatie van restaurant en dierenactiviteiten.",
+      "website": "https://campingstadspark.nl/horeca-op-camping-stadspark",
+      "lat": 53.2013064,
+      "lng": 6.5361434,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Kinderboerderij aanwezig; ideaal voor jonge kinderen die dieren willen zien.",
+      "last_verified_at": "2026-03-02T14:21:50.294Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Bunnik",
+    "score": 8,
+    "data": {
+      "name": "Rustpunt Boerderij Nieuw Slagmaat",
+      "region": "Utrechtse Heuvelrug",
+      "type": "horeca",
+      "description": "Rustpunt Boerderij Nieuw Slagmaat biedt een speelweide en maisdoolhof, perfect voor peuters om buiten te spelen en ontdekken.",
+      "website": "https://www.nieuwslagmaat.nl",
+      "lat": 52.05455,
+      "lng": 5.15683,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": false,
+      "weather": "both",
+      "toddler_highlight": "Speelweide en maisdoolhof voor actieve peuters.",
+      "last_verified_at": "2026-03-02T14:11:10.888Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "De Bilt",
+    "score": 10,
+    "data": {
+      "name": "Pancake in the Park",
+      "region": "Utrecht",
+      "type": "pancake",
+      "description": "Kindvriendelijke hotspot met ruime omheinde speeltuin met zandbakken, schommels, glijbaan, speelhuisje en springkussen plus pannenkoeken.",
+      "website": "https://www.pancakeinthepark.nl/",
+      "lat": 52.1222029,
+      "lng": 5.1362348,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Omheinde speeltuin speciaal ontworpen voor kindveiligheid en pannenkoeken.",
+      "last_verified_at": "2026-03-02T14:11:10.970Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "De Bilt",
+    "score": 9,
+    "data": {
+      "name": "Restaurant De Paddestoel",
+      "region": "Utrecht",
+      "type": "pancake",
+      "description": "Bosrestaurant met speelplein waar kinderen zich kunnen vermaken en heerlijke pannenkoeken.",
+      "website": "https://www.de-paddestoel.com/",
+      "lat": 52.1791905,
+      "lng": 5.2023523,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "outdoor",
+      "toddler_highlight": "Speelplein en pannenkoeken in natuuromgeving.",
+      "last_verified_at": "2026-03-02T14:11:10.970Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "De Bilt",
+    "score": 9,
+    "data": {
+      "name": "Koetshuis Beerschoten",
+      "region": "Utrecht",
+      "type": "horeca",
+      "description": "Coffee shop met uitgebreide speeltuin met zandbakken, schommels en glijbaan voor kleine kinderen.",
+      "website": "https://koetshuisbeerschoten.nl/",
+      "lat": 52.1063283,
+      "lng": 5.2007753,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": false,
+      "weather": "outdoor",
+      "toddler_highlight": "Excellente speeltuin speciaal voor kleine kinderen.",
+      "last_verified_at": "2026-03-02T14:11:10.970Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "De Bilt",
+    "score": 9,
+    "data": {
+      "name": "Biltse Boer",
+      "region": "Utrecht",
+      "type": "horeca",
+      "description": "IJssalon met aangrenzende speeltuin waar kinderen zich uitsluitend kunnen vermaken.",
+      "website": "https://www.biltseboer.nl/",
+      "lat": 52.1018966,
+      "lng": 5.1998726,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": false,
+      "weather": "outdoor",
+      "toddler_highlight": "Speeltuin bijzonderheidmiddel bij ijssalon.",
+      "last_verified_at": "2026-03-02T14:11:10.970Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "De Bilt",
+    "score": 8,
+    "data": {
+      "name": "PK Bilthoven",
+      "region": "Utrecht",
+      "type": "horeca",
+      "description": "Restaurant positioneert zich als ideale plek om te dineren met het gezin, met kinderkaart beschikbaar.",
+      "website": "https://www.pkbilthoven.nl/",
+      "lat": 52.1293546,
+      "lng": 5.2064252,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kinderkaart speciaal voor gezinnen.",
+      "last_verified_at": "2026-03-02T14:11:10.970Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Zeist",
+    "score": 9,
+    "data": {
+      "name": "Ouwekamp, ons eetcafé",
+      "region": "Utrechtse Heuvelrug",
+      "type": "horeca",
+      "description": "Ouwekamp biedt een speelhoek met zandbak voor allerkleinsten en speeltuin op 50 meter afstand, ideaal voor peuters.",
+      "website": "https://ouwekamp.nl/",
+      "lat": 52.0785791,
+      "lng": 5.3140228,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Zandbak en speelhoek specifiek voor allerkleinsten, plus speeltuin vlakbij.",
+      "last_verified_at": "2026-03-02T14:11:11.054Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Zeist",
+    "score": 8,
+    "data": {
+      "name": "Loetje",
+      "region": "Utrechtse Heuvelrug",
+      "type": "horeca",
+      "description": "Loetje is kindvriendelijk met een speciaal kindermenu met lekkere, kindvriendelijke gerechten voor kleine loetjes.",
+      "website": "https://www.loetje.nl/locaties/zeist/",
+      "lat": 52.0894177,
+      "lng": 5.2471269,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Speciaal kindermenu speciaal samengesteld voor jonge gasten.",
+      "last_verified_at": "2026-03-02T14:11:11.054Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Zeist",
+    "score": 8,
+    "data": {
+      "name": "Bijzonder Leuk",
+      "region": "Utrechtse Heuvelrug",
+      "type": "horeca",
+      "description": "Bijzonder Leuk is kindvriendelijk met heerlijke speelhoek 'mini taartenfabriek' en ruim aanbod voor kids op het menu.",
+      "website": "https://www.bijzonderleuk-zeist.nl/",
+      "lat": 52.0861381,
+      "lng": 5.2437376,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": false,
+      "weather": "indoor",
+      "toddler_highlight": "Speelhoek speciaal als 'mini taartenfabriek' met kindvriendelijk menu.",
+      "last_verified_at": "2026-03-02T14:11:11.054Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Zeist",
+    "score": 8,
+    "data": {
+      "name": "Blik en Burgers",
+      "region": "Utrechtse Heuvelrug",
+      "type": "horeca",
+      "description": "Blik en Burgers verwelkomt gasten met eten, drinken en spelen met grote binnenspeel ruimte voor kinderen.",
+      "website": "https://blikenburgers.nl",
+      "lat": 52.0761841,
+      "lng": 5.2345128,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Grote binnenspeel ruimte waar kinderen kunnen spelen terwijl ouders eten.",
+      "last_verified_at": "2026-03-02T14:11:11.054Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Houten",
+    "score": 9,
+    "data": {
+      "name": "Tante Truus Pannenkoeken",
+      "region": "Utrecht",
+      "type": "pancake",
+      "description": "Tante Truus Pannenkoeken heeft een speciële kinderhoek en een breed assortiment pannenkoeken voor alle leeftijden.",
+      "website": "https://tantetruuskitchen.nl",
+      "lat": 52.0164989,
+      "lng": 5.1786523,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kinderhoek waar peuters zich kunnen vermaken, perfect voor gezinsuitjes.",
+      "last_verified_at": "2026-03-02T14:11:11.137Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Houten",
+    "score": 8,
+    "data": {
+      "name": "De Beren",
+      "region": "Utrecht",
+      "type": "horeca",
+      "description": "De Beren biedt een unieke indoor springkussen waar jonge kinderen veilig kunnen spelen.",
+      "website": "https://www.beren.nl/vestigingen/houten",
+      "lat": 52.0239698,
+      "lng": 5.1458417,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Speciaal springkussen voor kinderen terwijl ouders kunnen genieten.",
+      "last_verified_at": "2026-03-02T14:11:11.137Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Houten",
+    "score": 8,
+    "data": {
+      "name": "Loetje",
+      "region": "Utrecht",
+      "type": "horeca",
+      "description": "Loetje biedt een speciaal kindermenu met kindvriendelijke gerechten voor jonge gasten.",
+      "website": "https://www.loetje.nl/locaties/houten/",
+      "lat": 52.0317012,
+      "lng": 5.1388326,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kleine Loetjes hebben een aantrekkelijk kindermenu.",
+      "last_verified_at": "2026-03-02T14:11:11.137Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Nieuwegein",
+    "score": 8,
+    "data": {
+      "name": "Happy Italy",
+      "region": "Utrecht",
+      "type": "horeca",
+      "description": "Italiaans restaurant met binnenspeeltuin en ballenbak, kindermenu en invalidentoilet aanwezig.",
+      "website": "https://www.happyitaly.nl/nl/locaties/nieuwegein/",
+      "lat": 52.0134282,
+      "lng": 5.1158896,
+      "coffee": true,
+      "diaper": true,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Binnenspeeltuin met ballenbak biedt ideale speelruimte voor peuters.",
+      "last_verified_at": "2026-03-02T14:11:11.222Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "IJsselstein",
+    "score": 9,
+    "data": {
+      "name": "De Roozeboom",
+      "region": "Utrecht",
+      "type": "pancake",
+      "description": "Pannenkoekenrestaurant met speeltuin en speelhoek waar kinderen zich kunnen vermaken terwijl het gezin eet.",
+      "website": "https://www.pannenkoeken.org/",
+      "lat": 52.0388904,
+      "lng": 5.0352831,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Speeltuin en speelhoek speciaal voor kinderen beschikbaar.",
+      "last_verified_at": "2026-03-02T14:11:11.303Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Woerden",
+    "score": 9,
+    "data": {
+      "name": "Spies & Spijs",
+      "region": "Utrecht",
+      "type": "horeca",
+      "description": "Rodizio grill restaurant met kinderspeelhoek en kinderstoelen; perfect voor families met jonge kinderen.",
+      "website": "https://www.spiesenspijs.nl",
+      "lat": 52.1159444,
+      "lng": 4.8365267,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kinderspeelhoek en kinderstoelen aanwezig; ideaal voor gezinnen met peuters.",
+      "last_verified_at": "2026-03-02T14:11:11.383Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Utrechtse Heuvelrug",
+    "score": 9,
+    "data": {
+      "name": "Het Grote Bos",
+      "region": "Utrechtse Heuvelrug",
+      "type": "horeca",
+      "description": "Het Grote Bos is een kindvriendelijk restaurant met indoor speelruimte en activiteiten.",
+      "website": "https://www.rcn.nl/nl/vakantieparken/nederland/utrecht/rcn-het-grote-bos/brasserie",
+      "lat": 52.0558175,
+      "lng": 5.3145545,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Indoor speelruimte en activiteiten voor peuters.",
+      "last_verified_at": "2026-03-02T14:11:11.467Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Utrechtse Heuvelrug",
+    "score": 8,
+    "data": {
+      "name": "Reyck",
+      "region": "Utrechtse Heuvelrug",
+      "type": "horeca",
+      "description": "Restaurant Reyck biedt een speelhoek voor kleine kinderen en traditioneel Italiaans ijs.",
+      "website": "https://www.reyck-doorn.nl/",
+      "lat": 52.0368978,
+      "lng": 5.3197984,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Speelhoek waar peuters vrij kunnen spelen.",
+      "last_verified_at": "2026-03-02T14:11:11.467Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Utrechtse Heuvelrug",
+    "score": 8,
+    "data": {
+      "name": "Bistro LOF",
+      "region": "Utrechtse Heuvelrug",
+      "type": "horeca",
+      "description": "Bistro LOF biedt een uitgebreide kinderkaart met gerechten zoals poffertjes en pasta.",
+      "website": "https://parcbroekhuizen.nl/eten-drinken/bistro-lof/",
+      "lat": 52.0079919,
+      "lng": 5.401932,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kinderkaart met poffertjes en beperkte porties.",
+      "last_verified_at": "2026-03-02T14:11:11.467Z",
+      "verification_source": "osm_discovery"
+    }
+  }
+]

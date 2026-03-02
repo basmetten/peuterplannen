@@ -57,6 +57,14 @@ const REGIONS = {
   'Arnhem':              { osmName: 'Arnhem', adminLevel: 8 },
   'Nijmegen':            { osmName: 'Nijmegen', adminLevel: 8 },
   'Apeldoorn':           { osmName: 'Apeldoorn', adminLevel: 8 },
+  // Utrecht-omringende gemeenten
+  'Bunnik':              { osmName: 'Bunnik',       adminLevel: 8, supabaseRegion: 'Utrechtse Heuvelrug' },
+  'De Bilt':             { osmName: 'De Bilt',      adminLevel: 8, supabaseRegion: 'Utrecht' },
+  'Zeist':               { osmName: 'Zeist',        adminLevel: 8, supabaseRegion: 'Utrechtse Heuvelrug' },
+  'Houten':              { osmName: 'Houten',       adminLevel: 8, supabaseRegion: 'Utrecht' },
+  'Nieuwegein':          { osmName: 'Nieuwegein',   adminLevel: 8, supabaseRegion: 'Utrecht' },
+  'IJsselstein':         { osmName: 'IJsselstein',  adminLevel: 8, supabaseRegion: 'Utrecht' },
+  'Woerden':             { osmName: 'Woerden',      adminLevel: 8, supabaseRegion: 'Utrecht' },
 };
 
 // ─── CLI args ──────────────────────────────────────────────────────────────
@@ -185,8 +193,8 @@ async function overpassDiscovery(region) {
 
   const query = `[out:json][timeout:60];
 area["name"="${config.osmName}"]["admin_level"="${config.adminLevel}"]->.a;
-(node["amenity"~"restaurant|cafe"](area.a);
- way["amenity"~"restaurant|cafe"](area.a););
+(node["amenity"~"restaurant|cafe|ice_cream|fast_food"](area.a);
+ way["amenity"~"restaurant|cafe|ice_cream|fast_food"](area.a););
 out center;`;
 
   console.log('  Querying Overpass API...');
@@ -547,6 +555,8 @@ function generateReports(candidates, region) {
   console.log(`  Review: ${reviewPath}`);
 
   // Generate evaluated.json with Supabase-ready records for score >= 7
+  const supabaseRegion = REGIONS[region]?.supabaseRegion || region;
+
   const supabaseReady = evaluated
     .filter(c => c.evaluation.score >= 7)
     .map(c => {
@@ -571,7 +581,7 @@ function generateReports(candidates, region) {
         is_pancake_restaurant: isPancake,
         supabase_ready: {
           name: c.name,
-          region: region,
+          region: supabaseRegion,
           type: isPancake ? 'pancake' : 'horeca',
           description: ev.description,
           website: c.website,
@@ -668,6 +678,12 @@ async function processRegion(region) {
   } else {
     candidates = loadStageFile(region, 2) || candidates;
     console.log(`  [Loaded stage 2: ${candidates.length} candidates]`);
+  }
+
+  // --no-llm: stop na Stage 2
+  if (args['no-llm']) {
+    console.log(`\n  [--no-llm] Stage 1+2 klaar. ${candidates.length} kandidaten in stage2 bestand.`);
+    return [];
   }
 
   // Stage 3

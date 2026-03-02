@@ -1,0 +1,31 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[323] NOK | restaurant | onbekend
+  Keywords: kids
+  Fragment: koud biertje. genieten van de zon op ons patioterras, lunchen in de skybar of dineren in het restaurant: bij ons ben je welkom. check our menu in english here nederlands menu lunch diner bites drinks kids reserveren reserveren bij nok kan via de module op deze pagina. voor groepsreserveringen vanaf 15 personen is het mogelijk om een menu te reserveren. informeer gerust naar de mogelijkheden via: r
+
+[326] Food Matterz Cafe | cafe | Vismarkt 21, Groningen
+  Keywords: kids, baby
+  Fragment: outdoor zakelijk uitgelicht sale -40% new arrivals topmerken skechers boss pme legend nelson cruyff timberland floris van bommel new balance adidas rehab alle merken voor heren shop alle new arrivals kids schoenen sneakers boots laarzen instapschoenen pantoffels snowboots regenlaarzen babyschoenen sandalen slippers voetbalschoenen verzorging en accessoires alle schoenen schoenen voor meisjes jonge
+
+[332] La Place | restaurant | Grote Markt 21, Groningen
+  Keywords: kids
+  Fragment: la place - la place menu deals foodstories recepten kids locaties zakelijk faq account account deals meer even écht genieten klik hier locaties bekijk locaties klik hier werken bij la place klik hier vergaderen offerte aanvragen klik hier recepten bekijk recepten klik hier deals bekijk deals klik hier la place klik hier contact opnemen klik hier faq
+
+[335] 't Zusje | restaurant / tapas | Rodeweeshuisstraat 6, Groningen
+  Keywords: kinderen
+  Fragment: altbommel zutphen date) --> welke datum kom je langs? met hoeveel personen kom je bij ons eten? number with buttons for + and -) --> volwassenen vanaf 11 jaar - + number with buttons for + and -) --> kinderen tot en met 10 jaar - + bel zusje bel zusje een momentje … we checken de beschikbaarheid! --> wat wordt je aankomst tijd? om de meest recente tijdvakken te tonen, wordt de lijst elke 30 second
+
+JSON array (4 objecten):

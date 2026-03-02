@@ -1,0 +1,115 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[17] Favolosa | cafe / coffee_shop | Herestraat 7, Groningen
+  Keywords: baby
+  Fragment: machine #barista #grotemarkt #vismarkt #groningencity #groningenstad #gelukkigbenjeingroningen #mooi #visitgroningen #groningen #igogroningen openen day becomes a bit better together with these sweet baby’s. ☀️drop by favolosa to grab your favorite muffin! p.s blueberry muffins are especially tasty because we make it ourself (check the first photo) 😉🧁 ⠀⠀⠀⠀ ⠀⠀ -⠀⠀⠀⠀ ⠀⠀⠀⠀ ⠀⠀⠀⠀ ⠀⠀⠀⠀ ⠀⠀⠀⠀ ⠀⠀⠀⠀ ⠀⠀⠀⠀ 
+
+[23] Bamboe Garden | restaurant / chinese | Diamantlaan 47-2, Groningen
+  Keywords: baby
+  Fragment: joy met garnalen € 18.80 vegetarische gerechten 75. tau fu met chinese groenten € 14.50 76. tau fu szechuan € 16.80 77. tau fu met zwarte bonensaus met paksoi en groente € 16.80 78. tau fu kerrie met babymaïs en groente € 16.80 varkensvlees gerechten 79. cha sieuw gegrilde magere varkenshaas € 18.00 80. sieuw yuk geroosterd speenvarken € 18.00 81. gon po yuk € 18.00 82. koe loe yuk € 18.00 83. bab
+
+[25] Het Concerthuis | cafe | Poelestraat 30, Groningen
+  Keywords: kids
+  Fragment: back on top. come with your friend or with your grandparents, everyone is welcome. the brakke brunch is ready for you every sunday from 10.30 am to 3 pm! time: 10.30 a.m. until 3 p.m. price: 18 euro (kids up to 12 yr. half price) reservations: groups only from 7 persons by phone (050 2304250) or email info@hetconcerthuis.nl | only available time slots 10.30 or 11 h. after 1 pm there&#8217;s usuall
+
+[26] Cafetaria Friet van Piet | fast_food / friture | Meeuwerderweg 112, Groningen
+  Keywords: kindermenu, kinderportie
+  Fragment: ittergarnituur de sauzen van piet vergeet uw eigen tas niet! groningse runderburgers vleesgerechten/kapsalon speciale gerechten vegetarische burgers lekker voor erbij! glutenvrij/veganistische keuzes kindermenu schnitzel menu's vergeet uw eigen tas niet!! broodjes met koud beleg broodjes met warm beleg tosti’s op regionaal brood dranken/milkshakes order meal delivery or pickup no delivery --> gron
+
+[27] 't Feithhuis | restaurant / regional | Martinikerkhof 10, Groningen
+  Keywords: kids
+  Fragment: agen nl --> home menukaart high tea onze ruimtes groepsaanbod contact vacatures menukaart offerte aanvragen adres martinikerkhof 10 9712 jg groningen voorjaarsvakantie 3-gangen diner €29.5 | 2-gangen kids diner €11.5 welkom high tea | lunch | borrel | diner meetings & events zaalverhuur | groepsaanbod menukaart offerte aanvragen scroll naar beneden &nbsp; &nbsp; welkom bij feithhuis je vindt ons i
+
+[39] Cafetaria Kerklaan | fast_food / burger | Kerklaan 5, Groningen
+  Keywords: kids, family
+  Fragment: speciaal € 4.90 halal kipburger speciaal € 5.60 halal hamburger speciaal € 6.00 milkshakes milkshake aardbei € 3.70 milkshake banaan € 3.70 milkshake chocolade € 3.70 milkshake vanille € 3.70 softijs kids cone € 1.75 funny face € 2.50 party animals € 2.50 oublie small € 2.50 oublie medium € 3.10 oublie large € 3.70 reuze beker € 3.00 kids beker € 3.95 sundae extra oreo kersen € 4.45 sundae extra c
+
+[46] Bodega y Tapas | restaurant / tapas | Nieuwe Ebbingestraat 149, Groningen
+  Keywords: kinderen, kids
+  Fragment: as gluten- of lactosevrij (kunnen) zijn. daarnaast staat erop vermeld wat je kunt eten als je zwanger bent, of wanneer je halal eet. de allergenenkaart kun je hier bekijken . wat zijn de prijzen voor kinderen? voor kinderen van 4 t/m 12 jaar rekenen we de leeftijd als prijs. kinderen jonger dan 4 jaar eten gratis. welke cadeaubonnen accepteren jullie? in deze vestiging kun je betalen met de vvv ka
+
+[57] McDonald's | fast_food / burger | Atoomweg 1, Groningen
+  Keywords: baby
+  Fragment: :30-21:30 opmerkingen wegens de slechte weersomstandigheden zijn we op 9 januari om 11:00 uur geopend ! dank voor u begrip services in dit restaurant bekijk onze services mccafé mcdelivery creditcard babyruimte myorder dichtstbijzijnde restaurants mcdonald&#039;s groningen west mcdonald&#039;s groningen westerhaven openingstijden restaurant: open tot 23:00 mcdrive: open tot 01:00 mcdelivery: open 
+
+[70] Bistro Beiroet | fast_food / kebab | Ypemaheerd 55, Groningen
+  Keywords: kindermenu
+  Fragment: ills luxe angus beef burgers menu crispy chicken burgers luxe angus beef burgers crispy chickenwings libanese specialiteiten schotels doner menu broodjes kapsalon lamachoun boxes sides/ voorgerechten kindermenu desserts drankjes extra saus extra order meal delivery or pickup no delivery --> actie lamachoun met 25% korting populaire gerechten this is what our customer love to order --> kapsalon dön
+
+[72] Jantje's Steakcafé | restaurant | Rijksweg 4, Groningen
+  Keywords: kindermenu
+  Fragment: nnige terras.&nbsp; ​ smaakt dit naar meer? bekijk ons menu en reserveer gelijk je plekje. verras iemand met een speciale jantje&#39;s cadeaubon cadeaubon bestellen &amp; bepaal zelf het bedrag! menu kindermenu borrel groepsmenu reserveer dessert over ons recensies google review had an absolutely lovely time here! staff is very friendly and the food is delicious. totally recommend checking this ou
+
+[93] Bodega y Tapas | restaurant / tapas | Damsterdiep 20, Groningen
+  Keywords: kinderen, kids
+  Fragment: as gluten- of lactosevrij (kunnen) zijn. daarnaast staat erop vermeld wat je kunt eten als je zwanger bent, of wanneer je halal eet. de allergenenkaart kun je hier bekijken . wat zijn de prijzen voor kinderen? voor kinderen van 4 t/m 12 jaar rekenen we de leeftijd als prijs. kinderen jonger dan 4 jaar eten gratis. welke cadeaubonnen accepteren jullie? in deze vestiging kun je betalen met de vvv ka
+
+[98] Eat Tasty | fast_food | Floresstraat 11, Groningen
+  Keywords: gezin
+  Fragment: noflooksaus € 8.20 patat kapsalon shoarma, ijsbergsla, kaas, tomaat en ui over patat. inclusief knoflooksaus € 9.00 patat kipsalon gefrituurde kip, ijsbergsla en speciale mayo over patat € 9.50 patat gezinszak 4 personen € 9.50 patat gezinszak 5 personen € 11.50 snacks frikandel € 2.30 frikandel speciaal € 2.90 frikandel xl 250 gram € 4.10 frikandel xl speciaal € 4.70 vleeskroket € 2.30 kalfskroke
+
+[99] Picobello | restaurant / pizza | Korreweg 111, Groningen
+  Keywords: kinderen
+  Fragment: 3.50 uitverkocht warme chocolade melk € 3.50 uitverkocht huisgemaakte ijsthee - citroen € 3.50 uitverkocht huisgemaakte ijsthee - hibiscus € 3.50 uitverkocht jus d'orange € 3.50 uitverkocht appelsap (kinderen) € 2.00 uitverkocht ontbijt 111. gemengd ontbijt gekookte ei , gebakken ei , becon , champignon , marmelade ,kaas ,broodjes € 14.75 uitverkocht 112. olijf ontbijt falafel , aubergine , courge
+
+[141] Artsy Avenue | cafe | Oude Boteringestraat 1-1, Groningen
+  Keywords: kinderen, kinderen welkom
+  Fragment: waterbasis en daardoor volledig veilig, ook tijdens de zwangerschap. voor langdurig plezier van je keramiek raden we aan om het altijd met de hand af te wassen en er voorzichtig mee om te gaan. zijn kinderen welkom? zeker! kinderen zijn van harte welkom bij artsy avenue, het is juist hartstikke leuk om samen creatief bezig te zijn. zolang er begeleiding van een volwassene aanwezig is, kunnen kinde
+
+[159] Diyar Mangal | restaurant / turkish | Steentilstraat 17, Groningen
+  Keywords: kinderen, gezin
+  Fragment: rd “mangal” staat in het turks voor houtskool, barbecue en op open vuur ambachtelijk bereid vlees. “diyar” is ontstaan door een liefdevolle samenvoeging van de eerste letters van de namen van de drie kinderen van de eigenaar: dilara, yuksel en arda. elke passant in de steenstilstraat ruikt al buiten de heerlijke geur van brandend houtskoolvuur vermengd met de geur van sappig vlees en exotische kru
+
+[165] Moro | restaurant / tapas | Gedempte Kattendiep 21, Groningen
+  Keywords: baby
+  Fragment: moro 050 3603666 moro@viavecchia.nl menukaarten menukaarten groepsmenu diner english menu wijn en borrelkaart arrangementen arrangementen borrelarrangement babyshower combo cocktailworkshop high- wine, tea, tapas borrels en feestjes agenda agenda cocktailnight @hemingway’s cervantes 25 jaar nieuws nieuws frivolo evento estivo 2026 cadeaukaart vacatures chef-kok bij boccaccio parttime bediening con
+
+[181] Tapasco | restaurant / tapas | Haddingedwarsstraat 3, Groningen
+  Keywords: kinderen
+  Fragment: n in ons spaans paradijsje! team tapasco ¡buen provecho! wij bieden verschillende menu opties aan ilimitadas € 26,95 2 uur lang onbeperkt tapas ilimitadas niño € 14,50 2 uur lang onbeperkt tapas voor kinderen tot en met 11 jaar menu para grupos dit e-mailadres wordt beveiligd tegen spambots. javascript dient ingeschakeld te zijn om het te bekijken. ben je met je vriendengroep, collega’s of familie
+
+[193] Vive la Vie | restaurant | Oosterstraat 39, Groningen
+  Keywords: gezin
+  Fragment: oen dining with the stars &#8211; koken op de malediven wauw wat was dit geweldig!! een &#8216;once in a lifetime experience&#8217;!!! van 19 februari tot en met 6 maart verbleef chef jeroen met zijn gezin op de malediven in het kader van &#8216;dining with the stars&#8217;. dining with the stars is een samenwerking tussen de jre en de diamonds resorts van planhotel; de eilanden athuruga en thuduf
+
+[194] 5 Smaken | restaurant / korean | Poelestraat 39, Groningen
+  Keywords: family
+  Fragment: perience that&#39;s fun, social, and delicious. korean bbq is a style of dining where you get to cook your own meat at your table using a grill or hot plate. it&#39;s a great way to enjoy a meal with family or friends, and it&#39;s perfect for anyone who loves the taste of grilled meat. ​ cooking korean bbq is a fun dining experience where you grill your own meat at your table. simply place the th
+
+[200] Yanagi | restaurant / japanese;noodles;ramen;sushi | Gedempte Zuiderdiep 44, Groningen
+  Keywords: baby
+  Fragment: springonion, leek and vegetables click for preview vegetarian ramen 野菜ラーメン vegetarian shoyu ramen - 15.50€ crispytofu, paksoi, corn, mushroom, blackwoodear, bellpepper, springonion, egg, beansprout, babycorn, chinesecabbage click for preview vegetarian miso ramen - 15.50€ crispytofu, paksoi, bellpepper, seaweed, corn, egg, edamame, beansprout, chinesecabbage click for preview spicy vegetarian rame
+
+[219] Kattencafé OP Z'N KOP | cafe / cake;coffee_shop | Oude Ebbingestraat 57, Groningen
+  Keywords: kids
+  Fragment: kattencafe home menu kattencafe de katten huisregels bezoeken met kids gift cards menu entree donaties store high tea events events poezen bingo vip kitten night movienight brunchen privebezoek contact contact about veelgestelde vragen news &amp; blog jobs index jobs meet the team english welkom bij kattencafé op z'n kop! reserveren reserveren bij een spontaan bez
+
+[222] I Love Sushi | restaurant / sushi | Gedempte Zuiderdiep 6, Groningen
+  Keywords: family
+  Fragment: 3 tonijn maki € 21,95 incl. statiegeld (€ 0,00) sushi sashimi box 14 stuks - 2 sake nigiri - 2 maguro nigiri - 4 california roll - 3 sashimi zalm - 3 sashimi tonijn € 25,95 incl. statiegeld (€ 0,00) family box 72 stuks - 4 sake nigiri - 4 maguro nigiri - 4 ebi nigiri - 4 tamago nigiri - 4 surimi nigiri - 4 tofu nigiri - 6 kappa maki - 6 kani maki - 6 sake maki - 6 tonijn maki - 8 tempura ebi roll 
+
+[245] La Casa | restaurant / pizza;salads;pasta | Burgemeester Triezenbergstraat 43, Ten Boer
+  Keywords: kindermenu
+  Fragment: ng tomorrow. thanks! --> website vandaag gesloten de website van la casa pizza & grill is op dit moment gesloten. pizza pizza vis pizza vegetarisch calzone lahmachun pasta's lasagne kapsalon schotels kindermenu beef burgers beef burger menu patat en aardappelschijfjes loaded fries wrap broodjes tosti pita snacks salade extra's sauzen dranken order meal delivery or pickup no delivery --> pizza stok
+
+[250] Bodega y Tapas | restaurant / tapas | Rijksstraatweg 127, Haren Gn
+  Keywords: kinderen, kids
+  Fragment: as gluten- of lactosevrij (kunnen) zijn. daarnaast staat erop vermeld wat je kunt eten als je zwanger bent, of wanneer je halal eet. de allergenenkaart kun je hier bekijken . wat zijn de prijzen voor kinderen? voor kinderen van 4 t/m 12 jaar rekenen we de leeftijd als prijs. kinderen jonger dan 4 jaar eten gratis. is het mogelijk om via factuur te betalen? voor bedrijven is het mogelijk om via fac
+
+[261] Eethuys Stadspark | restaurant | Campinglaan 6, Groningen
+  Keywords: kinderen
+  Fragment: et is de plek waar sinds 2001 het grootste bevrijdingsfestival van noord-nederland plaatsvindt. ook kun je in het park aanschuiven voor een luxe dinerbuffet of afhalen bij het restaurant ni hao. voor kinderen valt er ook genoeg te beleven bij de kinderboerderij. ontdek de stad gelukkig ben je in groningen de stad bezoeken of weten wat er te doen is? meer info e-mail telefoon kaart instagram contac
+
+JSON array (25 objecten):

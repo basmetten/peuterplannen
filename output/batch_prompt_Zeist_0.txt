@@ -1,0 +1,71 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[1] Snackbar De Dreef | fast_food | Kohnstammplein 1, Zeist
+  Keywords: gezin
+  Fragment: beoordelingen contact colofon cafetaria de dreef patat snacks vegetarische snacks broodjes broodje of dürüm turkse pizza's schotels hotwings tosti's sauzen frisdranken bier alcoholische dranken patat gezinszak (4 pers.) € 10,75 incl. statiegeld (€ 0,00) patat knoflooksaus € 3,75 incl. statiegeld (€ 0,00) patat andalouse € 3,75 incl. statiegeld (€ 0,00) patat kapsalon € 8,00 incl. statiegeld (€ 0,0
+
+[3] Kwalitaria | fast_food / friture | 1e Hogeweg 31, Zeist
+  Keywords: kindermenu
+  Fragment: aantal producten in winkelmand: 0 bekijk winkelmand () mijn kudos : 0 ons seizoen menu's burgers friet snacks salades vegetarisch dranken sauzen ijs ons seizoen menu's burgermenu maaltijden snackmenu kindermenu burgers friet snacks snacks mini snacks salades vegetarisch menu's burgers snacks dranken milkshakes frisdranken sauzen ijs vestigingen kwalitaria hogeweg, zeist ...een bijzondere snackbar 
+
+[7] Steakhouse Kepass | restaurant / steak_house | Sumatralaan 4, Zeist
+  Keywords: gezin, gezinnen
+  Fragment: snelle maaltijd om af te halen, bij kepass proef je de passie voor smaak in elk gerecht. vertrouwde plek voor iedere gelegenheid al decennialang is steakhouse kepass een geliefde ontmoetingsplek voor gezinnen, vrienden en vaste gasten. de warme inrichting en ongedwongen sfeer zorgen ervoor dat iedereen zich welkom voelt. ons vriendelijke team staat klaar om je te verwelkomen en te adviseren over h
+
+[11] The Blue Lotus | restaurant / chinese | onbekend
+  Keywords: kindermenu
+  Fragment: issue our restaurant is closed today. we should be back up and running tomorrow. thanks! --> keuzemenu voor 2 pers. combinatie gerechten eend gerechten nasi gerechten bami gerechten mihoen gerechten kindermenu thaise hoofdgerechten soepen voor-en bijgerechten vegetarische gerechten tjap tjoy gerechten foe yong hai gerechten varkensvlees gerechten kantonese specialiteiten kip gerechten ossenhaas/bi
+
+[18] Ouwekamp, ons eetcafé | restaurant / regional;international | Oude Postweg 144, Austerlitz
+  Keywords: speelhoek, speeltuin, kinderen, kids
+  Fragment: usterlitz. maar iedereen is welkom. van jong tot oud. te voet, met de fiets of in de auto. op 50 meter afstand is een speeltuin voor de kinderen en voor de allerkleinsten hebben we een zandbak en een speelhoek. &nbsp; rijke historie &nbsp; rond 1800 hield het leger van napoleon hier kamp, wat ouwekamp zijn naam gaf. veel overblijfselen van dit kampement zijn nog zichtbaar in de omgeving. ook de py
+
+[22] Grillroom Sphinx III | restaurant / greek | Steynlaan 19G, Zeist
+  Keywords: kindermenu
+  Fragment: ndag: &nbsp; 16:00 - 01:00 nieuwe sphinx grillroom steynlaan 19g 030 697 5777 pizza&#39;s calzones kapsalon broodjes turkse pizza&#39;s vleesgerechten kipgerechten pasta&#39;s mealdeals voorgerechten kindermenu&#39;s extra&#39;s special dranken meer &nbsp;&nbsp;actiecode check code korting: &euro; 0,00 de korting wordt automatisch verrekend met het totaalbedrag. filters allergenen zoeken helaas ge
+
+[25] Ramblas | restaurant / tapas | 1e Hogeweg 10, Zeist
+  Keywords: kindermenu
+  Fragment: waarbij wij bij uw bezoek diverse koude en warme tapas serveren. a la carte menu uitgebreid a la carte menu, keuze uit 100 gerechten, koude tapas, warme tapas, soepen, vleesgerechten, visgerechten en kindermenus. mixed grill diverse grill gerechten, alle hoofdgerechten worden geserveerd met friet, gebakken aardappeltjes en frisse salade. volledig menu bekijken dineren bij restaurant ramblas zeist 
+
+[53] Loetje | restaurant / steak_house | Antonlaan 185, Zeist
+  Keywords: kindvriendelijk, kindermenu
+  Fragment: servering maken kan eenvoudig en snel via onze website. is er ook een kindermenu? bij loetje denken we ook aan onze jonge gasten. voor de kleine loetjes hebben we een speciaal kindermenu met lekkere, kindvriendelijke gerechten waar ze van kunnen smullen. je kunt het volledige kindermenu hier bekijken. is loetje zeist geschikt voor lunch en diner? zeker. of je nu komt voor een ontspannen lunch, een
+
+[55] Bijzonder Leuk | cafe / cake;breakfast | Weeshuislaan 2, Zeist
+  Keywords: speelhoek, kinderen, kindvriendelijk, kids
+  Fragment: nu en arrangementen! ook voor de kleintjes hebben wij altijd wat lekkers. bijzonder gezellig wij zitten middenin het centrum van zeist, loop snel eens binnen! kindvriendelijk wij hebben een heerlijke speelhoek, onze 'mini taartenfabriek'. en natuurlijk ook op ons menu genoeg aanbod voor de kids! samenwerkingen met bv de bijzondere taartenfabriek voor verse homemade taarten, de bijzondere theemuts 
+
+[56] Kwalitaria | fast_food / friture | De Clomp 3304, Zeist
+  Keywords: kindermenu
+  Fragment: aantal producten in winkelmand: 0 bekijk winkelmand () mijn kudos : 0 ons seizoen menu's burgers friet snacks salades vegetarisch dranken sauzen ijs ons seizoen menu's burgermenu maaltijden snackmenu kindermenu burgers friet snacks snacks mini snacks salades vegetarisch menu's burgers snacks dranken milkshakes frisdranken sauzen ijs vestigingen kwalitaria de clomp, zeist ...een bijzondere snackbar
+
+[58] Blik en Burgers | restaurant | onbekend
+  Keywords: speelruimte, speeltuin, speelkamer, kinderen
+  Fragment: den beschikbaar. we verwelkomen onze gasten graag met eten, drinken en spelen. dus kom gezellig bij ons langs! vanaf 1 oktober kunnen alle kinderen weer lekker warm binnen spelen in onze grote binnen speelruimte. en wisten jullie dat je ook voor een privéfeest bij ons terecht kan? na sluitingstijd, het hele rijk voor jullie gezelschap alleen! stuur ons een mail en vraag naar de mogelijkheden, info
+
+[59] Yomiko | restaurant / sushi | Slotlaan 303
+  Keywords: family
+  Fragment: maki zalm, 8 california roll € 35.00 yomiko box major 8 califonia roll, 8 ebi tempura roll, 8 sake roll, 8 sake cheese roll, 8 maguro roll, 8 teriyaki chicken roll, 8 crispy ebi tempura roll € 58.50 family box 4 zalm, 4 tonijn, 4 krabsticks, 4 inari, 4 tamago, 4 ebi nigri, 8 california roll, 8 crispy california roll, 8 ebi tempura roll, 6 maki zalm, 6 maki kani, 6 maki kappa, 6 maki tekka € 60.95 
+
+[62] De Jonckheer | restaurant / regional | Oude Arnhemseweg 30, Zeist
+  Keywords: kinderen, kindermenu
+  Fragment: en onbeperkte smaakbeleving, zonder tijdslimiet! elke ronde kies je 2 gerechten van onze menukaart. (exclusief bijgerechten) dit tegen een vaste prijs per persoon: di t/m do € 37,50 vr t/m zo € 39,50 kinderen 4 t/m 9 jaar € 18,50 *of bestel een los gerecht van ons kindermenu. bekijk de menukaart borrel &amp; bar je bent bij ons altijd welkom voor een drankje aan de bar of om te genieten van onze b
+
+[63] 't Jagershuys | restaurant / pancake | onbekend
+  Keywords: pannenkoek
+  Fragment: het jagershuys - pannenkoeken restaurant zeist - het jagershuys - pannenkoeken restaurant zeist pannenkoeken by jagershuys bekijk pannenkoeken woodz by jagershuys bekijk woodz nieuwe kaart! scroll naar bovenzijde scroll naar bovenzijde scroll naar bovenzijde deze website maakt gebruik van cookies. ok lees verder coo
+
+JSON array (14 objecten):

@@ -1,0 +1,67 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[9] Roma | restaurant / italian_pizza | Leidsestraatweg 3, Woerden
+  Keywords: kindermenu
+  Fragment: erde --> €25,75 --> --> --> gegrilde ossenhaas met groene peperkorrels en roomsaus --> --> &ndash;&gt;--> &ndash;&gt;--> menu bambino &ndash;&gt;--> €8,75 &ndash;&gt;--> &ndash;&gt;--> &ndash;&gt;--> kindermenu met frietjes en vlees van de week &ndash;&gt;--> &ndash;&gt;--> --> --> trancia di salmone vino bianco --> €22,50 --> --> --> gegrilde zalmmoot met witte wijnsaus en kappertjes --> --> --> 
+
+[24] Bar Restaurant van Rossum | restaurant / dutch | Groenendaal 26, Woerden
+  Keywords: kinderen, gezin, gezinnen
+  Fragment: naal heeft behalve 25 unieke, stijlvolle suites ook enkele naast elkaar liggende suites die onderling met elkaar te verbinden zijn. deze zogenaamde familiekamers zijn ideaal voor gezinnen die met hun kinderen bij ons komen logeren. bekijk alle suites → bekijk alle arrangementen → boek een suite geen suite is hetzelfde eten &amp; drinken &#8220;producten uit de polder, dan weet je wat je eet.&#8221
+
+[27] Brownies&downieS | restaurant | De Kazerne 3, Woerden
+  Keywords: baby
+  Fragment: brownies &amp; downies woerden - puur is perfect skip to main content hit enter to search or esc to close search close search menu home menu reserveren high tea en babyshower over contact brownies &amp; downies woerden reserveer je plekje! reserveren onze menukaart! menu high tea lees meer de drie g&#8217;s van brownies &amp; downies gastvrij wij kennen geen drempels, iedereen voelt zich thuis bij
+
+[31] I Love Sushi | restaurant / sushi | Wagenstraat 6, Woerden
+  Keywords: family
+  Fragment: frame to improve your experience. 0348-214011 i love sushi woerden - wagenstraat 6 | 3441 bm woerden i love sushi woerden informatie bestellen &nbsp; bestel nu de lekkerste sushi van nederland! 109. family box 72 stuks; - 4x nigiri zalm - 4x nigiri tonijn - 4x nigiri garnaal - 4x nigiri krab - 4x nigiri tofu - 4x nigiri ei - 8x california roll - 8x crispy california roll - 8x tempura ebi roll - 24
+
+[32] Bistro de Bock | restaurant | De Kazerne 7, Woerden
+  Keywords: kinderen, kindvriendelijk, gezin
+  Fragment: gezelligheid, kwaliteit en gastvrijheid. dus waar wacht je nog op? kom langs en ontdek bistro de bock het gezelligste restaurant in woerden.&nbsp;bistro de bock in woerden is ideaal voor uit eten met kinderen. dit gezellige restaurant in de buurt biedt een kindvriendelijke sfeer en een gevarieerd menu voor jong en oud. geniet van heerlijke gerechten in een ontspannen setting. perfect voor een fami
+
+[41] Proeflokaal Bregje | restaurant / regional | Houttuinlaan 1, Woerden
+  Keywords: kindermenu
+  Fragment: keuzemenu van maandag tot en met donderdag voor slechts €19,95 en van vrijdag tot en met zondag voor €22,95. kom langs in woerden bij bregje! sfeerimpressie volgen gastvrouw bekijk kippenpoot bekijk kindermenu bekijk proeverij voor 2 bekijk streetfood plateau bekijk pulled chicken taco&#039;s bekijk gastvrouw bekijk contact houttuinlaan 1 3447 gm woerden woerden@bregje.nl 034-850 85 03 openingstij
+
+[44] Tandoor & More | restaurant / indian;surinamese | Dorpsstraat 111, Harmelen
+  Keywords: baby, pannenkoek
+  Fragment: tatiegeld (€ 0,00) trs ground cumin (jeera powder) 100 gram € 2,49 incl. statiegeld (€ 0,00) trs gram flour (besan) 1 kg € 3,59 incl. statiegeld (€ 0,00) trs channa dal 500 gram gesplitste en gepelde baby kikkererwten € 2,00 incl. statiegeld (€ 0,00) fresh green chillies (hari mirch) 100 gram € 1,69 incl. statiegeld (€ 0,00) trs red lentils (masoor dal) 500 gram rode linzen € 2,00 incl. statiegeld
+
+[47] de Kloosterhoeve | restaurant | Kloosterweg 2, Harmelen
+  Keywords: kids
+  Fragment: taurant &#8211; zalen link naar facebook link naar linkedin link naar instagram winter specials lunchdeal high tea menu deal in 1 minuut restaurant menukaart overdag avond avond 9 &#8211; 20 personen kids dranken high tea engels lunch engels diner lunch allergenen diner allergenen vergaderen arrangementen &#038; prijzen offerte vergaderingen offerte uitgebreide aanvraag party &#038; wedding party 
+
+[49] Restaurant Kortjak | restaurant | Breudijk 60, Harmelen
+  Keywords: gezin, gezinnen
+  Fragment: restaurant kortjak | eat &amp; meet skip to content reserveer volg ons: facebook-f instagram de eat &amp; meet locatie voor genieters, gezinnen en groepen goed eten, lekker drinken met familie, vrienden en relaties. kortjak is de plek om samen een leuke tijd te hebben. met een uitgebreide en populaire kaart weten wij sinds jaar en dag onze gasten te verwennen. kom en proef de harmelense gezellighe
+
+[51] Kameryck | restaurant | Oortjespad 3, Kamerik
+  Keywords: pannenkoek, pannenkoekenrestaurant
+  Fragment: ij de oortjeshoeve pannenbier bij de oortjeshoeve: hoogste punt bereikt lees meer 19-05-2025 *** persbericht *** eerste paal markeert start bouw restaurant de oortjeshoeve de bouw van het gloednieuwe pannenkoekenrestaurant nabij buitenplaats kameryck is officieel begonnen! lees meer schrijf je in voor de nieuwsbrief zakelijk eventcases congressen vergaderen bedrijfsuitje overnachten restaurant bek
+
+[54] 't Zusje | restaurant / tapas | Defensie-eiland 165, Woerden
+  Keywords: kinderen
+  Fragment: altbommel zutphen date) --> welke datum kom je langs? met hoeveel personen kom je bij ons eten? number with buttons for + and -) --> volwassenen vanaf 11 jaar - + number with buttons for + and -) --> kinderen tot en met 10 jaar - + bel zusje bel zusje een momentje … we checken de beschikbaarheid! --> wat wordt je aankomst tijd? om de meest recente tijdvakken te tonen, wordt de lijst elke 30 second
+
+[63] Lieke's IJs | ice_cream | Rietveld 92, Woerden
+  Keywords: kids
+  Fragment: prijs kwaliteitverhouding dik in orde. soms kan je ook een kijkje nemen bij de koeien en hoe het ijs gemaakt wordt, heel erg leuk -l. boers lekker ijs! breed assortiment en ook originele smaakjes. de kids zijn al om... het popcornijs is een topper! - l. kamerling eigenlijk heel gevaarlijk, zo'n ontzettend lekker ijssalon in de buurt. ik moet in ieder geval mijn best doen om hier niet te stoppen. d
+
+[64] Spies & Spijs | restaurant | Middenweg 2, Zegveld
+  Keywords: speelhoek, kinderen, kids, kinderstoel, kinderstoelen
+  Fragment: ten en drinken voor een vaste prijs. eten voor een vaste prijs onbeperkt eten en drinken ook vegetarische gerechten dieetwensen of een allergie? vraag naar de mogelijkheden. sfeervol restaurant kinderspeelhoek aanwezig spies &amp; spijs is een rodizio grill restaurant met een bijzondere wijze van bediening. onze passadores lopen continu rond met grote spiesen en snijden op verzoek een mooi stukje 
+
+JSON array (13 objecten):
