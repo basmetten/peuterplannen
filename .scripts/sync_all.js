@@ -270,6 +270,20 @@ function newsletterHTML() {
   return '';
 }
 
+function badgeHTML(loc) {
+  const badges = [];
+  if (loc.coffee) badges.push(`<span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span>`);
+  if (loc.alcohol) badges.push(`<span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span>`);
+  if (loc.diaper) badges.push(`<span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span>`);
+  return badges.length ? `<span class="badges">${badges.join('')}</span>` : '';
+}
+
+function revealScript() {
+  return `<script>
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(i){if(i.isIntersecting){i.target.classList.add('visible');o.unobserve(i.target);}});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.loc-item,.type-section,.region-section,.blog-card,.cta-block,.support-section,.faq-section').forEach(function(el,i){el.classList.add('reveal');el.style.animationDelay=(i*0.04)+'s';o.observe(el);});})();
+</script>`;
+}
+
 function supportHTML() {
   return `<section class="support-section">
     <h3>Vond je dit handig?</h3>
@@ -612,17 +626,12 @@ function updateManifest(data) {
 function locationHTML_city(loc) {
   const locationUrl = loc.pageUrl || '#';
   const websiteLink = loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van ${escapeHtml(loc.name)}">Website</a>` : '';
-  const badges = [];
-  if (loc.coffee) badges.push('Koffie');
-  if (loc.alcohol) badges.push('Alcohol');
-  if (loc.diaper) badges.push('Luierruimte');
-  const badgeStr = badges.length ? `<span class="badges">${badges.join(' &middot; ')}</span>` : '';
   const desc = isFillerDescription(loc.description) ? '' : (loc.description || '');
   return `
       <article class="loc-item">
         <h3><a href="${locationUrl}">${escapeHtml(loc.name)}</a></h3>
         ${desc ? `<p>${escapeHtml(desc)}</p>` : ''}
-        ${badgeStr}
+        ${badgeHTML(loc)}
         <div class="loc-actions">
           <a href="${locationUrl}" class="loc-detail-btn">Bekijk details</a>
           ${websiteLink}
@@ -639,7 +648,7 @@ function generateCityPage(region, locs, allRegions) {
   const sectionsHTML = typesWithLocs
     .map((t, i) => {
       const typeImgSrc = TYPE_IMAGES[t];
-      const typeImg = typeImgSrc ? `<picture><source type="image/webp" srcset="${typeImgSrc.replace('.png', '.webp')}"><img src="${typeImgSrc}" alt="" class="category-icon" width="40" height="40" loading="lazy"></picture>` : '';
+      const typeImg = typeImgSrc ? `<picture><source type="image/webp" srcset="${typeImgSrc.replace('.png', '.webp')}"><img src="${typeImgSrc}" alt="" class="category-icon" width="36" height="36" loading="lazy"></picture>` : '';
       let section = `
     <section class="type-section">
       <h2>${typeImg}${TYPE_LABELS_CITY[t]}</h2>
@@ -751,6 +760,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 
 ${footerHTML()}
 
+${revealScript()}
 ${analyticsHTML()}
 </body>
 </html>`;
@@ -773,11 +783,6 @@ function generateCityPages(data) {
 function locationHTML_type(loc) {
   const locationUrl = loc.pageUrl || '#';
   const websiteLink = loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van ${escapeHtml(loc.name)}">Website</a>` : '';
-  const badges = [];
-  if (loc.coffee) badges.push('Koffie');
-  if (loc.diaper) badges.push('Luierruimte');
-  if (loc.alcohol) badges.push('Alcohol');
-  const badgeStr = badges.length ? `<span class="badges">${badges.join(' &middot; ')}</span>` : '';
   const regionLabel = loc.region === 'Overig' ? 'Overig Nederland' : loc.region;
   const desc = isFillerDescription(loc.description) ? '' : (loc.description || '');
   return `
@@ -785,7 +790,7 @@ function locationHTML_type(loc) {
         <div class="loc-region">${regionLabel}</div>
         <h3><a href="${locationUrl}">${escapeHtml(loc.name)}</a></h3>
         ${desc ? `<p>${escapeHtml(desc)}</p>` : ''}
-        ${badgeStr}
+        ${badgeHTML(loc)}
         <div class="loc-actions">
           <a href="${locationUrl}" class="loc-detail-btn">Bekijk details</a>
           ${websiteLink}
@@ -819,7 +824,7 @@ function generateTypePage(page, locs, regions) {
   const faqHTML = page.faqItems.map(item => `
     <details class="faq-item">
       <summary>${item.q}</summary>
-      <p>${item.a}</p>
+      <div class="faq-answer"><p>${item.a}</p></div>
     </details>`).join('');
 
   const otherTypeLinks = TYPE_PAGES
@@ -925,6 +930,7 @@ ${navHTML()}
 
 ${footerHTML()}
 
+${revealScript()}
 ${analyticsHTML()}
 </body>
 </html>`;
@@ -1338,7 +1344,7 @@ ${analyticsHTML()}
   // Generate blog index
   const postCards = posts.map(p => `
     <article class="blog-card">
-      ${p.featured_image ? `<a href="/blog/${p.slug}/"><picture><source type="image/webp" srcset="${p.featured_image.replace(/\.jpe?g$/, '-400w.webp')} 400w, ${p.featured_image.replace(/\.jpe?g$/, '.webp')}" sizes="(max-width: 768px) 100vw, 400px"><img src="${p.featured_image}" alt="${escapeHtml(p.title)}" class="blog-card-thumb" style="width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:16px;" loading="lazy"></picture></a>` : ''}
+      ${p.featured_image ? `<a href="/blog/${p.slug}/"><picture><source type="image/webp" srcset="${p.featured_image.replace(/\.jpe?g$/, '-400w.webp')} 400w, ${p.featured_image.replace(/\.jpe?g$/, '.webp')}" sizes="(max-width: 768px) 100vw, 400px"><img src="${p.featured_image}" alt="${escapeHtml(p.title)}" class="blog-card-thumb" loading="lazy"></picture></a>` : ''}
       <h2><a href="/blog/${p.slug}/">${escapeHtml(p.title)}</a></h2>
       <p class="blog-date">${p.dateDisplay}</p>
       <p class="blog-excerpt">${escapeHtml(p.description)}</p>
@@ -1383,6 +1389,7 @@ ${navHTML()}
 
 ${footerHTML()}
 
+${revealScript()}
 ${analyticsHTML()}
 </body>
 </html>`;
