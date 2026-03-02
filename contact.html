@@ -148,6 +148,8 @@
     </div>
 
     <script>
+    const W3F_KEY = 'JOUW_WEB3FORMS_KEY'; // → vervang na web3forms.com signup
+
     document.getElementById('contact-form').addEventListener('submit', async function(e) {
         e.preventDefault();
         const subject = document.getElementById('cf-subject').value;
@@ -166,6 +168,12 @@
                 body: JSON.stringify({ input: '[' + subject + '] ' + msg, source: 'contact-form' })
             });
             if (res.ok) {
+                // Email notificatie (fire-and-forget)
+                fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ access_key: W3F_KEY, subject: 'PeuterPlannen: ' + subject, message: msg, from_name: 'PeuterPlannen formulier' })
+                }).catch(() => {});
                 status.textContent = 'Bedankt! We reageren zo snel mogelijk.';
                 status.style.color = '#2D8B5E';
                 document.getElementById('cf-message').value = '';

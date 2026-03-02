@@ -219,6 +219,8 @@
         </form>
 
         <script>
+        const W3F_KEY = 'JOUW_WEB3FORMS_KEY'; // → vervang na web3forms.com signup
+
         document.getElementById('suggestion-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const input = document.getElementById('suggestion-input');
@@ -236,6 +238,12 @@
                     body: JSON.stringify({ input: text, source: 'about-form' })
                 });
                 if (res.ok) {
+                    // Email notificatie (fire-and-forget)
+                    fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify({ access_key: W3F_KEY, subject: 'PeuterPlannen: locatie suggestie / melding', message: text, from_name: 'PeuterPlannen formulier' })
+                    }).catch(() => {});
                     status.textContent = 'Bedankt! We nemen je suggestie mee.';
                     status.style.color = '#2D8B5E';
                     input.value = '';
