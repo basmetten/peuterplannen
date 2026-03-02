@@ -1506,7 +1506,7 @@ function generateSitemap(data, blogPosts) {
     loc: `https://peuterplannen.nl${loc.pageUrl}`,
     priority: '0.6',
     changefreq: 'monthly',
-    lastmod: loc.last_verified || lastmod,
+    lastmod: loc.last_verified_at || lastmod,
   }));
 
   // Blog posts
