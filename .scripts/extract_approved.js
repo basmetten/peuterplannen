@@ -11,6 +11,9 @@ const regions = [
   'Wijdemeren', 'Eemnes', 'Soest', 'Baarn', 'Wijk bij Duurstede', 'Leusden',
   'Amsterdam', 'Amstelveen', 'Zaanstad', 'Haarlemmermeer', 'Diemen', 'Purmerend',
   'Haarlem', 'Heemstede', 'Bloemendaal', 'Zandvoort', 'Velsen', 'Beverwijk',
+  'Den Haag',
+  'Delft', 'Westland', 'Rijswijk', 'Zoetermeer',
+  'Wassenaar', 'Leidschendam-Voorburg', 'Pijnacker-Nootdorp',
 ];
 
 const skipPatterns = [
@@ -22,6 +25,15 @@ const skipPatterns = [
   /bistro beiroet/i,
   /de pieper/i,
   /crazy bun/i,
+  /snackbar/i,
+  /cafetaria/i,
+  /burger king/i,
+  /kfc/i,
+  /falafel/i,
+  /shoarma/i,
+  /pizza hut/i,
+  /domino's/i,
+  /subway/i,
 ];
 
 const allApproved = [];

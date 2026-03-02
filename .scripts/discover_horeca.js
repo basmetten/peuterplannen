@@ -43,7 +43,7 @@ const REGIONS = {
   'Utrecht':             { osmName: 'Utrecht', adminLevel: 8 },
   'Amsterdam':           { osmName: 'Amsterdam', adminLevel: 8 },
   'Rotterdam':           { osmName: 'Rotterdam', adminLevel: 8 },
-  'Den Haag':            { osmName: "'s-Gravenhage", adminLevel: 8 },
+  'Den Haag':            { osmName: 'Den Haag', adminLevel: 8 },
   'Haarlem':             { osmName: 'Haarlem', adminLevel: 8 },
   'Leiden':              { osmName: 'Leiden', adminLevel: 8 },
   'Amersfoort':          { osmName: 'Amersfoort', adminLevel: 8 },
@@ -90,6 +90,14 @@ const REGIONS = {
   'Zandvoort':          { osmName: 'Zandvoort',          adminLevel: 8, supabaseRegion: 'Haarlem' },
   'Velsen':             { osmName: 'Velsen',             adminLevel: 8, supabaseRegion: 'Haarlem' },
   'Beverwijk':          { osmName: 'Beverwijk',          adminLevel: 8, supabaseRegion: 'Haarlem' },
+  // Den Haag omliggende gemeenten
+  'Delft':                    { osmName: 'Delft',                    adminLevel: 8, supabaseRegion: 'Den Haag' },
+  'Westland':                 { osmName: 'Westland',                 adminLevel: 8, supabaseRegion: 'Den Haag' },
+  'Rijswijk':                 { osmName: 'Rijswijk',                 adminLevel: 8, supabaseRegion: 'Den Haag' },
+  'Zoetermeer':               { osmName: 'Zoetermeer',               adminLevel: 8, supabaseRegion: 'Den Haag' },
+  'Wassenaar':                { osmName: 'Wassenaar',                adminLevel: 8, supabaseRegion: 'Den Haag' },
+  'Leidschendam-Voorburg':    { osmName: 'Leidschendam-Voorburg',    adminLevel: 8, supabaseRegion: 'Den Haag' },
+  'Pijnacker-Nootdorp':       { osmName: 'Pijnacker-Nootdorp',       adminLevel: 8, supabaseRegion: 'Den Haag' },
 };
 
 // ─── CLI args ──────────────────────────────────────────────────────────────
