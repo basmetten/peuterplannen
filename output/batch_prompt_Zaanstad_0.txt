@@ -1,0 +1,75 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[4] De Remise | cafe / sandwich | Provincialeweg 60, Krommenie
+  Keywords: kids
+  Fragment: er, een gevoel van huiselijke gezelligheid en geborgenheid. reserveren contact vier kerst bij de remise ons kerstmenu voor 2025 met liefde samengesteld, feestelijk geserveerd. dit jaar kun je ook met kids komen genieten (alleen in de vroege tijdsblokken). uiteraard is er opnieuw volop keuze voor onze vega vrienden. reserveer bekijk het kerstmenu pure smaken, rechtstreeks uit de regio. bekijk hier 
+
+[7] La Cucina | restaurant / italian | Marktstraat 110, Wormerveer
+  Keywords: kindermenu
+  Fragment: and running tomorrow. thanks! --> ijs meatlovers menu brood soep salades broodjes kapsalon voorgerechten pizza's pasta's steaks bijgerechten sauzen fajita's burgermenu's vleesgerechten vis gerechten kindermenu dessert frisdranken bier en wijn order meal delivery or pickup no delivery --> pizzadag elke maandag 25% korting op alle pizzas spareribs dag elke dinsdag spareribsdag shoarma dag elke woens
+
+[20] Canton | restaurant / chinese | Molenwerf 4, Koog aan de Zaan
+  Keywords: kinderstoel
+  Fragment: bieden. en het is natuurlijk ook mogelijk om bij ons in het restaurant te dineren. u kunt langskomen of een tafeltje reserveren. ons restaurant biedt zitplaatsen voor 72 personen en ook is er aan de kinderstoel gedacht. op feestdagen zijn wij altijd geopend. heeft u een feestje of een speciale gelegenheid te vieren? dan kunnen wij u catering verzorgen aan huis voor minimaal 15 personen. meer infor
+
+[27] Eazie | restaurant / asian;salad;smoothies | Hermitage 20, Zaandam
+  Keywords: baby
+  Fragment: ce 170 gram groente satésaus, kipfilet, prei, champignons, taugé, paprika, courgette en rijst of noedels naar keuze € 10,99 chicken teriyaki 220 gram groente japanse teriyakisaus met zachte kipfilet, babymaïs, paprika, champignon, sperziebonen, ui. keuze uit rijst of noedels € 10,99 beef black chilli sauce 220 gram groente black chillisaus, biefstuk, babymaïs, paprika, portobello, sperziebonen en 
+
+[28] 't Zusje | restaurant / tapas | Dam 2, Zaandam
+  Keywords: kinderen
+  Fragment: altbommel zutphen date) --> welke datum kom je langs? met hoeveel personen kom je bij ons eten? number with buttons for + and -) --> volwassenen vanaf 11 jaar - + number with buttons for + and -) --> kinderen tot en met 10 jaar - + bel zusje bel zusje een momentje … we checken de beschikbaarheid! --> wat wordt je aankomst tijd? om de meest recente tijdvakken te tonen, wordt de lijst elke 30 second
+
+[41] Lab-44 | restaurant | Middenweg 44, Zaandam
+  Keywords: kinderen, baby
+  Fragment: eerd worden. laat het ons weten. de mogelijkheden zijn eindeloos. en bij lab-44 is vaak wel iets leuks te doen. naast eten en borrelen, kun je bijvoorbeeld een pizza- of kookworkshop boeken. ook voor kinderen organiseren we leuke activiteiten. en kerst en koningsdag zijn bij ons altijd oergezellig! lees meer &gt; trouwen bij lab-44 lab-44, de plek waar (bijna) alles kan! onze locatie laat zich het
+
+[46] Lagom Grand Café | restaurant / swedish;salad;breakfast;sandwich;smoothies | Stadhuisplein 92, Zaandam
+  Keywords: kids
+  Fragment: je voor twee! heb je niet echt trek, maar wil je wel wat lekkers bij je drankje? kies dan voor onze lagomplankje met vikingbrøddippers, roomkaas, humus, olijven, makreel, bitterballen en linzenchips. kids plate: mini lagom&#8217;ers zijn bij ons altijd van harte welkom! voor hun mini buikjes hebben we heerlijke gezonde lekkernijen. ze kunnen kiezen tussen een mini kommetje soep of yoghurt bowl, ee
+
+[49] Snackbar Family | fast_food | Kaaikhof 24, Assendelft
+  Keywords: family
+  Fragment: home | family saendelft werken bij saendelft acties onze menu&#39;s over ons bestel direct bestel direct schuif je ook aan bij family saendelft adres kaaikhof 24 1567 jp saendelft 075-6228884 openingstijden family saendelft zien we je snel? eethuis maandag 12:00 - 21:00 dinsdag 11:30 - 21:00 woensdag 11:30
+
+[50] Sanjou | restaurant / japanese | Kaaikhof 29, Assendelft
+  Keywords: family
+  Fragment: et ons op. meer info menu & afhaal u bent bij san jou sushi & grill uiteraard ook terecht als u onze gerechten wilt afhalen. bij san jou kunt u al onze gerechten afhalen én ook gebruik maken van onze family combo en voordeelboxen. let op! sommige gerechten, zoals de maki’s, bestaan uit meerdere stuks. de san jou box is een verassingsbox die door onze sushichef samengesteld wordt. meer info impress
+
+[51] Brasserie Tzar | restaurant | onbekend
+  Keywords: family, baby
+  Fragment: cozy bar &amp; living lobby you can relax and enjoy a drink by the fireplace. the bartender will stimulate your senses with a surprising cocktail or a delicious pot of tea. do you want to organize a family dinner? or a business meeting? please inquire about the possibilities. curious about our menu? please take a look here: dinner menu we are looking forward to welcoming you soon! you're also more
+
+[55] Rustpunt Bezoekboerderij White Ranch | cafe | onbekend
+  Keywords: kinderen
+  Fragment: over ons ▼ wie zijn wij geschiedenis fotogalerij dieren ▼ koeien geiten kippen eenden andere dieren varkens bijen contact f.a.q wie zijn wij wij zijn familie de wit. de boer jan, boerin myrna en onze kinderen thijs, lisa, nick en emma. jan is een boer in hart en nieren. hij geniet het meeste van natuur en werkt het liefst op natuurlijke manier, vandaar dat wij biologisch boeren. we hebben melkkoei
+
+[59] Dutch Pancake Co | restaurant / pancake;breakfast | Lagedijk 32-34
+  Keywords: kids, families, pancake
+  Fragment: c craftsmanship of ‘zaanse schans,’ there’s no better way to complete your dutch experience than with traditional dutch pancakes at dutch pancake co. authentically dutch fas fa-star free surprise for kids fas fa-star perfectly located pancakes world heritage location discover the essence of dutch culinary tradition at the dutch pancake company in zaandijk. enjoy authentic pancakes with a twist, pe
+
+[60] Family village | cafe | onbekend
+  Keywords: speeltuin, speelplek, kinderen, kids, gezin, family, gezinnen, baby, peuter
+  Fragment: sloten woensdag 08.30 - 17.00 donderdag 08.30 - 17.00 vrijdag 08.30 - 17.00 zaterdag 10.00 - 18.00 zondag 10.00 - 18.00 voor ouders ontbijt, lunch &amp; borrelplanken groot terras direct aan de natuurspeeltuin alles om jou te ontzorgen: o.a. luiers, verse fruit en groenten hapjes en voedingskussens baby- en peuterhoek inspiratiesessies over ouderschap &amp; opvoeding te gekke gezinsevenementen voo
+
+[61] Zaanse Pannenkoekenpaleis | restaurant | Wilhelminastraat 8, Zaandam
+  Keywords: kinderen, kindermenu, pannenkoek, pancake
+  Fragment: chocoladesaus 9,00 kaas pannenkoek 9,50 kindermenu (beren pannenkoek of poffertjes, limonade, kinderijs met verrassing) 10,00 krokante kiphaasjes met frietjes en appelmoes 11,00 kinderfeestje min. 4 kinderen (beren pannenkoek of poffertjes limonade of poffertjes en kinderijs met verrassing 10,00 oerhollandse poffertjes onze speciliteit, met boter en poedersuiker klein 15pcs medium 20pcs groot 30pc
+
+[64] De Kraai | restaurant / pancake | onbekend
+  Keywords: pannenkoek, pannenkoekenrestaurant
+  Fragment: pannenkoekenrestaurant de kraai zaanse schans zaandam noord holland | restaurant de kraai adres : kraaienpad 1, 1509 ax zaandam openingstijden : 09:00 tot 17:00 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; reserveren : 075 615 6403 toggle navigation home menukaart arrangementen bruiloft barbecue
+
+JSON array (15 objecten):

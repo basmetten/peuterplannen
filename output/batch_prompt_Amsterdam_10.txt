@@ -1,0 +1,115 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[1619] De Drie Graefjes | cafe / american | Stadionplein 111, Amsterdam
+  Keywords: kids, baby
+  Fragment: &amp; high tea producten bakkerij taarten cupcakes mini-cupcake cupcake mix repen koekjes scones gluten-free dairy-free vegan speciale gelegenheden baby cakes custom cupcakes edible decoration cakes kids cakes pattern cakes to go lunch to go high tea to go winkel alles high tea custom taarten locaties over ons nl en 0 producten bakkerij speciale gelegenheden to go winkel alles high tea custom taar
+
+[1620] The Black Dog | restaurant | Spuistraat 223A, Amsterdam
+  Keywords: kids
+  Fragment: xpats and tourists from all over the world, which gives it its lovely laid back atmosphere.&nbsp; the perfect meeting place, or, hang out spot, and we have a large games selection for both adults and kids &nbsp;(though not all are suitable for kids!) we show most major sporting events and have 5 screens so we can show a few games at the same time. ​ we have 7 beers on tap, a wide range range of lo
+
+[1624] Luna | restaurant / argentinian | Lindengracht 152, Amsterdam
+  Keywords: family
+  Fragment: restaurant argentino luna amsterdam &#8211; restaurant argentino home about luna argentine meat menu wine reservations menu menu about luna welcome restaurant luna we are a family restaurant located in the jordaan neighborhood, the heart of amsterdam. we specialize in grilled meats and argentinian wines. opening hours: sunday – friday • from 5:00 pm saturday • from 13:00 pm the kitchen closes at 1
+
+[1630] Miss Scarlett | restaurant / burger;dessert;cake;juice | Markelerbergpad 1917, Amsterdam
+  Keywords: kindermenu
+  Fragment: unky cocktails en de lekkerste espresso buiten italië. of het nu voor ontbijt, lunch, borrel of diner is: bij miss scarlett is het altijd thuiskomen. menu lunch diner drinks &amp; cocktails take away kindermenu openingstijden ma &#8211; vrij: 10:00 &#8211; 23:00 zat &#8211; zon: 10:00 &#8211; 21:30 route &amp; parkeren miss scarlett is supermakkelijk te bereiken met de auto, metro of bus en heeft 
+
+[1631] Lemoene | restaurant / syrian | onbekend
+  Keywords: kinderen
+  Fragment: very service monday&nbsp;-&nbsp;friday 17:30&nbsp;-&nbsp;18:30 we moved! dear beloved lemoene customers, it is our regret to inform you that we are no longer operational out of our old location in derkinderenstraat. the good news is that we moved to our production kitchen in amsterdam zuidoost area offering delivery, pickup and catering service only. check it out and give us a try, we will not dis
+
+[1635] Himalayan Kitchen | restaurant / indian;nepalese | Ten Katestraat 45, Amsterdam
+  Keywords: family
+  Fragment: erdam city center”, “indian food delivery amsterdam”, “fine dining nepalese cuisine” , “vegetarian indian dishes amsterdam”, “spicy nepali food amsterdam”, “nepalese restaurant with outdoor seating”, family-friendly indian restaurant amsterdam”, “halal indian food amsterdam”, nepali restaurant with vegan options” , “ indian restaurant catering amsterdam” street food opening times: mon - sat: 10:00
+
+[1643] FEBO | fast_food / friture | Daniël Goedkoopstraat 13, Amsterdam
+  Keywords: family
+  Fragment: s only today, a greek dish with a discount we're very sorry, but due an electronic issue our restaurant is closed today. we should be back up and running tomorrow. thanks! --> meatless monday 🌱 febo family burger deals 🍔 febo family snack deals 🍟 family kip deals 🍗 febo acties febo snacks febo broodjes febo burgers febo vega febo verse kip specialiteiten febo frites febo frites in bucket febo 
+
+[1646] HEMA restaurant | restaurant | Buikslotermeerplein 197, Amsterdam
+  Keywords: speelgoed, gezin, baby
+  Fragment: gorieën &nbsp; pasen nieuw en populair baby kind dames heren wonen en slapen taart, eten en drinken koken en tafelen school en kantoor buiten en onderweg huishouden --> feest en cadeau mooi en gezond speelgoed en hobby fotoservice vriendenprijsjes --> sale aanbiedingen mijn hema waar ben je naar op zoek? inloggen null 0 winkelmandje sluiten je winkelmandje is nog leeg... log in om winkelmand te be
+
+[1651] Nieuwland publieke ruimte | cafe | Pieter Nieuwlandstraat 93, Amsterdam
+  Keywords: kids
+  Fragment: , coaches &#038; therapists feminist club amsterdam (fca) collective the feminist club amsterdam (fca) is an online / offline intersectional feminist community born in amsterdam arabic activities for kids regular event we&#8217;re a group of parents who would like to expose our children to arabic language dyke march amsterdam collective the amsterdam dyke march organises protests, book clubs, craf
+
+[1657] Locals Coffee | cafe / coffee_shop | Ferdinand Bolstraat 21B, Amsterdam
+  Keywords: pancake
+  Fragment: no add to cart add to cart add to cart add to cart discover discover our all day brunch signature dishes our all day brunch signature dishes discover our signature brunch plates, from tripple stacked pancakes to poached eggs, paired with specialty coffee in our amsterdam cafés. discover our signature brunch plates, from tripple stacked pancakes to poached eggs, paired with specialty coffee in our 
+
+[1667] Baibua | restaurant / thai | Geelvinckssteeg 6-H, Amsterdam
+  Keywords: family
+  Fragment: eethuis home menu list of allergens contact opening hours home menu list of allergens contact opening hours authentic thai food in the heart of amsterdam about us baibua thais eethuis we are a small family-run restaurant that was established in 2018 by two partners who both have extensive experience in thai cuisine. our cozy and inviting atmosphere is perfect for a romantic date night or a casual 
+
+[1668] Indrapura | restaurant / indonesian | Rembrandtplein 40, Amsterdam
+  Keywords: family
+  Fragment: rdam, we’ve been serving authentic indonesian food for over 30 years. indrapura is a place to get together. it’s a place to call home. enjoy exceptional indonesian food and the company of friends and family in a relaxed atmosphere. and as the sun sets and the nighttime begins, our bustling bar becomes the best spot for a night out. more about us from lobster to delicious indonesian finger foods di
+
+[1669] Genki | restaurant / japanese | Reguliersdwarsstraat 26, Amsterdam
+  Keywords: kinderen
+  Fragment: erd worden. ontdek meer genki garden contact reguliersdwarsstraat 26 1017 bm amsterdam 020 626 3727 reserveren@restaurantgenki.nl prijzen lunch (13:00 &#8211; 15:00): € 31,95 p.p. diner: € 39,95 p.p. kinderen van 4 t/m 10 €14,95 p.p. al onze gerechten zijn halal gecertificeerd. reserveren je kan bij genki garden reserveren door gebruik te maken van onze reserveringstool of even te bellen naar 020 
+
+[1670] The Lobby | cafe | Tom Schreursweg 34, Amsterdam
+  Keywords: family, families, baby
+  Fragment: ival - departure guests 1 2 3 4 5 6 7 8 9 10 11 12 zoeken basecamp amsterdam small-scale and inspiring resort green oasis within cycling distance of the city centre sauna and wellness facilities warm family feeling filters 0 your selected filters dates price per night from to resort ijmuiden aan zee amsterdam number of guests 1 - 2 people 2 - 4 people 4 - 6 people number of bedroom 1 2 3 personal 
+
+[1671] Caffenation | cafe | Warmondstraat 120, Amsterdam
+  Keywords: family, baby
+  Fragment: t? a visit to hacienda sonora – costa rica’s coffee gem after hearing so many good stories about the sonora farm and the country of costa rica in general, i finally had the chance to fly over with my family. crafting blends at caffenation, and a word on 'specialty coffee' labeling. crafting blends at caffenation: a word on mister lgb, roast ed, and the cape town blend oaxaca food, and coffee heave
+
+[1672] Braai BBQ Bar | fast_food / burger;barbecue | Schinkelhavenkade 1, Amsterdam
+  Keywords: family
+  Fragment: lling stories. once you’ve experienced a real braai, you will never forget. what braai means to us these are the principles and values we want to express in our venues. spending time with friends and family, enjoying good food, cold drinks and local goods. we don’t have a typical south african kitchen; we use braai, barbecue and grilling techniques from all over the world in our dishes. come visit
+
+[1679] Spirit | restaurant | Czaar Peterstraat 2A, Amsterdam
+  Keywords: pannenkoek
+  Fragment: m menukaart buffet patisserie bar ons verhaal filosofie team giftcard locatie contact english menukaart buffet patisserie bar ons verhaal filosofie team giftcard locatie contact english sluit bananen pannenkoekjes ingrediënten eiersalade met kappertjes tijdelijk niet beschikbaar desembrood meerzaden ingrediënten fruitsalade ingrediënten gehele buffet er ging iets mis sluit tiramisu sake citroen in
+
+[1683] Polly Goudvisch | restaurant | Buiksloterweg 5, Amsterdam
+  Keywords: baby
+  Fragment: polly goudvisch | officiële website x home menu groepen private dining borrel verjaardag lunch &amp; diner babyshower trouwfeest feestdagen werken bij sfeerimpressie fam. goudvisch contact nl en nederlands english menu polly goudvisch polly goudvisch: jouw brasserie, jouw bruine café, jouw tweede thuis in amsterdam-noord. zonnen op de fijne terrassen, hangen in het café, uitgebreid dineren in het 
+
+[1687] Lumbini | restaurant / indian;nepalese | Amstel 32, Amsterdam
+  Keywords: kids, family
+  Fragment: &#x1f44c; were the momos' hands down. the classics are available, and you may want to ask for a little less spicy if you can't handle too much heat. fun and enjoyable. as always, good vegetarian and kids food options #indianfood #momolovers #familyfriendly vinoth ramanujam 20:21 07 apr 24 a five-star rating doesn’t accurately reflect the exceptional food and service we enjoyed at lumbini in amster
+
+[1704] The Foodmarket | restaurant | Zuidermolenweg 36, Amsterdam
+  Keywords: kinderen, kids
+  Fragment: tra coin. afmelden bij de receptie op het moment dat de eindtijd op uw bon is verstreken. langer blijven? geen probleem! verleng uw arrangement per 30 minuten voor maar &euro;4.50,- per persoon! voor kinderen&nbsp;is dit slechts &euro;1,- per kind.&nbsp;bijboeken kan echter alleen indien de tafel dit toelaat; informeer hiervoor bij de receptie. reserveer via de website, via email of telefoon en on
+
+[1711] Barmhartig | cafe | Veemkade 1288, Amsterdam
+  Keywords: kids
+  Fragment: ly! besides great coffee, we offer tea, juices, bakes, and toasties. vegan and vegetarian options are available where possible. we are equally welcoming to regulars, locals, tourists, laptop workers, kids, and pre- and post-workout meet-ups from members of our siblings crossfit vastberaden and heldhaftig yoga. so, a lively atmosphere is part of hanging out with us. only one staircase or elevator r
+
+[1736] Wowcrab | restaurant / asian;seafood | Utrechtsestraat 45, Amsterdam
+  Keywords: family
+  Fragment: r specialized cocktails and mocktails while you’re eating away your seafood boil. with our weekly changing live dj sets, we’ll set the stage of a good time in our restaurants. gather your friends and family and book&nbsp;here get your seafood fix at our six locations rotterdam hoogstraat 131 3011 pl rotterdam tuesday –sunday 4pm–10pm monday closed open on holidays info@wowcrab.nl whatsapp: +316-28
+
+[1753] Mirinda | cafe | onbekend
+  Keywords: pannenkoek
+  Fragment: t en schilferig aan de binnenkant. het wordt gemaakt door laagjes deeg te vouwen en plat te maken en vervolgens goudbruin te bakken in de pan. zie het als een mix tussen een crêpe en een boterachtige pannenkoek, perfect voor zowel zoete als hartige vullingen € 6,99 incl. statiegeld (€ 0,00) bastilla kip kip bastilla is marokko's meest iconische feestpastei, een gouden, bladerdeeg gevuld met een ri
+
+[1761] Eatmosfera | restaurant / italian | Sumatrastraat 47, Amsterdam
+  Keywords: family
+  Fragment: ost skip to content home menu lunch wines contacts order pickup home menu lunch wines contacts order pickup at eatmosfera, pizza-making isn&#8217;t just a job — it&#8217;s our passion. in our italian family-owned pizzeria, we&#8217;ll make you feel at home. &nbsp;sourdough pizza&nbsp; //&nbsp; natural wines&nbsp; //&nbsp; sourdough pizza //&nbsp; natural wines&nbsp; //&nbsp; sourdough pizza //&nbs
+
+[1768] 30ml | cafe | Bijlmerplein 156, Amsterdam
+  Keywords: pancake
+  Fragment: so tempting! ✨ ⁣ ⁣ try our creamy matcha yogurt with honey, mango, granola and a touch of apple blossom. ⁣ or treat yourself to a matcha chocolate croissant. in the mood for something hot? go for our pancakes deluxe with apples, gingerbread crunch and cream. 🥞 openen ✨ flavors that make your day! ✨⁣ ⁣ from our fresh salmon-dill salad to the irresistible pancakes deluxe. whether you go for a match
+
+JSON array (25 objecten):

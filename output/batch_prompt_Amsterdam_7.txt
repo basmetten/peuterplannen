@@ -1,0 +1,115 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[1208] Pont Neuf | fast_food | Buiksloterweg 5A, Amsterdam
+  Keywords: kinderen
+  Fragment: truck. dit bijzondere voertuig stamt uit 1980 en is door een groningse boer ruim 16 jaar lang gebruikt als veewagen. hier reed hij mee naar basisscholen om zijn schaapjes en ezeltje te laten zien aan kinderen uit het lokale dorp. inmiddels is deze prachtige veewagen verworden tot de pont neuf mobiel waarmee we jong en oud door heel nederland kennis laten maken met onze heerlijke friet. neem contac
+
+[1213] Australian Homemade | fast_food / ice_cream | onbekend
+  Keywords: gezin, gezinnen
+  Fragment: orest alliance organic keurmerken de keurmerken van australian producten zijn rainforest alliance en/of 100% biologisch. koffiebonen en cacao verbouwen is mensenwerk. zwaar werk waarvan boeren en hun gezinnen moeten leven. wij willen graag een bijdrage leveren aan betere leef- en werkomstandigheden voor de boeren op de plantages en daarbij verantwoord omgaan met het milieu. de keurmerken van austr
+
+[1221] Rozenboom | restaurant | Rozenboomsteeg 6, Amsterdam
+  Keywords: kinderen, pannenkoek
+  Fragment: boerenkoolstamppot met worst 17.50 andijviestamppot met gehaktbal 17.50 kapucijners, spek en gehaktbal 17.50 visgerechten gebakken mosselen 19.75 zeebaars fillet 24.75 zalmfilet 21.75 vis van de dag kinderen kipfilet met frites en als toetje een kinderijsje 13.50 alle vlees en vis gerechten worden geserveerd met frites en salade. ijs met aardbeiensaus en slagroom 6.50 ijs met advokaat, chocoladesa
+
+[1223] Stadspaleis | cafe | Nieuwezijds Voorburgwal 289, Amsterdam
+  Keywords: family
+  Fragment: the &#8221; koninklijk paleis&#8221; (royal palace) situated on dam square in the heart of amsterdam. constructed in the 17th century, the palace became one of the residences used by the dutch royal family. although this palace has historical significance, the access is limited, as it occasionally opens to the public. it&#8217;s important to recognize that the term &#8220;stadspaleis&#8221; can be
+
+[1227] Cinnabon | fast_food / dessert | Bijlmerplein 80, Amsterdam
+  Keywords: family
+  Fragment: ade with four classic cinnabon rolls baked into one , topped just the way you like it. choose your favorite topping: oreo, chocolate, pistachio &amp; more. perfect for birthdays, office celebrations, family gatherings… or not sharing at all (we won’t judge 😉). 🕒 pre-order 24 hours in advance 🏬 pick up in store 🇳🇱 available across cinnabon netherlands locations big celebrations deserve the ori
+
+[1235] Oriental City | restaurant / asian | Oudezijds Voorburgwal 177-179, Amsterdam
+  Keywords: pannenkoek
+  Fragment: rode rijstvellenbroodjes! bekijk meer 13.2024 may vier moederdag met een heerlijke culinaire ervaring! aankomende zondag is het moederdag! bekijk meer 06.2024 may gearomatiseerde knapperige eend met pannenkoek, komkommer en lenteui hartig eendenvlees, komkommer, lente-ui en huisgemaakte saus worden in de dunne pannenkoek gerold, perfect om te delen! bekijk meer 26.2024 apr fijne koningsdag! draag 
+
+[1239] Paskamer | restaurant | onbekend
+  Keywords: gezin
+  Fragment: oor een ontspannen vakantie 28 februari 2025 op zoek naar een manier om de dagelijkse drukte achter u te laten en te genieten van pure ontspanning? het... hoe kiest u de perfecte accommodatie voor uw gezinsvakantie op een luxe camping hoe kiest u de perfecte accommodatie voor uw gezinsvakantie op een luxe camping 10 juni 2024 op zoek naar de ultieme gezinsvakantie in een omgeving waar luxe en natu
+
+[1245] PomoRosso | fast_food / pizza | Amstelveenseweg 41, Amsterdam
+  Keywords: kinderen, baby
+  Fragment: e baby categorie: over tomaten bekijk meer waarom crossfit zo verslavend is: uitdaging, variatie en gemeenschap categorie: over tomaten bekijk meer voedingsadvies voor zwangere vrouwen en opgroeiende kinderen categorie: over tomaten bekijk meer vitamine b2: boost je energie en gezondheid met voeding categorie: over tomaten bekijk meer rufus door de eeuwen heen: van gladiator tot moderne legende ca
+
+[1255] Loetje | restaurant / steak_house | Ferdinand Bolstraat 188A, Amsterdam
+  Keywords: kinderen, kindvriendelijk, kindermenu
+  Fragment: ijk personeel en fantastisch eten. de biefstukken zijn zoals ze worden geroemd, maar ook de andere gerechten waren erg lekker! de ambiance is prima en ze hebben nette toiletten met o.a. een ruimte om kinderen te verschonen. tess &#9733; &#9733; &#9733; &#9733; &#9733; snel geholpen en vriendelijk personeel! ook het eten was van goede kwaliteit. susan &#9733; &#9733; &#9733; &#9733; &#9733; heerlij
+
+[1261] OTEMBA - ramen | restaurant / ramen | Kinkerstraat 56A, 1053DZ
+  Keywords: baby
+  Fragment: e japanse ramen én gyoza van amsterdam! - otemba spring naar content otemba fast fine fancy ramen menu locaties otemba- gyoza otemba- ramen groepen lunch of diner borrelen private dining verjaardagen babyshower loyalty franchise over ons ons verhaal het otemba concept werken bij instagram contact menu locaties otemba- gyoza otemba- ramen groepen lunch of diner borrelen private dining verjaardagen 
+
+[1264] Buffet van Odette | restaurant / home_made_food | Prinsengracht 598, Amsterdam
+  Keywords: family
+  Fragment: nen, veel naturel tinten en op maat gemaakte houten meubels. dit alles aangevuld met een grote wijnkast met een mooie collectie natuurwijnen, custom-made kandelaars. &nbsp; groepsdiners in italiaanse family-style de private diner leent zich goed voor een borrel in de winkel op de begane grond aangevuld met een diner boven in de huiselijke salon. wij serveren een vast driegangenmenu voor 5 5,- euro
+
+[1271] Pizza Brothers | fast_food / pizza | Mosveld 85, Amsterdam
+  Keywords: kinderen
+  Fragment: �𝐠, 𝐝𝐚𝐭 𝐦𝐢𝐣𝐧 𝐥𝐢𝐜𝐡𝐭𝐣𝐞 𝐛𝐫𝐚𝐧𝐝𝐞𝐧 𝐦𝐚𝐠! 🕯️ vandaag vieren we sint maarten, de dag waarop sint maarten zijn cape deelde met iemand die het nodig had. om deze dag te vieren, trekken kinderen er vanavond op uit met hun lampionnen, zingend van deur tot deur. een feest van licht en delen! 🎶 heb jij je lampion al klaar? vier jij sint maarten in jouw buurt? laat het ons weten! #winke
+
+[1272] Kattencafé Kopjes | cafe / cat_food | Marco Polostraat 211, Amsterdam
+  Keywords: kinderen
+  Fragment: zondag 10.00 u. - 19.00 u. wil je zeker zijn van een plekje maak dan een reservering via onze reserveringspagina we vragen een entreeprijs van 6 euro per persoon om voor de katten te zorgen. let op! kinderen onder de 12 jaar moeten nog even wachten met het bezoek aan ons. wij hebben een pin (maestro, visa debit, v-pay, debit card) of creditcard (visa & mastercard) only systeem &#xe80b; &#xe802; &#
+
+[1276] Seafood Bistro | restaurant / seafood | Warmoesstraat 45, Amsterdam
+  Keywords: family
+  Fragment: am has&nbsp;to offer! honest food menu we recommend you explore our menu and enjoy some of amsterdam&#39;s finest seafood. located in the heart of amsterdam central, seafood bistro is a contemporary, family-run, independent seafood restaurant and traditional takeaway. serving a seasonal menu, our restaurant is the perfect place for a business lunch, dinner with friends and family, or a quick bite 
+
+[1280] Caffe Italia | restaurant / italian | Warmoesstraat 93, Amsterdam
+  Keywords: family
+  Fragment: ssion menu book now groups locations skip to content home impression menu book now groups locations ca ff è italia caffè italia is located on the warmoesstraat 34 and 93 in amsterdam. caffè italia is family owned business. we are an cozy en trendy restaurant with a modern italian kitchen. over the years we have become the to go place for italian food and traditions. the menu offers a wide variety 
+
+[1282] Dal Pagliaccio | restaurant | Oudebrugsteeg 8-H, Amsterdam
+  Keywords: family
+  Fragment: 012 jp amsterdam +31 (0) 20 205 10 09 info@dalpagliaccio.com en nl en call +31 (0) 20 205 10 09 card menu card menu close where authentic italian flavors and a welcoming atmosphere come together like family in the heart of amsterdam about dal pagliaccio we are a group of dutch-italian foodlovers who are&nbsp;passionate about sharing our love for authentic&nbsp;italian cuisine and culture. our prid
+
+[1293] George W.P.A. | restaurant | Willemsparkweg 74, Amsterdam
+  Keywords: families
+  Fragment: s too. george w.p.a. is located on an incredibly charming street, just around the corner of the famous vondelpark and the amsterdam museum district. a warm place with sexy vibes where locals, expats, families, loved ones and friends come together to sip a glass of wine, watch people go by and enjoy our famous blackened tuna or other signature dishes. with it’s romantic atmosphere, it’s also the be
+
+[1301] Mr. Sam Asian Bistro | restaurant / chinese | Amstelveenseweg 344, Amsterdam
+  Keywords: family
+  Fragment: dishes to personalized touches that make your dining experience special. guests often rave about our service, saying it enhances their overall experience and makes them feel like part of the mr. sam family. come see why mr. sam&#39;s contemporary japanese kitchen &amp; bar has become a favorite in amsterdam. join us for a wonderful culinary journey where every meal is a prepared with a specialty f
+
+[1311] Blue Pepper | restaurant / indonesian | Nassaukade 366, Amsterdam
+  Keywords: family
+  Fragment: iful amsterdam. more info about our dinner cruise host your private dining event with blue pepper looking for a more intimate experience? blue pepper offers private dining options for special events, family gatherings, and corporate dinners. enjoy exclusive use of our venue, where you and your guests can indulge in personalized menus tailored to your preferences. whether it’s a birthday celebratio
+
+[1314] CAU | restaurant / argentinian | Damstraat 5, Amsterdam
+  Keywords: family
+  Fragment: e your dining experience will be one to remember&nbsp; spanning two floors, cau steakhouse offers a spacious venue. perfect for accommodating events and larger groups. whether you&rsquo;re planning a family gathering, company dinner or a special celebration. our argentinian steakhouse in amsterdam city center provides the ideal setting to make your occasion truly unforgettable.&nbsp; join us at ca
+
+[1319] Mangia Pizza | restaurant / italian_pizza;pizza | Amstelveenseweg 63, Amsterdam
+  Keywords: family
+  Fragment: quality. using time-honored techniques, hand-picked ingredients, and antonio’s signature dough, we bring the flavors of naples straight to your table—crispy, airy, and unforgettable. the mangia pizza family behind every pizza is a passionate team dedicated to delivering warmth, authenticity, and excellence. together, we’re more than colleagues—we’re a family sharing the joy of italian pizza with a
+
+[1320] Corner Bakery | cafe | Koningin Wilhelminaplein 60-62, Amsterdam
+  Keywords: pancake
+  Fragment: ast | lunch corner bakery is the place to be for all foodies and bon vivants. you can enjoy an all-day breakfast and brunch with us, including over-the-top milkshakes, homemade cakes and pies, fluffy pancakes and many more! book a table our locations amsterdam oud-zuid johannes vermeerstraat 40, 1071 ds monday - friday 09:00 - 16:00 saturday - sunday 09:00 - 17:00 whatsapp us book a table explore 
+
+[1328] Piqniq | cafe | Lindengracht 59, Amsterdam
+  Keywords: pannenkoek
+  Fragment: uken verlaten als we er zelf blij van zouden worden. bekijk ons menu onze menukaart "het gevoel van een picknick" diversiteit! voor het ontbijt heeft u keuze uit veel verschillende gerechten: eitjes, pannenkoeken, vers fruit, havermout en nog veel meer. de lunch stelt u zelf samen uit een combinatie van kleinere gerechten, of probeer eens onze lunchplank. en wellicht een lekker taartje als dessert
+
+[1330] Casa del Toro | restaurant / argentinian;italian | Nieuwezijds Voorburgwal 77, Amsterdam
+  Keywords: kids
+  Fragment: ing all our wishes 🙂 with four people we enjoyed the mixed grill, which was specially served to us on a mini bbq. in one word: a top restaurant! mitchell d. customer we had a wonderful meal with the kids, such a delightful surprise! the chicken wrap, the burgers, the pizza… everything tasted fantastic. truly recommended for everyone! the friendliness, openness, and spontaneity of the staff and th
+
+[1333] Bakers & Roasters | restaurant / breakfast;brunch | Eerste Jacob van Campenstraat 54-H, Amsterdam
+  Keywords: family, pancake
+  Fragment: y no to the industrial food system. to achieve this we partner with ethically reared, free-range, sustainable, organic, seasonal and local suppliers wherever we can. a special thanks go out to: local family bakers ad straathof for providing us with our delicious sourdough and spelled loaves. to local smokehouse - franks for their 100% antibiotic / hormone free perfectly smoked salmon, bacon and ch
+
+JSON array (25 objecten):

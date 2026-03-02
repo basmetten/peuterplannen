@@ -838,5 +838,505 @@
       "last_verified_at": "2026-03-02T17:00:44.413Z",
       "verification_source": "osm_discovery"
     }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 9,
+    "data": {
+      "name": "L'Osteria",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "L'Osteria is zeer kindvriendelijk met speeltuin, kinderporties, kinderstoelen en kleurpotloden.",
+      "website": "https://losteria.net/nl/restaurants/restaurant/amsterdam/",
+      "lat": 52.3410059,
+      "lng": 4.9179626,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "outdoor",
+      "toddler_highlight": "Prachtige omheinde speeltuin direct aan terras met kinderporties en -stoelen.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 9,
+    "data": {
+      "name": "Pannenkoekerij Gansi",
+      "region": "Amsterdam",
+      "type": "pancake",
+      "description": "Pannenkoekerij Gansi is een pannenkoekenzaak met speeltuin, speelgoed en dieren, perfect voor peuters met terras in de zomer.",
+      "website": "https://www.kinderboerderijgliphoeve.nl/s-projects-basic",
+      "lat": 52.3232036,
+      "lng": 4.9713577,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Speeltuin, speelgoed en dieren maken dit een topbestemming voor peuters.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
+      "name": "Loetje",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Loetje Amsterdam Centraal biedt een speciaal kindermenu met kindvriendelijke gerechten voor de kleine gasten.",
+      "website": "https://www.loetje.nl/locaties/amsterdam-centraal/",
+      "lat": 52.377503,
+      "lng": 4.9004373,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Speciaal kindermenu met lekker kindvriendelijke gerechten beschikbaar.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
+      "name": "Café Loetje",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Café Loetje Amsterdam biedt een speciaal kindermenu met kindvriendelijke gerechten voor de kleine gasten.",
+      "website": "https://www.loetje.nl/locaties/amsterdam-cafe/",
+      "lat": 52.3543672,
+      "lng": 4.8842366,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Speciaal kindermenu met lekker kindvriendelijke gerechten beschikbaar.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
+      "name": "Blin Queen",
+      "region": "Amsterdam",
+      "type": "pancake",
+      "description": "Blin Queen is een gezellige pannenkoekenzaak die expliciet kids friendly is met artisanale pannenkoeken.",
+      "website": "https://www.blinqueen.com",
+      "lat": 52.366956,
+      "lng": 4.8968557,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kids en animals friendly pancake restaurant met informeel, gastvrij karakter.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
+      "name": "Moak Pancakes",
+      "region": "Amsterdam",
+      "type": "pancake",
+      "description": "Moak Pancakes serveert American style pannenkoeken in een mellow vibe, perfect voor families.",
+      "website": "https://www.moakpancakes.nl",
+      "lat": 52.3565,
+      "lng": 4.8907494,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Gespecialiseerd in American style pannenkoeken, kindervoeding-vriendelijk.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
+      "name": "SUMO",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "SUMO is family-vriendelijk met kleurplaten en kleurpotloden voor kleine gasten, ideaal voor families met peuters.",
+      "website": "https://restaurantsumo.com",
+      "lat": 52.3773967,
+      "lng": 4.8950817,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Gratis kleurplaat en kleurpotloden voor kleine SUMO-fans zorgen voor vermaak.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
+      "name": "De Natuurkamer",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "De Natuurkamer is een café met aan speeltuin 'de natureluur', ideaal voor kinderen en gezinnen.",
+      "website": "https://de-natuurkamer.nl/",
+      "lat": 52.370681,
+      "lng": 4.8128534,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": false,
+      "weather": "outdoor",
+      "toddler_highlight": "Aangesloten speeltuin de natureluur maakt dit uiterst geschikt voor peuters.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
+      "name": "Hop 020",
+      "region": "Amsterdam",
+      "type": "pancake",
+      "description": "Pannenkoekenrestaurant in Amstelpark met aangrenzende speeltuin, minigolf en stadsboerderij met loslopende dieren.",
+      "website": "https://www.amstelpark.info/pc-hop-2-0/",
+      "lat": 52.3291087,
+      "lng": 4.8949779,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Perfecte combinatie van pannenkoeken en speelgelegenheid direct in het park.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
+      "name": "Roezemoes",
+      "region": "Amsterdam",
+      "type": "pancake",
+      "description": "Roezemoes is een pannenkoekenzaak met elke zondag speciale pannenkoekendag, ideaal voor gezinnen.",
+      "website": "https://roezemoesamsterdam.nl",
+      "lat": 52.397864,
+      "lng": 4.9412923,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Pannenkoeken op zondag, perfect voor peuters.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
+      "name": "Star BBQ",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Star BBQ heeft kinderzitjes en kindermenu; gratis parkeren maakt het gemakkelijk voor gezinnen.",
+      "website": "https://starbbq.nl/",
+      "lat": 52.2924095,
+      "lng": 4.9463129,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Kinderzitjes en speciaal kindermenu voor jonge gasten.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
+      "name": "Kaap Amsterdam",
+      "region": "Amsterdam",
+      "type": "pancake",
+      "description": "Kaap Amsterdam is zeer kindvriendelijk met pannenkoeken, ruimte voor kinderen en creatieve activiteiten.",
+      "website": "https://kaapamsterdam.nl",
+      "lat": 52.3697918,
+      "lng": 4.9773284,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Pannenkoeken, speelruimte en oneindig limonade voor kinderen.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
+      "name": "De Beren",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "De Beren biedt een speciaal kindermenu en diner & film arrangement inclusief bioscoopvoucher voor kinderen.",
+      "website": "https://www.beren.nl/vestigingen/amsterdam-noord",
+      "lat": 52.4006253,
+      "lng": 4.9346354,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Dedicated kindermenu en family entertainment arrangement.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amsterdam",
+    "score": 8,
+    "data": {
+      "name": "Hemelsbreed Cafe",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Hemelsbreed Cafe richt zich expliciet op ouders met baby's en kinderen tot 16 jaar met regelmatige begeleiding en adviesprogramma's.",
+      "website": "https://hemelsbreedcafe.nl",
+      "lat": 52.3158724,
+      "lng": 4.977353,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": false,
+      "weather": "indoor",
+      "toddler_highlight": "Speciaal café voor ouders met baby's en jonge kinderen met professionele ondersteuning.",
+      "last_verified_at": "2026-03-02T17:21:01.904Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amstelveen",
+    "score": 8,
+    "data": {
+      "name": "Geitenboerderij Ridammerhoeve",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Geitenboerderij-café met speeltuin waar peuters zich kunnen vermaken. Gezellige omgeving voor families met mogelijkheid voor dranken op het terras.",
+      "website": "https://www.geitenboerderij.nl",
+      "lat": 52.3128478,
+      "lng": 4.8244491,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": false,
+      "weather": "both",
+      "toddler_highlight": "Speeltuin aanwezig waar kinderen zich kunnen vermaken terwijl ouders ontspannen.",
+      "last_verified_at": "2026-03-02T17:21:01.948Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amstelveen",
+    "score": 8,
+    "data": {
+      "name": "Du Monde Bar&Kitchen",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Du Monde Bar&Kitchen biedt speciale kindermenu's en kleurplaten voor kinderen. Gezellig terras voorzijde met veel zitplaatsen.",
+      "website": "https://www.grandcafeoudedorp.nl",
+      "lat": 52.300852,
+      "lng": 4.846216,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Kindermenu's en kleurplaten beschikbaar voor entertainment van jonge gasten.",
+      "last_verified_at": "2026-03-02T17:21:01.948Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Amstelveen",
+    "score": 8,
+    "data": {
+      "name": "Stadscafé De Pannenkoek",
+      "region": "Amsterdam",
+      "type": "pancake",
+      "description": "Stadscafé De Pannenkoek serveert vers gebakken pannenkoeken en huisgemaakte tosti's in het stadshart van Amstelveen.",
+      "website": "https://stadscafedepannenkoek.nl/",
+      "lat": 52.3020099,
+      "lng": 4.8633823,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": false,
+      "weather": "indoor",
+      "toddler_highlight": "Gespecialiseerd in vers gebakken pannenkoeken, perfect voor peuters.",
+      "last_verified_at": "2026-03-02T17:21:01.948Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Zaanstad",
+    "score": 10,
+    "data": {
+      "name": "Family village",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Family Village is een gespecialiseerde gezinscafé met natuurspeeltuin, baby- en peuterhoek, voedingskussens, luiers en volledige voorzieningen voor gezinnen.",
+      "website": "https://familyvillage.nl/",
+      "lat": 52.4404939,
+      "lng": 4.8442202,
+      "coffee": true,
+      "diaper": true,
+      "alcohol": false,
+      "weather": "both",
+      "toddler_highlight": "Dedicated baby- en peuterhoek met alle noodzakelijke voorzieningen zoals luiers, voedingskussens en vers fruit.",
+      "last_verified_at": "2026-03-02T17:21:01.991Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Zaanstad",
+    "score": 8,
+    "data": {
+      "name": "Dutch Pancake Co",
+      "region": "Amsterdam",
+      "type": "pancake",
+      "description": "Dutch Pancake Co is een authentieke pannenkoekenzaak waar kinderen gratis verrassing krijgen en traditionele Nederlandse pannenkoeken worden geserveerd.",
+      "website": "https://www.dutchpancakeco.nl",
+      "lat": 52.4718137,
+      "lng": 4.8120218,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Gratis verrassingscadeau voor kinderen en traditionele Nederlandse pannenkoeken perfect voor peuters.",
+      "last_verified_at": "2026-03-02T17:21:01.991Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Zaanstad",
+    "score": 8,
+    "data": {
+      "name": "Zaanse Pannenkoekenpaleis",
+      "region": "Amsterdam",
+      "type": "pancake",
+      "description": "Zaanse Pannenkoekenpaleis biedt kindermenu met berenpanenkoeken, poffertjes en kinderijs, plus speciale kinderfeestpakketten.",
+      "website": "http://www.zaansepannenkoekenpaleis.nl",
+      "lat": 52.4392096,
+      "lng": 4.8264506,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Berenpanenkoeken en poffertjes speciaal voor kinderen met limonade en kinderijs.",
+      "last_verified_at": "2026-03-02T17:21:01.991Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Haarlemmermeer",
+    "score": 9,
+    "data": {
+      "name": "Bliss Kidscafé",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Bliss Kidscafé is speciaal ontworpen voor gezinnen met peuters met veilige speelhoek, kolfruimte, kindertoilet en babyhangmat.",
+      "website": "https://blisskidscafe.nl/",
+      "lat": 52.3020001,
+      "lng": 4.6924955,
+      "coffee": true,
+      "diaper": true,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Volledig ingerichte speelhoek, babyhangmat en kindertoilet aanwezig.",
+      "last_verified_at": "2026-03-02T17:21:02.036Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Haarlemmermeer",
+    "score": 8,
+    "data": {
+      "name": "Pannenkoeken Paviljoen",
+      "region": "Amsterdam",
+      "type": "pancake",
+      "description": "Pannenkoeken Paviljoen specialiseert zich in pannenkoeken voor kinderen met mogelijkheden voor verjaardagen.",
+      "website": "https://pannenkoekenpaviljoen.nl/",
+      "lat": 52.3299814,
+      "lng": 4.6517013,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Pannenkoekenzaak met speciale aandacht voor kinderen.",
+      "last_verified_at": "2026-03-02T17:21:02.036Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Haarlemmermeer",
+    "score": 8,
+    "data": {
+      "name": "Venneper Lodge",
+      "region": "Amsterdam",
+      "type": "pancake",
+      "description": "Venneper Lodge is een hippe plek voor alle leeftijden met een speelparadijs zowel binnen als buiten, en biedt pannenkoeken en diverse gerechten.",
+      "website": "https://venneperlodge.nl/",
+      "lat": 52.2652926,
+      "lng": 4.596094,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "both",
+      "toddler_highlight": "Binnenste en buitenspeelparadijs maken dit een uitstekende keuze voor peuters.",
+      "last_verified_at": "2026-03-02T17:21:02.036Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Diemen",
+    "score": 8,
+    "data": {
+      "name": "Otra más",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Otra más is volledig barrièrevrij en expliciet welkom voor gezinnen met baby's en kinderwagens.",
+      "website": "https://otramas.metro.rest",
+      "lat": 52.3384059,
+      "lng": 4.9599479,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": true,
+      "weather": "indoor",
+      "toddler_highlight": "Barrièrevrij toegankelijk en expliciet gastvrij voor gezinnen met jonge kinderen.",
+      "last_verified_at": "2026-03-02T17:21:02.079Z",
+      "verification_source": "osm_discovery"
+    }
+  },
+  {
+    "region": "Purmerend",
+    "score": 8,
+    "data": {
+      "name": "Brasserie 1434",
+      "region": "Amsterdam",
+      "type": "horeca",
+      "description": "Brasserie met speciaal kindermenu, kinderstoelen en kleurplaten in kindvriendelijke sfeer waar gezinnen altijd welkom zijn.",
+      "website": "https://brasserie1434.nl/",
+      "lat": 52.508614,
+      "lng": 4.9501975,
+      "coffee": true,
+      "diaper": false,
+      "alcohol": false,
+      "weather": "indoor",
+      "toddler_highlight": "Kinderstoelen en kleurplaten beschikbaar voor peuters.",
+      "last_verified_at": "2026-03-02T17:21:02.122Z",
+      "verification_source": "osm_discovery"
+    }
   }
 ]

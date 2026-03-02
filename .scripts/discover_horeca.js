@@ -78,6 +78,12 @@ const REGIONS = {
   'Baarn':              { osmName: 'Baarn',              adminLevel: 8, supabaseRegion: 'Utrechtse Heuvelrug' },
   'Wijk bij Duurstede': { osmName: 'Wijk bij Duurstede', adminLevel: 8, supabaseRegion: 'Utrechtse Heuvelrug' },
   'Leusden':            { osmName: 'Leusden',            adminLevel: 8, supabaseRegion: 'Utrechtse Heuvelrug' },
+  // Amsterdam omliggende gemeenten
+  'Amstelveen':         { osmName: 'Amstelveen',         adminLevel: 8, supabaseRegion: 'Amsterdam' },
+  'Zaanstad':           { osmName: 'Zaanstad',           adminLevel: 8, supabaseRegion: 'Amsterdam' },
+  'Haarlemmermeer':     { osmName: 'Haarlemmermeer',     adminLevel: 8, supabaseRegion: 'Amsterdam' },
+  'Diemen':             { osmName: 'Diemen',             adminLevel: 8, supabaseRegion: 'Amsterdam' },
+  'Purmerend':          { osmName: 'Purmerend',          adminLevel: 8, supabaseRegion: 'Amsterdam' },
 };
 
 // ─── CLI args ──────────────────────────────────────────────────────────────

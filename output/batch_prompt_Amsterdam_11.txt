@@ -1,0 +1,115 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[1776] esra | restaurant | C. van Eesterenlaan 35-37
+  Keywords: kids
+  Fragment: serve m editerranean , turkish and turkey-adjacent wines.&nbsp; x selin + steph reserve your table here ​ opening times lunch: s aturday from 12.00 dinner: thursday to saturday from 18.00 ​ ​ ​ dogs, kids and in-laws welcome (if well-behaved). do send us a message beforehand if you&#39;re bringing them, so we can organize an appropriate table for you! ​ we try to keep one table (for two) each even
+
+[1798] Fiaschetteria | restaurant / italian | Lindengracht 95, Amsterdam
+  Keywords: family
+  Fragment: alian table lovers. make a reservation the food our wine menu is a milk bottle rack loaded with flavorful imported wines, our ingredients are imported from italy and our recipes come from a long-time family tradition headed by “nonna”. fiaschetteria &#8220;pistoia&#8221; fiaschetteria “pistoia” was born in tuscany in 1890 from the love of a passionate italian family for food and, most importantly,
+
+[1803] Kasap | restaurant / turkish | Osdorpplein 937A, Amsterdam
+  Keywords: kindvriendelijk, gezin
+  Fragment: amsterdam +31 20 337 5108 reserveer in amsterdam onze vestigingen utrecht proostwetering 80j, 3543 aj utrecht 030 633 8097 openingstijden elke dag: 12:00 - 00:00 faciliteiten buitenterras gratis wifi kindvriendelijk nieuw! amsterdam osdorpplein 937-a, 1068 td amsterdam, netherlands +31 20 337 5108 openingstijden elke dag: 12:00 - 01:00 faciliteiten gratis wifi kindvriendelijk rotterdam charloisse 
+
+[1806] Hemelsbreed Cafe | cafe | onbekend
+  Keywords: kinderen, gezin, gezinnen, baby
+  Fragment: idische vragen en advies . 13.00 tot 16.00 : sherita van wpi voor ondersteuning &nbsp; bij werk en inkomen . donderdag donderdagmorgen 10.00-11.30 janine van ouder-kind team over alles over baby's en kinderen tot 16 jaar. donderdag 11.00-14.00 civic helpt met stefano &nbsp;vrijwilligerswerk, administratie, bewonersinitiatieven en socialiseren. donderdagmiddag 14.00-16.00 naturelab vanuit het groen
+
+[1811] YUSU | cafe | Andreas Bonnstraat 2
+  Keywords: family
+  Fragment: chrijven van mijn betaalmethode, op de vermelde frequentie en datums, totdat mijn bestelling is afgehandeld of totdat ik, indien toegestaan, opzeg. continue browsing close welcome fans, friends &amp; family the new coffee culture shop now yusu - amsterdam shop now espresso &amp; filter the coffee beans are carefully selected shop now colombia — yusu — espresso shop now collaborations products & ge
+
+[1813] Arepa Shop Amsterdam | restaurant / venezuelan | Anthony Fokkerweg 61, Amsterdam
+  Keywords: family
+  Fragment: &nbsp; latin brunch is back once a month, arepa shop brings you the ultimate latin brunch experience in amsterdam: delicious venezuelan food, great drinks, and the best vibes. gather your friends and family and join us for a weekend full of flavor, music, and shared moments.&nbsp; book here next dates: february 28th - march 1st ​ ​ i just don&#39;t want to look back and think i could have eaten th
+
+[1820] Café Jansen | cafe | Bijdorpplantsoen 10, Amsterdam
+  Keywords: family
+  Fragment: café jansen - hotel jansen hotel jansen bajeskwartier hotel jansen schinkel about the jansen family our rooms our events drinks, food &amp; fun reviews contact us eng nl hotel jansen schinkel hotel jansen bajeskwartier tiktok instagram facebook book your room now! book now! +31 (0)20 2 807 010 family@hoteljansen.nl eng nl café jansen bajeskwartier from the streets of amsterdam to your table
+
+[1829] Oceania | restaurant / chinese | Scheldestraat 77
+  Keywords: family
+  Fragment: away reservations &nbsp; &nbsp; &nbsp; authentic chinese fine dining experience oceania 海運酒樓 book a table take away &#8211; about us &#8211; chinese restaurant oceania was founded in 1978 by the chan family and has been managed within the family since then. the name ‘oceania’ in chinese means ‘fortune of the sea’ and it was chosen due to the geographic location of the netherlands, which is surroun
+
+[1843] Bromo Indah | restaurant / indonesian | Elandsgracht 82-H, Amsterdam
+  Keywords: pannenkoek
+  Fragment: tahoe en tempé € 16,00 incl. statiegeld (€ 0,00) gado gado diverse gemengde groenten, ei, rijst en satésaus € 16,00 incl. statiegeld (€ 0,00) roti maaltijden deze maaltijden worden geserveerd met een pannenkoek, aardappelen en boontjes roti rundvlees speciaal extra groenten en een ei € 18,50 incl. statiegeld (€ 0,00) roti pannenkoek € 3,25 incl. statiegeld (€ 0,00) roti vegetarisch speciaal extra 
+
+[1848] De Uitsmijter | restaurant / breakfast | onbekend
+  Keywords: family, pannenkoek
+  Fragment: -ms-flexbox; display: flex; height: 46px; width: 280px; border-color: #00645a; color: #00645a; position: fixed; bottom: 10px; left: 10px}.tf-widget-link { text-decoration: none; color: #00645a; font-family: raleway,sans-serif; font-size: 1.1em; width: 100%; text-align: center}.tf-widget-link:hover { font-weight: 700; background: none!important} terms and conditions &copy; 2026 - de uitsmijter | al
+
+[1850] Wingman | fast_food / chicken | Maasstraat 116
+  Keywords: family
+  Fragment: k saus bij je friet. &euro; 3,70 &euro; 3,70 large portion of regular fries grote portie knapperige friet van 9mm maak een keuze uit een kleine of grote bak saus bij je friet. &euro; 4,50 &euro; 4,50 family bag for 3 or more familiezak friet vanaf 3 personen. maak een keuze uit een kleine of grote bak saus bij je friet. &euro; 9,30 &euro; 9,30 loaded fries loaded fries minced meat large portion (9
+
+[1857] Broodje Mokum | fast_food / sandwich | Rozengracht 26, 1016NC
+  Keywords: kinderen
+  Fragment: en meteen weet wat je wilt bestellen, of de man die aan grappen geen gebrek kent. het is dan ook niet gek dat we soms bekend staan als ‘het buurthuis van de jordaan.’ het is namelijk hét plekkie waar kinderen langskomen om een koekje te halen, of om jus d’orange te persen. waar zij met trots een broodje naar de klanten brengen en jaren later zelfs een zaterdagbaantje hebben. de plek waar gezelligh
+
+[1861] Couscous Bar | restaurant / moroccan | Kinkerstraat 85
+  Keywords: family
+  Fragment: couscousbar &#8211; made by mamas skip to content couscousbar menu close menu family portions catering locations jobs school instagram build your own bowl of fluffy couscous or choose one of nadia zerouali favorites combinations&nbsp; &nbsp;&nbsp;create your own couscous&nbsp;&nbsp; big family? try our family portions nadia&#8217;s favorites maroc vegan fluffy steamed couscou
+
+[1872] Sham Maza | restaurant / arab | Jan Evertsenstraat 69-H
+  Keywords: gezin
+  Fragment: nd verzorgd. de sham royal is een aanrader. onthou deze tip voor als je een keer een smakelijke en bijzondere catering zoekt. posted on nur verified gastronomisch genot! gastronomisch genoten met ons gezin alles vers en bediening was zeer behulpzaam goede uitleg gehad over de gerechten. al met al wij komen zekers nog eens terug! posted on la s verified super ambiente top service sehr leckeres esse
+
+[1879] Hello Couscous | restaurant | Johan van Hasseltweg 80
+  Keywords: kindermenu
+  Fragment: us menu mobile bestellen informatie contact online bestellen bij hello couscous bezorgen of afhalen populaire gerechten ramadan vis couscous couscous salade bestilla tajine burgers en broodjes soepen kindermenu dranken extra's hello couscous couscous tajine halal johan van hasseltweg 80, 1022 wx amsterdam wij zijn op dit moment gesloten! kijk op de informatie-pagina voor onze openingstijden. popul
+
+[1883] Werkplaats | cafe | Wibautstraat 150, Amsterdam
+  Keywords: kinderen
+  Fragment: begane grond). ontbijtbuffet: neem de tijd en geniet van het uitzicht bij canvas (7e verdieping). op weekdagen van 7.00–10.30 uur en op zaterdag en zondag van 8.00–11.30 uur. prijs: € 16 // € 10 voor kinderen tot 10 jaar oud. parkeren je vindt onze parkeerplaats rechts naast ons gebouw. je betaalt €30 per 24 uur of een tarief van €5 per uur. normaal gesproken is er genoeg plek voor iedereen. reser
+
+[1884] Eazie | fast_food / asian | Bijlmerplein 1008, Amsterdam
+  Keywords: baby
+  Fragment: ce 170 gram groente satésaus, kipfilet, prei, champignons, taugé, paprika, courgette en rijst of noedels naar keuze € 10,99 chicken teriyaki 220 gram groente japanse teriyakisaus met zachte kipfilet, babymaïs, paprika, champignon, sperziebonen, ui. keuze uit rijst of noedels € 10,99 beef black chilli sauce 220 gram groente black chillisaus, biefstuk, babymaïs, paprika, portobello, sperziebonen en 
+
+[1888] Café Jansen | cafe | Valschermkade 19, Amsterdam
+  Keywords: family
+  Fragment: café jansen - hotel jansen hotel jansen schinkel hotel jansen bajeskwartier about the jansen family our rooms our events drinks, food &amp; fun reviews contact us eng nl hotel jansen schinkel hotel jansen bajeskwartier tiktok instagram facebook book your room now! book now! +31 (0)20 2 807 010 family@hoteljansen.nl eng nl café jansen schinkel from the streets of amsterdam to your table loca
+
+[1889] Couscous Bar | restaurant | onbekend
+  Keywords: family
+  Fragment: couscousbar &#8211; made by mamas skip to content couscousbar menu close menu family portions catering locations jobs school instagram build your own bowl of fluffy couscous or choose one of nadia zerouali favorites combinations&nbsp; &nbsp;&nbsp;create your own couscous&nbsp;&nbsp; big family? try our family portions nadia&#8217;s favorites maroc vegan fluffy steamed couscou
+
+[1903] De Vlugt | cafe | Burgemeester De Vlugtlaan 125, Amsterdam
+  Keywords: kids
+  Fragment: ilm(t)huis voor iedereen spring naar content facebook page opens in new window instagram page opens in new window linkedin page opens in new window cinema de vlugt een film(t)huis voor iedereen films kids gurbet sinemasi cinema diaspora studio arabesquo safar cinema: nadine labaki green cinema queer cinema black cinema specials verwacht over ons onze missie vacatures contact bezoek ons locatie &#0
+
+[1904] Kaia | restaurant / greek | Europaplein 21
+  Keywords: family
+  Fragment: ine menu about us careers press contact greek food you've never experienced before kaia is a contemporary greek restaurant-bar. where food becomes sacred sustenance. where time spent with friends and family becomes a gathering of kindred spirits. discover kaia discover our menu menu our team kaia is a brand new restaurant located at a beautiful location in the south of amsterdam. team kaia is stil
+
+[1911] Rasoi | restaurant / indian | Maasstraat 10-H, Amsterdam
+  Keywords: family
+  Fragment: s in maasstraat maasstraat 10, 1078 hj amsterdam open hours mon–wed: 4pm – 10pm thu–sun: 12pm – 10pm get directions reservation book a table planning a romantic dinner for two or a communal meal with family or friends? book a table now. booking email: info@rasoiamsterdam.nl call us: 06 820 62 867 online reservation facebook instagram privacy policy terms and conditions faq’s careers contact © copy
+
+[1915] Pannenkoekerij Gansi | restaurant / african;pancake | onbekend
+  Keywords: speeltuin, speelgoed, kinderen, pannenkoek
+  Fragment: . namelijk pannenkoekerij gansi. in de zomer is het goed toeven op het terras van pannenkoekerij gansi. geniet van een heerlijk kopje muntthee uit eigen (moes)tuin terwijl uw kind zich vermaakt in de speeltuin of met onze dieren.&nbsp; &nbsp; op woensdag zijn er ook heerlijke surinaamse broodjes beschikbaar en op zaterdag kookt chef angie b surinaamse maaltijden. gansi is geopend van dinsdag tot z
+
+[1917] Moychay | cafe / teahouse | onbekend
+  Keywords: baby
+  Fragment: 20.00 sat - sun 11.00 - 20.30 get directions host your event at moychay tea culture club our teahouse is open for your gatherings — from lectures and creative workshops to team buildings, birthdays, baby showers, bachelorette celebrations, and more. we offer a calm, atmospheric space in the center of amsterdam, supported by high-quality loose-leaf tea and thoughtful service. if you’d like to host 
+
+[1919] China Si Chuan Restaurant | restaurant / chinese | Warmoesstraat 17, Amsterdam
+  Keywords: family
+  Fragment: our food. although it was created with sichuan peppercorns, this fresh beer won’t have you breathing fire. as you know, sichuan peppercorns are berries of the prickly ash tree, a member of the citrus family. we’ve utilised their unique characteristics to add a fresh layer of citrus with herbal undertones and a hint of lavender, tamed by an army of chess, offers you a unique and refreshing experien
+
+JSON array (25 objecten):

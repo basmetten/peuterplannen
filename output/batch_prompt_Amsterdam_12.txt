@@ -1,0 +1,55 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[1920] KabelKantine | restaurant | Kabelweg 57, Amsterdam
+  Keywords: baby
+  Fragment: &#39;s a event location. ​ restaurant restaurant menu book your table ​ impression impression impression event location event location&nbsp; the location can be rented for events. think of birthdays, babyshowers, workshops etc. do you have a meeting or a presentation? we can also take care of this. with or without fully catered catering. everything is possible! &nbsp; the location has a capacity f
+
+[1922] Ristorante Papa Carlo | restaurant / italian | Kloveniersburgwal 7, 1011JT
+  Keywords: family
+  Fragment: wists. it&#8217;s easy to forget the busy amsterdam streets once you&#8217;re inside &#8211; enjoying italian hospitality, characterized by warmth and their passion for good food. the italian shehata family has been running restaurants since 1991. besides papa carlo, they house a second italian restaurant in amsterdam-zuid, buen gusto di italia . read more private moment fresh. authentic. seasonal
+
+[1926] Taka Ramen Nieuwmarkt | restaurant / ramen | Stormsteeg 9
+  Keywords: family, pancake
+  Fragment: in 2012 he returned to the netherlands and started selling ramen, first at waterlooplein, then moving to toko dun yong, de jordaan and back to toko dun yong. every year taka returns to japan to visit family and learn more about ramen to perfect his own ramen recipe. come and try taka's creations at toko dun yong in amsterdam near the nieuwmarkt or at his 2nd ramen-ya near gelderlandplein. see our 
+
+[1936] Paik's Noodle | restaurant / chinese;korean | Rokin 152, 1012LE
+  Keywords: family
+  Fragment: erience. at paik’s noodle, we are committed to providing not just a meal, but a memorable dining experience. our warm and welcoming atmosphere makes every visit special, whether you’re dining in with family and friends or grabbing a quick bite to go! our menu paik's noodle amsterdam rokin 152 amsterdam, 1012 le the netherlands info@paiksnoodle.nl - we don't accept reservations, only walk-ins - no 
+
+[1942] Mangia Pizza Centrum | restaurant / italian;italian_pizza;pizza | Vijzelgracht 33, Amsterdam
+  Keywords: family
+  Fragment: quality. using time-honored techniques, hand-picked ingredients, and antonio’s signature dough, we bring the flavors of naples straight to your table—crispy, airy, and unforgettable. the mangia pizza family behind every pizza is a passionate team dedicated to delivering warmth, authenticity, and excellence. together, we’re more than colleagues—we’re a family sharing the joy of italian pizza with a
+
+[2285] De Pannenkoekerij | restaurant / pancake | Gravenstraat 5, Amsterdam
+  Keywords: (geen)
+  Fragment: (geen)
+
+[2612] Old Dutch Pancake House | fast_food / pancakes | Singel 494, Amsterdam
+  Keywords: (geen)
+  Fragment: (geen)
+
+[2648] Mama Pancake | cafe / pancake | onbekend
+  Keywords: (geen)
+  Fragment: (geen)
+
+[2882] Mook pancakes | cafe | De Clercqstraat 34, Amsterdam
+  Keywords: (geen)
+  Fragment: (geen)
+
+[2922] Madam Pancake | restaurant | onbekend
+  Keywords: (geen)
+  Fragment: (geen)
+
+JSON array (10 objecten):

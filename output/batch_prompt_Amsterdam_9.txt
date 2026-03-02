@@ -1,0 +1,115 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[1494] Raina SR | restaurant / indian | Admiraal De Ruijterweg 468, Amsterdam
+  Keywords: pancake
+  Fragment: adipisicing elit. soluta, impedit, saepe. unde minima distinctio officiis amet temporibus, consequuntur dolorem dicta&#8230; read more read morebusiness breakfast rainarestaurants may 1, 2021 deserts pancakes in chocolate may 1, 2021 consectetur adipisicing elit. soluta, impedit, saepe. unde minima distinctio officiis amet temporibus, consequuntur dolorem dicta&#8230; read more read morepancakes i
+
+[1504] La Contessa, Ristorante Italiano & Gelateria | restaurant / italian | Cruquiusweg 83A, Amsterdam
+  Keywords: baby
+  Fragment: la contessa amsterdam la contessa amsterdam ristorante menu lista dei vini cocktails ristorante lista dei vini cocktails kom lekker ijs eten bij la contessa iets te vieren? aanvragen voor parties, baby showers, verjaardagen, besloten diners en andere events bespreken we graag persoonlijk met je. bel gerust of mail. voor groepen vanaf 8 personen bel of mail ons. reserveringen@lacontessaamsterdam.nl
+
+[1512] Loetje | restaurant / steak_house | Parnassusweg 1021, Amsterdam
+  Keywords: kindvriendelijk, kindermenu
+  Fragment: servering maken kan eenvoudig en snel via onze website. is er ook een kindermenu? bij loetje denken we ook aan onze jonge gasten. voor de kleine loetjes hebben we een speciaal kindermenu met lekkere, kindvriendelijke gerechten waar ze van kunnen smullen. je kunt het volledige kindermenu hier bekijken. kan ik parkeren bij loetje amsterdam zuidas? er is voldoende parkeergelegenheid in de directe omg
+
+[1526] Grillhouse Zion | fast_food / kebab | onbekend
+  Keywords: kindermenu
+  Fragment: tatiegeld (€ 0,00) golden hamburger schotel dubbele hamburger (lamsvlees), gebakken eieren, ananas en kaas met salade + rijst/patat/schijfpatat/spaghetti naar keuze. € 16,50 incl. statiegeld (€ 0,00) kindermenu met patat, salade, appelmoes en lams of kipshoarma € 11,50 incl. statiegeld (€ 0,00) kindermenu met nuggets met patat, appelmoes en salade € 11,50 incl. statiegeld (€ 0,00) falafel speciaal
+
+[1528] Calamares | restaurant / fish | onbekend
+  Keywords: kindermenu
+  Fragment: visrestaurant calamares - eten bestellen in amsterdam menukaart beoordelingen contact colofon visrestaurant calamares vis van de grill vis in saus mix schotels vis en chips kindermenu salades soepen broodjes extra's dranken vis van de grill geserveerd met 1 saus naar keuze, salade en friet zeebaars geserveerd met 1 saus naar keuze, salade en friet € 16,00 incl. statiegeld (€ 0,00) sardine geservee
+
+[1532] Rudi's Original Stroopwafels | fast_food | Albert Cuypstraat 182, Amsterdam
+  Keywords: family
+  Fragment: fels skip to content home our product our foodtruck our story faq home our product our foodtruck our story faq location our stroopwafels are daily and freshly baked in accordance with our traditional family recipe. enjoy the delicious flavours of the original dutch stroopwafel! baked at our foodtruck! the original dutch stroopwafels taste best when they are freshly baked, deliciously hot and still
+
+[1535] Vinnies | cafe / breakfast | Scheldestraat 45 BG, Amsterdam
+  Keywords: family
+  Fragment: private dining &amp; corporate events looking for the perfect venue for your next gathering? at vinnies private dining becomes an unforgettable experience. whether you’re celebrating with friends and family or hosting a corporate dinner event, our elegant and welcoming space sets the stage for memorable moments. with a focus on sustainability and a seasonal 4-course menu crafted from the finest lo
+
+[1536] Mojo | restaurant / japanese | Oosterdokskade 135, Amsterdam
+  Keywords: kids
+  Fragment: geniet samen van onbeperkt dagverse sushi en warme japanse gerechten in een romantisch aangeklede interior met prachtige zwevende hartballonnen. valentine’s lunch ayce: €34,95 p.p. valentine's lunch kids (4-10y): €18,95 p.p. valentine’s diner ayce: €49,95 p.p. valentine’s diner kids (4-10y): €28,95 p.p. 'romance by the water' menu - valentine's special beperkt aantal tafels beschikbaar maak van va
+
+[1537] The Big Apple | restaurant / american;grill;international | Reguliersdwarsstraat 17-19, Amsterdam
+  Keywords: family
+  Fragment: romise you an unforgettable american adventure! looking for something a little larger? no problem! you can also book our entire restaurant (or just a part of it) to enjoy some time with your friends, family or work colleagues. book a table take a look at our menu starters lunch dinner desserts cocktails soups arkensa’s tomato soup 6.50 french onion soup 7.50 appetizers chef’s combination 23.50 che
+
+[1541] Bakers and Roasters | cafe | Kadijksplein 16, Amsterdam
+  Keywords: family, pancake
+  Fragment: y no to the industrial food system. to achieve this we partner with ethically reared, free-range, sustainable, organic, seasonal and local suppliers wherever we can. a special thanks go out to: local family bakers ad straathof for providing us with our delicious sourdough and spelled loaves. to local smokehouse - franks for their 100% antibiotic / hormone free perfectly smoked salmon, bacon and ch
+
+[1547] Marie | restaurant | Nieuwe Doelenstraat 2-14, Amsterdam
+  Keywords: family
+  Fragment: ril 2026, with easter sunday on 5 april 2026, in refined parisian style at brasserie marie. as spring unfolds in amsterdam, marie offers the perfect setting for a festive lunch or elegant dinner with family and friends. expect timeless french dishes, thoughtful wine pairings and the effortless sophistication that defines every moment at our table. this easter, embrace the season, indulge in classi
+
+[1553] Lunch Hoek | fast_food | Jan Evertsenstraat 155, Amsterdam
+  Keywords: gezin
+  Fragment: eke bamischijf € 3,95 incl. statiegeld (€ 0,00) chicken nuggets 6 stuks 6 chicken nuggets € 3,95 incl. statiegeld (€ 0,00) friet friet klein voor de kleine eter € 5,50 incl. statiegeld (€ 0,00) friet gezinszak 3 personen € 13,50 incl. statiegeld (€ 0,00) friet groot voor de grote eter € 6,95 incl. statiegeld (€ 0,00) loaded fries en kapsalons loaded fries kapsalon friet bedekt met kip en afgetopt 
+
+[1556] STAN&CO | restaurant | Weesperplein 4A, Amsterdam
+  Keywords: baby
+  Fragment: rankjes. reserveer nu dj nights kom iedere vrijdag en zaterdag in de weekendstemming met de relaxte vibes van onze dj’s. meer informatie plan jouw event bij stan van groepsdiner tot verjaardagsfeest, babyshower of zakelijk evenement. stan is de perfecte plek om onvergetelijke herinneringen te maken. bekijk de mogelijkheden wij zoeken collega's! of je nou werk zoekt in de keuken, bediening of spoel
+
+[1567] De Jonge Admiraal | cafe | Javastraat 149-H, Amsterdam
+  Keywords: pannenkoek
+  Fragment: wachten. vraag eventueel het personeel hoe lang het ongeveer kan duren voordat er een tafel beschikbaar komt. ons menu - ontbijt / lunch tussen de €3,- en €12,-. het eten bestaat uit oa maaltijdsoep, pannenkoeken, yoghurt (oa vegan) met fruit, brood met oa omelet, zalm van frank's smoke house, huisgemaakte hummus, pittige grillworst, oude boerenkaas van boerderij geingenoegen, etc - als taart hebb
+
+[1573] De Beren | restaurant | Buikslotermeerplein 2001, Amsterdam
+  Keywords: kinderen, gezin, kindermenu
+  Fragment: ig zakendoen! reserveer nu! diner &amp; film geniet van een volledige avond uit met ons diner & film arrangement! voor €42,50 genieten volwassenen van een heerlijk 3-gangenmenu met bioscoopvoucher en kinderen van een kindermenu voor €19,95 inclusief bioscoopvoucher voor een film naar keuze bij pathé. houd er bij het reserveren rekening mee dat het 3-gangendiner minimaal 2 uur duurt. reserveer snel
+
+[1575] MADRE | restaurant / mexican | Westerstraat 186 BG, Amsterdam
+  Keywords: family, baby
+  Fragment: f the jordaan. we bring out the best of locally sourced, seasonal, fresh ingredients. from soil to supper, from field to fork, from nature with love. our farmers are our hero’s, our neighbors are our family. pull up a chair and join the conversation. you will feel right at home. madre has a greed for good. we love to be part of positive change. taking care of the people around us, looking out for 
+
+[1579] The Seafood Bar | restaurant | Spui 15
+  Keywords: family
+  Fragment: m amsterdam – oud-zuid amsterdam – spui amsterdam – de pijp amsterdam – damrak utrecht groups menu cocktail bar giftcard jobs jobs london jobs nl award-winning seafood restaurant from the de visscher family with a surname that means “fisherman’, fons de visscher opened his first fish shop in helmond in 1984, beloved by locals from afar. the first seafood bar he opened in 2012 on the van baerlestra
+
+[1585] Bunk Restaurant | restaurant / international | onbekend
+  Keywords: family
+  Fragment: to connect than over some delicious shared dishes and wine? breakfast &#038; lunch dinner drinks into any event let us get you organised if you are looking to organise a birthday party, team outing, family dinner or even divorce drinks, look no further. in any event, our planners have got you covered with organising the whole lot, including food and drinks, and then some. just get yourself booked 
+
+[1597] Gandhi | restaurant / indian | Lange Leidsedwarsstraat 56, Amsterdam
+  Keywords: families
+  Fragment: e, and it’s clear that nature, creativity and city life are a continuum here. oosterparkplein – peaceful and community-minded oosterparkplein is a more relaxing option than amsterdam’s other squares. families, joggers and villagers converge here to soak up green space and sun. the space is open and welcoming, perfect for travellers who prefer to slow down and take in everyday life. and as the day 
+
+[1600] Papa Zatarra | restaurant | Jacob Bontiusplaats 10, Amsterdam
+  Keywords: baby
+  Fragment: 01.00 zondag - gesloten papa zatarra van ontbijt tot dans, van lunch tot cocktails en van koffie tot diner. er is bij ons altijd een mogelijkheid voor het organiseren van een verjaardag, vergadering, babyshower of groepsdiner. wij bieden ook groepsmenu’s en arrangementen aan voor verschillende gelegenheden. events zoals; boozy brunches, salsa nights, oesters &amp; bubbels en drag brunches wil je n
+
+[1602] Darras Coffee Roasters | cafe | Gyroscoopweg 50, Amsterdam
+  Keywords: family
+  Fragment: darras coffee roasters settings > advanced > page header (or site-wide header) --> 0 skip to content home stores shop beans about ingredients &amp; allergens the darras family contact join our team open menu close menu home stores shop beans about ingredients &amp; allergens the darras family contact join our team open menu close menu home stores shop beans folder: about back ingredients &amp; all
+
+[1605] Fine Sushi | restaurant / sushi | Docklandsweg 7, Amsterdam
+  Keywords: family
+  Fragment: iri 2 maguro nigiri 2 ebi nigiri 2 gyu nigiri 2 kani nigiri 4 california roll 4 sake avocado roll 4 spicy maguro roll 4 crunchy roll 4 tempura ebi roll 4 chizu sake 6 kappa maki 6 sake maki € 58.80 k family box ( 75st) 3 sake nigiri 3 maguro nigiri 3 unagi nigiri 3 ebi nigiri 3 gyu nigiri 8 california roll 8 spicy maguro roll 8 crispy chieken roll 8 furikake ebi roll 6 kappa maki 6 sake maki 6 tek
+
+[1607] Burger & Fries 56 | restaurant | Korte Leidsedwarsstraat 56, Amsterdam
+  Keywords: family, kid-friendly
+  Fragment: ay 11:00 am - 2:00 am thursday 11:00 am - 2:00 am friday 11:00 am - 4:00 am saturday 11:00 am - 4:00 am sunday 11:00 am - 2:00 am key features cuisine burgers american eat &amp; drink ambiance casual family-friendly meal dinner lunch see all 7 features frequently asked questions does the restaurant burger &amp; fries 56 have parking? yes, the restaurant burger &amp; fries 56 has street parking. do
+
+[1609] Brunchdale | restaurant / breakfast;coffee_shop;sandwich;tea | Ridderspoorweg 104, Amsterdam
+  Keywords: family
+  Fragment: : 9 am - 5 pm &nbsp; drop by for a bite. brunchdale catering at brunchdale, we believe in turning every gathering into a memorable brunch experience. whether it&#39;s a cozy office meeting, a festive family gathering, or any special occasion, we&#39;re here to sprinkle it with our unique brunch charm. more information newsletter stay up to date with all the latest from brunchdale email join thanks
+
+[1616] Burger 'N Shake | fast_food / burger | Osdorpplein 47, Amsterdam
+  Keywords: kindermenu
+  Fragment: burger 'n shake amsterdam osdorp - eten bestellen in amsterdam menukaart beoordelingen contact colofon burger 'n shake amsterdam osdorp burger menu's beef burgers chicken burgers vegetarische burgers kindermenu hotdogs bites friet losse sauzen shakes koude dranken toetje burger menu's beef burger menu keuze uit een van onze beef burgers, friet en een drankje. € 17,45 incl. statiegeld (€ 0,00) cris
+
+JSON array (25 objecten):

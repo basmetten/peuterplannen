@@ -1,0 +1,115 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[2] Olmenhorst | cafe | onbekend
+  Keywords: speeltuin, kinderen
+  Fragment: s » "een oase van rust, midden in het hart van de randstad." kom gezellig wandelen, eten, drinken, of in het gras liggen. wil je een relaxt dagje uit met de kinderen? dan hebben we natuurlijk ook een speeltuin naast onze horecagelegenheden! het laatste nieuws van de olmenhorst in je inbox boomgaard adopteer een boom appelrassen zoek je boom appels plukken plukschema de fruitloods eten & drinken me
+
+[15] La Place | restaurant | Rijksweg A4 1B, Hoofddorp
+  Keywords: kids
+  Fragment: la place - la place menu deals foodstories recepten kids locaties zakelijk faq account account deals meer even écht genieten klik hier locaties bekijk locaties klik hier werken bij la place klik hier vergaderen offerte aanvragen klik hier recepten bekijk recepten klik hier deals bekijk deals klik hier la place klik hier contact opnemen klik hier faq
+
+[16] Joseph | restaurant | Hoofdweg 728A, Hoofddorp
+  Keywords: kids
+  Fragment: jong & oud en voor alle culturen want koningsdag is voor iedereen! even alle feitjes op een rijtje: - overdekt; dus zelfs bij regen, is het bij ons feest! - afgesloten terrein; hier ben je veilig. - kids corner; we denken natuurlijk ook aan de kleine opvolgers. - foodcourt by joyce & nancy; lekker eten is altijd goed om erbij te hebben! wees welkom en kom de verjaardag van onze koning vieren in ho
+
+[17] Orries | restaurant | Hoofdweg 1173I, Nieuw-Vennep
+  Keywords: kinderen, kindvriendelijk, gezin
+  Fragment: e meerdere smaken kunt combineren. het ging even mis met de dubbele espresso (was doorzichtig), maar dat werd snel hersteld (met extra koekje). marijke stipdonk 09:28 12 oct 25 vanavond hebben we met kinderen en kleinkinderen heerlijk gegeten bij orries. we hadden voor 11 personen gereserveerd, maar op het laatste moment wilden er nog 2 kleinkinderen mee en dit was geen probleem. zowel voor de vol
+
+[19] Woodstone | restaurant / pizza | Raadhuisplein 10, Hoofddorp
+  Keywords: baby
+  Fragment: 038; voorwaarden werken bij woodstone contact woodstone pizza – ook voor groepen ook groepen zijn welkom bij ons – we hebben speciale shared dining menu’s beschikbaar. dus heb je een werketentje, een babyshower of wil je je huwelijksjubileum vieren? neem contact met ons op en we vertellen je graag alles over de mogelijkheden! groepsaanvraag lekker lunchen bij woodstone pizza hoofddorp op zoek naar
+
+[32] Enjoy | restaurant | Marktplein 13, Hoofddorp
+  Keywords: kinderen
+  Fragment: eten! neem contact op alle arrangementen zijn inclusief een onbeperkt buffet inclusief fristdrank,koffie,thee, tapbier en huiswijn. maandag &#8211; donderdag 2,5 uur 3 uur volwassenen € 41,50 € 44,50 kinderen 8-11 jaar € 27,50 € 28,50 kinderen 3-7 jaar € 20,50 € 21,50 kinderen 2 jaar € 9,50 € 10,50 vrijdag &#8211; zondag en feestdagen * 2,5 uur 3 uur volwassenen € 44,50 € 47,50 kinderen 8-11 jaar 
+
+[35] Indian Taste | restaurant / indian | Tuinweg 14B, Hoofddorp
+  Keywords: pannenkoek
+  Fragment: ikant € 10.00 bak thais garnalen € 15.00 bak lamsvlees € 10.00 bak tempeh € 8.50 bak tahoe € 8.50 bak kerrie aardappel € 7.50 kerrie ei € 0.75 extra peper ( sambal) € 0.50 bak bakkeljauw € 12.50 roti pannenkoek € 2.50 mango chutney € 2.00 bak satésaus. € 2.00 paperdam portie € 1.50 raita € 3.00 pindasaus € 2.00 kheer € 3.50 surinaamse kerrie ei per stuk € 0.75 mix pickle indias pickle (achar) € 1.
+
+[37] Bliss Kidscafé | restaurant | Burgemeester van Stamplein 210, Hoofddorp
+  Keywords: speelhoek, kinderen, kindvriendelijk, kids, baby
+  Fragment: geren. alles met zorg bereid, in samenwerking met lokale partners. gezond, bewust en vooral: lekker. bekijk hier de menukaart faciliteiten bliss kidscafé is ontworpen om te ontzorgen. van een veilige speelhoek tot kolfruimte, een kindertoilet, magnetische glaswanden en een comfortabele moonboon-babyhangmat. werk je liever even door met een goede koffie en wifi? ook dat kan. contact zin om langs te
+
+[40] FEBO | fast_food / friture | Marktplein 220, Hoofddorp
+  Keywords: family
+  Fragment: n only today, a greek dish with a discount we're very sorry, but due an electronic issue our restaurant is closed today. we should be back up and running tomorrow. thanks! --> meatless monday 🌱 febo family burger deals 🍔 febo family snack deals 🍟 family kip deals 🍗 febo acties febo snacks febo broodjes febo burgers febo vega febo verse kip specialiteiten febo frites febo frites in bucket febo 
+
+[51] Sushi Chef | fast_food / sushi | Hoofdweg 716, Hoofddorp
+  Keywords: family
+  Fragment: wasabi roll and 8x crispy roll &euro; 25,25 &euro; 25,25 uramaki mix box deluxe 1x fried ebi special roll, 1x crispy roll, 1x spicy maguro crunchy roll, 1x sake crunchy roll &euro; 31,50 &euro; 31,50 family sushi deluxe 80 pcs. 8x zalm nigiri, 8x tonijn nigiri, 12x zalm maki, 12x komkommer maki, 8x uramaki crispy roll, 8x uramaki fried ebi roll, 8x uramaki tuna salad roll, 8x uramaki sake crunchy 
+
+[60] McDonald's | fast_food / burger | Vuursteen 5, Hoofddorp
+  Keywords: baby
+  Fragment: 5 vuursteen 5 2132 lz hoofddorp telefoon: 020-6535545 plan route services in dit restaurant bekijk onze services mcdrive mccafé kinderfeestjes glutenvrije producten terras creditcard speelgelegenheid babyruimte rolstoelvriendelijk parkeren elektrisch oplaadpunt auto myorder dichtstbijzijnde restaurants mcdonald&#039;s uithoorn werken bij mcdonald&#039;s hoofddorp ben jij minstens 15 jaar en minima
+
+[65] Proeflokaal Bregje | restaurant / regional | Rietkraag 2, Beinsdorp
+  Keywords: kindermenu
+  Fragment: inuten rijden van beinsdorp vandaan. sluit je dag vervolgens af bij bregje in stijl met een van onze kleurrijke en exotische gerechten. &nbsp; sfeerimpressie volgen gastvrouw bekijk kippenpoot bekijk kindermenu bekijk proeverij voor 2 bekijk streetfood plateau bekijk pulled chicken taco&#039;s bekijk gastvrouw bekijk contact rietkraag 2 2144 kc beinsdorp beinsdorp@bregje.nl 025-251 67 29 openingst
+
+[67] Kwalitaria | fast_food / friture | Händelplein 201, Nieuw-Vennep
+  Keywords: gezin, kindermenu, kinderportie
+  Fragment: mayonaise. − aantal + voeg toe friet friet portie friet friet of patat? in ieder geval gemaakt van de heerlijke hollandse agria aardappel en krokant gebakken in plantaardige olie. − aantal + voeg toe gezinsportie friet friet of patat? in ieder geval gemaakt van de heerlijke hollandse agria aardappel en krokant gebakken in plantaardige olie. − aantal + voeg toe hete kip special friet met heerlijke 
+
+[69] Vitaria Family restaurant | fast_food | Schoolstraat 1, Nieuw-Vennep
+  Keywords: family
+  Fragment: home | family nieuw-vennep werken bij nieuw-vennep acties onze menu&#39;s over ons schuif je ook aan bij family nieuw-vennep adres schoolstraat 1 2151 aa nieuw-vennep 0252-688036 openingstijden family nieuw-vennep zien we je snel? eethuis maandag gesloten dinsdag 16:00 - 20:00 woensdag 16:00 - 20:00 donder
+
+[75] Steakhouse Daan | restaurant | St. Anthoniusstraat 5A, Nieuw-Vennep
+  Keywords: kindermenu
+  Fragment: w postcode in : --> menukaart: selecteer een categorie: populaire gerechten koude voorgerechten warme voorgerechten soepen hoofdgerechten pastagerechten pizza's visgerechten schotelgerechten broodjes kindermenu desserts bijgerechten sauzen dranken ben & jerry's 100ml magnum pints 440ml onze site gebruikt cookies voor het verbeteren van het afrekenen en ter verbetering van onze advertenties. meer i
+
+[81] Pannenkoeken Paviljoen | restaurant / pancake | Kruisweg 1625, Cruquius
+  Keywords: kinderen, kids, pannenkoek
+  Fragment: pannenkoeken paviljoen | cruquius home menu arrangementen high tea verjaardagen gezelschappen scholen kinderen sfeer contact faq openingstijden vacatures select page &nbsp; &nbsp; &nbsp; &nbsp; menu de lekkerste pannenkoeken en meer. zie hier het menu. reserveren klik op de button reserveren rechts onder op onze homepage of bel ons contact 023-5477123 kruisweg 1625, cruquius cadeaubon klik op de b
+
+[92] Family Schiphol Zuidoost | fast_food / friture | Folkstoneweg 5, Schiphol
+  Keywords: family
+  Fragment: home | family schiphol-zuidoost werken bij schiphol-zuidoost acties onze menu&#39;s over ons bestel direct bestel direct schuif je ook aan bij family schiphol-zuidoost adres folkstoneweg 5 1118 lm schiphol zuidoost 020-4054380 openingstijden family schiphol-zuidoost zien we je snel? eethuis maandag 09:00 -
+
+[93] Wings food & drinks | restaurant / regional | Stationsplein-ZW 602, Schiphol
+  Keywords: gezin
+  Fragment: rzijde. het benedengedeelte is voor iedereen open. hier kan je gemakkelijk even lunchen, zakenrelaties ontmoeten, internetten (gratis wifi), een avondje borrelen of een hapje eten met bijvoorbeeld je gezin of je collega's. belangrijke ingrediënten van het eetcafé zijn kwaliteit, gezelligheid, vriendelijkheid en laagdrempeligheid. anders gezegd: we serveren met alle plezier onze gasten heerlijk ete
+
+[94] McDonald's | fast_food / burger | Loevesteinse Randweg 200, Schiphol
+  Keywords: baby
+  Fragment: vesteinse randweg 200 loevesteinse randweg 200 1118 el schiphol telefoon: 020-6570045 plan route services in dit restaurant bekijk onze services mcdrive mccafé glutenvrije producten terras creditcard babyruimte parkeren elektrisch oplaadpunt auto myorder dichtstbijzijnde restaurants mcdonald&#039;s hoofddorp mcdonald&#039;s amstelveen stadshart mcdonald&#039;s amsterdam osdorp drive werken bij mcd
+
+[103] 3D Diner Hoofddorp | restaurant | Taurusavenue 12, Hoofddorp
+  Keywords: kinderen, gezin, families, kindermenu
+  Fragment: ing van le petit chef alles behalve saai! ook voor families is dit unieke private dining-concept de perfecte oplossing: samen genieten van een diner op niveau in een gezellige privéruimte, terwijl de kinderen (en uzelf zeker ook) geëntertaind worden. menu & prijzen chef’s menu a amuse van de chef met een aperitief *** burrata met notensla, gemarineerde tomaatjes, ingelegde radijs en kumquat *** bo
+
+[105] Snackbar Lisserdijk | fast_food / burger | onbekend
+  Keywords: gezin, kindermenu
+  Fragment: en snacks glutenvrij vegetarisch broodjes kindermenu's burgers dranken milkshakes extra's order meal delivery or pickup no delivery --> populaire gerechten this is what our customer love to order --> gezinszak 4 porties € 11.00 hamburger speciaal € 5.50 kipsate inclusief pindasaus € 7.00 soft ijs soft ijs 300 ml € 4.50 soft ijs 400ml € 5.00 500 ml. soft ijs 500ml € 5.50 sorbet rum rozijnen € 4.50 
+
+[107] De Beren | restaurant | Raadhuisplein 3, Hoofddorp
+  Keywords: gezin
+  Fragment: dag: 12:00 - 22:00 uur. dagmenu&#39;s de dagmenu’s zijn er weer! heb je enorme trek? wil je weer eens uitgebreid bijpraten met vrienden? of gewoon behoefte aan een makkelijke, gezellige avond met het gezin? dan ben je bij ons op de juiste plek. maandag en dinsdag schuif je voor €22,50 p.p. bij ons aan voor onbeperkt spareribs. woensdag en donderdag kun je bij ons onbeperkt genieten van kip-, varke
+
+[115] Sushi Station | restaurant / sushi | Markenburg 85A, Hoofddorp
+  Keywords: kinderen, family
+  Fragment: n. soya, wasabi en gember zijn niet geldig voor pokebowls! aantal eetstokjes die ik nodig heb voeg dit product toe als u eetstokjes wilt. 1x toevoegen is dus 1 paar eetstokjes. € 0.00 eetstokjes voor kinderen ergonomische kinderstokjes. 1 paar eetstokjes voor kinderen, de eetstokje is voorzien van een koppelstukje die de stokjes bij elkaar houden die telkens weer gebruikt kan worden . met een ergo
+
+[117] Barraca | restaurant / brazilian | Bosweg 19, Hoofddorp
+  Keywords: family
+  Fragment: friday live april beleef een onvergetelijke avond met live entertainment! 27 maart 2026 brazilian friday live maart beleef een onvergetelijke avond met live entertainment! bekijk alle events join the family! kom je ons team versterken? barraca is op zoek naar jou! bekijk onze vacatures vind snel ons menu events contact vacatures veelgestelde vragen ons menu events contact vacatures veelgestelde vr
+
+[121] Darbaar | restaurant / indian | Kruisweg 969A, Hoofddorp
+  Keywords: families
+  Fragment: . onze indiase gerechten worden bereid met verse ingrediënten, aromatische kruiden en traditionele kookmethodes om authentieke smaken te garanderen. 3. is darbar een goed restaurant in hoofddorp voor families en groepen? + absoluut. darbar is de ideale plek in hoofddorp voor families, groepen en speciale gelegenheden. onze ruime opzet, gevarieerde menukaart en warme, gezellige sfeer zorgen voor ee
+
+JSON array (25 objecten):

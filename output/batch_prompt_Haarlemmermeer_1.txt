@@ -1,0 +1,31 @@
+Je beoordeelt of Nederlandse restaurants/cafés geschikt zijn voor gezinnen met peuters (0-4 jaar).
+
+INSTRUCTIES:
+- Score 0-10: 0=absoluut niet, 5=neutraal/onbekend, 10=expliciet kindvriendelijk
+- Score 7+ ALLEEN bij concrete aanwijzingen (speelhoek, kindermenu, pannenkoeken, etc.)
+- Pannenkoekenzaken: minimaal score 6
+- Beoordeel op basis van de beschikbare info; bij twijfel: score 5 of lager
+
+Retourneer UITSLUITEND een geldige JSON array, geen tekst ervoor of erna.
+Één object per locatie (in dezelfde volgorde als hieronder):
+[{"index":<origineel_index>,"score":<0-10>,"confidence":"high|medium|low","reasoning":"<1 zin NL>","has_play_area":<true|false|null>,"has_high_chairs":<true|false|null>,"has_kids_menu":<true|false|null>,"has_diaper_changing":<true|false|null>,"weather":"indoor|outdoor|both|null","description":"<1-2 zinnen als score>=7, anders null>","toddler_highlight":"<1 zin als score>=7, anders null>","is_pancake_restaurant":<true|false>},...]
+
+=== LOCATIES ===
+
+[123] La Place | restaurant | onbekend
+  Keywords: kids
+  Fragment: la place schiphol - plaza express - la place menu deals foodstories recepten kids locaties zakelijk faq account account deals meer la place locaties la place schiphol - plaza express la place locaties la place schiphol - plaza express la place schiphol - plaza express aankomstpassage 1 1118 ax , schiphol bekijk op maps openingstijden bijzondere tijden maandag 03:00 - 01:00 d
+
+[131] Fort Noxx | restaurant / regional | onbekend
+  Keywords: kids
+  Fragment: icious food van dungesneden prosciutto met gebakken gamba’s tot een warm smeltend melkchocoladetaartje met een witte chocoladefudge. dat zijn een aantal mogelijkheden van de menukaart. lunchen met de kids onder het genot van een broodje pindakaas kan natuurlijk ook. wie is er niet mee groot geworden? onze unieke locatie authentic flavours delicious food van dungesneden prosciutto met gebakken gamb
+
+[137] Barista Cafe | cafe / coffee_shop | Marktlaan 164B, Hoofddorp
+  Keywords: pancake
+  Fragment: de winkelcentrum vier meren, dat recent een grote metamorfose onderging en nu het kloppend hart van het stadscentrum vormt. op de kaart staan vertrouwde favorieten: van cappuccino tot smoothie en van pancakes tot clubsandwich. maar voor ramon gaat het om meer dan wat er op de kaart staat. “goede koffie kun je op veel plekken krijgen,” zegt hij. “het verschil zit in de aandacht, het contact en het 
+
+[138] Venneper Lodge | restaurant / regional | Getsewoudweg 1, Nieuw-Vennep
+  Keywords: speelparadijs, kindvriendelijk, kids, pannenkoek
+  Fragment: rant in omgeving nieuw vennep, hoofddorp, lisse en lisserbroek venneper lodge is een hippe plek voor alle leeftijden! reserveren ontbijt/lunch/diner voor ieder moment van de dag kids binnen en buiten speelparadijs gezelschappen iets te vieren met een grotere groep? welkom bij venneper lodge speurtocht bij venneper lodge lees snel meer >> een gezellig restaurant met goed eten vele gasten uit omgevi
+
+JSON array (4 objecten):
