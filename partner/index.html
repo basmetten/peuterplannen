@@ -12,112 +12,136 @@
     <style>
         :root {
             --primary: #D4775A; --primary-light: #FDF1ED; --primary-dark: #B35D42;
-            --accent: #E8B870; --bg: #FAF7F2; --surface: #FFFFFF;
-            --text: #2D2926; --text-secondary: #7A5E60; --text-muted: #A39490;
-            --success: #2D8B5E; --success-bg: #E8F5EF;
-            --error: #C0392B; --error-bg: #FDEDED;
-            --shadow: 0 4px 12px rgba(45,41,38,0.10);
-            --radius: 14px; --font-heading: 'Plus Jakarta Sans', sans-serif; --font-body: 'DM Sans', sans-serif;
+            --accent: #E8B870; --bg: #F5F3EF; --surface: #FFFFFF;
+            --text: #1C1917; --text-secondary: #6B5E5C; --text-muted: #9B8E8C;
+            --success: #1D7348; --success-bg: #ECFDF5;
+            --error: #B91C1C; --error-bg: #FEF2F2;
+            --border: rgba(28,25,23,0.10);
+            --shadow-sm: 0 1px 3px rgba(28,25,23,0.06), 0 2px 8px rgba(28,25,23,0.06);
+            --shadow: 0 1px 3px rgba(28,25,23,0.07), 0 6px 20px rgba(28,25,23,0.08);
+            --radius: 12px; --font-heading: 'Plus Jakarta Sans', sans-serif; --font-body: 'DM Sans', sans-serif;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+        body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; line-height: 1.6; }
         :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
         .hidden { display: none !important; }
 
         /* Nav */
-        nav { background: rgba(250,247,242,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(212,119,90,0.12); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
-        .nav-logo { font-family: var(--font-heading); font-weight: 800; font-size: 18px; color: var(--primary); text-decoration: none; }
-        .nav-logo span { color: var(--text); font-weight: 600; }
-        #nav-user { font-size: 13px; color: var(--text-secondary); }
-        #nav-logout { background: none; border: 1px solid rgba(212,119,90,0.3); color: var(--text-secondary); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; transition: all 0.2s; }
-        #nav-logout:hover { background: var(--primary-light); }
+        nav { background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+        .nav-logo { font-family: var(--font-heading); font-weight: 800; font-size: 16px; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .nav-logo-pill { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: var(--primary); color: white; padding: 2px 8px; border-radius: 4px; }
+        .nav-right { display: flex; align-items: center; gap: 10px; }
+        #nav-user { font-size: 13px; color: var(--text-muted); }
+        #nav-logout { background: none; border: 1px solid var(--border); color: var(--text-secondary); padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-family: inherit; transition: all 0.15s; }
+        #nav-logout:hover { background: var(--bg); border-color: rgba(28,25,23,0.2); }
 
         /* Container */
-        .container { max-width: 680px; margin: 0 auto; padding: 32px 20px 80px; }
+        .container { max-width: 660px; margin: 0 auto; padding: 36px 20px 80px; }
 
         /* Cards */
-        .card { background: var(--surface); border-radius: var(--radius); border: 1px solid rgba(212,119,90,0.15); box-shadow: var(--shadow); padding: 28px 32px; margin-bottom: 20px; }
-        .card h2 { font-family: var(--font-heading); font-size: 22px; font-weight: 800; margin-bottom: 6px; }
-        .card p { color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
-        .card h3 { font-family: var(--font-heading); font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+        .card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm); padding: 28px 32px; margin-bottom: 16px; }
+        .card-title { font-family: var(--font-heading); font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px; letter-spacing: -0.02em; }
+        .card-desc { color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+        .card h3 { font-family: var(--font-heading); font-size: 14px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
 
         /* Forms */
-        .form-group { margin-bottom: 16px; }
-        label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+        .form-group { margin-bottom: 14px; }
+        label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
         input[type=text], input[type=email], textarea, select {
-            width: 100%; padding: 12px 14px; border: 2px solid rgba(212,119,90,0.2); border-radius: 10px;
-            font-family: var(--font-body); font-size: 15px; color: var(--text); background: var(--bg);
-            transition: border-color 0.2s; outline: none;
+            width: 100%; padding: 10px 13px; border: 1px solid var(--border); border-radius: 8px;
+            font-family: var(--font-body); font-size: 14px; color: var(--text); background: var(--surface);
+            transition: border-color 0.15s, box-shadow 0.15s; outline: none;
         }
-        input:focus, textarea:focus, select:focus { border-color: var(--primary); }
+        input:focus, textarea:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(212,119,90,0.12); }
         textarea { min-height: 80px; resize: vertical; }
 
         /* Buttons */
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 24px; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; border: none; text-decoration: none; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; font-family: inherit; border: none; text-decoration: none; letter-spacing: 0.01em; }
+        .btn-primary { background: var(--text); color: white; }
+        .btn-primary:hover { background: #2d2a28; box-shadow: 0 2px 8px rgba(28,25,23,0.2); }
         .btn-primary:active { transform: scale(0.99); }
-        .btn-secondary { background: var(--bg); border: 1px solid rgba(212,119,90,0.3); color: var(--text); }
-        .btn-secondary:hover { background: var(--primary-light); }
-        .btn-danger { background: var(--error-bg); color: var(--error); border: 1px solid rgba(192,57,43,0.2); }
+        .btn-accent { background: var(--primary); color: white; }
+        .btn-accent:hover { background: var(--primary-dark); box-shadow: 0 2px 8px rgba(212,119,90,0.3); }
+        .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); }
+        .btn-secondary:hover { background: var(--bg); border-color: rgba(28,25,23,0.2); }
+        .btn-danger { background: var(--error-bg); color: var(--error); border: 1px solid rgba(185,28,28,0.15); }
         .btn-full { width: 100%; }
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         /* OTP code input */
-        .otp-input { letter-spacing: 0.3em; font-size: 24px; font-weight: 700; text-align: center; font-family: var(--font-heading); }
+        .otp-input { letter-spacing: 0.35em; font-size: 28px; font-weight: 700; text-align: center; font-family: var(--font-heading); }
 
         /* Alert */
-        .alert { padding: 12px 16px; border-radius: 10px; font-size: 14px; margin-bottom: 16px; }
-        .alert-error   { background: var(--error-bg);   color: var(--error);   border: 1px solid rgba(192,57,43,0.2); }
-        .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(45,139,94,0.2); }
+        .alert { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 14px; line-height: 1.5; }
+        .alert-error   { background: var(--error-bg);   color: var(--error);   border: 1px solid rgba(185,28,28,0.15); }
+        .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(29,115,72,0.15); }
         .alert-info    { background: var(--primary-light); color: var(--primary-dark); border: 1px solid rgba(212,119,90,0.2); }
 
-        /* Featured plan card */
-        .featured-plan-card { border: 2px solid var(--accent); border-radius: var(--radius); padding: 24px; background: linear-gradient(135deg, #FFFBF0, #FEF6E4); margin: 20px 0; }
-        .featured-plan-card h4 { font-family: var(--font-heading); font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-        .plan-badge { font-size: 11px; font-weight: 700; background: var(--accent); color: #6B4200; padding: 2px 10px; border-radius: 20px; margin-bottom: 10px; display: inline-block; }
-        .featured-plan-card ul { list-style: none; font-size: 14px; color: var(--text-secondary); margin: 14px 0; }
-        .featured-plan-card ul li { padding: 4px 0; }
-        .featured-plan-card ul li::before { content: '✓ '; color: var(--success); font-weight: 700; }
-        .billing-btns { display: flex; gap: 10px; margin-top: 16px; }
+        /* Pricing card */
+        .plan-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 20px 0; }
+        .plan-card-header { background: var(--text); color: white; padding: 20px 24px; }
+        .plan-card-header h4 { font-family: var(--font-heading); font-size: 18px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
+        .plan-card-header p { font-size: 13px; opacity: 0.6; }
+        .plan-card-body { padding: 20px 24px; background: var(--surface); }
+        .plan-features { list-style: none; margin: 0 0 20px; }
+        .plan-features li { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px; color: var(--text-secondary); border-bottom: 1px solid var(--bg); }
+        .plan-features li:last-child { border-bottom: none; }
+        .plan-features li::before { content: ''; width: 16px; height: 16px; border-radius: 50%; background: var(--success-bg); border: 1.5px solid var(--success); flex-shrink: 0; background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l2.5 2.5L9 1' stroke='%231D7348' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-position: center; background-repeat: no-repeat; }
+        .billing-btns { display: flex; gap: 8px; }
         .billing-btns .btn { flex: 1; }
         @media (max-width: 480px) { .billing-btns { flex-direction: column; } }
 
         /* Location search results */
-        .loc-result { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border: 1px solid rgba(212,119,90,0.15); border-radius: 10px; margin-bottom: 8px; background: var(--surface); }
-        .loc-result-name { font-weight: 600; font-size: 15px; }
-        .loc-result-region { font-size: 13px; color: var(--text-muted); }
-        .loc-result .btn { font-size: 12px; padding: 7px 14px; }
+        .loc-result { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; background: var(--surface); }
+        .loc-result-name { font-weight: 600; font-size: 14px; }
+        .loc-result-region { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+        .loc-result .btn { font-size: 12px; padding: 6px 12px; }
 
         /* Edit form sections */
-        .edit-section { border-top: 1px solid rgba(212,119,90,0.12); margin-top: 20px; padding-top: 20px; }
+        .edit-section { border-top: 1px solid var(--border); margin-top: 20px; padding-top: 20px; }
         .checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .checkbox-row input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
-        .checkbox-row label { margin: 0; cursor: pointer; font-size: 15px; color: var(--text); font-weight: 500; }
+        .checkbox-row input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
+        .checkbox-row label { margin: 0; cursor: pointer; font-size: 14px; color: var(--text); font-weight: 500; text-transform: none; letter-spacing: 0; }
 
         /* Spinner */
         @keyframes spin { to { transform: rotate(360deg); } }
-        .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
-        .spinner-primary { border-color: rgba(212,119,90,0.2); border-top-color: var(--primary); }
+        .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; }
 
         /* Status badge */
-        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.02em; }
-        .status-none, .status-canceled { background: #F0EDE8; color: #7A5E60; }
-        .status-trial { background: #EBF3F2; color: #2D6B60; }
-        .status-featured { background: linear-gradient(135deg, #F6C34A22, #E8A82022); color: #6B4200; border: 1px solid #E8A82040; }
+        .status-badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+        .status-none, .status-canceled { background: #F3F0ED; color: #7A6E6C; }
+        .status-trial { background: #EBF3F2; color: #1D5E55; }
+        .status-featured { background: #FEF9EC; color: #8A6200; border: 1px solid #E8A82030; }
         .status-past_due { background: var(--error-bg); color: var(--error); }
 
-        /* Tabs */
-        .portal-tabs { display: flex; gap: 4px; background: var(--bg); border-radius: 12px; padding: 4px; margin-bottom: 24px; border: 1px solid rgba(212,119,90,0.12); }
-        .portal-tab { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: 600; border-radius: 9px; cursor: pointer; transition: all 0.2s; color: var(--text-muted); background: none; border: none; font-family: inherit; }
-        .portal-tab.active { background: var(--surface); color: var(--primary-dark); box-shadow: 0 2px 8px rgba(45,41,38,0.08); }
+        /* Landing feature pills */
+        .feature-list { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+        .feature-row { display: flex; align-items: center; gap: 14px; }
+        .feature-icon-wrap { width: 36px; height: 36px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .feature-icon-wrap svg { width: 18px; height: 18px; stroke: var(--primary); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+        .feature-row-text strong { font-size: 14px; font-weight: 600; color: var(--text); display: block; }
+        .feature-row-text span { font-size: 13px; color: var(--text-muted); }
+
+        /* Tabs — underline style */
+        .portal-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 24px; gap: 0; }
+        .portal-tab { padding: 12px 20px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--text-muted); background: none; border: none; font-family: inherit; position: relative; transition: color 0.15s; }
+        .portal-tab::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--primary); transform: scaleX(0); transition: transform 0.2s ease; }
+        .portal-tab.active { color: var(--text); }
+        .portal-tab.active::after { transform: scaleX(1); }
+        .portal-tab:hover:not(.active) { color: var(--text-secondary); }
+
+        /* Landing header band */
+        .landing-header { background: var(--text); color: white; padding: 40px 32px 36px; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0; }
+        .landing-header h2 { font-family: var(--font-heading); font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; }
+        .landing-header p { font-size: 14px; opacity: 0.6; }
+        .landing-body { background: var(--surface); border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius) var(--radius); padding: 28px 32px; margin-bottom: 16px; }
     </style>
 </head>
 <body>
 
 <nav>
-    <a href="/" class="nav-logo"><span>Peuter</span>Plannen <span style="font-size:12px;background:var(--primary);color:white;padding:2px 8px;border-radius:6px;margin-left:6px;">Partner</span></a>
-    <div style="display:flex;align-items:center;gap:12px;">
+    <a href="/" class="nav-logo">PeuterPlannen <span class="nav-logo-pill">Partner</span></a>
+    <div class="nav-right">
         <span id="nav-user" class="hidden"></span>
         <button id="nav-logout" class="hidden" onclick="handleLogout()">Uitloggen</button>
     </div>
@@ -125,51 +149,64 @@
 
 <!-- ===================== SCREEN: LANDING ===================== -->
 <div id="screen-landing" class="container">
-    <div class="card" style="padding:40px 32px;">
-        <div style="font-size:40px;margin-bottom:12px;">🏠</div>
-        <h2 style="margin-bottom:8px;">Beheer je locatie op PeuterPlannen</h2>
-        <p>Sta je op PeuterPlannen? Claim je locatie, houd je gegevens actueel en bereik meer bezoekers met een Featured badge.</p>
+    <div class="landing-header">
+        <h2>Beheer je locatie</h2>
+        <p>Claim je plek op PeuterPlannen, houd gegevens actueel en bereik meer ouders.</p>
+    </div>
+    <div class="landing-body">
+        <div class="feature-list" style="margin-top:0;margin-bottom:24px;">
+            <div class="feature-row">
+                <div class="feature-icon-wrap">
+                    <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </div>
+                <div class="feature-row-text">
+                    <strong>Gegevens beheren</strong>
+                    <span>Openingstijden, beschrijving en faciliteiten direct aanpassen.</span>
+                </div>
+            </div>
+            <div class="feature-row">
+                <div class="feature-icon-wrap">
+                    <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <div class="feature-row-text">
+                    <strong>Geverifieerd badge</strong>
+                    <span>Ouders zien dat jouw informatie actueel en betrouwbaar is.</span>
+                </div>
+            </div>
+            <div class="feature-row">
+                <div class="feature-icon-wrap">
+                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <div class="feature-row-text">
+                    <strong>Featured listing</strong>
+                    <span>Prominente positie bovenaan zoekresultaten in jouw regio.</span>
+                </div>
+            </div>
+        </div>
         <div id="landing-alert"></div>
         <div class="form-group">
-            <label for="login-email">Je e-mailadres</label>
+            <label for="login-email">E-mailadres</label>
             <input type="email" id="login-email" placeholder="naam@bedrijf.nl" autocomplete="email">
         </div>
-        <button class="btn btn-primary btn-full" id="send-otp-btn" onclick="sendOtp()">Inlogcode sturen →</button>
-        <p style="font-size:13px;color:var(--text-muted);margin-top:12px;margin-bottom:0;">Je ontvangt een 6-cijferige code per e-mail. Geen wachtwoord nodig.</p>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:4px;">
-        <div class="card" style="padding:20px;text-align:center;">
-            <div style="font-size:28px;margin-bottom:8px;">✏️</div>
-            <h3 style="margin-bottom:6px;">Bewerk je info</h3>
-            <p style="font-size:13px;margin:0;">Openingstijden, beschrijving, faciliteiten altijd up-to-date.</p>
-        </div>
-        <div class="card" style="padding:20px;text-align:center;">
-            <div style="font-size:28px;margin-bottom:8px;">✓</div>
-            <h3 style="margin-bottom:6px;">Geverifieerd badge</h3>
-            <p style="font-size:13px;margin:0;">Laat ouders weten dat jouw info klopt en vers is.</p>
-        </div>
-        <div class="card" style="padding:20px;text-align:center;">
-            <div style="font-size:28px;margin-bottom:8px;">★</div>
-            <h3 style="margin-bottom:6px;">Aanbevolen listing</h3>
-            <p style="font-size:13px;margin:0;">Bovenaan de zoekresultaten in jouw regio.</p>
-        </div>
+        <button class="btn btn-primary btn-full" id="send-otp-btn" onclick="sendOtp()">Doorgaan met e-mail →</button>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:10px;text-align:center;">Je ontvangt een 6-cijferige inlogcode. Geen wachtwoord nodig.</p>
     </div>
 </div>
 
 <!-- ===================== SCREEN: OTP ===================== -->
 <div id="screen-otp" class="container hidden">
-    <div class="card" style="padding:40px 32px;">
-        <div style="font-size:40px;margin-bottom:12px;">📬</div>
-        <h2 style="margin-bottom:8px;">Controleer je e-mail</h2>
-        <p>We hebben een 6-cijferige code gestuurd naar <strong id="otp-email-display"></strong>.</p>
+    <div class="card" style="padding:36px 32px;">
+        <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:16px;">Stap 2 van 2</p>
+        <p class="card-title">Controleer je e-mail</p>
+        <p class="card-desc">We hebben een 6-cijferige code gestuurd naar <strong id="otp-email-display" style="color:var(--text);"></strong>.</p>
         <div id="otp-alert"></div>
         <div class="form-group">
             <label for="otp-code">Inlogcode</label>
-            <input type="text" id="otp-code" class="otp-input" placeholder="123456" maxlength="6" autocomplete="one-time-code" inputmode="numeric">
+            <input type="text" id="otp-code" class="otp-input" placeholder="000000" maxlength="6" autocomplete="one-time-code" inputmode="numeric">
         </div>
-        <button class="btn btn-primary btn-full" id="verify-otp-btn" onclick="verifyOtp()">Inloggen</button>
-        <p style="text-align:center;margin-top:14px;font-size:13px;">
-            <a href="#" onclick="showScreen('landing')" style="color:var(--primary);">← Ander e-mailadres gebruiken</a>
+        <button class="btn btn-primary btn-full" id="verify-otp-btn" onclick="verifyOtp()">Bevestigen en inloggen</button>
+        <p style="text-align:center;margin-top:14px;font-size:13px;color:var(--text-muted);">
+            <a href="#" onclick="showScreen('landing')" style="color:var(--primary-dark);">← Ander e-mailadres gebruiken</a>
         </p>
     </div>
 </div>
@@ -186,8 +223,8 @@
         <!-- Sub-screen A: geen locatie geclaimd -->
         <div id="no-location-panel">
             <div class="card">
-                <h2>Zoek jouw locatie</h2>
-                <p>Staat jouw locatie al in onze database? Zoek het op en dien een claim in. We controleren je aanvraag en koppelen de locatie aan jouw account.</p>
+                <p class="card-title">Zoek jouw locatie</p>
+                <p class="card-desc">Staat jouw locatie al in onze database? Zoek het op en dien een claim in. We controleren je aanvraag en koppelen de locatie aan jouw account.</p>
                 <div class="form-group" style="display:flex;gap:8px;margin-bottom:12px;">
                     <input type="text" id="loc-search-input" placeholder="Naam van je locatie..." style="flex:1;">
                     <button class="btn btn-primary" onclick="searchLocations()">Zoeken</button>
@@ -203,8 +240,8 @@
         <!-- Sub-screen B: locatie geclaimd + actief abonnement -->
         <div id="has-location-panel" class="hidden">
             <div class="card">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-                    <h2 style="margin:0;" id="edit-loc-name">—</h2>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+                    <p class="card-title" style="margin:0;" id="edit-loc-name">—</p>
                     <span class="status-badge" id="edit-plan-badge">Gratis</span>
                 </div>
                 <div id="edit-alert"></div>
@@ -281,27 +318,31 @@
     <!-- === Tab: Billing === -->
     <div id="tab-billing" class="hidden">
         <div class="card">
-            <h2>Abonnement</h2>
-            <p id="billing-current-plan">Huidig plan wordt geladen…</p>
+            <p class="card-title">Abonnement</p>
+            <p id="billing-current-plan" class="card-desc" style="margin-bottom:0;">Huidig plan wordt geladen…</p>
 
             <div id="billing-alert"></div>
 
-            <div class="featured-plan-card">
-                <span class="plan-badge">Enige betaaloptie</span>
-                <h4>Featured</h4>
-                <ul>
-                    <li>Alle velden bewerken</li>
-                    <li>Geverifieerd ✓ badge</li>
-                    <li>Foto uploaden</li>
-                    <li>★ Aanbevolen badge</li>
-                    <li>Bovenaan zoekresultaten</li>
-                    <li>Statistieken (views, kliks)</li>
-                </ul>
-                <div class="billing-btns" id="featured-upgrade-btns">
-                    <button class="btn btn-primary" id="upgrade-monthly-btn" onclick="startCheckout('monthly')">€11 / maand</button>
-                    <button class="btn btn-secondary" id="upgrade-yearly-btn" onclick="startCheckout('yearly')">€90 / jaar <span style="font-size:12px;opacity:0.7;">(-32%)</span></button>
+            <div class="plan-card">
+                <div class="plan-card-header">
+                    <h4>Featured</h4>
+                    <p>Alles wat je nodig hebt om op te vallen in de zoekresultaten</p>
                 </div>
-                <p id="featured-active-msg" class="hidden" style="margin:0;font-size:14px;color:var(--success);font-weight:600;">✓ Je Featured abonnement is actief.</p>
+                <div class="plan-card-body">
+                    <ul class="plan-features">
+                        <li>Alle locatiegegevens bewerken</li>
+                        <li>Geverifieerd badge zichtbaar voor ouders</li>
+                        <li>Foto uploaden bij je locatie</li>
+                        <li>Aanbevolen badge &amp; prioriteit in zoekresultaten</li>
+                        <li>Bovenaan in jouw regio</li>
+                        <li>Statistieken: weergaven en kliks</li>
+                    </ul>
+                    <div class="billing-btns" id="featured-upgrade-btns">
+                        <button class="btn btn-accent btn-full" id="upgrade-monthly-btn" onclick="startCheckout('monthly')" style="flex:1;">€11 <span style="font-weight:400;opacity:0.8;">/ maand</span></button>
+                        <button class="btn btn-secondary" id="upgrade-yearly-btn" onclick="startCheckout('yearly')" style="flex:1;">€90 <span style="font-weight:400;font-size:12px;color:var(--success);">−32%</span> <span style="font-weight:400;opacity:0.7;font-size:12px;">/ jaar</span></button>
+                    </div>
+                    <p id="featured-active-msg" class="hidden" style="margin:0;font-size:14px;color:var(--success);font-weight:600;text-align:center;padding:4px 0;">Abonnement is actief</p>
+                </div>
             </div>
 
             <div id="cancel-subscription-section" class="hidden" style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(212,119,90,0.12);">

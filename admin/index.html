@@ -12,12 +12,13 @@
     <style>
         :root {
             --primary: #D4775A; --primary-light: #FDF1ED; --primary-dark: #B35D42;
-            --accent: #E8B870; --bg: #FAF7F2; --surface: #FFFFFF;
-            --text: #2D2926; --text-secondary: #7A5E60; --text-muted: #A39490;
-            --success: #2D8B5E; --success-bg: #E8F5EF;
-            --error: #C0392B; --error-bg: #FDEDED;
-            --shadow: 0 4px 12px rgba(45,41,38,0.10);
-            --radius: 14px; --font-heading: 'Plus Jakarta Sans', sans-serif; --font-body: 'DM Sans', sans-serif;
+            --bg: #F2F0EC; --surface: #FFFFFF;
+            --text: #1C1917; --text-secondary: #6B5E5C; --text-muted: #9B8E8C;
+            --success: #1D7348; --success-bg: #ECFDF5;
+            --error: #B91C1C; --error-bg: #FEF2F2;
+            --border: rgba(28,25,23,0.10);
+            --shadow-sm: 0 1px 3px rgba(28,25,23,0.06), 0 2px 8px rgba(28,25,23,0.06);
+            --radius: 10px; --font-heading: 'Plus Jakarta Sans', sans-serif; --font-body: 'DM Sans', sans-serif;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
@@ -25,114 +26,126 @@
         .hidden { display: none !important; }
 
         /* Nav */
-        nav { background: rgba(250,247,242,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(212,119,90,0.12); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
-        .nav-logo { font-family: var(--font-heading); font-weight: 800; font-size: 18px; color: var(--primary); text-decoration: none; }
-        .nav-logo span { color: var(--text); font-weight: 600; }
-        #nav-user { font-size: 13px; color: var(--text-secondary); }
-        #nav-logout { background: none; border: 1px solid rgba(212,119,90,0.3); color: var(--text-secondary); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; transition: all 0.2s; }
-        #nav-logout:hover { background: var(--primary-light); }
+        nav { background: #1C1917; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 0 24px; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+        .nav-logo { font-family: var(--font-heading); font-weight: 800; font-size: 15px; color: white; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .nav-logo-pill { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); padding: 2px 8px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.15); }
+        .nav-right { display: flex; align-items: center; gap: 10px; }
+        #nav-user { font-size: 12px; color: rgba(255,255,255,0.5); }
+        #nav-logout { background: none; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); padding: 4px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; font-family: inherit; transition: all 0.15s; }
+        #nav-logout:hover { background: rgba(255,255,255,0.08); }
 
         /* Layout */
-        .container { max-width: 1100px; margin: 0 auto; padding: 32px 20px 80px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 28px 20px 80px; }
 
         /* Cards */
-        .card { background: var(--surface); border-radius: var(--radius); border: 1px solid rgba(212,119,90,0.15); box-shadow: var(--shadow); padding: 24px 28px; margin-bottom: 20px; }
-        .card h2 { font-family: var(--font-heading); font-size: 20px; font-weight: 800; margin-bottom: 6px; }
-        .card h3 { font-family: var(--font-heading); font-size: 16px; font-weight: 700; margin-bottom: 12px; }
-        .card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 12px; }
+        .card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm); padding: 22px 24px; margin-bottom: 16px; }
+        .card h2 { font-family: var(--font-heading); font-size: 16px; font-weight: 800; color: var(--text); letter-spacing: -0.01em; }
+        .card h3 { font-family: var(--font-heading); font-size: 13px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; }
+        .card p { color: var(--text-secondary); font-size: 13px; line-height: 1.6; }
 
         /* Buttons */
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; border: none; text-decoration: none; white-space: nowrap; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: var(--primary-dark); }
-        .btn-secondary { background: var(--bg); border: 1px solid rgba(212,119,90,0.3); color: var(--text); }
-        .btn-secondary:hover { background: var(--primary-light); }
-        .btn-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(45,139,94,0.2); }
-        .btn-success:hover { background: #d4ede3; }
-        .btn-danger { background: var(--error-bg); color: var(--error); border: 1px solid rgba(192,57,43,0.2); }
-        .btn-danger:hover { background: #f5c6c2; }
-        .btn-sm { padding: 5px 10px; font-size: 12px; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; font-family: inherit; border: none; text-decoration: none; white-space: nowrap; letter-spacing: 0.01em; }
+        .btn-primary { background: var(--text); color: white; }
+        .btn-primary:hover { background: #2d2a28; }
+        .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); }
+        .btn-secondary:hover { background: var(--bg); border-color: rgba(28,25,23,0.18); }
+        .btn-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(29,115,72,0.2); }
+        .btn-success:hover { background: #d4f0e4; }
+        .btn-danger { background: var(--error-bg); color: var(--error); border: 1px solid rgba(185,28,28,0.15); }
+        .btn-danger:hover { background: #fde8e8; }
+        .btn-sm { padding: 4px 10px; font-size: 12px; }
+        .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
         /* OTP code input */
-        .otp-input { letter-spacing: 0.3em; font-size: 24px; font-weight: 700; text-align: center; font-family: var(--font-heading); }
+        .otp-input { letter-spacing: 0.35em; font-size: 28px; font-weight: 700; text-align: center; font-family: var(--font-heading); }
 
         /* Alert */
-        .alert { padding: 12px 16px; border-radius: 10px; font-size: 14px; margin-bottom: 16px; }
-        .alert-error   { background: var(--error-bg);   color: var(--error);   border: 1px solid rgba(192,57,43,0.2); }
-        .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(45,139,94,0.2); }
+        .alert { padding: 10px 14px; border-radius: 7px; font-size: 13px; margin-bottom: 14px; }
+        .alert-error   { background: var(--error-bg);   color: var(--error);   border: 1px solid rgba(185,28,28,0.15); }
+        .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(29,115,72,0.15); }
         .alert-info    { background: var(--primary-light); color: var(--primary-dark); border: 1px solid rgba(212,119,90,0.2); }
 
         /* Stat cards */
-        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
         @media (max-width: 800px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
-        .stat-card { background: var(--surface); border: 1px solid rgba(212,119,90,0.15); border-radius: var(--radius); padding: 20px; text-align: center; box-shadow: var(--shadow); }
-        .stat-card .stat-icon { font-size: 28px; margin-bottom: 8px; }
-        .stat-card .stat-value { font-family: var(--font-heading); font-size: 32px; font-weight: 800; color: var(--primary-dark); }
-        .stat-card .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; font-weight: 600; }
+        .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 8px; }
+        .stat-card-top { display: flex; align-items: center; justify-content: space-between; }
+        .stat-card-icon { width: 32px; height: 32px; border-radius: 7px; background: var(--bg); display: flex; align-items: center; justify-content: center; }
+        .stat-card-icon svg { width: 16px; height: 16px; stroke: var(--text-muted); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .stat-card .stat-value { font-family: var(--font-heading); font-size: 28px; font-weight: 800; color: var(--text); letter-spacing: -0.03em; line-height: 1; }
+        .stat-card .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
 
-        /* Tabs */
-        .admin-tabs { display: flex; gap: 4px; background: var(--bg); border-radius: 12px; padding: 4px; margin-bottom: 24px; border: 1px solid rgba(212,119,90,0.12); overflow-x: auto; }
-        .admin-tab { flex-shrink: 0; padding: 9px 16px; text-align: center; font-size: 13px; font-weight: 600; border-radius: 9px; cursor: pointer; transition: all 0.2s; color: var(--text-muted); background: none; border: none; font-family: inherit; white-space: nowrap; }
-        .admin-tab.active { background: var(--surface); color: var(--primary-dark); box-shadow: 0 2px 8px rgba(45,41,38,0.08); }
+        /* Tabs — underline style */
+        .admin-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; overflow-x: auto; gap: 0; }
+        .admin-tab { flex-shrink: 0; padding: 10px 18px; font-size: 13px; font-weight: 600; border-radius: 0; cursor: pointer; color: var(--text-muted); background: none; border: none; font-family: inherit; white-space: nowrap; position: relative; transition: color 0.15s; }
+        .admin-tab::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--text); transform: scaleX(0); transition: transform 0.2s ease; }
+        .admin-tab.active { color: var(--text); }
+        .admin-tab.active::after { transform: scaleX(1); }
+        .admin-tab:hover:not(.active) { color: var(--text-secondary); }
 
         /* Filter pills */
-        .filter-group { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-        .filter-pill { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid rgba(212,119,90,0.2); background: var(--bg); color: var(--text-secondary); transition: all 0.2s; font-family: inherit; }
-        .filter-pill.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .filter-group { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+        .filter-pill { padding: 5px 12px; border-radius: 5px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); transition: all 0.15s; font-family: inherit; }
+        .filter-pill.active { background: var(--text); color: white; border-color: var(--text); }
+        .filter-pill:hover:not(.active) { background: var(--bg); }
 
         /* Tables */
-        .table-wrap { overflow-x: auto; }
+        .table-wrap { overflow-x: auto; margin: 0 -24px; padding: 0 24px; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { text-align: left; padding: 10px 12px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid rgba(212,119,90,0.12); white-space: nowrap; }
-        td { padding: 12px 12px; border-bottom: 1px solid rgba(212,119,90,0.07); vertical-align: middle; }
+        thead tr { border-bottom: 1px solid var(--border); }
+        th { text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+        td { padding: 11px 10px; border-bottom: 1px solid rgba(28,25,23,0.05); vertical-align: middle; }
         tr:last-child td { border-bottom: none; }
-        tr:hover td { background: rgba(212,119,90,0.03); }
+        tbody tr:hover td { background: rgba(28,25,23,0.02); }
         .td-muted { color: var(--text-muted); font-size: 12px; }
-        .td-truncate { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .td-truncate { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
         /* Status badges */
-        .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-        .badge-pending  { background: #FEF3CD; color: #856404; }
+        .badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+        .badge-pending  { background: #FEF9C3; color: #7C5A00; }
         .badge-approved { background: var(--success-bg); color: var(--success); }
         .badge-rejected { background: var(--error-bg); color: var(--error); }
-        .badge-featured { background: linear-gradient(135deg, #F6C34A22, #E8A82022); color: #6B4200; border: 1px solid #E8A82040; }
-        .badge-trial    { background: #EBF3F2; color: #2D6B60; }
-        .badge-none, .badge-canceled { background: #F0EDE8; color: #7A5E60; }
+        .badge-featured { background: #FEF9EC; color: #8A6200; border: 1px solid #E8A82025; }
+        .badge-trial    { background: #EBF3F2; color: #1D5E55; }
+        .badge-none, .badge-canceled { background: #F3F0ED; color: #7A6E6C; }
         .badge-past_due { background: var(--error-bg); color: var(--error); }
 
         /* Toggle switch */
         .toggle-wrap { display: flex; align-items: center; gap: 6px; }
-        .toggle { position: relative; width: 36px; height: 20px; cursor: pointer; }
+        .toggle { position: relative; width: 32px; height: 18px; cursor: pointer; }
         .toggle input { opacity: 0; width: 0; height: 0; }
-        .toggle-slider { position: absolute; inset: 0; background: #ccc; border-radius: 20px; transition: 0.2s; }
-        .toggle-slider:before { content: ''; position: absolute; width: 14px; height: 14px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: 0.2s; }
-        .toggle input:checked + .toggle-slider { background: var(--primary); }
-        .toggle input:checked + .toggle-slider:before { transform: translateX(16px); }
+        .toggle-slider { position: absolute; inset: 0; background: #D1CEC8; border-radius: 18px; transition: 0.18s; }
+        .toggle-slider:before { content: ''; position: absolute; width: 12px; height: 12px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: 0.18s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+        .toggle input:checked + .toggle-slider { background: var(--success); }
+        .toggle input:checked + .toggle-slider:before { transform: translateX(14px); }
 
         /* Search bar */
         .search-bar { display: flex; gap: 8px; margin-bottom: 16px; }
-        .search-bar input { flex: 1; padding: 10px 14px; border: 2px solid rgba(212,119,90,0.2); border-radius: 10px; font-family: var(--font-body); font-size: 14px; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s; }
-        .search-bar input:focus { border-color: var(--primary); }
+        .search-bar input { flex: 1; padding: 9px 12px; border: 1px solid var(--border); border-radius: 7px; font-family: var(--font-body); font-size: 13px; color: var(--text); background: var(--surface); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
+        .search-bar input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(212,119,90,0.1); }
 
         /* Modal */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(45,41,38,0.5); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .modal { background: var(--surface); border-radius: var(--radius); padding: 28px 32px; max-width: 480px; width: 100%; box-shadow: 0 20px 60px rgba(45,41,38,0.2); }
-        .modal h3 { font-family: var(--font-heading); font-size: 18px; font-weight: 800; margin-bottom: 16px; }
-        .modal-btns { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 5px; }
-        .form-group select { width: 100%; padding: 10px 12px; border: 2px solid rgba(212,119,90,0.2); border-radius: 8px; font-family: var(--font-body); font-size: 14px; color: var(--text); background: var(--bg); outline: none; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(28,25,23,0.55); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(2px); }
+        .modal { background: var(--surface); border-radius: var(--radius); padding: 24px 28px; max-width: 440px; width: 100%; box-shadow: 0 20px 60px rgba(28,25,23,0.2); border: 1px solid var(--border); }
+        .modal h3 { font-family: var(--font-heading); font-size: 16px; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.01em; }
+        .modal-btns { display: flex; gap: 8px; margin-top: 18px; justify-content: flex-end; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
+        .form-group select { width: 100%; padding: 9px 11px; border: 1px solid var(--border); border-radius: 6px; font-family: var(--font-body); font-size: 13px; color: var(--text); background: var(--surface); outline: none; }
         .form-group select:focus { border-color: var(--primary); }
 
         /* Loading */
         @keyframes spin { to { transform: rotate(360deg); } }
-        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(212,119,90,0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; }
+        .spinner { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(28,25,23,0.1); border-top-color: var(--text-secondary); border-radius: 50%; animation: spin 0.6s linear infinite; }
         .loading-row td { text-align: center; padding: 32px; color: var(--text-muted); }
 
         /* Pagination */
-        .pagination { display: flex; align-items: center; gap: 12px; margin-top: 16px; justify-content: center; }
-        .pagination button { padding: 6px 14px; }
+        .pagination { display: flex; align-items: center; gap: 10px; margin-top: 14px; justify-content: center; }
+        .pagination button { padding: 5px 12px; }
+
+        /* Section header in card */
+        .card-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .card-section-header h2 { margin: 0; }
 
         @media (max-width: 600px) {
             .stat-grid { grid-template-columns: repeat(2, 1fr); }
@@ -143,19 +156,19 @@
 <body>
 
 <nav>
-    <a href="/" class="nav-logo"><span>Peuter</span>Plannen <span style="font-size:12px;background:#2D2926;color:white;padding:2px 8px;border-radius:6px;margin-left:6px;">Admin</span></a>
-    <div style="display:flex;align-items:center;gap:12px;">
+    <a href="/" class="nav-logo">PeuterPlannen <span class="nav-logo-pill">Admin</span></a>
+    <div class="nav-right">
         <span id="nav-user" class="hidden"></span>
         <button id="nav-logout" class="hidden" onclick="handleLogout()">Uitloggen</button>
     </div>
 </nav>
 
 <!-- ===================== SCREEN: LOGIN ===================== -->
-<div id="screen-login" class="container" style="max-width:480px;">
-    <div class="card" style="padding:40px 32px;margin-top:40px;">
-        <div style="font-size:40px;margin-bottom:12px;">🔐</div>
-        <h2 style="margin-bottom:8px;">Admin toegang</h2>
-        <p>Vul je e-mailadres in om een inlogcode te ontvangen.</p>
+<div id="screen-login" class="container" style="max-width:400px;">
+    <div class="card" style="padding:32px 28px;margin-top:48px;">
+        <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:16px;">Toegang vereist</p>
+        <h2 style="font-family:var(--font-heading);font-size:20px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">Admin inloggen</h2>
+        <p class="card p" style="margin-bottom:20px;">Stuur een inlogcode naar je e-mailadres om toegang te krijgen.</p>
         <div id="login-alert"></div>
         <div class="form-group">
             <label for="admin-email">E-mailadres</label>
@@ -166,19 +179,19 @@
 </div>
 
 <!-- ===================== SCREEN: OTP ===================== -->
-<div id="screen-otp" class="container hidden" style="max-width:480px;">
-    <div class="card" style="padding:40px 32px;margin-top:40px;">
-        <div style="font-size:40px;margin-bottom:12px;">📬</div>
-        <h2 style="margin-bottom:8px;">Controleer je inbox</h2>
-        <p>Code gestuurd naar <strong id="otp-email-display"></strong>.</p>
+<div id="screen-otp" class="container hidden" style="max-width:400px;">
+    <div class="card" style="padding:32px 28px;margin-top:48px;">
+        <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:16px;">Verificatie</p>
+        <h2 style="font-family:var(--font-heading);font-size:20px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">Controleer je inbox</h2>
+        <p class="card p" style="margin-bottom:20px;">Code verstuurd naar <strong id="otp-email-display" style="color:var(--text);"></strong>.</p>
         <div id="otp-alert"></div>
         <div class="form-group">
             <label for="otp-code">6-cijferige code</label>
-            <input type="text" id="otp-code" class="otp-input" placeholder="123456" maxlength="6" autocomplete="one-time-code" inputmode="numeric">
+            <input type="text" id="otp-code" class="otp-input" placeholder="000000" maxlength="6" autocomplete="one-time-code" inputmode="numeric">
         </div>
         <button class="btn btn-primary" style="width:100%;" id="verify-otp-btn" onclick="verifyOtp()">Inloggen</button>
-        <p style="text-align:center;margin-top:14px;font-size:13px;">
-            <a href="#" onclick="showScreen('login')" style="color:var(--primary);">← Terug</a>
+        <p style="text-align:center;margin-top:12px;font-size:12px;">
+            <a href="#" onclick="showScreen('login')" style="color:var(--primary-dark);">← Terug</a>
         </p>
     </div>
 </div>
@@ -188,27 +201,51 @@
 
     <!-- Tabs -->
     <div class="admin-tabs">
-        <button class="admin-tab active" onclick="switchTab('tab-overview')" id="tab-btn-overview">📊 Dashboard</button>
-        <button class="admin-tab" onclick="switchTab('tab-claims')" id="tab-btn-claims">📋 Claims</button>
-        <button class="admin-tab" onclick="switchTab('tab-owners')" id="tab-btn-owners">👤 Abonnees</button>
-        <button class="admin-tab" onclick="switchTab('tab-locations')" id="tab-btn-locations">📍 Locaties</button>
-        <button class="admin-tab" onclick="switchTab('tab-editlog')" id="tab-btn-editlog">📝 Edit log</button>
+        <button class="admin-tab active" onclick="switchTab('tab-overview')" id="tab-btn-overview">Overzicht</button>
+        <button class="admin-tab" onclick="switchTab('tab-claims')" id="tab-btn-claims">Claims</button>
+        <button class="admin-tab" onclick="switchTab('tab-owners')" id="tab-btn-owners">Abonnees</button>
+        <button class="admin-tab" onclick="switchTab('tab-locations')" id="tab-btn-locations">Locaties</button>
+        <button class="admin-tab" onclick="switchTab('tab-editlog')" id="tab-btn-editlog">Edit log</button>
     </div>
 
     <!-- ① Dashboard -->
     <div id="tab-overview">
         <div class="stat-grid" id="stat-grid">
-            <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value" id="stat-pending">—</div><div class="stat-label">Openstaande claims</div></div>
-            <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-value" id="stat-subs">—</div><div class="stat-label">Actieve Featured</div></div>
-            <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-value" id="stat-edits">—</div><div class="stat-label">Bewerkingen (7d)</div></div>
-            <div class="stat-card"><div class="stat-icon">👤</div><div class="stat-value" id="stat-owners">—</div><div class="stat-label">Totaal eigenaren</div></div>
+            <div class="stat-card">
+                <div class="stat-card-top">
+                    <div class="stat-label">Openstaande claims</div>
+                    <div class="stat-card-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+                </div>
+                <div class="stat-value" id="stat-pending">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-top">
+                    <div class="stat-label">Actieve Featured</div>
+                    <div class="stat-card-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                </div>
+                <div class="stat-value" id="stat-subs">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-top">
+                    <div class="stat-label">Bewerkingen (7 dagen)</div>
+                    <div class="stat-card-icon"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+                </div>
+                <div class="stat-value" id="stat-edits">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-top">
+                    <div class="stat-label">Totaal eigenaren</div>
+                    <div class="stat-card-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                </div>
+                <div class="stat-value" id="stat-owners">—</div>
+            </div>
         </div>
     </div>
 
     <!-- ② Claim-aanvragen -->
     <div id="tab-claims" class="hidden">
         <div class="card">
-            <h2 style="margin-bottom:16px;">Claim-aanvragen</h2>
+            <div class="card-section-header"><h2>Claim-aanvragen</h2></div>
             <div class="filter-group">
                 <button class="filter-pill active" onclick="setClaimsFilter('pending', this)">Openstaand</button>
                 <button class="filter-pill" onclick="setClaimsFilter('approved', this)">Goedgekeurd</button>
@@ -227,7 +264,7 @@
     <!-- ③ Abonnees -->
     <div id="tab-owners" class="hidden">
         <div class="card">
-            <h2 style="margin-bottom:16px;">Abonnees</h2>
+            <div class="card-section-header"><h2>Abonnees</h2></div>
             <div id="owners-alert"></div>
             <div class="table-wrap">
                 <table>
@@ -241,7 +278,7 @@
     <!-- ④ Locaties -->
     <div id="tab-locations" class="hidden">
         <div class="card">
-            <h2 style="margin-bottom:16px;">Locaties</h2>
+            <div class="card-section-header"><h2>Locaties</h2></div>
             <div class="search-bar">
                 <input type="text" id="loc-search" placeholder="Zoeken op naam…" oninput="debounceLocSearch()">
             </div>
@@ -263,7 +300,7 @@
     <!-- ⑤ Edit log -->
     <div id="tab-editlog" class="hidden">
         <div class="card">
-            <h2 style="margin-bottom:16px;">Edit log</h2>
+            <div class="card-section-header"><h2>Edit log</h2></div>
             <div class="table-wrap">
                 <table>
                     <thead><tr><th>Datum</th><th>Locatie</th><th>Eigenaar</th><th>Veld</th><th>Oud</th><th>Nieuw</th></tr></thead>
