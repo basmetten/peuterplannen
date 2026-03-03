@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — PeuterPlannen</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #D4775A; --primary-light: #FDF1ED; --primary-dark: #B35D42;
+            --accent: #E8B870; --bg: #FAF7F2; --surface: #FFFFFF;
+            --text: #2D2926; --text-secondary: #7A5E60; --text-muted: #A39490;
+            --success: #2D8B5E; --success-bg: #E8F5EF;
+            --error: #C0392B; --error-bg: #FDEDED;
+            --shadow: 0 4px 12px rgba(45,41,38,0.10);
+            --radius: 14px; --font-heading: 'Plus Jakarta Sans', sans-serif; --font-body: 'DM Sans', sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+        :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
+        .hidden { display: none !important; }
+
+        /* Nav */
+        nav { background: rgba(250,247,242,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(212,119,90,0.12); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+        .nav-logo { font-family: var(--font-heading); font-weight: 800; font-size: 18px; color: var(--primary); text-decoration: none; }
+        .nav-logo span { color: var(--text); font-weight: 600; }
+        #nav-user { font-size: 13px; color: var(--text-secondary); }
+        #nav-logout { background: none; border: 1px solid rgba(212,119,90,0.3); color: var(--text-secondary); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; transition: all 0.2s; }
+        #nav-logout:hover { background: var(--primary-light); }
+
+        /* Layout */
+        .container { max-width: 1100px; margin: 0 auto; padding: 32px 20px 80px; }
+
+        /* Cards */
+        .card { background: var(--surface); border-radius: var(--radius); border: 1px solid rgba(212,119,90,0.15); box-shadow: var(--shadow); padding: 24px 28px; margin-bottom: 20px; }
+        .card h2 { font-family: var(--font-heading); font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+        .card h3 { font-family: var(--font-heading); font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+        .card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 12px; }
+
+        /* Buttons */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; border: none; text-decoration: none; white-space: nowrap; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-secondary { background: var(--bg); border: 1px solid rgba(212,119,90,0.3); color: var(--text); }
+        .btn-secondary:hover { background: var(--primary-light); }
+        .btn-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(45,139,94,0.2); }
+        .btn-success:hover { background: #d4ede3; }
+        .btn-danger { background: var(--error-bg); color: var(--error); border: 1px solid rgba(192,57,43,0.2); }
+        .btn-danger:hover { background: #f5c6c2; }
+        .btn-sm { padding: 5px 10px; font-size: 12px; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* OTP code input */
+        .otp-input { letter-spacing: 0.3em; font-size: 24px; font-weight: 700; text-align: center; font-family: var(--font-heading); }
+
+        /* Alert */
+        .alert { padding: 12px 16px; border-radius: 10px; font-size: 14px; margin-bottom: 16px; }
+        .alert-error   { background: var(--error-bg);   color: var(--error);   border: 1px solid rgba(192,57,43,0.2); }
+        .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(45,139,94,0.2); }
+        .alert-info    { background: var(--primary-light); color: var(--primary-dark); border: 1px solid rgba(212,119,90,0.2); }
+
+        /* Stat cards */
+        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        @media (max-width: 800px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+        .stat-card { background: var(--surface); border: 1px solid rgba(212,119,90,0.15); border-radius: var(--radius); padding: 20px; text-align: center; box-shadow: var(--shadow); }
+        .stat-card .stat-icon { font-size: 28px; margin-bottom: 8px; }
+        .stat-card .stat-value { font-family: var(--font-heading); font-size: 32px; font-weight: 800; color: var(--primary-dark); }
+        .stat-card .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; font-weight: 600; }
+
+        /* Tabs */
+        .admin-tabs { display: flex; gap: 4px; background: var(--bg); border-radius: 12px; padding: 4px; margin-bottom: 24px; border: 1px solid rgba(212,119,90,0.12); overflow-x: auto; }
+        .admin-tab { flex-shrink: 0; padding: 9px 16px; text-align: center; font-size: 13px; font-weight: 600; border-radius: 9px; cursor: pointer; transition: all 0.2s; color: var(--text-muted); background: none; border: none; font-family: inherit; white-space: nowrap; }
+        .admin-tab.active { background: var(--surface); color: var(--primary-dark); box-shadow: 0 2px 8px rgba(45,41,38,0.08); }
+
+        /* Filter pills */
+        .filter-group { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .filter-pill { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid rgba(212,119,90,0.2); background: var(--bg); color: var(--text-secondary); transition: all 0.2s; font-family: inherit; }
+        .filter-pill.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Tables */
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { text-align: left; padding: 10px 12px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid rgba(212,119,90,0.12); white-space: nowrap; }
+        td { padding: 12px 12px; border-bottom: 1px solid rgba(212,119,90,0.07); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(212,119,90,0.03); }
+        .td-muted { color: var(--text-muted); font-size: 12px; }
+        .td-truncate { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* Status badges */
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+        .badge-pending  { background: #FEF3CD; color: #856404; }
+        .badge-approved { background: var(--success-bg); color: var(--success); }
+        .badge-rejected { background: var(--error-bg); color: var(--error); }
+        .badge-featured { background: linear-gradient(135deg, #F6C34A22, #E8A82022); color: #6B4200; border: 1px solid #E8A82040; }
+        .badge-trial    { background: #EBF3F2; color: #2D6B60; }
+        .badge-none, .badge-canceled { background: #F0EDE8; color: #7A5E60; }
+        .badge-past_due { background: var(--error-bg); color: var(--error); }
+
+        /* Toggle switch */
+        .toggle-wrap { display: flex; align-items: center; gap: 6px; }
+        .toggle { position: relative; width: 36px; height: 20px; cursor: pointer; }
+        .toggle input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; inset: 0; background: #ccc; border-radius: 20px; transition: 0.2s; }
+        .toggle-slider:before { content: ''; position: absolute; width: 14px; height: 14px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: 0.2s; }
+        .toggle input:checked + .toggle-slider { background: var(--primary); }
+        .toggle input:checked + .toggle-slider:before { transform: translateX(16px); }
+
+        /* Search bar */
+        .search-bar { display: flex; gap: 8px; margin-bottom: 16px; }
+        .search-bar input { flex: 1; padding: 10px 14px; border: 2px solid rgba(212,119,90,0.2); border-radius: 10px; font-family: var(--font-body); font-size: 14px; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s; }
+        .search-bar input:focus { border-color: var(--primary); }
+
+        /* Modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(45,41,38,0.5); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .modal { background: var(--surface); border-radius: var(--radius); padding: 28px 32px; max-width: 480px; width: 100%; box-shadow: 0 20px 60px rgba(45,41,38,0.2); }
+        .modal h3 { font-family: var(--font-heading); font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+        .modal-btns { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 5px; }
+        .form-group select { width: 100%; padding: 10px 12px; border: 2px solid rgba(212,119,90,0.2); border-radius: 8px; font-family: var(--font-body); font-size: 14px; color: var(--text); background: var(--bg); outline: none; }
+        .form-group select:focus { border-color: var(--primary); }
+
+        /* Loading */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(212,119,90,0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; }
+        .loading-row td { text-align: center; padding: 32px; color: var(--text-muted); }
+
+        /* Pagination */
+        .pagination { display: flex; align-items: center; gap: 12px; margin-top: 16px; justify-content: center; }
+        .pagination button { padding: 6px 14px; }
+
+        @media (max-width: 600px) {
+            .stat-grid { grid-template-columns: repeat(2, 1fr); }
+            .container { padding: 16px 12px 60px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo"><span>Peuter</span>Plannen <span style="font-size:12px;background:#2D2926;color:white;padding:2px 8px;border-radius:6px;margin-left:6px;">Admin</span></a>
+    <div style="display:flex;align-items:center;gap:12px;">
+        <span id="nav-user" class="hidden"></span>
+        <button id="nav-logout" class="hidden" onclick="handleLogout()">Uitloggen</button>
+    </div>
+</nav>
+
+<!-- ===================== SCREEN: LOGIN ===================== -->
+<div id="screen-login" class="container" style="max-width:480px;">
+    <div class="card" style="padding:40px 32px;margin-top:40px;">
+        <div style="font-size:40px;margin-bottom:12px;">🔐</div>
+        <h2 style="margin-bottom:8px;">Admin toegang</h2>
+        <p>Vul je e-mailadres in om een inlogcode te ontvangen.</p>
+        <div id="login-alert"></div>
+        <div class="form-group">
+            <label for="admin-email">E-mailadres</label>
+            <input type="email" id="admin-email" placeholder="basmetten@gmail.com" autocomplete="email">
+        </div>
+        <button class="btn btn-primary" style="width:100%;" id="send-otp-btn" onclick="sendOtp()">Inlogcode sturen →</button>
+    </div>
+</div>
+
+<!-- ===================== SCREEN: OTP ===================== -->
+<div id="screen-otp" class="container hidden" style="max-width:480px;">
+    <div class="card" style="padding:40px 32px;margin-top:40px;">
+        <div style="font-size:40px;margin-bottom:12px;">📬</div>
+        <h2 style="margin-bottom:8px;">Controleer je inbox</h2>
+        <p>Code gestuurd naar <strong id="otp-email-display"></strong>.</p>
+        <div id="otp-alert"></div>
+        <div class="form-group">
+            <label for="otp-code">6-cijferige code</label>
+            <input type="text" id="otp-code" class="otp-input" placeholder="123456" maxlength="6" autocomplete="one-time-code" inputmode="numeric">
+        </div>
+        <button class="btn btn-primary" style="width:100%;" id="verify-otp-btn" onclick="verifyOtp()">Inloggen</button>
+        <p style="text-align:center;margin-top:14px;font-size:13px;">
+            <a href="#" onclick="showScreen('login')" style="color:var(--primary);">← Terug</a>
+        </p>
+    </div>
+</div>
+
+<!-- ===================== SCREEN: DASHBOARD ===================== -->
+<div id="screen-dashboard" class="container hidden">
+
+    <!-- Tabs -->
+    <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchTab('tab-overview')" id="tab-btn-overview">📊 Dashboard</button>
+        <button class="admin-tab" onclick="switchTab('tab-claims')" id="tab-btn-claims">📋 Claims</button>
+        <button class="admin-tab" onclick="switchTab('tab-owners')" id="tab-btn-owners">👤 Abonnees</button>
+        <button class="admin-tab" onclick="switchTab('tab-locations')" id="tab-btn-locations">📍 Locaties</button>
+        <button class="admin-tab" onclick="switchTab('tab-editlog')" id="tab-btn-editlog">📝 Edit log</button>
+    </div>
+
+    <!-- ① Dashboard -->
+    <div id="tab-overview">
+        <div class="stat-grid" id="stat-grid">
+            <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value" id="stat-pending">—</div><div class="stat-label">Openstaande claims</div></div>
+            <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-value" id="stat-subs">—</div><div class="stat-label">Actieve Featured</div></div>
+            <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-value" id="stat-edits">—</div><div class="stat-label">Bewerkingen (7d)</div></div>
+            <div class="stat-card"><div class="stat-icon">👤</div><div class="stat-value" id="stat-owners">—</div><div class="stat-label">Totaal eigenaren</div></div>
+        </div>
+    </div>
+
+    <!-- ② Claim-aanvragen -->
+    <div id="tab-claims" class="hidden">
+        <div class="card">
+            <h2 style="margin-bottom:16px;">Claim-aanvragen</h2>
+            <div class="filter-group">
+                <button class="filter-pill active" onclick="setClaimsFilter('pending', this)">Openstaand</button>
+                <button class="filter-pill" onclick="setClaimsFilter('approved', this)">Goedgekeurd</button>
+                <button class="filter-pill" onclick="setClaimsFilter('rejected', this)">Afgewezen</button>
+            </div>
+            <div id="claims-alert"></div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Datum</th><th>Aanvrager</th><th>Locatie</th><th>Bericht</th><th>Status</th><th>Actie</th></tr></thead>
+                    <tbody id="claims-tbody"><tr class="loading-row"><td colspan="6"><span class="spinner"></span></td></tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ③ Abonnees -->
+    <div id="tab-owners" class="hidden">
+        <div class="card">
+            <h2 style="margin-bottom:16px;">Abonnees</h2>
+            <div id="owners-alert"></div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Email</th><th>Locatie</th><th>Tier</th><th>Status</th><th>Verloopt</th><th>Actie</th></tr></thead>
+                    <tbody id="owners-tbody"><tr class="loading-row"><td colspan="6"><span class="spinner"></span></td></tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ④ Locaties -->
+    <div id="tab-locations" class="hidden">
+        <div class="card">
+            <h2 style="margin-bottom:16px;">Locaties</h2>
+            <div class="search-bar">
+                <input type="text" id="loc-search" placeholder="Zoeken op naam…" oninput="debounceLocSearch()">
+            </div>
+            <div id="locations-alert"></div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Naam</th><th>Regio</th><th>Featured</th><th>Verified</th></tr></thead>
+                    <tbody id="locations-tbody"><tr class="loading-row"><td colspan="4"><span class="spinner"></span></td></tr></tbody>
+                </table>
+            </div>
+            <div class="pagination">
+                <button class="btn btn-secondary btn-sm" id="loc-prev-btn" onclick="changeLocPage(-1)" disabled>← Vorige</button>
+                <span id="loc-page-label" style="font-size:13px;color:var(--text-muted);">Pagina 1</span>
+                <button class="btn btn-secondary btn-sm" id="loc-next-btn" onclick="changeLocPage(1)">Volgende →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ⑤ Edit log -->
+    <div id="tab-editlog" class="hidden">
+        <div class="card">
+            <h2 style="margin-bottom:16px;">Edit log</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Datum</th><th>Locatie</th><th>Eigenaar</th><th>Veld</th><th>Oud</th><th>Nieuw</th></tr></thead>
+                    <tbody id="editlog-tbody"><tr class="loading-row"><td colspan="6"><span class="spinner"></span></td></tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit owner modal -->
+<div id="edit-owner-modal" class="modal-overlay hidden">
+    <div class="modal">
+        <h3>Abonnement aanpassen</h3>
+        <input type="hidden" id="modal-owner-id">
+        <div class="form-group">
+            <label>Status</label>
+            <select id="modal-status">
+                <option value="none">Geen</option>
+                <option value="trial">Trial</option>
+                <option value="featured">Featured (actief)</option>
+                <option value="past_due">Past due</option>
+                <option value="canceled">Opgezegd</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Plan tier</label>
+            <select id="modal-tier">
+                <option value="none">Geen</option>
+                <option value="featured">Featured</option>
+            </select>
+        </div>
+        <div id="modal-alert"></div>
+        <div class="modal-btns">
+            <button class="btn btn-secondary" onclick="closeModal()">Annuleren</button>
+            <button class="btn btn-primary" onclick="saveOwnerEdit()">Opslaan</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SB_URL    = 'https://piujsvgbfflrrvauzsxe.supabase.co';
+    const SB_ANON   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpdWpzdmdiZmZscnJ2YXV6c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNDMxNzAsImV4cCI6MjA4NzYxOTE3MH0.5y3gqiPfVvpvfaDYA_PgqE-KTvuf6zgN6vGzqfUpeSo';
+    const EDGE_BASE = `${SB_URL}/functions/v1`;
+    const ADMIN_EMAIL = 'basmetten@gmail.com';
+
+    const supabase = createClient(SB_URL, SB_ANON);
+
+    let currentUser = null;
+    let currentToken = null;
+    let claimsFilter = 'pending';
+    let locPage = 0;
+    let locSearchVal = '';
+    let locSearchTimer = null;
+    let otpEmail = '';
+
+    // Expose to inline handlers
+    window.sendOtp            = sendOtp;
+    window.verifyOtp          = verifyOtp;
+    window.showScreen         = showScreen;
+    window.handleLogout       = handleLogout;
+    window.switchTab          = switchTab;
+    window.setClaimsFilter    = setClaimsFilter;
+    window.approveClaim       = approveClaim;
+    window.rejectClaim        = rejectClaim;
+    window.openEditOwner      = openEditOwner;
+    window.closeModal         = closeModal;
+    window.saveOwnerEdit      = saveOwnerEdit;
+    window.changeLocPage      = changeLocPage;
+    window.debounceLocSearch  = debounceLocSearch;
+    window.toggleFeatured     = toggleFeatured;
+    window.toggleVerified     = toggleVerified;
+
+    // ---- Routing ----
+    function showScreen(id) {
+        ['login','otp','dashboard'].forEach(s => {
+            document.getElementById('screen-' + s)?.classList.add('hidden');
+        });
+        document.getElementById('screen-' + id)?.classList.remove('hidden');
+    }
+
+    // ---- Auth: OTP flow ----
+    async function sendOtp() {
+        const email = document.getElementById('admin-email').value.trim();
+        const btn   = document.getElementById('send-otp-btn');
+        setAlert('login-alert', '', '');
+        if (!email) { setAlert('login-alert', 'Vul je e-mailadres in.', 'error'); return; }
+        btn.disabled = true; btn.textContent = 'Versturen…';
+        const { error } = await supabase.auth.signInWithOtp({
+            email,
+            options: { shouldCreateUser: true }
+        });
+        btn.disabled = false; btn.textContent = 'Inlogcode sturen →';
+        if (error) {
+            setAlert('login-alert', 'Fout: ' + error.message, 'error');
+        } else {
+            otpEmail = email;
+            document.getElementById('otp-email-display').textContent = email;
+            document.getElementById('otp-code').value = '';
+            setAlert('otp-alert', '', '');
+            showScreen('otp');
+            setTimeout(() => document.getElementById('otp-code').focus(), 100);
+        }
+    }
+
+    async function verifyOtp() {
+        const token = document.getElementById('otp-code').value.trim();
+        const btn   = document.getElementById('verify-otp-btn');
+        setAlert('otp-alert', '', '');
+        if (!token) { setAlert('otp-alert', 'Vul de code in.', 'error'); return; }
+        btn.disabled = true; btn.textContent = 'Controleren…';
+        const { error } = await supabase.auth.verifyOtp({
+            email: otpEmail,
+            token,
+            type: 'email'
+        });
+        btn.disabled = false; btn.textContent = 'Inloggen';
+        if (error) {
+            setAlert('otp-alert', 'Ongeldige of verlopen code.', 'error');
+        }
+        // onAuthStateChange handles the rest
+    }
+
+    supabase.auth.onAuthStateChange(async (event, session) => {
+        if (session?.user) {
+            if (session.user.email !== ADMIN_EMAIL) {
+                setAlert('otp-alert', 'Geen toegang — dit dashboard is alleen voor Bas Metten.', 'error');
+                showScreen('otp');
+                await supabase.auth.signOut();
+                return;
+            }
+            currentUser = session.user;
+            currentToken = session.access_token;
+            document.getElementById('nav-user').textContent = session.user.email;
+            document.getElementById('nav-user').classList.remove('hidden');
+            document.getElementById('nav-logout').classList.remove('hidden');
+            showScreen('dashboard');
+            loadStats();
+        } else {
+            currentUser = null;
+            currentToken = null;
+            document.getElementById('nav-user').classList.add('hidden');
+            document.getElementById('nav-logout').classList.add('hidden');
+            showScreen('login');
+        }
+    });
+
+    async function handleLogout() {
+        await supabase.auth.signOut();
+    }
+
+    // ---- API helper ----
+    async function api(action, params = {}) {
+        const res = await fetch(`${EDGE_BASE}/admin-api`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${currentToken}`,
+            },
+            body: JSON.stringify({ action, params }),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error ?? 'API fout');
+        return json.data;
+    }
+
+    // ---- Tab switching ----
+    function switchTab(tabId) {
+        const tabs = ['tab-overview','tab-claims','tab-owners','tab-locations','tab-editlog'];
+        tabs.forEach(t => {
+            document.getElementById(t)?.classList.add('hidden');
+            document.getElementById('tab-btn-' + t)?.classList.remove('active');
+        });
+        document.getElementById(tabId)?.classList.remove('hidden');
+        document.getElementById('tab-btn-' + tabId)?.classList.add('active');
+
+        // Lazy-load tab content
+        if (tabId === 'tab-claims')    loadClaims();
+        if (tabId === 'tab-owners')    loadOwners();
+        if (tabId === 'tab-locations') loadLocations();
+        if (tabId === 'tab-editlog')   loadEditLog();
+    }
+
+    // ---- ① Stats ----
+    async function loadStats() {
+        try {
+            const stats = await api('get_stats');
+            document.getElementById('stat-pending').textContent = stats.pending_claims;
+            document.getElementById('stat-subs').textContent    = stats.active_subs;
+            document.getElementById('stat-edits').textContent   = stats.edits_last_7days;
+            document.getElementById('stat-owners').textContent  = stats.total_owners;
+        } catch (err) {
+            console.error('Stats error:', err);
+        }
+    }
+
+    // ---- ② Claims ----
+    function setClaimsFilter(status, btn) {
+        claimsFilter = status;
+        document.querySelectorAll('#tab-claims .filter-pill').forEach(p => p.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        loadClaims();
+    }
+
+    async function loadClaims() {
+        const tbody = document.getElementById('claims-tbody');
+        tbody.innerHTML = '<tr class="loading-row"><td colspan="6"><span class="spinner"></span></td></tr>';
+        try {
+            const claims = await api('list_claims', { status: claimsFilter });
+            if (!claims.length) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px;">Geen aanvragen gevonden.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = claims.map(c => `
+                <tr>
+                    <td class="td-muted">${fmtDate(c.created_at)}</td>
+                    <td>${escapeHtml(c.requester_email)}</td>
+                    <td><strong>${escapeHtml(c.locations?.name ?? '—')}</strong><br><span class="td-muted">${escapeHtml(c.locations?.region ?? '')}</span></td>
+                    <td class="td-truncate td-muted">${escapeHtml(c.message ?? '')}</td>
+                    <td><span class="badge badge-${c.status}">${c.status}</span></td>
+                    <td>
+                        ${c.status === 'pending' ? `
+                            <div style="display:flex;gap:6px;">
+                                <button class="btn btn-success btn-sm" onclick="approveClaim('${c.id}', this)">✓ Goedkeuren</button>
+                                <button class="btn btn-danger btn-sm" onclick="rejectClaim('${c.id}', this)">✗ Afwijzen</button>
+                            </div>
+                        ` : '<span class="td-muted">—</span>'}
+                    </td>
+                </tr>
+            `).join('');
+        } catch (err) {
+            setAlert('claims-alert', 'Fout bij laden: ' + err.message, 'error');
+        }
+    }
+
+    async function approveClaim(claimId, btn) {
+        if (!confirm('Claim goedkeuren?')) return;
+        btn.disabled = true; btn.textContent = '…';
+        try {
+            await api('approve_claim', { claim_id: claimId });
+            loadClaims();
+            loadStats();
+        } catch (err) {
+            setAlert('claims-alert', 'Fout: ' + err.message, 'error');
+            btn.disabled = false; btn.textContent = '✓ Goedkeuren';
+        }
+    }
+
+    async function rejectClaim(claimId, btn) {
+        if (!confirm('Claim afwijzen?')) return;
+        btn.disabled = true; btn.textContent = '…';
+        try {
+            await api('reject_claim', { claim_id: claimId });
+            loadClaims();
+        } catch (err) {
+            setAlert('claims-alert', 'Fout: ' + err.message, 'error');
+            btn.disabled = false; btn.textContent = '✗ Afwijzen';
+        }
+    }
+
+    // ---- ③ Owners ----
+    async function loadOwners() {
+        const tbody = document.getElementById('owners-tbody');
+        tbody.innerHTML = '<tr class="loading-row"><td colspan="6"><span class="spinner"></span></td></tr>';
+        try {
+            const owners = await api('list_owners');
+            if (!owners.length) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px;">Geen eigenaren gevonden.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = owners.map(o => `
+                <tr>
+                    <td>${escapeHtml(o.email)}</td>
+                    <td>${escapeHtml(o.locations?.name ?? '—')}</td>
+                    <td>${escapeHtml(o.plan_tier ?? 'none')}</td>
+                    <td><span class="badge badge-${o.subscription_status ?? 'none'}">${o.subscription_status ?? 'none'}</span></td>
+                    <td class="td-muted">${o.plan_expires_at ? fmtDate(o.plan_expires_at) : '—'}</td>
+                    <td><button class="btn btn-secondary btn-sm" onclick="openEditOwner('${o.id}', '${escapeJs(o.subscription_status ?? 'none')}', '${escapeJs(o.plan_tier ?? 'none')}')">Bewerk</button></td>
+                </tr>
+            `).join('');
+        } catch (err) {
+            setAlert('owners-alert', 'Fout bij laden: ' + err.message, 'error');
+        }
+    }
+
+    function openEditOwner(ownerId, status, tier) {
+        document.getElementById('modal-owner-id').value = ownerId;
+        document.getElementById('modal-status').value = status;
+        document.getElementById('modal-tier').value = tier;
+        document.getElementById('modal-alert').innerHTML = '';
+        document.getElementById('edit-owner-modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('edit-owner-modal').classList.add('hidden');
+    }
+
+    async function saveOwnerEdit() {
+        const ownerId = document.getElementById('modal-owner-id').value;
+        const status  = document.getElementById('modal-status').value;
+        const tier    = document.getElementById('modal-tier').value;
+        try {
+            await api('update_owner', { owner_id: ownerId, subscription_status: status, plan_tier: tier });
+            closeModal();
+            loadOwners();
+        } catch (err) {
+            document.getElementById('modal-alert').innerHTML = `<div class="alert alert-error">${escapeHtml(err.message)}</div>`;
+        }
+    }
+
+    // ---- ④ Locations ----
+    function debounceLocSearch() {
+        clearTimeout(locSearchTimer);
+        locSearchTimer = setTimeout(() => {
+            locSearchVal = document.getElementById('loc-search').value;
+            locPage = 0;
+            loadLocations();
+        }, 300);
+    }
+
+    function changeLocPage(dir) {
+        locPage = Math.max(0, locPage + dir);
+        loadLocations();
+    }
+
+    async function loadLocations() {
+        const tbody = document.getElementById('locations-tbody');
+        tbody.innerHTML = '<tr class="loading-row"><td colspan="4"><span class="spinner"></span></td></tr>';
+        document.getElementById('loc-page-label').textContent = `Pagina ${locPage + 1}`;
+        document.getElementById('loc-prev-btn').disabled = locPage === 0;
+        try {
+            const locs = await api('list_locations', { search: locSearchVal, page: locPage });
+            document.getElementById('loc-next-btn').disabled = locs.length < 50;
+            if (!locs.length) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:24px;">Geen locaties gevonden.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = locs.map(l => `
+                <tr>
+                    <td><strong>${escapeHtml(l.name)}</strong></td>
+                    <td class="td-muted">${escapeHtml(l.region ?? '')}</td>
+                    <td>
+                        <label class="toggle">
+                            <input type="checkbox" ${l.is_featured ? 'checked' : ''} onchange="toggleFeatured(${l.id}, this)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="toggle">
+                            <input type="checkbox" ${l.owner_verified ? 'checked' : ''} onchange="toggleVerified(${l.id}, this)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </td>
+                </tr>
+            `).join('');
+        } catch (err) {
+            setAlert('locations-alert', 'Fout bij laden: ' + err.message, 'error');
+        }
+    }
+
+    async function toggleFeatured(locationId, checkbox) {
+        checkbox.disabled = true;
+        try {
+            const result = await api('toggle_featured', { location_id: locationId });
+            checkbox.checked = result.is_featured;
+        } catch (err) {
+            checkbox.checked = !checkbox.checked; // revert
+            setAlert('locations-alert', 'Fout: ' + err.message, 'error');
+        } finally {
+            checkbox.disabled = false;
+        }
+    }
+
+    async function toggleVerified(locationId, checkbox) {
+        checkbox.disabled = true;
+        try {
+            const result = await api('toggle_verified', { location_id: locationId });
+            checkbox.checked = result.owner_verified;
+        } catch (err) {
+            checkbox.checked = !checkbox.checked; // revert
+            setAlert('locations-alert', 'Fout: ' + err.message, 'error');
+        } finally {
+            checkbox.disabled = false;
+        }
+    }
+
+    // ---- ⑤ Edit log ----
+    async function loadEditLog() {
+        const tbody = document.getElementById('editlog-tbody');
+        tbody.innerHTML = '<tr class="loading-row"><td colspan="6"><span class="spinner"></span></td></tr>';
+        try {
+            const logs = await api('list_edit_log');
+            if (!logs.length) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px;">Geen bewerkingen gevonden.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = logs.map(e => `
+                <tr>
+                    <td class="td-muted">${fmtDate(e.created_at)}</td>
+                    <td>${escapeHtml(e.locations?.name ?? '—')}</td>
+                    <td class="td-muted">${escapeHtml(e.owner_email)}</td>
+                    <td><code style="font-size:12px;">${escapeHtml(e.field_name)}</code></td>
+                    <td class="td-muted td-truncate">${escapeHtml(e.old_value ?? '—')}</td>
+                    <td class="td-truncate">${escapeHtml(e.new_value ?? '—')}</td>
+                </tr>
+            `).join('');
+        } catch (err) {
+            console.error('Edit log error:', err);
+        }
+    }
+
+    // ---- Util ----
+    function setAlert(id, msg, type) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.innerHTML = msg ? `<div class="alert alert-${type}">${msg}</div>` : '';
+    }
+
+    function escapeHtml(s) {
+        return (s ?? '').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function escapeJs(s) {
+        return (s ?? '').toString().replace(/'/g,"\\'").replace(/"/g,'\\"');
+    }
+
+    function fmtDate(iso) {
+        if (!iso) return '—';
+        return new Date(iso).toLocaleDateString('nl-NL', { day:'numeric', month:'short', year:'numeric' });
+    }
+</script>
+</body>
+</html>
