@@ -370,7 +370,7 @@
         });
         btn.disabled = false; btn.textContent = 'Inlogcode sturen →';
         if (error) {
-            setAlert('landing-alert', 'Fout: ' + error.message, 'error');
+            setAlert('landing-alert', 'Fout: ' + escapeHtml(error.message), 'error', true);
         } else {
             otpEmail = email;
             document.getElementById('otp-email-display').textContent = email;
@@ -508,9 +508,15 @@
             ? new Date(expires).toLocaleDateString('nl-NL', { day:'numeric', month:'long', year:'numeric' })
             : '';
 
-        document.getElementById('billing-current-plan').innerHTML =
-            `Huidig plan: <strong>${{ none:'Gratis', trial:'Trial (proefperiode)', featured:'Featured', past_due:'Featured (betaling mislukt)', canceled:'Geen actief abonnement' }[status] ?? status}</strong>` +
-            (expiryStr ? ` · Geldig tot ${expiryStr}` : '');
+        const planLabel = { none:'Gratis', trial:'Trial (proefperiode)', featured:'Featured', past_due:'Featured (betaling mislukt)', canceled:'Geen actief abonnement' }[status] ?? status;
+        const planEl = document.getElementById('billing-current-plan');
+        planEl.textContent = '';
+        const planPrefix = document.createTextNode('Huidig plan: ');
+        const planStrong = document.createElement('strong');
+        planStrong.textContent = planLabel;
+        planEl.appendChild(planPrefix);
+        planEl.appendChild(planStrong);
+        if (expiryStr) planEl.appendChild(document.createTextNode(` · Geldig tot ${expiryStr}`));
 
         const hasActive = ['featured','trial'].includes(status);
         document.getElementById('cancel-subscription-section').classList.toggle('hidden', !hasActive);
@@ -621,7 +627,7 @@
         if (photoFile) {
             const err = await uploadPhoto(claimedLoc.id, photoFile);
             if (err) {
-                setAlert('edit-alert', 'Foto upload mislukt: ' + err, 'error');
+                setAlert('edit-alert', 'Foto upload mislukt: ' + escapeHtml(String(err)), 'error', true);
                 btn.disabled = false; btn.textContent = 'Wijzigingen opslaan';
                 return;
             }
@@ -635,7 +641,7 @@
         btn.disabled = false; btn.textContent = 'Wijzigingen opslaan';
 
         if (error) {
-            setAlert('edit-alert', 'Opslaan mislukt: ' + error.message, 'error');
+            setAlert('edit-alert', 'Opslaan mislukt: ' + escapeHtml(error.message), 'error', true);
         } else {
             setAlert('edit-alert', '✓ Wijzigingen opgeslagen!', 'success');
             claimedLoc = { ...claimedLoc, ...updates };
@@ -686,7 +692,7 @@
                 throw new Error(json.error ?? 'Onbekende fout');
             }
         } catch (err) {
-            setAlert('billing-alert', 'Checkout mislukt: ' + err.message, 'error');
+            setAlert('billing-alert', 'Checkout mislukt: ' + escapeHtml(err.message), 'error', true);
             if (btn) {
                 btn.disabled = false;
                 btn.textContent = billingInterval === 'monthly' ? '€11 / maand' : '€90 / jaar';
@@ -696,15 +702,21 @@
 
     async function cancelSubscription() {
         if (!confirm('Weet je zeker dat je je abonnement wilt opzeggen? Je behoudt toegang tot het einde van de betaalperiode.')) return;
-        setAlert('billing-alert', 'Om je abonnement op te zeggen, neem contact op via <a href="/contact.html">contact.html</a>.', 'info');
+        setAlert('billing-alert', 'Om je abonnement op te zeggen, neem contact op via <a href="/contact.html">contact.html</a>.', 'info', true);
     }
 
     // ---- Util ----
-    function setAlert(id, msg, type) {
+    // setAlert: msg is treated as plain text by default.
+    // Pass html=true only for hardcoded safe strings (not user/API data).
+    function setAlert(id, msg, type, html = false) {
         const el = document.getElementById(id);
         if (!el) return;
         el.className = 'alert' + (type ? ' alert-' + type : '');
-        el.innerHTML = msg;
+        if (html) {
+            el.innerHTML = msg;
+        } else {
+            el.textContent = msg;
+        }
         el.style.display = msg ? 'block' : 'none';
     }
 

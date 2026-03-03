@@ -108,16 +108,17 @@ async function updateLocationBadges(
   ownerId:    string,
   isFeatured: boolean,
   expiresAt:  string | null
-) {
-  const { data: owner } = await supabase
+): Promise<void> {
+  const { data: owner, error: ownerErr } = await supabase
     .from("venue_owners")
     .select("location_id")
     .eq("id", ownerId)
     .single();
 
+  if (ownerErr) throw ownerErr;
   if (!owner?.location_id) return;
 
-  await supabase
+  const { error: updateErr } = await supabase
     .from("locations")
     .update({
       is_featured:    isFeatured,
@@ -126,4 +127,6 @@ async function updateLocationBadges(
       owner_verified: isFeatured,
     })
     .eq("id", owner.location_id);
+
+  if (updateErr) throw updateErr;
 }

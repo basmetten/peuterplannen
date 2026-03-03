@@ -97,7 +97,7 @@ serve(async (req) => {
         allow_promotion_codes: true,
       },
       {
-        idempotencyKey: `checkout-${user.id}-featured-${billing_interval}-${Date.now()}`,
+        idempotencyKey: `checkout-${user.id}-featured-${billing_interval}`,
       }
     );
 

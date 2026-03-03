@@ -479,25 +479,28 @@
                 tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px;">Geen aanvragen gevonden.</td></tr>`;
                 return;
             }
-            tbody.innerHTML = claims.map(c => `
+            const VALID_STATUSES = ['pending','approved','rejected'];
+            tbody.innerHTML = claims.map(c => {
+                const safeStatus = VALID_STATUSES.includes(c.status) ? c.status : 'pending';
+                return `
                 <tr>
                     <td class="td-muted">${fmtDate(c.created_at)}</td>
                     <td>${escapeHtml(c.requester_email)}</td>
                     <td><strong>${escapeHtml(c.locations?.name ?? '—')}</strong><br><span class="td-muted">${escapeHtml(c.locations?.region ?? '')}</span></td>
                     <td class="td-truncate td-muted">${escapeHtml(c.message ?? '')}</td>
-                    <td><span class="badge badge-${c.status}">${c.status}</span></td>
+                    <td><span class="badge badge-${safeStatus}">${safeStatus}</span></td>
                     <td>
-                        ${c.status === 'pending' ? `
+                        ${safeStatus === 'pending' ? `
                             <div style="display:flex;gap:6px;">
-                                <button class="btn btn-success btn-sm" onclick="approveClaim('${c.id}', this)">✓ Goedkeuren</button>
-                                <button class="btn btn-danger btn-sm" onclick="rejectClaim('${c.id}', this)">✗ Afwijzen</button>
+                                <button class="btn btn-success btn-sm" onclick="approveClaim('${escapeJs(c.id)}', this)">✓ Goedkeuren</button>
+                                <button class="btn btn-danger btn-sm" onclick="rejectClaim('${escapeJs(c.id)}', this)">✗ Afwijzen</button>
                             </div>
                         ` : '<span class="td-muted">—</span>'}
                     </td>
-                </tr>
-            `).join('');
+                </tr>`;
+            }).join('');
         } catch (err) {
-            setAlert('claims-alert', 'Fout bij laden: ' + err.message, 'error');
+            setAlert('claims-alert', 'Fout bij laden: ' + escapeHtml(err.message), 'error');
         }
     }
 
@@ -509,7 +512,7 @@
             loadClaims();
             loadStats();
         } catch (err) {
-            setAlert('claims-alert', 'Fout: ' + err.message, 'error');
+            setAlert('claims-alert', 'Fout: ' + escapeHtml(err.message), 'error');
             btn.disabled = false; btn.textContent = '✓ Goedkeuren';
         }
     }
@@ -521,7 +524,7 @@
             await api('reject_claim', { claim_id: claimId });
             loadClaims();
         } catch (err) {
-            setAlert('claims-alert', 'Fout: ' + err.message, 'error');
+            setAlert('claims-alert', 'Fout: ' + escapeHtml(err.message), 'error');
             btn.disabled = false; btn.textContent = '✗ Afwijzen';
         }
     }
@@ -536,18 +539,22 @@
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px;">Geen eigenaren gevonden.</td></tr>';
                 return;
             }
-            tbody.innerHTML = owners.map(o => `
+            const VALID_SUB_STATUSES = ['none','trial','featured','past_due','canceled'];
+            tbody.innerHTML = owners.map(o => {
+                const safeSub = VALID_SUB_STATUSES.includes(o.subscription_status) ? o.subscription_status : 'none';
+                const safeTier = ['none','featured'].includes(o.plan_tier) ? o.plan_tier : 'none';
+                return `
                 <tr>
                     <td>${escapeHtml(o.email)}</td>
                     <td>${escapeHtml(o.locations?.name ?? '—')}</td>
-                    <td>${escapeHtml(o.plan_tier ?? 'none')}</td>
-                    <td><span class="badge badge-${o.subscription_status ?? 'none'}">${o.subscription_status ?? 'none'}</span></td>
+                    <td>${safeTier}</td>
+                    <td><span class="badge badge-${safeSub}">${safeSub}</span></td>
                     <td class="td-muted">${o.plan_expires_at ? fmtDate(o.plan_expires_at) : '—'}</td>
-                    <td><button class="btn btn-secondary btn-sm" onclick="openEditOwner('${o.id}', '${escapeJs(o.subscription_status ?? 'none')}', '${escapeJs(o.plan_tier ?? 'none')}')">Bewerk</button></td>
-                </tr>
-            `).join('');
+                    <td><button class="btn btn-secondary btn-sm" onclick="openEditOwner('${escapeJs(o.id)}', '${safeSub}', '${safeTier}')">Bewerk</button></td>
+                </tr>`;
+            }).join('');
         } catch (err) {
-            setAlert('owners-alert', 'Fout bij laden: ' + err.message, 'error');
+            setAlert('owners-alert', 'Fout bij laden: ' + escapeHtml(err.message), 'error');
         }
     }
 
@@ -555,7 +562,7 @@
         document.getElementById('modal-owner-id').value = ownerId;
         document.getElementById('modal-status').value = status;
         document.getElementById('modal-tier').value = tier;
-        document.getElementById('modal-alert').innerHTML = '';
+        setAlert('modal-alert', '', '');
         document.getElementById('edit-owner-modal').classList.remove('hidden');
     }
 
@@ -572,7 +579,7 @@
             closeModal();
             loadOwners();
         } catch (err) {
-            document.getElementById('modal-alert').innerHTML = `<div class="alert alert-error">${escapeHtml(err.message)}</div>`;
+            setAlert('modal-alert', escapeHtml(err.message), 'error', true);
         }
     }
 
@@ -622,7 +629,7 @@
                 </tr>
             `).join('');
         } catch (err) {
-            setAlert('locations-alert', 'Fout bij laden: ' + err.message, 'error');
+            setAlert('locations-alert', 'Fout bij laden: ' + escapeHtml(err.message), 'error');
         }
     }
 
@@ -633,7 +640,7 @@
             checkbox.checked = result.is_featured;
         } catch (err) {
             checkbox.checked = !checkbox.checked; // revert
-            setAlert('locations-alert', 'Fout: ' + err.message, 'error');
+            setAlert('locations-alert', 'Fout: ' + escapeHtml(err.message), 'error');
         } finally {
             checkbox.disabled = false;
         }
@@ -646,7 +653,7 @@
             checkbox.checked = result.owner_verified;
         } catch (err) {
             checkbox.checked = !checkbox.checked; // revert
-            setAlert('locations-alert', 'Fout: ' + err.message, 'error');
+            setAlert('locations-alert', 'Fout: ' + escapeHtml(err.message), 'error');
         } finally {
             checkbox.disabled = false;
         }
@@ -678,10 +685,20 @@
     }
 
     // ---- Util ----
-    function setAlert(id, msg, type) {
+    // Pass html=true only for already-escaped or hardcoded safe HTML (not raw user/API data).
+    function setAlert(id, msg, type, html = false) {
         const el = document.getElementById(id);
         if (!el) return;
-        el.innerHTML = msg ? `<div class="alert alert-${type}">${msg}</div>` : '';
+        if (!msg) { el.innerHTML = ''; return; }
+        if (html) {
+            el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+        } else {
+            el.innerHTML = '';
+            const div = document.createElement('div');
+            div.className = `alert alert-${type}`;
+            div.textContent = msg;
+            el.appendChild(div);
+        }
     }
 
     function escapeHtml(s) {

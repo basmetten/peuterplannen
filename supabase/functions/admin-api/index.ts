@@ -67,6 +67,7 @@ serve(async (req) => {
 
       case "list_claims": {
         const status = (params.status as string) || "pending";
+        if (!["pending", "approved", "rejected"].includes(status)) throw new Error("Ongeldige status");
         const { data, error } = await supabase
           .from("location_claim_requests")
           .select(`
@@ -193,7 +194,12 @@ serve(async (req) => {
       }
 
       case "list_locations": {
-        const { search = "", page = 0 } = params as { search?: string; page?: number };
+        const rawSearch = String(params.search ?? "").trim();
+        const rawPage   = Number(params.page ?? 0);
+        if (rawSearch.length > 100) throw new Error("Zoekopdracht te lang");
+        if (!Number.isInteger(rawPage) || rawPage < 0 || rawPage > 10000) throw new Error("Ongeldige pagina");
+        const search = rawSearch;
+        const page   = rawPage;
         const limit = 50;
         let query = supabase
           .from("locations")
