@@ -19,7 +19,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>PeuterPlannen — Vind kindvriendelijke uitjes bij jou in de buurt</title>
-    <meta name="description" content="Zoek op locatie en vind de beste kindvriendelijke speeltuinen, restaurants, musea en natuur. Gratis, snel, 767 geverifieerde plekken.">
+    <meta name="description" content="Ontdek uitjes voor peuters bij jou in de buurt. Filter op leeftijd, weer en vervoer. Alle locaties handmatig gecheckt — slimmer dan een chatbot.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://peuterplannen.nl/app.html">
 
@@ -367,6 +367,52 @@
         .weather-banner:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
         .weather-banner.indoor { background: linear-gradient(135deg, #E8F0FE, #D4E4FC); }
         .weather-banner.outdoor { background: linear-gradient(135deg, #FEF6E4, #FCF0D4); }
+        .weather-banner.neutral { background: linear-gradient(135deg, #F0EDE8, #E8E4DC); }
+
+        /* Featured & verified badges */
+        .badge-featured { display: inline-flex; align-items: center; gap: 3px; padding: 3px 9px; border-radius: 8px; font-size: 11px; font-weight: 700; background: linear-gradient(135deg, #F6C34A, #E8A820); color: #6B4200; letter-spacing: 0.02em; }
+        .badge-verified { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; color: #2D8B5E; font-weight: 600; }
+
+        /* Info AI note */
+        .info-ai-note { background: var(--primary-light); border-radius: 12px; padding: 16px 18px; margin-top: 16px; border-left: 3px solid var(--primary); }
+        .info-ai-note h3 { font-family: var(--font-heading); font-size: 15px; font-weight: 700; color: var(--primary-dark); margin-bottom: 8px; }
+        .info-ai-note p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+
+        /* Plan wizard */
+        .plan-view { padding: 20px 0; }
+        .plan-wizard { display: flex; flex-direction: column; gap: 20px; }
+        .plan-step { background: var(--surface); border: 1px solid rgba(212,119,90,0.15); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-sm); }
+        .plan-step h3 { font-family: var(--font-heading); font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+        .plan-option-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .plan-option { padding: 12px; border: 2px solid rgba(212,119,90,0.2); border-radius: 12px; background: var(--bg); text-align: center; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-secondary); transition: all 0.2s; touch-action: manipulation; }
+        .plan-option:active { transform: scale(0.97); }
+        .plan-option.selected { border-color: var(--primary); background: var(--primary); color: white; font-weight: 600; }
+        .plan-option-icon { font-size: 24px; display: block; margin-bottom: 4px; }
+        .age-slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .age-slider-label { font-size: 13px; color: var(--text-secondary); min-width: 60px; }
+        .age-slider { flex: 1; accent-color: var(--primary); }
+        .age-slider-val { min-width: 40px; text-align: right; font-weight: 600; font-size: 13px; color: var(--primary-dark); }
+        .plan-generate-btn { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: var(--font-heading); transition: all 0.2s; touch-action: manipulation; margin-top: 8px; }
+        .plan-generate-btn:active { background: var(--primary-dark); transform: scale(0.99); }
+        .plan-generate-btn:disabled { background: var(--text-muted); cursor: not-allowed; }
+
+        /* Plan result card */
+        .plan-result { background: var(--surface); border: 1px solid rgba(212,119,90,0.15); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); }
+        .plan-result-header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 16px 20px; }
+        .plan-result-header h3 { font-family: var(--font-heading); font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+        .plan-result-header p { font-size: 13px; opacity: 0.85; }
+        .plan-slot { padding: 16px 20px; border-bottom: 1px solid rgba(212,119,90,0.1); }
+        .plan-slot:last-child { border-bottom: none; }
+        .plan-slot-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 4px; }
+        .plan-slot-name { font-family: var(--font-heading); font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+        .plan-slot-meta { font-size: 13px; color: var(--text-secondary); }
+        .plan-ai-text { padding: 16px 20px; background: var(--primary-light); font-size: 14px; color: var(--primary-dark); line-height: 1.65; font-style: italic; border-top: 1px solid rgba(212,119,90,0.15); }
+        .plan-actions { display: flex; gap: 8px; padding: 16px 20px; }
+        .kids-counter { display: flex; align-items: center; gap: 16px; }
+        .kids-counter button { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--primary); background: none; color: var(--primary); font-size: 18px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; touch-action: manipulation; }
+        .kids-counter button:active { background: var(--primary); color: white; }
+        .kids-counter-val { font-size: 20px; font-weight: 700; color: var(--text); min-width: 30px; text-align: center; }
+        .plan-date-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
         .weather-banner-icon { font-size: 28px; flex-shrink: 0; line-height: 1; }
         .weather-banner-text { flex: 1; font-size: 14px; font-weight: 500; color: var(--text); }
         .weather-banner-text strong { font-weight: 700; }
@@ -575,6 +621,65 @@
     </div><!-- /#app-container -->
     </div><!-- /.app-wrapper -->
 
+    <!-- Plan view (hidden until tab selected) -->
+    <div id="plan-view" class="app-container plan-view hidden">
+        <h2 style="font-family:var(--font-heading);font-size:22px;font-weight:800;margin-bottom:6px;">Plan mijn dag</h2>
+        <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px;">Vertel wat je wilt, wij regelen de rest.</p>
+
+        <div class="plan-wizard" id="plan-wizard">
+            <!-- Stap 1: Datum -->
+            <div class="plan-step">
+                <h3>📅 Wanneer?</h3>
+                <div class="plan-date-options" id="plan-date-options">
+                    <button class="plan-option selected" data-date="today" onclick="selectPlanDate(this,'today')"><span class="plan-option-icon">☀️</span>Vandaag</button>
+                    <button class="plan-option" data-date="tomorrow" onclick="selectPlanDate(this,'tomorrow')"><span class="plan-option-icon">🌅</span>Morgen</button>
+                    <button class="plan-option" data-date="saturday" onclick="selectPlanDate(this,'saturday')"><span class="plan-option-icon">🎉</span>Zaterdag</button>
+                    <button class="plan-option" data-date="sunday" onclick="selectPlanDate(this,'sunday')"><span class="plan-option-icon">🌤️</span>Zondag</button>
+                </div>
+            </div>
+
+            <!-- Stap 2: Kinderen -->
+            <div class="plan-step">
+                <h3>👶 Wie gaan er mee?</h3>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                    <span style="font-size:14px;font-weight:600;color:var(--text-secondary);">Aantal kinderen</span>
+                    <div class="kids-counter">
+                        <button onclick="changeKidsCount(-1)" aria-label="Minder kinderen">−</button>
+                        <span class="kids-counter-val" id="kids-count-val">1</span>
+                        <button onclick="changeKidsCount(1)" aria-label="Meer kinderen">+</button>
+                    </div>
+                </div>
+                <div id="age-sliders"></div>
+            </div>
+
+            <!-- Stap 3: Vervoer -->
+            <div class="plan-step">
+                <h3>🚗 Hoe gaan we?</h3>
+                <div class="plan-option-grid">
+                    <button class="plan-option selected" data-transport="auto" onclick="selectPlanOption(this,'transport')"><span class="plan-option-icon">🚗</span>Auto (50km)</button>
+                    <button class="plan-option" data-transport="fiets" onclick="selectPlanOption(this,'transport')"><span class="plan-option-icon">🚲</span>Fiets (5km)</button>
+                    <button class="plan-option" data-transport="ov" onclick="selectPlanOption(this,'transport')"><span class="plan-option-icon">🚌</span>OV (25km)</button>
+                    <button class="plan-option" data-transport="bakfiets" onclick="selectPlanOption(this,'transport')"><span class="plan-option-icon">🚲👶</span>Bakfiets (8km)</button>
+                </div>
+            </div>
+
+            <!-- Stap 4: Duur -->
+            <div class="plan-step">
+                <h3>⏱️ Hoe lang?</h3>
+                <div class="plan-option-grid">
+                    <button class="plan-option selected" data-duration="morning" onclick="selectPlanOption(this,'duration')"><span class="plan-option-icon">🌅</span>Ochtendje (2–3u)</button>
+                    <button class="plan-option" data-duration="half_day" onclick="selectPlanOption(this,'duration')"><span class="plan-option-icon">🌤️</span>Halve dag (4u)</button>
+                    <button class="plan-option" data-duration="whole_day" onclick="selectPlanOption(this,'duration')"><span class="plan-option-icon">🌞</span>Hele dag (7u)</button>
+                </div>
+            </div>
+
+            <button class="plan-generate-btn" id="plan-gen-btn" onclick="generatePlan()">✨ Genereer mijn plan</button>
+        </div>
+
+        <!-- Plan resultaat -->
+        <div id="plan-result-container" class="hidden" style="margin-top:20px;"></div>
+    </div>
+
     <!-- Info panel (slide-up bottom sheet) -->
     <div class="info-overlay" id="info-overlay" onclick="closeInfoPanel()" aria-hidden="true"></div>
     <div class="info-panel" id="info-panel" role="dialog" aria-label="Over PeuterPlannen" aria-hidden="true">
@@ -606,6 +711,11 @@
 <!-- END:INFO_STATS -->
 
             <p>Ontworpen door een vader van twee peuters die simpelweg betere tooling wilde. Geen startup, geen VC-geld — gewoon een tool die werkt.</p>
+
+            <div class="info-ai-note">
+                <h3>Hoe werkt de aanbeveling?</h3>
+                <p>PeuterPlannen combineert actuele weerdata, jouw locatie en de leeftijd van je kinderen om de meest geschikte uitjes naar boven te halen. Alle 767 locaties zijn handmatig geverifieerd — niet gegenereerd door een chatbot.</p>
+            </div>
 
             <div class="info-links">
                 <a href="about.html" class="info-link">
@@ -645,6 +755,10 @@
         <button class="bnav-item" onclick="switchView('favorites')" id="tab-favorites" aria-label="Favorieten">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             <span>Favorieten</span>
+        </button>
+        <button class="bnav-item" onclick="switchView('plan')" id="tab-plan" aria-label="Plan mijn dag">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+            <span>Plan</span>
         </button>
         <button class="bnav-item" onclick="switchView('info')" id="tab-info" aria-label="Info">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
@@ -890,7 +1004,8 @@
             if (loc.coffee)   score += 1;
             if (loc.weather && ['indoor','hybrid','both'].includes(loc.weather)) score += 2;
             if (loc.toddler_highlight) score += 1;
-            return score; // max 10
+            if (loc.is_featured && loc.featured_until && new Date(loc.featured_until) > new Date()) score += 5;
+            return score; // max 15 with featured bonus
         }
 
         // === Location Search ===
@@ -986,18 +1101,28 @@
                 const code = data.current.weather_code;
                 const temp = Math.round(data.current.temperature_2m);
                 const banner = document.getElementById('weather-banner');
-                // Weather codes: 0-3 clear/cloudy, 45-48 fog, 51+ rain/snow
-                if (code >= 51) {
+                // Weather code sets (OpenMeteo)
+                const OUTDOOR_SAFE = new Set([0,1,2,3]);
+                const RAIN_CODES   = new Set([51,53,55,56,57,61,63,65,66,67,80,81,82,83,84,85,86,95,96,99]);
+
+                if (RAIN_CODES.has(code)) {
                     banner.innerHTML = `<div class="weather-banner indoor" onclick="toggleWeather('indoor', null); document.querySelectorAll('.chip').forEach(c => { if(c.textContent==='Binnen') c.classList.add('active'); });">
-                        <span class="weather-banner-icon">\u{1F327}\uFE0F</span>
-                        <span class="weather-banner-text"><strong>${temp}°C en regen</strong> — bekijk indoor uitjes</span>
-                        <span class="weather-banner-arrow">\u203A</span>
+                        <span class="weather-banner-icon">🌧️</span>
+                        <span class="weather-banner-text"><strong>${temp}° en regen</strong> — tip: kies een <strong>binnenlocatie</strong></span>
+                        <span class="weather-banner-arrow">›</span>
                     </div>`;
-                } else if (code <= 3 && temp >= 14) {
+                } else if (OUTDOOR_SAFE.has(code) && temp >= 10) {
                     banner.innerHTML = `<div class="weather-banner outdoor" onclick="toggleWeather('outdoor', null); document.querySelectorAll('.chip').forEach(c => { if(c.textContent==='Buiten') c.classList.add('active'); });">
-                        <span class="weather-banner-icon">\u2600\uFE0F</span>
-                        <span class="weather-banner-text"><strong>${temp}°C en droog</strong> — ontdek buitenactiviteiten</span>
-                        <span class="weather-banner-arrow">\u203A</span>
+                        <span class="weather-banner-icon">☀️</span>
+                        <span class="weather-banner-text"><strong>${temp}° en zonnig</strong> — <strong>buitenlocaties</strong> zijn extra fijn vandaag</span>
+                        <span class="weather-banner-arrow">›</span>
+                    </div>`;
+                } else {
+                    // Bewolkt / mist / sneeuw — neutraal, toon alle opties
+                    banner.innerHTML = `<div class="weather-banner neutral" onclick="activeWeather=null; document.querySelectorAll('.chip').forEach(c => { if(c.textContent==='Binnen'||c.textContent==='Buiten') c.classList.remove('active'); }); loadLocations();">
+                        <span class="weather-banner-icon">🌥️</span>
+                        <span class="weather-banner-text"><strong>${temp}° en wisselvallig</strong> — binnen én buiten opties beschikbaar</span>
+                        <span class="weather-banner-arrow">›</span>
                     </div>`;
                 }
             } catch(e) { /* Weather banner is non-critical */ }
@@ -1012,7 +1137,7 @@
             if (currentDisplayMode !== 'map') { container.innerHTML = ''; loader.classList.remove('hidden'); }
             error.classList.add('hidden');
             try {
-                let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight";
+                let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url";
                 if (activeTag !== 'all' && activeTag !== 'favorites') url += "&type=eq." + activeTag;
                 if (activeWeather) { if (activeWeather === "indoor") url += "&weather=in.(indoor,hybrid,both)"; else if (activeWeather === "outdoor") url += "&weather=in.(outdoor,hybrid,both)"; else url += "&weather=eq." + activeWeather; }
                 if (activeFacilities.coffee) url += "&coffee=eq.true";
@@ -1172,8 +1297,12 @@
                 }
 
                 const ps = computePeuterScore(item);
-                const psColor = ps >= 7 ? '#4A7A4A' : ps >= 4 ? '#C07830' : '#9E9E9E';
-                const psBadge = `<span class="peuterscore" style="background:${psColor}18;color:${psColor};border:1px solid ${psColor}30" title="Peuterscore: ${ps}/10">${ps}★</span>`;
+                const psBase = ps - (item.is_featured && item.featured_until && new Date(item.featured_until) > new Date() ? 5 : 0);
+                const psColor = psBase >= 7 ? '#4A7A4A' : psBase >= 4 ? '#C07830' : '#9E9E9E';
+                const psBadge = `<span class="peuterscore" style="background:${psColor}18;color:${psColor};border:1px solid ${psColor}30" title="Peuterscore: ${psBase}/10">${psBase}★</span>`;
+                const isFeaturedNow = item.is_featured && item.featured_until && new Date(item.featured_until) > new Date();
+                const featuredBadge = isFeaturedNow ? `<span class="badge-featured">★ Aanbevolen</span>` : '';
+                const verifiedBadge = item.owner_verified ? `<span class="badge-verified" title="Geverifieerd door eigenaar">✓</span>` : '';
 
                 const ageInfo = (item.min_age !== null && item.max_age !== null) ?
                     `<span class="age-range">${item.min_age}-${item.max_age} jaar</span>` : '';
@@ -1195,6 +1324,7 @@
                 card.innerHTML = `
                     <div class="card-top">
                         <div class="card-pills">
+                            ${featuredBadge}
                             <span class="pill pill-type">${typeLabel}</span>
                             ${weatherLabel ? `<span class="pill pill-weather">${weatherIcon}${weatherLabel}</span>` : ''}
                             ${distancePill}
@@ -1205,7 +1335,7 @@
                         </button>
                     </div>
                     ${ageInfo}
-                    <h2 class="card-name">${escapeHtml(item.name)}</h2>
+                    <h2 class="card-name">${escapeHtml(item.name)}${verifiedBadge}</h2>
                     <p class="card-desc">${escapeHtml(item.description || '')}</p>
                     ${highlight}
                     ${facilities.length ? `<div class="card-facilities">${facilities.join('')}</div>` : ''}
@@ -1795,6 +1925,323 @@
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js').catch(e => console.warn('SW:', e));
         }
+
+        // ================================================================
+        // === AI WEEKPLANNER ===
+        // ================================================================
+
+        const TRANSPORT_RADIUS = { auto: 50, fiets: 5, ov: 25, lopen: 2, bakfiets: 8 };
+        const SPEED_KMH        = { auto: 50, fiets: 15, bakfiets: 12, ov: 35, lopen: 5 };
+        const TRANSPORT_LABELS = { auto: 'de auto', fiets: 'de fiets', ov: 'het OV', lopen: 'te voet', bakfiets: 'de bakfiets' };
+
+        let planState = {
+            date:      'today',
+            kidsCount: 1,
+            childAges: [2],
+            transport: 'auto',
+            duration:  'morning',
+        };
+
+        // ---- Date helpers ----
+        function getPlanDate(key) {
+            const d = new Date();
+            if (key === 'tomorrow') d.setDate(d.getDate() + 1);
+            else if (key === 'saturday') { const dow = d.getDay(); d.setDate(d.getDate() + (6 - dow + 7) % 7 || 7); }
+            else if (key === 'sunday')   { const dow = d.getDay(); d.setDate(d.getDate() + (0 - dow + 7) % 7 || 7); }
+            return d.toISOString().slice(0, 10);
+        }
+
+        function selectPlanDate(btn, val) {
+            document.querySelectorAll('#plan-date-options .plan-option').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            planState.date = val;
+        }
+
+        function selectPlanOption(btn, group) {
+            const parent = btn.closest('.plan-step');
+            parent.querySelectorAll('.plan-option').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            if (group === 'transport') planState.transport = btn.dataset.transport;
+            if (group === 'duration')  planState.duration  = btn.dataset.duration;
+        }
+
+        // ---- Kids counter & age sliders ----
+        function changeKidsCount(delta) {
+            const next = Math.max(1, Math.min(4, planState.kidsCount + delta));
+            planState.kidsCount = next;
+            document.getElementById('kids-count-val').textContent = next;
+            // Adjust childAges array
+            while (planState.childAges.length < next) planState.childAges.push(2);
+            planState.childAges = planState.childAges.slice(0, next);
+            renderAgeSliders();
+        }
+
+        function renderAgeSliders() {
+            const container = document.getElementById('age-sliders');
+            container.innerHTML = planState.childAges.map((age, i) => `
+                <div class="age-slider-row">
+                    <span class="age-slider-label">Kind ${i + 1}</span>
+                    <input type="range" class="age-slider" min="0" max="6" value="${age}" oninput="updateChildAge(${i}, this.value); document.getElementById('age-val-${i}').textContent=this.value">
+                    <span class="age-slider-val" id="age-val-${i}">${age}</span>
+                    <span style="font-size:12px;color:var(--text-muted);">jaar</span>
+                </div>
+            `).join('');
+        }
+
+        function updateChildAge(index, val) {
+            planState.childAges[index] = parseInt(val);
+        }
+
+        // ---- Weather forecast ----
+        async function fetchDayForecast(dateStr, lat, lng) {
+            try {
+                const res = await fetch(
+                    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}` +
+                    `&daily=weather_code,temperature_2m_max,precipitation_sum,wind_speed_10m_max` +
+                    `&start_date=${dateStr}&end_date=${dateStr}&timezone=Europe/Amsterdam`
+                );
+                const data = await res.json();
+                return {
+                    weatherCode:   data.daily.weather_code[0]   ?? 2,
+                    maxTemp:       data.daily.temperature_2m_max[0] ?? 12,
+                    precipitation: data.daily.precipitation_sum[0]  ?? 0,
+                    windSpeed:     data.daily.wind_speed_10m_max[0]  ?? 10,
+                };
+            } catch { return { weatherCode: 2, maxTemp: 12, precipitation: 0, windSpeed: 10 }; }
+        }
+
+        function isOutdoorSuitable(code, temp) {
+            const RAIN_CODES = new Set([51,53,55,56,57,61,63,65,66,67,80,81,82,83,84,85,86,95,96,99]);
+            if (RAIN_CODES.has(code)) return false;
+            if (code <= 3 && temp >= 10) return true;
+            return 'marginal'; // cloudy / overcast — both indoor and outdoor ok
+        }
+
+        function estimateTravelTime(distKm, transport) {
+            const speed = SPEED_KMH[transport] ?? 50;
+            const mins  = Math.round((distKm / speed) * 60);
+            return transport === 'ov' ? mins + 10 : mins;
+        }
+
+        function findNearLunch(candidates, anchor) {
+            const horeca = candidates.filter(l =>
+                l.id !== anchor.id &&
+                (l.type === 'horeca' || l.type === 'pancake') &&
+                anchor.lat && anchor.lng && l.lat && l.lng &&
+                calculateDistance(anchor.lat, anchor.lng, l.lat, l.lng) < 15
+            );
+            return horeca[0] ?? null;
+        }
+
+        // ---- Main generate plan ----
+        async function generatePlan() {
+            const btn = document.getElementById('plan-gen-btn');
+            const resultContainer = document.getElementById('plan-result-container');
+            btn.disabled = true;
+            btn.textContent = '⏳ Plan wordt gemaakt…';
+            resultContainer.classList.add('hidden');
+            resultContainer.innerHTML = '';
+
+            try {
+                const lat = userLocation ? userLocation.lat : 52.37;
+                const lng = userLocation ? userLocation.lng : 4.90;
+                const dateStr    = getPlanDate(planState.date);
+                const radiusKm   = TRANSPORT_RADIUS[planState.transport];
+                const forecast   = await fetchDayForecast(dateStr, lat, lng);
+                const outdoorOk  = isOutdoorSuitable(forecast.weatherCode, forecast.maxTemp);
+                const minAge     = Math.min(...planState.childAges);
+
+                // Filter locations
+                const candidates = allLocations.filter(loc => {
+                    if (!loc.lat || !loc.lng) return false;
+                    const dist    = calculateDistance(lat, lng, loc.lat, loc.lng);
+                    const ageOk   = (loc.min_age === null || loc.min_age <= minAge);
+                    const inRange = dist <= radiusKm;
+                    if (!ageOk || !inRange) return false;
+                    if (outdoorOk === false) {
+                        return ['indoor','hybrid','both'].includes(loc.weather);
+                    }
+                    return true;
+                });
+
+                // Score and sort
+                const scored = candidates.map(loc => {
+                    const dist  = calculateDistance(lat, lng, loc.lat, loc.lng);
+                    const score = computePeuterScore(loc) - (dist * 0.1);
+                    return { ...loc, _planScore: score, _distKm: dist };
+                }).sort((a, b) => b._planScore - a._planScore);
+
+                if (!scored.length) {
+                    resultContainer.innerHTML = `<div class="error-msg">Geen locaties gevonden binnen ${radiusKm}km die passen bij je zoekopdracht. Probeer een andere vervoersoptie.</div>`;
+                    resultContainer.classList.remove('hidden');
+                    return;
+                }
+
+                // Build plan
+                const morning   = scored[0];
+                let lunch       = null;
+                let afternoon   = null;
+
+                if (planState.duration === 'half_day' || planState.duration === 'whole_day') {
+                    lunch = findNearLunch(scored, morning);
+                }
+                if (planState.duration === 'whole_day') {
+                    afternoon = scored.find(l =>
+                        l.id !== morning.id &&
+                        l.type !== morning.type &&
+                        (!lunch || l.id !== lunch.id)
+                    ) ?? null;
+                }
+
+                // Travel times
+                function travelLabel(from, to) {
+                    if (!from || !to || !from.lat || !to.lat) return '';
+                    const dist = calculateDistance(from.lat, from.lng, to.lat, to.lng);
+                    const mins = estimateTravelTime(dist, planState.transport);
+                    return mins < 60 ? `${mins} min` : `${Math.floor(mins/60)}u ${mins%60}m`;
+                }
+
+                const morningTravel = travelLabel({ lat, lng }, morning);
+                const lunchTravel   = lunch     ? travelLabel(morning, lunch)   : '';
+                const afternoonTv   = afternoon ? travelLabel(lunch || morning, afternoon) : '';
+
+                // Weather description for header
+                const wCode = forecast.weatherCode;
+                const temp  = Math.round(forecast.maxTemp);
+                const wEmoji = wCode <= 3 ? '☀️' : wCode >= 51 ? '🌧️' : '🌥️';
+                const wDesc  = wCode <= 3 ? 'zonnig' : wCode >= 51 ? 'regen' : 'bewolkt';
+
+                // Date label
+                const dateObj  = new Date(dateStr + 'T12:00:00');
+                const dayLabel = dateObj.toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' });
+
+                // Build result HTML
+                let slotsHtml = `
+                    <div class="plan-slot">
+                        <div class="plan-slot-label">🌅 OCHTEND</div>
+                        <div class="plan-slot-name">${escapeHtml(morning.name)}</div>
+                        <div class="plan-slot-meta">${escapeHtml(morning.region || '')} · ${morningTravel ? morningTravel + ' ' + TRANSPORT_LABELS[planState.transport] : 'Dichtbij'}</div>
+                    </div>
+                `;
+                if (lunch) {
+                    slotsHtml += `
+                        <div class="plan-slot">
+                            <div class="plan-slot-label">🍽️ LUNCH (12:00)</div>
+                            <div class="plan-slot-name">${escapeHtml(lunch.name)}</div>
+                            <div class="plan-slot-meta">${escapeHtml(lunch.region || '')} · ${lunchTravel ? lunchTravel + ' van ochtendactiviteit' : 'Dichtbij'}</div>
+                        </div>
+                    `;
+                }
+                if (afternoon) {
+                    slotsHtml += `
+                        <div class="plan-slot">
+                            <div class="plan-slot-label">☀️ MIDDAG</div>
+                            <div class="plan-slot-name">${escapeHtml(afternoon.name)}</div>
+                            <div class="plan-slot-meta">${escapeHtml(afternoon.region || '')} · ${afternoonTv ? afternoonTv + ' verder' : 'Dichtbij'}</div>
+                        </div>
+                    `;
+                }
+
+                resultContainer.innerHTML = `
+                    <div class="plan-result">
+                        <div class="plan-result-header">
+                            <h3>${dayLabel} · ${wEmoji} ${temp}° ${wDesc}</h3>
+                            <p>${planState.childAges.length === 1 ? '1 kind' : planState.childAges.length + ' kinderen'} (${planState.childAges.join(', ')} jaar) · via ${TRANSPORT_LABELS[planState.transport]}</p>
+                        </div>
+                        ${slotsHtml}
+                        <div class="plan-ai-text" id="plan-ai-text">
+                            <span style="color:var(--text-muted);font-style:normal;">✨ AI-beschrijving laden…</span>
+                        </div>
+                        <div class="plan-actions">
+                            <button class="btn" onclick="sharePlan()">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                                Deel dit plan
+                            </button>
+                            <button class="btn btn-detail" onclick="generatePlan()">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                                Nieuw plan
+                            </button>
+                        </div>
+                    </div>
+                `;
+                resultContainer.classList.remove('hidden');
+                resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                // Fetch AI description async
+                fetchAiPlanDescription({
+                    date: dateStr, childAges: planState.childAges,
+                    transport: planState.transport, duration: planState.duration,
+                    morning, lunch, afternoon, forecast,
+                }).then(desc => {
+                    const el = document.getElementById('plan-ai-text');
+                    if (el && desc) el.textContent = desc;
+                    else if (el) el.style.display = 'none';
+                }).catch(() => {
+                    const el = document.getElementById('plan-ai-text');
+                    if (el) el.style.display = 'none';
+                });
+
+            } catch (err) {
+                console.error('generatePlan error:', err);
+                resultContainer.innerHTML = `<div class="error-msg">Er ging iets mis bij het genereren van je plan. Probeer het opnieuw.</div>`;
+                resultContainer.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '✨ Genereer mijn plan';
+            }
+        }
+
+        async function fetchAiPlanDescription(params) {
+            try {
+                const res = await fetch(
+                    'https://piujsvgbfflrrvauzsxe.supabase.co/functions/v1/generate-plan',
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(params),
+                    }
+                );
+                const data = await res.json();
+                return data.description ?? null;
+            } catch { return null; }
+        }
+
+        function sharePlan() {
+            const morning   = document.querySelector('.plan-slot .plan-slot-name')?.textContent ?? '';
+            const shareText = `Kijk, ons plan voor vandaag via PeuterPlannen: ${morning}. Bekijk meer op https://peuterplannen.nl/app.html`;
+            if (navigator.share) {
+                navigator.share({ title: 'Mijn PeuterPlannen', text: shareText }).catch(() => {});
+            } else {
+                navigator.clipboard?.writeText(shareText).then(() => alert('Plan gekopieerd!')).catch(() => {});
+            }
+        }
+
+        // Init plan view
+        renderAgeSliders();
+
+        // ================================================================
+        // === EXTEND switchView FOR PLAN TAB ===
+        // ================================================================
+        const _origSwitchView = switchView;
+        switchView = function(view) {
+            const planView = document.getElementById('plan-view');
+            const appWrapper = document.querySelector('.app-wrapper');
+
+            if (view === 'plan') {
+                // Show plan view, hide main app
+                if (appWrapper) appWrapper.classList.add('hidden');
+                if (planView)   planView.classList.remove('hidden');
+                document.querySelectorAll('.bnav-item').forEach(i => i.classList.remove('active'));
+                document.getElementById('tab-plan')?.classList.add('active');
+                currentView = 'plan';
+                moveNavIndicator();
+                return;
+            }
+            // Leaving plan view
+            if (planView)   planView.classList.add('hidden');
+            if (appWrapper) appWrapper.classList.remove('hidden');
+            _origSwitchView(view);
+        };
     </script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
