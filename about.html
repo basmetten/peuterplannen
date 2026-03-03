@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+    <!-- Google tag (gtag.js) — Consent Mode v2 -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-46RW178B97');
+      gtag('consent', 'default', {
+        analytics_storage: 'denied', ad_storage: 'denied',
+        ad_user_data: 'denied', ad_personalization: 'denied',
+        wait_for_update: 500
+      });
+      try { var _s = localStorage.getItem('pp_consent'); if (_s) gtag('consent', 'update', JSON.parse(_s)); } catch(e) {}
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+    <script>gtag('js', new Date()); gtag('config', 'G-46RW178B97');</script>
+    <script src="/consent.js" defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Over PeuterPlannen — Het verhaal</title>
@@ -197,15 +203,15 @@
 <!-- END:SUPPORT_ABOUT -->
 
         <h2 id="privacy">Privacy</h2>
-        <p>PeuterPlannen respecteert je privacy. Punt. Geen kleine lettertjes, geen verborgen tracking, geen "we verkopen je data aan adverteerders". Gewoon eerlijk.</p>
+        <p>Geen kleine lettertjes, geen verborgen tracking, geen "we verkopen je data". Wel eerlijk zijn over wat er wél gebeurt.</p>
 
         <div class="check-list">
             <p>&#10003; We slaan <strong>geen persoonsgegevens</strong> op</p>
-            <p>&#10003; Favorieten worden lokaal opgeslagen in je browser (localStorage)</p>
-            <p>&#10003; We gebruiken Supabase voor locatiedata — geen tracking</p>
-            <p>&#10003; Geen cookies behalve technisch noodzakelijke</p>
-            <p>&#10003; We delen geen data met derden</p>
-            <p>&#10003; Volledig AVG/GDPR compliant</p>
+            <p>&#10003; Favorieten worden lokaal in je browser opgeslagen — nooit op een server</p>
+            <p>&#10003; We gebruiken <strong>Google Analytics 4</strong> voor bezoekersstatistieken — alleen met jouw toestemming (je ziet de banner bij je eerste bezoek)</p>
+            <p>&#10003; Zonder toestemming worden géén analytische of advertentiecookies geplaatst</p>
+            <p>&#10003; We delen geen data met adverteerders of andere derden</p>
+            <p>&#10003; Locatiedata (als je die deelt) wordt alleen lokaal gebruikt om afstand te berekenen — nooit opgeslagen of doorgestuurd</p>
         </div>
 
         <p>Heb je vragen over privacy? Mail ons gerust op <a href="mailto:privacy@peuterplannen.nl" style="color: var(--primary); font-weight: 600;">privacy@peuterplannen.nl</a>.</p>

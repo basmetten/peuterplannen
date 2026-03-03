@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+    <!-- Google tag (gtag.js) — Consent Mode v2 -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-46RW178B97');
+      gtag('consent', 'default', {
+        analytics_storage: 'denied', ad_storage: 'denied',
+        ad_user_data: 'denied', ad_personalization: 'denied',
+        wait_for_update: 500
+      });
+      try { var _s = localStorage.getItem('pp_consent'); if (_s) gtag('consent', 'update', JSON.parse(_s)); } catch(e) {}
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+    <script>gtag('js', new Date()); gtag('config', 'G-46RW178B97');</script>
+    <script src="/consent.js" defer></script>
+    <!-- AdSense — uncomment + vul publisher-ID in na goedkeuring:
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+    -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>PeuterPlannen — Vind kindvriendelijke uitjes bij jou in de buurt</title>
@@ -379,6 +388,9 @@
         .loc-card.promo-banner.promo-donation .card-name,
         .loc-card.promo-banner.promo-donation .card-desc { color: white; }
         .loc-card.promo-banner.promo-donation .promo-cta { background: white; color: var(--primary-dark); }
+        /* AdSense in-feed card */
+        .adsense-card { padding: 8px 12px 12px; min-height: 100px; background: var(--bg); border: 1px dashed rgba(45,41,38,0.12); }
+        .adsense-card .ad-label { display: block; font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; opacity: 0.6; }
         .loc-card.promo-banner.promo-donation .promo-icon { background: rgba(255,255,255,0.20); }
         .loc-card.promo-banner.promo-donation .promo-icon svg { stroke: white; }
 
@@ -1074,6 +1086,16 @@
         }
 
         // === Card Rendering ===
+        // ── AdSense in-feed ──────────────────────────────────────────────────
+        // Vul in na goedkeuring door Google AdSense:
+        //   1. Uncomment de <script> in <head> (zoek op "adsbygoogle.js")
+        //   2. Maak een "In-feed" ad-unit aan in AdSense → kopieer slot-ID
+        //   3. Vul hieronder je publisher-ID en slot-ID in
+        const ADSENSE_PUB_ID   = ''; // 'ca-pub-XXXXXXXXXXXXXXXX'
+        const ADSENSE_SLOT_ID  = ''; // '1234567890'
+        const ADSENSE_EVERY_N  = 10; // 1 advertentie per N kaarten
+        // ─────────────────────────────────────────────────────────────────────
+
         const PROMO_ITEMS = [
             { title: 'Dit is een hobbyproject', text: 'Geen team, geen budget. Wel 767+ uitjes in Nederland. Stuur een koffie. ☕', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun PeuterPlannen', icon: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>', donation: true },
             { title: 'Gemaakt door een vader, voor ouders', text: 'Geen team, geen budget. Wel 767+ uitjes. Een kleine bijdrage helpt.', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun PeuterPlannen', icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>', donation: true },
@@ -1124,6 +1146,17 @@
                         <a href="${promo.url}" class="promo-cta">${promo.cta}</a>
                     `;
                     container.appendChild(adCard);
+                }
+                // AdSense in-feed (actief zodra ADSENSE_PUB_ID is ingevuld)
+                if (ADSENSE_PUB_ID && ADSENSE_SLOT_ID && index > 0 && index % ADSENSE_EVERY_N === 0) {
+                    const ael = document.createElement('article');
+                    ael.className = 'loc-card adsense-card';
+                    ael.innerHTML = `<span class="ad-label">Advertentie</span>` +
+                        `<ins class="adsbygoogle" style="display:block" data-ad-format="fluid"` +
+                        ` data-ad-layout-key="-6t+ed+2i-1n-4w"` +
+                        ` data-ad-client="${ADSENSE_PUB_ID}" data-ad-slot="${ADSENSE_SLOT_ID}"></ins>`;
+                    container.appendChild(ael);
+                    try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
                 }
                 const item = batchLocations[index];
                 const travelInfo = batchTravelTimes[item.id];
