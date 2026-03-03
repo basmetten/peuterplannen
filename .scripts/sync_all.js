@@ -387,7 +387,7 @@ function navHTML(ctaText = 'Open App', ctaHref = '/app.html') {
 function footerHTML() {
   return `<footer>
   <nav aria-label="Footernavigatie">
-  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Blog</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over ons</a> &middot; <a href="${TIKKIE_URL}" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="${TIKKIE_URL}" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
   </nav>
 </footer>`;
 }
@@ -1715,7 +1715,7 @@ ${fm.featured_image ? `<div class="blog-hero-img" style="max-width:1100px;margin
 </div>
 
 <nav aria-label="Kruimelpad" class="breadcrumb">
-  <a href="/">PeuterPlannen</a> &rsaquo; <a href="/blog/">Blog</a> &rsaquo; ${escapeHtml(fm.title)}
+  <a href="/">PeuterPlannen</a> &rsaquo; <a href="/blog/">Inspiratie</a> &rsaquo; ${escapeHtml(fm.title)}
 </nav>
 
 <main id="main-content">
@@ -1798,12 +1798,12 @@ ${blogIndexLd}
 ${navHTML()}
 
 <div class="hero">
-  <h1>Blog</h1>
+  <h1>Inspiratie</h1>
   <p>Tips, inspiratie en praktische gidsen voor uitjes met peuters</p>
 </div>
 
 <nav aria-label="Kruimelpad" class="breadcrumb">
-  <a href="/">PeuterPlannen</a> &rsaquo; Blog
+  <a href="/">PeuterPlannen</a> &rsaquo; Inspiratie
 </nav>
 
 <main id="main-content">
