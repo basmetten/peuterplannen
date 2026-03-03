@@ -596,15 +596,15 @@ function updateIndex(data) {
   const statsHTML = `    <section class="stats">
         <div class="stats-container">
             <div>
-                <div class="stat-number">${total}</div>
+                <div class="stat-number" data-target="${total}" data-suffix="">${total}</div>
                 <div class="stat-label">Locaties</div>
             </div>
             <div>
-                <div class="stat-number">${regions.length}</div>
+                <div class="stat-number" data-target="${regions.length}" data-suffix="">${regions.length}</div>
                 <div class="stat-label">Regio's</div>
             </div>
             <div>
-                <div class="stat-number">100%</div>
+                <div class="stat-number" data-target="100" data-suffix="%">100%</div>
                 <div class="stat-label">Gecheckt</div>
             </div>
         </div>

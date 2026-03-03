@@ -1,7 +1,26 @@
 /* PeuterPlannen — Shared CSS for all generated pages */
 
-/* View Transitions API — smooth cross-fade between pages */
-@view-transition { navigation: auto; }
+/* View Transitions API — asymmetrische fade-up lift
+   Onderzoek (NNG, Smashing, Chrome Devs 2025):
+   - exit snel (160ms ease-in): niemand kijkt naar vertrekkende content
+   - enter rustig (280ms ease-out + 80ms delay): content landt kalm
+   - prefers-reduced-motion guard is verplicht voor toegankelijkheid        */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+
+@keyframes vt-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes vt-fade-up  { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: vt-fade-out 160ms ease-in both;
+  }
+  ::view-transition-new(root) {
+    animation: vt-fade-up 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 80ms;
+  }
+}
 
 :root {
   --primary: #D4775A;
