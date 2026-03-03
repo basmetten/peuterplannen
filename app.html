@@ -253,12 +253,15 @@
         .no-results strong { display: block; color: var(--text); margin-bottom: 8px; font-size: 18px; font-family: var(--font-heading); }
 
         /* Bottom nav (mobile) */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid rgba(212, 119, 90, 0.1); padding: 8px 0; padding-bottom: calc(8px + var(--safe-bottom)); display: flex; justify-content: space-around; z-index: 100; box-shadow: 0 -2px 12px rgba(45, 41, 38, 0.06); }
-        .bnav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 16px; text-decoration: none; font-size: 10px; font-weight: 600; color: var(--text-muted); transition: color 0.2s; background: none; border: none; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; position: relative; }
-        .bnav-item.active { color: var(--primary-dark); background: rgba(212, 119, 90, 0.14); border-radius: 12px; box-shadow: inset 0 0 0 1.5px rgba(212, 119, 90, 0.45); }
-        .bnav-item.active::after { display: none; }
-        .bnav-item.active span { font-weight: 800; }
-        .bnav-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        /* Floating pill bottom nav */
+        .bottom-nav { position: fixed; bottom: max(16px, env(safe-area-inset-bottom, 16px)); left: 50%; transform: translateX(-50%); background: rgba(245, 240, 235, 0.82); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-radius: 100px; padding: 6px; display: flex; align-items: center; z-index: 100; box-shadow: 0 8px 32px rgba(45, 41, 38, 0.16), 0 2px 8px rgba(45, 41, 38, 0.06), inset 0 1px 0 rgba(255,255,255,0.72); border: 1px solid rgba(255,255,255,0.48); }
+        @supports not (backdrop-filter: blur(1px)) { .bottom-nav { background: rgba(245, 240, 235, 0.96); } }
+        .nav-indicator { position: absolute; background: var(--primary); border-radius: 100px; top: 6px; bottom: 6px; left: 6px; width: 60px; z-index: 0; pointer-events: none; transition: left 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.38s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .nav-indicator.no-transition { transition: none !important; }
+        .bnav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 18px; font-size: 10px; font-weight: 600; color: var(--text-muted); transition: color 0.2s; background: none; border: none; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; position: relative; z-index: 1; min-height: 48px; border-radius: 100px; }
+        .bnav-item.active { color: white; }
+        .bnav-item svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .bnav-item.active svg { transform: scale(1.1); }
         @media (min-width: 768px) { .bottom-nav { display: none; } body { padding-bottom: 0; } }
 
         /* Skeleton cards */
@@ -600,6 +603,7 @@
 
     <!-- Mobile bottom navigation -->
     <nav class="bottom-nav" id="bottom-nav" aria-label="Navigatie">
+        <span class="nav-indicator" id="nav-indicator"></span>
         <button class="bnav-item active" onclick="switchView('home')" id="tab-home" aria-label="Ontdek">
             <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
             <span>Ontdek</span>
@@ -1199,6 +1203,19 @@
         // === SPA View Switching ===
         let currentView = 'home';
 
+        function moveNavIndicator(instant = false) {
+            const active = document.querySelector('.bnav-item.active');
+            const indicator = document.getElementById('nav-indicator');
+            const nav = document.getElementById('bottom-nav');
+            if (!active || !indicator || !nav) return;
+            const nr = nav.getBoundingClientRect();
+            const br = active.getBoundingClientRect();
+            if (instant) indicator.classList.add('no-transition');
+            indicator.style.left = (br.left - nr.left) + 'px';
+            indicator.style.width = br.width + 'px';
+            if (instant) requestAnimationFrame(() => indicator.classList.remove('no-transition'));
+        }
+
         function switchView(view) {
             const isDesktop = window.innerWidth >= 768;
             closeLocSheet();
@@ -1207,6 +1224,7 @@
             document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
             const tab = document.getElementById('tab-' + view);
             if (tab) tab.classList.add('active');
+            moveNavIndicator();
 
             // On desktop: map is always visible; favorites/info handled normally
             if (isDesktop) {
@@ -1288,6 +1306,7 @@
                 currentView = 'home';
                 document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
                 document.getElementById('tab-home').classList.add('active');
+                moveNavIndicator();
             }
         }
 
@@ -1324,6 +1343,7 @@
                 document.getElementById('tab-home').classList.add('active');
                 currentView = 'home';
             }
+            moveNavIndicator();
             _origToggleTag(tag, evt);
         };
 
@@ -1666,6 +1686,10 @@
         if (window.innerWidth >= 768) {
             document.getElementById('map-container').classList.remove('hidden');
         }
+
+        // Floating pill nav indicator — set initial position and track resize
+        moveNavIndicator(true);
+        window.addEventListener('resize', () => moveNavIndicator(true));
 
         // Preload MapLibre — immediately on desktop, lazily on mobile
         if (window.innerWidth >= 768) {
