@@ -557,7 +557,7 @@ function updateIndex(data) {
             </div>
             <div>
                 <div class="stat-number">100%</div>
-                <div class="stat-label">Geverifieerd</div>
+                <div class="stat-label">Gecheckt</div>
             </div>
         </div>
     </section>`;
@@ -700,7 +700,7 @@ function updateApp(data) {
   const noscriptHTML = `<noscript>
   <div>
     <h1>PeuterPlannen</h1>
-    <p>${total} geverifieerde uitjes voor gezinnen met jonge kinderen.</p>
+    <p>${total} uitjes voor gezinnen met jonge kinderen.</p>
     <h2>Per stad</h2>
     <ul>
 ${noscriptCities}
@@ -960,7 +960,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 
 <main id="main-content">
   <div class="intro-box">
-    <p>${region.blurb} ${weatherNote}Op deze pagina vind je <strong>${locs.length} geverifieerde locaties</strong> in de regio ${region.name}.${coverageNote} Allemaal geselecteerd op kindvriendelijkheid, faciliteiten en geschiktheid voor peuters.</p>
+    <p>${region.blurb} ${weatherNote}Op deze pagina vind je <strong>${locs.length} locaties</strong> in de regio ${region.name}.${coverageNote} Gecheckt op kindvriendelijkheid en of het echt werkt met een peuter.</p>
   </div>
 
   <div class="city-app-cta">
@@ -1126,7 +1126,7 @@ ${navHTML()}
 
 <div class="hero">
   <h1>${page.h1.replace('Nederland', '<span>Nederland</span>')}</h1>
-  <p>${locs.length} geverifieerde locaties in ${regionNamesStr}</p>
+  <p>${locs.length} locaties in ${regionNamesStr}</p>
 </div>
 
 <nav aria-label="Kruimelpad" class="breadcrumb">
@@ -1660,7 +1660,7 @@ ${fm.featured_image ? `<div class="blog-hero-img" style="max-width:1100px;margin
 
   <div class="cta-block">
     <h3>Op zoek naar meer uitjes?</h3>
-    <p>Ontdek ${data.total}+ geverifieerde locaties op PeuterPlannen.</p>
+    <p>Ontdek ${data.total}+ uitjes op PeuterPlannen.</p>
     <a href="/app.html">Open de app</a>
   </div>
 
