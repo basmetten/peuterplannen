@@ -195,6 +195,7 @@ const MUNICIPALITY_COVERAGE = {
   'haarlem':             ['Heemstede', 'Bloemendaal', 'Zandvoort', 'Velsen', 'Beverwijk'],
   'utrechtse-heuvelrug': ['Soest', 'Baarn', 'Wijk bij Duurstede', 'Leusden', 'Zeist', 'Bunnik'],
   'gooi-en-vechtstreek': ['Hilversum', 'Gooise Meren', 'Huizen', 'Blaricum', 'Laren', 'Wijdemeren', 'Eemnes'],
+  's-hertogenbosch':     ['Vught', 'Heusden', 'Bernheze', 'Boxtel', 'Oss', 'Maasdriel', 'Sint-Michielsgestel'],
 };
 
 const CITY_FAQ = {
@@ -930,7 +931,7 @@ ${headCommon()}
   <meta property="og:url" content="https://peuterplannen.nl/${region.slug}.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
-  <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
+  <meta property="og:image" content="${DEFAULT_OG}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <script type="application/ld+json">
@@ -959,7 +960,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 
 <main id="main-content">
   <div class="intro-box">
-    <p>${region.blurb} ${weatherNote}Op deze pagina vind je <strong>${locs.length} geverifieerde locaties</strong> in de regio ${region.name}.${coverageNote} Allemaal gecontroleerd op adres, openingstijden en kindvriendelijkheid.</p>
+    <p>${region.blurb} ${weatherNote}Op deze pagina vind je <strong>${locs.length} geverifieerde locaties</strong> in de regio ${region.name}.${coverageNote} Allemaal geselecteerd op kindvriendelijkheid, faciliteiten en geschiktheid voor peuters.</p>
   </div>
 
   <div class="city-app-cta">
@@ -1109,7 +1110,7 @@ ${headCommon()}
   <meta property="og:url" content="https://peuterplannen.nl/${page.slug}.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
-  <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
+  <meta property="og:image" content="${TYPE_OG_IMAGE[page.dbType] || DEFAULT_OG}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <script type="application/ld+json">
@@ -1218,6 +1219,36 @@ const TYPE_SINGULAR = {
   horeca:  'kindvriendelijk café of restaurant'
 };
 
+const TYPE_OG_IMAGE = {
+  play:    'https://peuterplannen.nl/images/og/play.jpg',
+  farm:    'https://peuterplannen.nl/images/og/farm.jpg',
+  nature:  'https://peuterplannen.nl/images/og/nature.jpg',
+  museum:  'https://peuterplannen.nl/images/og/museum.jpg',
+  swim:    'https://peuterplannen.nl/images/og/swim.jpg',
+  pancake: 'https://peuterplannen.nl/images/og/pancake.jpg',
+  horeca:  'https://peuterplannen.nl/images/og/horeca.jpg',
+};
+const DEFAULT_OG = 'https://peuterplannen.nl/images/og/default.jpg';
+
+const REGION_BLOG_MAP = {
+  'amsterdam':            [
+    { slug: 'gratis-peuteruitjes-amsterdam', title: '10 Gratis peuteruitjes in Amsterdam' },
+    { slug: 'dagje-uit-met-dreumes',         title: 'Dagje uit met een dreumes: 8 tips' },
+  ],
+  'utrecht':              [
+    { slug: 'kinderboerderijen-utrecht',     title: 'Beste kinderboerderijen in Utrecht' },
+  ],
+  'den-haag':             [
+    { slug: 'den-haag-met-peuters',          title: 'Den Haag met peuters: de beste plekken' },
+  ],
+  'haarlem':              [
+    { slug: 'haarlem-met-peuters',           title: 'Haarlem met peuters' },
+  ],
+  'utrechtse-heuvelrug':  [
+    { slug: 'pannenkoeken-boerderijen-utrecht-heuvelrug', title: 'Pannenkoeken op de Heuvelrug' },
+  ],
+};
+
 function truncateDesc(text, max = 155) {
   if (!text || text.length <= max) return text;
   const cut = text.lastIndexOf(' ', max);
@@ -1231,7 +1262,7 @@ function locationPageHTML(loc, region, similarLocs) {
   const regionDisplayName = region.subtitleLabel || region.name;
   const rawDesc = isFillerDescription(loc.description) ? '' : (loc.description || '');
   const metaDesc = truncateDesc(rawDesc)
-    || `${loc.name} in ${region.name} is een ${TYPE_SINGULAR[loc.type] || 'uitje'} voor gezinnen met jonge kinderen. Bekijk faciliteiten, route en openingstijden op PeuterPlannen.`;
+    || `${loc.name} in ${region.name} is een ${TYPE_SINGULAR[loc.type] || 'uitje'} voor gezinnen met jonge kinderen. Bekijk faciliteiten en plan je route via PeuterPlannen.`;
 
   // Weather
   const weatherLabel = WEATHER_LABELS[loc.weather] || '';
@@ -1277,7 +1308,32 @@ function locationPageHTML(loc, region, similarLocs) {
   if (weatherLabel) infoItems.push(`<div class="info-item"><div><div class="info-label">Weer</div><div class="info-value">${weatherLabel}</div></div></div>`);
   if (ageLabel) infoItems.push(`<div class="info-item"><div><div class="info-label">Leeftijd</div><div class="info-value">${ageLabel}</div></div></div>`);
   facilities.forEach(f => infoItems.push(`<div class="info-item"><div><div class="info-label">Faciliteit</div><div class="info-value">${f}</div></div></div>`));
+  if (loc.last_verified_at) {
+    const d = new Date(loc.last_verified_at);
+    const label = `Geverifieerd ${d.toLocaleString('nl-NL', { month: 'long', year: 'numeric' })}`;
+    infoItems.push(`<div class="info-item verified-badge"><div><div class="info-label">Status</div><div class="info-value">✓ ${label}</div></div></div>`);
+  }
   if (loc.website) infoItems.push(`<div class="info-item"><div><div class="info-label">Website</div><div class="info-value"><a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" aria-label="Website van ${escapeHtml(loc.name)}">${escapeHtml(loc.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''))}</a></div></div></div>`);
+
+  const regionSlug = (region.slug || '').toLowerCase();
+  const relatedBlogs = (REGION_BLOG_MAP[regionSlug] || []);
+  const blogLinksHTML = relatedBlogs.length > 0
+    ? `<div class="related-blogs">
+      <h3>Meer inspiratie</h3>
+      <ul>${relatedBlogs.map(b =>
+        `<li><a href="/blog/${b.slug}/">${b.title}</a></li>`
+      ).join('')}</ul>
+    </div>`
+    : '';
+
+  const appUrl = `/app.html?type=${encodeURIComponent(loc.type)}&regio=${encodeURIComponent(loc.region)}`;
+  const typeLabel_explore = TYPE_MAP[loc.type]?.label || loc.type;
+  const exploreCTAHTML = `
+<div class="explore-cta">
+  <a href="${appUrl}" class="btn-explore">
+    Bekijk alle ${typeLabel_explore} in ${loc.region} →
+  </a>
+</div>`;
 
   // JSON-LD
   const jsonLd = JSON.stringify({
@@ -1361,7 +1417,7 @@ ${headCommon(`\n  <link rel="preconnect" href="https://basemaps.cartocdn.com" cr
   <meta property="og:url" content="${fullUrl}">
   <meta property="og:type" content="article">
   <meta property="og:locale" content="nl_NL">
-  <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
+  <meta property="og:image" content="${TYPE_OG_IMAGE[loc.type] || DEFAULT_OG}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary">
@@ -1373,6 +1429,18 @@ ${jsonLd}
   <script type="application/ld+json">
 ${breadcrumbLd}
   </script>
+  <style>
+    .explore-cta { margin: 28px 0; text-align: center; }
+    .btn-explore { display: inline-block; padding: 12px 24px; background: var(--primary-light); color: var(--primary-dark); border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 15px; transition: background 0.2s; }
+    .btn-explore:hover { background: var(--primary); color: white; }
+    .related-blogs { margin: 24px 0; padding: 20px 24px; background: var(--bg-warm, #FAF7F2); border-radius: 12px; border-left: 4px solid var(--primary, #D4775A); }
+    .related-blogs h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--primary-dark, #B35D42); }
+    .related-blogs ul { list-style: none; padding: 0; margin: 0; }
+    .related-blogs li { margin-bottom: 8px; }
+    .related-blogs a { color: var(--primary-dark, #B35D42); text-decoration: none; font-weight: 500; }
+    .related-blogs a:hover { text-decoration: underline; }
+    .verified-badge .info-value { color: #2D8B5E; font-weight: 600; }
+  </style>
 </head>
 <body>
 
@@ -1399,6 +1467,8 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 
   ${infoItems.length > 0 ? `<div class="location-info">\n    ${infoItems.join('\n    ')}\n  </div>` : ''}
 
+  ${exploreCTAHTML}
+
   <div class="location-actions">
     ${routeUrl ? `<a href="${routeUrl}" target="_blank" rel="noopener" class="btn-route">Route plannen</a>` : ''}
   </div>
@@ -1412,6 +1482,8 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
   <p class="map-attribution">Kaart: &copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>` : ''}
 
   ${similarHTML}
+
+  ${blogLinksHTML}
 
   ${supportHTML()}
 

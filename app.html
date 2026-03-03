@@ -364,12 +364,51 @@
         .promo-body .card-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
         .promo-body .card-desc { font-size: 13px; margin-bottom: 0; }
         .promo-cta { flex-shrink: 0; padding: 8px 16px; background: var(--primary); color: white; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap; }
-        .loc-card.promo-banner.promo-donation { background: linear-gradient(135deg, #6B9590, #4A7A76); }
+        .loc-card.promo-banner.promo-donation { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
         .loc-card.promo-banner.promo-donation .card-name,
         .loc-card.promo-banner.promo-donation .card-desc { color: white; }
-        .loc-card.promo-banner.promo-donation .promo-cta { background: white; color: #4A7A76; }
-        .loc-card.promo-banner.promo-donation .promo-icon { background: rgba(255,255,255,0.25); }
+        .loc-card.promo-banner.promo-donation .promo-cta { background: white; color: var(--primary-dark); }
+        .loc-card.promo-banner.promo-donation .promo-icon { background: rgba(255,255,255,0.20); }
         .loc-card.promo-banner.promo-donation .promo-icon svg { stroke: white; }
+
+        /* Peuterscore badge */
+        .peuterscore {
+          display: inline-flex; align-items: center; gap: 2px;
+          padding: 2px 7px; border-radius: 8px;
+          font-size: 11px; font-weight: 700; line-height: 1;
+        }
+
+        /* Sort select */
+        .sort-select { padding: 4px 8px; border: 1px solid rgba(212,119,90,0.2); border-radius: 8px; font-family: var(--font-body); font-size: 12px; color: var(--text-secondary); background: var(--surface); cursor: pointer; }
+
+
+        /* Radius chips dimmed when no location set */
+        .radius-chip { opacity: 0.45; pointer-events: none; }
+        .has-location .radius-chip { opacity: 1; pointer-events: auto; }
+
+        /* Desktop split view */
+        @media (min-width: 768px) {
+          body { overflow: hidden; padding-bottom: 0; }
+          .app-wrapper { display: grid; grid-template-rows: auto 1fr; height: 100dvh; overflow: hidden; }
+          .app-header { margin: 0; position: static; }
+          .app-container { display: grid; grid-template-columns: 440px 1fr; max-width: 100%; overflow: hidden; height: 100%; padding: 0; }
+          #list-view { display: flex !important; flex-direction: column; overflow-y: auto; height: 100%; border-right: 1px solid rgba(45,41,38,0.08); padding: 12px 16px 20px; }
+          #map-container { display: block !important; height: 100%; position: relative; width: 100%; }
+          .map-container { width: 100%; margin: 0; height: 100%; max-height: none; min-height: unset; border-top: none; }
+          .bottom-nav { display: none; }
+        }
+
+        /* Explore CTA */
+        .explore-cta { margin: 28px 0; text-align: center; }
+        .btn-explore { display: inline-block; padding: 12px 24px; background: var(--primary-light); color: var(--primary-dark); border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 15px; transition: background 0.2s; }
+        .btn-explore:hover { background: var(--primary); color: white; }
+
+        /* View Transitions */
+        @keyframes slide-in  { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        @keyframes slide-out { from { transform: translateX(0); }   to { transform: translateX(-30%); opacity: 0; } }
+        ::view-transition-old(root) { animation: 250ms ease slide-out; }
+        ::view-transition-new(root) { animation: 250ms ease slide-in; }
+        @media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } }
     </style>
 </head>
 <body>
@@ -413,8 +452,8 @@
 </noscript>
 <!-- END:NOSCRIPT -->
 
-    <div class="app-container">
-        <header>
+    <div class="app-wrapper">
+        <header class="app-header">
             <a href="/" class="logo" aria-label="PeuterPlannen homepage">
                 <div class="logo-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" class="nav-logo-svg" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>
@@ -423,6 +462,8 @@
             </a>
             <div class="sub-head">Waar gaan we vandaag naartoe?</div>
         </header>
+    <div class="app-container" id="app-container">
+        <div id="list-view">
 
         <div class="search-section" role="search">
             <div class="search-label">
@@ -458,6 +499,13 @@
             <span class="chip-label">Extra:</span>
             <button class="chip" onclick="toggleFacility('coffee', event)" aria-selected="false">Koffie</button>
             <button class="chip" onclick="toggleFacility('diaper', event)" aria-selected="false">Verschonen</button>
+            <span class="chip-label">Leeftijd:</span>
+            <button class="chip" onclick="toggleAge('dreumes', event)" aria-selected="false">Dreumes (0–2)</button>
+            <button class="chip" onclick="toggleAge('peuter', event)" aria-selected="false">Peuter (2–5)</button>
+            <span class="chip-label">Afstand:</span>
+            <button class="chip radius-chip" onclick="toggleRadius(5, event)" aria-selected="false">5 km</button>
+            <button class="chip radius-chip" onclick="toggleRadius(10, event)" aria-selected="false">10 km</button>
+            <button class="chip radius-chip" onclick="toggleRadius(25, event)" aria-selected="false">25 km</button>
         </div>
 
         <div class="active-filters" id="active-filters" style="display:none;">
@@ -467,9 +515,19 @@
 
         <div id="weather-banner"></div>
 
-        <div class="results-count" id="results-count"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div class="results-count" id="results-count"></div>
+            <select id="sort-select" class="sort-select" onchange="applySort(this.value)" aria-label="Sorteer op">
+                <option value="default">Standaard</option>
+                <option value="peuterscore">Beste Peuterscore</option>
+                <option value="az">A–Z</option>
+            </select>
+        </div>
 
         <div id="results-container" class="results-list" role="feed" aria-label="Locaties"></div>
+        <div id="loader" class="loader" role="status" aria-label="Laden">Locaties laden...</div>
+        <div id="error" class="error-msg hidden" role="alert"></div>
+        </div><!-- /#list-view -->
 
         <div id="map-container" class="map-container hidden">
             <div id="map" class="map-canvas"></div>
@@ -481,10 +539,8 @@
                 Probeer een andere categorie of filter
             </div>
         </div>
-
-        <div id="loader" class="loader" role="status" aria-label="Laden">Locaties laden...</div>
-        <div id="error" class="error-msg hidden" role="alert"></div>
-    </div>
+    </div><!-- /#app-container -->
+    </div><!-- /.app-wrapper -->
 
     <!-- Info panel (slide-up bottom sheet) -->
     <div class="info-overlay" id="info-overlay" onclick="closeInfoPanel()" aria-hidden="true"></div>
@@ -582,6 +638,10 @@
         let activeTag = 'all';
         let activeWeather = null;
         let activeRegion = null;
+        let activeAgeGroup = null; // null | 'dreumes' | 'peuter'
+        let activeRadius = null;   // null | 5 | 10 | 25
+        let activeSort = 'default';
+        let lastTravelTimes = {};
 
         // Parse URL parameters (from quick-action buttons on homepage and city pages)
         (function() {
@@ -608,6 +668,7 @@
             if (params.get('regio')) {
                 activeRegion = params.get('regio');
             }
+            if (params.get('age')) activeAgeGroup = params.get('age');
         })();
         let activeFacilities = { coffee: false, diaper: false };
         let userLocation = null;
@@ -717,6 +778,8 @@
             if (activeWeather) count++;
             if (activeFacilities.coffee) count++;
             if (activeFacilities.diaper) count++;
+            if (activeAgeGroup) count++;
+            if (activeRadius) count++;
             const bar = document.getElementById('active-filters');
             const label = document.getElementById('filter-count');
             if (count > 0) {
@@ -727,14 +790,72 @@
             }
         }
 
+        function toggleAge(group, evt) {
+            evt?.stopPropagation();
+            activeAgeGroup = (activeAgeGroup === group) ? null : group;
+            document.querySelectorAll('.chip[onclick*="toggleAge"]').forEach(c => {
+                c.classList.toggle('active', c.getAttribute('onclick').includes(`'${activeAgeGroup}'`));
+                c.setAttribute('aria-selected', c.classList.contains('active') ? 'true' : 'false');
+            });
+            updateFilterCount();
+            loadLocations();
+        }
+
+        function toggleRadius(km, evt) {
+            evt?.stopPropagation();
+            if (!userLocation) {
+                document.getElementById('location-input')?.focus();
+                return;
+            }
+            activeRadius = (activeRadius === km) ? null : km;
+            document.querySelectorAll('.radius-chip').forEach(c => {
+                c.classList.remove('active');
+                c.setAttribute('aria-selected', 'false');
+            });
+            if (activeRadius && evt?.currentTarget) {
+                evt.currentTarget.classList.add('active');
+                evt.currentTarget.setAttribute('aria-selected', 'true');
+            }
+            updateFilterCount();
+            loadLocations();
+        }
+
         function resetAllFilters() {
             activeTag = 'all';
             activeWeather = null;
             activeFacilities = { coffee: false, diaper: false };
+            activeAgeGroup = null;
+            activeRadius = null;
+            activeSort = 'default';
+            const sortSelect = document.getElementById('sort-select');
+            if (sortSelect) sortSelect.value = 'default';
             document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
             document.querySelector('.chip').classList.add('active');
             updateFilterCount();
             loadLocations();
+        }
+
+        // === Sort ===
+        function applyActiveSort() {
+            if (activeSort === 'peuterscore') allLocations.sort((a,b) => computePeuterScore(b) - computePeuterScore(a));
+            else if (activeSort === 'az') allLocations.sort((a,b) => (a.name||'').localeCompare(b.name||'', 'nl'));
+        }
+
+        function applySort(val) {
+            activeSort = val;
+            applyActiveSort();
+            renderCards(allLocations, lastTravelTimes);
+        }
+
+        // === Peuterscore ===
+        function computePeuterScore(loc) {
+            let score = 0;
+            if (loc.min_age === null || loc.min_age <= 2) score += 3;
+            if (loc.diaper)   score += 3;
+            if (loc.coffee)   score += 1;
+            if (loc.weather && ['indoor','hybrid','both'].includes(loc.weather)) score += 2;
+            if (loc.toddler_highlight) score += 1;
+            return score; // max 10
         }
 
         // === Location Search ===
@@ -748,6 +869,7 @@
                 const place = autocomplete.getPlace();
                 if (place.geometry) {
                     userLocation = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), name: place.formatted_address || place.name };
+                    document.getElementById('app-container')?.classList.add('has-location');
                     loadLocations(); updateUserLocationOnMap();
                 }
             });
@@ -772,8 +894,9 @@
                     input.value = userLocation.name;
                     showGpsStatus(`Locatie: ${userLocation.name}`, '');
                     setTimeout(() => statusEl.classList.add('hidden'), 2000);
+                    document.getElementById('app-container')?.classList.add('has-location');
                     loadLocations(); updateUserLocationOnMap();
-                } catch (err) { input.value = 'Mijn locatie'; showGpsStatus('Locatie gevonden', ''); setTimeout(() => statusEl.classList.add('hidden'), 2000); loadLocations(); updateUserLocationOnMap(); }
+                } catch (err) { input.value = 'Mijn locatie'; showGpsStatus('Locatie gevonden', ''); setTimeout(() => statusEl.classList.add('hidden'), 2000); document.getElementById('app-container')?.classList.add('has-location'); loadLocations(); updateUserLocationOnMap(); }
             }, (err) => { let msg = 'Locatie niet beschikbaar'; if (err.code === 1) msg = 'Toestemming geweigerd'; if (err.code === 2) msg = 'Locatie niet gevonden'; if (err.code === 3) msg = 'Timeout'; showGpsStatus(msg, 'error'); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
         }
 
@@ -791,6 +914,7 @@
                 });
                 userLocation = { lat: result.geometry.location.lat(), lng: result.geometry.location.lng(), name: input };
                 showGpsStatus(`Zoeken bij ${input}...`, 'active');
+                document.getElementById('app-container')?.classList.add('has-location');
                 loadLocations(); updateUserLocationOnMap();
             } catch (err) { showGpsStatus('Locatie niet gevonden', 'error'); }
         }
@@ -810,7 +934,7 @@
                 if (dest.lat && dest.lng) {
                     const dist = calculateDistance(userLocation.lat, userLocation.lng, dest.lat, dest.lng);
                     const mins = Math.round(dist * 1.3); // rough driving estimate
-                    results[dest.id] = { duration: mins < 60 ? `${mins} min` : `${Math.floor(mins/60)}u ${mins%60}m`, durationValue: mins * 60, distance: dist < 1 ? `${Math.round(dist*1000)}m` : `${dist.toFixed(1)} km` };
+                    results[dest.id] = { duration: mins < 60 ? `${mins} min` : `${Math.floor(mins/60)}u ${mins%60}m`, durationValue: mins * 60, distance: dist < 1 ? `${Math.round(dist*1000)}m` : `${dist.toFixed(1)} km`, distanceKm: dist };
                 }
             });
             return results;
@@ -869,16 +993,37 @@
                     allLocations = allLocations.filter(item => favorites.includes(item.id));
                 }
 
+                // Age filter
+                if (activeAgeGroup === 'dreumes') {
+                    allLocations = allLocations.filter(loc => loc.min_age === null || loc.min_age <= 2);
+                } else if (activeAgeGroup === 'peuter') {
+                    allLocations = allLocations.filter(loc =>
+                        (loc.min_age === null || loc.min_age <= 5) &&
+                        (loc.max_age === null || loc.max_age >= 2)
+                    );
+                }
+
                 if (allLocations.length === 0) { loader.classList.add('hidden'); container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong><br>Probeer een andere categorie of filter</div>'; updateMapMarkers([]); updateResultsCount(0); return; }
 
                 if (userLocation) {
                     const travelTimes = await calculateTravelTimes(allLocations);
+                    lastTravelTimes = travelTimes;
                     allLocations.sort((a, b) => (travelTimes[a.id]?.durationValue || 999999) - (travelTimes[b.id]?.durationValue || 999999));
+                    // Radius filter (after distance sort)
+                    if (activeRadius) {
+                        allLocations = allLocations.filter(loc => {
+                            const t = travelTimes[loc.id];
+                            return t ? t.distanceKm <= activeRadius : false;
+                        });
+                    }
+                    applyActiveSort();
                     loader.classList.add('hidden');
                     renderCards(allLocations, travelTimes);
                     updateMapMarkers(allLocations); updateResultsCount(allLocations.length);
                 } else {
+                    lastTravelTimes = {};
                     allLocations.sort((a, b) => (a.distance_from_city_center_km || 999) - (b.distance_from_city_center_km || 999));
+                    applyActiveSort();
                     loader.classList.add('hidden');
                     renderCards(allLocations, {});
                     updateMapMarkers(allLocations); updateResultsCount(allLocations.length);
@@ -906,7 +1051,7 @@
         // === Card Rendering ===
         const PROMO_ITEMS = [
             { title: 'Dit is een hobbyproject', text: 'Geen team, geen budget. Wel 660+ uitjes in Nederland. Stuur een koffie. ☕', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun PeuterPlannen', icon: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>', donation: true },
-            { title: 'De server betaalt zichzelf niet', text: '€10/maand om dit gratis te houden. Wil jij helpen?', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Stuur een bijdrage', icon: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/>', donation: true },
+            { title: 'Gemaakt door een vader, voor ouders', text: 'Geen team, geen budget. Wel 767+ geverifieerde uitjes. Een kleine bijdrage helpt.', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun PeuterPlannen', icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>', donation: true },
             { title: 'Iets nuttigs gevonden?', text: 'PeuterPlannen is gratis. Een kleine bijdrage houdt het zo.', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Trakteer de maker', icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>', donation: true },
             { title: '660+ locaties, gratis', text: 'Gemaakt voor ouders in Nederland. Help het gratis te houden.', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun via betaalverzoek', icon: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>', donation: true },
         ];
@@ -970,6 +1115,10 @@
                     distancePill = `<span class="pill pill-region">${item.region}</span>`;
                 }
 
+                const ps = computePeuterScore(item);
+                const psColor = ps >= 7 ? '#4A7A4A' : ps >= 4 ? '#C07830' : '#9E9E9E';
+                const psBadge = `<span class="peuterscore" style="background:${psColor}18;color:${psColor};border:1px solid ${psColor}30" title="Peuterscore: ${ps}/10">${ps}★</span>`;
+
                 const ageInfo = (item.min_age !== null && item.max_age !== null) ?
                     `<span class="age-range">${item.min_age}-${item.max_age} jaar</span>` : '';
                 const highlight = item.toddler_highlight ?
@@ -983,12 +1132,17 @@
                 const card = document.createElement('article');
                 card.className = 'loc-card reveal';
                 card.style.animationDelay = `${Math.min(batchIdx * 0.04, 0.2)}s`;
+                if (window.innerWidth >= 768 && item.lat && item.lng) {
+                    card.addEventListener('mouseenter', () => highlightMarker(item.id));
+                    card.addEventListener('mouseleave', () => highlightMarker(null));
+                }
                 card.innerHTML = `
                     <div class="card-top">
                         <div class="card-pills">
                             <span class="pill pill-type">${typeLabel}</span>
                             ${weatherLabel ? `<span class="pill pill-weather">${weatherIcon}${weatherLabel}</span>` : ''}
                             ${distancePill}
+                            ${psBadge}
                         </div>
                         <button class="card-fav" onclick="toggleFavorite(${item.id}, this)" title="${isFav ? 'Verwijder favoriet' : 'Opslaan'}" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
                             <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -1046,6 +1200,7 @@
         let currentView = 'home';
 
         function switchView(view) {
+            const isDesktop = window.innerWidth >= 768;
             closeLocSheet();
             if (view !== 'info') closeInfoPanel();
 
@@ -1053,7 +1208,21 @@
             const tab = document.getElementById('tab-' + view);
             if (tab) tab.classList.add('active');
 
-            // Hide map when switching to a non-map view
+            // On desktop: map is always visible; favorites/info handled normally
+            if (isDesktop) {
+                if (view === 'favorites') { activeTag = 'favorites'; loadLocations(); }
+                else if (view === 'info') { openInfoPanel(); }
+                else if (view === 'home') {
+                    activeTag = 'all'; activeWeather = null; activeFacilities = { coffee: false, diaper: false };
+                    activeAgeGroup = null; activeRadius = null;
+                    document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
+                    document.querySelector('.chip').classList.add('active');
+                    updateFilterCount(); loadLocations();
+                }
+                return;
+            }
+
+            // Hide map when switching to a non-map view (mobile only)
             if (view !== 'map' && currentDisplayMode === 'map') setDisplayMode('list');
 
             currentView = view;
@@ -1308,7 +1477,8 @@
             const hasResults = locations.filter(l => l.lat && l.lng).length > 0;
             noResults.classList.toggle('hidden', hasResults);
 
-            if (currentDisplayMode === 'map' && hasResults) fitMapToMarkers();
+            const isDesktopSplit = window.innerWidth >= 768;
+            if ((currentDisplayMode === 'map' || isDesktopSplit) && hasResults) fitMapToMarkers();
         }
 
         function fitMapToMarkers() {
@@ -1341,14 +1511,17 @@
         }
 
         function setDisplayMode(mode) {
+            const isDesktop = window.innerWidth >= 768;
             currentDisplayMode = mode;
             const resultsContainer = document.getElementById('results-container');
             const loader = document.getElementById('loader');
             const mapContainer = document.getElementById('map-container');
 
-            if (mode === 'map') {
-                resultsContainer.classList.add('map-active');
-                loader.classList.add('map-active');
+            if (mode === 'map' || isDesktop) {
+                if (!isDesktop) {
+                    resultsContainer.classList.add('map-active');
+                    loader.classList.add('map-active');
+                }
                 mapContainer.classList.remove('hidden');
 
                 if (!mapInstance) {
@@ -1356,14 +1529,13 @@
                         initMap();
                     }).catch(err => {
                         console.warn('Map unavailable:', err);
-                        // Hide map tab on CDN failure
                         const mapTab = document.getElementById('tab-map');
                         if (mapTab) mapTab.style.display = 'none';
-                        switchView('home');
+                        if (!isDesktop) switchView('home');
                     });
                 } else {
                     mapInstance.resize();
-                    fitMapToMarkers();
+                    if (mode === 'map') fitMapToMarkers();
                 }
             } else {
                 resultsContainer.classList.remove('map-active');
@@ -1490,11 +1662,41 @@
         loadLocations();
         checkWeather();
 
-        // Preload MapLibre in background
-        if ('requestIdleCallback' in window) {
+        // On desktop: show map panel immediately
+        if (window.innerWidth >= 768) {
+            document.getElementById('map-container').classList.remove('hidden');
+        }
+
+        // Preload MapLibre — immediately on desktop, lazily on mobile
+        if (window.innerWidth >= 768) {
+            loadMapLibre().then(() => { initMap(); }).catch(() => {});
+        } else if ('requestIdleCallback' in window) {
             requestIdleCallback(() => loadMapLibre(), { timeout: 5000 });
         } else {
             setTimeout(() => loadMapLibre(), 3000);
+        }
+
+        // === View Transitions for location page navigation ===
+        document.getElementById('results-container').addEventListener('click', (e) => {
+            const link = e.target.closest('a.btn-detail');
+            if (!link || !link.href) return;
+            if (!document.startViewTransition) return;
+            e.preventDefault();
+            const href = link.href;
+            document.startViewTransition(() => { location.href = href; });
+        });
+
+        // === Marker highlight on desktop card hover ===
+        function highlightMarker(id) {
+            if (!mapInstance) return;
+            try {
+                mapInstance.setPaintProperty('unclustered-point', 'circle-radius', [
+                    'case', ['==', ['get', 'id'], id ?? -1], 14, 9
+                ]);
+                mapInstance.setPaintProperty('unclustered-point', 'circle-stroke-width', [
+                    'case', ['==', ['get', 'id'], id ?? -1], 3, 2
+                ]);
+            } catch(e) {}
         }
 
         // Scroll-reveal observer

@@ -98,6 +98,14 @@ const REGIONS = {
   'Wassenaar':                { osmName: 'Wassenaar',                adminLevel: 8, supabaseRegion: 'Den Haag' },
   'Leidschendam-Voorburg':    { osmName: 'Leidschendam-Voorburg',    adminLevel: 8, supabaseRegion: 'Den Haag' },
   'Pijnacker-Nootdorp':       { osmName: 'Pijnacker-Nootdorp',       adminLevel: 8, supabaseRegion: 'Den Haag' },
+  // 's-Hertogenbosch omliggende gemeenten
+  'Vught':               { osmName: 'Vught',               adminLevel: 8, supabaseRegion: "'s-Hertogenbosch" },
+  'Sint-Michielsgestel': { osmName: 'Sint-Michielsgestel', adminLevel: 8, supabaseRegion: "'s-Hertogenbosch" },
+  'Heusden':             { osmName: 'Heusden',             adminLevel: 8, supabaseRegion: "'s-Hertogenbosch" },
+  'Bernheze':            { osmName: 'Bernheze',            adminLevel: 8, supabaseRegion: "'s-Hertogenbosch" },
+  'Boxtel':              { osmName: 'Boxtel',              adminLevel: 8, supabaseRegion: "'s-Hertogenbosch" },
+  'Oss':                 { osmName: 'Oss',                 adminLevel: 8, supabaseRegion: "'s-Hertogenbosch" },
+  'Maasdriel':           { osmName: 'Maasdriel',           adminLevel: 8, supabaseRegion: "'s-Hertogenbosch" },
 };
 
 // ─── CLI args ──────────────────────────────────────────────────────────────
