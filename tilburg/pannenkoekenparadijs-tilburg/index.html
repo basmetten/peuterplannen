@@ -18,6 +18,7 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
   <meta name="theme-color" content="#D4775A">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
@@ -143,12 +144,42 @@
       <a href="/contact.html" class="nav-link">Contact</a>
       <a href="/app.html?regio=Tilburg" class="nav-cta">Zoek in Tilburg</a>
     </div>
+    <button class="nav-burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-mobile-menu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
+    <a href="/" class="nav-mobile-link">Home</a>
+    <a href="/about.html" class="nav-mobile-link">Over</a>
+    <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
+    <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    <a href="/app.html?regio=Tilburg" class="nav-mobile-link nav-mobile-cta nav-cta">Zoek in Tilburg</a>
   </div>
 </nav>
+<script>
+(function(){
+  var p=location.pathname;
+  document.querySelectorAll('.nav-link,.nav-mobile-link').forEach(function(a){
+    var h=a.getAttribute('href');
+    if(h===p||(h.length>1&&p.startsWith(h)))a.classList.add('active');
+  });
+  var burger=document.querySelector('.nav-burger');
+  var mobile=document.getElementById('nav-mobile-menu');
+  if(!burger||!mobile)return;
+  function close(){mobile.classList.remove('open');mobile.setAttribute('aria-hidden','true');burger.classList.remove('open');burger.setAttribute('aria-expanded','false');}
+  burger.addEventListener('click',function(){var o=!mobile.classList.contains('open');mobile.classList.toggle('open',o);mobile.setAttribute('aria-hidden',!o);burger.classList.toggle('open',o);burger.setAttribute('aria-expanded',o);});
+  mobile.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+  document.addEventListener('click',function(e){if(!e.target.closest('nav'))close();});
+})();
+</script>
 
-<div class="hero" style="padding: 100px 24px 40px;">
+<div class="hero hero-location">
+  <span class="hero-location-badge">Pannenkoeken</span>
   <p class="hero-location-title">Pannenkoekenparadijs Tilburg</p>
-  <p>Pannenkoeken in Tilburg</p>
+  <p class="hero-location-sub">in <a href="/tilburg.html">Tilburg</a></p>
 </div>
 
 <nav aria-label="Kruimelpad" class="breadcrumb">

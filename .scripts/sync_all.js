@@ -380,8 +380,37 @@ function navHTML(ctaText = 'Open App', ctaHref = '/app.html') {
       <a href="/contact.html" class="nav-link">Contact</a>
       <a href="${ctaHref}" class="nav-cta">${ctaText}</a>
     </div>
+    <button class="nav-burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-mobile-menu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
   </div>
-</nav>`;
+  <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
+    <a href="/" class="nav-mobile-link">Home</a>
+    <a href="/about.html" class="nav-mobile-link">Over</a>
+    <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
+    <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    <a href="${ctaHref}" class="nav-mobile-link nav-mobile-cta nav-cta">${ctaText}</a>
+  </div>
+</nav>
+<script>
+(function(){
+  var p=location.pathname;
+  document.querySelectorAll('.nav-link,.nav-mobile-link').forEach(function(a){
+    var h=a.getAttribute('href');
+    if(h===p||(h.length>1&&p.startsWith(h)))a.classList.add('active');
+  });
+  var burger=document.querySelector('.nav-burger');
+  var mobile=document.getElementById('nav-mobile-menu');
+  if(!burger||!mobile)return;
+  function close(){mobile.classList.remove('open');mobile.setAttribute('aria-hidden','true');burger.classList.remove('open');burger.setAttribute('aria-expanded','false');}
+  burger.addEventListener('click',function(){var o=!mobile.classList.contains('open');mobile.classList.toggle('open',o);mobile.setAttribute('aria-hidden',!o);burger.classList.toggle('open',o);burger.setAttribute('aria-expanded',o);});
+  mobile.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+  document.addEventListener('click',function(e){if(!e.target.closest('nav'))close();});
+})();
+</script>`;
 }
 
 function footerHTML() {
@@ -406,7 +435,7 @@ function badgeHTML(loc) {
 
 function revealScript() {
   return `<script>
-(function(){var o=new IntersectionObserver(function(e){e.forEach(function(i){if(i.isIntersecting){i.target.classList.add('visible');o.unobserve(i.target);}});},{threshold:0,rootMargin:'0px 0px 300px 0px'});document.querySelectorAll('.loc-item,.type-section,.region-section,.blog-card,.cta-block,.support-section,.faq-section').forEach(function(el,i){el.classList.add('reveal');el.style.animationDelay=Math.min(i*0.03,0.15)+'s';o.observe(el);});})();
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(i){if(i.isIntersecting){i.target.classList.add('visible');o.unobserve(i.target);}});},{threshold:0,rootMargin:'0px 0px 300px 0px'});document.querySelectorAll('.loc-item,.type-section,.region-section,.blog-card,.cta-block,.support-section,.faq-section').forEach(function(el,i){el.classList.add('reveal');el.style.animationDelay=Math.min(i*0.04,0.24)+'s';o.observe(el);});})();
 </script>`;
 }
 
@@ -464,6 +493,7 @@ function headCommon(extra = '') {
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
   <meta name="theme-color" content="#D4775A">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
@@ -1514,9 +1544,10 @@ ${breadcrumbLd}
 
 ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region.name)}`)}
 
-<div class="hero" style="padding: 100px 24px 40px;">
+<div class="hero hero-location">
+  <span class="hero-location-badge">${typeLabel}</span>
   <p class="hero-location-title">${escapeHtml(loc.name)}</p>
-  <p>${typeLabel} in ${regionDisplayName}</p>
+  <p class="hero-location-sub">in <a href="/${region.slug}.html">${regionDisplayName}</a></p>
 </div>
 
 <nav aria-label="Kruimelpad" class="breadcrumb">
@@ -1738,6 +1769,14 @@ ${fm.featured_image ? `<div class="blog-hero-img" style="max-width:1100px;margin
 
 ${footerHTML()}
 
+<script>
+(function(){
+  var bar=document.createElement('div');
+  bar.style.cssText='position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--primary),var(--accent));z-index:9999;transition:width 0.1s linear;border-radius:0 2px 2px 0;pointer-events:none;';
+  document.body.prepend(bar);
+  window.addEventListener('scroll',function(){var h=document.documentElement;var pct=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;bar.style.width=Math.min(pct,100)+'%';},{passive:true});
+})();
+</script>
 ${analyticsHTML()}
 </body>
 </html>`;

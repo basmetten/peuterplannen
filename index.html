@@ -218,7 +218,8 @@
 
         .hero { padding: 140px 24px 80px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center; }
         .hero-content h1 { font-size: 52px; font-weight: 700; line-height: 1.15; margin-bottom: 20px; letter-spacing: -0.02em; }
-        .hero-content h1 { color: var(--navy); } .hero-content h1 span { color: var(--primary); }
+        .hero-content h1 { color: var(--navy); }
+        .hero-content h1 span { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .hero-content p { font-size: 20px; color: var(--ink-light); margin-bottom: 32px; max-width: 480px; }
         .hero-cta { display: flex; gap: 16px; }
         .hero-cta-primary { background: var(--primary); color: white; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 20px rgba(45,41,38,0.25); transition: all 0.25s cubic-bezier(0.22,1,0.36,1); letter-spacing: 0.01em; }
@@ -338,7 +339,8 @@
         /* Premium: feature card gradient top border on hover */
         .feature-card { position: relative; overflow: hidden; }
         .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); border-radius: 20px 20px 0 0; }
-        .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(45,41,38,0.12); }
+        .feature-card { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease; }
+        .feature-card:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 2px 4px rgba(45,41,38,0.04), 0 12px 32px rgba(45,41,38,0.10), 0 32px 60px rgba(212,119,90,0.07); }
         .feature-card:hover::before { transform: scaleX(1); }
 
         /* Premium: stat numbers use heading font */
@@ -419,15 +421,15 @@
     <section class="stats">
         <div class="stats-container">
             <div>
-                <div class="stat-number">767</div>
+                <div class="stat-number" data-target="767" data-suffix="">767</div>
                 <div class="stat-label">Locaties</div>
             </div>
             <div>
-                <div class="stat-number">18</div>
+                <div class="stat-number" data-target="18" data-suffix="">18</div>
                 <div class="stat-label">Regio's</div>
             </div>
             <div>
-                <div class="stat-number">100%</div>
+                <div class="stat-number" data-target="100" data-suffix="%">100%</div>
                 <div class="stat-label">Gecheckt</div>
             </div>
         </div>
@@ -667,6 +669,28 @@ document.querySelectorAll('.feature-card, .stat-item, .hero-content, .hero-visua
   el.style.animationDelay = (i * 0.1) + 's';
   observer.observe(el);
 });
+
+/* Count-up animation for stats */
+function countUp(el) {
+  var target = parseInt(el.dataset.target, 10);
+  var suffix = el.dataset.suffix || '';
+  var duration = 1400;
+  var start = null;
+  function step(ts) {
+    if (!start) start = ts;
+    var p = Math.min((ts - start) / duration, 1);
+    var ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(ease * target) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+var statObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) { countUp(e.target); statObs.unobserve(e.target); }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-number[data-target]').forEach(function(el) { statObs.observe(el); });
 </script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
