@@ -949,6 +949,7 @@ ${headCommon()}
   <meta property="og:image" content="${DEFAULT_OG}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Peuteruitjes in ${region.name} — PeuterPlannen">
   <script type="application/ld+json">
 ${jsonLd}
   </script>
@@ -1128,6 +1129,7 @@ ${headCommon()}
   <meta property="og:image" content="${TYPE_OG_IMAGE[page.dbType] || DEFAULT_OG}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="${escapeHtml(page.metaTitle)}">
   <script type="application/ld+json">
 ${jsonLdItemList}
   </script>
@@ -1264,6 +1266,25 @@ const REGION_BLOG_MAP = {
   ],
 };
 
+function buildMetaDesc(loc, region) {
+  const typeNoun = TYPE_SINGULAR[loc.type] || 'uitje';
+  const parts = [];
+  if (loc.toddler_highlight) {
+    const firstSentence = cleanToddlerHighlight(loc.toddler_highlight).split(/[.!?]/)[0].trim();
+    if (firstSentence.length > 20) parts.push(firstSentence);
+  }
+  const facilities = [];
+  if (loc.diaper) facilities.push('luierruimte');
+  if (loc.coffee) facilities.push('koffie voor ouders');
+  if (['indoor', 'hybrid', 'both'].includes(loc.weather)) facilities.push('ook bij slecht weer');
+  const facilityStr = facilities.length > 0 ? ` Met ${facilities.join(' en ')}.` : '';
+
+  if (parts.length > 0) {
+    return `${parts[0]}. ${typeNoun.charAt(0).toUpperCase() + typeNoun.slice(1)} in ${region.name}${facilityStr} Ontdek via PeuterPlannen.`;
+  }
+  return `${loc.name} in ${region.name} is een ${typeNoun} voor peuters en dreumesen.${facilityStr} Bekijk route en tips via PeuterPlannen.`;
+}
+
 function truncateDesc(text, max = 155) {
   if (!text || text.length <= max) return text;
   const cut = text.lastIndexOf(' ', max);
@@ -1276,8 +1297,7 @@ function locationPageHTML(loc, region, similarLocs) {
   const typeLabel_meta = TYPE_MAP[loc.type]?.label || loc.type;
   const regionDisplayName = region.subtitleLabel || region.name;
   const rawDesc = isFillerDescription(loc.description) ? '' : (loc.description || '');
-  const metaDesc = truncateDesc(rawDesc)
-    || `${loc.name} in ${region.name} is een ${TYPE_SINGULAR[loc.type] || 'uitje'} voor gezinnen met jonge kinderen. Bekijk faciliteiten en plan je route via PeuterPlannen.`;
+  const metaDesc = truncateDesc(rawDesc) || buildMetaDesc(loc, region);
 
   // Weather
   const weatherLabel = WEATHER_LABELS[loc.weather] || '';
@@ -1351,9 +1371,12 @@ function locationPageHTML(loc, region, similarLocs) {
 </div>`;
 
   // JSON-LD
+  const schemaType = (loc.type === 'horeca' || loc.type === 'pancake')
+    ? ['FoodEstablishment', 'TouristAttraction']
+    : 'TouristAttraction';
   const jsonLd = JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "TouristAttraction",
+    "@type": schemaType,
     "name": loc.name,
     "description": metaDesc,
     "url": fullUrl,
@@ -1366,7 +1389,9 @@ function locationPageHTML(loc, region, similarLocs) {
       "amenityFeature": facilities.map(f => ({ "@type": "LocationFeatureSpecification", "name": f, "value": true }))
     }),
     "audience": { "@type": "Audience", "audienceType": "Gezinnen met jonge kinderen (0-7 jaar)" },
-    "touristType": "Gezinnen met peuters"
+    "touristType": "Gezinnen met peuters",
+    ...(loc.type === 'pancake' && { "servesCuisine": "Pannenkoeken" }),
+    ...(loc.type === 'horeca'  && { "servesCuisine": "Kindvriendelijk" })
   }, null, 2);
 
   const breadcrumbLd = JSON.stringify({
@@ -1435,6 +1460,7 @@ ${headCommon(`\n  <link rel="preconnect" href="https://basemaps.cartocdn.com" cr
   <meta property="og:image" content="${TYPE_OG_IMAGE[loc.type] || DEFAULT_OG}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="${escapeHtml(loc.name)} — peuteruitje in ${escapeHtml(region.name)}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="${escapeHtml(loc.name)} | PeuterPlannen">
   <meta name="twitter:description" content="${escapeHtml(metaDesc)}">
@@ -1796,8 +1822,6 @@ function generateSitemap(data, blogPosts) {
     { loc: 'https://peuterplannen.nl/about.html', priority: '0.5', changefreq: 'monthly' },
     { loc: 'https://peuterplannen.nl/contact.html', priority: '0.4', changefreq: 'monthly' },
     { loc: 'https://peuterplannen.nl/blog/', priority: '0.7', changefreq: 'weekly' },
-    { loc: 'https://peuterplannen.nl/privacy/', priority: '0.3', changefreq: 'yearly' },
-    { loc: 'https://peuterplannen.nl/disclaimer/', priority: '0.3', changefreq: 'yearly' },
   ];
 
   const cityPages = regions.map(r => ({
@@ -1813,7 +1837,7 @@ function generateSitemap(data, blogPosts) {
   }));
 
   // Location pages
-  const locationPages = locations.map(loc => ({
+  const locationPages = locations.filter(loc => loc.pageUrl).map(loc => ({
     loc: `https://peuterplannen.nl${loc.pageUrl}`,
     priority: '0.6',
     changefreq: 'monthly',
