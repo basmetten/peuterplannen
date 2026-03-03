@@ -444,7 +444,15 @@ function supportHTML(variant = 'default') {
 }
 
 function headCommon(extra = '') {
-  return `  <meta charset="UTF-8">
+  return `  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-46RW178B97');
+  </script>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#D4775A">
   <link rel="icon" href="/favicon.ico" sizes="any">
