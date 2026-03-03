@@ -374,7 +374,10 @@ function navHTML(ctaText = 'Open App', ctaHref = '/app.html') {
       <span class="logo-text"><span class="logo-top">Peuter</span><span class="logo-bottom">Plannen</span></span>
     </a>
     <div class="nav-links">
-      <a href="/blog/" class="nav-link">Blog</a>
+      <a href="/" class="nav-link">Home</a>
+      <a href="/about.html" class="nav-link">Over</a>
+      <a href="/blog/" class="nav-link">Inspiratie</a>
+      <a href="/contact.html" class="nav-link">Contact</a>
       <a href="${ctaHref}" class="nav-cta">${ctaText}</a>
     </div>
   </div>
@@ -934,6 +937,15 @@ function generateCityPage(region, locs, allRegions) {
     "itemListElement": jsonLdItems
   }, null, 2);
 
+  const breadcrumbCityLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "PeuterPlannen", "item": "https://peuterplannen.nl/" },
+      { "@type": "ListItem", "position": 2, "name": `${region.name} met peuters`, "item": `https://peuterplannen.nl/${region.slug}.html` }
+    ]
+  }, null, 2);
+
   return `<!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -954,6 +966,9 @@ ${headCommon()}
 ${jsonLd}
   </script>
   ${cityFaqLd ? `<script type="application/ld+json">\n${cityFaqLd}\n  </script>` : ''}
+  <script type="application/ld+json">
+${breadcrumbCityLd}
+  </script>
 </head>
 <body>
 
@@ -961,7 +976,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 
 <div class="hero">
   <h1>Uitjes met peuters in <span>${region.name}${omgevingLabel}</span></h1>
-  <p>${region.blurb}</p>
+  <p>${escapeHtml(region.blurb)}</p>
   <div class="hero-stats">
     <div class="hero-stat"><strong>${locs.length}</strong><span>locaties</span></div>
     <div class="hero-stat"><strong>${byType.play?.length || 0}</strong><span>speeltuinen</span></div>
@@ -990,8 +1005,8 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
     <h2>Veelgestelde vragen over uitjes in ${region.name}</h2>
     ${cityFaqItems.map(item => `
     <details class="faq-item">
-      <summary>${item.q}</summary>
-      <div class="faq-answer"><p>${item.a}</p></div>
+      <summary>${escapeHtml(item.q)}</summary>
+      <div class="faq-answer"><p>${escapeHtml(item.a)}</p></div>
     </details>`).join('')}
   </div>` : ''}
 
@@ -1076,8 +1091,8 @@ function generateTypePage(page, locs, regions) {
 
   const faqHTML = page.faqItems.map(item => `
     <details class="faq-item">
-      <summary>${item.q}</summary>
-      <div class="faq-answer"><p>${item.a}</p></div>
+      <summary>${escapeHtml(item.q)}</summary>
+      <div class="faq-answer"><p>${escapeHtml(item.a)}</p></div>
     </details>`).join('');
 
   const otherTypeLinks = TYPE_PAGES
@@ -1114,6 +1129,15 @@ function generateTypePage(page, locs, regions) {
     }))
   }, null, 2);
 
+  const breadcrumbTypeLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "PeuterPlannen", "item": "https://peuterplannen.nl/" },
+      { "@type": "ListItem", "position": 2, "name": page.title, "item": `https://peuterplannen.nl/${page.slug}.html` }
+    ]
+  }, null, 2);
+
   return `<!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -1135,6 +1159,9 @@ ${jsonLdItemList}
   </script>
   <script type="application/ld+json">
 ${jsonLdFaq}
+  </script>
+  <script type="application/ld+json">
+${breadcrumbTypeLd}
   </script>
 </head>
 <body>
@@ -1455,7 +1482,7 @@ ${headCommon(`\n  <link rel="preconnect" href="https://basemaps.cartocdn.com" cr
   <meta property="og:title" content="${escapeHtml(loc.name)} — ${region.name} | PeuterPlannen">
   <meta property="og:description" content="${escapeHtml(metaDesc)}">
   <meta property="og:url" content="${fullUrl}">
-  <meta property="og:type" content="article">
+  <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
   <meta property="og:image" content="${TYPE_OG_IMAGE[loc.type] || DEFAULT_OG}">
   <meta property="og:image:width" content="1200">
@@ -1659,6 +1686,7 @@ ${headCommon()}
   <meta property="og:image" content="https://peuterplannen.nl/${fm.featured_image ? fm.featured_image.replace(/^\//, '') : 'homepage_hero_ai.jpeg'}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="${escapeHtml(fm.title)} | PeuterPlannen">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${escapeHtml(fm.title)}">
   <meta name="twitter:description" content="${escapeHtml(fm.description || '')}">
@@ -1731,6 +1759,19 @@ ${analyticsHTML()}
       ${p.tags.length > 0 ? `<div class="blog-tags">${p.tags.map(t => `<span class="blog-tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
     </article>`).join('\n');
 
+  const blogIndexLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "PeuterPlannen Blog",
+    "description": "Tips, inspiratie en praktische gidsen voor uitjes met peuters en kleuters in Nederland.",
+    "url": "https://peuterplannen.nl/blog/",
+    "publisher": {
+      "@type": "Organization",
+      "name": "PeuterPlannen",
+      "url": "https://peuterplannen.nl/"
+    }
+  }, null, 2);
+
   const indexHTML = `<!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -1745,6 +1786,12 @@ ${headCommon()}
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
   <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
+  <meta property="og:image:width" content="1408">
+  <meta property="og:image:height" content="768">
+  <meta property="og:image:alt" content="PeuterPlannen Blog — uitjes voor peuters in Nederland">
+  <script type="application/ld+json">
+${blogIndexLd}
+  </script>
 </head>
 <body>
 
