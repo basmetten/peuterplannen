@@ -410,7 +410,7 @@
             options: { shouldCreateUser: true }
         });
         if (error) {
-            btn.disabled = false; btn.textContent = 'Inlogcode sturen →';
+            btn.disabled = false; btn.textContent = 'Doorgaan met e-mail →';
             setAlert('landing-alert', 'Fout: ' + escapeHtml(error.message), 'error', true);
         } else {
             otpEmail = email;
@@ -432,7 +432,7 @@
             if (remaining <= 0) {
                 clearInterval(interval);
                 btn.disabled = false;
-                btn.textContent = 'Inlogcode sturen →';
+                btn.textContent = 'Doorgaan met e-mail →';
             } else {
                 btn.textContent = `Opnieuw sturen (${remaining}s)`;
             }
