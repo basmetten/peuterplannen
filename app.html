@@ -1934,6 +1934,17 @@
         const SPEED_KMH        = { auto: 50, fiets: 15, bakfiets: 12, ov: 35, lopen: 5 };
         const TRANSPORT_LABELS = { auto: 'de auto', fiets: 'de fiets', ov: 'het OV', lopen: 'te voet', bakfiets: 'de bakfiets' };
 
+        let planLocationsCache = null;
+
+        async function fetchPlanLocations() {
+            if (planLocationsCache && planLocationsCache.length > 0) return planLocationsCache;
+            const url = SB_URL + "?select=id,name,type,region,lat,lng,weather,min_age,max_age,toddler_highlight,is_featured,coffee,diaper&order=created_at.desc";
+            const res = await fetch(url, { headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY } });
+            if (!res.ok) throw new Error('Could not fetch locations for plan');
+            planLocationsCache = await res.json();
+            return planLocationsCache;
+        }
+
         let planState = {
             date:      'today',
             kidsCount: 1,
@@ -2051,8 +2062,11 @@
                 const outdoorOk  = isOutdoorSuitable(forecast.weatherCode, forecast.maxTemp);
                 const minAge     = Math.min(...planState.childAges);
 
+                // Load full location set for planning (independent of current list filters)
+                const planLocations = await fetchPlanLocations();
+
                 // Filter locations
-                const candidates = allLocations.filter(loc => {
+                const candidates = planLocations.filter(loc => {
                     if (!loc.lat || !loc.lng) return false;
                     const dist    = calculateDistance(lat, lng, loc.lat, loc.lng);
                     const ageOk   = (loc.min_age === null || loc.min_age <= minAge);

@@ -409,8 +409,8 @@
             email,
             options: { shouldCreateUser: true }
         });
-        btn.disabled = false; btn.textContent = 'Inlogcode sturen →';
         if (error) {
+            btn.disabled = false; btn.textContent = 'Inlogcode sturen →';
             setAlert('landing-alert', 'Fout: ' + escapeHtml(error.message), 'error', true);
         } else {
             otpEmail = email;
@@ -419,7 +419,24 @@
             setAlert('otp-alert', '', '');
             showScreen('otp');
             setTimeout(() => document.getElementById('otp-code').focus(), 100);
+            startOtpCooldown(btn, 60);
         }
+    }
+
+    function startOtpCooldown(btn, seconds) {
+        let remaining = seconds;
+        btn.disabled = true;
+        btn.textContent = `Opnieuw sturen (${remaining}s)`;
+        const interval = setInterval(() => {
+            remaining--;
+            if (remaining <= 0) {
+                clearInterval(interval);
+                btn.disabled = false;
+                btn.textContent = 'Inlogcode sturen →';
+            } else {
+                btn.textContent = `Opnieuw sturen (${remaining}s)`;
+            }
+        }, 1000);
     }
 
     async function verifyOtp() {
