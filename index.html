@@ -296,9 +296,17 @@
         @media (max-width: 768px) {
             .hero { grid-template-columns: 1fr; padding-top: 100px; }
             .hero-content h1 { font-size: 36px; }
+            .hero-visual { height: 280px; }
             .features-grid { grid-template-columns: 1fr; }
             .footer-container { grid-template-columns: 1fr 1fr; }
             .nav-links { display: none; }
+        }
+        @media (max-width: 480px) {
+            .hero { padding: 88px 20px 48px; }
+            .hero-content h1 { font-size: 30px; }
+            .hero-visual { height: 220px; }
+            .footer-container { grid-template-columns: 1fr; }
+            .footer-bottom { margin-top: 24px; }
         }
 
         .cities-section { padding: 80px 24px; background: var(--bg-cream); }

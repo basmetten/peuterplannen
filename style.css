@@ -429,6 +429,11 @@ body::after {
   .blog-grid { grid-template-columns: 1fr; }
   .location-info { grid-template-columns: 1fr; }
   .location-actions { flex-direction: column; }
-  .nav-links { gap: 12px; }
   .city-app-cta { flex-direction: column; text-align: center; gap: 12px; padding: 20px; }
+}
+@media (max-width: 480px) {
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .footer-links-row { gap: 12px; }
+  .hero { padding: 88px 16px 36px; }
+  .hero p { font-size: 15px; }
 }

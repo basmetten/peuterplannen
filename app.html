@@ -391,7 +391,7 @@
         /* Chip grid */
         .plan-chip-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
         .plan-chip-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-        .plan-chip { padding: 10px 12px; border: 1.5px solid rgba(45,41,38,0.11); border-radius: 10px; background: var(--bg); cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-secondary); transition: border-color 0.15s, background 0.15s, color 0.15s; touch-action: manipulation; display: flex; align-items: center; gap: 8px; line-height: 1.3; white-space: nowrap; }
+        .plan-chip { padding: 10px 12px; border: 1.5px solid rgba(45,41,38,0.11); border-radius: 10px; background: var(--bg); cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-secondary); transition: border-color 0.15s, background 0.15s, color 0.15s; touch-action: manipulation; display: flex; align-items: center; gap: 8px; line-height: 1.3; }
         .plan-chip:active { transform: scale(0.97); }
         .plan-chip.selected { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); font-weight: 600; }
         .plan-chip svg { width: 16px; height: 16px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.75; opacity: 0.7; }
@@ -423,7 +423,7 @@
 
         .plan-timeline { padding: 20px 20px 8px; position: relative; }
         .plan-stop { display: flex; gap: 14px; padding-bottom: 18px; position: relative; }
-        .plan-stop:not(:last-child)::before { content: ''; position: absolute; left: 9px; top: 22px; bottom: 0; width: 1px; background: rgba(45,41,38,0.1); }
+        .plan-stop:not(:last-child)::before { content: ''; position: absolute; left: 10px; top: 22px; bottom: 0; width: 1px; background: rgba(45,41,38,0.1); }
         .plan-stop-dot { width: 20px; height: 20px; border-radius: 50%; background: var(--primary); flex-shrink: 0; margin-top: 1px; position: relative; z-index: 1; }
         .plan-stop-dot.lunch-dot { background: var(--gold); }
         .plan-stop-dot.afternoon-dot { background: var(--secondary); }
@@ -698,7 +698,7 @@
                 <div class="plan-step-label">Duur</div>
                 <div class="plan-chip-grid-3">
                     <button class="plan-chip selected" data-duration="morning" onclick="selectPlanOption(this,'duration')">
-                        <span>Ochtendje<small>2–3 uur</small></span>
+                        <span>Ochtend<small>2–3 uur</small></span>
                     </button>
                     <button class="plan-chip" data-duration="half_day" onclick="selectPlanOption(this,'duration')">
                         <span>Halve dag<small>4 uur</small></span>
