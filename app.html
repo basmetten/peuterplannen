@@ -378,45 +378,61 @@
         .info-ai-note h3 { font-family: var(--font-heading); font-size: 15px; font-weight: 700; color: var(--primary-dark); margin-bottom: 8px; }
         .info-ai-note p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin: 0; }
 
-        /* Plan wizard */
-        .plan-view { padding: 20px 0; }
-        .plan-wizard { display: flex; flex-direction: column; gap: 20px; }
-        .plan-step { background: var(--surface); border: 1px solid rgba(212,119,90,0.15); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow-sm); }
-        .plan-step h3 { font-family: var(--font-heading); font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
-        .plan-option-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-        .plan-option { padding: 12px; border: 2px solid rgba(212,119,90,0.2); border-radius: 12px; background: var(--bg); text-align: center; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-secondary); transition: all 0.2s; touch-action: manipulation; }
-        .plan-option:active { transform: scale(0.97); }
-        .plan-option.selected { border-color: var(--primary); background: var(--primary); color: white; font-weight: 600; }
-        .plan-option-icon { font-size: 24px; display: block; margin-bottom: 4px; }
-        .age-slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-        .age-slider-label { font-size: 13px; color: var(--text-secondary); min-width: 60px; }
-        .age-slider { flex: 1; accent-color: var(--primary); }
-        .age-slider-val { min-width: 40px; text-align: right; font-weight: 600; font-size: 13px; color: var(--primary-dark); }
-        .plan-generate-btn { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: var(--font-heading); transition: all 0.2s; touch-action: manipulation; margin-top: 8px; }
-        .plan-generate-btn:active { background: var(--primary-dark); transform: scale(0.99); }
-        .plan-generate-btn:disabled { background: var(--text-muted); cursor: not-allowed; }
+        /* ── Plan wizard ── */
+        .plan-view { padding: 16px 0 80px; }
+        .plan-view-header { margin-bottom: 20px; }
+        .plan-view-header h2 { font-family: var(--font-heading); font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; margin-bottom: 3px; }
+        .plan-view-header p { font-size: 14px; color: var(--text-muted); }
 
-        /* Plan result card */
-        .plan-result { background: var(--surface); border: 1px solid rgba(212,119,90,0.15); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); }
-        .plan-result-header { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; padding: 16px 20px; }
-        .plan-result-header h3 { font-family: var(--font-heading); font-size: 17px; font-weight: 700; margin-bottom: 4px; }
-        .plan-result-header p { font-size: 13px; opacity: 0.85; }
-        .plan-slot { padding: 16px 20px; border-bottom: 1px solid rgba(212,119,90,0.1); }
-        .plan-slot:last-child { border-bottom: none; }
-        .plan-slot-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 4px; }
-        .plan-slot-name { font-family: var(--font-heading); font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-        .plan-slot-meta { font-size: 13px; color: var(--text-secondary); }
-        .plan-ai-text { padding: 16px 20px; background: var(--primary-light); font-size: 14px; color: var(--primary-dark); line-height: 1.65; font-style: italic; border-top: 1px solid rgba(212,119,90,0.15); }
-        .plan-actions { display: flex; gap: 8px; padding: 16px 20px; }
-        .kids-counter { display: flex; align-items: center; gap: 16px; }
-        .kids-counter button { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--primary); background: none; color: var(--primary); font-size: 18px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; touch-action: manipulation; }
-        .kids-counter button:active { background: var(--primary); color: white; }
-        .kids-counter-val { font-size: 20px; font-weight: 700; color: var(--text); min-width: 30px; text-align: center; }
-        .plan-date-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-        .weather-banner-icon { font-size: 28px; flex-shrink: 0; line-height: 1; }
-        .weather-banner-text { flex: 1; font-size: 14px; font-weight: 500; color: var(--text); }
-        .weather-banner-text strong { font-weight: 700; }
-        .weather-banner-arrow { flex-shrink: 0; color: var(--primary); font-weight: 700; font-size: 18px; }
+        .plan-wizard { display: flex; flex-direction: column; gap: 10px; }
+        .plan-step { background: var(--surface); border: 1px solid rgba(45,41,38,0.08); border-radius: 14px; padding: 16px 18px; }
+        .plan-step-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 10px; }
+
+        /* Chip grid */
+        .plan-chip-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+        .plan-chip-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .plan-chip { padding: 10px 12px; border: 1.5px solid rgba(45,41,38,0.11); border-radius: 10px; background: var(--bg); cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-secondary); transition: border-color 0.15s, background 0.15s, color 0.15s; touch-action: manipulation; display: flex; align-items: center; gap: 8px; line-height: 1.3; white-space: nowrap; }
+        .plan-chip:active { transform: scale(0.97); }
+        .plan-chip.selected { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); font-weight: 600; }
+        .plan-chip svg { width: 16px; height: 16px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.75; opacity: 0.7; }
+        .plan-chip.selected svg { opacity: 1; }
+        .plan-chip small { display: block; font-size: 11px; font-weight: 400; opacity: 0.75; margin-top: 1px; }
+
+        /* Kids counter */
+        .kids-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .kids-row-label { font-size: 14px; color: var(--text-secondary); }
+        .kids-counter { display: flex; align-items: center; gap: 14px; }
+        .kids-counter button { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid rgba(45,41,38,0.15); background: none; color: var(--text); font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; touch-action: manipulation; }
+        .kids-counter button:hover { border-color: var(--primary); color: var(--primary); }
+        .kids-counter-val { font-size: 17px; font-weight: 700; color: var(--text); min-width: 22px; text-align: center; }
+        .age-slider-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .age-slider-label { font-size: 13px; color: var(--text-secondary); min-width: 52px; }
+        .age-slider { flex: 1; accent-color: var(--primary); }
+        .age-slider-val { min-width: 26px; text-align: right; font-weight: 600; font-size: 13px; color: var(--primary); }
+
+        /* Generate button */
+        .plan-generate-btn { width: 100%; padding: 15px; background: var(--text); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: var(--font-heading); transition: opacity 0.2s, transform 0.15s; touch-action: manipulation; margin-top: 6px; letter-spacing: -0.01em; }
+        .plan-generate-btn:active { opacity: 0.85; transform: scale(0.99); }
+        .plan-generate-btn:disabled { background: var(--text-muted); cursor: not-allowed; transform: none; }
+
+        /* ── Plan result – timeline ── */
+        .plan-result { background: var(--surface); border: 1px solid rgba(45,41,38,0.08); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-md); }
+        .plan-result-header { background: var(--text); color: white; padding: 18px 20px; }
+        .plan-result-header h3 { font-family: var(--font-heading); font-size: 16px; font-weight: 700; margin-bottom: 3px; letter-spacing: -0.01em; }
+        .plan-result-header p { font-size: 13px; opacity: 0.55; }
+
+        .plan-timeline { padding: 20px 20px 8px; position: relative; }
+        .plan-stop { display: flex; gap: 14px; padding-bottom: 18px; position: relative; }
+        .plan-stop:not(:last-child)::before { content: ''; position: absolute; left: 9px; top: 22px; bottom: 0; width: 1px; background: rgba(45,41,38,0.1); }
+        .plan-stop-dot { width: 20px; height: 20px; border-radius: 50%; background: var(--primary); flex-shrink: 0; margin-top: 1px; position: relative; z-index: 1; }
+        .plan-stop-dot.lunch-dot { background: var(--gold); }
+        .plan-stop-dot.afternoon-dot { background: var(--secondary); }
+        .plan-stop-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 2px; }
+        .plan-stop-name { font-family: var(--font-heading); font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 2px; line-height: 1.25; }
+        .plan-stop-meta { font-size: 13px; color: var(--text-secondary); }
+
+        .plan-ai-quote { margin: 0 20px 20px; padding: 12px 14px; border-left: 3px solid var(--primary); background: var(--primary-light); border-radius: 0 8px 8px 0; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+        .plan-actions { display: flex; gap: 8px; padding: 0 20px 20px; }
 
         /* Promo banner (visually distinct from location cards) */
         .promo-banner { background: linear-gradient(135deg, var(--primary-light), var(--bg-warm)); border: none; border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 16px; }
@@ -623,26 +639,28 @@
 
     <!-- Plan view (hidden until tab selected) -->
     <div id="plan-view" class="app-container plan-view hidden">
-        <h2 style="font-family:var(--font-heading);font-size:22px;font-weight:800;margin-bottom:6px;">Plan mijn dag</h2>
-        <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px;">Vertel wat je wilt, wij regelen de rest.</p>
+        <div class="plan-view-header">
+            <h2>Plan mijn dag</h2>
+            <p>Vertel ons wat, wij kiezen de route.</p>
+        </div>
 
         <div class="plan-wizard" id="plan-wizard">
-            <!-- Stap 1: Datum -->
+            <!-- Wanneer -->
             <div class="plan-step">
-                <h3>📅 Wanneer?</h3>
-                <div class="plan-date-options" id="plan-date-options">
-                    <button class="plan-option selected" data-date="today" onclick="selectPlanDate(this,'today')"><span class="plan-option-icon">☀️</span>Vandaag</button>
-                    <button class="plan-option" data-date="tomorrow" onclick="selectPlanDate(this,'tomorrow')"><span class="plan-option-icon">🌅</span>Morgen</button>
-                    <button class="plan-option" data-date="saturday" onclick="selectPlanDate(this,'saturday')"><span class="plan-option-icon">🎉</span>Zaterdag</button>
-                    <button class="plan-option" data-date="sunday" onclick="selectPlanDate(this,'sunday')"><span class="plan-option-icon">🌤️</span>Zondag</button>
+                <div class="plan-step-label">Wanneer</div>
+                <div class="plan-chip-grid" id="plan-date-options">
+                    <button class="plan-chip selected" data-date="today" onclick="selectPlanDate(this,'today')">Vandaag</button>
+                    <button class="plan-chip" data-date="tomorrow" onclick="selectPlanDate(this,'tomorrow')">Morgen</button>
+                    <button class="plan-chip" data-date="saturday" onclick="selectPlanDate(this,'saturday')">Zaterdag</button>
+                    <button class="plan-chip" data-date="sunday" onclick="selectPlanDate(this,'sunday')">Zondag</button>
                 </div>
             </div>
 
-            <!-- Stap 2: Kinderen -->
+            <!-- Kinderen -->
             <div class="plan-step">
-                <h3>👶 Wie gaan er mee?</h3>
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-                    <span style="font-size:14px;font-weight:600;color:var(--text-secondary);">Aantal kinderen</span>
+                <div class="plan-step-label">Kinderen</div>
+                <div class="kids-row">
+                    <span class="kids-row-label">Aantal</span>
                     <div class="kids-counter">
                         <button onclick="changeKidsCount(-1)" aria-label="Minder kinderen">−</button>
                         <span class="kids-counter-val" id="kids-count-val">1</span>
@@ -652,32 +670,50 @@
                 <div id="age-sliders"></div>
             </div>
 
-            <!-- Stap 3: Vervoer -->
+            <!-- Vervoer -->
             <div class="plan-step">
-                <h3>🚗 Hoe gaan we?</h3>
-                <div class="plan-option-grid">
-                    <button class="plan-option selected" data-transport="auto" onclick="selectPlanOption(this,'transport')"><span class="plan-option-icon">🚗</span>Auto (50km)</button>
-                    <button class="plan-option" data-transport="fiets" onclick="selectPlanOption(this,'transport')"><span class="plan-option-icon">🚲</span>Fiets (5km)</button>
-                    <button class="plan-option" data-transport="ov" onclick="selectPlanOption(this,'transport')"><span class="plan-option-icon">🚌</span>OV (25km)</button>
-                    <button class="plan-option" data-transport="bakfiets" onclick="selectPlanOption(this,'transport')"><span class="plan-option-icon">🚲👶</span>Bakfiets (8km)</button>
+                <div class="plan-step-label">Vervoer</div>
+                <div class="plan-chip-grid">
+                    <button class="plan-chip selected" data-transport="auto" onclick="selectPlanOption(this,'transport')">
+                        <svg viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h13l4 4v6a2 2 0 0 1-2 2h-2"/><circle cx="7.5" cy="17" r="2.5"/><circle cx="17.5" cy="17" r="2.5"/></svg>
+                        <span>Auto <small>50 km</small></span>
+                    </button>
+                    <button class="plan-chip" data-transport="fiets" onclick="selectPlanOption(this,'transport')">
+                        <svg viewBox="0 0 24 24"><circle cx="5.5" cy="17.5" r="3"/><circle cx="18.5" cy="17.5" r="3"/><path d="M15 6h-4l-2 6h7l-1-6z"/><path d="M5.5 14.5 9 6"/></svg>
+                        <span>Fiets <small>5 km</small></span>
+                    </button>
+                    <button class="plan-chip" data-transport="ov" onclick="selectPlanOption(this,'transport')">
+                        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/><path d="M2 12h20"/></svg>
+                        <span>OV <small>25 km</small></span>
+                    </button>
+                    <button class="plan-chip" data-transport="bakfiets" onclick="selectPlanOption(this,'transport')">
+                        <svg viewBox="0 0 24 24"><circle cx="18" cy="17" r="3"/><circle cx="7" cy="17" r="3"/><path d="M7 17h7V8H7zM14 8h4l2 4"/></svg>
+                        <span>Bakfiets <small>8 km</small></span>
+                    </button>
                 </div>
             </div>
 
-            <!-- Stap 4: Duur -->
+            <!-- Hoe lang -->
             <div class="plan-step">
-                <h3>⏱️ Hoe lang?</h3>
-                <div class="plan-option-grid">
-                    <button class="plan-option selected" data-duration="morning" onclick="selectPlanOption(this,'duration')"><span class="plan-option-icon">🌅</span>Ochtendje (2–3u)</button>
-                    <button class="plan-option" data-duration="half_day" onclick="selectPlanOption(this,'duration')"><span class="plan-option-icon">🌤️</span>Halve dag (4u)</button>
-                    <button class="plan-option" data-duration="whole_day" onclick="selectPlanOption(this,'duration')"><span class="plan-option-icon">🌞</span>Hele dag (7u)</button>
+                <div class="plan-step-label">Duur</div>
+                <div class="plan-chip-grid-3">
+                    <button class="plan-chip selected" data-duration="morning" onclick="selectPlanOption(this,'duration')">
+                        <span>Ochtendje<small>2–3 uur</small></span>
+                    </button>
+                    <button class="plan-chip" data-duration="half_day" onclick="selectPlanOption(this,'duration')">
+                        <span>Halve dag<small>4 uur</small></span>
+                    </button>
+                    <button class="plan-chip" data-duration="whole_day" onclick="selectPlanOption(this,'duration')">
+                        <span>Hele dag<small>7 uur</small></span>
+                    </button>
                 </div>
             </div>
 
-            <button class="plan-generate-btn" id="plan-gen-btn" onclick="generatePlan()">✨ Genereer mijn plan</button>
+            <button class="plan-generate-btn" id="plan-gen-btn" onclick="generatePlan()">Plan genereren →</button>
         </div>
 
         <!-- Plan resultaat -->
-        <div id="plan-result-container" class="hidden" style="margin-top:20px;"></div>
+        <div id="plan-result-container" class="hidden" style="margin-top:14px;"></div>
     </div>
 
     <!-- Info panel (slide-up bottom sheet) -->
@@ -2049,7 +2085,7 @@
             const btn = document.getElementById('plan-gen-btn');
             const resultContainer = document.getElementById('plan-result-container');
             btn.disabled = true;
-            btn.textContent = '⏳ Plan wordt gemaakt…';
+            btn.textContent = 'Plan wordt gemaakt…';
             resultContainer.classList.add('hidden');
             resultContainer.innerHTML = '';
 
@@ -2119,39 +2155,47 @@
                 const lunchTravel   = lunch     ? travelLabel(morning, lunch)   : '';
                 const afternoonTv   = afternoon ? travelLabel(lunch || morning, afternoon) : '';
 
-                // Weather description for header
+                // Weather for header
                 const wCode = forecast.weatherCode;
                 const temp  = Math.round(forecast.maxTemp);
-                const wEmoji = wCode <= 3 ? '☀️' : wCode >= 51 ? '🌧️' : '🌥️';
-                const wDesc  = wCode <= 3 ? 'zonnig' : wCode >= 51 ? 'regen' : 'bewolkt';
+                const wDesc = wCode <= 3 ? `${temp}° · zonnig` : wCode >= 51 ? `${temp}° · regen` : `${temp}° · bewolkt`;
 
                 // Date label
                 const dateObj  = new Date(dateStr + 'T12:00:00');
                 const dayLabel = dateObj.toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' });
 
-                // Build result HTML
-                let slotsHtml = `
-                    <div class="plan-slot">
-                        <div class="plan-slot-label">🌅 OCHTEND</div>
-                        <div class="plan-slot-name">${escapeHtml(morning.name)}</div>
-                        <div class="plan-slot-meta">${escapeHtml(morning.region || '')} · ${morningTravel ? morningTravel + ' ' + TRANSPORT_LABELS[planState.transport] : 'Dichtbij'}</div>
+                // Build timeline stops
+                let stopsHtml = `
+                    <div class="plan-stop">
+                        <div class="plan-stop-dot"></div>
+                        <div>
+                            <div class="plan-stop-label">Ochtend</div>
+                            <div class="plan-stop-name">${escapeHtml(morning.name)}</div>
+                            <div class="plan-stop-meta">${escapeHtml(morning.region || '')}${morningTravel ? ' · ' + morningTravel + ' ' + TRANSPORT_LABELS[planState.transport] : ''}</div>
+                        </div>
                     </div>
                 `;
                 if (lunch) {
-                    slotsHtml += `
-                        <div class="plan-slot">
-                            <div class="plan-slot-label">🍽️ LUNCH (12:00)</div>
-                            <div class="plan-slot-name">${escapeHtml(lunch.name)}</div>
-                            <div class="plan-slot-meta">${escapeHtml(lunch.region || '')} · ${lunchTravel ? lunchTravel + ' van ochtendactiviteit' : 'Dichtbij'}</div>
+                    stopsHtml += `
+                        <div class="plan-stop">
+                            <div class="plan-stop-dot lunch-dot"></div>
+                            <div>
+                                <div class="plan-stop-label">Lunch · 12:00</div>
+                                <div class="plan-stop-name">${escapeHtml(lunch.name)}</div>
+                                <div class="plan-stop-meta">${escapeHtml(lunch.region || '')}${lunchTravel ? ' · ' + lunchTravel + ' verder' : ''}</div>
+                            </div>
                         </div>
                     `;
                 }
                 if (afternoon) {
-                    slotsHtml += `
-                        <div class="plan-slot">
-                            <div class="plan-slot-label">☀️ MIDDAG</div>
-                            <div class="plan-slot-name">${escapeHtml(afternoon.name)}</div>
-                            <div class="plan-slot-meta">${escapeHtml(afternoon.region || '')} · ${afternoonTv ? afternoonTv + ' verder' : 'Dichtbij'}</div>
+                    stopsHtml += `
+                        <div class="plan-stop">
+                            <div class="plan-stop-dot afternoon-dot"></div>
+                            <div>
+                                <div class="plan-stop-label">Middag</div>
+                                <div class="plan-stop-name">${escapeHtml(afternoon.name)}</div>
+                                <div class="plan-stop-meta">${escapeHtml(afternoon.region || '')}${afternoonTv ? ' · ' + afternoonTv + ' verder' : ''}</div>
+                            </div>
                         </div>
                     `;
                 }
@@ -2159,17 +2203,15 @@
                 resultContainer.innerHTML = `
                     <div class="plan-result">
                         <div class="plan-result-header">
-                            <h3>${dayLabel} · ${wEmoji} ${temp}° ${wDesc}</h3>
-                            <p>${planState.childAges.length === 1 ? '1 kind' : planState.childAges.length + ' kinderen'} (${planState.childAges.join(', ')} jaar) · via ${TRANSPORT_LABELS[planState.transport]}</p>
+                            <h3>${dayLabel.charAt(0).toUpperCase() + dayLabel.slice(1)}</h3>
+                            <p>${wDesc} · ${planState.childAges.length === 1 ? '1 kind' : planState.childAges.length + ' kinderen'} (${planState.childAges.join(', ')} jr) · ${TRANSPORT_LABELS[planState.transport]}</p>
                         </div>
-                        ${slotsHtml}
-                        <div class="plan-ai-text" id="plan-ai-text">
-                            <span style="color:var(--text-muted);font-style:normal;">✨ AI-beschrijving laden…</span>
-                        </div>
+                        <div class="plan-timeline">${stopsHtml}</div>
+                        <div class="plan-ai-quote" id="plan-ai-text" style="color:var(--text-muted);">Beschrijving laden…</div>
                         <div class="plan-actions">
                             <button class="btn" onclick="sharePlan()">
                                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-                                Deel dit plan
+                                Delen
                             </button>
                             <button class="btn btn-detail" onclick="generatePlan()">
                                 <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
@@ -2188,7 +2230,7 @@
                     morning, lunch, afternoon, forecast,
                 }).then(desc => {
                     const el = document.getElementById('plan-ai-text');
-                    if (el && desc) el.textContent = desc;
+                    if (el && desc) { el.textContent = desc; el.style.color = ''; }
                     else if (el) el.style.display = 'none';
                 }).catch(() => {
                     const el = document.getElementById('plan-ai-text');
@@ -2201,7 +2243,7 @@
                 resultContainer.classList.remove('hidden');
             } finally {
                 btn.disabled = false;
-                btn.textContent = '✨ Genereer mijn plan';
+                btn.textContent = 'Plan genereren →';
             }
         }
 
