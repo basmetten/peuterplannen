@@ -125,7 +125,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         html { height: 100%; overflow-x: hidden; overscroll-behavior: none; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         ::selection { background: rgba(212, 119, 90, 0.2); color: var(--text); }
-        body { font-family: var(--font-body); min-height: 100%; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; overscroll-behavior: none; }
+        body { font-family: var(--font-body); min-height: 100%; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; overscroll-behavior: none; -webkit-text-size-adjust: 100%; }
 
         /* Skeleton loader */
         .skeleton { background: linear-gradient(90deg, var(--bg-warm) 25%, #f0ebe3 50%, var(--bg-warm) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 12px; }
@@ -390,13 +390,13 @@
 
         /* Chip grid */
         .plan-chip-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
-        .plan-chip-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-        .plan-chip { padding: 10px 12px; border: 1.5px solid rgba(45,41,38,0.11); border-radius: 10px; background: var(--bg); cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-secondary); transition: border-color 0.15s, background 0.15s, color 0.15s; touch-action: manipulation; display: flex; align-items: center; gap: 8px; line-height: 1.3; }
+        .plan-chip-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 6px; }
+        .plan-chip { padding: 10px 12px; border: 1.5px solid rgba(45,41,38,0.11); border-radius: 10px; background: var(--bg); cursor: pointer; font-size: clamp(11px, 3.2vw, 13px); font-weight: 500; color: var(--text-secondary); transition: border-color 0.15s, background 0.15s, color 0.15s; touch-action: manipulation; display: flex; align-items: center; gap: 8px; line-height: 1.3; min-width: 0; overflow-wrap: break-word; }
         .plan-chip:active { transform: scale(0.97); }
         .plan-chip.selected { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); font-weight: 600; }
         .plan-chip svg { width: 16px; height: 16px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.75; opacity: 0.7; }
         .plan-chip.selected svg { opacity: 1; }
-        .plan-chip small { display: block; font-size: 11px; font-weight: 400; opacity: 0.75; margin-top: 1px; }
+        .plan-chip small { display: block; font-size: clamp(10px, 2.8vw, 11px); font-weight: 400; opacity: 0.75; margin-top: 1px; }
 
         /* Kids counter */
         .kids-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
@@ -428,7 +428,7 @@
         .plan-stop-dot.lunch-dot { background: var(--gold); }
         .plan-stop-dot.afternoon-dot { background: var(--secondary); }
         .plan-stop-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 2px; }
-        .plan-stop-name { font-family: var(--font-heading); font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 2px; line-height: 1.25; }
+        .plan-stop-name { font-family: var(--font-heading); font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 2px; line-height: 1.25; overflow-wrap: break-word; }
         .plan-stop-meta { font-size: 13px; color: var(--text-secondary); }
 
         .plan-ai-quote { margin: 0 20px 20px; padding: 12px 14px; border-left: 3px solid var(--primary); background: var(--primary-light); border-radius: 0 8px 8px 0; font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
@@ -1040,8 +1040,8 @@
             if (loc.coffee)   score += 1;
             if (loc.weather && ['indoor','hybrid','both'].includes(loc.weather)) score += 2;
             if (loc.toddler_highlight) score += 1;
-            if (loc.is_featured && loc.featured_until && new Date(loc.featured_until) > new Date()) score += 5;
-            return score; // max 15 with featured bonus
+            if (loc.is_featured && loc.featured_until && new Date(loc.featured_until) > new Date()) score += 1;
+            return score; // max 11 with featured bonus
         }
 
         // === Location Search ===
@@ -1999,14 +1999,14 @@
         }
 
         function selectPlanDate(btn, val) {
-            document.querySelectorAll('#plan-date-options .plan-option').forEach(b => b.classList.remove('selected'));
+            document.querySelectorAll('#plan-date-options .plan-chip').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             planState.date = val;
         }
 
         function selectPlanOption(btn, group) {
             const parent = btn.closest('.plan-step');
-            parent.querySelectorAll('.plan-option').forEach(b => b.classList.remove('selected'));
+            parent.querySelectorAll('.plan-chip').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             if (group === 'transport') planState.transport = btn.dataset.transport;
             if (group === 'duration')  planState.duration  = btn.dataset.duration;
@@ -2075,7 +2075,7 @@
                 l.id !== anchor.id &&
                 (l.type === 'horeca' || l.type === 'pancake') &&
                 anchor.lat && anchor.lng && l.lat && l.lng &&
-                calculateDistance(anchor.lat, anchor.lng, l.lat, l.lng) < 15
+                calculateDistance(anchor.lat, anchor.lng, l.lat, l.lng) < 20
             );
             return horeca[0] ?? null;
         }
@@ -2127,8 +2127,9 @@
                     return;
                 }
 
-                // Build plan
-                const morning   = scored[0];
+                // Build plan — pick randomly from top-3 for variety
+                const topPool   = scored.slice(0, Math.min(3, scored.length));
+                const morning   = topPool[Math.floor(Math.random() * topPool.length)];
                 let lunch       = null;
                 let afternoon   = null;
 
