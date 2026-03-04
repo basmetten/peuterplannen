@@ -186,6 +186,12 @@
         .icon-btn.primary { background: var(--primary); border-color: transparent; }
         .icon-btn.primary svg { stroke: white; }
         .icon-btn.primary:active { background: var(--primary-dark); }
+        .icon-btn.gps-active { background: #eff6ff; border-color: #3b82f6; }
+        .icon-btn.gps-active svg { stroke: #3b82f6; }
+
+        .plan-location-chip { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-muted); margin-bottom: 16px; cursor: default; }
+        .plan-location-chip svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+        .plan-location-chip.has-location { color: var(--primary-dark); }
 
         .gps-status { font-size: 13px; color: var(--text-secondary); margin-top: 10px; display: flex; align-items: center; gap: 8px; }
         .gps-status.loading::before { content: ''; width: 14px; height: 14px; border: 2px solid rgba(212,119,90,0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -567,7 +573,7 @@
             </div>
             <div class="search-input-wrapper">
                 <input type="text" id="location-input" class="search-input" placeholder="Typ je stad of adres..." value="" autocomplete="off" aria-label="Zoek locatie">
-                <button class="icon-btn" onclick="getCurrentLocation()" title="Gebruik mijn locatie" aria-label="Gebruik mijn locatie">
+                <button class="icon-btn" id="gps-btn" onclick="getCurrentLocation()" title="Gebruik mijn locatie" aria-label="Gebruik mijn locatie">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg>
                 </button>
                 <button class="icon-btn primary" onclick="updateLocation()" aria-label="Zoeken">
@@ -642,6 +648,10 @@
         <div class="plan-view-header">
             <h2>Plan mijn dag</h2>
             <p>Vertel ons wat, wij kiezen de route.</p>
+        </div>
+        <div class="plan-location-chip" id="plan-location-chip">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <span id="plan-location-label">Locatie niet ingesteld</span>
         </div>
 
         <div class="plan-wizard" id="plan-wizard">
@@ -1056,6 +1066,8 @@
                 if (place.geometry) {
                     userLocation = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), name: place.formatted_address || place.name };
                     document.getElementById('app-container')?.classList.add('has-location');
+                    document.getElementById('gps-btn')?.classList.remove('gps-active');
+                    updatePlanLocationChip();
                     loadLocations(); updateUserLocationOnMap();
                 }
             });
@@ -1081,8 +1093,10 @@
                     showGpsStatus(`Locatie: ${userLocation.name}`, '');
                     setTimeout(() => statusEl.classList.add('hidden'), 2000);
                     document.getElementById('app-container')?.classList.add('has-location');
+                    document.getElementById('gps-btn')?.classList.add('gps-active');
+                    updatePlanLocationChip();
                     loadLocations(); updateUserLocationOnMap();
-                } catch (err) { input.value = 'Mijn locatie'; showGpsStatus('Locatie gevonden', ''); setTimeout(() => statusEl.classList.add('hidden'), 2000); document.getElementById('app-container')?.classList.add('has-location'); loadLocations(); updateUserLocationOnMap(); }
+                } catch (err) { input.value = 'Mijn locatie'; showGpsStatus('Locatie gevonden', ''); setTimeout(() => statusEl.classList.add('hidden'), 2000); document.getElementById('app-container')?.classList.add('has-location'); document.getElementById('gps-btn')?.classList.add('gps-active'); updatePlanLocationChip(); loadLocations(); updateUserLocationOnMap(); }
             }, (err) => { let msg = 'Locatie niet beschikbaar'; if (err.code === 1) msg = 'Toestemming geweigerd'; if (err.code === 2) msg = 'Locatie niet gevonden'; if (err.code === 3) msg = 'Timeout'; showGpsStatus(msg, 'error'); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
         }
 
@@ -1101,6 +1115,8 @@
                 userLocation = { lat: result.geometry.location.lat(), lng: result.geometry.location.lng(), name: input };
                 showGpsStatus(`Zoeken bij ${input}...`, 'active');
                 document.getElementById('app-container')?.classList.add('has-location');
+                document.getElementById('gps-btn')?.classList.remove('gps-active');
+                updatePlanLocationChip();
                 loadLocations(); updateUserLocationOnMap();
             } catch (err) { showGpsStatus('Locatie niet gevonden', 'error'); }
         }
@@ -1972,6 +1988,19 @@
 
         let planLocationsCache = null;
 
+        function updatePlanLocationChip() {
+            const chip  = document.getElementById('plan-location-chip');
+            const label = document.getElementById('plan-location-label');
+            if (!chip || !label) return;
+            if (userLocation) {
+                label.textContent = userLocation.name || 'Jouw locatie';
+                chip.classList.add('has-location');
+            } else {
+                label.textContent = 'Locatie niet ingesteld';
+                chip.classList.remove('has-location');
+            }
+        }
+
         async function fetchPlanLocations() {
             if (planLocationsCache && planLocationsCache.length > 0) return planLocationsCache;
             const url = SB_URL + "?select=id,name,type,region,lat,lng,weather,min_age,max_age,toddler_highlight,is_featured,coffee,diaper&order=created_at.desc";
@@ -2089,6 +2118,28 @@
             resultContainer.classList.add('hidden');
             resultContainer.innerHTML = '';
 
+            // Auto-request GPS if no location set
+            let locationEstimated = false;
+            if (!userLocation && navigator.geolocation) {
+                btn.textContent = 'Locatie ophalen…';
+                try {
+                    await new Promise((resolve) => {
+                        navigator.geolocation.getCurrentPosition(
+                            (pos) => {
+                                userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude, name: 'Mijn locatie' };
+                                document.getElementById('gps-btn')?.classList.add('gps-active');
+                                updatePlanLocationChip();
+                                resolve();
+                            },
+                            () => resolve(), // silently fall through on deny/timeout
+                            { enableHighAccuracy: false, timeout: 6000, maximumAge: 300000 }
+                        );
+                    });
+                } catch { /* ignore */ }
+                btn.textContent = 'Plan wordt gemaakt…';
+            }
+            if (!userLocation) locationEstimated = true;
+
             try {
                 const lat = userLocation ? userLocation.lat : 52.37;
                 const lng = userLocation ? userLocation.lng : 4.90;
@@ -2205,7 +2256,7 @@
                     <div class="plan-result">
                         <div class="plan-result-header">
                             <h3>${dayLabel.charAt(0).toUpperCase() + dayLabel.slice(1)}</h3>
-                            <p>${wDesc} · ${planState.childAges.length === 1 ? '1 kind' : planState.childAges.length + ' kinderen'} (${planState.childAges.join(', ')} jr) · ${TRANSPORT_LABELS[planState.transport]}</p>
+                            <p>${wDesc} · ${planState.childAges.length === 1 ? '1 kind' : planState.childAges.length + ' kinderen'} (${planState.childAges.join(', ')} jr) · ${TRANSPORT_LABELS[planState.transport]} · ${locationEstimated ? 'Amsterdam (stel locatie in)' : escapeHtml(userLocation.name)}</p>
                         </div>
                         <div class="plan-timeline">${stopsHtml}</div>
                         <div class="plan-ai-quote" id="plan-ai-text" style="color:var(--text-muted);">Beschrijving laden…</div>
@@ -2291,6 +2342,7 @@
                 document.querySelectorAll('.bnav-item').forEach(i => i.classList.remove('active'));
                 document.getElementById('tab-plan')?.classList.add('active');
                 currentView = 'plan';
+                updatePlanLocationChip();
                 moveNavIndicator();
                 return;
             }
