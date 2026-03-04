@@ -1986,7 +1986,11 @@
         const SPEED_KMH        = { auto: 50, fiets: 15, bakfiets: 12, ov: 35, lopen: 5 };
         const TRANSPORT_LABELS = { auto: 'de auto', fiets: 'de fiets', ov: 'het OV', lopen: 'te voet', bakfiets: 'de bakfiets' };
 
+        // Group semantically similar types so the plan picks diverse experiences
+        const TYPE_GROUPS = { farm: 'outdoor', nature: 'outdoor', play: 'play', museum: 'culture', swim: 'water', horeca: 'food', pancake: 'food' };
+
         let planLocationsCache = null;
+        let lastGeneratedPlan  = null;
 
         function updatePlanLocationChip() {
             const chip  = document.getElementById('plan-location-chip');
@@ -2100,13 +2104,16 @@
         }
 
         function findNearLunch(candidates, anchor) {
-            const horeca = candidates.filter(l =>
+            // Sort by distance from the morning location (closest lunch wins)
+            return candidates.filter(l =>
                 l.id !== anchor.id &&
                 (l.type === 'horeca' || l.type === 'pancake') &&
                 anchor.lat && anchor.lng && l.lat && l.lng &&
                 calculateDistance(anchor.lat, anchor.lng, l.lat, l.lng) < 20
-            );
-            return horeca[0] ?? null;
+            ).sort((a, b) =>
+                calculateDistance(anchor.lat, anchor.lng, a.lat, a.lng) -
+                calculateDistance(anchor.lat, anchor.lng, b.lat, b.lng)
+            )[0] ?? null;
         }
 
         // ---- Main generate plan ----
@@ -2188,10 +2195,20 @@
                     lunch = findNearLunch(scored, morning);
                 }
                 if (planState.duration === 'whole_day') {
+                    const morningGroup = TYPE_GROUPS[morning.type] ?? morning.type;
+                    const lunchGroup   = lunch ? (TYPE_GROUPS[lunch.type] ?? lunch.type) : null;
+                    // Prefer different group from both morning AND lunch
                     afternoon = scored.find(l =>
-                        l.id !== morning.id &&
-                        l.type !== morning.type &&
-                        (!lunch || l.id !== lunch.id)
+                        l.id !== morning.id && (!lunch || l.id !== lunch.id) &&
+                        (TYPE_GROUPS[l.type] ?? l.type) !== morningGroup &&
+                        (!lunchGroup || (TYPE_GROUPS[l.type] ?? l.type) !== lunchGroup)
+                    // Fallback: different group from morning only
+                    ) ?? scored.find(l =>
+                        l.id !== morning.id && (!lunch || l.id !== lunch.id) &&
+                        (TYPE_GROUPS[l.type] ?? l.type) !== morningGroup
+                    // Last resort: any other location (no same id)
+                    ) ?? scored.find(l =>
+                        l.id !== morning.id && (!lunch || l.id !== lunch.id)
                     ) ?? null;
                 }
 
@@ -2216,6 +2233,10 @@
                 const dateObj  = new Date(dateStr + 'T12:00:00');
                 const dayLabel = dateObj.toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' });
 
+                // Store plan for share
+                const locName = locationEstimated ? 'Amsterdam' : (userLocation?.name || 'Jouw locatie');
+                lastGeneratedPlan = { morning, lunch, afternoon, dayLabel, wDesc, locName, locationEstimated };
+
                 // Build timeline stops
                 let stopsHtml = `
                     <div class="plan-stop">
@@ -2235,6 +2256,17 @@
                                 <div class="plan-stop-label">Lunch · 12:00</div>
                                 <div class="plan-stop-name">${escapeHtml(lunch.name)}</div>
                                 <div class="plan-stop-meta">${escapeHtml(lunch.region || '')}${lunchTravel ? ' · ' + lunchTravel + ' verder' : ''}</div>
+                            </div>
+                        </div>
+                    `;
+                } else if (planState.duration === 'half_day' || planState.duration === 'whole_day') {
+                    stopsHtml += `
+                        <div class="plan-stop">
+                            <div class="plan-stop-dot" style="background:var(--bg-warm);border:1.5px solid rgba(45,41,38,0.15);"></div>
+                            <div>
+                                <div class="plan-stop-label">Lunch · 12:00</div>
+                                <div class="plan-stop-name" style="font-weight:500;color:var(--text-secondary);">Eigen lunch meenemen</div>
+                                <div class="plan-stop-meta">Geen horecagelegenheid gevonden in de buurt</div>
                             </div>
                         </div>
                     `;
@@ -2315,12 +2347,39 @@
         }
 
         function sharePlan() {
-            const morning   = document.querySelector('.plan-slot .plan-slot-name')?.textContent ?? '';
-            const shareText = `Kijk, ons plan voor vandaag via PeuterPlannen: ${morning}. Bekijk meer op https://peuterplannen.nl/app.html`;
+            if (!lastGeneratedPlan) return;
+            const { morning, lunch, afternoon, dayLabel, wDesc, locName, locationEstimated } = lastGeneratedPlan;
+
+            const lines = [];
+            lines.push(`Mijn dag met de peuters — ${dayLabel}`);
+            lines.push(`📍 ${locName}${locationEstimated ? ' (geschatte locatie)' : ''} · ${wDesc}`);
+            lines.push('');
+            lines.push(`🌅 Ochtend: ${morning.name}${morning.region ? ' (' + morning.region + ')' : ''}`);
+            if (lunch) {
+                lines.push(`🍽 Lunch: ${lunch.name}${lunch.region ? ' (' + lunch.region + ')' : ''}`);
+            }
+            if (afternoon) {
+                lines.push(`☀️ Middag: ${afternoon.name}${afternoon.region ? ' (' + afternoon.region + ')' : ''}`);
+            }
+            const aiText = document.getElementById('plan-ai-text')?.textContent ?? '';
+            if (aiText && !aiText.includes('laden') && !aiText.includes('ging iets mis')) {
+                lines.push('');
+                lines.push(aiText);
+            }
+            lines.push('');
+            lines.push('Gemaakt via PeuterPlannen — peuterplannen.nl');
+
+            const text = lines.join('\n');
             if (navigator.share) {
-                navigator.share({ title: 'Mijn PeuterPlannen', text: shareText }).catch(() => {});
+                navigator.share({ title: 'Mijn dag met de peuters', text }).catch(() => {});
             } else {
-                navigator.clipboard?.writeText(shareText).then(() => alert('Plan gekopieerd!')).catch(() => {});
+                const shareBtn = document.querySelector('.plan-actions .btn');
+                navigator.clipboard?.writeText(text).then(() => {
+                    if (!shareBtn) return;
+                    const orig = shareBtn.innerHTML;
+                    shareBtn.textContent = '✓ Gekopieerd';
+                    setTimeout(() => { shareBtn.innerHTML = orig; }, 2000);
+                }).catch(() => window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'));
             }
         }
 
