@@ -43,7 +43,7 @@ Het Nijntje Museum is al een prima regenplek. Maar als je een andere optie zoekt
 
 **Speelhoek in de bibliotheek (OBA Utrecht/Bibliotheek Utrecht):** Er is een hoek ingericht voor kleine kinderen, boeken zijn er voor elk niveau, en het is droog, gratis en rustig. Goed voor als je na het Nijntje Museum nog een uur wilt vullen.
 
-**Binnenspeeltuin:** In Utrecht en omgeving zijn een paar binnenspeeltuinen. De Speelbrouwerij (zie ook onze [speelparadijzen-gids](/blog/speelparadijzen-nederland-peuters/)) heeft een aparte peuterzone en is een uur rijden maar zeker de moeite als je er toch bent.
+**Binnenspeeltuin:** In Utrecht en omgeving zijn een paar binnenspeeltuinen. De Speelbrouwerij (zie ook onze [regenproof gids](/blog/uitjes-met-peuter-bij-regen/)) heeft een aparte peuterzone en is een uur rijden maar zeker de moeite als je er toch bent.
 
 ## Park Oud-Zuilen: kasteel in de verte, veel groen
 

@@ -15,7 +15,7 @@ Hieronder de beste opties in en rondom de stad, met wat je ervan kunt verwachten
 
 ### Kinderboerderij Griftsteede
 
-[Kinderboerderij Griftsteede](/utrecht/griftsteede/) ligt in het Grifpark, op loopafstand van het centrum. Het is een van de meest bezochte kinderboerderijen van Utrecht en dat is niet zonder reden.
+[Kinderboerderij Griftsteede](/utrecht/stadsboerderij-griftsteede/) ligt in het Grifpark, op loopafstand van het centrum. Het is een van de meest bezochte kinderboerderijen van Utrecht en dat is niet zonder reden.
 
 Geiten, schapen, kippen, konijnen, varkens en soms lammetjes in het voorjaar. Er is een moestuin waar peuters mogen kijken. De boerderij is compact maar goed onderhouden.
 
@@ -53,7 +53,7 @@ Naast de standaard boerderijdieren heeft Koppeldijk een grote buitenspeelplaats 
 
 ### Geertjes Hoeve
 
-[Geertjes Hoeve](/utrechtse-heuvelrug/geertjes-hoeve/) in Haarzuilens (vlak bij Utrecht) is meer dan een kinderboerderij. Het is een volwaardig dagje uit voor het hele gezin. De boerderij ligt op een prachtige plek aan de rand van het landgoed van Kasteel de Haar.
+[Geertjes Hoeve](/utrecht/geertje-s-hoeve/) in Haarzuilens (vlak bij Utrecht) is meer dan een kinderboerderij. Het is een volwaardig dagje uit voor het hele gezin. De boerderij ligt op een prachtige plek aan de rand van het landgoed van Kasteel de Haar.
 
 **Wat is er te doen:** Een grote boerderij met koeien, paarden, geiten, varkens, kippen en konijnen. Daarnaast een hooiberg, maisdoolhof (zomer/herfst), tractorritten en een speeltuin. Voor peuters is er een **speciale dreumeshoek** met kleine diertjes en een zandbak.
 

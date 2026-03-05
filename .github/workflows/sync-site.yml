@@ -94,6 +94,19 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
 
+      - name: Run consistency audit (warn-only until 2026-03-12)
+        if: steps.gate.outputs.run_build == 'true'
+        run: |
+          set -euo pipefail
+          TODAY="$(date -u +%Y-%m-%d)"
+          if [[ "${TODAY}" <= "2026-03-12" ]]; then
+            echo "Running consistency audit in warn-only mode (${TODAY})."
+            node .scripts/audit_internal_consistency.js || true
+          else
+            echo "Running consistency audit in strict mode (${TODAY})."
+            node .scripts/audit_internal_consistency.js --strict
+          fi
+
       - name: Commit and push when build changed files
         if: steps.gate.outputs.run_build == 'true'
         id: publish

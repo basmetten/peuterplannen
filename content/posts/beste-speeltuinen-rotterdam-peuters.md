@@ -22,7 +22,7 @@ Er zijn meerdere speelplekken specifiek voor de allerkleinsten, met lage klimtoe
 
 ## 2. Speeldernis
 
-[Speeldernis](/rotterdam/speeldernis/) in het Zuiderpark is een unieke natuurspeeltuin en een van de parels van Rotterdam. Hier spelen kinderen met water, zand, hout en planten in een avontuurlijke omgeving.
+[Speeldernis](/rotterdam.html) in het Zuiderpark is een unieke natuurspeeltuin en een van de parels van Rotterdam. Hier spelen kinderen met water, zand, hout en planten in een avontuurlijke omgeving.
 
 **Voor peuters:** De dreumeshoek is een afgesloten deel met een zandbak, boomstammen om overheen te kruipen en een klein waterloopje. Peuters kunnen hier veilig spelen terwijl oudere kinderen verderop bezig zijn. Het terrein is bewust niet strak aangelegd: kinderen mogen vies worden.
 
@@ -44,7 +44,7 @@ Er is een apart peutergedeelte met babyschommels, lage glijbaantjes en wipkippen
 
 ## 4. Jimmy's Speelparadijs
 
-[Jimmy's Speelparadijs](/rotterdam/jimmys-speelparadijs/) is een van de grotere indoor speelparadijzen in Rotterdam. Voor regenachtige dagen is dit een uitkomst: een enorme hal vol klimrekken, glijbanen, trampolines en ballenbaden.
+[Jimmy's Speelparadijs](/rotterdam.html) is een van de grotere indoor speelparadijzen in Rotterdam. Voor regenachtige dagen is dit een uitkomst: een enorme hal vol klimrekken, glijbanen, trampolines en ballenbaden.
 
 **Voor peuters:** Er is een **afgesloten peuterzone** met zachte speelelementen, een klein ballenbad en een laag klimrek. Peuters kunnen hier spelen zonder in de buurt te komen van de wildere attracties.
 
@@ -77,7 +77,7 @@ De speeltuin heeft een **afgesloten peuterhoek** met speeltoestellen op maat. Er
 
 ## 7. Ballorig Rotterdam
 
-[Ballorig](/rotterdam/ballorig-rotterdam/) heeft ook een vestiging in Rotterdam en is een betrouwbare keuze voor een indoor speeldag. Het concept is vergelijkbaar met andere Ballorig-vestigingen: een groot klimparadijs met aparte zones per leeftijd.
+[Ballorig](/rotterdam.html) heeft ook een vestiging in Rotterdam en is een betrouwbare keuze voor een indoor speeldag. Het concept is vergelijkbaar met andere Ballorig-vestigingen: een groot klimparadijs met aparte zones per leeftijd.
 
 **Voor peuters:** De peuterzone is duidelijk afgebakend en heeft zachte speelelementen, een ballenbad en een klein huisje om in te spelen. Wat **overzichtelijker en rustiger** dan sommige andere grote speelparadijzen, fijn als je peuter snel overprikkeld raakt.
 

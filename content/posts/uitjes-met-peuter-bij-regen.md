@@ -15,15 +15,15 @@ Als het regent, is een binnenspeeltuin de meest voor de hand liggende keuze. En 
 
 ### 1. Monkey Town
 
-[Monkey Town](/amsterdam/monkey-town/) heeft vestigingen door heel Nederland. De speeltoestellen zijn verdeeld over leeftijdsgroepen, dus ook voor de allerkleinsten is er een veilige plek. De peuterhoek heeft meestal zachte speelelementen, een klein ballenbad en lage glijbaantjes. **Let op:** in het weekend en tijdens vakanties kan het druk zijn. Ga bij voorkeur doordeweeks.
+[Monkey Town](/amsterdam/monkey-town-amsterdam/) heeft vestigingen door heel Nederland. De speeltoestellen zijn verdeeld over leeftijdsgroepen, dus ook voor de allerkleinsten is er een veilige plek. De peuterhoek heeft meestal zachte speelelementen, een klein ballenbad en lage glijbaantjes. **Let op:** in het weekend en tijdens vakanties kan het druk zijn. Ga bij voorkeur doordeweeks.
 
 ### 2. Ballorig
 
-[Ballorig](/utrecht/ballorig/) is een andere bekende keten met vestigingen in onder andere Utrecht, Rotterdam en Eindhoven. Het voordeel van Ballorig is dat er vaak een apart peutergedeelte is met speelgoed dat geschikt is voor kinderen van **1 tot 4 jaar**. Er is doorgaans een horecagelegenheid waar je als ouder kunt zitten.
+[Ballorig](/utrecht.html) is een andere bekende keten met vestigingen in onder andere Utrecht, Rotterdam en Eindhoven. Het voordeel van Ballorig is dat er vaak een apart peutergedeelte is met speelgoed dat geschikt is voor kinderen van **1 tot 4 jaar**. Er is doorgaans een horecagelegenheid waar je als ouder kunt zitten.
 
 ### 3. Jimmy's Speelparadijs
 
-Bij [Jimmy's Speelparadijs](/rotterdam/jimmys-speelparadijs/) in Rotterdam vind je een ruime indoorspeeltuin met klimrekken, trampolines en een aparte peuterhoek. De inrichting is kleurrijk en er is voldoende ruimte om je kind vrij te laten bewegen. **Tip:** neem antislipsokken mee, die zijn bij veel speelparadijzen verplicht.
+Bij [Jimmy's Speelparadijs](/rotterdam.html) in Rotterdam vind je een ruime indoorspeeltuin met klimrekken, trampolines en een aparte peuterhoek. De inrichting is kleurrijk en er is voldoende ruimte om je kind vrij te laten bewegen. **Tip:** neem antislipsokken mee, die zijn bij veel speelparadijzen verplicht.
 
 ### 4. Lokale binnenspeeltuinen
 
@@ -35,7 +35,7 @@ Musea en peuters: het klinkt als een moeilijke combinatie. Maar er zijn in Neder
 
 ### 5. NEMO Science Museum
 
-[NEMO](/amsterdam/nemo/) in Amsterdam heeft op de begane grond een speciale ruimte voor de allerkleinsten. Hier kunnen peuters experimenteren met water, licht en geluid. Alles is op hun hoogte en stevig genoeg voor enthousiaste handjes. **Entreeprijzen:** kinderen tot en met 3 jaar gratis.
+[NEMO](/amsterdam/nemo-science-museum/) in Amsterdam heeft op de begane grond een speciale ruimte voor de allerkleinsten. Hier kunnen peuters experimenteren met water, licht en geluid. Alles is op hun hoogte en stevig genoeg voor enthousiaste handjes. **Entreeprijzen:** kinderen tot en met 3 jaar gratis.
 
 ### 6. Nijntje Museum
 
@@ -69,7 +69,7 @@ Veel muziekscholen en buurthuizen bieden losse muziek- of danslessen aan voor pe
 
 ### 12. Aquarium (Sea Life Scheveningen)
 
-Bij [Sea Life](/den-haag/sea-life-scheveningen/) in Scheveningen lopen peuters met grote ogen langs de aquariums. De gekleurde vissen en haaien zijn een hit. Er is een speciaal interactief gedeelte voor kinderen. **Let op:** het kan druk zijn op regenachtige dagen, want veel ouders hebben hetzelfde idee.
+Bij [Sea Life](/den-haag.html) in Scheveningen lopen peuters met grote ogen langs de aquariums. De gekleurde vissen en haaien zijn een hit. Er is een speciaal interactief gedeelte voor kinderen. **Let op:** het kan druk zijn op regenachtige dagen, want veel ouders hebben hetzelfde idee.
 
 ### 13. Vlindertuin
 

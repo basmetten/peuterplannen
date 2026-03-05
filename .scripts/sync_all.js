@@ -330,6 +330,23 @@ function todayISO() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function isoDateInTimeZone(date, timeZone = 'Europe/Amsterdam') {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(date);
+  const year = parts.find((p) => p.type === 'year')?.value;
+  const month = parts.find((p) => p.type === 'month')?.value;
+  const day = parts.find((p) => p.type === 'day')?.value;
+  return `${year}-${month}-${day}`;
+}
+
+function todayISOAmsterdam() {
+  return isoDateInTimeZone(new Date(), 'Europe/Amsterdam');
+}
+
 function replaceMarker(content, marker, replacement) {
   const regex = new RegExp(`(<!-- BEGIN:${marker} -->)[\\s\\S]*?(<!-- END:${marker} -->)`, 'g');
   return content.replace(regex, `$1\n${replacement}\n$2`);
@@ -1304,9 +1321,42 @@ const REGION_BLOG_MAP = {
     { slug: 'haarlem-met-peuters',           title: 'Haarlem met peuters' },
   ],
   'utrechtse-heuvelrug':  [
-    { slug: 'pannenkoeken-boerderijen-utrecht-heuvelrug', title: 'Pannenkoeken op de Heuvelrug' },
+    { slug: 'pannenkoekenboerderijen-utrecht-heuvelrug', title: 'Pannenkoeken op de Heuvelrug' },
   ],
 };
+
+let publishedBlogSlugCache = null;
+function getPublishedBlogSlugSet() {
+  if (publishedBlogSlugCache) return publishedBlogSlugCache;
+  const postsDir = path.join(ROOT, 'content', 'posts');
+  const result = new Set();
+
+  if (!fs.existsSync(postsDir)) {
+    publishedBlogSlugCache = result;
+    return result;
+  }
+
+  const todayAmsterdam = todayISOAmsterdam();
+  const files = fs.readdirSync(postsDir).filter((f) => f.endsWith('.md'));
+
+  for (const file of files) {
+    const slug = file.replace(/\.md$/, '');
+    if (!matter) {
+      result.add(slug);
+      continue;
+    }
+
+    const raw = fs.readFileSync(path.join(postsDir, file), 'utf8');
+    const { data: fm } = matter(raw);
+    const parsedDate = fm.date ? new Date(fm.date) : new Date();
+    const safeDate = Number.isNaN(parsedDate.getTime()) ? new Date() : parsedDate;
+    const dateStr = isoDateInTimeZone(safeDate, 'Europe/Amsterdam');
+    if (dateStr <= todayAmsterdam) result.add(slug);
+  }
+
+  publishedBlogSlugCache = result;
+  return result;
+}
 
 function buildMetaDesc(loc, region) {
   const typeNoun = TYPE_SINGULAR[loc.type] || 'uitje';
@@ -1393,7 +1443,8 @@ function locationPageHTML(loc, region, similarLocs) {
   if (loc.website) infoItems.push(`<div class="info-item"><div><div class="info-label">Website</div><div class="info-value"><a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" aria-label="Website van ${escapeHtml(loc.name)}">${escapeHtml(loc.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''))}</a></div></div></div>`);
 
   const regionSlug = (region.slug || '').toLowerCase();
-  const relatedBlogs = (REGION_BLOG_MAP[regionSlug] || []);
+  const publishedBlogSlugs = getPublishedBlogSlugSet();
+  const relatedBlogs = (REGION_BLOG_MAP[regionSlug] || []).filter((b) => publishedBlogSlugs.has(b.slug));
   const blogLinksHTML = relatedBlogs.length > 0
     ? `<div class="related-blogs">
       <h3>Meer inspiratie</h3>
@@ -1666,8 +1717,10 @@ function buildBlog(data) {
     const { data: fm, content } = matter(raw);
     const slug = file.replace(/\.md$/, '');
     const htmlContent = marked(content);
-    const dateStr = fm.date ? new Date(fm.date).toISOString().slice(0, 10) : todayISO();
-    const dateDisplay = fm.date ? formatDateNL(new Date(fm.date)) : today();
+    const parsedDate = fm.date ? new Date(fm.date) : new Date();
+    const safeDate = Number.isNaN(parsedDate.getTime()) ? new Date() : parsedDate;
+    const dateStr = isoDateInTimeZone(safeDate, 'Europe/Amsterdam');
+    const dateDisplay = formatDateNL(safeDate);
 
     posts.push({
       slug,
@@ -1680,44 +1733,63 @@ function buildBlog(data) {
       featured_image: fm.featured_image || '',
       content: htmlContent,
     });
+  }
 
-    // Generate individual post page
-    const postDir = path.join(blogDir, slug);
+  // Sort posts by date descending
+  posts.sort((a, b) => b.date.localeCompare(a.date));
+  const todayAmsterdam = todayISOAmsterdam();
+  const publishedPosts = posts.filter((p) => p.date <= todayAmsterdam);
+  const unpublishedPosts = posts.filter((p) => p.date > todayAmsterdam);
+
+  if (unpublishedPosts.length > 0) {
+    console.log(`  Scheduled posts hidden (${unpublishedPosts.length}) — publish after local date in Europe/Amsterdam`);
+  }
+
+  // Remove stale generated blog pages that should not be live.
+  const publishedSet = new Set(publishedPosts.map((p) => p.slug));
+  for (const entry of fs.readdirSync(blogDir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    if (!publishedSet.has(entry.name)) {
+      fs.rmSync(path.join(blogDir, entry.name), { recursive: true, force: true });
+    }
+  }
+
+  // Generate individual post pages for published posts only.
+  for (const p of publishedPosts) {
+    const postDir = path.join(blogDir, p.slug);
     if (!fs.existsSync(postDir)) fs.mkdirSync(postDir, { recursive: true });
-
-    let processedContent = htmlContent;
 
     const postHTML = `<!DOCTYPE html>
 <html lang="nl">
 <head>
 ${headCommon()}
-  <title>${escapeHtml(fm.title)} | PeuterPlannen Blog</title>
-  <meta name="description" content="${escapeHtml(fm.description || '')}">
-  <link rel="canonical" href="https://peuterplannen.nl/blog/${slug}/">
-  <meta property="og:title" content="${escapeHtml(fm.title)} | PeuterPlannen">
-  <meta property="og:description" content="${escapeHtml(fm.description || '')}">
-  <meta property="og:url" content="https://peuterplannen.nl/blog/${slug}/">
+  <title>${escapeHtml(p.title)} | PeuterPlannen Blog</title>
+  <meta name="description" content="${escapeHtml(p.description || '')}">
+  <link rel="canonical" href="https://peuterplannen.nl/blog/${p.slug}/">
+  <meta property="og:title" content="${escapeHtml(p.title)} | PeuterPlannen">
+  <meta property="og:description" content="${escapeHtml(p.description || '')}">
+  <meta property="og:url" content="https://peuterplannen.nl/blog/${p.slug}/">
   <meta property="og:type" content="article">
   <meta property="og:locale" content="nl_NL">
-  <meta property="og:image" content="https://peuterplannen.nl/${fm.featured_image ? fm.featured_image.replace(/^\//, '') : 'homepage_hero_ai.jpeg'}">
+  <meta property="og:image" content="https://peuterplannen.nl/${p.featured_image ? p.featured_image.replace(/^\//, '') : 'homepage_hero_ai.jpeg'}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="${escapeHtml(fm.title)} | PeuterPlannen">
+  <meta property="og:image:alt" content="${escapeHtml(p.title)} | PeuterPlannen">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="${escapeHtml(fm.title)}">
-  <meta name="twitter:description" content="${escapeHtml(fm.description || '')}">
-  <meta name="twitter:image" content="https://peuterplannen.nl/${fm.featured_image ? fm.featured_image.replace(/^\//, '') : 'homepage_hero_ai.jpeg'}">
+  <meta name="twitter:title" content="${escapeHtml(p.title)}">
+  <meta name="twitter:description" content="${escapeHtml(p.description || '')}">
+  <meta name="twitter:image" content="https://peuterplannen.nl/${p.featured_image ? p.featured_image.replace(/^\//, '') : 'homepage_hero_ai.jpeg'}">
   <script type="application/ld+json">
 ${JSON.stringify({
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": fm.title,
-  "description": fm.description || '',
-  "datePublished": dateStr,
+  "headline": p.title,
+  "description": p.description || '',
+  "datePublished": p.date,
   "author": { "@type": "Person", "name": "Bas Metten" },
   "publisher": { "@type": "Organization", "name": "PeuterPlannen" },
-  "url": `https://peuterplannen.nl/blog/${slug}/`,
-  "mainEntityOfPage": `https://peuterplannen.nl/blog/${slug}/`
+  "url": `https://peuterplannen.nl/blog/${p.slug}/`,
+  "mainEntityOfPage": `https://peuterplannen.nl/blog/${p.slug}/`
 }, null, 2)}
   </script>
 </head>
@@ -1725,20 +1797,20 @@ ${JSON.stringify({
 
 ${navHTML()}
 
-${fm.featured_image ? `<div class="blog-hero-img" style="max-width:1100px;margin:80px auto 0;padding:0 24px;"><picture><source type="image/webp" srcset="${fm.featured_image.replace(/\.jpe?g$/, '.webp')}"><img src="${fm.featured_image}" alt="${escapeHtml(fm.title)}" style="width:100%;height:auto;border-radius:16px;max-height:400px;object-fit:cover;" loading="eager"></picture></div>` : ''}
-<div class="hero" style="padding: ${fm.featured_image ? '24px' : '100px'} 24px 40px;">
-  <h1>${escapeHtml(fm.title)}</h1>
+${p.featured_image ? `<div class="blog-hero-img" style="max-width:1100px;margin:80px auto 0;padding:0 24px;"><picture><source type="image/webp" srcset="${p.featured_image.replace(/\.jpe?g$/, '.webp')}"><img src="${p.featured_image}" alt="${escapeHtml(p.title)}" style="width:100%;height:auto;border-radius:16px;max-height:400px;object-fit:cover;" loading="eager"></picture></div>` : ''}
+<div class="hero" style="padding: ${p.featured_image ? '24px' : '100px'} 24px 40px;">
+  <h1>${escapeHtml(p.title)}</h1>
 </div>
 
 <nav aria-label="Kruimelpad" class="breadcrumb">
-  <a href="/">PeuterPlannen</a> &rsaquo; <a href="/blog/">Inspiratie</a> &rsaquo; ${escapeHtml(fm.title)}
+  <a href="/">PeuterPlannen</a> &rsaquo; <a href="/blog/">Inspiratie</a> &rsaquo; ${escapeHtml(p.title)}
 </nav>
 
 <main id="main-content">
-  <p class="blog-meta">${dateDisplay}${fm.tags?.length ? ' &middot; ' + fm.tags.join(', ') : ''}</p>
+  <p class="blog-meta">${p.dateDisplay}${p.tags?.length ? ' &middot; ' + p.tags.join(', ') : ''}</p>
 
   <div class="blog-content">
-    ${processedContent}
+    ${p.content}
   </div>
 
   ${newsletterHTML()}
@@ -1767,14 +1839,11 @@ ${analyticsHTML()}
 </html>`;
 
     fs.writeFileSync(path.join(postDir, 'index.html'), postHTML);
-    console.log(`  blog/${slug}/index.html`);
+    console.log(`  blog/${p.slug}/index.html`);
   }
 
-  // Sort posts by date descending
-  posts.sort((a, b) => b.date.localeCompare(a.date));
-
   // Generate blog index
-  const postCards = posts.map(p => `
+  const postCards = publishedPosts.map(p => `
     <article class="blog-card">
       ${p.featured_image ? `<a href="/blog/${p.slug}/"><picture><source type="image/webp" srcset="${p.featured_image.replace(/\.jpe?g$/, '-400w.webp')} 400w, ${p.featured_image.replace(/\.jpe?g$/, '.webp')}" sizes="(max-width: 768px) 100vw, 400px"><img src="${p.featured_image}" alt="${escapeHtml(p.title)}" class="blog-card-thumb" loading="lazy"></picture></a>` : ''}
       <h2><a href="/blog/${p.slug}/">${escapeHtml(p.title)}</a></h2>
@@ -1846,10 +1915,10 @@ ${analyticsHTML()}
 </html>`;
 
   fs.writeFileSync(path.join(blogDir, 'index.html'), indexHTML);
-  console.log(`  blog/index.html (${posts.length} posts)`);
+  console.log(`  blog/index.html (${publishedPosts.length} posts)`);
 
   // Generate RSS feed
-  const rssItems = posts.map(p => `    <item>
+  const rssItems = publishedPosts.map(p => `    <item>
       <title>${escapeHtml(p.title)}</title>
       <link>https://peuterplannen.nl/blog/${p.slug}/</link>
       <description>${escapeHtml(p.description)}</description>
@@ -1873,7 +1942,7 @@ ${rssItems}
   fs.writeFileSync(path.join(blogDir, 'feed.xml'), rss);
   console.log(`  blog/feed.xml`);
 
-  return posts;
+  return publishedPosts;
 }
 
 function formatDateNL(date) {

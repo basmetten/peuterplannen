@@ -13,11 +13,11 @@ Een dagje uit met een dreumes is anders dan met een peuter van drie of vier. Je 
 
 ### 1. Kinderboerderij bezoeken
 
-De absolute nummer een voor dreumesen. Kinderboerderijen zijn overal in Nederland te vinden, vaak gratis, en bieden precies wat een dreumes nodig heeft: dieren die je kunt aaien, ruimte om te lopen en een zandbak om in te spelen. In [Utrecht](/utrecht.html) is [Kinderboerderij Griftsteede](/utrecht/griftsteede/) een aanrader, en in [Amsterdam](/amsterdam.html) zijn er tientallen stadsboerderijen. Ga rond voedertijd, dan zijn de dieren het actiefst en mag je dreumes vaak meehelpen.
+De absolute nummer een voor dreumesen. Kinderboerderijen zijn overal in Nederland te vinden, vaak gratis, en bieden precies wat een dreumes nodig heeft: dieren die je kunt aaien, ruimte om te lopen en een zandbak om in te spelen. In [Utrecht](/utrecht.html) is [Kinderboerderij Griftsteede](/utrecht/stadsboerderij-griftsteede/) een aanrader, en in [Amsterdam](/amsterdam.html) zijn er tientallen stadsboerderijen. Ga rond voedertijd, dan zijn de dieren het actiefst en mag je dreumes vaak meehelpen.
 
 ### 2. Eendjes voeren in het park
 
-Simpel maar effectief. Een stukje oud brood (of beter: speciale eendenvoerkorrels van de dierenwinkel) en een vijver met eenden. Meer heeft een dreumes niet nodig. Het [Vondelpark](/amsterdam/vondelpark/) in Amsterdam en het Wilhelminapark in [Utrecht](/utrecht.html) zijn goede opties.
+Simpel maar effectief. Een stukje oud brood (of beter: speciale eendenvoerkorrels van de dierenwinkel) en een vijver met eenden. Meer heeft een dreumes niet nodig. Het [Vondelpark](/amsterdam.html) in Amsterdam en het Wilhelminapark in [Utrecht](/utrecht.html) zijn goede opties.
 
 ### 3. Bos- of duinwandeling
 
@@ -31,7 +31,7 @@ Een tuin vol geuren en kleuren is fascinerend voor een dreumes. Botanische tuine
 
 ### 5. Peuterbinnenspeeltuin
 
-Steeds meer binnenspeeltuinen hebben een speciaal gedeelte voor kinderen onder de twee. Hier staan zachte blokken, lage glijbaantjes en ballenbaden met kleine ballen. [Ballorig](/utrecht/ballorig/) en [Monkey Town](/amsterdam/monkey-town/) hebben aparte dreumeshoeken. Let op leeftijdsgrenzen: bij sommige speeltuinen is de minimumleeftijd 1 jaar.
+Steeds meer binnenspeeltuinen hebben een speciaal gedeelte voor kinderen onder de twee. Hier staan zachte blokken, lage glijbaantjes en ballenbaden met kleine ballen. [Ballorig](/utrecht.html) en [Monkey Town](/amsterdam/monkey-town-amsterdam/) hebben aparte dreumeshoeken. Let op leeftijdsgrenzen: bij sommige speeltuinen is de minimumleeftijd 1 jaar.
 
 ### 6. Speeltuin met babyschommel
 
@@ -67,7 +67,7 @@ Het [Nijntje Museum](/utrecht/nijntje-museum/) in [Utrecht](/utrecht.html) is ee
 
 ### 13. Ontdekmuseum of science center
 
-Sommige science centers hebben speciale zones voor de allerkleinsten. [NEMO](/amsterdam/nemo/) in Amsterdam heeft bijvoorbeeld een ontdekruimte voor kleine kinderen met watertafels en lichtexperimenten. Dit soort plekken bieden zintuiglijke prikkels zonder dat het overweldigend wordt.
+Sommige science centers hebben speciale zones voor de allerkleinsten. [NEMO](/amsterdam/nemo-science-museum/) in Amsterdam heeft bijvoorbeeld een ontdekruimte voor kleine kinderen met watertafels en lichtexperimenten. Dit soort plekken bieden zintuiglijke prikkels zonder dat het overweldigend wordt.
 
 ### 14. Tropisch zwemparadijs
 

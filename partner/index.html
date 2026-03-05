@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beheer je locatie — PeuterPlannen Partner Portal</title>
+    <meta name="description" content="Partnerportal voor PeuterPlannen: claim en beheer je locatiegegevens voor ouders met peuters en kleuters.">
+    <link rel="canonical" href="https://partner.peuterplannen.nl/">
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,6 +26,8 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; line-height: 1.6; }
         :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
+        .skip-link { position: absolute; left: -9999px; top: 8px; z-index: 9999; background: #fff; color: #111; border: 2px solid var(--primary); border-radius: 8px; padding: 8px 12px; font-size: 13px; text-decoration: none; }
+        .skip-link:focus { left: 12px; }
         .hidden { display: none !important; }
 
         /* Nav */
@@ -139,7 +143,8 @@
 </head>
 <body>
 
-<nav>
+<a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
+<nav aria-label="Hoofdnavigatie">
     <a href="/" class="nav-logo">PeuterPlannen <span class="nav-logo-pill">Partner</span></a>
     <div class="nav-right">
         <span id="nav-user" class="hidden"></span>
@@ -147,6 +152,7 @@
     </div>
 </nav>
 
+<main id="main-content">
 <!-- ===================== SCREEN: LANDING ===================== -->
 <div id="screen-landing" class="container">
     <div class="landing-header">
@@ -352,6 +358,8 @@
         </div>
     </div>
 </div>
+
+</main>
 
 <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';

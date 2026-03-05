@@ -27,7 +27,7 @@ Praktisch: kinderen onder 3 jaar zijn gratis. Een bezoek duurt 1,5 tot 2 uur, me
 
 ## Museon voor een regendag
 
-[Museon](/den-haag/museon/) is het meest onderschatte museum van Den Haag voor jonge kinderen. Kinderen tot 4 jaar zijn gratis. Er is een zone die specifiek op peuters is afgestemd: lage opstellingen, dingen aanraken en een kleine ontdekhoek. Het is niet zo groot als NEMO in Amsterdam, maar ook minder druk en rustiger van sfeer.
+[Museon](/den-haag/museon-omniversum-den-haag/) is het meest onderschatte museum van Den Haag voor jonge kinderen. Kinderen tot 4 jaar zijn gratis. Er is een zone die specifiek op peuters is afgestemd: lage opstellingen, dingen aanraken en een kleine ontdekhoek. Het is niet zo groot als NEMO in Amsterdam, maar ook minder druk en rustiger van sfeer.
 
 De rest van het museum (aarde, klimaat, mensheid) is wat te abstract voor peuters. Maar de peuterhoek en een rondwandeling door de begane grond zijn goed te combineren met een kop koffie.
 
