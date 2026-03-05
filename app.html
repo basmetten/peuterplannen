@@ -397,10 +397,100 @@
         .info-ai-note p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin: 0; }
 
         /* ── Plan wizard ── */
-        .plan-view { max-width: 760px; margin: 106px auto 0; padding: 16px 16px calc(80px + var(--safe-bottom)); }
-        .plan-view-header { margin-bottom: 20px; }
-        .plan-view-header h2 { font-family: var(--font-heading); font-size: clamp(32px, 5vw, 48px); font-weight: 700; color: var(--text); letter-spacing: -0.055em; line-height: 0.98; margin-bottom: 6px; }
-        .plan-view-header p { font-size: 14px; color: var(--text-muted); }
+        .plan-view {
+            width: min(1240px, calc(100% - 32px));
+            margin: 104px auto 0;
+            padding: 18px 0 calc(96px + var(--safe-bottom));
+        }
+        .plan-shell { display: grid; gap: 22px; align-items: start; }
+        .plan-main { min-width: 0; }
+        .plan-side { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+        .plan-stage {
+            background:
+                radial-gradient(circle at top right, rgba(232, 184, 112, 0.16), transparent 38%),
+                linear-gradient(155deg, rgba(255,255,255,0.98), rgba(255,249,243,0.92));
+            border: 1px solid rgba(45,41,38,0.08);
+            border-radius: 28px;
+            padding: clamp(22px, 3vw, 34px);
+            box-shadow: 0 20px 42px rgba(45,41,38,0.08);
+        }
+        .plan-view-header { margin-bottom: 22px; }
+        .plan-view-header h2 { font-family: var(--font-heading); font-size: clamp(40px, 5.2vw, 72px); font-weight: 700; color: var(--text); letter-spacing: -0.065em; line-height: 0.92; margin-bottom: 10px; max-width: 10ch; }
+        .plan-view-header p { font-size: 16px; color: var(--text-secondary); max-width: 40ch; }
+        .plan-preview-card {
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(145deg, rgba(45,41,38,0.98), rgba(85,61,50,0.94));
+            color: white;
+            border-radius: 28px;
+            padding: 26px 24px;
+            box-shadow: 0 22px 46px rgba(45,41,38,0.18);
+        }
+        .plan-preview-card::after {
+            content: '';
+            position: absolute;
+            inset: auto -12% -35% auto;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(232,184,112,0.26), transparent 68%);
+            pointer-events: none;
+        }
+        .plan-preview-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            border-radius: var(--radius-pill);
+            background: rgba(255,255,255,0.14);
+            color: rgba(255,255,255,0.82);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+        }
+        .plan-preview-title {
+            font-family: var(--font-heading);
+            font-size: clamp(28px, 3.3vw, 44px);
+            line-height: 0.98;
+            letter-spacing: -0.05em;
+            margin-bottom: 10px;
+            max-width: 12ch;
+        }
+        .plan-preview-copy { color: rgba(255,255,255,0.78); font-size: 15px; line-height: 1.65; max-width: 38ch; }
+        .plan-preview-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .plan-preview-pill {
+            padding: 12px 14px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .plan-preview-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.58);
+            margin-bottom: 5px;
+        }
+        .plan-preview-value {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: white;
+        }
+        .plan-result-slot { display: flex; flex-direction: column; gap: 14px; }
+        .plan-result-slot.hidden { display: none !important; }
 
         .plan-wizard { display: flex; flex-direction: column; gap: 10px; }
         .plan-step { background: linear-gradient(170deg, #ffffff, rgba(255,251,246,0.92)); border: 1px solid rgba(45,41,38,0.08); border-radius: var(--radius-sm); padding: 16px 18px; box-shadow: 0 8px 18px rgba(45,41,38,0.06); }
@@ -499,9 +589,11 @@
           .bottom-nav { display: none; }
           .filter-chips { top: 0; }
           body.plan-mode { overflow: auto; }
-          body.plan-mode .app-wrapper { display: block; height: auto; overflow: visible; margin-top: 92px; }
-          body.plan-mode .app-context-strip { margin: 0 auto 14px; }
-          body.plan-mode #plan-view.app-container { display: block; max-width: 760px; width: min(100%, 760px); margin: 0 auto; padding: 16px 16px calc(96px + var(--safe-bottom)); height: auto; overflow: visible; }
+          body.plan-mode .app-wrapper { display: none !important; }
+          body.plan-mode #plan-view { display: block !important; }
+          body.plan-mode #plan-view.plan-view { width: min(1240px, calc(100% - 48px)); padding: 18px 0 calc(120px + var(--safe-bottom)); }
+          body.plan-mode .plan-shell { grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr); gap: 24px; }
+          body.plan-mode .plan-side { position: sticky; top: 116px; }
         }
         /* Desktop split view — JS class fallback (belt AND suspenders) */
         html.pp-desktop body { overflow: hidden !important; padding-bottom: 0 !important; }
@@ -516,9 +608,21 @@
         html.pp-desktop .chip-label { display: none; }
         html.pp-desktop .chip { padding: 5px 10px; font-size: 11px; }
         html.pp-desktop body.plan-mode { overflow: auto !important; }
-        html.pp-desktop body.plan-mode .app-wrapper { display: block !important; height: auto !important; overflow: visible !important; margin-top: 92px !important; }
-        html.pp-desktop body.plan-mode .app-context-strip { margin: 0 auto 14px !important; position: static !important; }
-        html.pp-desktop body.plan-mode #plan-view.app-container { display: block !important; grid-template-columns: none !important; max-width: 760px !important; width: min(100%, 760px) !important; overflow: visible !important; height: auto !important; padding: 16px 16px calc(96px + var(--safe-bottom)) !important; margin: 0 auto !important; }
+        html.pp-desktop body.plan-mode .app-wrapper { display: none !important; }
+        html.pp-desktop body.plan-mode #plan-view { display: block !important; }
+        html.pp-desktop body.plan-mode #plan-view.plan-view { width: min(1240px, calc(100% - 48px)) !important; overflow: visible !important; padding: 18px 0 calc(120px + var(--safe-bottom)) !important; margin: 104px auto 0 !important; }
+        html.pp-desktop body.plan-mode .plan-shell { display: grid !important; grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr) !important; gap: 24px !important; }
+        html.pp-desktop body.plan-mode .plan-side { position: sticky !important; top: 116px !important; }
+
+        @media (max-width: 679px) {
+          .plan-view { width: min(100%, 760px); margin-top: 92px; padding-bottom: calc(110px + var(--safe-bottom)); }
+          .plan-stage { border-radius: 22px; padding: 20px 18px; }
+          .plan-view-header h2 { font-size: clamp(32px, 9vw, 52px); max-width: none; }
+          .plan-view-header p { font-size: 14px; }
+          .plan-preview-card { border-radius: 22px; padding: 20px 18px; }
+          .plan-preview-title { font-size: clamp(24px, 8vw, 36px); max-width: none; }
+          .plan-preview-list { grid-template-columns: 1fr; }
+        }
 
         /* Explore CTA */
         .explore-cta { margin: 28px 0; text-align: center; }
@@ -688,10 +792,13 @@
     </div><!-- /.app-wrapper -->
 
     <!-- Plan view (hidden until tab selected) -->
-    <div id="plan-view" class="app-container plan-view hidden">
+    <section id="plan-view" class="plan-view hidden">
+        <div class="plan-shell">
+        <div class="plan-main">
+        <div class="plan-stage">
         <div class="plan-view-header">
             <h2>Plan mijn dag</h2>
-            <p>Vertel ons wat, wij kiezen de route.</p>
+            <p>Vertel ons wat voor dag je zoekt. PeuterPlannen bouwt daarna een logische route met locaties die passen bij je kinderen, het weer en je vervoer.</p>
         </div>
         <div class="plan-location-chip" id="plan-location-chip">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
@@ -765,10 +872,20 @@
 
             <button class="plan-generate-btn" id="plan-gen-btn" onclick="generatePlan()">Plan genereren →</button>
         </div>
+        </div>
+        </div>
 
-        <!-- Plan resultaat -->
-        <div id="plan-result-container" class="hidden" style="margin-top:14px;"></div>
-    </div>
+        <aside class="plan-side">
+            <div class="plan-preview-card">
+                <div class="plan-preview-kicker">Dagvoorstel</div>
+                <h3 class="plan-preview-title" id="plan-preview-title">Rustig, slim en peuterproof opgebouwd.</h3>
+                <p class="plan-preview-copy" id="plan-preview-copy">Kies je dag, kinderen en vervoer. Rechts verschijnt daarna direct een bruikbaar plan, zonder losse lijstjes of giswerk.</p>
+                <div class="plan-preview-list" id="plan-preview-list"></div>
+            </div>
+            <div id="plan-result-container" class="plan-result-slot hidden"></div>
+        </aside>
+        </div>
+    </section>
 
     <!-- Info panel (slide-up bottom sheet) -->
     <div class="info-overlay" id="info-overlay" onclick="closeInfoPanel()" aria-hidden="true"></div>
@@ -2074,6 +2191,7 @@
                 label.textContent = 'Locatie niet ingesteld';
                 chip.classList.remove('has-location');
             }
+            renderPlanPreview();
         }
 
         async function fetchPlanLocations() {
@@ -2093,6 +2211,63 @@
             duration:  'morning',
         };
 
+        function getPlanPreviewDateLabel(key) {
+            const labels = {
+                today: 'Vandaag',
+                tomorrow: 'Morgen',
+                saturday: 'Zaterdag',
+                sunday: 'Zondag',
+            };
+            return labels[key] || 'Vandaag';
+        }
+
+        function getPlanPreviewDurationLabel(key) {
+            const labels = {
+                morning: 'Ochtend',
+                half_day: 'Halve dag',
+                whole_day: 'Hele dag',
+            };
+            return labels[key] || 'Ochtend';
+        }
+
+        function getPlanPreviewTransportLabel(key) {
+            const labels = {
+                auto: 'Auto · 50 km',
+                fiets: 'Fiets · 5 km',
+                ov: 'OV · 25 km',
+                bakfiets: 'Bakfiets · 8 km',
+            };
+            return labels[key] || 'Auto · 50 km';
+        }
+
+        function renderPlanPreview() {
+            const title = document.getElementById('plan-preview-title');
+            const copy = document.getElementById('plan-preview-copy');
+            const list = document.getElementById('plan-preview-list');
+            if (!title || !copy || !list) return;
+
+            const kidsLabel = `${planState.kidsCount} ${planState.kidsCount === 1 ? 'kind' : 'kinderen'}`;
+            const agesLabel = planState.childAges.map((age) => `${age} jr`).join(', ');
+            const locationLabel = userLocation?.name || 'Nog geen locatie gekozen';
+
+            title.textContent = `${getPlanPreviewDurationLabel(planState.duration)} voor ${kidsLabel}, zonder zoekchaos.`;
+            copy.textContent = userLocation
+                ? `We bouwen een voorstel vanuit ${locationLabel}, afgestemd op ${agesLabel} en ${TRANSPORT_LABELS[planState.transport]}.`
+                : 'Voeg een stad of adres toe voor sterkere routes en afstandsfilters. Zonder locatie starten we slim vanuit een centrale plek.';
+
+            list.innerHTML = [
+                ['Wanneer', getPlanPreviewDateLabel(planState.date)],
+                ['Kinderen', `${kidsLabel} · ${agesLabel}`],
+                ['Vervoer', getPlanPreviewTransportLabel(planState.transport)],
+                ['Startpunt', locationLabel],
+            ].map(([label, value]) => `
+                <div class="plan-preview-pill">
+                    <span class="plan-preview-label">${label}</span>
+                    <span class="plan-preview-value">${escapeHtml(value)}</span>
+                </div>
+            `).join('');
+        }
+
         // ---- Date helpers ----
         function getPlanDate(key) {
             const d = new Date();
@@ -2106,6 +2281,7 @@
             document.querySelectorAll('#plan-date-options .plan-chip').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             planState.date = val;
+            renderPlanPreview();
         }
 
         function selectPlanOption(btn, group) {
@@ -2114,6 +2290,7 @@
             btn.classList.add('selected');
             if (group === 'transport') planState.transport = btn.dataset.transport;
             if (group === 'duration')  planState.duration  = btn.dataset.duration;
+            renderPlanPreview();
         }
 
         // ---- Kids counter & age sliders ----
@@ -2125,6 +2302,7 @@
             while (planState.childAges.length < next) planState.childAges.push(2);
             planState.childAges = planState.childAges.slice(0, next);
             renderAgeSliders();
+            renderPlanPreview();
         }
 
         function renderAgeSliders() {
@@ -2141,6 +2319,7 @@
 
         function updateChildAge(index, val) {
             planState.childAges[index] = parseInt(val);
+            renderPlanPreview();
         }
 
         // ---- Weather forecast ----
@@ -2376,7 +2555,9 @@
                     </div>
                 `;
                 resultContainer.classList.remove('hidden');
-                resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (window.innerWidth < DESKTOP_WIDTH) {
+                    resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
 
                 // Fetch AI description async
                 fetchAiPlanDescription({
@@ -2456,6 +2637,7 @@
 
         // Init plan view
         renderAgeSliders();
+        renderPlanPreview();
 
         // ================================================================
         // === EXTEND switchView FOR PLAN TAB ===
