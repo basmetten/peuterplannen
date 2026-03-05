@@ -182,6 +182,37 @@
         .app-context-kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; }
         .app-context-title { font-family: var(--font-heading); font-size: 21px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; line-height: 1.2; }
         .app-context-sub { font-size: 13px; color: var(--text-secondary); font-weight: 500; margin-top: 2px; }
+        .app-mode-switch {
+            margin-top: 14px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 6px;
+            border-radius: var(--radius-pill);
+            background: rgba(255,255,255,0.7);
+            border: 1px solid rgba(212, 119, 90, 0.14);
+            box-shadow: 0 8px 22px rgba(45,41,38,0.08);
+        }
+        .app-mode-chip {
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: var(--font-ui);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            padding: 11px 18px;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .app-mode-chip.active {
+            background: var(--surface);
+            color: var(--text);
+            box-shadow: 0 8px 18px rgba(45,41,38,0.08);
+        }
+        .plan-mode-toolbar { margin-bottom: 18px; }
 
         /* Search card */
         .search-section { background: linear-gradient(165deg, rgba(255,255,255,0.96), #fff); border: 1px solid rgba(212, 119, 90, 0.18); border-radius: var(--radius-md); box-shadow: 0 10px 22px rgba(45,41,38,0.08); padding: 20px; margin-bottom: 16px; }
@@ -582,6 +613,7 @@
           body { overflow: hidden; padding-bottom: 0; }
           .app-wrapper { display: grid; grid-template-rows: auto 1fr; height: calc(100dvh - 92px); overflow: hidden; margin-top: 92px; }
           .app-context-strip { margin: 0 auto 10px; }
+          .app-mode-switch { display: inline-flex; }
           .app-container { display: grid; grid-template-columns: 440px 1fr; max-width: 100%; overflow: hidden; height: 100%; padding: 0; margin: 0; }
           #list-view { display: flex !important; flex-direction: column; overflow-y: auto; height: 100%; border-right: 1px solid rgba(45,41,38,0.08); padding: 12px 16px 20px; }
           #map-container { display: block !important; height: 100%; position: relative; width: 100%; }
@@ -622,6 +654,7 @@
           .plan-preview-card { border-radius: 22px; padding: 20px 18px; }
           .plan-preview-title { font-size: clamp(24px, 8vw, 36px); max-width: none; }
           .plan-preview-list { grid-template-columns: 1fr; }
+          .app-mode-switch { display: none !important; }
         }
 
         /* Explore CTA */
@@ -710,6 +743,10 @@
             <p class="app-context-kicker">PeuterPlannen App</p>
             <p class="app-context-title">Waar gaan we vandaag naartoe?</p>
             <p class="app-context-sub">Ontdek direct kindvriendelijke uitjes in de buurt</p>
+            <div class="app-mode-switch" aria-label="Desktop app-modus">
+                <button type="button" class="app-mode-chip active" data-mode-target="home" onclick="switchView('home')">Ontdek locaties</button>
+                <button type="button" class="app-mode-chip" data-mode-target="plan" onclick="switchView('plan')">Plan mijn dag</button>
+            </div>
         </header>
     <div class="app-container" id="app-container">
         <div id="list-view">
@@ -796,6 +833,10 @@
         <div class="plan-shell">
         <div class="plan-main">
         <div class="plan-stage">
+        <div class="app-mode-switch plan-mode-toolbar" aria-label="Desktop app-modus">
+            <button type="button" class="app-mode-chip" data-mode-target="home" onclick="switchView('home')">Ontdek locaties</button>
+            <button type="button" class="app-mode-chip active" data-mode-target="plan" onclick="switchView('plan')">Plan mijn dag</button>
+        </div>
         <div class="plan-view-header">
             <h2>Plan mijn dag</h2>
             <p>Vertel ons wat voor dag je zoekt. PeuterPlannen bouwt daarna een logische route met locaties die passen bij je kinderen, het weer en je vervoer.</p>
@@ -1643,6 +1684,12 @@
             if (instant) requestAnimationFrame(() => indicator.classList.remove('no-transition'));
         }
 
+        function syncDesktopModeSwitch(mode = 'home') {
+            document.querySelectorAll('.app-mode-chip').forEach((button) => {
+                button.classList.toggle('active', button.dataset.modeTarget === mode);
+            });
+        }
+
         function switchView(view) {
             const isDesktop = window.innerWidth >= DESKTOP_WIDTH;
             closeLocSheet();
@@ -1664,6 +1711,7 @@
                     document.querySelector('.chip').classList.add('active');
                     updateFilterCount(); loadLocations();
                 }
+                syncDesktopModeSwitch('home');
                 return;
             }
 
@@ -1771,6 +1819,7 @@
                 currentView = 'home';
             }
             moveNavIndicator();
+            syncDesktopModeSwitch('home');
             _origToggleTag(tag, evt);
         };
 
@@ -2115,6 +2164,7 @@
 
         // Apply layout (desktop/mobile) via CSS class + media query (belt AND suspenders)
         applyLayout();
+        syncDesktopModeSwitch('home');
         window.addEventListener('resize', applyLayout);
 
         // Preload MapLibre — immediately on desktop, lazily on mobile
@@ -2656,6 +2706,7 @@
                 document.getElementById('tab-plan')?.classList.add('active');
                 currentView = 'plan';
                 updatePlanLocationChip();
+                syncDesktopModeSwitch('plan');
                 moveNavIndicator();
                 return;
             }
@@ -2664,6 +2715,7 @@
             if (planView)   planView.classList.add('hidden');
             if (appWrapper) appWrapper.classList.remove('hidden');
             _origSwitchView(view);
+            syncDesktopModeSwitch('home');
         };
     </script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
