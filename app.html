@@ -179,6 +179,7 @@
             transform: scale(1.1);
         }
         .app-context-strip > * { position: relative; z-index: 1; }
+        .app-context-copy { display: flex; flex-direction: column; align-items: center; }
         .app-context-kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; }
         .app-context-title { font-family: var(--font-heading); font-size: 21px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; line-height: 1.2; }
         .app-context-sub { font-size: 13px; color: var(--text-secondary); font-weight: 500; margin-top: 2px; }
@@ -193,8 +194,23 @@
             background: rgba(255,255,255,0.7);
             border: 1px solid rgba(212, 119, 90, 0.14);
             box-shadow: 0 8px 22px rgba(45,41,38,0.08);
+            position: relative;
+            isolation: isolate;
         }
+        .app-mode-switch::before {
+            content: '';
+            position: absolute;
+            inset: 6px auto 6px 6px;
+            width: calc(50% - 3px);
+            border-radius: var(--radius-pill);
+            background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,250,245,0.92));
+            box-shadow: 0 10px 22px rgba(45,41,38,0.10);
+            transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), width 0.42s cubic-bezier(0.22, 1, 0.36, 1), background 0.25s ease;
+            z-index: 0;
+        }
+        .app-mode-switch.is-plan::before { transform: translateX(calc(100% + 6px)); }
         .app-mode-chip {
+            flex: 1 1 0;
             border: none;
             background: transparent;
             color: var(--text-secondary);
@@ -205,12 +221,13 @@
             padding: 11px 18px;
             border-radius: var(--radius-pill);
             cursor: pointer;
-            transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+            transition: color 0.28s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.22s ease;
+            position: relative;
+            z-index: 1;
         }
         .app-mode-chip.active {
-            background: var(--surface);
             color: var(--text);
-            box-shadow: 0 8px 18px rgba(45,41,38,0.08);
+            transform: translateY(-1px);
         }
         .plan-mode-toolbar { margin-bottom: 18px; }
 
@@ -612,8 +629,22 @@
         @media (min-width: 680px) {
           body { overflow: hidden; padding-bottom: 0; }
           .app-wrapper { display: grid; grid-template-rows: auto 1fr; height: calc(100dvh - 92px); overflow: hidden; margin-top: 92px; }
-          .app-context-strip { margin: 0 auto 10px; }
+          .app-context-strip {
+            margin: 0 auto 10px;
+            max-width: min(1240px, calc(100% - 32px));
+            width: calc(100% - 32px);
+            display: grid;
+            grid-template-columns: minmax(360px, 1fr) auto;
+            align-items: center;
+            gap: 24px;
+            padding: 20px 24px;
+            text-align: left;
+          }
+          .app-context-copy { align-items: flex-start; }
+          .app-context-title { font-size: clamp(28px, 3vw, 40px); letter-spacing: -0.05em; }
+          .app-context-sub { font-size: 15px; max-width: 38ch; }
           .app-mode-switch { display: inline-flex; }
+          .app-mode-switch.compact { width: min(360px, 100%); margin-top: 0; align-self: center; }
           .app-container { display: grid; grid-template-columns: 440px 1fr; max-width: 100%; overflow: hidden; height: 100%; padding: 0; margin: 0; }
           #list-view { display: flex !important; flex-direction: column; overflow-y: auto; height: 100%; border-right: 1px solid rgba(45,41,38,0.08); padding: 12px 16px 20px; }
           #map-container { display: block !important; height: 100%; position: relative; width: 100%; }
@@ -630,7 +661,22 @@
         /* Desktop split view — JS class fallback (belt AND suspenders) */
         html.pp-desktop body { overflow: hidden !important; padding-bottom: 0 !important; }
         html.pp-desktop .app-wrapper { display: grid !important; grid-template-rows: auto 1fr !important; height: calc(100dvh - 92px) !important; overflow: hidden !important; margin-top: 92px !important; }
-        html.pp-desktop .app-context-strip { margin: 0 auto 10px !important; position: static !important; }
+        html.pp-desktop .app-context-strip {
+          margin: 0 auto 10px !important;
+          position: static !important;
+          max-width: min(1240px, calc(100% - 32px)) !important;
+          width: calc(100% - 32px) !important;
+          display: grid !important;
+          grid-template-columns: minmax(360px, 1fr) auto !important;
+          align-items: center !important;
+          gap: 24px !important;
+          padding: 20px 24px !important;
+          text-align: left !important;
+        }
+        html.pp-desktop .app-context-copy { align-items: flex-start !important; }
+        html.pp-desktop .app-context-title { font-size: clamp(28px, 3vw, 40px) !important; letter-spacing: -0.05em !important; }
+        html.pp-desktop .app-context-sub { font-size: 15px !important; max-width: 38ch !important; }
+        html.pp-desktop .app-mode-switch.compact { width: min(360px, 100%) !important; margin-top: 0 !important; align-self: center !important; }
         html.pp-desktop .app-container { display: grid !important; grid-template-columns: 440px 1fr !important; max-width: 100% !important; overflow: hidden !important; height: 100% !important; padding: 0 !important; margin: 0 !important; }
         html.pp-desktop #list-view { display: flex !important; flex-direction: column !important; overflow-y: auto !important; height: 100% !important; border-right: 1px solid rgba(45,41,38,0.08) !important; padding: 12px 16px 20px !important; }
         html.pp-desktop #map-container { display: block !important; height: 100% !important; position: relative !important; width: 100% !important; }
@@ -655,6 +701,7 @@
           .plan-preview-title { font-size: clamp(24px, 8vw, 36px); max-width: none; }
           .plan-preview-list { grid-template-columns: 1fr; }
           .app-mode-switch { display: none !important; }
+          .app-context-copy { align-items: center; }
         }
 
         /* Explore CTA */
@@ -740,10 +787,12 @@
 
     <div class="app-wrapper">
         <header class="app-context-strip">
-            <p class="app-context-kicker">PeuterPlannen App</p>
-            <p class="app-context-title">Waar gaan we vandaag naartoe?</p>
-            <p class="app-context-sub">Ontdek direct kindvriendelijke uitjes in de buurt</p>
-            <div class="app-mode-switch" aria-label="Desktop app-modus">
+            <div class="app-context-copy">
+                <p class="app-context-kicker">PeuterPlannen App</p>
+                <p class="app-context-title">Waar gaan we vandaag naartoe?</p>
+                <p class="app-context-sub">Ontdek direct kindvriendelijke uitjes in de buurt</p>
+            </div>
+            <div class="app-mode-switch compact" aria-label="Desktop app-modus">
                 <button type="button" class="app-mode-chip active" data-mode-target="home" onclick="switchView('home')">Ontdek locaties</button>
                 <button type="button" class="app-mode-chip" data-mode-target="plan" onclick="switchView('plan')">Plan mijn dag</button>
             </div>
@@ -1687,6 +1736,9 @@
         function syncDesktopModeSwitch(mode = 'home') {
             document.querySelectorAll('.app-mode-chip').forEach((button) => {
                 button.classList.toggle('active', button.dataset.modeTarget === mode);
+            });
+            document.querySelectorAll('.app-mode-switch').forEach((el) => {
+                el.classList.toggle('is-plan', mode === 'plan');
             });
         }
 
