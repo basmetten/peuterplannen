@@ -34,6 +34,7 @@ function json(payload: unknown, status = 200): Response {
     headers: {
       ...CORS,
       "Content-Type": "application/json",
+      "Cache-Control": "no-store",
     },
   });
 }
@@ -142,6 +143,9 @@ async function fetchEmailMap(userIds: string[], concurrency = 12): Promise<Recor
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: CORS });
+  }
+  if (req.method !== "POST") {
+    return json({ error: "Method not allowed", code: "METHOD_NOT_ALLOWED" }, 405);
   }
 
   const requestId = getRequestId(req);

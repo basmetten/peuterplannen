@@ -16,13 +16,27 @@ const RETURN_URL = Deno.env.get("STRIPE_BILLING_PORTAL_RETURN_URL") || "https://
 
 const CORS = {
   "Access-Control-Allow-Origin": "https://partner.peuterplannen.nl",
-  "Access-Control-Allow-Headers": "authorization, content-type",
+  "Access-Control-Allow-Headers": "authorization, content-type, x-request-id",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
+
+function json(payload: unknown, status = 200): Response {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: {
+      ...CORS,
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store",
+    },
+  });
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: CORS });
+  }
+  if (req.method !== "POST") {
+    return json({ error: "Method not allowed", code: "METHOD_NOT_ALLOWED" }, 405);
   }
 
   try {
@@ -58,18 +72,13 @@ serve(async (req) => {
       return_url: RETURN_URL,
     });
 
-    return new Response(JSON.stringify({ url: portalSession.url }), {
-      headers: { ...CORS, "Content-Type": "application/json" },
-    });
+    return json({ url: portalSession.url });
   } catch (error) {
     console.error("create-customer-portal-session error", error);
 
     const message = (error as Error).message || "Onbekende fout";
     const status = message === "Unauthorized" ? 401 : 400;
 
-    return new Response(JSON.stringify({ error: message }), {
-      status,
-      headers: { ...CORS, "Content-Type": "application/json" },
-    });
+    return json({ error: message, code: status === 401 ? "UNAUTHORIZED" : "BAD_REQUEST" }, status);
   }
 });

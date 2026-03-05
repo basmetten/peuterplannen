@@ -539,6 +539,10 @@
     }
 
     async function api(action, params = {}) {
+      if (!state.accessToken) {
+        throw new Error('Sessie verlopen. Log opnieuw in.');
+      }
+
       const requestId = (globalThis.crypto && globalThis.crypto.randomUUID)
         ? globalThis.crypto.randomUUID()
         : `req-${Date.now()}`;
@@ -884,7 +888,7 @@
           </tr>
         `).join('');
       } catch (error) {
-        console.error('loadEditLog failed', error);
+        PortalShell.setAlert('owners-alert', `Editlog laden mislukt: ${error.message}`, 'error', { assertive: true });
       }
     }
 

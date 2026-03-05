@@ -554,11 +554,16 @@
     }
 
     async function loadOwnerData() {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('venue_owners')
         .select('*')
         .eq('user_id', state.currentUser.id)
-        .single();
+        .maybeSingle();
+
+      if (error) {
+        PortalShell.setAlert('landing-alert', `Profiel laden mislukt: ${error.message}`, 'error', { assertive: true });
+        return;
+      }
 
       state.venueOwner = data || null;
 
@@ -577,13 +582,18 @@
     }
 
     async function loadLatestClaimStatus() {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('location_claim_requests')
         .select('status, review_reason, created_at')
         .eq('user_id', state.currentUser.id)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
+
+      if (error) {
+        PortalShell.setAlert('claim-search-alert', `Claimstatus laden mislukt: ${error.message}`, 'error', { assertive: true });
+        return;
+      }
 
       const panel = document.getElementById('claim-status-panel');
       const msg = document.getElementById('claim-status-msg');
@@ -623,7 +633,13 @@
         .ilike('name', `%${query}%`)
         .limit(10);
 
-      if (error || !data?.length) {
+      if (error) {
+        resultsEl.innerHTML = '<p class="portal-muted">Zoeken mislukt. Probeer opnieuw.</p>';
+        PortalShell.setAlert('claim-search-alert', `Zoeken mislukt: ${error.message}`, 'error', { assertive: true });
+        return;
+      }
+
+      if (!data?.length) {
         resultsEl.innerHTML = '<p class="portal-muted">Geen locaties gevonden.</p>';
         return;
       }
@@ -663,11 +679,15 @@
         const since = new Date();
         since.setDate(since.getDate() - 1);
 
-        const { count } = await supabase
+        const { count, error: countError } = await supabase
           .from('location_claim_requests')
           .select('id', { count: 'exact', head: true })
           .eq('user_id', state.currentUser.id)
           .gte('created_at', since.toISOString());
+
+        if (countError) {
+          throw countError;
+        }
 
         if ((count || 0) >= 3) {
           PortalShell.setAlert('claim-search-alert', 'Je hebt al 3 aanvragen in 24 uur verstuurd. Probeer later opnieuw.', 'warn', { assertive: true });
@@ -699,11 +719,16 @@
     async function loadLocationData() {
       if (!state.venueOwner?.location_id) return;
 
-      const { data: location } = await supabase
+      const { data: location, error } = await supabase
         .from('locations')
         .select('*')
         .eq('id', state.venueOwner.location_id)
         .single();
+
+      if (error) {
+        PortalShell.setAlert('edit-alert', `Locatie laden mislukt: ${error.message}`, 'error', { assertive: true });
+        return;
+      }
 
       if (!location) return;
 
@@ -868,6 +893,10 @@
 
       try {
         const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) {
+          throw new Error('Je sessie is verlopen. Log opnieuw in.');
+        }
+
         const response = await fetch(`${EDGE_BASE}/create-checkout-session`, {
           method: 'POST',
           headers: {
@@ -896,6 +925,10 @@
 
       try {
         const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) {
+          throw new Error('Je sessie is verlopen. Log opnieuw in.');
+        }
+
         const response = await fetch(`${EDGE_BASE}/create-customer-portal-session`, {
           method: 'POST',
           headers: {
@@ -904,8 +937,17 @@
           },
         });
 
-        const payload = await response.json();
+        let payload = {};
+        try {
+          payload = await response.json();
+        } catch {
+          payload = {};
+        }
+
         if (!response.ok || !payload.url) {
+          if (response.status === 404 || payload.code === 'NOT_FOUND') {
+            throw new Error('Het Stripe klantportaal is nog niet actief op de backend. Gebruik tijdelijk support@peuterplannen.nl voor abonnementwijzigingen.');
+          }
           throw new Error(payload.error || 'Klantportaal kon niet worden geopend.');
         }
 
