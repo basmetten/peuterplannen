@@ -667,42 +667,42 @@
         <div class="features-container">
             <div class="features-header">
                 <h2>Waarom PeuterPlannen?</h2>
-                <p>Gemaakt door ouders, voor ouders, met live previews van hoe je sneller kiest.</p>
+                <p>Gemaakt door ouders, voor ouders, zodat je snel iets vindt dat echt werkt met peuters en kleuters.</p>
             </div>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h8"/><circle cx="18" cy="12" r="3"/></svg>
                     </div>
-                    <h3>Shuffler</h3>
-                    <p>Een mini-simulator die laat zien hoe snel je andere opties krijgt zonder opnieuw te zoeken.</p>
-                    <div class="feature-output" id="shuffler-output">Start met: "Natuur + Koffie"</div>
-                    <button class="feature-btn" id="shuffle-btn" type="button">Nieuwe combinatie</button>
+                    <h3>Snel nieuw idee</h3>
+                    <p>Twijfel je? Met 1 tik krijg je direct een nieuw peuterproof plan, zonder opnieuw te beginnen.</p>
+                    <div class="feature-output" id="shuffler-output">Nu: "Natuurwandeling + koffiestop met speelhoek"</div>
+                    <button class="feature-btn" id="shuffle-btn" type="button">Geef me een nieuw idee</button>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24"><path d="M4 19h16M6 16V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8"/><path d="M8 10h8"/></svg>
                     </div>
-                    <h3>Typewriter filters</h3>
-                    <p>Zie hoe zoekintentie direct vertaalt naar filtertaal die de app begrijpt.</p>
+                    <h3>Zeg wat je zoekt</h3>
+                    <p>Typ zoals je praat; wij maken er meteen een passende selectie van voor jouw gezin.</p>
                     <div class="feature-live-row">
-                        <span class="feature-live-label">Prompt</span>
+                        <span class="feature-live-label">Jouw wens</span>
                         <div class="typewriter-text" id="typewriter-text"></div>
                     </div>
-                    <button class="feature-btn" id="typewriter-btn" type="button">Volgende prompt</button>
+                    <button class="feature-btn" id="typewriter-btn" type="button">Volgende wens</button>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M7 11h10M7 15h7"/></svg>
                     </div>
-                    <h3>Dagplanner preview</h3>
-                    <p>Kies dagdeel en weer; de preview toont direct een logische volgorde voor je peuterdag.</p>
+                    <h3>Dagje-uit voorbeeld</h3>
+                    <p>Kies moment en weer en zie meteen een rustige volgorde die werkt met kleine kinderen.</p>
                     <div class="scheduler-grid" id="scheduler-grid">
                         <button type="button" class="scheduler-day active" data-scheduler="zaterdagochtend">Za ochtend</button>
                         <button type="button" class="scheduler-day" data-scheduler="zaterdagmiddag">Za middag</button>
                         <button type="button" class="scheduler-day" data-scheduler="zondagochtend">Zo ochtend</button>
                     </div>
-                    <div class="feature-output" id="scheduler-output">Binnen starten, lunch dichtbij, eindigen in een speeltuin.</div>
+                    <div class="feature-output" id="scheduler-output">Rustig opstarten binnen, daarna lunch en uitrazen in de speeltuin.</div>
                 </div>
             </div>
         </div>
@@ -925,10 +925,10 @@
   var shufflerOutput = document.getElementById('shuffler-output');
   var shuffleBtn = document.getElementById('shuffle-btn');
   var shuffleStates = [
-    'Start met: "Natuur + Koffie"',
-    'Switch naar: "Binnen + Verschoonplek"',
-    'Dan: "Speeltuin + Dreumesproof"',
-    'Sluit af met: "Pannenkoek + Buitenruimte"'
+    'Nu: "Natuurwandeling + koffiestop met speelhoek"',
+    'Of: "Binnen spelen + verschoonplek dichtbij"',
+    'Of: "Kinderboerderij + pannenkoek toe"',
+    'Of: "Speeltuin + rustige lunch in de buurt"'
   ];
   var shuffleIdx = 0;
   if (shuffleBtn && shufflerOutput) {
@@ -939,10 +939,10 @@
   }
 
   var prompts = [
-    'regen + peuter + max 15 min',
-    'zonnig + boerderij + koffie',
-    'zaterdag + rustige lunchplek',
-    'middag + binnen + verschoonplek'
+    'Het regent, we willen dichtbij iets leuks met koffie.',
+    'Zonnig! Liefst buiten met dieren en veel ruimte.',
+    'Korte ochtendactiviteit met peuterproof lunchplek.',
+    'Binnen spelen, liefst met verschoonruimte en kinderstoel.'
   ];
   var typewriterText = document.getElementById('typewriter-text');
   var typewriterBtn = document.getElementById('typewriter-btn');
@@ -974,9 +974,9 @@
 
   var schedulerOutput = document.getElementById('scheduler-output');
   var schedulePlanMap = {
-    zaterdagochtend: 'Binnen starten, lunch dichtbij, eindigen in een speeltuin.',
-    zaterdagmiddag: 'Eerst buitenlucht, daarna pannenkoekpauze met kinderstoel.',
-    zondagochtend: 'Korte reistijd, rustige boerderij, koffiestop voor ouders.'
+    zaterdagochtend: 'Rustig opstarten binnen, daarna lunch en uitrazen in de speeltuin.',
+    zaterdagmiddag: 'Eerst buitenlucht, daarna pannenkoekpauze met ruimte voor de kids.',
+    zondagochtend: 'Korte reistijd, dierentijd op de boerderij en koffie voor ouders.'
   };
   document.querySelectorAll('.scheduler-day').forEach(function (btn) {
     btn.addEventListener('click', function () {
