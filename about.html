@@ -102,8 +102,24 @@
         .nav-cta:hover { background: var(--primary-dark); }
 
         .content { max-width: 760px; margin: 0 auto; padding: 154px 24px 80px; }
-        h1 { font-size: 42px; font-weight: 800; margin-bottom: 32px; line-height: 1.2; }
-        h2 { font-size: 26px; font-weight: 700; margin: 48px 0 20px; color: var(--navy); }
+        h1 {
+            font-size: clamp(40px, 6vw, 66px);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            margin-bottom: 28px;
+            line-height: 0.96;
+            max-width: 12ch;
+            text-wrap: balance;
+        }
+        h2 {
+            font-size: clamp(30px, 3.2vw, 42px);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin: 56px 0 18px;
+            color: var(--navy);
+            line-height: 1.04;
+            text-wrap: balance;
+        }
         p { margin-bottom: 20px; font-size: 17px; color: var(--ink-light); line-height: 1.8; }
         .highlight { color: var(--primary); font-weight: 600; }
 
@@ -116,7 +132,7 @@
         .stat-card span { font-size: 14px; color: var(--ink-muted); }
 
         .cta-box { background: var(--primary); border-radius: var(--radius-md); padding: 36px 32px; text-align: center; margin-top: 48px; color: white; }
-        .cta-box h3 { font-size: 22px; margin-bottom: 12px; }
+        .cta-box h3 { font-size: clamp(28px, 3vw, 38px); line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 12px; }
         .cta-box p { color: rgba(255,255,255,0.85); margin-bottom: 20px; }
         .cta-box a { background: white; color: var(--primary); padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; }
         .cta-box a:hover { background: #f0f0f0; }
@@ -129,7 +145,8 @@
             .nav-inner { padding: 12px 14px; }
             .nav-links { display: none; }
             .content { padding-top: 124px; }
-            h1 { font-size: 32px; }
+            h1 { font-size: clamp(34px, 10vw, 46px); line-height: 0.98; }
+            h2 { font-size: clamp(28px, 7vw, 34px); }
             .stats-row { gap: 12px; }
             .stat-card { min-width: 100px; padding: 16px; }
         }
@@ -150,7 +167,7 @@
 
         .support-about-section { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border-radius: var(--radius-md); padding: 36px 32px; text-align: center; margin: 48px 0; box-shadow: var(--shadow-lg); }
         .support-about-inner { max-width: 480px; margin: 0 auto; }
-        .support-about-section h2 { font-size: 22px; font-weight: 700; margin-bottom: 12px; color: white; margin-top: 0; }
+        .support-about-section h2 { font-size: clamp(30px, 3.2vw, 40px); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; color: white; margin-top: 0; line-height: 1.04; }
         .support-about-section p { color: rgba(255,255,255,0.9); margin-bottom: 16px; font-size: 16px; }
         .support-about-amounts { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
         .support-about-pill { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: var(--radius-pill); padding: 6px 16px; font-size: 14px; font-weight: 600; }

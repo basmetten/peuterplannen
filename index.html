@@ -283,7 +283,7 @@
             letter-spacing: 0.04em;
             text-transform: uppercase;
         }
-        .hero-content h1 { font-size: 52px; font-weight: 700; line-height: 1.15; margin-bottom: 20px; letter-spacing: -0.02em; }
+        .hero-content h1 { font-size: clamp(44px, 5.8vw, 68px); font-weight: 700; line-height: 0.96; margin-bottom: 20px; letter-spacing: -0.065em; text-wrap: balance; max-width: 11ch; }
         .hero-content h1 { color: var(--navy); }
         .hero-content h1 span {
             background: linear-gradient(125deg, var(--primary) 0%, #D66B57 45%, var(--accent) 100%);
@@ -376,13 +376,13 @@
         .features { padding: 80px 24px; background: linear-gradient(180deg, rgba(255,245,235,0.76) 0%, var(--bg-cream) 100%); }
         .features-container { max-width: 1200px; margin: 0 auto; }
         .features-header { text-align: center; margin-bottom: 60px; }
-        .features-header h2 { font-size: 36px; font-weight: 700; margin-bottom: 12px; }
+        .features-header h2 { font-size: clamp(30px, 4vw, 48px); font-weight: 700; margin-bottom: 12px; letter-spacing: -0.06em; line-height: 0.96; text-wrap: balance; }
         .features-header p { font-size: 18px; color: var(--ink-light); }
         .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
         .feature-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 30px; box-shadow: var(--card-shadow); }
         .feature-icon { width: 48px; height: 48px; background: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(45,41,38,0.2); }
         .feature-icon svg { width: 24px; height: 24px; stroke: white; fill: none; stroke-width: 2; }
-        .feature-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 10px; }
+        .feature-card h3 { font-size: 24px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.045em; line-height: 1; text-wrap: balance; }
         .feature-card p { color: var(--ink-light); font-size: 15px; }
         .feature-live-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
         .feature-live-label { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-muted); }
@@ -465,13 +465,13 @@
         }
 
         .cities-section { padding: 80px 24px; background: var(--bg-cream); }
-        .section-title { font-size: 32px; font-weight: 700; color: var(--navy); text-align: center; margin-bottom: 12px; }
+        .section-title { font-size: clamp(30px, 4vw, 46px); font-weight: 700; color: var(--navy); text-align: center; margin-bottom: 12px; letter-spacing: -0.06em; line-height: 0.96; text-wrap: balance; }
         .section-sub { color: var(--ink-light); text-align: center; font-size: 17px; margin-bottom: 40px; }
         .container { max-width: 1100px; margin: 0 auto; }
         .cities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
         .city-card { background: white; border-radius: 12px; padding: 24px 20px; text-align: center; text-decoration: none; border: 1px solid var(--card-border); box-shadow: 0 2px 12px rgba(45,41,38,0.06); transition: all 0.25s; display: flex; flex-direction: column; align-items: center; gap: 6px; }
         .city-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(45,41,38,0.13); border-color: var(--primary); }
-        .city-card strong { font-size: 17px; font-weight: 700; color: var(--navy); }
+        .city-card strong { font-size: 19px; font-weight: 700; color: var(--navy); letter-spacing: -0.03em; }
         .city-card span { font-size: 13px; color: var(--ink-muted); }
 
         .hero-icons { display: flex; gap: 32px; justify-content: center; align-items: center; }

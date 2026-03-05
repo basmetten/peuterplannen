@@ -74,7 +74,7 @@ footer nav, nav.breadcrumb { position: static; background: none; backdrop-filter
 
 /* Hero */
 .hero { background: linear-gradient(150deg, #C46050 0%, var(--primary) 50%, #B55A45 100%); color: white; padding: 108px 24px 64px; text-align: center; }
-.hero h1 { font-size: clamp(30px, 5vw, 58px); font-weight: 700; margin-bottom: 16px; line-height: 0.98; letter-spacing: -0.055em; }
+.hero h1 { font-size: clamp(34px, 5.4vw, 66px); font-weight: 700; margin-bottom: 16px; line-height: 0.94; letter-spacing: -0.065em; max-width: 11ch; margin-left: auto; margin-right: auto; }
 .hero h1 span { color: rgba(255,255,255,0.85); font-style: italic; }
 .hero p { font-size: 17px; opacity: 0.82; max-width: 600px; margin: 0 auto 28px; line-height: 1.7; }
 .hero-stats { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
@@ -104,9 +104,12 @@ footer nav, nav.breadcrumb { position: static; background: none; backdrop-filter
 }
 
 .hero-blog-title {
-  max-width: 10ch;
+  max-width: 11ch;
   margin-left: auto;
   margin-right: auto;
+  font-size: clamp(40px, 6vw, 76px);
+  line-height: 0.9;
+  letter-spacing: -0.075em;
 }
 
 .hero-blog-sub {
@@ -146,11 +149,11 @@ main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
 
 /* Type sections (city pages) */
 .type-section { margin-bottom: 52px; }
-.type-section h2 { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(45,41,38,0.1); letter-spacing: -0.04em; }
+.type-section h2 { font-size: clamp(24px, 2.6vw, 32px); font-weight: 700; color: var(--navy); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(45,41,38,0.1); letter-spacing: -0.055em; line-height: 0.98; }
 
 /* Region sections (type pages) */
 .region-section { margin-bottom: 52px; }
-.region-section h2 { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(45,41,38,0.1); letter-spacing: -0.04em; }
+.region-section h2 { font-size: clamp(24px, 2.6vw, 32px); font-weight: 700; color: var(--navy); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(45,41,38,0.1); letter-spacing: -0.055em; line-height: 0.98; }
 
 /* Location cards */
 .loc-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
@@ -158,7 +161,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
 .loc-item:hover { transform: translateY(-3px); box-shadow: 0 4px 8px rgba(45,41,38,0.06), 0 12px 28px rgba(45,41,38,0.10); }
 .loc-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--primary), var(--accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; border-radius: 14px 14px 0 0; }
 .loc-item:hover::before { transform: scaleX(1); }
-.loc-item h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
+.loc-item h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.035em; line-height: 1.05; }
 .loc-item h3 a { color: var(--navy); text-decoration: none; }
 .loc-item h3 a:hover { color: var(--primary); }
 .loc-item p { font-size: 14px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.6; }
@@ -223,9 +226,9 @@ footer a:hover { color: rgba(255,255,255,0.85); }
 
 /* === Location page specific === */
 
-.hero-location-title { font-size: clamp(24px, 4vw, 36px); font-weight: 700; color: white; margin-bottom: 8px; font-family: var(--font-heading); line-height: 1.2; }
+.hero-location-title { font-size: clamp(34px, 5vw, 56px); font-weight: 700; color: white; margin-bottom: 10px; font-family: var(--font-heading); line-height: 0.94; letter-spacing: -0.07em; max-width: 12ch; margin-left: auto; margin-right: auto; }
 .location-header { margin-bottom: 32px; }
-.location-header h1 { font-size: clamp(28px, 4.4vw, 42px); font-weight: 700; color: var(--navy); margin-bottom: 8px; letter-spacing: -0.05em; line-height: 0.98; }
+.location-header h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 700; color: var(--navy); margin-bottom: 8px; letter-spacing: -0.065em; line-height: 0.94; }
 .location-subtitle { font-size: 16px; color: var(--text-muted); margin-bottom: 0; }
 
 .location-description { font-size: 16px; line-height: 1.8; margin-bottom: 24px; }
@@ -280,7 +283,7 @@ footer a:hover { color: rgba(255,255,255,0.85); }
 .blog-card::before { content: ''; position: absolute; inset: 0 auto auto 0; width: 100%; height: 3px; background: linear-gradient(90deg, rgba(212,119,90,0.92), rgba(232,184,112,0.88)); }
 .blog-card:hover { transform: translateY(-3px); box-shadow: 0 4px 8px rgba(45,41,38,0.07), 0 14px 32px rgba(45,41,38,0.10); }
 .blog-card-kicker { margin-bottom: 12px; font-family: var(--font-ui); font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary-dark); }
-.blog-card h2 { font-size: 24px; margin-bottom: 10px; font-weight: 700; line-height: 1.02; letter-spacing: -0.05em; }
+.blog-card h2 { font-size: clamp(28px, 2.6vw, 34px); margin-bottom: 12px; font-weight: 700; line-height: 0.96; letter-spacing: -0.065em; text-wrap: balance; }
 .blog-card h2 a { color: var(--navy); text-decoration: none; }
 .blog-card h2 a:hover { text-decoration: underline; }
 .blog-card .blog-date { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }

@@ -231,6 +231,51 @@
         }
         .plan-mode-toolbar { margin-bottom: 18px; }
 
+        @media (prefers-reduced-motion: no-preference) {
+          ::view-transition-old(app-browser) {
+            animation: app-browser-out 220ms cubic-bezier(0.4, 0, 1, 1) both;
+          }
+          ::view-transition-new(app-browser) {
+            animation: app-browser-in 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
+          }
+          ::view-transition-old(app-plan) {
+            animation: app-plan-out 220ms cubic-bezier(0.4, 0, 1, 1) both;
+          }
+          ::view-transition-new(app-plan) {
+            animation: app-plan-in 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+          }
+          ::view-transition-old(app-context) {
+            animation: app-context-out 220ms ease both;
+          }
+          ::view-transition-new(app-context) {
+            animation: app-context-in 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+          }
+          @keyframes app-browser-out {
+            from { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+            to { opacity: 0; transform: translateX(-24px) scale(0.985); filter: blur(6px); }
+          }
+          @keyframes app-browser-in {
+            from { opacity: 0; transform: translateX(18px) scale(0.992); filter: blur(8px); }
+            to { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+          }
+          @keyframes app-plan-out {
+            from { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+            to { opacity: 0; transform: translateX(26px) scale(0.985); filter: blur(8px); }
+          }
+          @keyframes app-plan-in {
+            from { opacity: 0; transform: translateX(26px) scale(0.986); filter: blur(8px); }
+            to { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+          }
+          @keyframes app-context-out {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(-8px) scale(0.99); }
+          }
+          @keyframes app-context-in {
+            from { opacity: 0; transform: translateY(12px) scale(0.985); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+          }
+        }
+
         /* Search card */
         .search-section { background: linear-gradient(165deg, rgba(255,255,255,0.96), #fff); border: 1px solid rgba(212, 119, 90, 0.18); border-radius: var(--radius-md); box-shadow: 0 10px 22px rgba(45,41,38,0.08); padding: 20px; margin-bottom: 16px; }
         .search-label { font-family: var(--font-heading); font-size: 12px; font-weight: 700; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
@@ -639,6 +684,7 @@
             gap: 24px;
             padding: 20px 24px;
             text-align: left;
+            view-transition-name: app-context;
           }
           .app-context-copy { align-items: flex-start; }
           .app-context-title { font-size: clamp(28px, 3vw, 40px); letter-spacing: -0.05em; }
@@ -646,6 +692,7 @@
           .app-mode-switch { display: inline-flex; }
           .app-mode-switch.compact { width: min(360px, 100%); margin-top: 0; align-self: center; }
           .app-container { display: grid; grid-template-columns: 440px 1fr; max-width: 100%; overflow: hidden; height: 100%; padding: 0; margin: 0; }
+          .app-wrapper { view-transition-name: app-browser; }
           #list-view { display: flex !important; flex-direction: column; overflow-y: auto; height: 100%; border-right: 1px solid rgba(45,41,38,0.08); padding: 12px 16px 20px; }
           #map-container { display: block !important; height: 100%; position: relative; width: 100%; }
           .map-container { width: 100%; margin: 0; height: 100%; max-height: none; min-height: unset; border-top: none; }
@@ -655,6 +702,7 @@
           body.plan-mode .app-wrapper { display: none !important; }
           body.plan-mode #plan-view { display: block !important; }
           body.plan-mode #plan-view.plan-view { width: min(1240px, calc(100% - 48px)); padding: 18px 0 calc(120px + var(--safe-bottom)); }
+          body.plan-mode #plan-view { view-transition-name: app-plan; }
           body.plan-mode .plan-shell { grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr); gap: 24px; }
           body.plan-mode .plan-side { position: sticky; top: 116px; }
         }
@@ -2745,12 +2793,11 @@
         // === EXTEND switchView FOR PLAN TAB ===
         // ================================================================
         const _origSwitchView = switchView;
-        switchView = function(view) {
+        function applyModeView(view) {
             const planView = document.getElementById('plan-view');
             const appWrapper = document.querySelector('.app-wrapper');
 
             if (view === 'plan') {
-                // Show plan view, hide main app
                 document.body.classList.add('plan-mode');
                 if (appWrapper) appWrapper.classList.add('hidden');
                 if (planView)   planView.classList.remove('hidden');
@@ -2762,12 +2809,22 @@
                 moveNavIndicator();
                 return;
             }
-            // Leaving plan view
+
             document.body.classList.remove('plan-mode');
             if (planView)   planView.classList.add('hidden');
             if (appWrapper) appWrapper.classList.remove('hidden');
             _origSwitchView(view);
             syncDesktopModeSwitch('home');
+        }
+
+        switchView = function(view) {
+            const isDesktop = window.innerWidth >= DESKTOP_WIDTH;
+            const isModeSwitch = isDesktop && ((document.body.classList.contains('plan-mode') && view !== 'plan') || (!document.body.classList.contains('plan-mode') && view === 'plan'));
+            if (isModeSwitch && document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.startViewTransition(() => applyModeView(view));
+                return;
+            }
+            applyModeView(view);
         };
     </script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>

@@ -1534,14 +1534,14 @@ function locationPageHTML(loc, region, similarLocs) {
       observer.disconnect();
       var link = document.createElement('link');
       link.rel = 'stylesheet';
-      link.href = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css';
+      link.href = 'https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.css';
       document.head.appendChild(link);
       var s = document.createElement('script');
-      s.src = 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js';
+      s.src = 'https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.js';
       s.onload = function() {
         var map = new maplibregl.Map({
           container: 'map',
-          style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+          style: 'https://tiles.openfreemap.org/styles/positron',
           center: [${loc.lng}, ${loc.lat}],
           zoom: 14,
           attributionControl: false
@@ -1551,7 +1551,8 @@ function locationPageHTML(loc, region, similarLocs) {
       document.head.appendChild(s);
     }
   }, { rootMargin: '200px' });
-  observer.observe(document.getElementById('map-container'));
+  var mapContainer = document.getElementById('map-container');
+  if (mapContainer) observer.observe(mapContainer);
 })();
 </script>` : '';
 
@@ -1567,7 +1568,7 @@ function shareNative() {
   return `<!DOCTYPE html>
 <html lang="nl">
 <head>
-${headCommon(`\n  <link rel="preconnect" href="https://basemaps.cartocdn.com" crossorigin>`)}
+${headCommon(`\n  <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin>`)}
   <title>${escapeHtml(loc.name)} — Peuteruitje in ${region.name} | PeuterPlannen</title>
   <meta name="description" content="${escapeHtml(metaDesc)}">
   <link rel="canonical" href="${fullUrl}">
@@ -1640,7 +1641,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
   </div>
 
   ${(loc.lat && loc.lng) ? `<div class="location-map" id="map-container"><div id="map"></div></div>
-  <p class="map-attribution">Kaart: &copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>` : ''}
+  <p class="map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>` : ''}
 
   ${similarHTML}
 
