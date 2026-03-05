@@ -574,15 +574,17 @@
     }
 
     async function api(action, params = {}) {
-      if (!state.accessToken) {
-        throw new Error('Sessie verlopen. Log opnieuw in.');
-      }
+      const { data: { session } } = await supabase.auth.getSession();
+      const accessToken = session?.access_token || state.accessToken;
+      if (!accessToken) throw new Error('Sessie verlopen. Log opnieuw in.');
+      state.accessToken = accessToken;
 
       const response = await fetch(`${EDGE_BASE}/admin-api`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${state.accessToken}`,
+          apikey: SB_ANON,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({ action, params }),
       });
@@ -595,7 +597,7 @@
       }
 
       if (!response.ok) {
-        const message = payload?.error || 'Onbekende API-fout';
+        const message = payload?.error || (response.status === 401 ? 'Sessie niet geaccepteerd' : 'Onbekende API-fout');
         const code = payload?.code || 'API_ERROR';
         throw new Error(`${message} (${code})`);
       }
@@ -632,6 +634,11 @@
         });
       } catch (error) {
         console.error('loadStats failed', error);
+        ['stat-pending', 'stat-subs', 'stat-edits', 'stat-owners'].forEach((id) => {
+          const el = document.getElementById(id);
+          el.textContent = '—';
+          el.classList.remove('is-loading');
+        });
         PortalShell.setAlert('overview-alert', 'Dashboard laden mislukt. Vernieuw de pagina of log opnieuw in.', 'error', { assertive: true });
       }
     }

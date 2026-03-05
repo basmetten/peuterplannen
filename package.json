@@ -4,7 +4,7 @@
   "private": true,
   "description": "PeuterPlannen — Leuke uitjes voor kinderen",
   "scripts": {
-    "build": "node .scripts/optimize_images.js && node .scripts/sync_all.js",
+    "build": "node .scripts/optimize_images.js && node .scripts/sync_portal_assets.js && node .scripts/sync_all.js",
     "discover": "node .scripts/discover_horeca.js",
     "pipeline:utrecht:codex": "PIPELINE_SCORE_CONCURRENCY=20 node .scripts/pipeline/run_osm_ai_codex.js --region=Utrecht --with-surroundings=true",
     "pipeline:utrecht:codex:dry": "PIPELINE_SCORE_CONCURRENCY=20 node .scripts/pipeline/run_osm_ai_codex.js --region=Utrecht --with-surroundings=true --dry-run=true --limit=20",

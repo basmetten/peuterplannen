@@ -143,16 +143,22 @@ patch_auth_config() {
 
 deploy_functions() {
   local functions=(
-    "admin-api"
-    "create-checkout-session"
-    "create-customer-portal-session"
-    "public-feedback"
+    "admin-api:no-verify"
+    "create-checkout-session:no-verify"
+    "create-customer-portal-session:no-verify"
+    "public-feedback:verify"
   )
 
   supabase login --token "${SUPABASE_ACCESS_TOKEN}" >/dev/null
 
-  for fn in "${functions[@]}"; do
-    supabase functions deploy "${fn}" --project-ref "${PROJECT_REF}" --use-api
+  for entry in "${functions[@]}"; do
+    local fn="${entry%%:*}"
+    local mode="${entry##*:}"
+    if [[ "${mode}" == "no-verify" ]]; then
+      supabase functions deploy "${fn}" --project-ref "${PROJECT_REF}" --use-api --no-verify-jwt
+    else
+      supabase functions deploy "${fn}" --project-ref "${PROJECT_REF}" --use-api
+    fi
   done
 }
 

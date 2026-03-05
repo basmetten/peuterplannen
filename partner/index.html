@@ -59,6 +59,7 @@
       background: rgba(255, 255, 255, 0.88);
       border-radius: 14px;
       padding: 12px;
+      color: var(--pp-text);
     }
 
     .partner-status-box b {
@@ -813,7 +814,7 @@
       }[status];
       const updated = state.claimedLoc?.last_owner_update
         ? fmtDateTime(state.claimedLoc.last_owner_update)
-        : '-';
+        : 'Nog niet aangepast';
 
       document.getElementById('status-loc-name').textContent = locName;
       document.getElementById('status-plan').textContent = planLabel;
@@ -931,6 +932,7 @@
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            apikey: SB_ANON,
             Authorization: `Bearer ${session.access_token}`,
           },
           body: JSON.stringify({ plan_tier: 'featured', billing_interval: interval }),
@@ -963,6 +965,7 @@
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            apikey: SB_ANON,
             Authorization: `Bearer ${session.access_token}`,
           },
         });
