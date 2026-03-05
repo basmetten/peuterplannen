@@ -133,7 +133,7 @@
 </footer>
 
 <script>
-const W3F_KEY = 'db683305-6b2a-4a50-b32b-6e4ba0a28a89';
+const PUBLIC_FEEDBACK_ENDPOINT = 'https://piujsvgbfflrrvauzsxe.supabase.co/functions/v1/public-feedback';
 
 document.getElementById('contact-form').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -145,19 +145,17 @@ document.getElementById('contact-form').addEventListener('submit', async functio
   btn.disabled = true; btn.textContent = 'Versturen...';
   status.textContent = ''; status.style.color = 'var(--ink-muted)';
   try {
-    const SB = 'https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1';
-    const KEY = atob('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5CcGRXcHpkbWRpWm1ac2NuSjJZWFY2YzNobElpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpJd05ETXhOekFzSW1WNGNDSTZNakE0TnpZeE9URTNNSDAuNXkzZ3FpUGZWdnB2ZmFEWUFfUGdxRS1LVHZ1ZjZ6Z042dkd6cWZVcGVTbw==');
-    const res = await fetch(SB + '/suggestions', {
+    const res = await fetch(PUBLIC_FEEDBACK_ENDPOINT, {
       method: 'POST',
-      headers: { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ input: '[' + subject + '] ' + msg, source: 'contact-form' })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        subject: subject,
+        message: msg,
+        source: 'contact-form',
+        page: '/contact.html'
+      })
     });
     if (res.ok) {
-      fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ access_key: W3F_KEY, subject: 'PeuterPlannen: ' + subject, message: msg, from_name: 'PeuterPlannen formulier' })
-      }).catch(() => {});
       status.textContent = 'Bedankt! We reageren zo snel mogelijk.';
       status.style.color = '#2D8B5E';
       document.getElementById('cf-message').value = '';
