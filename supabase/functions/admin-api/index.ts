@@ -3,41 +3,156 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const supabase = createClient(
   Deno.env.get("SUPABASE_URL")!,
-  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
 );
 
 const ADMIN_EMAIL = "basmetten@gmail.com";
+const DEFAULT_PAGE_SIZE = 50;
 
 const CORS = {
-  "Access-Control-Allow-Origin":  "https://admin.peuterplannen.nl",
-  "Access-Control-Allow-Headers": "authorization, content-type",
+  "Access-Control-Allow-Origin": "https://admin.peuterplannen.nl",
+  "Access-Control-Allow-Headers": "authorization, content-type, x-request-id",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
+class AppError extends Error {
+  code: string;
+  status: number;
+  details?: unknown;
+
+  constructor(message: string, code = "BAD_REQUEST", status = 400, details?: unknown) {
+    super(message);
+    this.code = code;
+    this.status = status;
+    this.details = details;
+  }
+}
+
+function json(payload: unknown, status = 200): Response {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: {
+      ...CORS,
+      "Content-Type": "application/json",
+    },
+  });
+}
+
+function getRequestId(req: Request): string {
+  return req.headers.get("x-request-id") || crypto.randomUUID();
+}
+
+function parseBody(req: Request): Promise<{ action: string; params: Record<string, unknown> }> {
+  return req
+    .json()
+    .then((body) => {
+      const action = typeof body?.action === "string" ? body.action : "";
+      const params = body?.params && typeof body.params === "object" ? body.params : {};
+      if (!action) {
+        throw new AppError("Action ontbreekt", "INVALID_ACTION", 400);
+      }
+      return { action, params: params as Record<string, unknown> };
+    })
+    .catch((error) => {
+      if (error instanceof AppError) throw error;
+      throw new AppError("Body is geen geldig JSON-object", "INVALID_JSON", 400);
+    });
+}
+
+function asString(value: unknown, fallback = ""): string {
+  return typeof value === "string" ? value : fallback;
+}
+
+function asInteger(value: unknown, fallback = 0): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) return fallback;
+  return Math.trunc(value);
+}
+
+function assertUuid(value: string, fieldName: string): void {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  if (!uuidRegex.test(value)) {
+    throw new AppError(`${fieldName} is ongeldig`, "INVALID_UUID", 400);
+  }
+}
+
+async function requireAdminUser(authHeader: string | null): Promise<{ id: string; email: string }> {
+  if (!authHeader?.startsWith("Bearer ")) {
+    throw new AppError("Unauthorized", "UNAUTHORIZED", 401);
+  }
+
+  const token = authHeader.replace("Bearer ", "");
+  const { data, error } = await supabase.auth.getUser(token);
+  if (error || !data?.user) {
+    throw new AppError("Unauthorized", "UNAUTHORIZED", 401);
+  }
+
+  const email = data.user.email || "";
+  if (email !== ADMIN_EMAIL) {
+    throw new AppError("Forbidden", "FORBIDDEN", 403);
+  }
+
+  return { id: data.user.id, email };
+}
+
+function validateClaimStatus(status: string): string {
+  const allowed = ["pending", "approved", "rejected", "auto_rejected_duplicate"];
+  if (!allowed.includes(status)) {
+    throw new AppError("Ongeldige claim-status", "INVALID_STATUS", 400);
+  }
+  return status;
+}
+
+function validateSubscriptionStatus(status: string): string {
+  const allowed = ["none", "trial", "featured", "past_due", "canceled"];
+  if (!allowed.includes(status)) {
+    throw new AppError("Ongeldige subscription_status", "INVALID_SUBSCRIPTION_STATUS", 400);
+  }
+  return status;
+}
+
+function validatePlanTier(tier: string): string {
+  const allowed = ["none", "featured"];
+  if (!allowed.includes(tier)) {
+    throw new AppError("Ongeldige plan_tier", "INVALID_PLAN_TIER", 400);
+  }
+  return tier;
+}
+
+async function fetchEmailMap(userIds: string[], concurrency = 12): Promise<Record<string, string>> {
+  const uniqueUserIds = [...new Set(userIds.filter((id) => typeof id === "string" && id.length > 0))];
+  const emailMap: Record<string, string> = {};
+
+  for (let index = 0; index < uniqueUserIds.length; index += concurrency) {
+    const chunk = uniqueUserIds.slice(index, index + concurrency);
+    const chunkResults = await Promise.all(
+      chunk.map(async (uid) => {
+        const { data } = await supabase.auth.admin.getUserById(uid);
+        return { uid, email: data?.user?.email || "onbekend" };
+      }),
+    );
+
+    chunkResults.forEach((item) => {
+      emailMap[item.uid] = item.email;
+    });
+  }
+
+  return emailMap;
+}
+
 serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: CORS });
+  }
+
+  const requestId = getRequestId(req);
 
   try {
-    // 1. Authenticate
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) throw new Error("Unauthorized");
-
-    const { data: { user }, error: authErr } = await supabase.auth.getUser(
-      authHeader.replace("Bearer ", "")
-    );
-    if (authErr || !user) throw new Error("Unauthorized");
-    if (user.email !== ADMIN_EMAIL) throw new Error("Forbidden");
-
-    // 2. Parse request
-    const { action, params = {} } = await req.json() as {
-      action: string;
-      params?: Record<string, unknown>;
-    };
+    const admin = await requireAdminUser(req.headers.get("Authorization"));
+    const { action, params } = await parseBody(req);
 
     let result: unknown;
 
     switch (action) {
-
       case "get_stats": {
         const [pendingClaims, activeOwners, recentEdits, totalOwners] = await Promise.all([
           supabase
@@ -56,246 +171,303 @@ serve(async (req) => {
             .from("venue_owners")
             .select("id", { count: "exact", head: true }),
         ]);
+
+        const firstError = pendingClaims.error || activeOwners.error || recentEdits.error || totalOwners.error;
+        if (firstError) {
+          throw new AppError(firstError.message, "STATS_QUERY_FAILED", 400);
+        }
+
         result = {
-          pending_claims:   pendingClaims.count ?? 0,
-          active_subs:      activeOwners.count  ?? 0,
-          edits_last_7days: recentEdits.count   ?? 0,
-          total_owners:     totalOwners.count   ?? 0,
+          pending_claims: pendingClaims.count ?? 0,
+          active_subs: activeOwners.count ?? 0,
+          edits_last_7days: recentEdits.count ?? 0,
+          total_owners: totalOwners.count ?? 0,
         };
         break;
       }
 
       case "list_claims": {
-        const status = (params.status as string) || "pending";
-        if (!["pending", "approved", "rejected"].includes(status)) throw new Error("Ongeldige status");
+        const status = validateClaimStatus(asString(params.status, "pending"));
+
         const { data, error } = await supabase
           .from("location_claim_requests")
-          .select(`
-            id, status, message, created_at, reviewed_at,
-            user_id,
-            locations ( name, region )
-          `)
+          .select(
+            `
+              id, status, message, review_reason, created_at, reviewed_at,
+              user_id,
+              locations ( name, region )
+            `,
+          )
           .eq("status", status)
           .order("created_at", { ascending: false })
-          .limit(100);
-        if (error) throw error;
+          .limit(150);
 
-        // Enrich with user emails via auth admin API
-        const userIds = [...new Set((data ?? []).map((c: Record<string, unknown>) => c.user_id as string))];
-        const emailMap: Record<string, string> = {};
-        for (const uid of userIds) {
-          const { data: userData } = await supabase.auth.admin.getUserById(uid as string);
-          if (userData?.user?.email) emailMap[uid] = userData.user.email;
+        if (error) {
+          throw new AppError(error.message, "CLAIMS_QUERY_FAILED", 400);
         }
 
-        result = (data ?? []).map((c: Record<string, unknown>) => ({
-          ...c,
-          requester_email: emailMap[c.user_id as string] ?? "onbekend",
+        const userIds = (data ?? []).map((item: Record<string, unknown>) => String(item.user_id || ""));
+        const emailMap = await fetchEmailMap(userIds);
+
+        result = (data ?? []).map((item: Record<string, unknown>) => ({
+          ...item,
+          requester_email: emailMap[String(item.user_id)] || "onbekend",
         }));
         break;
       }
 
       case "approve_claim": {
-        const { claim_id } = params as { claim_id: string };
-        if (!claim_id) throw new Error("claim_id vereist");
+        const claimId = asString(params.claim_id);
+        if (!claimId) {
+          throw new AppError("claim_id ontbreekt", "MISSING_CLAIM_ID", 400);
+        }
+        assertUuid(claimId, "claim_id");
 
-        // Get claim
-        const { data: claim, error: claimErr } = await supabase
-          .from("location_claim_requests")
-          .select("user_id, location_id")
-          .eq("id", claim_id)
-          .single();
-        if (claimErr || !claim) throw new Error("Claim niet gevonden");
+        const { data, error } = await supabase.rpc("admin_approve_claim", {
+          p_claim_id: claimId,
+          p_admin_user_id: admin.id,
+        });
 
-        // Update claim status
-        await supabase
-          .from("location_claim_requests")
-          .update({ status: "approved", reviewed_by: user.id, reviewed_at: new Date().toISOString() })
-          .eq("id", claim_id);
-
-        // Link location to owner
-        const { data: owner } = await supabase
-          .from("venue_owners")
-          .select("id")
-          .eq("user_id", claim.user_id)
-          .single();
-
-        if (owner) {
-          await supabase
-            .from("venue_owners")
-            .update({ location_id: claim.location_id })
-            .eq("id", owner.id);
-        } else {
-          await supabase
-            .from("venue_owners")
-            .insert({ user_id: claim.user_id, location_id: claim.location_id });
+        if (error) {
+          throw new AppError(error.message, "APPROVE_CLAIM_FAILED", 400);
         }
 
-        // Set claimed_by_user_id on location
-        await supabase
-          .from("locations")
-          .update({ claimed_by_user_id: claim.user_id })
-          .eq("id", claim.location_id);
-
-        result = { ok: true };
+        result = data;
         break;
       }
 
       case "reject_claim": {
-        const { claim_id } = params as { claim_id: string };
-        if (!claim_id) throw new Error("claim_id vereist");
-        await supabase
+        const claimId = asString(params.claim_id);
+        if (!claimId) {
+          throw new AppError("claim_id ontbreekt", "MISSING_CLAIM_ID", 400);
+        }
+        assertUuid(claimId, "claim_id");
+
+        const { error } = await supabase
           .from("location_claim_requests")
-          .update({ status: "rejected", reviewed_by: user.id, reviewed_at: new Date().toISOString() })
-          .eq("id", claim_id);
-        result = { ok: true };
+          .update({
+            status: "rejected",
+            review_reason: "Afgewezen door admin",
+            reviewed_by: admin.id,
+            reviewed_at: new Date().toISOString(),
+          })
+          .eq("id", claimId)
+          .in("status", ["pending", "auto_rejected_duplicate"]);
+
+        if (error) {
+          throw new AppError(error.message, "REJECT_CLAIM_FAILED", 400);
+        }
+
+        result = { ok: true, claim_id: claimId };
         break;
       }
 
       case "list_owners": {
         const { data, error } = await supabase
           .from("venue_owners")
-          .select(`
-            id, user_id, subscription_status, plan_tier, plan_expires_at, created_at,
-            locations ( name, region )
-          `)
+          .select(
+            `
+              id, user_id, subscription_status, plan_tier, plan_expires_at, created_at,
+              locations ( name, region )
+            `,
+          )
           .order("created_at", { ascending: false })
-          .limit(200);
-        if (error) throw error;
+          .limit(250);
 
-        const userIds = [...new Set((data ?? []).map((o: Record<string, unknown>) => o.user_id as string))];
-        const emailMap: Record<string, string> = {};
-        for (const uid of userIds) {
-          const { data: userData } = await supabase.auth.admin.getUserById(uid as string);
-          if (userData?.user?.email) emailMap[uid] = userData.user.email;
+        if (error) {
+          throw new AppError(error.message, "OWNERS_QUERY_FAILED", 400);
         }
 
-        result = (data ?? []).map((o: Record<string, unknown>) => ({
-          ...o,
-          email: emailMap[o.user_id as string] ?? "onbekend",
+        const userIds = (data ?? []).map((item: Record<string, unknown>) => String(item.user_id || ""));
+        const emailMap = await fetchEmailMap(userIds);
+
+        result = (data ?? []).map((item: Record<string, unknown>) => ({
+          ...item,
+          email: emailMap[String(item.user_id)] || "onbekend",
         }));
         break;
       }
 
       case "update_owner": {
-        const { owner_id, subscription_status, plan_tier } = params as {
-          owner_id: string;
-          subscription_status?: string;
-          plan_tier?: string;
-        };
-        if (!owner_id) throw new Error("owner_id vereist");
-        const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
-        if (subscription_status !== undefined) updates.subscription_status = subscription_status;
-        if (plan_tier !== undefined) updates.plan_tier = plan_tier;
-        const { error } = await supabase.from("venue_owners").update(updates).eq("id", owner_id);
-        if (error) throw error;
-        result = { ok: true };
+        const ownerId = asString(params.owner_id);
+        const subscriptionStatus = validateSubscriptionStatus(asString(params.subscription_status, "none"));
+        let planTier = validatePlanTier(asString(params.plan_tier, "none"));
+
+        if (["none", "canceled"].includes(subscriptionStatus)) {
+          planTier = "none";
+        }
+        if (["featured", "trial", "past_due"].includes(subscriptionStatus) && planTier === "none") {
+          planTier = "featured";
+        }
+
+        if (!ownerId) {
+          throw new AppError("owner_id ontbreekt", "MISSING_OWNER_ID", 400);
+        }
+        assertUuid(ownerId, "owner_id");
+
+        const { error } = await supabase
+          .from("venue_owners")
+          .update({
+            subscription_status: subscriptionStatus,
+            plan_tier: planTier,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", ownerId);
+
+        if (error) {
+          throw new AppError(error.message, "UPDATE_OWNER_FAILED", 400);
+        }
+
+        result = { ok: true, owner_id: ownerId };
         break;
       }
 
       case "list_locations": {
-        const rawSearch = String(params.search ?? "").trim();
-        const rawPage   = Number(params.page ?? 0);
-        if (rawSearch.length > 100) throw new Error("Zoekopdracht te lang");
-        if (!Number.isInteger(rawPage) || rawPage < 0 || rawPage > 10000) throw new Error("Ongeldige pagina");
-        const search = rawSearch;
-        const page   = rawPage;
-        const limit = 50;
+        const rawSearch = asString(params.search, "").trim();
+        const page = asInteger(params.page, 0);
+
+        if (rawSearch.length > 100) {
+          throw new AppError("Zoekterm is te lang", "SEARCH_TOO_LONG", 400);
+        }
+        if (page < 0 || page > 10000) {
+          throw new AppError("Ongeldige pagina", "INVALID_PAGE", 400);
+        }
+
         let query = supabase
           .from("locations")
           .select("id, name, region, type, is_featured, featured_until, owner_verified, claimed_by_user_id")
-          .order("name")
-          .range(page * limit, (page + 1) * limit - 1);
-        if (search) query = query.ilike("name", `%${search}%`);
+          .order("name", { ascending: true })
+          .range(page * DEFAULT_PAGE_SIZE, (page + 1) * DEFAULT_PAGE_SIZE - 1);
+
+        if (rawSearch) {
+          query = query.ilike("name", `%${rawSearch}%`);
+        }
+
         const { data, error } = await query;
-        if (error) throw error;
+        if (error) {
+          throw new AppError(error.message, "LOCATIONS_QUERY_FAILED", 400);
+        }
+
         result = data ?? [];
         break;
       }
 
       case "toggle_featured": {
-        const { location_id } = params as { location_id: number };
-        if (!location_id) throw new Error("location_id vereist");
-        const { data: loc, error: fetchErr } = await supabase
+        const locationId = asInteger(params.location_id);
+        if (!locationId) {
+          throw new AppError("location_id ontbreekt", "MISSING_LOCATION_ID", 400);
+        }
+
+        const { data: location, error: fetchError } = await supabase
           .from("locations")
           .select("is_featured")
-          .eq("id", location_id)
+          .eq("id", locationId)
           .single();
-        if (fetchErr || !loc) throw new Error("Locatie niet gevonden");
 
-        const newFeatured = !loc.is_featured;
-        await supabase
+        if (fetchError || !location) {
+          throw new AppError("Locatie niet gevonden", "LOCATION_NOT_FOUND", 404);
+        }
+
+        const nextFeatured = !location.is_featured;
+        const { error: updateError } = await supabase
           .from("locations")
           .update({
-            is_featured:    newFeatured,
-            featured_until: newFeatured ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() : null,
-            featured_tier:  newFeatured ? "featured" : null,
+            is_featured: nextFeatured,
+            featured_until: nextFeatured ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() : null,
+            featured_tier: nextFeatured ? "featured" : null,
           })
-          .eq("id", location_id);
-        result = { ok: true, is_featured: newFeatured };
+          .eq("id", locationId);
+
+        if (updateError) {
+          throw new AppError(updateError.message, "TOGGLE_FEATURED_FAILED", 400);
+        }
+
+        result = { ok: true, is_featured: nextFeatured, location_id: locationId };
         break;
       }
 
       case "toggle_verified": {
-        const { location_id } = params as { location_id: number };
-        if (!location_id) throw new Error("location_id vereist");
-        const { data: loc, error: fetchErr } = await supabase
+        const locationId = asInteger(params.location_id);
+        if (!locationId) {
+          throw new AppError("location_id ontbreekt", "MISSING_LOCATION_ID", 400);
+        }
+
+        const { data: location, error: fetchError } = await supabase
           .from("locations")
           .select("owner_verified")
-          .eq("id", location_id)
+          .eq("id", locationId)
           .single();
-        if (fetchErr || !loc) throw new Error("Locatie niet gevonden");
 
-        const newVerified = !loc.owner_verified;
-        await supabase
+        if (fetchError || !location) {
+          throw new AppError("Locatie niet gevonden", "LOCATION_NOT_FOUND", 404);
+        }
+
+        const nextVerified = !location.owner_verified;
+        const { error: updateError } = await supabase
           .from("locations")
-          .update({ owner_verified: newVerified })
-          .eq("id", location_id);
-        result = { ok: true, owner_verified: newVerified };
+          .update({ owner_verified: nextVerified })
+          .eq("id", locationId);
+
+        if (updateError) {
+          throw new AppError(updateError.message, "TOGGLE_VERIFIED_FAILED", 400);
+        }
+
+        result = { ok: true, owner_verified: nextVerified, location_id: locationId };
         break;
       }
 
       case "list_edit_log": {
         const { data, error } = await supabase
           .from("location_edit_log")
-          .select(`
-            id, field_name, old_value, new_value, created_at,
-            user_id,
-            locations ( name )
-          `)
+          .select(
+            `
+              id, field_name, old_value, new_value, created_at,
+              user_id,
+              locations ( name )
+            `,
+          )
           .order("created_at", { ascending: false })
-          .limit(50);
-        if (error) throw error;
+          .limit(120);
 
-        const userIds = [...new Set((data ?? []).map((e: Record<string, unknown>) => e.user_id as string))];
-        const emailMap: Record<string, string> = {};
-        for (const uid of userIds) {
-          const { data: userData } = await supabase.auth.admin.getUserById(uid as string);
-          if (userData?.user?.email) emailMap[uid] = userData.user.email;
+        if (error) {
+          throw new AppError(error.message, "EDIT_LOG_QUERY_FAILED", 400);
         }
 
-        result = (data ?? []).map((e: Record<string, unknown>) => ({
-          ...e,
-          owner_email: emailMap[e.user_id as string] ?? "onbekend",
+        const userIds = (data ?? []).map((item: Record<string, unknown>) => String(item.user_id || ""));
+        const emailMap = await fetchEmailMap(userIds);
+
+        result = (data ?? []).map((item: Record<string, unknown>) => ({
+          ...item,
+          owner_email: emailMap[String(item.user_id)] || "onbekend",
         }));
         break;
       }
 
       default:
-        throw new Error(`Onbekende actie: ${action}`);
+        throw new AppError(`Onbekende actie: ${action}`, "UNKNOWN_ACTION", 400);
     }
 
-    return new Response(JSON.stringify({ data: result }), {
-      headers: { ...CORS, "Content-Type": "application/json" },
+    return json({ data: result, request_id: requestId });
+  } catch (error) {
+    const appError = error instanceof AppError
+      ? error
+      : new AppError((error as Error).message || "Onbekende fout", "INTERNAL_ERROR", 500);
+
+    console.error("admin-api error", {
+      request_id: requestId,
+      code: appError.code,
+      message: appError.message,
+      details: appError.details ?? null,
     });
 
-  } catch (err) {
-    console.error("admin-api error:", err);
-    const status = (err as Error).message === "Forbidden" ? 403 :
-                   (err as Error).message === "Unauthorized" ? 401 : 400;
-    return new Response(
-      JSON.stringify({ error: (err as Error).message }),
-      { status, headers: { ...CORS, "Content-Type": "application/json" } }
+    return json(
+      {
+        error: appError.message,
+        code: appError.code,
+        details: appError.details ?? null,
+        request_id: requestId,
+      },
+      appError.status,
     );
   }
 });

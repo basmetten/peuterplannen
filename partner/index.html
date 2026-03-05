@@ -1,798 +1,927 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beheer je locatie — PeuterPlannen Partner Portal</title>
-    <meta name="description" content="Partnerportal voor PeuterPlannen: claim en beheer je locatiegegevens voor ouders met peuters en kleuters.">
-    <link rel="canonical" href="https://partner.peuterplannen.nl/">
-    <meta name="robots" content="noindex, nofollow">
-    <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #D4775A; --primary-light: #FDF1ED; --primary-dark: #B35D42;
-            --accent: #E8B870; --bg: #F5F3EF; --surface: #FFFFFF;
-            --text: #1C1917; --text-secondary: #6B5E5C; --text-muted: #9B8E8C;
-            --success: #1D7348; --success-bg: #ECFDF5;
-            --error: #B91C1C; --error-bg: #FEF2F2;
-            --border: rgba(28,25,23,0.10);
-            --shadow-sm: 0 1px 3px rgba(28,25,23,0.06), 0 2px 8px rgba(28,25,23,0.06);
-            --shadow: 0 1px 3px rgba(28,25,23,0.07), 0 6px 20px rgba(28,25,23,0.08);
-            --radius: 12px; --font-heading: 'Plus Jakarta Sans', sans-serif; --font-body: 'DM Sans', sans-serif;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; line-height: 1.6; }
-        :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
-        .skip-link { position: absolute; left: -9999px; top: 8px; z-index: 9999; background: #fff; color: #111; border: 2px solid var(--primary); border-radius: 8px; padding: 8px 12px; font-size: 13px; text-decoration: none; }
-        .skip-link:focus { left: 12px; }
-        .hidden { display: none !important; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partner portal - PeuterPlannen</title>
+  <meta name="description" content="Partnerportal voor PeuterPlannen: claim en beheer je locatiegegevens voor ouders met peuters en kleuters.">
+  <link rel="canonical" href="https://partner.peuterplannen.nl/">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/portal-shell.css">
+  <style>
+    .partner-shell {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
 
-        /* Nav */
-        nav { background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
-        .nav-logo { font-family: var(--font-heading); font-weight: 800; font-size: 16px; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; }
-        .nav-logo-pill { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: var(--primary); color: white; padding: 2px 8px; border-radius: 4px; }
-        .nav-right { display: flex; align-items: center; gap: 10px; }
-        #nav-user { font-size: 13px; color: var(--text-muted); }
-        #nav-logout { background: none; border: 1px solid var(--border); color: var(--text-secondary); padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-family: inherit; transition: all 0.15s; }
-        #nav-logout:hover { background: var(--bg); border-color: rgba(28,25,23,0.2); }
+    .partner-auth {
+      max-width: 620px;
+      margin: 18px auto 0;
+    }
 
-        /* Container */
-        .container { max-width: 660px; margin: 0 auto; padding: 36px 20px 80px; }
+    .partner-auth .portal-card,
+    .partner-auth .portal-hero {
+      border-radius: 24px;
+      padding: 28px;
+    }
 
-        /* Cards */
-        .card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm); padding: 28px 32px; margin-bottom: 16px; }
-        .card-title { font-family: var(--font-heading); font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px; letter-spacing: -0.02em; }
-        .card-desc { color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
-        .card h3 { font-family: var(--font-heading); font-size: 14px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
+    .partner-auth-list {
+      margin-top: 12px;
+    }
 
-        /* Forms */
-        .form-group { margin-bottom: 14px; }
-        label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-        input[type=text], input[type=email], textarea, select {
-            width: 100%; padding: 10px 13px; border: 1px solid var(--border); border-radius: 8px;
-            font-family: var(--font-body); font-size: 14px; color: var(--text); background: var(--surface);
-            transition: border-color 0.15s, box-shadow 0.15s; outline: none;
-        }
-        input:focus, textarea:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(212,119,90,0.12); }
-        textarea { min-height: 80px; resize: vertical; }
+    .partner-auth-list strong {
+      display: block;
+      margin-bottom: 2px;
+      font-family: var(--pp-font-head);
+      font-size: 14px;
+    }
 
-        /* Buttons */
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; font-family: inherit; border: none; text-decoration: none; letter-spacing: 0.01em; }
-        .btn-primary { background: var(--text); color: white; }
-        .btn-primary:hover { background: #2d2a28; box-shadow: 0 2px 8px rgba(28,25,23,0.2); }
-        .btn-primary:active { transform: scale(0.99); }
-        .btn-accent { background: var(--primary); color: white; }
-        .btn-accent:hover { background: var(--primary-dark); box-shadow: 0 2px 8px rgba(212,119,90,0.3); }
-        .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); }
-        .btn-secondary:hover { background: var(--bg); border-color: rgba(28,25,23,0.2); }
-        .btn-danger { background: var(--error-bg); color: var(--error); border: 1px solid rgba(185,28,28,0.15); }
-        .btn-full { width: 100%; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .partner-dashboard-top {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
 
-        /* OTP code input */
-        .otp-input { letter-spacing: 0.35em; font-size: 28px; font-weight: 700; text-align: center; font-family: var(--font-heading); }
+    .partner-status-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
 
-        /* Alert */
-        .alert { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 14px; line-height: 1.5; }
-        .alert-error   { background: var(--error-bg);   color: var(--error);   border: 1px solid rgba(185,28,28,0.15); }
-        .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(29,115,72,0.15); }
-        .alert-info    { background: var(--primary-light); color: var(--primary-dark); border: 1px solid rgba(212,119,90,0.2); }
+    .partner-status-box {
+      border: 1px solid rgba(35, 31, 26, 0.1);
+      background: rgba(255, 255, 255, 0.88);
+      border-radius: 14px;
+      padding: 12px;
+    }
 
-        /* Pricing card */
-        .plan-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 20px 0; }
-        .plan-card-header { background: var(--text); color: white; padding: 20px 24px; }
-        .plan-card-header h4 { font-family: var(--font-heading); font-size: 18px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
-        .plan-card-header p { font-size: 13px; opacity: 0.6; }
-        .plan-card-body { padding: 20px 24px; background: var(--surface); }
-        .plan-features { list-style: none; margin: 0 0 20px; }
-        .plan-features li { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px; color: var(--text-secondary); border-bottom: 1px solid var(--bg); }
-        .plan-features li:last-child { border-bottom: none; }
-        .plan-features li::before { content: ''; width: 16px; height: 16px; border-radius: 50%; background: var(--success-bg); border: 1.5px solid var(--success); flex-shrink: 0; background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l2.5 2.5L9 1' stroke='%231D7348' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-position: center; background-repeat: no-repeat; }
-        .billing-btns { display: flex; gap: 8px; }
-        .billing-btns .btn { flex: 1; }
-        @media (max-width: 480px) { .billing-btns { flex-direction: column; } }
+    .partner-status-box b {
+      display: block;
+      font-family: var(--pp-font-head);
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
 
-        /* Location search results */
-        .loc-result { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; background: var(--surface); }
-        .loc-result-name { font-weight: 600; font-size: 14px; }
-        .loc-result-region { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
-        .loc-result .btn { font-size: 12px; padding: 6px 12px; }
+    .partner-status-box span {
+      color: var(--pp-text-muted);
+      font-size: 12px;
+    }
 
-        /* Edit form sections */
-        .edit-section { border-top: 1px solid var(--border); margin-top: 20px; padding-top: 20px; }
-        .checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .checkbox-row input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
-        .checkbox-row label { margin: 0; cursor: pointer; font-size: 14px; color: var(--text); font-weight: 500; text-transform: none; letter-spacing: 0; }
+    .partner-billing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
 
-        /* Spinner */
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; }
+    .partner-plan-card {
+      border: 1px solid var(--pp-border);
+      border-radius: 16px;
+      padding: 16px;
+      background: #ffffff;
+    }
 
-        /* Status badge */
-        .status-badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
-        .status-none, .status-canceled { background: #F3F0ED; color: #7A6E6C; }
-        .status-trial { background: #EBF3F2; color: #1D5E55; }
-        .status-featured { background: #FEF9EC; color: #8A6200; border: 1px solid #E8A82030; }
-        .status-past_due { background: var(--error-bg); color: var(--error); }
+    .partner-plan-card h3 {
+      margin: 0 0 8px;
+      font-family: var(--pp-font-head);
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
 
-        /* Landing feature pills */
-        .feature-list { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
-        .feature-row { display: flex; align-items: center; gap: 14px; }
-        .feature-icon-wrap { width: 36px; height: 36px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .feature-icon-wrap svg { width: 18px; height: 18px; stroke: var(--primary); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
-        .feature-row-text strong { font-size: 14px; font-weight: 600; color: var(--text); display: block; }
-        .feature-row-text span { font-size: 13px; color: var(--text-muted); }
+    .partner-plan-price {
+      font-family: var(--pp-font-head);
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+      margin: 0 0 10px;
+    }
 
-        /* Tabs — underline style */
-        .portal-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 24px; gap: 0; }
-        .portal-tab { padding: 12px 20px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--text-muted); background: none; border: none; font-family: inherit; position: relative; transition: color 0.15s; }
-        .portal-tab::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--primary); transform: scaleX(0); transition: transform 0.2s ease; }
-        .portal-tab.active { color: var(--text); }
-        .portal-tab.active::after { transform: scaleX(1); }
-        .portal-tab:hover:not(.active) { color: var(--text-secondary); }
+    .partner-plan-note {
+      font-size: 12px;
+      color: var(--pp-text-muted);
+    }
 
-        /* Landing header band */
-        .landing-header { background: var(--text); color: white; padding: 40px 32px 36px; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0; }
-        .landing-header h2 { font-family: var(--font-heading); font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; }
-        .landing-header p { font-size: 14px; opacity: 0.6; }
-        .landing-body { background: var(--surface); border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius) var(--radius); padding: 28px 32px; margin-bottom: 16px; }
-    </style>
+    .partner-section-title {
+      margin: 0 0 10px;
+      font-family: var(--pp-font-head);
+      font-size: 18px;
+    }
+
+    .partner-divider {
+      height: 1px;
+      background: rgba(35, 31, 26, 0.1);
+      margin: 8px 0 4px;
+    }
+
+    @media (max-width: 780px) {
+      .partner-status-grid,
+      .partner-billing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .partner-auth .portal-card,
+      .partner-auth .portal-hero {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
-<body>
+<body class="portal-partner">
+  <a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
 
-<a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
-<nav aria-label="Hoofdnavigatie">
-    <a href="/" class="nav-logo">PeuterPlannen <span class="nav-logo-pill">Partner</span></a>
-    <div class="nav-right">
-        <span id="nav-user" class="hidden"></span>
-        <button id="nav-logout" class="hidden" onclick="handleLogout()">Uitloggen</button>
+  <nav class="portal-nav" aria-label="Hoofdnavigatie">
+    <div class="portal-nav-inner">
+      <a class="portal-nav-brand" href="/">
+        PeuterPlannen
+        <span class="portal-nav-pill">Partner</span>
+      </a>
+      <div class="portal-nav-right">
+        <span id="nav-user" class="portal-nav-user hidden"></span>
+        <button id="nav-logout" class="portal-btn portal-btn-secondary portal-btn-sm hidden" type="button">Uitloggen</button>
+      </div>
     </div>
-</nav>
+  </nav>
 
-<main id="main-content">
-<!-- ===================== SCREEN: LANDING ===================== -->
-<div id="screen-landing" class="container">
-    <div class="landing-header">
-        <h2>Beheer je locatie</h2>
-        <p>Claim je plek op PeuterPlannen, houd gegevens actueel en bereik meer ouders.</p>
-    </div>
-    <div class="landing-body">
-        <div class="feature-list" style="margin-top:0;margin-bottom:24px;">
-            <div class="feature-row">
-                <div class="feature-icon-wrap">
-                    <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                </div>
-                <div class="feature-row-text">
-                    <strong>Gegevens beheren</strong>
-                    <span>Openingstijden, beschrijving en faciliteiten direct aanpassen.</span>
-                </div>
-            </div>
-            <div class="feature-row">
-                <div class="feature-icon-wrap">
-                    <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                </div>
-                <div class="feature-row-text">
-                    <strong>Geverifieerd badge</strong>
-                    <span>Ouders zien dat jouw informatie actueel en betrouwbaar is.</span>
-                </div>
-            </div>
-            <div class="feature-row">
-                <div class="feature-icon-wrap">
-                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                </div>
-                <div class="feature-row-text">
-                    <strong>Featured listing</strong>
-                    <span>Prominente positie bovenaan zoekresultaten in jouw regio.</span>
-                </div>
-            </div>
-        </div>
-        <div id="landing-alert"></div>
-        <div class="form-group">
-            <label for="login-email">E-mailadres</label>
-            <input type="email" id="login-email" placeholder="naam@bedrijf.nl" autocomplete="email">
-        </div>
-        <button class="btn btn-primary btn-full" id="send-otp-btn" onclick="sendOtp()">Doorgaan met e-mail →</button>
-        <p style="font-size:12px;color:var(--text-muted);margin-top:10px;text-align:center;">Je ontvangt een 6-cijferige inlogcode. Geen wachtwoord nodig.</p>
-    </div>
-</div>
+  <main id="main-content" class="portal-container">
+    <section id="screen-landing" class="partner-auth">
+      <article class="portal-hero">
+        <p class="portal-chip">Partner portal</p>
+        <h1 class="portal-title" style="margin-top:8px;">Beheer jouw locatie professioneel</h1>
+        <p style="margin:10px 0 0;color:rgba(255,255,255,0.84);max-width:60ch;">Claim je locatie, houd data actueel en beheer je Featured-abonnement direct vanuit je dashboard.</p>
+      </article>
 
-<!-- ===================== SCREEN: OTP ===================== -->
-<div id="screen-otp" class="container hidden">
-    <div class="card" style="padding:36px 32px;">
-        <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-muted);margin-bottom:16px;">Stap 2 van 2</p>
-        <p class="card-title">Controleer je e-mail</p>
-        <p class="card-desc">We hebben een 6-cijferige code gestuurd naar <strong id="otp-email-display" style="color:var(--text);"></strong>.</p>
-        <div id="otp-alert"></div>
-        <div class="form-group">
-            <label for="otp-code">Inlogcode</label>
-            <input type="text" id="otp-code" class="otp-input" placeholder="000000" maxlength="6" autocomplete="one-time-code" inputmode="numeric">
-        </div>
-        <button class="btn btn-primary btn-full" id="verify-otp-btn" onclick="verifyOtp()">Bevestigen en inloggen</button>
-        <p style="text-align:center;margin-top:14px;font-size:13px;color:var(--text-muted);">
-            <a href="#" onclick="showScreen('landing')" style="color:var(--primary-dark);">← Ander e-mailadres gebruiken</a>
-        </p>
-    </div>
-</div>
-
-<!-- ===================== SCREEN: DASHBOARD ===================== -->
-<div id="screen-dashboard" class="container hidden">
-    <div class="portal-tabs">
-        <button class="portal-tab active" onclick="switchTab('tab-mijn-locatie')" id="tab-btn-mijn-locatie">Mijn locatie</button>
-        <button class="portal-tab" onclick="switchTab('tab-billing')" id="tab-btn-billing">Abonnement</button>
-    </div>
-
-    <!-- === Tab: Mijn Locatie === -->
-    <div id="tab-mijn-locatie">
-        <!-- Sub-screen A: geen locatie geclaimd -->
-        <div id="no-location-panel">
-            <div class="card">
-                <p class="card-title">Zoek jouw locatie</p>
-                <p class="card-desc">Staat jouw locatie al in onze database? Zoek het op en dien een claim in. We controleren je aanvraag en koppelen de locatie aan jouw account.</p>
-                <div class="form-group" style="display:flex;gap:8px;margin-bottom:12px;">
-                    <input type="text" id="loc-search-input" placeholder="Naam van je locatie..." style="flex:1;">
-                    <button class="btn btn-primary" onclick="searchLocations()">Zoeken</button>
-                </div>
-                <div id="loc-search-results"></div>
-            </div>
-
-            <div id="claim-status-panel" class="hidden">
-                <div class="alert alert-info" id="claim-status-msg"></div>
-            </div>
+      <article class="portal-card">
+        <h2 class="partner-section-title">Inloggen met e-mailcode</h2>
+        <p class="portal-subtitle">Geen wachtwoord nodig. Je krijgt een 6-cijferige code op e-mail.</p>
+        <div class="partner-auth-list">
+          <ul class="portal-list">
+            <li class="portal-list-item"><div><strong>Snelle verificatie</strong><span>Inloggen in 2 stappen met eenmalige code.</span></div></li>
+            <li class="portal-list-item"><div><strong>Realtime updates</strong><span>Wijzigingen op je locatiegegevens direct opslaan.</span></div></li>
+            <li class="portal-list-item"><div><strong>Volledige controle</strong><span>Abonnement beheren via veilige Stripe self-service.</span></div></li>
+          </ul>
         </div>
 
-        <!-- Sub-screen B: locatie geclaimd + actief abonnement -->
+        <div id="landing-alert" class="portal-alert-wrap" aria-live="assertive"></div>
+        <div class="portal-form-group">
+          <label class="portal-label" for="login-email">E-mailadres</label>
+          <input class="portal-input" type="email" id="login-email" placeholder="naam@bedrijf.nl" autocomplete="email">
+        </div>
+        <button id="send-otp-btn" class="portal-btn portal-btn-primary portal-btn-full" type="button">Doorgaan met e-mail</button>
+      </article>
+    </section>
+
+    <section id="screen-otp" class="partner-auth hidden">
+      <article class="portal-card">
+        <h1 class="portal-screen-title">Controleer je inbox</h1>
+        <p class="portal-subtitle">We hebben een 6-cijferige code gestuurd naar <strong id="otp-email-display"></strong>.</p>
+        <div id="otp-alert" class="portal-alert-wrap" aria-live="assertive"></div>
+        <div class="portal-form-group">
+          <label class="portal-label" for="otp-code">Inlogcode</label>
+          <input class="portal-input" type="text" id="otp-code" maxlength="6" autocomplete="one-time-code" inputmode="numeric" placeholder="000000">
+        </div>
+        <div class="portal-btn-row">
+          <button id="verify-otp-btn" class="portal-btn portal-btn-primary" type="button">Inloggen</button>
+          <button id="otp-back-btn" class="portal-btn portal-btn-secondary" type="button">Ander e-mailadres</button>
+        </div>
+      </article>
+    </section>
+
+    <section id="screen-dashboard" class="hidden partner-shell">
+      <h1 class="sr-only">PeuterPlannen partner dashboard</h1>
+
+      <article class="portal-hero partner-dashboard-top">
+        <div>
+          <p class="portal-chip">Locatiebeheer</p>
+          <h2 class="portal-title" style="margin-top:8px;">Alles voor jouw listing op een plek</h2>
+          <p style="margin:8px 0 0;color:rgba(255,255,255,0.84);max-width:60ch;">Werk je profiel bij, volg claimstatus en beheer je featured zichtbaarheid zonder supporttickets.</p>
+        </div>
+        <div class="partner-status-grid" aria-label="Korte statusoverzicht">
+          <div class="partner-status-box">
+            <b id="status-loc-name">Nog niet geclaimd</b>
+            <span>Gekoppelde locatie</span>
+          </div>
+          <div class="partner-status-box">
+            <b id="status-plan">Gratis</b>
+            <span>Abonnementsstatus</span>
+          </div>
+          <div class="partner-status-box">
+            <b id="status-updated">-</b>
+            <span>Laatst geupdate</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="portal-card portal-card-soft">
+        <div class="portal-tabs" role="tablist" aria-label="Partner onderdelen">
+          <button class="portal-tab active" id="tab-btn-mijn-locatie" data-tab-target="tab-mijn-locatie" role="tab" aria-selected="true" type="button">Mijn locatie</button>
+          <button class="portal-tab" id="tab-btn-billing" data-tab-target="tab-billing" role="tab" aria-selected="false" type="button">Abonnement</button>
+        </div>
+      </article>
+
+      <section id="tab-mijn-locatie" class="portal-card">
+        <h2 class="partner-section-title">Mijn locatie</h2>
+
+        <div id="claim-status-panel" class="hidden">
+          <div id="claim-status-msg" class="portal-alert portal-alert-info" role="status" aria-live="polite"></div>
+        </div>
+
+        <div id="no-location-panel" class="hidden">
+          <p class="portal-subtitle" style="margin-bottom:12px;">Nog geen locatie gekoppeld. Zoek je locatie en dien een claim in.</p>
+          <div id="claim-search-alert" class="portal-alert-wrap" aria-live="assertive"></div>
+          <div class="portal-row">
+            <div class="portal-form-group" style="margin-bottom:0;">
+              <label class="portal-label" for="loc-search-input">Zoek op locatienaam</label>
+              <input id="loc-search-input" class="portal-input" type="text" placeholder="Bijv. Jungle Cafe Eindhoven">
+            </div>
+            <div class="portal-btn-row" style="align-items:flex-end;">
+              <button id="loc-search-btn" class="portal-btn portal-btn-primary" type="button">Zoeken</button>
+            </div>
+          </div>
+          <div id="loc-search-results" style="margin-top:12px;"></div>
+        </div>
+
         <div id="has-location-panel" class="hidden">
-            <div class="card">
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-                    <p class="card-title" style="margin:0;" id="edit-loc-name">—</p>
-                    <span class="status-badge" id="edit-plan-badge">Gratis</span>
-                </div>
-                <div id="edit-alert"></div>
+          <div class="portal-heading-row">
+            <h3 id="edit-loc-name" class="portal-title" style="font-size:22px;">-</h3>
+          </div>
+          <div id="edit-alert" class="portal-alert-wrap" aria-live="polite"></div>
 
-                <div class="form-group">
-                    <label for="edit-description">Beschrijving</label>
-                    <textarea id="edit-description" placeholder="Beschrijf wat bezoekers kunnen verwachten..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="edit-website">Website</label>
-                    <input type="text" id="edit-website" placeholder="https://...">
-                </div>
-                <div class="form-group">
-                    <label for="edit-hours">Openingstijden</label>
-                    <textarea id="edit-hours" placeholder="Ma–Vr 9:00–17:00, Za–Zo 10:00–18:00" style="min-height:60px;"></textarea>
-                </div>
+          <div class="portal-form-group">
+            <label class="portal-label" for="edit-description">Beschrijving</label>
+            <textarea id="edit-description" class="portal-textarea" placeholder="Beschrijf je locatie voor ouders met peuters en kleuters..."></textarea>
+          </div>
 
-                <div class="edit-section">
-                    <h3>Faciliteiten</h3>
-                    <div class="checkbox-row">
-                        <input type="checkbox" id="edit-coffee"><label for="edit-coffee">Koffie aanwezig</label>
-                    </div>
-                    <div class="checkbox-row">
-                        <input type="checkbox" id="edit-diaper"><label for="edit-diaper">Verschoontafel aanwezig</label>
-                    </div>
-                    <div class="checkbox-row">
-                        <input type="checkbox" id="edit-alcohol"><label for="edit-alcohol">Alcohol beschikbaar</label>
-                    </div>
-                </div>
-
-                <div class="edit-section">
-                    <h3>Leeftijdsrange</h3>
-                    <div style="display:flex;gap:12px;">
-                        <div class="form-group" style="flex:1;margin:0;">
-                            <label for="edit-min-age">Minimumleeftijd (jaar)</label>
-                            <input type="text" id="edit-min-age" placeholder="0">
-                        </div>
-                        <div class="form-group" style="flex:1;margin:0;">
-                            <label for="edit-max-age">Maximumleeftijd (jaar)</label>
-                            <input type="text" id="edit-max-age" placeholder="6">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="edit-section">
-                    <h3>Type locatie</h3>
-                    <div class="form-group" style="margin:0;">
-                        <label for="edit-weather">Binnen / Buiten</label>
-                        <select id="edit-weather">
-                            <option value="indoor">Binnen</option>
-                            <option value="outdoor">Buiten</option>
-                            <option value="both">Beide</option>
-                            <option value="hybrid">Hybride (overdekt buiten)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Foto upload (alleen Featured plan) -->
-                <div class="edit-section" id="photo-upload-section" style="display:none;">
-                    <h3>Foto uploaden</h3>
-                    <p style="font-size:13px;margin-bottom:12px;">Upload een foto van je locatie (JPG/PNG/WebP, max 5MB). Alleen beschikbaar voor Featured abonnees.</p>
-                    <input type="file" id="edit-photo" accept="image/jpeg,image/png,image/webp" style="font-size:14px;">
-                    <div id="photo-preview" style="margin-top:12px;"></div>
-                </div>
-
-                <div style="display:flex;gap:10px;margin-top:24px;">
-                    <button class="btn btn-primary" id="save-btn" onclick="saveLocationEdits()">Wijzigingen opslaan</button>
-                    <button class="btn btn-secondary" onclick="loadLocationData()">Annuleren</button>
-                </div>
+          <div class="portal-row">
+            <div class="portal-form-group">
+              <label class="portal-label" for="edit-website">Website</label>
+              <input id="edit-website" class="portal-input" type="text" placeholder="https://...">
             </div>
+            <div class="portal-form-group">
+              <label class="portal-label" for="edit-hours">Openingstijden</label>
+              <input id="edit-hours" class="portal-input" type="text" placeholder="Bijv. ma-vr 09:00-17:00">
+            </div>
+          </div>
+
+          <div class="partner-divider"></div>
+
+          <h3 class="partner-section-title" style="font-size:16px;">Faciliteiten</h3>
+          <div class="portal-checkbox-row"><input type="checkbox" id="edit-coffee"><label for="edit-coffee">Koffie aanwezig</label></div>
+          <div class="portal-checkbox-row"><input type="checkbox" id="edit-diaper"><label for="edit-diaper">Verschoontafel aanwezig</label></div>
+          <div class="portal-checkbox-row"><input type="checkbox" id="edit-alcohol"><label for="edit-alcohol">Alcohol beschikbaar</label></div>
+
+          <div class="portal-row">
+            <div class="portal-form-group">
+              <label class="portal-label" for="edit-min-age">Minimumleeftijd</label>
+              <input id="edit-min-age" class="portal-input" type="number" min="0" max="18" placeholder="0">
+            </div>
+            <div class="portal-form-group">
+              <label class="portal-label" for="edit-max-age">Maximumleeftijd</label>
+              <input id="edit-max-age" class="portal-input" type="number" min="0" max="18" placeholder="6">
+            </div>
+          </div>
+
+          <div class="portal-form-group">
+            <label class="portal-label" for="edit-weather">Binnen of buiten</label>
+            <select id="edit-weather" class="portal-select">
+              <option value="indoor">Binnen</option>
+              <option value="outdoor">Buiten</option>
+              <option value="both">Binnen en buiten</option>
+            </select>
+          </div>
+
+          <div id="photo-upload-section">
+            <div class="partner-divider"></div>
+            <h3 class="partner-section-title" style="font-size:16px;">Foto uploaden</h3>
+            <p class="portal-subtitle" style="margin-bottom:8px;">Beschikbaar voor trial en featured listings.</p>
+            <div class="portal-form-group">
+              <label class="portal-label" for="edit-photo">Foto (JPG/PNG/WebP, max 5MB)</label>
+              <input id="edit-photo" class="portal-input" type="file" accept="image/jpeg,image/png,image/webp">
+            </div>
+          </div>
+
+          <div class="portal-btn-row">
+            <button id="save-btn" class="portal-btn portal-btn-primary" type="button">Wijzigingen opslaan</button>
+            <button id="reload-btn" class="portal-btn portal-btn-secondary" type="button">Herladen</button>
+          </div>
         </div>
-    </div>
+      </section>
 
-    <!-- === Tab: Billing === -->
-    <div id="tab-billing" class="hidden">
-        <div class="card">
-            <p class="card-title">Abonnement</p>
-            <p id="billing-current-plan" class="card-desc" style="margin-bottom:0;">Huidig plan wordt geladen…</p>
+      <section id="tab-billing" class="portal-card hidden">
+        <h2 class="partner-section-title">Abonnement</h2>
+        <p id="billing-current-plan" class="portal-subtitle" style="margin-bottom:10px;">Huidig plan: <strong>Gratis</strong></p>
+        <div id="billing-alert" class="portal-alert-wrap" aria-live="polite"></div>
 
-            <div id="billing-alert"></div>
+        <div class="partner-billing-grid" id="upgrade-section">
+          <article class="partner-plan-card">
+            <h3>Featured maand</h3>
+            <p class="partner-plan-price">EUR 11</p>
+            <p class="partner-plan-note">per maand, maandelijks opzegbaar</p>
+            <ul class="portal-list" style="margin-top:10px;">
+              <li class="portal-list-item"><div>Featured badge en hogere zichtbaarheid</div></li>
+              <li class="portal-list-item"><div>Owner verified badge</div></li>
+            </ul>
+            <button id="upgrade-monthly-btn" class="portal-btn portal-btn-accent portal-btn-full" type="button" style="margin-top:12px;">Start maandplan</button>
+          </article>
 
-            <div class="plan-card">
-                <div class="plan-card-header">
-                    <h4>Featured</h4>
-                    <p>Alles wat je nodig hebt om op te vallen in de zoekresultaten</p>
-                </div>
-                <div class="plan-card-body">
-                    <ul class="plan-features">
-                        <li>Alle locatiegegevens bewerken</li>
-                        <li>Geverifieerd badge zichtbaar voor ouders</li>
-                        <li>Foto uploaden bij je locatie</li>
-                        <li>Aanbevolen badge &amp; prioriteit in zoekresultaten</li>
-                        <li>Bovenaan in jouw regio</li>
-                        <li>Statistieken: weergaven en kliks</li>
-                    </ul>
-                    <div class="billing-btns" id="featured-upgrade-btns">
-                        <button class="btn btn-accent btn-full" id="upgrade-monthly-btn" onclick="startCheckout('monthly')" style="flex:1;">€11 <span style="font-weight:400;opacity:0.8;">/ maand</span></button>
-                        <button class="btn btn-secondary" id="upgrade-yearly-btn" onclick="startCheckout('yearly')" style="flex:1;">€90 <span style="font-weight:400;font-size:12px;color:var(--success);">−32%</span> <span style="font-weight:400;opacity:0.7;font-size:12px;">/ jaar</span></button>
-                    </div>
-                    <p id="featured-active-msg" class="hidden" style="margin:0;font-size:14px;color:var(--success);font-weight:600;text-align:center;padding:4px 0;">Abonnement is actief</p>
-                </div>
-            </div>
-
-            <div id="cancel-subscription-section" class="hidden" style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(212,119,90,0.12);">
-                <p style="font-size:14px;color:var(--text-muted);">Je kunt je abonnement op elk moment opzeggen. Je behoudt toegang tot je huidige plan tot het einde van de betaalperiode.</p>
-                <button class="btn btn-danger" onclick="cancelSubscription()" style="margin-top:8px;font-size:13px;padding:8px 16px;">Abonnement opzeggen</button>
-            </div>
+          <article class="partner-plan-card">
+            <h3>Featured jaar</h3>
+            <p class="partner-plan-price">EUR 90</p>
+            <p class="partner-plan-note">per jaar, effectief 32% korting</p>
+            <ul class="portal-list" style="margin-top:10px;">
+              <li class="portal-list-item"><div>Zelfde features als maandplan</div></li>
+              <li class="portal-list-item"><div>Lagere prijs op jaarbasis</div></li>
+            </ul>
+            <button id="upgrade-yearly-btn" class="portal-btn portal-btn-secondary portal-btn-full" type="button" style="margin-top:12px;">Start jaarplan</button>
+          </article>
         </div>
+
+        <div id="manage-section" class="portal-card portal-card-soft hidden" style="margin-top:12px;">
+          <h3 class="partner-section-title" style="font-size:16px;">Beheer of zeg op via Stripe</h3>
+          <p class="portal-subtitle" style="margin-bottom:10px;">Je kunt betaalmethode wijzigen, facturen bekijken of opzeggen via je Stripe klantportaal.</p>
+          <button id="manage-subscription-btn" class="portal-btn portal-btn-secondary" type="button">Open Stripe klantportaal</button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div id="confirm-modal" class="portal-modal" aria-hidden="true">
+    <div class="portal-modal-backdrop" data-close-modal="true"></div>
+    <div class="portal-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+      <h2 id="confirm-title" class="portal-modal-title" data-confirm-title>Bevestigen</h2>
+      <p class="portal-modal-text" data-confirm-text></p>
+      <div class="portal-modal-actions">
+        <button type="button" class="portal-btn portal-btn-secondary" data-confirm-cancel>Annuleren</button>
+        <button type="button" class="portal-btn portal-btn-primary" data-confirm-ok>Bevestigen</button>
+      </div>
     </div>
-</div>
+  </div>
 
-</main>
-
-<script type="module">
+  <script src="/portal-shell.js" defer></script>
+  <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-    const SB_URL     = 'https://piujsvgbfflrrvauzsxe.supabase.co';
-    const SB_ANON    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpdWpzdmdiZmZscnJ2YXV6c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNDMxNzAsImV4cCI6MjA4NzYxOTE3MH0.5y3gqiPfVvpvfaDYA_PgqE-KTvuf6zgN6vGzqfUpeSo';
-    const EDGE_BASE  = `${SB_URL}/functions/v1`;
+    const SB_URL = 'https://piujsvgbfflrrvauzsxe.supabase.co';
+    const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpdWpzdmdiZmZscnJ2YXV6c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNDMxNzAsImV4cCI6MjA4NzYxOTE3MH0.5y3gqiPfVvpvfaDYA_PgqE-KTvuf6zgN6vGzqfUpeSo';
+    const EDGE_BASE = `${SB_URL}/functions/v1`;
 
     const supabase = createClient(SB_URL, SB_ANON);
 
-    // ---- State ----
-    let currentUser   = null;
-    let venueOwner    = null;
-    let claimedLoc    = null;
+    const state = {
+      currentUser: null,
+      venueOwner: null,
+      claimedLoc: null,
+      otpEmail: '',
+    };
 
-    let otpEmail = '';
+    document.addEventListener('DOMContentLoaded', () => {
+      bindUI();
+      showScreen('landing');
+    });
 
-    // ---- Expose helpers to inline onclick ----
-    window.showScreen        = showScreen;
-    window.switchTab         = switchTab;
-    window.sendOtp           = sendOtp;
-    window.verifyOtp         = verifyOtp;
-    window.handleLogout      = handleLogout;
-    window.searchLocations   = searchLocations;
-    window.saveLocationEdits = saveLocationEdits;
-    window.startCheckout     = startCheckout;
-    window.cancelSubscription = cancelSubscription;
-    window.loadLocationData  = loadLocationData;
+    function bindUI() {
+      document.getElementById('send-otp-btn').addEventListener('click', sendOtp);
+      document.getElementById('verify-otp-btn').addEventListener('click', verifyOtp);
+      document.getElementById('otp-back-btn').addEventListener('click', () => showScreen('landing'));
+      document.getElementById('nav-logout').addEventListener('click', handleLogout);
 
-    // ---- Routing ----
+      document.querySelectorAll('[data-tab-target]').forEach((btn) => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tabTarget));
+      });
+
+      document.getElementById('loc-search-btn').addEventListener('click', searchLocations);
+      document.getElementById('loc-search-results').addEventListener('click', onSearchResultsClick);
+
+      document.getElementById('save-btn').addEventListener('click', saveLocationEdits);
+      document.getElementById('reload-btn').addEventListener('click', loadLocationData);
+
+      document.getElementById('upgrade-monthly-btn').addEventListener('click', () => startCheckout('monthly'));
+      document.getElementById('upgrade-yearly-btn').addEventListener('click', () => startCheckout('yearly'));
+      document.getElementById('manage-subscription-btn').addEventListener('click', openBillingPortal);
+    }
+
     function showScreen(id) {
-        ['landing','otp','dashboard'].forEach(s => {
-            document.getElementById('screen-' + s)?.classList.add('hidden');
-        });
-        document.getElementById('screen-' + id)?.classList.remove('hidden');
+      ['landing', 'otp', 'dashboard'].forEach((screen) => {
+        document.getElementById(`screen-${screen}`).classList.toggle('hidden', screen !== id);
+      });
     }
 
     function switchTab(tabId) {
-        ['tab-mijn-locatie','tab-billing'].forEach(t => {
-            document.getElementById(t)?.classList.add('hidden');
-            document.getElementById('tab-btn-' + t)?.classList.remove('active');
-        });
-        document.getElementById(tabId)?.classList.remove('hidden');
-        document.getElementById('tab-btn-' + tabId)?.classList.add('active');
+      ['tab-mijn-locatie', 'tab-billing'].forEach((id) => {
+        const section = document.getElementById(id);
+        const button = document.querySelector(`[data-tab-target="${id}"]`);
+        const active = id === tabId;
+        section.classList.toggle('hidden', !active);
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
     }
 
-    // ---- Auth: OTP flow ----
     async function sendOtp() {
-        const email = document.getElementById('login-email').value.trim();
-        const btn   = document.getElementById('send-otp-btn');
-        setAlert('landing-alert', '', '');
-        if (!email) { setAlert('landing-alert', 'Vul je e-mailadres in.', 'error'); return; }
-        btn.disabled = true; btn.textContent = 'Versturen…';
-        const { error } = await supabase.auth.signInWithOtp({
-            email,
-            options: { shouldCreateUser: true }
-        });
-        if (error) {
-            btn.disabled = false; btn.textContent = 'Doorgaan met e-mail →';
-            setAlert('landing-alert', 'Fout: ' + escapeHtml(error.message), 'error', true);
-        } else {
-            otpEmail = email;
-            document.getElementById('otp-email-display').textContent = email;
-            document.getElementById('otp-code').value = '';
-            setAlert('otp-alert', '', '');
-            showScreen('otp');
-            setTimeout(() => document.getElementById('otp-code').focus(), 100);
-            startOtpCooldown(btn, 60);
-        }
+      const email = document.getElementById('login-email').value.trim();
+      const button = document.getElementById('send-otp-btn');
+      PortalShell.setAlert('landing-alert', '', 'info');
+
+      if (!email) {
+        PortalShell.setAlert('landing-alert', 'Vul je e-mailadres in.', 'error', { assertive: true });
+        return;
+      }
+
+      PortalShell.setButtonBusy(button, true, 'Versturen...', 'Doorgaan met e-mail');
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { shouldCreateUser: true },
+      });
+
+      if (error) {
+        PortalShell.setButtonBusy(button, false, null, 'Doorgaan met e-mail');
+        PortalShell.setAlert('landing-alert', `Inloggen mislukt: ${error.message}`, 'error', { assertive: true });
+        return;
+      }
+
+      state.otpEmail = email;
+      document.getElementById('otp-email-display').textContent = email;
+      document.getElementById('otp-code').value = '';
+      showScreen('otp');
+      startOtpCooldown(button, 60);
+      setTimeout(() => document.getElementById('otp-code').focus(), 60);
     }
 
-    function startOtpCooldown(btn, seconds) {
-        let remaining = seconds;
-        btn.disabled = true;
-        btn.textContent = `Opnieuw sturen (${remaining}s)`;
-        const interval = setInterval(() => {
-            remaining--;
-            if (remaining <= 0) {
-                clearInterval(interval);
-                btn.disabled = false;
-                btn.textContent = 'Doorgaan met e-mail →';
-            } else {
-                btn.textContent = `Opnieuw sturen (${remaining}s)`;
-            }
-        }, 1000);
+    function startOtpCooldown(button, seconds) {
+      let remaining = seconds;
+      button.disabled = true;
+      button.textContent = `Opnieuw sturen (${remaining}s)`;
+      const timer = setInterval(() => {
+        remaining -= 1;
+        if (remaining <= 0) {
+          clearInterval(timer);
+          button.disabled = false;
+          button.textContent = 'Doorgaan met e-mail';
+        } else {
+          button.textContent = `Opnieuw sturen (${remaining}s)`;
+        }
+      }, 1000);
     }
 
     async function verifyOtp() {
-        const token = document.getElementById('otp-code').value.trim();
-        const btn   = document.getElementById('verify-otp-btn');
-        setAlert('otp-alert', '', '');
-        if (!token) { setAlert('otp-alert', 'Vul de code in.', 'error'); return; }
-        btn.disabled = true; btn.textContent = 'Controleren…';
-        const { error } = await supabase.auth.verifyOtp({
-            email: otpEmail,
-            token,
-            type: 'email'
-        });
-        btn.disabled = false; btn.textContent = 'Inloggen';
-        if (error) {
-            setAlert('otp-alert', 'Ongeldige of verlopen code. Probeer opnieuw.', 'error');
-        }
-        // onAuthStateChange handles the redirect to dashboard
+      const token = document.getElementById('otp-code').value.trim();
+      const button = document.getElementById('verify-otp-btn');
+      PortalShell.setAlert('otp-alert', '', 'info');
+
+      if (!token) {
+        PortalShell.setAlert('otp-alert', 'Vul de code in.', 'error', { assertive: true });
+        return;
+      }
+
+      PortalShell.setButtonBusy(button, true, 'Controleren...', 'Inloggen');
+      const { error } = await supabase.auth.verifyOtp({
+        email: state.otpEmail,
+        token,
+        type: 'email',
+      });
+      PortalShell.setButtonBusy(button, false, null, 'Inloggen');
+
+      if (error) {
+        PortalShell.setAlert('otp-alert', 'Ongeldige of verlopen code. Probeer opnieuw.', 'error', { assertive: true });
+      }
     }
 
-    supabase.auth.onAuthStateChange(async (event, session) => {
-        if (session?.user) {
-            currentUser = session.user;
-            const displayName = session.user.user_metadata?.full_name || session.user.email;
-            document.getElementById('nav-user').textContent = displayName;
-            document.getElementById('nav-user').classList.remove('hidden');
-            document.getElementById('nav-logout').classList.remove('hidden');
-            await loadOwnerData();
-            showScreen('dashboard');
+    supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user) {
+        state.currentUser = session.user;
+        document.getElementById('nav-user').textContent = session.user.email;
+        document.getElementById('nav-user').classList.remove('hidden');
+        document.getElementById('nav-logout').classList.remove('hidden');
 
-            // Handle billing return
-            const params = new URLSearchParams(location.search);
-            if (params.get('billing') === 'success') {
-                history.replaceState({}, '', location.pathname);
-                setTimeout(() => setAlert('billing-alert', '🎉 Betaling geslaagd! Je abonnement wordt binnen enkele seconden geactiveerd.', 'success'), 800);
-            } else if (params.get('billing') === 'canceled') {
-                history.replaceState({}, '', location.pathname);
-            }
-        } else {
-            currentUser = null;
-            venueOwner  = null;
-            document.getElementById('nav-user').classList.add('hidden');
-            document.getElementById('nav-logout').classList.add('hidden');
-            showScreen('landing');
+        await loadOwnerData();
+        showScreen('dashboard');
+
+        const params = new URLSearchParams(location.search);
+        if (params.get('billing') === 'success') {
+          history.replaceState({}, '', location.pathname);
+          PortalShell.setAlert('billing-alert', 'Betaling geslaagd. Je plan wordt binnen enkele seconden actief.', 'success');
         }
+        if (params.get('billing') === 'canceled') {
+          history.replaceState({}, '', location.pathname);
+          PortalShell.setAlert('billing-alert', 'Checkout afgebroken. Geen wijzigingen doorgevoerd.', 'info');
+        }
+      } else {
+        state.currentUser = null;
+        state.venueOwner = null;
+        state.claimedLoc = null;
+        document.getElementById('nav-user').classList.add('hidden');
+        document.getElementById('nav-logout').classList.add('hidden');
+        showScreen('landing');
+      }
     });
 
     async function handleLogout() {
-        await supabase.auth.signOut();
+      await supabase.auth.signOut();
     }
 
-    // ---- Owner data ----
     async function loadOwnerData() {
-        const { data } = await supabase
-            .from('venue_owners')
-            .select('*')
-            .eq('user_id', currentUser.id)
-            .single();
-        venueOwner = data;
+      const { data } = await supabase
+        .from('venue_owners')
+        .select('*')
+        .eq('user_id', state.currentUser.id)
+        .single();
 
-        // Load claim requests if no location yet
-        if (!venueOwner?.location_id) {
-            const { data: claims } = await supabase
-                .from('location_claim_requests')
-                .select('*')
-                .eq('user_id', currentUser.id)
-                .order('created_at', { ascending: false })
-                .limit(1)
-                .single();
-            if (claims) {
-                const msg = claims.status === 'pending'
-                    ? '⏳ Aanvraag ingediend — wacht op goedkeuring van PeuterPlannen.'
-                    : claims.status === 'approved'
-                    ? '✅ Aanvraag goedgekeurd!'
-                    : '❌ Aanvraag afgewezen. Stuur een bericht via contact.html als je denkt dat dit een fout is.';
-                document.getElementById('claim-status-msg').textContent = msg;
-                document.getElementById('claim-status-panel').classList.remove('hidden');
-            }
-            document.getElementById('no-location-panel').classList.remove('hidden');
-            document.getElementById('has-location-panel').classList.add('hidden');
-        } else {
-            document.getElementById('no-location-panel').classList.add('hidden');
-            document.getElementById('has-location-panel').classList.remove('hidden');
-            await loadLocationData();
+      state.venueOwner = data || null;
+
+      if (!state.venueOwner?.location_id) {
+        await loadLatestClaimStatus();
+        document.getElementById('no-location-panel').classList.remove('hidden');
+        document.getElementById('has-location-panel').classList.add('hidden');
+      } else {
+        document.getElementById('no-location-panel').classList.add('hidden');
+        document.getElementById('has-location-panel').classList.remove('hidden');
+        await loadLocationData();
+      }
+
+      updateBillingUI();
+      refreshStatusBoxes();
+    }
+
+    async function loadLatestClaimStatus() {
+      const { data } = await supabase
+        .from('location_claim_requests')
+        .select('status, review_reason, created_at')
+        .eq('user_id', state.currentUser.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      const panel = document.getElementById('claim-status-panel');
+      const msg = document.getElementById('claim-status-msg');
+      if (!data) {
+        panel.classList.add('hidden');
+        msg.textContent = '';
+        return;
+      }
+
+      panel.classList.remove('hidden');
+      if (data.status === 'pending') {
+        msg.textContent = 'Aanvraag ontvangen. We beoordelen je claim zo snel mogelijk.';
+      } else if (data.status === 'approved') {
+        msg.textContent = 'Claim goedgekeurd. Je kunt je locatie nu beheren.';
+      } else if (data.status === 'auto_rejected_duplicate') {
+        msg.textContent = data.review_reason || 'Een andere claim op deze locatie is al goedgekeurd.';
+      } else {
+        msg.textContent = data.review_reason || 'Claim afgewezen. Neem contact op als je denkt dat dit onjuist is.';
+      }
+    }
+
+    async function searchLocations() {
+      const query = document.getElementById('loc-search-input').value.trim();
+      const resultsEl = document.getElementById('loc-search-results');
+      PortalShell.setAlert('claim-search-alert', '', 'info');
+
+      if (!query) {
+        PortalShell.setAlert('claim-search-alert', 'Vul een locatienaam in om te zoeken.', 'error', { assertive: true });
+        return;
+      }
+
+      resultsEl.innerHTML = '<p class="portal-muted">Zoeken...</p>';
+
+      const { data, error } = await supabase
+        .from('locations')
+        .select('id, name, region, type')
+        .ilike('name', `%${query}%`)
+        .limit(10);
+
+      if (error || !data?.length) {
+        resultsEl.innerHTML = '<p class="portal-muted">Geen locaties gevonden.</p>';
+        return;
+      }
+
+      resultsEl.innerHTML = data.map((loc) => `
+        <div class="portal-result-row">
+          <div>
+            <div class="portal-result-name">${escapeHtml(loc.name)}</div>
+            <div class="portal-result-meta">${escapeHtml(loc.region || '')} · ${escapeHtml(loc.type || '')}</div>
+          </div>
+          <button type="button" class="portal-btn portal-btn-secondary portal-btn-sm"
+            data-claim-location-id="${loc.id}"
+            data-claim-location-name="${escapeAttr(loc.name)}">Claimen</button>
+        </div>
+      `).join('');
+    }
+
+    async function onSearchResultsClick(event) {
+      const button = event.target.closest('[data-claim-location-id]');
+      if (!button) return;
+
+      const locationId = Number(button.dataset.claimLocationId);
+      const locationName = button.dataset.claimLocationName || 'deze locatie';
+
+      const confirmed = await PortalShell.showConfirm({
+        title: 'Claim-aanvraag versturen?',
+        text: `We versturen een claim-aanvraag voor ${locationName}.`,
+        confirmLabel: 'Versturen',
+        trigger: button,
+      });
+
+      if (!confirmed) return;
+
+      PortalShell.setButtonBusy(button, true, 'Versturen...', 'Claimen');
+
+      try {
+        const since = new Date();
+        since.setDate(since.getDate() - 1);
+
+        const { count } = await supabase
+          .from('location_claim_requests')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', state.currentUser.id)
+          .gte('created_at', since.toISOString());
+
+        if ((count || 0) >= 3) {
+          PortalShell.setAlert('claim-search-alert', 'Je hebt al 3 aanvragen in 24 uur verstuurd. Probeer later opnieuw.', 'warn', { assertive: true });
+          return;
         }
 
-        updateBillingUI();
+        const { error } = await supabase
+          .from('location_claim_requests')
+          .insert({
+            user_id: state.currentUser.id,
+            location_id: locationId,
+            message: `Ik ben eigenaar van ${locationName} en wil deze locatie beheren via PeuterPlannen.`,
+          });
+
+        if (error) {
+          throw error;
+        }
+
+        document.getElementById('loc-search-results').innerHTML = '';
+        await loadLatestClaimStatus();
+        PortalShell.setAlert('claim-search-alert', 'Claim-aanvraag verstuurd. We laten je weten zodra deze beoordeeld is.', 'success');
+      } catch (error) {
+        PortalShell.setAlert('claim-search-alert', `Claim mislukt: ${error.message}`, 'error', { assertive: true });
+      } finally {
+        PortalShell.setButtonBusy(button, false, null, 'Claimen');
+      }
     }
 
     async function loadLocationData() {
-        if (!venueOwner?.location_id) return;
-        const { data: loc } = await supabase
-            .from('locations')
-            .select('*')
-            .eq('id', venueOwner.location_id)
-            .single();
-        if (!loc) return;
-        claimedLoc = loc;
+      if (!state.venueOwner?.location_id) return;
 
-        document.getElementById('edit-loc-name').textContent = loc.name;
-        document.getElementById('edit-description').value = loc.description || '';
-        document.getElementById('edit-website').value     = loc.website     || '';
-        document.getElementById('edit-hours').value       = loc.opening_hours || '';
-        document.getElementById('edit-coffee').checked   = !!loc.coffee;
-        document.getElementById('edit-diaper').checked   = !!loc.diaper;
-        document.getElementById('edit-alcohol').checked  = !!loc.alcohol;
-        document.getElementById('edit-min-age').value    = loc.min_age ?? '';
-        document.getElementById('edit-max-age').value    = loc.max_age ?? '';
-        document.getElementById('edit-weather').value    = loc.weather || 'indoor';
+      const { data: location } = await supabase
+        .from('locations')
+        .select('*')
+        .eq('id', state.venueOwner.location_id)
+        .single();
 
-        // Photo upload only for Featured plan
-        const hasFeatured = ['featured','trial'].includes(venueOwner?.subscription_status);
-        document.getElementById('photo-upload-section').style.display = hasFeatured ? 'block' : 'none';
+      if (!location) return;
+
+      state.claimedLoc = location;
+      document.getElementById('edit-loc-name').textContent = location.name || '-';
+      document.getElementById('edit-description').value = location.description || '';
+      document.getElementById('edit-website').value = location.website || '';
+      document.getElementById('edit-hours').value = location.opening_hours || '';
+      document.getElementById('edit-coffee').checked = !!location.coffee;
+      document.getElementById('edit-diaper').checked = !!location.diaper;
+      document.getElementById('edit-alcohol').checked = !!location.alcohol;
+      document.getElementById('edit-min-age').value = location.min_age ?? '';
+      document.getElementById('edit-max-age').value = location.max_age ?? '';
+      document.getElementById('edit-weather').value = location.weather || 'indoor';
+
+      const canUploadPhoto = ['featured', 'trial'].includes(state.venueOwner?.subscription_status || 'none');
+      document.getElementById('photo-upload-section').classList.toggle('hidden', !canUploadPhoto);
+
+      refreshStatusBoxes();
     }
 
     function updateBillingUI() {
-        const status  = venueOwner?.subscription_status ?? 'none';
-        const expires = venueOwner?.plan_expires_at;
+      const status = safeSubscriptionStatus(state.venueOwner?.subscription_status);
+      const expires = state.venueOwner?.plan_expires_at;
+      const planLabel = {
+        none: 'Gratis',
+        trial: 'Trial',
+        featured: 'Featured',
+        past_due: 'Betaling mislukt',
+        canceled: 'Opgezegd',
+      }[status];
 
-        const badge = document.getElementById('edit-plan-badge');
-        if (badge) {
-            badge.className = 'status-badge status-' + (status === 'none' ? 'none' : status);
-            badge.textContent = { none:'Gratis', trial:'Trial', featured:'Featured ★', past_due:'Betaling mislukt', canceled:'Opgezegd' }[status] ?? status;
-        }
+      const planText = expires
+        ? `Huidig plan: ${planLabel} · Geldig tot ${fmtDate(expires)}`
+        : `Huidig plan: ${planLabel}`;
+      document.getElementById('billing-current-plan').textContent = planText;
 
-        const expiryStr = expires
-            ? new Date(expires).toLocaleDateString('nl-NL', { day:'numeric', month:'long', year:'numeric' })
-            : '';
-
-        const planLabel = { none:'Gratis', trial:'Trial (proefperiode)', featured:'Featured', past_due:'Featured (betaling mislukt)', canceled:'Geen actief abonnement' }[status] ?? status;
-        const planEl = document.getElementById('billing-current-plan');
-        planEl.textContent = '';
-        const planPrefix = document.createTextNode('Huidig plan: ');
-        const planStrong = document.createElement('strong');
-        planStrong.textContent = planLabel;
-        planEl.appendChild(planPrefix);
-        planEl.appendChild(planStrong);
-        if (expiryStr) planEl.appendChild(document.createTextNode(` · Geldig tot ${expiryStr}`));
-
-        const hasActive = ['featured','trial'].includes(status);
-        document.getElementById('cancel-subscription-section').classList.toggle('hidden', !hasActive);
-
-        // Show/hide upgrade buttons vs active message
-        const upgradeEl = document.getElementById('featured-upgrade-btns');
-        const activeMsg = document.getElementById('featured-active-msg');
-        if (hasActive) {
-            upgradeEl.classList.add('hidden');
-            activeMsg.classList.remove('hidden');
-        } else {
-            upgradeEl.classList.remove('hidden');
-            activeMsg.classList.add('hidden');
-        }
+      const hasActive = ['featured', 'trial', 'past_due'].includes(status);
+      document.getElementById('upgrade-section').classList.toggle('hidden', hasActive);
+      document.getElementById('manage-section').classList.toggle('hidden', !hasActive);
     }
 
-    // ---- Location search & claim ----
-    async function searchLocations() {
-        const q = document.getElementById('loc-search-input').value.trim();
-        if (!q) return;
-        const resultsEl = document.getElementById('loc-search-results');
-        resultsEl.innerHTML = '<p style="color:var(--text-muted);font-size:14px;">Zoeken…</p>';
+    function refreshStatusBoxes() {
+      const locName = state.claimedLoc?.name || 'Nog niet geclaimd';
+      const status = safeSubscriptionStatus(state.venueOwner?.subscription_status);
+      const planLabel = {
+        none: 'Gratis',
+        trial: 'Trial',
+        featured: 'Featured',
+        past_due: 'Past due',
+        canceled: 'Opgezegd',
+      }[status];
+      const updated = state.claimedLoc?.last_owner_update
+        ? fmtDateTime(state.claimedLoc.last_owner_update)
+        : '-';
 
-        const { data, error } = await supabase
-            .from('locations')
-            .select('id, name, region, type')
-            .ilike('name', `%${q}%`)
-            .limit(10);
-
-        if (error || !data?.length) {
-            resultsEl.innerHTML = '<p style="color:var(--text-muted);font-size:14px;">Geen locaties gevonden. Staat je locatie nog niet in onze database? <a href="/contact.html" style="color:var(--primary);">Stuur een suggestie</a>.</p>';
-            return;
-        }
-
-        resultsEl.innerHTML = data.map(loc => `
-            <div class="loc-result">
-                <div>
-                    <div class="loc-result-name">${escapeHtml(loc.name)}</div>
-                    <div class="loc-result-region">${escapeHtml(loc.region || '')} · ${escapeHtml(loc.type || '')}</div>
-                </div>
-                <button class="btn btn-secondary" onclick="claimLocation(${loc.id}, '${escapeJs(loc.name)}')">Claimen</button>
-            </div>
-        `).join('');
+      document.getElementById('status-loc-name').textContent = locName;
+      document.getElementById('status-plan').textContent = planLabel;
+      document.getElementById('status-updated').textContent = updated;
     }
 
-    window.claimLocation = async (locationId, locationName) => {
-        if (!currentUser) return;
-
-        // UX precheck: DB trigger enforces the definitive 24h limit
-        const since = new Date(); since.setDate(since.getDate() - 1);
-        const { count } = await supabase
-            .from('location_claim_requests')
-            .select('id', { count: 'exact', head: true })
-            .eq('user_id', currentUser.id)
-            .gte('created_at', since.toISOString());
-
-        if ((count ?? 0) >= 3) {
-            alert('Je hebt vandaag al 3 claim-aanvragen ingediend. Probeer het morgen opnieuw.');
-            return;
-        }
-
-        const message = `Ik ben de eigenaar van ${locationName} en wil dit beheren via PeuterPlannen.`;
-        const { error } = await supabase
-            .from('location_claim_requests')
-            .insert({ user_id: currentUser.id, location_id: locationId, message });
-
-        if (!error) {
-            document.getElementById('claim-status-msg').textContent =
-                `⏳ Aanvraag voor "${locationName}" ingediend — wacht op goedkeuring van PeuterPlannen.`;
-            document.getElementById('claim-status-panel').classList.remove('hidden');
-            document.getElementById('loc-search-results').innerHTML = '';
-        } else {
-            alert(error.message || 'Er ging iets mis. Probeer het opnieuw.');
-        }
-    };
-
-    // ---- Save location edits ----
     async function saveLocationEdits() {
-        if (!claimedLoc) return;
-        const btn = document.getElementById('save-btn');
-        setAlert('edit-alert', '', '');
-        btn.disabled = true; btn.textContent = 'Opslaan…';
+      if (!state.claimedLoc) return;
+
+      const button = document.getElementById('save-btn');
+      PortalShell.setAlert('edit-alert', '', 'info');
+      PortalShell.setButtonBusy(button, true, 'Opslaan...', 'Wijzigingen opslaan');
+
+      try {
+        const minAgeRaw = document.getElementById('edit-min-age').value.trim();
+        const maxAgeRaw = document.getElementById('edit-max-age').value.trim();
+        const minAge = minAgeRaw === '' ? null : Number(minAgeRaw);
+        const maxAge = maxAgeRaw === '' ? null : Number(maxAgeRaw);
+
+        if (minAge !== null && (Number.isNaN(minAge) || minAge < 0 || minAge > 18)) {
+          throw new Error('Minimumleeftijd moet tussen 0 en 18 liggen.');
+        }
+        if (maxAge !== null && (Number.isNaN(maxAge) || maxAge < 0 || maxAge > 18)) {
+          throw new Error('Maximumleeftijd moet tussen 0 en 18 liggen.');
+        }
+        if (minAge !== null && maxAge !== null && minAge > maxAge) {
+          throw new Error('Minimumleeftijd kan niet hoger zijn dan maximumleeftijd.');
+        }
+
+        const website = document.getElementById('edit-website').value.trim();
+        if (website) {
+          try {
+            const parsed = new URL(website);
+            if (!['http:', 'https:'].includes(parsed.protocol)) {
+              throw new Error('invalid_protocol');
+            }
+          } catch {
+            throw new Error('Website URL is ongeldig. Gebruik http(s)://...');
+          }
+        }
 
         const updates = {
-            description:   document.getElementById('edit-description').value.trim() || null,
-            website:       document.getElementById('edit-website').value.trim() || null,
-            opening_hours: document.getElementById('edit-hours').value.trim() || null,
-            coffee:        document.getElementById('edit-coffee').checked,
-            diaper:        document.getElementById('edit-diaper').checked,
-            alcohol:       document.getElementById('edit-alcohol').checked,
-            min_age:       parseInt(document.getElementById('edit-min-age').value) || null,
-            max_age:       parseInt(document.getElementById('edit-max-age').value) || null,
-            weather:       document.getElementById('edit-weather').value,
-            last_owner_update: new Date().toISOString(),
+          description: document.getElementById('edit-description').value.trim() || null,
+          website: website || null,
+          opening_hours: document.getElementById('edit-hours').value.trim() || null,
+          coffee: document.getElementById('edit-coffee').checked,
+          diaper: document.getElementById('edit-diaper').checked,
+          alcohol: document.getElementById('edit-alcohol').checked,
+          min_age: minAge,
+          max_age: maxAge,
+          weather: document.getElementById('edit-weather').value,
+          last_owner_update: new Date().toISOString(),
         };
 
-        // Validate website URL
-        if (updates.website) {
-            try { new URL(updates.website); } catch {
-                setAlert('edit-alert', 'Website-URL is niet geldig. Gebruik https://...', 'error');
-                btn.disabled = false; btn.textContent = 'Wijzigingen opslaan';
-                return;
-            }
-        }
-
-        // Handle photo upload first if provided
-        const photoFile = document.getElementById('edit-photo')?.files?.[0];
-        if (photoFile) {
-            const err = await uploadPhoto(claimedLoc.id, photoFile);
-            if (err) {
-                setAlert('edit-alert', 'Foto upload mislukt: ' + escapeHtml(String(err)), 'error', true);
-                btn.disabled = false; btn.textContent = 'Wijzigingen opslaan';
-                return;
-            }
+        const file = document.getElementById('edit-photo').files?.[0];
+        if (file) {
+          const photoErr = await uploadPhoto(state.claimedLoc.id, file);
+          if (photoErr) throw new Error(photoErr);
         }
 
         const { error } = await supabase
-            .from('locations')
-            .update(updates)
-            .eq('id', claimedLoc.id);
+          .from('locations')
+          .update(updates)
+          .eq('id', state.claimedLoc.id);
 
-        btn.disabled = false; btn.textContent = 'Wijzigingen opslaan';
+        if (error) throw error;
 
-        if (error) {
-            setAlert('edit-alert', 'Opslaan mislukt: ' + escapeHtml(error.message), 'error', true);
-        } else {
-            setAlert('edit-alert', '✓ Wijzigingen opgeslagen!', 'success');
-            claimedLoc = { ...claimedLoc, ...updates };
-        }
+        state.claimedLoc = { ...state.claimedLoc, ...updates };
+        PortalShell.setAlert('edit-alert', 'Wijzigingen opgeslagen.', 'success');
+        refreshStatusBoxes();
+      } catch (error) {
+        PortalShell.setAlert('edit-alert', `Opslaan mislukt: ${error.message}`, 'error', { assertive: true });
+      } finally {
+        PortalShell.setButtonBusy(button, false, null, 'Wijzigingen opslaan');
+      }
     }
 
     async function uploadPhoto(locationId, file) {
-        if (!['image/jpeg','image/png','image/webp'].includes(file.type)) return 'Alleen JPG, PNG of WebP toegestaan.';
-        if (file.size > 5 * 1024 * 1024) return 'Bestand te groot (max 5MB).';
+      const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+      if (!allowed.includes(file.type)) return 'Alleen JPG, PNG of WebP is toegestaan.';
+      if (file.size > 5 * 1024 * 1024) return 'Bestand te groot (max 5MB).';
 
-        const ext  = file.name.split('.').pop();
-        const path = `${locationId}/owner-${Date.now()}.${ext}`;
-        const { error } = await supabase.storage
-            .from('location-images')
-            .upload(path, file, { upsert: true, contentType: file.type });
+      const ext = file.name.split('.').pop();
+      const path = `${locationId}/owner-${Date.now()}.${ext}`;
 
-        if (error) return error.message;
+      const { error: uploadError } = await supabase.storage
+        .from('location-images')
+        .upload(path, file, { upsert: true, contentType: file.type });
 
-        const { data: { publicUrl } } = supabase.storage
-            .from('location-images')
-            .getPublicUrl(path);
+      if (uploadError) return uploadError.message;
 
-        await supabase.from('locations').update({ owner_photo_url: publicUrl }).eq('id', locationId);
-        return null;
+      const { data } = supabase.storage.from('location-images').getPublicUrl(path);
+      const { error: updateError } = await supabase
+        .from('locations')
+        .update({ owner_photo_url: data.publicUrl })
+        .eq('id', locationId);
+
+      if (updateError) return updateError.message;
+      return null;
     }
 
-    // ---- Stripe checkout ----
-    async function startCheckout(billingInterval) {
-        const btnId = billingInterval === 'monthly' ? 'upgrade-monthly-btn' : 'upgrade-yearly-btn';
-        const btn = document.getElementById(btnId);
-        if (btn) { btn.disabled = true; btn.textContent = 'Laden…'; }
-        setAlert('billing-alert', '', '');
+    async function startCheckout(interval) {
+      const buttonId = interval === 'monthly' ? 'upgrade-monthly-btn' : 'upgrade-yearly-btn';
+      const button = document.getElementById(buttonId);
+      PortalShell.setAlert('billing-alert', '', 'info');
+      PortalShell.setButtonBusy(button, true, 'Laden...', button.textContent);
 
-        try {
-            const { data: { session } } = await supabase.auth.getSession();
-            const res = await fetch(`${EDGE_BASE}/create-checkout-session`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${session.access_token}`,
-                },
-                body: JSON.stringify({ plan_tier: 'featured', billing_interval: billingInterval }),
-            });
-            const json = await res.json();
-            if (json.url) {
-                window.location.href = json.url;
-            } else {
-                throw new Error(json.error ?? 'Onbekende fout');
-            }
-        } catch (err) {
-            setAlert('billing-alert', 'Checkout mislukt: ' + escapeHtml(err.message), 'error', true);
-            if (btn) {
-                btn.disabled = false;
-                btn.textContent = billingInterval === 'monthly' ? '€11 / maand' : '€90 / jaar';
-            }
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const response = await fetch(`${EDGE_BASE}/create-checkout-session`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({ plan_tier: 'featured', billing_interval: interval }),
+        });
+
+        const payload = await response.json();
+        if (!response.ok || !payload.url) {
+          throw new Error(payload.error || 'Checkout kon niet worden gestart.');
         }
+
+        window.location.href = payload.url;
+      } catch (error) {
+        PortalShell.setAlert('billing-alert', `Checkout mislukt: ${error.message}`, 'error', { assertive: true });
+        PortalShell.setButtonBusy(button, false, null, interval === 'monthly' ? 'Start maandplan' : 'Start jaarplan');
+      }
     }
 
-    async function cancelSubscription() {
-        if (!confirm('Weet je zeker dat je je abonnement wilt opzeggen? Je behoudt toegang tot het einde van de betaalperiode.')) return;
-        setAlert('billing-alert', 'Om je abonnement op te zeggen, neem contact op via <a href="/contact.html">contact.html</a>.', 'info', true);
-    }
+    async function openBillingPortal() {
+      const button = document.getElementById('manage-subscription-btn');
+      PortalShell.setAlert('billing-alert', '', 'info');
+      PortalShell.setButtonBusy(button, true, 'Openen...', 'Open Stripe klantportaal');
 
-    // ---- Util ----
-    // setAlert: msg is treated as plain text by default.
-    // Pass html=true only for hardcoded safe strings (not user/API data).
-    function setAlert(id, msg, type, html = false) {
-        const el = document.getElementById(id);
-        if (!el) return;
-        el.className = 'alert' + (type ? ' alert-' + type : '');
-        if (html) {
-            el.innerHTML = msg;
-        } else {
-            el.textContent = msg;
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const response = await fetch(`${EDGE_BASE}/create-customer-portal-session`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        });
+
+        const payload = await response.json();
+        if (!response.ok || !payload.url) {
+          throw new Error(payload.error || 'Klantportaal kon niet worden geopend.');
         }
-        el.style.display = msg ? 'block' : 'none';
+
+        window.location.href = payload.url;
+      } catch (error) {
+        PortalShell.setButtonBusy(button, false, null, 'Open Stripe klantportaal');
+        PortalShell.setAlert('billing-alert', `Portal openen mislukt: ${error.message}`, 'error', { assertive: true });
+      }
     }
 
-    function escapeHtml(s) {
-        return (s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    function safeSubscriptionStatus(status) {
+      const allowed = ['none', 'trial', 'featured', 'past_due', 'canceled'];
+      return allowed.includes(status) ? status : 'none';
     }
 
-    function escapeJs(s) {
-        return (s ?? '').replace(/'/g,"\\'").replace(/"/g,'\\"');
+    function fmtDate(iso) {
+      if (!iso) return '-';
+      return new Date(iso).toLocaleDateString('nl-NL', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      });
     }
-</script>
+
+    function fmtDateTime(iso) {
+      if (!iso) return '-';
+      return new Date(iso).toLocaleString('nl-NL', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    }
+
+    function escapeHtml(value) {
+      return PortalShell.escapeHtml(value);
+    }
+
+    function escapeAttr(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+  </script>
 </body>
 </html>

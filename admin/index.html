@@ -1,780 +1,913 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin — PeuterPlannen</title>
-    <meta name="description" content="Adminportal voor PeuterPlannen: beheer claims, locaties en abonnementen.">
-    <link rel="canonical" href="https://admin.peuterplannen.nl/">
-    <meta name="robots" content="noindex, nofollow">
-    <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #D4775A; --primary-light: #FDF1ED; --primary-dark: #B35D42;
-            --bg: #F2F0EC; --surface: #FFFFFF;
-            --text: #1C1917; --text-secondary: #6B5E5C; --text-muted: #9B8E8C;
-            --success: #1D7348; --success-bg: #ECFDF5;
-            --error: #B91C1C; --error-bg: #FEF2F2;
-            --border: rgba(28,25,23,0.10);
-            --shadow-sm: 0 1px 3px rgba(28,25,23,0.06), 0 2px 8px rgba(28,25,23,0.06);
-            --radius: 10px; --font-heading: 'Plus Jakarta Sans', sans-serif; --font-body: 'DM Sans', sans-serif;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-        :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
-        .skip-link { position: absolute; left: -9999px; top: 8px; z-index: 9999; background: #fff; color: #111; border: 2px solid var(--primary); border-radius: 8px; padding: 8px 12px; font-size: 13px; text-decoration: none; }
-        .skip-link:focus { left: 12px; }
-        .hidden { display: none !important; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - PeuterPlannen</title>
+  <meta name="description" content="Adminportal voor PeuterPlannen: beheer claims, locaties en abonnementen.">
+  <link rel="canonical" href="https://admin.peuterplannen.nl/">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/portal-shell.css">
+  <style>
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
 
-        /* Nav */
-        nav { background: #1C1917; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 0 24px; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
-        .nav-logo { font-family: var(--font-heading); font-weight: 800; font-size: 15px; color: white; text-decoration: none; display: flex; align-items: center; gap: 8px; }
-        .nav-logo-pill { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); padding: 2px 8px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.15); }
-        .nav-right { display: flex; align-items: center; gap: 10px; }
-        #nav-user { font-size: 12px; color: rgba(255,255,255,0.5); }
-        #nav-logout { background: none; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); padding: 4px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; font-family: inherit; transition: all 0.15s; }
-        #nav-logout:hover { background: rgba(255,255,255,0.08); }
+    .admin-auth {
+      max-width: 500px;
+      margin: 22px auto 0;
+    }
 
-        /* Layout */
-        .container { max-width: 1100px; margin: 0 auto; padding: 28px 20px 80px; }
+    .admin-auth .portal-card {
+      border-radius: 22px;
+      padding: 26px;
+    }
 
-        /* Cards */
-        .card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-sm); padding: 22px 24px; margin-bottom: 16px; }
-        .card h2 { font-family: var(--font-heading); font-size: 16px; font-weight: 800; color: var(--text); letter-spacing: -0.01em; }
-        .card h3 { font-family: var(--font-heading); font-size: 13px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; }
-        .card p { color: var(--text-secondary); font-size: 13px; line-height: 1.6; }
+    .admin-hero-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1.15fr 1fr;
+      align-items: stretch;
+    }
 
-        /* Buttons */
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; font-family: inherit; border: none; text-decoration: none; white-space: nowrap; letter-spacing: 0.01em; }
-        .btn-primary { background: var(--text); color: white; }
-        .btn-primary:hover { background: #2d2a28; }
-        .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); }
-        .btn-secondary:hover { background: var(--bg); border-color: rgba(28,25,23,0.18); }
-        .btn-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(29,115,72,0.2); }
-        .btn-success:hover { background: #d4f0e4; }
-        .btn-danger { background: var(--error-bg); color: var(--error); border: 1px solid rgba(185,28,28,0.15); }
-        .btn-danger:hover { background: #fde8e8; }
-        .btn-sm { padding: 4px 10px; font-size: 12px; }
-        .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .admin-hero-note {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.9);
+    }
 
-        /* OTP code input */
-        .otp-input { letter-spacing: 0.35em; font-size: 28px; font-weight: 700; text-align: center; font-family: var(--font-heading); }
+    .admin-kpi-card {
+      border: 1px solid rgba(35, 31, 26, 0.08);
+      background: rgba(255, 255, 255, 0.9);
+    }
 
-        /* Alert */
-        .alert { padding: 10px 14px; border-radius: 7px; font-size: 13px; margin-bottom: 14px; }
-        .alert-error   { background: var(--error-bg);   color: var(--error);   border: 1px solid rgba(185,28,28,0.15); }
-        .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(29,115,72,0.15); }
-        .alert-info    { background: var(--primary-light); color: var(--primary-dark); border: 1px solid rgba(212,119,90,0.2); }
+    .admin-kpi-value {
+      font-family: var(--pp-font-head);
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1;
+    }
 
-        /* Stat cards */
-        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
-        @media (max-width: 800px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
-        .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 8px; }
-        .stat-card-top { display: flex; align-items: center; justify-content: space-between; }
-        .stat-card-icon { width: 32px; height: 32px; border-radius: 7px; background: var(--bg); display: flex; align-items: center; justify-content: center; }
-        .stat-card-icon svg { width: 16px; height: 16px; stroke: var(--text-muted); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .stat-card .stat-value { font-family: var(--font-heading); font-size: 28px; font-weight: 800; color: var(--text); letter-spacing: -0.03em; line-height: 1; }
-        .stat-card .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+    .admin-kpi-label {
+      font-size: 12px;
+      color: var(--pp-text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
 
-        /* Tabs — underline style */
-        .admin-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; overflow-x: auto; gap: 0; }
-        .admin-tab { flex-shrink: 0; padding: 10px 18px; font-size: 13px; font-weight: 600; border-radius: 0; cursor: pointer; color: var(--text-muted); background: none; border: none; font-family: inherit; white-space: nowrap; position: relative; transition: color 0.15s; }
-        .admin-tab::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--text); transform: scaleX(0); transition: transform 0.2s ease; }
-        .admin-tab.active { color: var(--text); }
-        .admin-tab.active::after { transform: scaleX(1); }
-        .admin-tab:hover:not(.active) { color: var(--text-secondary); }
+    .portal-table td.actions {
+      width: 180px;
+    }
 
-        /* Filter pills */
-        .filter-group { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
-        .filter-pill { padding: 5px 12px; border-radius: 5px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); transition: all 0.15s; font-family: inherit; }
-        .filter-pill.active { background: var(--text); color: white; border-color: var(--text); }
-        .filter-pill:hover:not(.active) { background: var(--bg); }
+    .portal-inline-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+      font-size: 12px;
+      border: 1px solid rgba(35, 31, 26, 0.12);
+      border-radius: 6px;
+      background: #f7f3ee;
+      padding: 2px 6px;
+    }
 
-        /* Tables */
-        .table-wrap { overflow-x: auto; margin: 0 -24px; padding: 0 24px; }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        thead tr { border-bottom: 1px solid var(--border); }
-        th { text-align: left; padding: 8px 10px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
-        td { padding: 11px 10px; border-bottom: 1px solid rgba(28,25,23,0.05); vertical-align: middle; }
-        tr:last-child td { border-bottom: none; }
-        tbody tr:hover td { background: rgba(28,25,23,0.02); }
-        .td-muted { color: var(--text-muted); font-size: 12px; }
-        .td-truncate { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    @media (max-width: 860px) {
+      .admin-hero-grid {
+        grid-template-columns: 1fr;
+      }
 
-        /* Status badges */
-        .badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
-        .badge-pending  { background: #FEF9C3; color: #7C5A00; }
-        .badge-approved { background: var(--success-bg); color: var(--success); }
-        .badge-rejected { background: var(--error-bg); color: var(--error); }
-        .badge-featured { background: #FEF9EC; color: #8A6200; border: 1px solid #E8A82025; }
-        .badge-trial    { background: #EBF3F2; color: #1D5E55; }
-        .badge-none, .badge-canceled { background: #F3F0ED; color: #7A6E6C; }
-        .badge-past_due { background: var(--error-bg); color: var(--error); }
-
-        /* Toggle switch */
-        .toggle-wrap { display: flex; align-items: center; gap: 6px; }
-        .toggle { position: relative; width: 32px; height: 18px; cursor: pointer; }
-        .toggle input { opacity: 0; width: 0; height: 0; }
-        .toggle-slider { position: absolute; inset: 0; background: #D1CEC8; border-radius: 18px; transition: 0.18s; }
-        .toggle-slider:before { content: ''; position: absolute; width: 12px; height: 12px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: 0.18s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
-        .toggle input:checked + .toggle-slider { background: var(--success); }
-        .toggle input:checked + .toggle-slider:before { transform: translateX(14px); }
-
-        /* Search bar */
-        .search-bar { display: flex; gap: 8px; margin-bottom: 16px; }
-        .search-bar input { flex: 1; padding: 9px 12px; border: 1px solid var(--border); border-radius: 7px; font-family: var(--font-body); font-size: 13px; color: var(--text); background: var(--surface); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
-        .search-bar input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(212,119,90,0.1); }
-
-        /* Modal */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(28,25,23,0.55); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(2px); }
-        .modal { background: var(--surface); border-radius: var(--radius); padding: 24px 28px; max-width: 440px; width: 100%; box-shadow: 0 20px 60px rgba(28,25,23,0.2); border: 1px solid var(--border); }
-        .modal h3 { font-family: var(--font-heading); font-size: 16px; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.01em; }
-        .modal-btns { display: flex; gap: 8px; margin-top: 18px; justify-content: flex-end; }
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; }
-        .form-group select { width: 100%; padding: 9px 11px; border: 1px solid var(--border); border-radius: 6px; font-family: var(--font-body); font-size: 13px; color: var(--text); background: var(--surface); outline: none; }
-        .form-group select:focus { border-color: var(--primary); }
-
-        /* Loading */
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .spinner { display: inline-block; width: 15px; height: 15px; border: 2px solid rgba(28,25,23,0.1); border-top-color: var(--text-secondary); border-radius: 50%; animation: spin 0.6s linear infinite; }
-        .loading-row td { text-align: center; padding: 32px; color: var(--text-muted); }
-
-        /* Pagination */
-        .pagination { display: flex; align-items: center; gap: 10px; margin-top: 14px; justify-content: center; }
-        .pagination button { padding: 5px 12px; }
-
-        /* Section header in card */
-        .card-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-        .card-section-header h2 { margin: 0; }
-
-        @media (max-width: 600px) {
-            .stat-grid { grid-template-columns: repeat(2, 1fr); }
-            .container { padding: 16px 12px 60px; }
-        }
-    </style>
+      .portal-table td.actions {
+        width: auto;
+      }
+    }
+  </style>
 </head>
-<body>
+<body class="portal-admin">
+  <a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
 
-<a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
-<nav aria-label="Hoofdnavigatie">
-    <a href="/" class="nav-logo">PeuterPlannen <span class="nav-logo-pill">Admin</span></a>
-    <div class="nav-right">
-        <span id="nav-user" class="hidden"></span>
-        <button id="nav-logout" class="hidden" onclick="handleLogout()">Uitloggen</button>
+  <nav class="portal-nav" aria-label="Hoofdnavigatie">
+    <div class="portal-nav-inner">
+      <a class="portal-nav-brand" href="/">
+        PeuterPlannen
+        <span class="portal-nav-pill">Admin</span>
+      </a>
+      <div class="portal-nav-right">
+        <span id="nav-user" class="portal-nav-user hidden"></span>
+        <button id="nav-logout" class="portal-btn portal-btn-secondary portal-btn-sm hidden" type="button">Uitloggen</button>
+      </div>
     </div>
-</nav>
+  </nav>
 
-<main id="main-content">
-<!-- ===================== SCREEN: LOGIN ===================== -->
-<div id="screen-login" class="container" style="max-width:400px;">
-    <div class="card" style="padding:32px 28px;margin-top:48px;">
-        <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:16px;">Toegang vereist</p>
-        <h2 style="font-family:var(--font-heading);font-size:20px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">Admin inloggen</h2>
-        <p class="card p" style="margin-bottom:20px;">Stuur een inlogcode naar je e-mailadres om toegang te krijgen.</p>
-        <div id="login-alert"></div>
-        <div class="form-group">
-            <label for="admin-email">E-mailadres</label>
-            <input type="email" id="admin-email" placeholder="jouw@email.nl" autocomplete="off">
+  <main id="main-content" class="portal-container">
+    <section id="screen-login" class="admin-auth">
+      <div class="portal-card">
+        <h1 class="portal-screen-title">Admin toegang</h1>
+        <p class="portal-subtitle">Log in met een eenmalige code op je vaste admin e-mailadres.</p>
+        <div id="login-alert" class="portal-alert-wrap" aria-live="assertive"></div>
+        <div class="portal-form-group">
+          <label class="portal-label" for="admin-email">E-mailadres</label>
+          <input class="portal-input" type="email" id="admin-email" placeholder="basmetten@gmail.com" autocomplete="email">
         </div>
-        <button class="btn btn-primary" style="width:100%;" id="send-otp-btn" onclick="sendOtp()">Inlogcode sturen →</button>
+        <button id="send-otp-btn" class="portal-btn portal-btn-primary portal-btn-full" type="button">Inlogcode sturen</button>
+      </div>
+    </section>
+
+    <section id="screen-otp" class="admin-auth hidden">
+      <div class="portal-card">
+        <h1 class="portal-screen-title">Verifieer je login</h1>
+        <p class="portal-subtitle">Code verstuurd naar <strong id="otp-email-display"></strong>.</p>
+        <div id="otp-alert" class="portal-alert-wrap" aria-live="assertive"></div>
+        <div class="portal-form-group">
+          <label class="portal-label" for="otp-code">6-cijferige code</label>
+          <input class="portal-input" type="text" id="otp-code" maxlength="6" autocomplete="one-time-code" inputmode="numeric" placeholder="000000">
+        </div>
+        <div class="portal-btn-row">
+          <button id="verify-otp-btn" class="portal-btn portal-btn-primary" type="button">Inloggen</button>
+          <button id="otp-back-btn" class="portal-btn portal-btn-secondary" type="button">Terug</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-dashboard" class="hidden admin-layout">
+      <h1 class="sr-only">PeuterPlannen admin dashboard</h1>
+
+      <article class="portal-hero">
+        <div class="admin-hero-grid">
+          <div>
+            <p class="portal-chip">Control panel</p>
+            <h2 class="portal-title" style="margin-top:8px;">Claims, abonnementen en locatiekwaliteit</h2>
+            <p style="margin:10px 0 0;color:rgba(255,255,255,0.82);font-size:14px;max-width:58ch;">Dit dashboard beheert ownership en zichtbaarheid in de app. Alle mutaties zijn gekoppeld aan auditlog en stricte servervalidatie.</p>
+          </div>
+          <div class="admin-hero-note">
+            <strong style="display:block;font-family:var(--pp-font-head);margin-bottom:6px;">Live-operatie</strong>
+            Claims en featured-status beïnvloeden ranking en badges op peuterplannen.nl direct na sync.
+          </div>
+        </div>
+      </article>
+
+      <section class="portal-stat-grid" id="stat-grid" aria-label="Kerncijfers">
+        <div class="portal-stat-card admin-kpi-card">
+          <span class="admin-kpi-value" id="stat-pending">-</span>
+          <span class="admin-kpi-label">Open claims</span>
+        </div>
+        <div class="portal-stat-card admin-kpi-card">
+          <span class="admin-kpi-value" id="stat-subs">-</span>
+          <span class="admin-kpi-label">Actieve subscriptions</span>
+        </div>
+        <div class="portal-stat-card admin-kpi-card">
+          <span class="admin-kpi-value" id="stat-edits">-</span>
+          <span class="admin-kpi-label">Edits 7 dagen</span>
+        </div>
+        <div class="portal-stat-card admin-kpi-card">
+          <span class="admin-kpi-value" id="stat-owners">-</span>
+          <span class="admin-kpi-label">Totaal owners</span>
+        </div>
+      </section>
+
+      <section class="portal-card portal-card-soft">
+        <div class="portal-tabs" role="tablist" aria-label="Admin onderdelen">
+          <button class="portal-tab active" id="tab-btn-overview" data-tab-target="tab-overview" role="tab" aria-selected="true" type="button">Overzicht</button>
+          <button class="portal-tab" id="tab-btn-claims" data-tab-target="tab-claims" role="tab" aria-selected="false" type="button">Claims</button>
+          <button class="portal-tab" id="tab-btn-owners" data-tab-target="tab-owners" role="tab" aria-selected="false" type="button">Abonnees</button>
+          <button class="portal-tab" id="tab-btn-locations" data-tab-target="tab-locations" role="tab" aria-selected="false" type="button">Locaties</button>
+          <button class="portal-tab" id="tab-btn-editlog" data-tab-target="tab-editlog" role="tab" aria-selected="false" type="button">Edit log</button>
+        </div>
+      </section>
+
+      <section id="tab-overview" class="portal-card">
+        <div class="portal-heading-row">
+          <h2>Systeemstatus</h2>
+        </div>
+        <p class="portal-subtitle">Gebruik de tabs om operationele taken uit te voeren. Claims worden transactioneel verwerkt en duplicates worden automatisch afgewezen.</p>
+      </section>
+
+      <section id="tab-claims" class="portal-card hidden">
+        <div class="portal-heading-row">
+          <h2>Claim-aanvragen</h2>
+        </div>
+        <div class="portal-pill-row" id="claims-filter-row">
+          <button class="portal-pill active" type="button" data-claims-filter="pending">Openstaand</button>
+          <button class="portal-pill" type="button" data-claims-filter="approved">Goedgekeurd</button>
+          <button class="portal-pill" type="button" data-claims-filter="rejected">Afgewezen</button>
+          <button class="portal-pill" type="button" data-claims-filter="auto_rejected_duplicate">Auto duplicate</button>
+        </div>
+        <div id="claims-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="portal-table-wrap">
+          <table class="portal-table" aria-label="Claims tabel">
+            <thead>
+              <tr>
+                <th>Datum</th>
+                <th>Email</th>
+                <th>Locatie</th>
+                <th>Bericht</th>
+                <th>Status</th>
+                <th>Acties</th>
+              </tr>
+            </thead>
+            <tbody id="claims-tbody">
+              <tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-owners" class="portal-card hidden">
+        <div class="portal-heading-row">
+          <h2>Abonnees</h2>
+        </div>
+        <div id="owners-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="portal-table-wrap">
+          <table class="portal-table" aria-label="Owners tabel">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Locatie</th>
+                <th>Plan</th>
+                <th>Status</th>
+                <th>Vervalt</th>
+                <th>Actie</th>
+              </tr>
+            </thead>
+            <tbody id="owners-tbody">
+              <tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-locations" class="portal-card hidden">
+        <div class="portal-heading-row">
+          <h2>Locaties</h2>
+          <div class="portal-btn-row">
+            <button class="portal-btn portal-btn-secondary portal-btn-sm" id="loc-prev-btn" type="button" disabled>Vorige</button>
+            <span id="loc-page-label" class="portal-muted">Pagina 1</span>
+            <button class="portal-btn portal-btn-secondary portal-btn-sm" id="loc-next-btn" type="button">Volgende</button>
+          </div>
+        </div>
+        <div class="portal-form-group">
+          <label class="portal-label" for="loc-search">Zoek op locatienaam</label>
+          <input id="loc-search" class="portal-input" type="text" placeholder="Bijv. Monkey Town Amsterdam">
+        </div>
+        <div id="locations-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="portal-table-wrap">
+          <table class="portal-table" aria-label="Locaties tabel">
+            <thead>
+              <tr>
+                <th>Naam</th>
+                <th>Regio</th>
+                <th>Featured</th>
+                <th>Geverifieerd</th>
+              </tr>
+            </thead>
+            <tbody id="locations-tbody">
+              <tr class="portal-loading-row"><td colspan="4"><span class="portal-spinner"></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-editlog" class="portal-card hidden">
+        <div class="portal-heading-row">
+          <h2>Edit log</h2>
+        </div>
+        <div class="portal-table-wrap">
+          <table class="portal-table" aria-label="Editlog tabel">
+            <thead>
+              <tr>
+                <th>Datum</th>
+                <th>Locatie</th>
+                <th>Owner</th>
+                <th>Veld</th>
+                <th>Van</th>
+                <th>Naar</th>
+              </tr>
+            </thead>
+            <tbody id="editlog-tbody">
+              <tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div id="edit-owner-modal" class="portal-modal" aria-hidden="true">
+    <div class="portal-modal-backdrop" data-close-modal="true"></div>
+    <div class="portal-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="edit-owner-title">
+      <h2 id="edit-owner-title" class="portal-modal-title">Abonnement aanpassen</h2>
+      <input type="hidden" id="modal-owner-id">
+      <div class="portal-form-group">
+        <label class="portal-label" for="modal-status">Status</label>
+        <select id="modal-status" class="portal-select">
+          <option value="none">Geen</option>
+          <option value="trial">Trial</option>
+          <option value="featured">Featured</option>
+          <option value="past_due">Past due</option>
+          <option value="canceled">Opgezegd</option>
+        </select>
+      </div>
+      <div class="portal-form-group">
+        <label class="portal-label" for="modal-tier">Plan tier</label>
+        <select id="modal-tier" class="portal-select">
+          <option value="none">Geen</option>
+          <option value="featured">Featured</option>
+        </select>
+      </div>
+      <div id="modal-alert" class="portal-alert-wrap" aria-live="assertive"></div>
+      <div class="portal-modal-actions">
+        <button id="modal-cancel-btn" class="portal-btn portal-btn-secondary" type="button" data-close-modal="true">Annuleren</button>
+        <button id="modal-save-btn" class="portal-btn portal-btn-primary" type="button">Opslaan</button>
+      </div>
     </div>
-</div>
+  </div>
 
-<!-- ===================== SCREEN: OTP ===================== -->
-<div id="screen-otp" class="container hidden" style="max-width:400px;">
-    <div class="card" style="padding:32px 28px;margin-top:48px;">
-        <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:16px;">Verificatie</p>
-        <h2 style="font-family:var(--font-heading);font-size:20px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px;">Controleer je inbox</h2>
-        <p class="card p" style="margin-bottom:20px;">Code verstuurd naar <strong id="otp-email-display" style="color:var(--text);"></strong>.</p>
-        <div id="otp-alert"></div>
-        <div class="form-group">
-            <label for="otp-code">6-cijferige code</label>
-            <input type="text" id="otp-code" class="otp-input" placeholder="000000" maxlength="6" autocomplete="one-time-code" inputmode="numeric">
-        </div>
-        <button class="btn btn-primary" style="width:100%;" id="verify-otp-btn" onclick="verifyOtp()">Inloggen</button>
-        <p style="text-align:center;margin-top:12px;font-size:12px;">
-            <a href="#" onclick="showScreen('login')" style="color:var(--primary-dark);">← Terug</a>
-        </p>
+  <div id="confirm-modal" class="portal-modal" aria-hidden="true">
+    <div class="portal-modal-backdrop" data-close-modal="true"></div>
+    <div class="portal-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+      <h2 id="confirm-title" class="portal-modal-title" data-confirm-title>Bevestigen</h2>
+      <p class="portal-modal-text" data-confirm-text></p>
+      <div class="portal-modal-actions">
+        <button type="button" class="portal-btn portal-btn-secondary" data-confirm-cancel>Annuleren</button>
+        <button type="button" class="portal-btn portal-btn-primary" data-confirm-ok>Bevestigen</button>
+      </div>
     </div>
-</div>
+  </div>
 
-<!-- ===================== SCREEN: DASHBOARD ===================== -->
-<div id="screen-dashboard" class="container hidden">
-
-    <!-- Tabs -->
-    <div class="admin-tabs">
-        <button class="admin-tab active" onclick="switchTab('tab-overview')" id="tab-btn-overview">Overzicht</button>
-        <button class="admin-tab" onclick="switchTab('tab-claims')" id="tab-btn-claims">Claims</button>
-        <button class="admin-tab" onclick="switchTab('tab-owners')" id="tab-btn-owners">Abonnees</button>
-        <button class="admin-tab" onclick="switchTab('tab-locations')" id="tab-btn-locations">Locaties</button>
-        <button class="admin-tab" onclick="switchTab('tab-editlog')" id="tab-btn-editlog">Edit log</button>
-    </div>
-
-    <!-- ① Dashboard -->
-    <div id="tab-overview">
-        <div class="stat-grid" id="stat-grid">
-            <div class="stat-card">
-                <div class="stat-card-top">
-                    <div class="stat-label">Openstaande claims</div>
-                    <div class="stat-card-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
-                </div>
-                <div class="stat-value" id="stat-pending">—</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-card-top">
-                    <div class="stat-label">Actieve Featured</div>
-                    <div class="stat-card-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-                </div>
-                <div class="stat-value" id="stat-subs">—</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-card-top">
-                    <div class="stat-label">Bewerkingen (7 dagen)</div>
-                    <div class="stat-card-icon"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
-                </div>
-                <div class="stat-value" id="stat-edits">—</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-card-top">
-                    <div class="stat-label">Totaal eigenaren</div>
-                    <div class="stat-card-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-                </div>
-                <div class="stat-value" id="stat-owners">—</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ② Claim-aanvragen -->
-    <div id="tab-claims" class="hidden">
-        <div class="card">
-            <div class="card-section-header"><h2>Claim-aanvragen</h2></div>
-            <div class="filter-group">
-                <button class="filter-pill active" onclick="setClaimsFilter('pending', this)">Openstaand</button>
-                <button class="filter-pill" onclick="setClaimsFilter('approved', this)">Goedgekeurd</button>
-                <button class="filter-pill" onclick="setClaimsFilter('rejected', this)">Afgewezen</button>
-            </div>
-            <div id="claims-alert"></div>
-            <div class="table-wrap">
-                <table>
-                    <thead><tr><th>Datum</th><th>Aanvrager</th><th>Locatie</th><th>Bericht</th><th>Status</th><th>Actie</th></tr></thead>
-                    <tbody id="claims-tbody"><tr class="loading-row"><td colspan="6"><span class="spinner"></span></td></tr></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- ③ Abonnees -->
-    <div id="tab-owners" class="hidden">
-        <div class="card">
-            <div class="card-section-header"><h2>Abonnees</h2></div>
-            <div id="owners-alert"></div>
-            <div class="table-wrap">
-                <table>
-                    <thead><tr><th>Email</th><th>Locatie</th><th>Tier</th><th>Status</th><th>Verloopt</th><th>Actie</th></tr></thead>
-                    <tbody id="owners-tbody"><tr class="loading-row"><td colspan="6"><span class="spinner"></span></td></tr></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- ④ Locaties -->
-    <div id="tab-locations" class="hidden">
-        <div class="card">
-            <div class="card-section-header"><h2>Locaties</h2></div>
-            <div class="search-bar">
-                <input type="text" id="loc-search" placeholder="Zoeken op naam…" oninput="debounceLocSearch()">
-            </div>
-            <div id="locations-alert"></div>
-            <div class="table-wrap">
-                <table>
-                    <thead><tr><th>Naam</th><th>Regio</th><th>Featured</th><th>Verified</th></tr></thead>
-                    <tbody id="locations-tbody"><tr class="loading-row"><td colspan="4"><span class="spinner"></span></td></tr></tbody>
-                </table>
-            </div>
-            <div class="pagination">
-                <button class="btn btn-secondary btn-sm" id="loc-prev-btn" onclick="changeLocPage(-1)" disabled>← Vorige</button>
-                <span id="loc-page-label" style="font-size:13px;color:var(--text-muted);">Pagina 1</span>
-                <button class="btn btn-secondary btn-sm" id="loc-next-btn" onclick="changeLocPage(1)">Volgende →</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ⑤ Edit log -->
-    <div id="tab-editlog" class="hidden">
-        <div class="card">
-            <div class="card-section-header"><h2>Edit log</h2></div>
-            <div class="table-wrap">
-                <table>
-                    <thead><tr><th>Datum</th><th>Locatie</th><th>Eigenaar</th><th>Veld</th><th>Oud</th><th>Nieuw</th></tr></thead>
-                    <tbody id="editlog-tbody"><tr class="loading-row"><td colspan="6"><span class="spinner"></span></td></tr></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Edit owner modal -->
-<div id="edit-owner-modal" class="modal-overlay hidden">
-    <div class="modal">
-        <h3>Abonnement aanpassen</h3>
-        <input type="hidden" id="modal-owner-id">
-        <div class="form-group">
-            <label>Status</label>
-            <select id="modal-status">
-                <option value="none">Geen</option>
-                <option value="trial">Trial</option>
-                <option value="featured">Featured (actief)</option>
-                <option value="past_due">Past due</option>
-                <option value="canceled">Opgezegd</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Plan tier</label>
-            <select id="modal-tier">
-                <option value="none">Geen</option>
-                <option value="featured">Featured</option>
-            </select>
-        </div>
-        <div id="modal-alert"></div>
-        <div class="modal-btns">
-            <button class="btn btn-secondary" onclick="closeModal()">Annuleren</button>
-            <button class="btn btn-primary" onclick="saveOwnerEdit()">Opslaan</button>
-        </div>
-    </div>
-</div>
-
-</main>
-
-<script type="module">
+  <script src="/portal-shell.js" defer></script>
+  <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-    const SB_URL    = 'https://piujsvgbfflrrvauzsxe.supabase.co';
-    const SB_ANON   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpdWpzdmdiZmZscnJ2YXV6c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNDMxNzAsImV4cCI6MjA4NzYxOTE3MH0.5y3gqiPfVvpvfaDYA_PgqE-KTvuf6zgN6vGzqfUpeSo';
+    const SB_URL = 'https://piujsvgbfflrrvauzsxe.supabase.co';
+    const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpdWpzdmdiZmZscnJ2YXV6c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNDMxNzAsImV4cCI6MjA4NzYxOTE3MH0.5y3gqiPfVvpvfaDYA_PgqE-KTvuf6zgN6vGzqfUpeSo';
     const EDGE_BASE = `${SB_URL}/functions/v1`;
     const ADMIN_EMAIL = 'basmetten@gmail.com';
 
     const supabase = createClient(SB_URL, SB_ANON);
 
-    let currentUser = null;
-    let currentToken = null;
-    let claimsFilter = 'pending';
-    let locPage = 0;
-    let locSearchVal = '';
-    let locSearchTimer = null;
-    let otpEmail = '';
+    const state = {
+      currentUser: null,
+      accessToken: null,
+      otpEmail: '',
+      claimsFilter: 'pending',
+      locPage: 0,
+      locSearch: '',
+      locSearchTimer: null,
+      ownerModal: null,
+    };
 
-    // Expose to inline handlers
-    window.sendOtp            = sendOtp;
-    window.verifyOtp          = verifyOtp;
-    window.showScreen         = showScreen;
-    window.handleLogout       = handleLogout;
-    window.switchTab          = switchTab;
-    window.setClaimsFilter    = setClaimsFilter;
-    window.approveClaim       = approveClaim;
-    window.rejectClaim        = rejectClaim;
-    window.openEditOwner      = openEditOwner;
-    window.closeModal         = closeModal;
-    window.saveOwnerEdit      = saveOwnerEdit;
-    window.changeLocPage      = changeLocPage;
-    window.debounceLocSearch  = debounceLocSearch;
-    window.toggleFeatured     = toggleFeatured;
-    window.toggleVerified     = toggleVerified;
+    document.addEventListener('DOMContentLoaded', () => {
+      bindUI();
+      showScreen('login');
+    });
 
-    // ---- Routing ----
-    function showScreen(id) {
-        ['login','otp','dashboard'].forEach(s => {
-            document.getElementById('screen-' + s)?.classList.add('hidden');
-        });
-        document.getElementById('screen-' + id)?.classList.remove('hidden');
+    function bindUI() {
+      document.getElementById('send-otp-btn').addEventListener('click', sendOtp);
+      document.getElementById('verify-otp-btn').addEventListener('click', verifyOtp);
+      document.getElementById('otp-back-btn').addEventListener('click', () => showScreen('login'));
+      document.getElementById('nav-logout').addEventListener('click', handleLogout);
+
+      document.querySelectorAll('[data-tab-target]').forEach((btn) => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tabTarget));
+      });
+
+      document.querySelectorAll('[data-claims-filter]').forEach((btn) => {
+        btn.addEventListener('click', () => setClaimsFilter(btn.dataset.claimsFilter, btn));
+      });
+
+      document.getElementById('loc-search').addEventListener('input', debounceLocSearch);
+      document.getElementById('loc-prev-btn').addEventListener('click', () => changeLocPage(-1));
+      document.getElementById('loc-next-btn').addEventListener('click', () => changeLocPage(1));
+
+      document.getElementById('claims-tbody').addEventListener('click', onClaimsTableClick);
+      document.getElementById('owners-tbody').addEventListener('click', onOwnersTableClick);
+      document.getElementById('locations-tbody').addEventListener('change', onLocationsTableChange);
+
+      document.getElementById('modal-save-btn').addEventListener('click', saveOwnerEdit);
+
+      state.ownerModal = document.getElementById('edit-owner-modal');
     }
 
-    // ---- Auth: OTP flow ----
+    function showScreen(screen) {
+      ['login', 'otp', 'dashboard'].forEach((name) => {
+        document.getElementById(`screen-${name}`).classList.toggle('hidden', name !== screen);
+      });
+    }
+
     async function sendOtp() {
-        const email = document.getElementById('admin-email').value.trim();
-        const btn   = document.getElementById('send-otp-btn');
-        setAlert('login-alert', '', '');
-        if (!email) { setAlert('login-alert', 'Vul je e-mailadres in.', 'error'); return; }
-        btn.disabled = true; btn.textContent = 'Versturen…';
-        const { error } = await supabase.auth.signInWithOtp({
-            email,
-            options: { shouldCreateUser: true }
-        });
-        if (error) {
-            btn.disabled = false; btn.textContent = 'Inlogcode sturen →';
-            setAlert('login-alert', 'Fout: ' + error.message, 'error');
-        } else {
-            otpEmail = email;
-            document.getElementById('otp-email-display').textContent = email;
-            document.getElementById('otp-code').value = '';
-            setAlert('otp-alert', '', '');
-            showScreen('otp');
-            setTimeout(() => document.getElementById('otp-code').focus(), 100);
-            startOtpCooldown(btn, 60);
-        }
+      const email = document.getElementById('admin-email').value.trim().toLowerCase();
+      const btn = document.getElementById('send-otp-btn');
+
+      PortalShell.setAlert('login-alert', '', 'info');
+
+      if (!email) {
+        PortalShell.setAlert('login-alert', 'Vul je e-mailadres in.', 'error', { assertive: true });
+        return;
+      }
+
+      if (email !== ADMIN_EMAIL) {
+        PortalShell.setAlert('login-alert', 'Dit dashboard is alleen toegankelijk voor het vaste admin-account.', 'error', { assertive: true });
+        return;
+      }
+
+      PortalShell.setButtonBusy(btn, true, 'Versturen...', 'Inlogcode sturen');
+
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { shouldCreateUser: false },
+      });
+
+      if (error) {
+        PortalShell.setButtonBusy(btn, false, null, 'Inlogcode sturen');
+        PortalShell.setAlert('login-alert', `Inloggen mislukt: ${error.message}`, 'error', { assertive: true });
+        return;
+      }
+
+      state.otpEmail = email;
+      document.getElementById('otp-email-display').textContent = email;
+      document.getElementById('otp-code').value = '';
+      PortalShell.setAlert('otp-alert', '', 'info');
+      showScreen('otp');
+      startOtpCooldown(btn, 60);
+      setTimeout(() => document.getElementById('otp-code').focus(), 60);
     }
 
-    function startOtpCooldown(btn, seconds) {
-        let remaining = seconds;
-        btn.disabled = true;
-        btn.textContent = `Opnieuw sturen (${remaining}s)`;
-        const interval = setInterval(() => {
-            remaining--;
-            if (remaining <= 0) {
-                clearInterval(interval);
-                btn.disabled = false;
-                btn.textContent = 'Inlogcode sturen →';
-            } else {
-                btn.textContent = `Opnieuw sturen (${remaining}s)`;
-            }
-        }, 1000);
+    function startOtpCooldown(button, seconds) {
+      let remaining = seconds;
+      button.disabled = true;
+      button.textContent = `Opnieuw sturen (${remaining}s)`;
+      const timer = setInterval(() => {
+        remaining -= 1;
+        if (remaining <= 0) {
+          clearInterval(timer);
+          button.disabled = false;
+          button.textContent = 'Inlogcode sturen';
+        } else {
+          button.textContent = `Opnieuw sturen (${remaining}s)`;
+        }
+      }, 1000);
     }
 
     async function verifyOtp() {
-        const token = document.getElementById('otp-code').value.trim();
-        const btn   = document.getElementById('verify-otp-btn');
-        setAlert('otp-alert', '', '');
-        if (!token) { setAlert('otp-alert', 'Vul de code in.', 'error'); return; }
-        btn.disabled = true; btn.textContent = 'Controleren…';
-        const { error } = await supabase.auth.verifyOtp({
-            email: otpEmail,
-            token,
-            type: 'email'
-        });
-        btn.disabled = false; btn.textContent = 'Inloggen';
-        if (error) {
-            setAlert('otp-alert', 'Ongeldige of verlopen code.', 'error');
-        }
-        // onAuthStateChange handles the rest
+      const token = document.getElementById('otp-code').value.trim();
+      const btn = document.getElementById('verify-otp-btn');
+
+      PortalShell.setAlert('otp-alert', '', 'info');
+      if (!token) {
+        PortalShell.setAlert('otp-alert', 'Vul de 6-cijferige code in.', 'error', { assertive: true });
+        return;
+      }
+
+      PortalShell.setButtonBusy(btn, true, 'Controleren...', 'Inloggen');
+      const { error } = await supabase.auth.verifyOtp({
+        email: state.otpEmail,
+        token,
+        type: 'email',
+      });
+      PortalShell.setButtonBusy(btn, false, null, 'Inloggen');
+
+      if (error) {
+        PortalShell.setAlert('otp-alert', 'Ongeldige of verlopen code. Vraag een nieuwe code aan.', 'error', { assertive: true });
+      }
     }
 
-    supabase.auth.onAuthStateChange(async (event, session) => {
-        if (session?.user) {
-            if (session.user.email !== ADMIN_EMAIL) {
-                setAlert('otp-alert', 'Geen toegang — dit dashboard is alleen voor Bas Metten.', 'error');
-                showScreen('otp');
-                await supabase.auth.signOut();
-                return;
-            }
-            currentUser = session.user;
-            currentToken = session.access_token;
-            document.getElementById('nav-user').textContent = session.user.email;
-            document.getElementById('nav-user').classList.remove('hidden');
-            document.getElementById('nav-logout').classList.remove('hidden');
-            showScreen('dashboard');
-            loadStats();
-        } else {
-            currentUser = null;
-            currentToken = null;
-            document.getElementById('nav-user').classList.add('hidden');
-            document.getElementById('nav-logout').classList.add('hidden');
-            showScreen('login');
+    supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user) {
+        if (session.user.email !== ADMIN_EMAIL) {
+          PortalShell.setAlert('otp-alert', 'Geen toegang: dit dashboard is alleen voor Bas Metten.', 'error', { assertive: true });
+          await supabase.auth.signOut();
+          showScreen('otp');
+          return;
         }
+
+        state.currentUser = session.user;
+        state.accessToken = session.access_token;
+
+        document.getElementById('nav-user').textContent = session.user.email;
+        document.getElementById('nav-user').classList.remove('hidden');
+        document.getElementById('nav-logout').classList.remove('hidden');
+
+        showScreen('dashboard');
+        await loadStats();
+        await switchTab('tab-overview');
+      } else {
+        state.currentUser = null;
+        state.accessToken = null;
+        document.getElementById('nav-user').classList.add('hidden');
+        document.getElementById('nav-logout').classList.add('hidden');
+        showScreen('login');
+      }
     });
 
     async function handleLogout() {
-        await supabase.auth.signOut();
+      await supabase.auth.signOut();
     }
 
-    // ---- API helper ----
     async function api(action, params = {}) {
-        const res = await fetch(`${EDGE_BASE}/admin-api`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentToken}`,
-            },
-            body: JSON.stringify({ action, params }),
-        });
-        const json = await res.json();
-        if (!res.ok) throw new Error(json.error ?? 'API fout');
-        return json.data;
+      const requestId = (globalThis.crypto && globalThis.crypto.randomUUID)
+        ? globalThis.crypto.randomUUID()
+        : `req-${Date.now()}`;
+
+      const response = await fetch(`${EDGE_BASE}/admin-api`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${state.accessToken}`,
+          'X-Request-Id': requestId,
+        },
+        body: JSON.stringify({ action, params }),
+      });
+
+      let payload = null;
+      try {
+        payload = await response.json();
+      } catch {
+        payload = null;
+      }
+
+      if (!response.ok) {
+        const message = payload?.error || 'Onbekende API-fout';
+        const code = payload?.code || 'API_ERROR';
+        throw new Error(`${message} (${code})`);
+      }
+
+      return payload?.data;
     }
 
-    // ---- Tab switching ----
-    function switchTab(tabId) {
-        const tabs = ['tab-overview','tab-claims','tab-owners','tab-locations','tab-editlog'];
-        tabs.forEach(t => {
-            document.getElementById(t)?.classList.add('hidden');
-            document.getElementById('tab-btn-' + t)?.classList.remove('active');
-        });
-        document.getElementById(tabId)?.classList.remove('hidden');
-        document.getElementById('tab-btn-' + tabId)?.classList.add('active');
+    async function switchTab(tabId) {
+      const tabs = ['tab-overview', 'tab-claims', 'tab-owners', 'tab-locations', 'tab-editlog'];
+      tabs.forEach((id) => {
+        const tabSection = document.getElementById(id);
+        const button = document.querySelector(`[data-tab-target="${id}"]`);
+        const active = id === tabId;
+        tabSection.classList.toggle('hidden', !active);
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
 
-        // Lazy-load tab content
-        if (tabId === 'tab-claims')    loadClaims();
-        if (tabId === 'tab-owners')    loadOwners();
-        if (tabId === 'tab-locations') loadLocations();
-        if (tabId === 'tab-editlog')   loadEditLog();
+      if (tabId === 'tab-claims') await loadClaims();
+      if (tabId === 'tab-owners') await loadOwners();
+      if (tabId === 'tab-locations') await loadLocations();
+      if (tabId === 'tab-editlog') await loadEditLog();
     }
 
-    // ---- ① Stats ----
     async function loadStats() {
-        try {
-            const stats = await api('get_stats');
-            document.getElementById('stat-pending').textContent = stats.pending_claims;
-            document.getElementById('stat-subs').textContent    = stats.active_subs;
-            document.getElementById('stat-edits').textContent   = stats.edits_last_7days;
-            document.getElementById('stat-owners').textContent  = stats.total_owners;
-        } catch (err) {
-            console.error('Stats error:', err);
-        }
+      try {
+        const stats = await api('get_stats');
+        document.getElementById('stat-pending').textContent = stats.pending_claims ?? 0;
+        document.getElementById('stat-subs').textContent = stats.active_subs ?? 0;
+        document.getElementById('stat-edits').textContent = stats.edits_last_7days ?? 0;
+        document.getElementById('stat-owners').textContent = stats.total_owners ?? 0;
+      } catch (error) {
+        console.error('loadStats failed', error);
+      }
     }
 
-    // ---- ② Claims ----
-    function setClaimsFilter(status, btn) {
-        claimsFilter = status;
-        document.querySelectorAll('#tab-claims .filter-pill').forEach(p => p.classList.remove('active'));
-        if (btn) btn.classList.add('active');
-        loadClaims();
+    function setClaimsFilter(status, triggerButton) {
+      state.claimsFilter = status;
+      document.querySelectorAll('[data-claims-filter]').forEach((btn) => {
+        btn.classList.toggle('active', btn === triggerButton);
+      });
+      loadClaims();
     }
 
     async function loadClaims() {
-        const tbody = document.getElementById('claims-tbody');
-        tbody.innerHTML = '<tr class="loading-row"><td colspan="6"><span class="spinner"></span></td></tr>';
-        try {
-            const claims = await api('list_claims', { status: claimsFilter });
-            if (!claims.length) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px;">Geen aanvragen gevonden.</td></tr>`;
-                return;
-            }
-            const VALID_STATUSES = ['pending','approved','rejected'];
-            tbody.innerHTML = claims.map(c => {
-                const safeStatus = VALID_STATUSES.includes(c.status) ? c.status : 'pending';
-                return `
-                <tr>
-                    <td class="td-muted">${fmtDate(c.created_at)}</td>
-                    <td>${escapeHtml(c.requester_email)}</td>
-                    <td><strong>${escapeHtml(c.locations?.name ?? '—')}</strong><br><span class="td-muted">${escapeHtml(c.locations?.region ?? '')}</span></td>
-                    <td class="td-truncate td-muted">${escapeHtml(c.message ?? '')}</td>
-                    <td><span class="badge badge-${safeStatus}">${safeStatus}</span></td>
-                    <td>
-                        ${safeStatus === 'pending' ? `
-                            <div style="display:flex;gap:6px;">
-                                <button class="btn btn-success btn-sm" onclick="approveClaim('${escapeJs(c.id)}', this)">✓ Goedkeuren</button>
-                                <button class="btn btn-danger btn-sm" onclick="rejectClaim('${escapeJs(c.id)}', this)">✗ Afwijzen</button>
-                            </div>
-                        ` : '<span class="td-muted">—</span>'}
-                    </td>
-                </tr>`;
-            }).join('');
-        } catch (err) {
-            setAlert('claims-alert', 'Fout bij laden: ' + escapeHtml(err.message), 'error');
+      const tbody = document.getElementById('claims-tbody');
+      tbody.innerHTML = '<tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr>';
+
+      try {
+        const claims = await api('list_claims', { status: state.claimsFilter });
+        if (!claims?.length) {
+          tbody.innerHTML = '<tr><td colspan="6" class="portal-muted">Geen aanvragen gevonden.</td></tr>';
+          return;
         }
+
+        tbody.innerHTML = claims.map((claim) => {
+          const status = safeClaimStatus(claim.status);
+          const actionHtml = status === 'pending'
+            ? `<div class="portal-btn-row">
+                <button class="portal-btn portal-btn-success portal-btn-sm" type="button" data-claim-action="approve" data-claim-id="${escapeAttr(claim.id)}">Goedkeuren</button>
+                <button class="portal-btn portal-btn-danger portal-btn-sm" type="button" data-claim-action="reject" data-claim-id="${escapeAttr(claim.id)}">Afwijzen</button>
+               </div>`
+            : '<span class="portal-muted">-</span>';
+
+          return `<tr>
+            <td class="portal-muted">${fmtDate(claim.created_at)}</td>
+            <td>${escapeHtml(claim.requester_email || 'onbekend')}</td>
+            <td>
+              <strong>${escapeHtml(claim.locations?.name || '-')}</strong><br>
+              <span class="portal-muted">${escapeHtml(claim.locations?.region || '')}</span>
+            </td>
+            <td class="portal-truncate">${escapeHtml(claim.message || claim.review_reason || '')}</td>
+            <td><span class="portal-badge portal-badge-${status}">${status}</span></td>
+            <td class="actions">${actionHtml}</td>
+          </tr>`;
+        }).join('');
+      } catch (error) {
+        PortalShell.setAlert('claims-alert', `Claims laden mislukt: ${error.message}`, 'error', { assertive: true });
+      }
     }
 
-    async function approveClaim(claimId, btn) {
-        if (!confirm('Claim goedkeuren?')) return;
-        btn.disabled = true; btn.textContent = '…';
+    async function onClaimsTableClick(event) {
+      const button = event.target.closest('[data-claim-action]');
+      if (!button) return;
+
+      const claimId = button.dataset.claimId;
+      const action = button.dataset.claimAction;
+
+      if (!claimId) return;
+
+      if (action === 'approve') {
+        const confirmed = await PortalShell.showConfirm({
+          title: 'Claim goedkeuren?',
+          text: 'Deze claim wordt goedgekeurd en andere open claims op dezelfde locatie worden automatisch afgewezen.',
+          confirmLabel: 'Goedkeuren',
+          trigger: button,
+        });
+        if (!confirmed) return;
+
+        PortalShell.setButtonBusy(button, true, 'Bezig...', 'Goedkeuren');
         try {
-            await api('approve_claim', { claim_id: claimId });
-            loadClaims();
-            loadStats();
-        } catch (err) {
-            setAlert('claims-alert', 'Fout: ' + escapeHtml(err.message), 'error');
-            btn.disabled = false; btn.textContent = '✓ Goedkeuren';
+          const result = await api('approve_claim', { claim_id: claimId });
+          const autoRejectedCount = Array.isArray(result?.auto_rejected_claim_ids)
+            ? result.auto_rejected_claim_ids.length
+            : 0;
+          PortalShell.setAlert(
+            'claims-alert',
+            `Claim goedgekeurd. Auto-afgewezen duplicate claims: ${autoRejectedCount}.`,
+            'success'
+          );
+          await loadClaims();
+          await loadStats();
+        } catch (error) {
+          PortalShell.setAlert('claims-alert', `Goedkeuren mislukt: ${error.message}`, 'error', { assertive: true });
+        } finally {
+          PortalShell.setButtonBusy(button, false, null, 'Goedkeuren');
         }
+      }
+
+      if (action === 'reject') {
+        const confirmed = await PortalShell.showConfirm({
+          title: 'Claim afwijzen?',
+          text: 'Deze claim krijgt status afgewezen.',
+          confirmLabel: 'Afwijzen',
+          trigger: button,
+        });
+        if (!confirmed) return;
+
+        PortalShell.setButtonBusy(button, true, 'Bezig...', 'Afwijzen');
+        try {
+          await api('reject_claim', { claim_id: claimId });
+          PortalShell.setAlert('claims-alert', 'Claim afgewezen.', 'success');
+          await loadClaims();
+          await loadStats();
+        } catch (error) {
+          PortalShell.setAlert('claims-alert', `Afwijzen mislukt: ${error.message}`, 'error', { assertive: true });
+        } finally {
+          PortalShell.setButtonBusy(button, false, null, 'Afwijzen');
+        }
+      }
     }
 
-    async function rejectClaim(claimId, btn) {
-        if (!confirm('Claim afwijzen?')) return;
-        btn.disabled = true; btn.textContent = '…';
-        try {
-            await api('reject_claim', { claim_id: claimId });
-            loadClaims();
-        } catch (err) {
-            setAlert('claims-alert', 'Fout: ' + escapeHtml(err.message), 'error');
-            btn.disabled = false; btn.textContent = '✗ Afwijzen';
-        }
-    }
-
-    // ---- ③ Owners ----
     async function loadOwners() {
-        const tbody = document.getElementById('owners-tbody');
-        tbody.innerHTML = '<tr class="loading-row"><td colspan="6"><span class="spinner"></span></td></tr>';
-        try {
-            const owners = await api('list_owners');
-            if (!owners.length) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px;">Geen eigenaren gevonden.</td></tr>';
-                return;
-            }
-            const VALID_SUB_STATUSES = ['none','trial','featured','past_due','canceled'];
-            tbody.innerHTML = owners.map(o => {
-                const safeSub = VALID_SUB_STATUSES.includes(o.subscription_status) ? o.subscription_status : 'none';
-                const safeTier = ['none','featured'].includes(o.plan_tier) ? o.plan_tier : 'none';
-                return `
-                <tr>
-                    <td>${escapeHtml(o.email)}</td>
-                    <td>${escapeHtml(o.locations?.name ?? '—')}</td>
-                    <td>${safeTier}</td>
-                    <td><span class="badge badge-${safeSub}">${safeSub}</span></td>
-                    <td class="td-muted">${o.plan_expires_at ? fmtDate(o.plan_expires_at) : '—'}</td>
-                    <td><button class="btn btn-secondary btn-sm" onclick="openEditOwner('${escapeJs(o.id)}', '${safeSub}', '${safeTier}')">Bewerk</button></td>
-                </tr>`;
-            }).join('');
-        } catch (err) {
-            setAlert('owners-alert', 'Fout bij laden: ' + escapeHtml(err.message), 'error');
+      const tbody = document.getElementById('owners-tbody');
+      tbody.innerHTML = '<tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr>';
+
+      try {
+        const owners = await api('list_owners');
+        if (!owners?.length) {
+          tbody.innerHTML = '<tr><td colspan="6" class="portal-muted">Geen owners gevonden.</td></tr>';
+          return;
         }
+
+        tbody.innerHTML = owners.map((owner) => {
+          const status = safeOwnerStatus(owner.subscription_status);
+          const tier = safePlanTier(owner.plan_tier);
+          return `<tr>
+            <td>${escapeHtml(owner.email || 'onbekend')}</td>
+            <td>${escapeHtml(owner.locations?.name || '-')}</td>
+            <td>${escapeHtml(tier)}</td>
+            <td><span class="portal-badge portal-badge-${status}">${status}</span></td>
+            <td class="portal-muted">${owner.plan_expires_at ? fmtDate(owner.plan_expires_at) : '-'}</td>
+            <td>
+              <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button"
+                data-owner-edit="true"
+                data-owner-id="${escapeAttr(owner.id)}"
+                data-owner-status="${escapeAttr(status)}"
+                data-owner-tier="${escapeAttr(tier)}">Bewerk</button>
+            </td>
+          </tr>`;
+        }).join('');
+      } catch (error) {
+        PortalShell.setAlert('owners-alert', `Owners laden mislukt: ${error.message}`, 'error', { assertive: true });
+      }
     }
 
-    function openEditOwner(ownerId, status, tier) {
-        document.getElementById('modal-owner-id').value = ownerId;
-        document.getElementById('modal-status').value = status;
-        document.getElementById('modal-tier').value = tier;
-        setAlert('modal-alert', '', '');
-        document.getElementById('edit-owner-modal').classList.remove('hidden');
+    function onOwnersTableClick(event) {
+      const button = event.target.closest('[data-owner-edit]');
+      if (!button) return;
+      openEditOwner(button.dataset.ownerId, button.dataset.ownerStatus, button.dataset.ownerTier, button);
     }
 
-    function closeModal() {
-        document.getElementById('edit-owner-modal').classList.add('hidden');
+    function openEditOwner(ownerId, status, tier, trigger) {
+      document.getElementById('modal-owner-id').value = ownerId;
+      document.getElementById('modal-status').value = safeOwnerStatus(status);
+      document.getElementById('modal-tier').value = safePlanTier(tier);
+      PortalShell.setAlert('modal-alert', '', 'info');
+      PortalShell.openModal('edit-owner-modal', trigger);
     }
 
     async function saveOwnerEdit() {
-        const ownerId = document.getElementById('modal-owner-id').value;
-        const status  = document.getElementById('modal-status').value;
-        const tier    = document.getElementById('modal-tier').value;
-        try {
-            await api('update_owner', { owner_id: ownerId, subscription_status: status, plan_tier: tier });
-            closeModal();
-            loadOwners();
-        } catch (err) {
-            setAlert('modal-alert', escapeHtml(err.message), 'error', true);
-        }
+      const ownerId = document.getElementById('modal-owner-id').value;
+      const status = safeOwnerStatus(document.getElementById('modal-status').value);
+      const tier = safePlanTier(document.getElementById('modal-tier').value);
+      const saveBtn = document.getElementById('modal-save-btn');
+
+      PortalShell.setButtonBusy(saveBtn, true, 'Opslaan...', 'Opslaan');
+
+      try {
+        await api('update_owner', {
+          owner_id: ownerId,
+          subscription_status: status,
+          plan_tier: tier,
+        });
+
+        PortalShell.closeModal('edit-owner-modal');
+        PortalShell.setAlert('owners-alert', 'Abonnement bijgewerkt.', 'success');
+        await loadOwners();
+      } catch (error) {
+        PortalShell.setAlert('modal-alert', `Opslaan mislukt: ${error.message}`, 'error', { assertive: true });
+      } finally {
+        PortalShell.setButtonBusy(saveBtn, false, null, 'Opslaan');
+      }
     }
 
-    // ---- ④ Locations ----
     function debounceLocSearch() {
-        clearTimeout(locSearchTimer);
-        locSearchTimer = setTimeout(() => {
-            locSearchVal = document.getElementById('loc-search').value;
-            locPage = 0;
-            loadLocations();
-        }, 300);
+      clearTimeout(state.locSearchTimer);
+      state.locSearchTimer = setTimeout(() => {
+        state.locSearch = document.getElementById('loc-search').value.trim();
+        state.locPage = 0;
+        loadLocations();
+      }, 280);
     }
 
-    function changeLocPage(dir) {
-        locPage = Math.max(0, locPage + dir);
-        loadLocations();
+    function changeLocPage(direction) {
+      state.locPage = Math.max(0, state.locPage + direction);
+      loadLocations();
     }
 
     async function loadLocations() {
-        const tbody = document.getElementById('locations-tbody');
-        tbody.innerHTML = '<tr class="loading-row"><td colspan="4"><span class="spinner"></span></td></tr>';
-        document.getElementById('loc-page-label').textContent = `Pagina ${locPage + 1}`;
-        document.getElementById('loc-prev-btn').disabled = locPage === 0;
-        try {
-            const locs = await api('list_locations', { search: locSearchVal, page: locPage });
-            document.getElementById('loc-next-btn').disabled = locs.length < 50;
-            if (!locs.length) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:24px;">Geen locaties gevonden.</td></tr>';
-                return;
-            }
-            tbody.innerHTML = locs.map(l => `
-                <tr>
-                    <td><strong>${escapeHtml(l.name)}</strong></td>
-                    <td class="td-muted">${escapeHtml(l.region ?? '')}</td>
-                    <td>
-                        <label class="toggle">
-                            <input type="checkbox" ${l.is_featured ? 'checked' : ''} onchange="toggleFeatured(${l.id}, this)">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </td>
-                    <td>
-                        <label class="toggle">
-                            <input type="checkbox" ${l.owner_verified ? 'checked' : ''} onchange="toggleVerified(${l.id}, this)">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </td>
-                </tr>
-            `).join('');
-        } catch (err) {
-            setAlert('locations-alert', 'Fout bij laden: ' + escapeHtml(err.message), 'error');
+      const tbody = document.getElementById('locations-tbody');
+      tbody.innerHTML = '<tr class="portal-loading-row"><td colspan="4"><span class="portal-spinner"></span></td></tr>';
+
+      document.getElementById('loc-page-label').textContent = `Pagina ${state.locPage + 1}`;
+      document.getElementById('loc-prev-btn').disabled = state.locPage === 0;
+
+      try {
+        const locations = await api('list_locations', {
+          search: state.locSearch,
+          page: state.locPage,
+        });
+
+        document.getElementById('loc-next-btn').disabled = (locations?.length || 0) < 50;
+
+        if (!locations?.length) {
+          tbody.innerHTML = '<tr><td colspan="4" class="portal-muted">Geen locaties gevonden.</td></tr>';
+          return;
         }
+
+        tbody.innerHTML = locations.map((location) => `
+          <tr>
+            <td><strong>${escapeHtml(location.name)}</strong></td>
+            <td class="portal-muted">${escapeHtml(location.region || '')}</td>
+            <td>
+              <label class="portal-toggle">
+                <input type="checkbox" ${location.is_featured ? 'checked' : ''}
+                  data-toggle-type="featured" data-location-id="${location.id}">
+                <span class="portal-toggle-track"></span>
+              </label>
+            </td>
+            <td>
+              <label class="portal-toggle">
+                <input type="checkbox" ${location.owner_verified ? 'checked' : ''}
+                  data-toggle-type="verified" data-location-id="${location.id}">
+                <span class="portal-toggle-track"></span>
+              </label>
+            </td>
+          </tr>
+        `).join('');
+      } catch (error) {
+        PortalShell.setAlert('locations-alert', `Locaties laden mislukt: ${error.message}`, 'error', { assertive: true });
+      }
     }
 
-    async function toggleFeatured(locationId, checkbox) {
-        checkbox.disabled = true;
-        try {
-            const result = await api('toggle_featured', { location_id: locationId });
-            checkbox.checked = result.is_featured;
-        } catch (err) {
-            checkbox.checked = !checkbox.checked; // revert
-            setAlert('locations-alert', 'Fout: ' + escapeHtml(err.message), 'error');
-        } finally {
-            checkbox.disabled = false;
+    async function onLocationsTableChange(event) {
+      const input = event.target.closest('[data-toggle-type]');
+      if (!input) return;
+
+      const locationId = Number(input.dataset.locationId);
+      const action = input.dataset.toggleType;
+      if (!locationId || !action) return;
+
+      input.disabled = true;
+      try {
+        if (action === 'featured') {
+          const result = await api('toggle_featured', { location_id: locationId });
+          input.checked = !!result.is_featured;
         }
+        if (action === 'verified') {
+          const result = await api('toggle_verified', { location_id: locationId });
+          input.checked = !!result.owner_verified;
+        }
+      } catch (error) {
+        input.checked = !input.checked;
+        PortalShell.setAlert('locations-alert', `Wijzigen mislukt: ${error.message}`, 'error', { assertive: true });
+      } finally {
+        input.disabled = false;
+      }
     }
 
-    async function toggleVerified(locationId, checkbox) {
-        checkbox.disabled = true;
-        try {
-            const result = await api('toggle_verified', { location_id: locationId });
-            checkbox.checked = result.owner_verified;
-        } catch (err) {
-            checkbox.checked = !checkbox.checked; // revert
-            setAlert('locations-alert', 'Fout: ' + escapeHtml(err.message), 'error');
-        } finally {
-            checkbox.disabled = false;
-        }
-    }
-
-    // ---- ⑤ Edit log ----
     async function loadEditLog() {
-        const tbody = document.getElementById('editlog-tbody');
-        tbody.innerHTML = '<tr class="loading-row"><td colspan="6"><span class="spinner"></span></td></tr>';
-        try {
-            const logs = await api('list_edit_log');
-            if (!logs.length) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px;">Geen bewerkingen gevonden.</td></tr>';
-                return;
-            }
-            tbody.innerHTML = logs.map(e => `
-                <tr>
-                    <td class="td-muted">${fmtDate(e.created_at)}</td>
-                    <td>${escapeHtml(e.locations?.name ?? '—')}</td>
-                    <td class="td-muted">${escapeHtml(e.owner_email)}</td>
-                    <td><code style="font-size:12px;">${escapeHtml(e.field_name)}</code></td>
-                    <td class="td-muted td-truncate">${escapeHtml(e.old_value ?? '—')}</td>
-                    <td class="td-truncate">${escapeHtml(e.new_value ?? '—')}</td>
-                </tr>
-            `).join('');
-        } catch (err) {
-            console.error('Edit log error:', err);
+      const tbody = document.getElementById('editlog-tbody');
+      tbody.innerHTML = '<tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr>';
+
+      try {
+        const logs = await api('list_edit_log');
+        if (!logs?.length) {
+          tbody.innerHTML = '<tr><td colspan="6" class="portal-muted">Geen edits gevonden.</td></tr>';
+          return;
         }
+
+        tbody.innerHTML = logs.map((entry) => `
+          <tr>
+            <td class="portal-muted">${fmtDateTime(entry.created_at)}</td>
+            <td>${escapeHtml(entry.locations?.name || '-')}</td>
+            <td class="portal-muted">${escapeHtml(entry.owner_email || 'onbekend')}</td>
+            <td><span class="portal-inline-code">${escapeHtml(entry.field_name || '-')}</span></td>
+            <td class="portal-truncate portal-muted">${escapeHtml(valueOrDash(entry.old_value))}</td>
+            <td class="portal-truncate">${escapeHtml(valueOrDash(entry.new_value))}</td>
+          </tr>
+        `).join('');
+      } catch (error) {
+        console.error('loadEditLog failed', error);
+      }
     }
 
-    // ---- Util ----
-    // Pass html=true only for already-escaped or hardcoded safe HTML (not raw user/API data).
-    function setAlert(id, msg, type, html = false) {
-        const el = document.getElementById(id);
-        if (!el) return;
-        if (!msg) { el.innerHTML = ''; return; }
-        if (html) {
-            el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
-        } else {
-            el.innerHTML = '';
-            const div = document.createElement('div');
-            div.className = `alert alert-${type}`;
-            div.textContent = msg;
-            el.appendChild(div);
-        }
+    function safeClaimStatus(status) {
+      const allowed = ['pending', 'approved', 'rejected', 'auto_rejected_duplicate'];
+      return allowed.includes(status) ? status : 'pending';
     }
 
-    function escapeHtml(s) {
-        return (s ?? '').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    function safeOwnerStatus(status) {
+      const allowed = ['none', 'trial', 'featured', 'past_due', 'canceled'];
+      return allowed.includes(status) ? status : 'none';
     }
 
-    function escapeJs(s) {
-        return (s ?? '').toString().replace(/'/g,"\\'").replace(/"/g,'\\"');
+    function safePlanTier(tier) {
+      return tier === 'featured' ? 'featured' : 'none';
+    }
+
+    function valueOrDash(value) {
+      if (value === null || value === undefined || value === '') return '-';
+      return String(value);
     }
 
     function fmtDate(iso) {
-        if (!iso) return '—';
-        return new Date(iso).toLocaleDateString('nl-NL', { day:'numeric', month:'short', year:'numeric' });
+      if (!iso) return '-';
+      return new Date(iso).toLocaleDateString('nl-NL', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      });
     }
-</script>
+
+    function fmtDateTime(iso) {
+      if (!iso) return '-';
+      return new Date(iso).toLocaleString('nl-NL', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    }
+
+    function escapeHtml(value) {
+      return PortalShell.escapeHtml(value);
+    }
+
+    function escapeAttr(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+  </script>
 </body>
 </html>
