@@ -19,7 +19,8 @@
   --pp-radius-sm: 10px;
   --pp-radius: 16px;
   --pp-radius-lg: 24px;
-  --pp-font-head: 'Plus Jakarta Sans', sans-serif;
+  --pp-font-display: 'Familjen Grotesk', 'Plus Jakarta Sans', sans-serif;
+  --pp-font-head: var(--pp-font-display);
   --pp-font-body: 'DM Sans', sans-serif;
 }
 
@@ -38,9 +39,9 @@ body {
   color: var(--pp-text);
   min-height: 100vh;
   background:
-    radial-gradient(circle at 5% -10%, #f9e3d7 0%, transparent 38%),
-    radial-gradient(circle at 95% -10%, #fdeec8 0%, transparent 36%),
-    linear-gradient(180deg, #f7f3ed 0%, #f0ebe3 100%);
+    radial-gradient(circle at 5% -10%, #f9e3d7 0%, transparent 36%),
+    radial-gradient(circle at 95% -10%, #fdeec8 0%, transparent 34%),
+    linear-gradient(180deg, #f8f4ee 0%, #f0ebe4 100%);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -128,7 +129,7 @@ a {
   margin: 0 auto;
   min-height: 62px;
   padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.88);
   border: 1px solid rgba(35, 31, 26, 0.08);
   box-shadow: var(--pp-shadow-sm);
   border-radius: 999px;
@@ -195,7 +196,8 @@ a {
 
 .portal-hero {
   background:
-    linear-gradient(120deg, #201c18 0%, #312922 45%, #3f342b 100%);
+    radial-gradient(circle at 85% 20%, rgba(223, 162, 108, 0.16), transparent 22%),
+    linear-gradient(120deg, #1c1714 0%, #31261f 45%, #46382e 100%);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--pp-radius-lg);
@@ -214,20 +216,24 @@ a {
 }
 
 .portal-title {
-  font-size: 28px;
-  font-weight: 800;
+  font-size: clamp(29px, 4vw, 44px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
 }
 
 .portal-screen-title {
-  font-size: 24px;
-  font-weight: 800;
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 700;
   margin-bottom: 6px;
+  letter-spacing: -0.04em;
 }
 
 .portal-subtitle {
   margin: 0;
   color: var(--pp-text-muted);
   font-size: 14px;
+  line-height: 1.65;
 }
 
 .portal-heading-row {
@@ -257,8 +263,9 @@ a {
 .portal-stat-value {
   font-family: var(--pp-font-head);
   font-size: 28px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
+  letter-spacing: -0.04em;
 }
 
 .portal-stat-label {
@@ -475,6 +482,7 @@ a {
   border-radius: 10px;
   font-size: 13px;
   border: 1px solid transparent;
+  line-height: 1.6;
 }
 
 .portal-alert-error {
@@ -542,6 +550,41 @@ a {
 
 .portal-muted {
   color: var(--pp-text-muted);
+}
+
+.portal-empty-state {
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px dashed rgba(35, 31, 26, 0.14);
+  background: linear-gradient(180deg, rgba(255,255,255,0.84), rgba(247,243,237,0.9));
+  color: var(--pp-text-muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.portal-empty-state strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--pp-text);
+  font-family: var(--pp-font-head);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.is-loading {
+  position: relative;
+  color: transparent !important;
+}
+
+.is-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(238,231,223,0.85) 0%, rgba(255,250,245,0.98) 50%, rgba(238,231,223,0.85) 100%);
+  background-size: 200% 100%;
+  animation: portal-shimmer 1.2s linear infinite;
 }
 
 .portal-truncate {
@@ -643,6 +686,15 @@ a {
 @keyframes portal-spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes portal-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
   }
 }
 
