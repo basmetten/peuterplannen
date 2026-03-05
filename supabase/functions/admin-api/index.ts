@@ -120,6 +120,132 @@ function validatePlanTier(tier: string): string {
   return tier;
 }
 
+async function approveClaimInline(claimId: string, adminUserId: string) {
+  const { data: claim, error: claimError } = await supabase
+    .from("location_claim_requests")
+    .select("id, user_id, location_id, status")
+    .eq("id", claimId)
+    .maybeSingle();
+
+  if (claimError) {
+    throw new AppError(claimError.message, "APPROVE_CLAIM_FAILED", 400);
+  }
+  if (!claim) {
+    throw new AppError("Claim niet gevonden", "CLAIM_NOT_FOUND", 404);
+  }
+  if (claim.status !== "pending") {
+    throw new AppError("Claim is niet meer openstaand", "CLAIM_NOT_OPEN", 409);
+  }
+
+  const approvedAt = new Date().toISOString();
+
+  const { error: approveError } = await supabase
+    .from("location_claim_requests")
+    .update({
+      status: "approved",
+      reviewed_by: adminUserId,
+      reviewed_at: approvedAt,
+    })
+    .eq("id", claimId)
+    .eq("status", "pending");
+
+  if (approveError) {
+    throw new AppError(approveError.message, "APPROVE_CLAIM_FAILED", 400);
+  }
+
+  const { data: competingOwners, error: competingOwnersError } = await supabase
+    .from("venue_owners")
+    .select("id, user_id")
+    .eq("location_id", claim.location_id)
+    .neq("user_id", claim.user_id);
+
+  if (competingOwnersError) {
+    throw new AppError(competingOwnersError.message, "APPROVE_CLAIM_FAILED", 400);
+  }
+
+  if ((competingOwners ?? []).length) {
+    const { error: clearOwnersError } = await supabase
+      .from("venue_owners")
+      .update({ location_id: null, updated_at: approvedAt })
+      .eq("location_id", claim.location_id)
+      .neq("user_id", claim.user_id);
+
+    if (clearOwnersError) {
+      throw new AppError(clearOwnersError.message, "APPROVE_CLAIM_FAILED", 400);
+    }
+  }
+
+  const { data: existingOwner, error: existingOwnerError } = await supabase
+    .from("venue_owners")
+    .select("id")
+    .eq("user_id", claim.user_id)
+    .maybeSingle();
+
+  if (existingOwnerError) {
+    throw new AppError(existingOwnerError.message, "APPROVE_CLAIM_FAILED", 400);
+  }
+
+  let ownerId = existingOwner?.id ?? null;
+  if (existingOwner) {
+    const { error: updateOwnerError } = await supabase
+      .from("venue_owners")
+      .update({ location_id: claim.location_id, updated_at: approvedAt })
+      .eq("id", existingOwner.id);
+
+    if (updateOwnerError) {
+      throw new AppError(updateOwnerError.message, "APPROVE_CLAIM_FAILED", 400);
+    }
+  } else {
+    const { data: insertedOwner, error: insertOwnerError } = await supabase
+      .from("venue_owners")
+      .insert({
+        user_id: claim.user_id,
+        location_id: claim.location_id,
+        updated_at: approvedAt,
+      })
+      .select("id")
+      .single();
+
+    if (insertOwnerError) {
+      throw new AppError(insertOwnerError.message, "APPROVE_CLAIM_FAILED", 400);
+    }
+    ownerId = insertedOwner.id;
+  }
+
+  const { error: locationError } = await supabase
+    .from("locations")
+    .update({ claimed_by_user_id: claim.user_id })
+    .eq("id", claim.location_id);
+
+  if (locationError) {
+    throw new AppError(locationError.message, "APPROVE_CLAIM_FAILED", 400);
+  }
+
+  const { data: autoRejectedRows, error: autoRejectError } = await supabase
+    .from("location_claim_requests")
+    .update({
+      status: "rejected",
+      reviewed_by: adminUserId,
+      reviewed_at: approvedAt,
+    })
+    .eq("location_id", claim.location_id)
+    .neq("id", claimId)
+    .eq("status", "pending")
+    .select("id");
+
+  if (autoRejectError) {
+    throw new AppError(autoRejectError.message, "APPROVE_CLAIM_FAILED", 400);
+  }
+
+  return {
+    ok: true,
+    approved_claim_id: claimId,
+    auto_rejected_claim_ids: (autoRejectedRows ?? []).map((row: { id: string }) => row.id),
+    owner_id: ownerId,
+    location_id: claim.location_id,
+  };
+}
+
 async function fetchEmailMap(userIds: string[], concurrency = 12): Promise<Record<string, string>> {
   const uniqueUserIds = [...new Set(userIds.filter((id) => typeof id === "string" && id.length > 0))];
   const emailMap: Record<string, string> = {};
@@ -198,7 +324,7 @@ serve(async (req) => {
           .from("location_claim_requests")
           .select(
             `
-              id, status, message, review_reason, created_at, reviewed_at,
+              id, status, message, created_at, reviewed_at,
               user_id,
               locations ( name, region )
             `,
@@ -228,16 +354,7 @@ serve(async (req) => {
         }
         assertUuid(claimId, "claim_id");
 
-        const { data, error } = await supabase.rpc("admin_approve_claim", {
-          p_claim_id: claimId,
-          p_admin_user_id: admin.id,
-        });
-
-        if (error) {
-          throw new AppError(error.message, "APPROVE_CLAIM_FAILED", 400);
-        }
-
-        result = data;
+        result = await approveClaimInline(claimId, admin.id);
         break;
       }
 
@@ -252,12 +369,11 @@ serve(async (req) => {
           .from("location_claim_requests")
           .update({
             status: "rejected",
-            review_reason: "Afgewezen door admin",
             reviewed_by: admin.id,
             reviewed_at: new Date().toISOString(),
           })
           .eq("id", claimId)
-          .in("status", ["pending", "auto_rejected_duplicate"]);
+          .eq("status", "pending");
 
         if (error) {
           throw new AppError(error.message, "REJECT_CLAIM_FAILED", 400);

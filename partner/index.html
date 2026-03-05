@@ -615,7 +615,7 @@
     async function loadLatestClaimStatus() {
       const { data, error } = await supabase
         .from('location_claim_requests')
-        .select('status, review_reason, created_at')
+        .select('status, created_at')
         .eq('user_id', state.currentUser.id)
         .order('created_at', { ascending: false })
         .limit(1)
@@ -640,9 +640,9 @@
       } else if (data.status === 'approved') {
         msg.textContent = 'Claim goedgekeurd. Je kunt je locatie nu beheren.';
       } else if (data.status === 'auto_rejected_duplicate') {
-        msg.textContent = data.review_reason || 'Een andere claim op deze locatie is al goedgekeurd.';
+        msg.textContent = 'Een andere claim op deze locatie is al goedgekeurd.';
       } else {
-        msg.textContent = data.review_reason || 'Claim afgewezen. Neem contact op als je denkt dat dit onjuist is.';
+        msg.textContent = 'Claim afgewezen. Neem contact op als je denkt dat dit onjuist is.';
       }
     }
 

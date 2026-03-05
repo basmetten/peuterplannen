@@ -678,7 +678,7 @@
               <strong>${escapeHtml(claim.locations?.name || '-')}</strong><br>
               <span class="portal-muted">${escapeHtml(claim.locations?.region || '')}</span>
             </td>
-            <td class="portal-truncate">${escapeHtml(claim.message || claim.review_reason || '')}</td>
+            <td class="portal-truncate">${escapeHtml(claim.message || '')}</td>
             <td><span class="portal-badge portal-badge-${status}">${status}</span></td>
             <td class="actions">${actionHtml}</td>
           </tr>`;
