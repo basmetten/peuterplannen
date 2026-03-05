@@ -5,7 +5,9 @@
   "description": "PeuterPlannen — Leuke uitjes voor kinderen",
   "scripts": {
     "build": "node .scripts/optimize_images.js && node .scripts/sync_all.js",
-    "discover": "node .scripts/discover_horeca.js"
+    "discover": "node .scripts/discover_horeca.js",
+    "deploy": "wrangler deploy",
+    "deploy:live": "bash .scripts/deploy_live.sh"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
@@ -15,6 +17,7 @@
     "sharp": "^0.33.2"
   },
   "devDependencies": {
-    "puppeteer": "^24.37.5"
+    "puppeteer": "^24.37.5",
+    "wrangler": "^4.70.0"
   }
 }

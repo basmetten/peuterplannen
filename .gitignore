@@ -54,3 +54,4 @@ batch_*.json
 .scripts/create_suggestions_table.js
 .scripts/calculate_city_distances.js
 .audit/
+supabase/.temp/
