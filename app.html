@@ -15,7 +15,6 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
     <script>gtag('js', new Date()); gtag('config', 'G-46RW178B97');</script>
     <script src="/consent.js" defer></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>PeuterPlannen — Vind kindvriendelijke uitjes bij jou in de buurt</title>
@@ -37,7 +36,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://peuterplannen.nl/app.html">
     <meta property="og:title" content="PeuterPlannen — Kindvriendelijke uitjes in de buurt">
-    <meta property="og:description" content="767 geverifieerde locaties: speeltuinen, restaurants, musea en natuur voor gezinnen in 17 regio's door heel Nederland.">
+    <meta property="og:description" content="767 geverifieerde locaties: speeltuinen, restaurants, musea en natuur voor gezinnen in 18 regio's door heel Nederland.">
     <meta property="og:locale" content="nl_NL">
     <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
     <meta property="og:image:width" content="1408">
@@ -55,7 +54,7 @@
       "@type": "WebApplication",
       "name": "PeuterPlannen",
       "url": "https://peuterplannen.nl/app.html",
-      "description": "Interactieve kaart met 767 kindvriendelijke locaties. Filter op type: speeltuin, restaurant, museum, natuur.",
+      "description": "Interactieve kaart met 767 kindvriendelijke locaties in heel Nederland. Filter op type, weer, leeftijd en afstand.",
       "applicationCategory": "LifestyleApplication",
       "operatingSystem": "Any",
       "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
@@ -737,7 +736,7 @@
             </button>
         </div>
         <div class="info-body">
-            <p>PeuterPlannen helpt ouders met jonge kinderen de leukste uitjes te vinden in heel Nederland. 17 regio's, alle locaties gecheckt op kindvriendelijkheid.</p>
+            <p>PeuterPlannen helpt ouders met jonge kinderen de leukste uitjes te vinden in heel Nederland. 18 regio's, alle locaties gecheckt op kindvriendelijkheid.</p>
 
             <!-- BEGIN:INFO_STATS -->
             <div class="info-stats">
@@ -750,7 +749,7 @@
                     <span>Regio's</span>
                 </div>
                 <div class="info-stat">
-                    <strong>5</strong>
+                    <strong>7</strong>
                     <span>Categorieën</span>
                 </div>
             </div>
@@ -848,6 +847,7 @@
                         if (c.textContent.trim() === 'Binnen' && activeWeather === 'indoor') c.classList.add('active');
                         if (c.textContent.trim() === 'Buiten' && activeWeather === 'outdoor') c.classList.add('active');
                     });
+                    syncChipAria();
                 }, 0);
             }
             if (params.get('type') && params.get('type') !== 'all') {
@@ -858,6 +858,7 @@
                         const map = {'play':'Speeltuin','farm':'Boerderij','nature':'Natuur','horeca':'Horeca','museum':'Museum','swim':'Zwemmen','pancake':'Pannenkoeken'};
                         if (c.textContent.trim() === map[activeTag]) c.classList.add('active');
                     });
+                    syncChipAria();
                 }, 0);
             }
             if (params.get('regio')) {
@@ -876,6 +877,12 @@
         let mapLibreReady = false;
         let activeLocSheet = null;
         let userLocationMarker = null;
+
+        function syncChipAria() {
+            document.querySelectorAll('.chip').forEach((chip) => {
+                chip.setAttribute('aria-selected', chip.classList.contains('active') ? 'true' : 'false');
+            });
+        }
 
         const TYPE_LABELS = { play: 'Speeltuin', farm: 'Boerderij', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', swim: 'Zwemmen', pancake: 'Pannenkoeken' };
         const WEATHER_LABELS = { indoor: 'Binnen', outdoor: 'Buiten', both: 'Binnen & buiten', hybrid: 'Binnen & buiten' };
@@ -935,9 +942,14 @@
         function toggleWeather(weather, evt) {
             if (activeWeather === weather) { activeWeather = null; } else { activeWeather = weather; }
             document.querySelectorAll('.chip').forEach(c => {
-                if (c.textContent === 'Binnen' || c.textContent === 'Buiten') c.classList.remove('active');
+                if (c.textContent.trim() === 'Binnen' || c.textContent.trim() === 'Buiten') c.classList.remove('active');
             });
-            if (activeWeather && evt && evt.target) evt.target.classList.add('active');
+            if (activeWeather) {
+                const weatherLabel = activeWeather === 'indoor' ? 'Binnen' : 'Buiten';
+                const target = evt?.currentTarget || Array.from(document.querySelectorAll('.chip')).find((c) => c.textContent.trim() === weatherLabel);
+                if (target) target.classList.add('active');
+            }
+            syncChipAria();
             updateFilterCount();
             loadLocations();
         }
@@ -946,13 +958,17 @@
             activeTag = tag;
             activeWeather = null;
             document.querySelectorAll('.chip').forEach(p => p.classList.remove('active'));
-            if (evt && evt.target) evt.target.classList.add('active');
+            if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
             else document.querySelector('.chip').classList.add('active');
             // Re-apply active class to facility chips that are still active
             document.querySelectorAll('.chip').forEach(c => {
-                if (c.textContent === 'Koffie' && activeFacilities.coffee) c.classList.add('active');
-                if (c.textContent === 'Verschonen' && activeFacilities.diaper) c.classList.add('active');
+                if (c.textContent.trim() === 'Koffie' && activeFacilities.coffee) c.classList.add('active');
+                if (c.textContent.trim() === 'Verschonen' && activeFacilities.diaper) c.classList.add('active');
+                if (c.textContent.trim() === 'Dreumes (0–2)' && activeAgeGroup === 'dreumes') c.classList.add('active');
+                if (c.textContent.trim() === 'Peuter (2–5)' && activeAgeGroup === 'peuter') c.classList.add('active');
+                if (activeRadius && c.classList.contains('radius-chip') && c.textContent.trim() === `${activeRadius} km`) c.classList.add('active');
             });
+            syncChipAria();
             updateFilterCount();
             loadLocations();
         }
@@ -963,6 +979,7 @@
                 evt.target.classList.toggle('active', activeFacilities[facility]);
                 evt.target.setAttribute('aria-selected', activeFacilities[facility] ? 'true' : 'false');
             }
+            syncChipAria();
             updateFilterCount();
             loadLocations();
         }
@@ -992,6 +1009,7 @@
                 c.classList.toggle('active', c.getAttribute('onclick').includes(`'${activeAgeGroup}'`));
                 c.setAttribute('aria-selected', c.classList.contains('active') ? 'true' : 'false');
             });
+            syncChipAria();
             updateFilterCount();
             loadLocations();
         }
@@ -1011,6 +1029,7 @@
                 evt.currentTarget.classList.add('active');
                 evt.currentTarget.setAttribute('aria-selected', 'true');
             }
+            syncChipAria();
             updateFilterCount();
             loadLocations();
         }
@@ -1026,6 +1045,7 @@
             if (sortSelect) sortSelect.value = 'default';
             document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
             document.querySelector('.chip').classList.add('active');
+            syncChipAria();
             updateFilterCount();
             loadLocations();
         }
@@ -1158,20 +1178,20 @@
                 const RAIN_CODES   = new Set([51,53,55,56,57,61,63,65,66,67,80,81,82,83,84,85,86,95,96,99]);
 
                 if (RAIN_CODES.has(code)) {
-                    banner.innerHTML = `<div class="weather-banner indoor" onclick="toggleWeather('indoor', null); document.querySelectorAll('.chip').forEach(c => { if(c.textContent==='Binnen') c.classList.add('active'); });">
+                    banner.innerHTML = `<div class="weather-banner indoor" onclick="toggleWeather('indoor', null);">
                         <span class="weather-banner-icon">🌧️</span>
                         <span class="weather-banner-text"><strong>${temp}° en regen</strong> — tip: kies een <strong>binnenlocatie</strong></span>
                         <span class="weather-banner-arrow">›</span>
                     </div>`;
                 } else if (OUTDOOR_SAFE.has(code) && temp >= 10) {
-                    banner.innerHTML = `<div class="weather-banner outdoor" onclick="toggleWeather('outdoor', null); document.querySelectorAll('.chip').forEach(c => { if(c.textContent==='Buiten') c.classList.add('active'); });">
+                    banner.innerHTML = `<div class="weather-banner outdoor" onclick="toggleWeather('outdoor', null);">
                         <span class="weather-banner-icon">☀️</span>
                         <span class="weather-banner-text"><strong>${temp}° en zonnig</strong> — <strong>buitenlocaties</strong> zijn extra fijn vandaag</span>
                         <span class="weather-banner-arrow">›</span>
                     </div>`;
                 } else {
                     // Bewolkt / mist / sneeuw — neutraal, toon alle opties
-                    banner.innerHTML = `<div class="weather-banner neutral" onclick="activeWeather=null; document.querySelectorAll('.chip').forEach(c => { if(c.textContent==='Binnen'||c.textContent==='Buiten') c.classList.remove('active'); }); loadLocations();">
+                    banner.innerHTML = `<div class="weather-banner neutral" onclick="activeWeather=null; document.querySelectorAll('.chip').forEach(c => { if(c.textContent==='Binnen'||c.textContent==='Buiten') c.classList.remove('active'); }); syncChipAria(); loadLocations();">
                         <span class="weather-banner-icon">🌥️</span>
                         <span class="weather-banner-text"><strong>${temp}° en wisselvallig</strong> — binnen én buiten opties beschikbaar</span>
                         <span class="weather-banner-arrow">›</span>
@@ -1262,10 +1282,8 @@
 
         // === Card Rendering ===
         // ── AdSense in-feed ──────────────────────────────────────────────────
-        // Vul in na goedkeuring door Google AdSense:
-        //   1. Uncomment de <script> in <head> (zoek op "adsbygoogle.js")
-        //   2. Maak een "In-feed" ad-unit aan in AdSense → kopieer slot-ID
-        //   3. Vul hieronder je publisher-ID en slot-ID in
+        // Script wordt pas geladen na expliciete toestemming via consent.js.
+        // Vul alleen je ad-unit slot-ID in zodra AdSense live is.
         const ADSENSE_PUB_ID   = 'ca-pub-4964283748507156';
         const ADSENSE_SLOT_ID  = ''; // '1234567890'
         const ADSENSE_EVERY_N  = 10; // 1 advertentie per N kaarten
@@ -1401,12 +1419,16 @@
                             Route
                         </a>
                         ${safeUrl(item.website) ? `<a href="${safeUrl(item.website)}" target="_blank" rel="noopener" class="btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
-                        <button onclick="shareLocation('${item.name.replace(/'/g, "\\'")}', '${(item.region || '').replace(/'/g, "\\'")}')"  class="btn btn-share" title="Delen" aria-label="Deel ${item.name}">
+                        <button class="btn btn-share" title="Delen" aria-label="Deel ${escapeHtml(item.name)}">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                         </button>
                     </div>
                 `;
                 container.appendChild(card);
+                const shareButton = card.querySelector('.btn-share');
+                if (shareButton) {
+                    shareButton.addEventListener('click', () => shareLocation(item.name, item.region || ''));
+                }
             }
 
             batchRenderedCount = end;
@@ -1865,11 +1887,15 @@
                         Route
                     </a>
                     ${safeUrl(loc.website) ? `<a href="${safeUrl(loc.website)}" target="_blank" rel="noopener" class="btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
-                    <button onclick="shareLocation('${loc.name.replace(/'/g, "\\'")}', '${(loc.region || '').replace(/'/g, "\\'")}')" class="btn btn-share" title="Delen" aria-label="Deel ${escapeHtml(loc.name)}">
+                    <button class="btn btn-share" title="Delen" aria-label="Deel ${escapeHtml(loc.name)}">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                     </button>
                 </div>
             `;
+            const shareButton = content.querySelector('.btn-share');
+            if (shareButton) {
+                shareButton.addEventListener('click', () => shareLocation(loc.name, loc.region || ''));
+            }
 
             const overlay = document.getElementById('loc-overlay');
             const sheet = document.getElementById('loc-sheet');

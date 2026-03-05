@@ -623,7 +623,7 @@
     window.claimLocation = async (locationId, locationName) => {
         if (!currentUser) return;
 
-        // Rate limit: max 3 per dag
+        // UX precheck: DB trigger enforces the definitive 24h limit
         const since = new Date(); since.setDate(since.getDate() - 1);
         const { count } = await supabase
             .from('location_claim_requests')
@@ -647,7 +647,7 @@
             document.getElementById('claim-status-panel').classList.remove('hidden');
             document.getElementById('loc-search-results').innerHTML = '';
         } else {
-            alert('Er ging iets mis. Probeer het opnieuw.');
+            alert(error.message || 'Er ging iets mis. Probeer het opnieuw.');
         }
     };
 

@@ -84,6 +84,7 @@ serve(async (req) => {
     }
 
     // 5. Create Stripe Checkout Session
+    const idempotencyBucket = Math.floor(Date.now() / (5 * 60 * 1000));
     const session = await stripe.checkout.sessions.create(
       {
         mode: "subscription",
@@ -97,7 +98,7 @@ serve(async (req) => {
         allow_promotion_codes: true,
       },
       {
-        idempotencyKey: `checkout-${user.id}-featured-${billing_interval}`,
+        idempotencyKey: `checkout-${user.id}-${owner.id}-featured-${billing_interval}-${idempotencyBucket}`,
       }
     );
 

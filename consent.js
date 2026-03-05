@@ -3,11 +3,33 @@
   'use strict';
 
   var KEY = 'pp_consent';
+  var DEFAULT_ADSENSE_CLIENT = 'ca-pub-4964283748507156';
 
   function applyConsent(state) {
     if (typeof gtag !== 'undefined') {
       gtag('consent', 'update', state);
     }
+    loadAdsense(state);
+  }
+
+  function getAdsenseClient() {
+    var configured = (typeof window !== 'undefined' && typeof window.PP_ADSENSE_CLIENT === 'string')
+      ? window.PP_ADSENSE_CLIENT.trim()
+      : '';
+    return configured || DEFAULT_ADSENSE_CLIENT;
+  }
+
+  function loadAdsense(state) {
+    if (!state || state.ad_storage !== 'granted') return;
+    if (document.querySelector('script[data-pp-adsense="1"]')) return;
+    var client = getAdsenseClient();
+    if (!client) return;
+    var script = document.createElement('script');
+    script.async = true;
+    script.crossOrigin = 'anonymous';
+    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(client);
+    script.setAttribute('data-pp-adsense', '1');
+    document.head.appendChild(script);
   }
 
   function showBanner() {
@@ -48,7 +70,13 @@
   }
 
   // Don't show if user already made a choice
-  if (localStorage.getItem(KEY)) return;
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) {
+      applyConsent(JSON.parse(raw));
+      return;
+    }
+  } catch (e) {}
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', showBanner);
@@ -66,6 +94,17 @@ function ppConsent(accepted) {
   };
   try { localStorage.setItem('pp_consent', JSON.stringify(state)); } catch (e) {}
   if (typeof gtag !== 'undefined') gtag('consent', 'update', state);
+  if (accepted && !document.querySelector('script[data-pp-adsense="1"]')) {
+    var client = (typeof window !== 'undefined' && typeof window.PP_ADSENSE_CLIENT === 'string' && window.PP_ADSENSE_CLIENT.trim())
+      ? window.PP_ADSENSE_CLIENT.trim()
+      : 'ca-pub-4964283748507156';
+    var script = document.createElement('script');
+    script.async = true;
+    script.crossOrigin = 'anonymous';
+    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(client);
+    script.setAttribute('data-pp-adsense', '1');
+    document.head.appendChild(script);
+  }
   var el = document.getElementById('pp-cb');
   if (el) {
     el.style.opacity = '0';

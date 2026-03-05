@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS public.location_claim_requests (
   created_at   TIMESTAMPTZ DEFAULT now()
 );
 
--- Rate limiting index: max 3 pending claims per user per day (enforced in app)
+-- Rate limiting index: supports claim limit checks (enforcement moved to DB trigger)
 CREATE INDEX IF NOT EXISTS idx_claim_requests_user_created
   ON public.location_claim_requests(user_id, created_at);
 
