@@ -10,8 +10,8 @@ MAX_RETRIES="${MAX_RETRIES:-3}"
 POLL_INTERVAL_SECONDS="${POLL_INTERVAL_SECONDS:-15}"
 POLL_MAX_ATTEMPTS="${POLL_MAX_ATTEMPTS:-40}"
 
-if [[ -n "$(git status --porcelain)" ]]; then
-  echo "Working tree is not clean. Commit/stash first, then run deploy script."
+if ! git diff --quiet || ! git diff --cached --quiet; then
+  echo "Tracked changes detected. Commit/stash tracked edits first, then run deploy script."
   exit 1
 fi
 
