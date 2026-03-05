@@ -1308,17 +1308,43 @@ const DEFAULT_OG = 'https://peuterplannen.nl/images/og/default.jpg';
 
 const REGION_BLOG_MAP = {
   'amsterdam':            [
+    { slug: 'amsterdam-met-peuters-en-kleuters', title: 'Amsterdam met peuters en kleuters: complete gids' },
     { slug: 'gratis-peuteruitjes-amsterdam', title: '10 Gratis peuteruitjes in Amsterdam' },
-    { slug: 'dagje-uit-met-dreumes',         title: 'Dagje uit met een dreumes: 8 tips' },
+    { slug: 'kindvriendelijke-horeca-met-speelhoek', title: 'Kindvriendelijke horeca met speelhoek' },
+    { slug: 'dagje-uit-met-dreumes',         title: 'Dagje uit met een dreumes: 20 activiteiten' },
+  ],
+  'rotterdam':            [
+    { slug: 'rotterdam-met-peuters',         title: 'Rotterdam met peuters: praktische stadsgids' },
+    { slug: 'beste-speeltuinen-rotterdam-peuters', title: 'De beste speeltuinen in Rotterdam' },
+    { slug: 'dagje-uit-met-kleuter-4-6-jaar', title: 'Dagje uit met kleuter (4-6): 25 ideeën' },
   ],
   'utrecht':              [
     { slug: 'kinderboerderijen-utrecht',     title: 'Beste kinderboerderijen in Utrecht' },
+    { slug: 'utrecht-met-peuters',           title: 'Utrecht met peuters: complete gids' },
+    { slug: 'dagje-uit-met-kleuter-4-6-jaar', title: 'Dagje uit met kleuter (4-6): 25 ideeën' },
   ],
   'den-haag':             [
     { slug: 'den-haag-met-peuters',          title: 'Den Haag met peuters: de beste plekken' },
+    { slug: 'dagje-uit-met-kleuter-4-6-jaar', title: 'Dagje uit met kleuter (4-6): 25 ideeën' },
   ],
   'haarlem':              [
     { slug: 'haarlem-met-peuters',           title: 'Haarlem met peuters' },
+  ],
+  'eindhoven':            [
+    { slug: 'eindhoven-met-peuters',         title: 'Eindhoven met peuters en kleuters: dagplanning' },
+    { slug: 'dagje-uit-met-kleuter-4-6-jaar', title: 'Dagje uit met kleuter (4-6): 25 ideeën' },
+  ],
+  'groningen':            [
+    { slug: 'groningen-met-peuters',         title: 'Groningen met peuters en kleuters: keuzes per dagdeel' },
+  ],
+  'breda':                [
+    { slug: 'breda-met-peuters',             title: 'Breda met peuters en kleuters: complete gids' },
+  ],
+  'nijmegen':             [
+    { slug: 'nijmegen-met-peuters',          title: 'Nijmegen met peuters en kleuters: ontspannen dag' },
+  ],
+  'amersfoort':           [
+    { slug: 'amersfoort-met-peuters',        title: 'Amersfoort met peuters en kleuters: praktische gids' },
   ],
   'utrechtse-heuvelrug':  [
     { slug: 'pannenkoekenboerderijen-utrecht-heuvelrug', title: 'Pannenkoeken op de Heuvelrug' },

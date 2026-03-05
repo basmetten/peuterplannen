@@ -1,7 +1,7 @@
 ---
 title: "Utrecht met peuters: Nijntje, grachten en wat te doen als het regent"
 description: "Een dagje Utrecht met een jonge peuter: wat echt werkt, hoe je het Nijntje Museum boekt, en waarom de trein beter is dan de auto."
-date: 2026-03-15
+date: 2026-03-04
 tags: ["utrecht", "tips", "stadsuitje"]
 related_regions: ["utrecht"]
 featured_image: /images/blog/utrecht-met-peuters.jpg

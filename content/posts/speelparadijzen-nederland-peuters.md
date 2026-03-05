@@ -1,7 +1,7 @@
 ---
 title: "Speelparadijzen voor peuters: de eerlijke gids per regio"
 description: "Niet elk speelparadijs is geschikt voor een peuter. Wat je moet weten voor je gaat, plus de beste binnenspeelplaatsen per regio in Nederland."
-date: 2026-03-20
+date: 2026-03-03
 tags: ["binnenspeelplaats", "regen", "tips", "speelparadijs"]
 related_regions: ["amsterdam", "rotterdam", "utrecht", "den-haag"]
 featured_image: /images/blog/speelparadijzen-nederland-peuters.jpg

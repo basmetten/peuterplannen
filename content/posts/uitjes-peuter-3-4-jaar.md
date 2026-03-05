@@ -1,7 +1,7 @@
 ---
 title: "Dagje uit met een peuter van 3 of 4 jaar: wat hij nu eindelijk écht leuk vindt"
 description: "Wat verandert er rond het derde jaar, en welke uitjes passen daar bij? Een overzicht van activiteiten die écht werken voor peuters van 3 en 4 jaar oud."
-date: 2026-03-18
+date: 2026-03-03
 tags: ["3 jaar", "4 jaar", "tips", "activiteiten"]
 related_regions: ["amsterdam", "rotterdam", "utrecht", "den-haag"]
 featured_image: /images/blog/uitjes-peuter-3-4-jaar.jpg

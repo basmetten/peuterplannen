@@ -1,7 +1,7 @@
 ---
 title: "Dagje uit met een dreumes: 20 activiteiten voor 1-2 jaar"
 description: "Wat kun je doen met een dreumes van 1-2 jaar? 20 leuke activiteiten speciaal voor de allerkleinsten."
-date: 2026-03-10
+date: 2026-03-04
 tags: ["dreumes", "tips", "1-2 jaar"]
 related_regions: ["amsterdam", "utrecht", "rotterdam", "den-haag"]
 featured_image: /images/blog/dagje-uit-met-dreumes.jpg

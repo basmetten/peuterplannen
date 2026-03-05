@@ -1,7 +1,7 @@
 ---
 title: "Rotterdam met peuters: Blijdorp, havens en wat je kunt overslaan"
 description: "Praktische gids voor een dagje Rotterdam met jonge kinderen. Welke plekken werken écht, wat valt tegen, en waarom dinsdag de beste dag is."
-date: 2026-03-12
+date: 2026-03-04
 tags: ["rotterdam", "tips", "stadsuitje"]
 related_regions: ["rotterdam"]
 featured_image: /images/blog/rotterdam-met-peuters.jpg
