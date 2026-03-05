@@ -500,7 +500,7 @@ function headCommon(extra = '') {
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.min.css">
   <link rel="stylesheet" href="/nav-floating.css">
   <script src="/nav-floating.js" defer></script>${extra}`;
@@ -1872,6 +1872,7 @@ ${analyticsHTML()}
   const postCards = publishedPosts.map(p => `
     <article class="blog-card">
       ${p.featured_image ? `<a href="/blog/${p.slug}/"><picture><source type="image/webp" srcset="${p.featured_image.replace(/\.jpe?g$/, '-400w.webp')} 400w, ${p.featured_image.replace(/\.jpe?g$/, '.webp')}" sizes="(max-width: 768px) 100vw, 400px"><img src="${p.featured_image}" alt="${escapeHtml(p.title)}" class="blog-card-thumb" loading="lazy"></picture></a>` : ''}
+      <p class="blog-card-kicker">${escapeHtml((p.tags[0] || 'Gezinsgids')).toUpperCase()}</p>
       <h2><a href="/blog/${p.slug}/">${escapeHtml(p.title)}</a></h2>
       <p class="blog-date">${p.dateDisplay}</p>
       <p class="blog-excerpt">${escapeHtml(p.description)}</p>
@@ -1916,9 +1917,15 @@ ${blogIndexLd}
 
 ${navHTML()}
 
-<div class="hero">
-  <h1>Inspiratie</h1>
-  <p>Tips, inspiratie en praktische gidsen voor uitjes met peuters</p>
+<div class="hero hero-blog">
+  <p class="hero-kicker">PeuterPlannen redactie</p>
+  <h1 class="hero-blog-title">Inspiratie voor dagen die echt werken</h1>
+  <p class="hero-blog-sub">Praktische gidsen, rustige tips en slimme routes voor ouders met peuters en kleuters. Minder generiek zoeken, sneller een dag die klopt.</p>
+  <div class="hero-blog-meta">
+    <span>${publishedPosts.length} gidsen</span>
+    <span>Nederland breed</span>
+    <span>Voor peuters en kleuters</span>
+  </div>
 </div>
 
 <nav aria-label="Kruimelpad" class="breadcrumb">

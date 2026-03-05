@@ -20,12 +20,27 @@ const PRICE_IDS: Record<string, string> = {
 
 const CORS = {
   "Access-Control-Allow-Origin":  "https://partner.peuterplannen.nl",
-  "Access-Control-Allow-Headers": "authorization, content-type",
+  "Access-Control-Allow-Headers": "authorization, content-type, apikey, x-client-info, x-request-id",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Vary": "Origin",
 };
+
+function json(payload: unknown, status = 200): Response {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: {
+      ...CORS,
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store",
+    },
+  });
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
+  if (req.method !== "POST") {
+    return json({ error: "Method not allowed", code: "METHOD_NOT_ALLOWED" }, 405);
+  }
 
   try {
     // 1. Authenticate user from JWT
@@ -102,15 +117,15 @@ serve(async (req) => {
       }
     );
 
-    return new Response(JSON.stringify({ url: session.url }), {
-      headers: { ...CORS, "Content-Type": "application/json" },
-    });
+    return json({ url: session.url, code: "OK" });
 
   } catch (err) {
     console.error("create-checkout-session error:", err);
-    return new Response(
-      JSON.stringify({ error: (err as Error).message }),
-      { status: 400, headers: { ...CORS, "Content-Type": "application/json" } }
-    );
+    const message = (err as Error).message || "Onbekende fout";
+    const status = message === "Unauthorized" ? 401 : 400;
+    return json({
+      error: message,
+      code: status === 401 ? "UNAUTHORIZED" : "BAD_REQUEST",
+    }, status);
   }
 });

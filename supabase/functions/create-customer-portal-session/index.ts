@@ -16,8 +16,9 @@ const RETURN_URL = Deno.env.get("STRIPE_BILLING_PORTAL_RETURN_URL") || "https://
 
 const CORS = {
   "Access-Control-Allow-Origin": "https://partner.peuterplannen.nl",
-  "Access-Control-Allow-Headers": "authorization, content-type, x-request-id",
+  "Access-Control-Allow-Headers": "authorization, content-type, apikey, x-client-info, x-request-id",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Vary": "Origin",
 };
 
 function json(payload: unknown, status = 200): Response {
@@ -72,13 +73,16 @@ serve(async (req) => {
       return_url: RETURN_URL,
     });
 
-    return json({ url: portalSession.url });
+    return json({ url: portalSession.url, code: "OK" });
   } catch (error) {
     console.error("create-customer-portal-session error", error);
 
     const message = (error as Error).message || "Onbekende fout";
     const status = message === "Unauthorized" ? 401 : 400;
 
-    return json({ error: message, code: status === 401 ? "UNAUTHORIZED" : "BAD_REQUEST" }, status);
+    return json({
+      error: message,
+      code: status === 401 ? "UNAUTHORIZED" : "BAD_REQUEST",
+    }, status);
   }
 });

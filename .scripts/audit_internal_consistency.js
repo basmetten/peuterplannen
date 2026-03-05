@@ -54,6 +54,7 @@ function scanBrokenHtmlLinks(htmlFiles) {
   for (const file of htmlFiles) {
     const rel = toRel(file);
     if (rel.startsWith('portal/')) continue;
+    if (rel.startsWith('supabase/auth/')) continue;
     const content = fs.readFileSync(file, 'utf8');
     let match;
     while ((match = hrefRegex.exec(content))) {

@@ -19,7 +19,7 @@ function corsHeaders(origin: string | null) {
   const safeOrigin = origin && ALLOWED_ORIGINS.has(origin) ? origin : FALLBACK_ORIGIN;
   return {
     "Access-Control-Allow-Origin": safeOrigin,
-    "Access-Control-Allow-Headers": "content-type",
+    "Access-Control-Allow-Headers": "authorization, content-type, apikey, x-client-info, x-request-id",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Vary": "Origin",
   };
@@ -36,10 +36,10 @@ serve(async (req) => {
 
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   if (req.method !== "POST") {
-    return new Response(
-      JSON.stringify({ error: "Method not allowed" }),
-      { status: 405, headers: { ...CORS, "Content-Type": "application/json" } }
-    );
+      return new Response(
+        JSON.stringify({ error: "Method not allowed", code: "METHOD_NOT_ALLOWED" }),
+        { status: 405, headers: { ...CORS, "Content-Type": "application/json" } }
+      );
   }
 
   try {
@@ -63,13 +63,13 @@ serve(async (req) => {
 
     if (!subject || subject.length < 2) {
       return new Response(
-        JSON.stringify({ error: "Ongeldig onderwerp" }),
+        JSON.stringify({ error: "Ongeldig onderwerp", code: "INVALID_SUBJECT" }),
         { status: 400, headers: { ...CORS, "Content-Type": "application/json" } }
       );
     }
     if (!message || message.length < 5) {
       return new Response(
-        JSON.stringify({ error: "Bericht te kort" }),
+        JSON.stringify({ error: "Bericht te kort", code: "INVALID_MESSAGE" }),
         { status: 400, headers: { ...CORS, "Content-Type": "application/json" } }
       );
     }
@@ -112,13 +112,13 @@ serve(async (req) => {
     }
 
     return new Response(
-      JSON.stringify({ ok: true }),
+      JSON.stringify({ ok: true, code: "OK" }),
       { headers: { ...CORS, "Content-Type": "application/json" } }
     );
   } catch (err) {
     console.error("public-feedback error", err);
     return new Response(
-      JSON.stringify({ error: "Er ging iets mis" }),
+      JSON.stringify({ error: "Er ging iets mis", code: "INTERNAL_ERROR" }),
       { status: 500, headers: { ...CORS, "Content-Type": "application/json" } }
     );
   }

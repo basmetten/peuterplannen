@@ -92,7 +92,7 @@
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.css" />
 
     <!-- Fonts (swap for faster paint) -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/nav-floating.css">
     <script src="/nav-floating.js" defer></script>
 
@@ -122,7 +122,8 @@
             --radius-md: 18px;
             --radius-lg: 24px;
             --radius-pill: 999px;
-            --font-heading: 'Plus Jakarta Sans', sans-serif;
+            --font-heading: 'Familjen Grotesk', 'Plus Jakarta Sans', sans-serif;
+            --font-ui: 'Plus Jakarta Sans', sans-serif;
             --font-body: 'DM Sans', -apple-system, sans-serif;
             --safe-bottom: env(safe-area-inset-bottom, 20px);
             --radius: 16px;
@@ -396,9 +397,9 @@
         .info-ai-note p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin: 0; }
 
         /* ── Plan wizard ── */
-        .plan-view { padding: 16px 0 80px; }
+        .plan-view { max-width: 760px; margin: 106px auto 0; padding: 16px 16px calc(80px + var(--safe-bottom)); }
         .plan-view-header { margin-bottom: 20px; }
-        .plan-view-header h2 { font-family: var(--font-heading); font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; margin-bottom: 3px; }
+        .plan-view-header h2 { font-family: var(--font-heading); font-size: clamp(32px, 5vw, 48px); font-weight: 700; color: var(--text); letter-spacing: -0.055em; line-height: 0.98; margin-bottom: 6px; }
         .plan-view-header p { font-size: 14px; color: var(--text-muted); }
 
         .plan-wizard { display: flex; flex-direction: column; gap: 10px; }
@@ -497,6 +498,10 @@
           .map-container { width: 100%; margin: 0; height: 100%; max-height: none; min-height: unset; border-top: none; }
           .bottom-nav { display: none; }
           .filter-chips { top: 0; }
+          body.plan-mode { overflow: auto; }
+          body.plan-mode .app-wrapper { display: block; height: auto; overflow: visible; margin-top: 92px; }
+          body.plan-mode .app-context-strip { margin: 0 auto 14px; }
+          body.plan-mode #plan-view.app-container { display: block; max-width: 760px; width: min(100%, 760px); margin: 0 auto; padding: 16px 16px calc(96px + var(--safe-bottom)); height: auto; overflow: visible; }
         }
         /* Desktop split view — JS class fallback (belt AND suspenders) */
         html.pp-desktop body { overflow: hidden !important; padding-bottom: 0 !important; }
@@ -510,6 +515,10 @@
         html.pp-desktop .filter-chips { flex-wrap: wrap; overflow-x: visible; padding-bottom: 8px; gap: 4px; top: 0 !important; }
         html.pp-desktop .chip-label { display: none; }
         html.pp-desktop .chip { padding: 5px 10px; font-size: 11px; }
+        html.pp-desktop body.plan-mode { overflow: auto !important; }
+        html.pp-desktop body.plan-mode .app-wrapper { display: block !important; height: auto !important; overflow: visible !important; margin-top: 92px !important; }
+        html.pp-desktop body.plan-mode .app-context-strip { margin: 0 auto 14px !important; position: static !important; }
+        html.pp-desktop body.plan-mode #plan-view.app-container { display: block !important; grid-template-columns: none !important; max-width: 760px !important; width: min(100%, 760px) !important; overflow: visible !important; height: auto !important; padding: 16px 16px calc(96px + var(--safe-bottom)) !important; margin: 0 auto !important; }
 
         /* Explore CTA */
         .explore-cta { margin: 28px 0; text-align: center; }
@@ -2458,6 +2467,7 @@
 
             if (view === 'plan') {
                 // Show plan view, hide main app
+                document.body.classList.add('plan-mode');
                 if (appWrapper) appWrapper.classList.add('hidden');
                 if (planView)   planView.classList.remove('hidden');
                 document.querySelectorAll('.bnav-item').forEach(i => i.classList.remove('active'));
@@ -2468,6 +2478,7 @@
                 return;
             }
             // Leaving plan view
+            document.body.classList.remove('plan-mode');
             if (planView)   planView.classList.add('hidden');
             if (appWrapper) appWrapper.classList.remove('hidden');
             _origSwitchView(view);
