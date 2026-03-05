@@ -156,8 +156,8 @@
       </article>
 
       <article class="portal-card">
-        <h2 class="partner-section-title">Inloggen met e-mailcode</h2>
-        <p class="portal-subtitle">Geen wachtwoord nodig. Je krijgt een 6-cijferige code op e-mail.</p>
+        <h2 class="partner-section-title">Inloggen met e-mail</h2>
+        <p class="portal-subtitle">Geen wachtwoord nodig. Je krijgt een inlogmail met code of link.</p>
         <div class="partner-auth-list">
           <ul class="portal-list">
             <li class="portal-list-item"><div><strong>Snelle verificatie</strong><span>Inloggen in 2 stappen met eenmalige code.</span></div></li>
@@ -178,7 +178,7 @@
     <section id="screen-otp" class="partner-auth hidden">
       <article class="portal-card">
         <h1 class="portal-screen-title">Controleer je inbox</h1>
-        <p class="portal-subtitle">We hebben een 6-cijferige code gestuurd naar <strong id="otp-email-display"></strong>.</p>
+        <p class="portal-subtitle">Inlogmail gestuurd naar <strong id="otp-email-display"></strong>. Vul de code in. Zie je geen code? Open de inloglink uit dezelfde mail.</p>
         <div id="otp-alert" class="portal-alert-wrap" aria-live="assertive"></div>
         <div class="portal-form-group">
           <label class="portal-label" for="otp-code">Inlogcode</label>
@@ -380,6 +380,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       bindUI();
+      maybeHandleAuthCallback();
       showScreen('landing');
     });
 
@@ -434,7 +435,10 @@
       PortalShell.setButtonBusy(button, true, 'Versturen...', 'Doorgaan met e-mail');
       const { error } = await supabase.auth.signInWithOtp({
         email,
-        options: { shouldCreateUser: true },
+        options: {
+          shouldCreateUser: true,
+          emailRedirectTo: `${location.origin}${location.pathname}`,
+        },
       });
 
       if (error) {
@@ -449,6 +453,32 @@
       showScreen('otp');
       startOtpCooldown(button, 60);
       setTimeout(() => document.getElementById('otp-code').focus(), 60);
+    }
+
+    async function maybeHandleAuthCallback() {
+      const params = new URLSearchParams(location.search);
+      const tokenHash = params.get('token_hash');
+      const type = params.get('type');
+      const errorDescription = params.get('error_description');
+
+      if (errorDescription) {
+        PortalShell.setAlert('landing-alert', errorDescription, 'error', { assertive: true });
+      }
+
+      if (!tokenHash || !type) return;
+
+      try {
+        const { error } = await supabase.auth.verifyOtp({
+          type,
+          token_hash: tokenHash,
+        });
+        if (error) {
+          PortalShell.setAlert('landing-alert', 'De inloglink is ongeldig of verlopen. Vraag een nieuwe login aan.', 'error', { assertive: true });
+          return;
+        }
+      } finally {
+        history.replaceState({}, '', location.pathname);
+      }
     }
 
     function startOtpCooldown(button, seconds) {

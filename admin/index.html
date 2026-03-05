@@ -108,7 +108,7 @@
     <section id="screen-login" class="admin-auth">
       <div class="portal-card">
         <h1 class="portal-screen-title">Admin toegang</h1>
-        <p class="portal-subtitle">Log in met een eenmalige code op je vaste admin e-mailadres.</p>
+        <p class="portal-subtitle">Log in met je e-mail op het vaste admin-account. Je krijgt een inlogmail met code of link.</p>
         <div id="login-alert" class="portal-alert-wrap" aria-live="assertive"></div>
         <div class="portal-form-group">
           <label class="portal-label" for="admin-email">E-mailadres</label>
@@ -121,7 +121,7 @@
     <section id="screen-otp" class="admin-auth hidden">
       <div class="portal-card">
         <h1 class="portal-screen-title">Verifieer je login</h1>
-        <p class="portal-subtitle">Code verstuurd naar <strong id="otp-email-display"></strong>.</p>
+        <p class="portal-subtitle">Inlogmail verstuurd naar <strong id="otp-email-display"></strong>. Vul de code in. Zie je geen code? Open de inloglink uit dezelfde mail.</p>
         <div id="otp-alert" class="portal-alert-wrap" aria-live="assertive"></div>
         <div class="portal-form-group">
           <label class="portal-label" for="otp-code">6-cijferige code</label>
@@ -363,6 +363,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       bindUI();
+      maybeHandleAuthCallback();
       showScreen('login');
     });
 
@@ -419,7 +420,10 @@
 
       const { error } = await supabase.auth.signInWithOtp({
         email,
-        options: { shouldCreateUser: false },
+        options: {
+          shouldCreateUser: false,
+          emailRedirectTo: `${location.origin}${location.pathname}`,
+        },
       });
 
       if (error) {
@@ -435,6 +439,32 @@
       showScreen('otp');
       startOtpCooldown(btn, 60);
       setTimeout(() => document.getElementById('otp-code').focus(), 60);
+    }
+
+    async function maybeHandleAuthCallback() {
+      const params = new URLSearchParams(location.search);
+      const tokenHash = params.get('token_hash');
+      const type = params.get('type');
+      const errorDescription = params.get('error_description');
+
+      if (errorDescription) {
+        PortalShell.setAlert('login-alert', errorDescription, 'error', { assertive: true });
+      }
+
+      if (!tokenHash || !type) return;
+
+      try {
+        const { error } = await supabase.auth.verifyOtp({
+          type,
+          token_hash: tokenHash,
+        });
+        if (error) {
+          PortalShell.setAlert('login-alert', 'De inloglink is ongeldig of verlopen. Vraag een nieuwe login aan.', 'error', { assertive: true });
+          return;
+        }
+      } finally {
+        history.replaceState({}, '', location.pathname);
+      }
     }
 
     function startOtpCooldown(button, seconds) {
