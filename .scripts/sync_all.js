@@ -367,7 +367,7 @@ const NAV_LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40
 
 function navHTML(ctaText = 'Open App', ctaHref = '/app.html') {
   return `<a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
-<nav aria-label="Hoofdnavigatie">
+<nav aria-label="Hoofdnavigatie" class="floating-nav">
   <div class="nav-inner">
     <a href="/" class="nav-logo">
       ${NAV_LOGO_SVG}
@@ -393,24 +393,7 @@ function navHTML(ctaText = 'Open App', ctaHref = '/app.html') {
     <a href="/contact.html" class="nav-mobile-link">Contact</a>
     <a href="${ctaHref}" class="nav-mobile-link nav-mobile-cta nav-cta">${ctaText}</a>
   </div>
-</nav>
-<script>
-(function(){
-  var p=location.pathname;
-  document.querySelectorAll('.nav-link,.nav-mobile-link').forEach(function(a){
-    var h=a.getAttribute('href');
-    if(h===p||(h.length>1&&p.startsWith(h)))a.classList.add('active');
-  });
-  var burger=document.querySelector('.nav-burger');
-  var mobile=document.getElementById('nav-mobile-menu');
-  if(!burger||!mobile)return;
-  function close(){mobile.classList.remove('open');mobile.setAttribute('aria-hidden','true');burger.classList.remove('open');burger.setAttribute('aria-expanded','false');}
-  burger.addEventListener('click',function(){var o=!mobile.classList.contains('open');mobile.classList.toggle('open',o);mobile.setAttribute('aria-hidden',!o);burger.classList.toggle('open',o);burger.setAttribute('aria-expanded',o);});
-  mobile.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
-  document.addEventListener('click',function(e){if(!e.target.closest('nav'))close();});
-})();
-</script>`;
+</nav>`;
 }
 
 function footerHTML() {
@@ -501,7 +484,9 @@ function headCommon(extra = '') {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.min.css">${extra}`;
+  <link rel="stylesheet" href="/style.min.css">
+  <link rel="stylesheet" href="/nav-floating.css">
+  <script src="/nav-floating.js" defer></script>${extra}`;
 }
 
 // Fallback regions when the DB table doesn't exist yet

@@ -36,7 +36,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://peuterplannen.nl/app.html">
     <meta property="og:title" content="PeuterPlannen — Kindvriendelijke uitjes in de buurt">
-    <meta property="og:description" content="767 geverifieerde locaties: speeltuinen, restaurants, musea en natuur voor gezinnen in 18 regio's door heel Nederland.">
+    <meta property="og:description" content="776 geverifieerde locaties: speeltuinen, restaurants, musea en natuur voor gezinnen in 18 regio's door heel Nederland.">
     <meta property="og:locale" content="nl_NL">
     <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
     <meta property="og:image:width" content="1408">
@@ -54,7 +54,7 @@
       "@type": "WebApplication",
       "name": "PeuterPlannen",
       "url": "https://peuterplannen.nl/app.html",
-      "description": "Interactieve kaart met 767 kindvriendelijke locaties in heel Nederland. Filter op type, weer, leeftijd en afstand.",
+      "description": "Interactieve kaart met 776 kindvriendelijke locaties. Filter op type: speeltuin, restaurant, museum, natuur.",
       "applicationCategory": "LifestyleApplication",
       "operatingSystem": "Any",
       "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
@@ -93,6 +93,8 @@
 
     <!-- Fonts (swap for faster paint) -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/nav-floating.css">
+    <script src="/nav-floating.js" defer></script>
 
     <style>
         :root {
@@ -130,6 +132,7 @@
         html { height: 100%; overflow-x: hidden; overscroll-behavior: none; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         ::selection { background: rgba(212, 119, 90, 0.2); color: var(--text); }
         body { font-family: var(--font-body); min-height: 100%; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; overscroll-behavior: none; -webkit-text-size-adjust: 100%; }
+        .skip-link { position: absolute; left: -9999px; top: 0; padding: 8px; background: var(--primary); color: #fff; z-index: 300; font-size: 14px; }
 
         /* Skeleton loader */
         .skeleton { background: linear-gradient(90deg, var(--bg-warm) 25%, #f0ebe3 50%, var(--bg-warm) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 12px; }
@@ -146,31 +149,24 @@
         @keyframes viewFadeIn { from { opacity: 0; } to { opacity: 1; } }
         .view-enter { animation: viewFadeIn 0.15s ease forwards; }
 
+        .app-wrapper { margin-top: 92px; }
         .app-container { max-width: 540px; margin: 0 auto; padding: 0 16px calc(80px + var(--safe-bottom)); position: relative; }
 
-        /* Header — compact */
-        header {
-            position: sticky;
-            top: 10px;
-            z-index: 30;
+        .app-context-strip {
             background: rgba(255, 251, 246, 0.84);
             backdrop-filter: blur(16px) saturate(160%);
             -webkit-backdrop-filter: blur(16px) saturate(160%);
-            padding: 12px 18px 12px;
-            margin: 10px -8px 16px;
+            padding: 12px 18px 13px;
+            margin: 10px auto 16px;
+            max-width: 540px;
             text-align: center;
             overflow: hidden;
             border: 1px solid rgba(212, 119, 90, 0.18);
             border-radius: var(--radius-lg);
             box-shadow: 0 10px 24px rgba(45, 41, 38, 0.1), inset 0 1px 0 rgba(255,255,255,0.85);
-            transition: box-shadow 0.2s ease, background 0.2s ease, top 0.2s ease;
+            position: relative;
         }
-        .app-header.scrolled {
-            top: 6px;
-            background: rgba(255, 251, 246, 0.94);
-            box-shadow: 0 12px 28px rgba(45, 41, 38, 0.14), inset 0 1px 0 rgba(255,255,255,0.9);
-        }
-        header::before {
+        .app-context-strip::before {
             content: '';
             position: absolute;
             inset: 0;
@@ -181,12 +177,10 @@
             z-index: 0;
             transform: scale(1.1);
         }
-        header > * { position: relative; z-index: 1; }
-        .logo { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: inherit; margin-bottom: 0; }
-        .logo-icon { width: 32px; height: 32px; }
-        .logo-icon img { width: 100%; height: 100%; display: block; }
-        h1 { font-family: var(--font-heading); font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
-        .sub-head { font-size: 13px; color: var(--text-secondary); font-weight: 500; margin-top: 0; }
+        .app-context-strip > * { position: relative; z-index: 1; }
+        .app-context-kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; }
+        .app-context-title { font-family: var(--font-heading); font-size: 21px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; line-height: 1.2; }
+        .app-context-sub { font-size: 13px; color: var(--text-secondary); font-weight: 500; margin-top: 2px; }
 
         /* Search card */
         .search-section { background: linear-gradient(165deg, rgba(255,255,255,0.96), #fff); border: 1px solid rgba(212, 119, 90, 0.18); border-radius: var(--radius-md); box-shadow: 0 10px 22px rgba(45,41,38,0.08); padding: 20px; margin-bottom: 16px; }
@@ -214,7 +208,7 @@
         .gps-status.error { color: var(--accent); }
 
         /* Filter chips */
-        .filter-chips { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 4px 0 16px; position: sticky; top: 0; z-index: 10; background: linear-gradient(to bottom, var(--bg) 82%, rgba(250,247,242,0)); margin: 0 -4px; padding-left: 4px; padding-right: 4px; }
+        .filter-chips { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 4px 0 16px; position: sticky; top: 84px; z-index: 10; background: linear-gradient(to bottom, var(--bg) 82%, rgba(250,247,242,0)); margin: 0 -4px; padding-left: 4px; padding-right: 4px; }
         .filter-chips::-webkit-scrollbar { display: none; }
         .chip { flex-shrink: 0; scroll-snap-align: start; padding: 10px 16px; border-radius: var(--radius-pill); border: 1.5px solid rgba(212, 119, 90, 0.2); background: var(--surface); font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--text-secondary); white-space: nowrap; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease; touch-action: manipulation; box-shadow: var(--shadow-sm); }
         .chip:active { transform: scale(0.96); }
@@ -495,24 +489,25 @@
         /* Desktop split view — CSS media query */
         @media (min-width: 680px) {
           body { overflow: hidden; padding-bottom: 0; }
-          .app-wrapper { display: grid; grid-template-rows: auto 1fr; height: 100dvh; overflow: hidden; }
-          .app-header { margin: 0; position: static; }
+          .app-wrapper { display: grid; grid-template-rows: auto 1fr; height: calc(100dvh - 92px); overflow: hidden; margin-top: 92px; }
+          .app-context-strip { margin: 0 auto 10px; }
           .app-container { display: grid; grid-template-columns: 440px 1fr; max-width: 100%; overflow: hidden; height: 100%; padding: 0; margin: 0; }
           #list-view { display: flex !important; flex-direction: column; overflow-y: auto; height: 100%; border-right: 1px solid rgba(45,41,38,0.08); padding: 12px 16px 20px; }
           #map-container { display: block !important; height: 100%; position: relative; width: 100%; }
           .map-container { width: 100%; margin: 0; height: 100%; max-height: none; min-height: unset; border-top: none; }
           .bottom-nav { display: none; }
+          .filter-chips { top: 0; }
         }
         /* Desktop split view — JS class fallback (belt AND suspenders) */
         html.pp-desktop body { overflow: hidden !important; padding-bottom: 0 !important; }
-        html.pp-desktop .app-wrapper { display: grid !important; grid-template-rows: auto 1fr !important; height: 100dvh !important; overflow: hidden !important; }
-        html.pp-desktop .app-header { margin: 0 !important; position: static !important; }
+        html.pp-desktop .app-wrapper { display: grid !important; grid-template-rows: auto 1fr !important; height: calc(100dvh - 92px) !important; overflow: hidden !important; margin-top: 92px !important; }
+        html.pp-desktop .app-context-strip { margin: 0 auto 10px !important; position: static !important; }
         html.pp-desktop .app-container { display: grid !important; grid-template-columns: 440px 1fr !important; max-width: 100% !important; overflow: hidden !important; height: 100% !important; padding: 0 !important; margin: 0 !important; }
         html.pp-desktop #list-view { display: flex !important; flex-direction: column !important; overflow-y: auto !important; height: 100% !important; border-right: 1px solid rgba(45,41,38,0.08) !important; padding: 12px 16px 20px !important; }
         html.pp-desktop #map-container { display: block !important; height: 100% !important; position: relative !important; width: 100% !important; }
         html.pp-desktop .map-container { width: 100% !important; margin: 0 !important; height: 100% !important; max-height: none !important; min-height: unset !important; border-top: none !important; }
         html.pp-desktop .bottom-nav { display: none !important; }
-        html.pp-desktop .filter-chips { flex-wrap: wrap; overflow-x: visible; padding-bottom: 8px; gap: 4px; }
+        html.pp-desktop .filter-chips { flex-wrap: wrap; overflow-x: visible; padding-bottom: 8px; gap: 4px; top: 0 !important; }
         html.pp-desktop .chip-label { display: none; }
         html.pp-desktop .chip { padding: 5px 10px; font-size: 11px; }
 
@@ -534,22 +529,22 @@
 <noscript>
   <div>
     <h1>PeuterPlannen</h1>
-    <p>767 uitjes voor gezinnen met jonge kinderen.</p>
+    <p>776 uitjes voor gezinnen met jonge kinderen.</p>
     <h2>Per stad</h2>
     <ul>
-      <li><a href="amsterdam.html">Amsterdam (103 locaties)</a></li>
-      <li><a href="rotterdam.html">Rotterdam (30 locaties)</a></li>
+      <li><a href="amsterdam.html">Amsterdam (104 locaties)</a></li>
+      <li><a href="rotterdam.html">Rotterdam (31 locaties)</a></li>
       <li><a href="den-haag.html">Den Haag (57 locaties)</a></li>
-      <li><a href="utrecht.html">Utrecht (91 locaties)</a></li>
+      <li><a href="utrecht.html">Utrecht (92 locaties)</a></li>
       <li><a href="haarlem.html">Haarlem (36 locaties)</a></li>
       <li><a href="amersfoort.html">Amersfoort (23 locaties)</a></li>
       <li><a href="leiden.html">Leiden (25 locaties)</a></li>
       <li><a href="utrechtse-heuvelrug.html">Utrechtse Heuvelrug (67 locaties)</a></li>
-      <li><a href="eindhoven.html">Eindhoven (26 locaties)</a></li>
+      <li><a href="eindhoven.html">Eindhoven (27 locaties)</a></li>
       <li><a href="groningen.html">Groningen (75 locaties)</a></li>
       <li><a href="almere.html">Almere (25 locaties)</a></li>
-      <li><a href="tilburg.html">Tilburg (25 locaties)</a></li>
-      <li><a href="breda.html">Breda (27 locaties)</a></li>
+      <li><a href="tilburg.html">Tilburg (27 locaties)</a></li>
+      <li><a href="breda.html">Breda (30 locaties)</a></li>
       <li><a href="nijmegen.html">Nijmegen (26 locaties)</a></li>
       <li><a href="arnhem.html">Arnhem (26 locaties)</a></li>
       <li><a href="apeldoorn.html">Apeldoorn (26 locaties)</a></li>
@@ -570,15 +565,38 @@
 </noscript>
 <!-- END:NOSCRIPT -->
 
-    <div class="app-wrapper">
-        <header class="app-header">
-            <a href="/" class="logo" aria-label="PeuterPlannen homepage">
-                <div class="logo-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" class="nav-logo-svg" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>
-                </div>
-                <h1>Peuter<span style="color:var(--primary)">Plannen</span></h1>
+    <a href="#app-container" class="skip-link">Naar hoofdinhoud</a>
+    <nav aria-label="Hoofdnavigatie" class="floating-nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" class="nav-logo-svg" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>
+                <span class="logo-text"><span class="logo-top">Peuter</span><span class="logo-bottom">Plannen</span></span>
             </a>
-            <div class="sub-head">Waar gaan we vandaag naartoe?</div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/about.html" class="nav-link">Over</a>
+                <a href="/blog/" class="nav-link">Inspiratie</a>
+                <a href="/contact.html" class="nav-link">Contact</a>
+                <a href="/app.html" class="nav-cta">Open App</a>
+            </div>
+            <button class="nav-burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-mobile-menu">
+                <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
+            <a href="/" class="nav-mobile-link">Home</a>
+            <a href="/about.html" class="nav-mobile-link">Over</a>
+            <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
+            <a href="/contact.html" class="nav-mobile-link">Contact</a>
+            <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Open App</a>
+        </div>
+    </nav>
+
+    <div class="app-wrapper">
+        <header class="app-context-strip">
+            <p class="app-context-kicker">PeuterPlannen App</p>
+            <p class="app-context-title">Waar gaan we vandaag naartoe?</p>
+            <p class="app-context-sub">Ontdek direct kindvriendelijke uitjes in de buurt</p>
         </header>
     <div class="app-container" id="app-container">
         <div id="list-view">
@@ -759,7 +777,7 @@
             <!-- BEGIN:INFO_STATS -->
             <div class="info-stats">
                 <div class="info-stat">
-                    <strong>767+</strong>
+                    <strong>776+</strong>
                     <span>Locaties</span>
                 </div>
                 <div class="info-stat">
@@ -767,7 +785,7 @@
                     <span>Regio's</span>
                 </div>
                 <div class="info-stat">
-                    <strong>7</strong>
+                    <strong>5</strong>
                     <span>Categorieën</span>
                 </div>
             </div>
@@ -895,14 +913,6 @@
         let mapLibreReady = false;
         let activeLocSheet = null;
         let userLocationMarker = null;
-
-        const appHeader = document.querySelector('.app-header');
-        function syncHeaderState() {
-            if (!appHeader) return;
-            appHeader.classList.toggle('scrolled', window.scrollY > 8);
-        }
-        syncHeaderState();
-        window.addEventListener('scroll', syncHeaderState, { passive: true });
 
         function syncChipAria() {
             document.querySelectorAll('.chip').forEach((chip) => {

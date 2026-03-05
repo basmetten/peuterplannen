@@ -1,31 +1,142 @@
 name: Sync PeuterPlannen Data
+
 on:
   schedule:
-    - cron: '0 6 * * *'       # dagelijks 07:00 CET
-  workflow_dispatch:            # handmatige trigger
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Force rebuild and publish
+        required: false
+        default: false
+        type: boolean
   repository_dispatch:
-    types: [data-changed]       # webhook trigger
+    types: [data-changed]
+
+concurrency:
+  group: sync-site
+  cancel-in-progress: false
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Decide if build is needed
+        id: gate
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          FORCE_INPUT: ${{ github.event.inputs.force || 'false' }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${EVENT_NAME}" == "repository_dispatch" ]]; then
+            echo "run_build=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [[ "${FORCE_INPUT}" == "true" ]]; then
+            echo "run_build=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [[ -z "${SUPABASE_URL:-}" || -z "${SUPABASE_SERVICE_KEY:-}" ]]; then
+            echo "Supabase secrets ontbreken; build wordt uitgevoerd als veilige fallback."
+            echo "run_build=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          response="$(curl -sS -f \
+            -H "apikey: ${SUPABASE_SERVICE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
+            -H "Content-Type: application/json" \
+            "${SUPABASE_URL}/rest/v1/site_publish_state?id=eq.1&select=dirty,pending_count" || true)"
+
+          if [[ -z "${response}" ]]; then
+            echo "Dirty-state niet leesbaar; build wordt uitgevoerd als fallback."
+            echo "run_build=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          dirty="$(echo "${response}" | jq -r 'if type=="array" and length>0 then .[0].dirty else false end')"
+          pending="$(echo "${response}" | jq -r 'if type=="array" and length>0 then (. [0].pending_count // 0) else 0 end')"
+          echo "Dirty=${dirty} Pending=${pending}"
+
+          if [[ "${dirty}" == "true" ]]; then
+            echo "run_build=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run_build=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Stop when no publish changes are pending
+        if: steps.gate.outputs.run_build != 'true'
+        run: echo "No publish-impact data changes detected."
+
       - uses: actions/setup-node@v4
+        if: steps.gate.outputs.run_build == 'true'
         with:
           node-version: '20'
-      - run: npm ci
-      - run: npm run build
+
+      - name: Install dependencies
+        if: steps.gate.outputs.run_build == 'true'
+        run: npm ci
+
+      - name: Build static site
+        if: steps.gate.outputs.run_build == 'true'
+        run: npm run build
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-      - name: Commit & push if changed
+
+      - name: Commit and push when build changed files
+        if: steps.gate.outputs.run_build == 'true'
+        id: publish
         run: |
-          git diff --quiet && exit 0
+          set -euo pipefail
+
           git config user.name "PeuterPlannen Bot"
           git config user.email "bot@peuterplannen.nl"
+
+          if git diff --quiet; then
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            echo "publish_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           git add -A
-          git commit -m "Auto-sync: update data $(date +%Y-%m-%d)"
+          git commit -m "Auto-sync: update data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
           git push
+
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+          echo "publish_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Mark publish state clean
+        if: steps.gate.outputs.run_build == 'true'
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          PUBLISH_REF: ${{ steps.publish.outputs.publish_ref }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${SUPABASE_URL:-}" || -z "${SUPABASE_SERVICE_KEY:-}" ]]; then
+            echo "Supabase secrets ontbreken; clean-state update overgeslagen."
+            exit 0
+          fi
+
+          payload="$(jq -nc --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg ref "${PUBLISH_REF}" '{dirty:false,pending_count:0,last_published_at:$ts,last_publish_ref:$ref,updated_at:$ts}')"
+
+          curl -sS -f -X PATCH \
+            -H "apikey: ${SUPABASE_SERVICE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d "${payload}" \
+            "${SUPABASE_URL}/rest/v1/site_publish_state?id=eq.1" \
+            || echo "Waarschuwing: publish-state kon niet op clean gezet worden."
