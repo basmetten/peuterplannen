@@ -684,7 +684,6 @@
             gap: 24px;
             padding: 20px 24px;
             text-align: left;
-            view-transition-name: app-context;
           }
           .app-context-copy { align-items: flex-start; }
           .app-context-title { font-size: clamp(28px, 3vw, 40px); letter-spacing: -0.05em; }
@@ -692,7 +691,6 @@
           .app-mode-switch { display: inline-flex; }
           .app-mode-switch.compact { width: min(360px, 100%); margin-top: 0; align-self: center; }
           .app-container { display: grid; grid-template-columns: 440px 1fr; max-width: 100%; overflow: hidden; height: 100%; padding: 0; margin: 0; }
-          .app-wrapper { view-transition-name: app-browser; }
           #list-view { display: flex !important; flex-direction: column; overflow-y: auto; height: 100%; border-right: 1px solid rgba(45,41,38,0.08); padding: 12px 16px 20px; }
           #map-container { display: block !important; height: 100%; position: relative; width: 100%; }
           .map-container { width: 100%; margin: 0; height: 100%; max-height: none; min-height: unset; border-top: none; }
@@ -702,7 +700,6 @@
           body.plan-mode .app-wrapper { display: none !important; }
           body.plan-mode #plan-view { display: block !important; }
           body.plan-mode #plan-view.plan-view { width: min(1240px, calc(100% - 48px)); padding: 18px 0 calc(120px + var(--safe-bottom)); }
-          body.plan-mode #plan-view { view-transition-name: app-plan; }
           body.plan-mode .plan-shell { grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr); gap: 24px; }
           body.plan-mode .plan-side { position: sticky; top: 116px; }
         }
@@ -757,64 +754,40 @@
         .btn-explore { display: inline-block; padding: 12px 24px; background: var(--primary-light); color: var(--primary-dark); border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 15px; transition: background 0.2s; }
         .btn-explore:hover { background: var(--primary); color: white; }
 
-        /* View transitions */
-        @keyframes app-browser-out-left {
-          from { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
-          to { opacity: 0; transform: translateX(-56px) scale(0.985); filter: blur(8px); }
+        /* Lightweight desktop mode transitions */
+        @keyframes shell-enter-left {
+          from { opacity: 0.01; transform: translate3d(-24px, 0, 0) scale(0.992); }
+          to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
         }
-        @keyframes app-browser-in-left {
-          from { opacity: 0; transform: translateX(-56px) scale(0.985); filter: blur(8px); }
-          to { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+        @keyframes shell-enter-right {
+          from { opacity: 0.01; transform: translate3d(24px, 0, 0) scale(0.992); }
+          to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
         }
-        @keyframes app-browser-out-right {
-          from { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
-          to { opacity: 0; transform: translateX(56px) scale(0.985); filter: blur(8px); }
+        @keyframes shell-enter-up {
+          from { opacity: 0.01; transform: translate3d(0, 14px, 0) scale(0.992); }
+          to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
         }
-        @keyframes app-browser-in-right {
-          from { opacity: 0; transform: translateX(56px) scale(0.985); filter: blur(8px); }
-          to { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+        body.app-mode-animating .app-context-strip,
+        body.app-mode-animating #plan-view:not(.hidden),
+        body.app-mode-animating .app-wrapper:not(.hidden) {
+          will-change: transform, opacity;
+          backface-visibility: hidden;
+          transform: translateZ(0);
         }
-        @keyframes app-context-out-up {
-          from { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-          to { opacity: 0; transform: translateY(-18px) scale(0.985); filter: blur(8px); }
-        }
-        @keyframes app-context-in-up {
-          from { opacity: 0; transform: translateY(18px) scale(0.985); filter: blur(8px); }
-          to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-        }
-        ::view-transition-group(app-browser),
-        ::view-transition-group(app-plan),
-        ::view-transition-group(app-context) {
-          animation-duration: 540ms;
-          animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        body[data-mode-direction="to-plan"] ::view-transition-old(app-browser) { animation: 380ms both app-browser-out-left; }
-        body[data-mode-direction="to-plan"] ::view-transition-new(app-plan) { animation: 560ms both app-browser-in-right; }
-        body[data-mode-direction="to-plan"] ::view-transition-old(app-context) { animation: 280ms both app-context-out-up; }
-        body[data-mode-direction="to-plan"] ::view-transition-new(app-context) { animation: 520ms 40ms both app-context-in-up; }
-        body[data-mode-direction="to-home"] ::view-transition-old(app-plan) { animation: 380ms both app-browser-out-right; }
-        body[data-mode-direction="to-home"] ::view-transition-new(app-browser) { animation: 560ms both app-browser-in-left; }
-        body[data-mode-direction="to-home"] ::view-transition-old(app-context) { animation: 280ms both app-context-out-up; }
-        body[data-mode-direction="to-home"] ::view-transition-new(app-context) { animation: 520ms 40ms both app-context-in-up; }
-
-        body.app-mode-animating .app-context-strip { will-change: transform, opacity, filter; }
         body.app-mode-animating[data-mode-direction="to-plan"] .app-context-strip,
         body.app-mode-animating[data-mode-direction="to-home"] .app-context-strip {
-          animation: 520ms cubic-bezier(0.22, 1, 0.36, 1) app-context-in-up;
+          animation: 260ms cubic-bezier(0.22, 1, 0.36, 1) shell-enter-up;
         }
         body.app-mode-animating[data-mode-direction="to-plan"] #plan-view:not(.hidden) {
-          animation: 560ms cubic-bezier(0.22, 1, 0.36, 1) app-browser-in-right;
+          animation: 320ms cubic-bezier(0.22, 1, 0.36, 1) shell-enter-right;
         }
         body.app-mode-animating[data-mode-direction="to-home"] .app-wrapper:not(.hidden) {
-          animation: 560ms cubic-bezier(0.22, 1, 0.36, 1) app-browser-in-left;
+          animation: 320ms cubic-bezier(0.22, 1, 0.36, 1) shell-enter-left;
         }
         @media (prefers-reduced-motion: reduce) {
-          ::view-transition-group(app-browser),
-          ::view-transition-group(app-plan),
-          ::view-transition-group(app-context),
           body.app-mode-animating .app-context-strip,
-          body.app-mode-animating[data-mode-direction="to-plan"] #plan-view:not(.hidden),
-          body.app-mode-animating[data-mode-direction="to-home"] .app-wrapper:not(.hidden) { animation: none; }
+          body.app-mode-animating #plan-view:not(.hidden),
+          body.app-mode-animating .app-wrapper:not(.hidden) { animation: none; }
         }
     </style>
 </head>
@@ -2877,18 +2850,11 @@
                 document.body.classList.remove('app-mode-animating');
                 delete document.body.dataset.modeDirection;
             };
-            if (isModeSwitch && document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.body.dataset.modeDirection = view === 'plan' ? 'to-plan' : 'to-home';
-                document.body.classList.add('app-mode-animating');
-                const transition = document.startViewTransition(() => applyModeView(view));
-                transition.finished.finally(cleanupModeAnimation);
-                return;
-            }
             if (isModeSwitch && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                 document.body.dataset.modeDirection = view === 'plan' ? 'to-plan' : 'to-home';
                 document.body.classList.add('app-mode-animating');
                 applyModeView(view);
-                window.setTimeout(cleanupModeAnimation, 620);
+                window.setTimeout(cleanupModeAnimation, 360);
                 return;
             }
             applyModeView(view);
