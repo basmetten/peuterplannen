@@ -67,6 +67,10 @@ detect_migration_changes() {
     return 0
   fi
 
+  if [[ -n "${GITHUB_ACTIONS:-}" && -n "${SUPABASE_DB_PASSWORD:-}" ]]; then
+    return 0
+  fi
+
   if ! git diff --quiet -- supabase/migrations || ! git diff --cached --quiet -- supabase/migrations; then
     return 0
   fi
@@ -192,7 +196,7 @@ smoke_check() {
     -H 'Access-Control-Request-Method: POST' \
     -H 'Access-Control-Request-Headers: authorization,content-type,x-request-id,apikey,x-client-info')"
 
-  portal_status="$(curl -s -o /dev/null -w '%{http_code}' \
+  portal_status="$(curl -s -o /dev/null -w '%{http_code}' -X POST \
     'https://'"${PROJECT_REF}"'.supabase.co/functions/v1/create-customer-portal-session')"
 
   printf '%s\n' "${admin_headers}" > "${OUTPUT_DIR}/admin-api-options.txt"
@@ -208,8 +212,8 @@ smoke_check() {
     exit 1
   fi
 
-  if [[ "${portal_status}" == "404" ]]; then
-    echo "Customer portal function smoke check failed: still returns 404." >&2
+  if [[ "${portal_status}" != "401" ]]; then
+    echo "Customer portal function smoke check failed: expected 401 for unauthenticated POST, got ${portal_status}." >&2
     exit 1
   fi
 }

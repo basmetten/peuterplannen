@@ -143,6 +143,7 @@ async function approveClaimInline(claimId: string, adminUserId: string) {
     .from("location_claim_requests")
     .update({
       status: "approved",
+      review_reason: "Goedgekeurd door admin",
       reviewed_by: adminUserId,
       reviewed_at: approvedAt,
     })
@@ -224,7 +225,8 @@ async function approveClaimInline(claimId: string, adminUserId: string) {
   const { data: autoRejectedRows, error: autoRejectError } = await supabase
     .from("location_claim_requests")
     .update({
-      status: "rejected",
+      status: "auto_rejected_duplicate",
+      review_reason: "Auto-afgewezen: andere claim op deze locatie is goedgekeurd.",
       reviewed_by: adminUserId,
       reviewed_at: approvedAt,
     })
@@ -244,6 +246,35 @@ async function approveClaimInline(claimId: string, adminUserId: string) {
     owner_id: ownerId,
     location_id: claim.location_id,
   };
+}
+
+function isMissingRpcError(message: string): boolean {
+  const normalized = message.toLowerCase();
+  return normalized.includes("could not find the function") ||
+    normalized.includes("function public.admin_approve_claim") ||
+    normalized.includes("admin_approve_claim(") ||
+    normalized.includes("schema cache");
+}
+
+async function approveClaim(claimId: string, adminUserId: string) {
+  const { data, error } = await supabase.rpc("admin_approve_claim", {
+    p_claim_id: claimId,
+    p_admin_user_id: adminUserId,
+  });
+
+  if (!error) {
+    return data;
+  }
+
+  if (isMissingRpcError(error.message)) {
+    console.warn("admin-api falling back to inline claim approval", {
+      claim_id: claimId,
+      reason: error.message,
+    });
+    return await approveClaimInline(claimId, adminUserId);
+  }
+
+  throw new AppError(error.message, "APPROVE_CLAIM_FAILED", 400);
 }
 
 async function fetchEmailMap(userIds: string[], concurrency = 12): Promise<Record<string, string>> {
@@ -324,7 +355,7 @@ serve(async (req) => {
           .from("location_claim_requests")
           .select(
             `
-              id, status, message, created_at, reviewed_at,
+              id, status, message, review_reason, created_at, reviewed_at,
               user_id,
               locations ( name, region )
             `,
@@ -354,7 +385,7 @@ serve(async (req) => {
         }
         assertUuid(claimId, "claim_id");
 
-        result = await approveClaimInline(claimId, admin.id);
+        result = await approveClaim(claimId, admin.id);
         break;
       }
 
@@ -369,6 +400,7 @@ serve(async (req) => {
           .from("location_claim_requests")
           .update({
             status: "rejected",
+            review_reason: asString(params.review_reason, "Afgewezen door admin"),
             reviewed_by: admin.id,
             reviewed_at: new Date().toISOString(),
           })
