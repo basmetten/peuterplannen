@@ -757,12 +757,65 @@
         .btn-explore { display: inline-block; padding: 12px 24px; background: var(--primary-light); color: var(--primary-dark); border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 15px; transition: background 0.2s; }
         .btn-explore:hover { background: var(--primary); color: white; }
 
-        /* View Transitions */
-        @keyframes slide-in  { from { transform: translateX(100%); } to { transform: translateX(0); } }
-        @keyframes slide-out { from { transform: translateX(0); }   to { transform: translateX(-30%); opacity: 0; } }
-        ::view-transition-old(root) { animation: 250ms ease slide-out; }
-        ::view-transition-new(root) { animation: 250ms ease slide-in; }
-        @media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } }
+        /* View transitions */
+        @keyframes app-browser-out-left {
+          from { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+          to { opacity: 0; transform: translateX(-56px) scale(0.985); filter: blur(8px); }
+        }
+        @keyframes app-browser-in-left {
+          from { opacity: 0; transform: translateX(-56px) scale(0.985); filter: blur(8px); }
+          to { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+        }
+        @keyframes app-browser-out-right {
+          from { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+          to { opacity: 0; transform: translateX(56px) scale(0.985); filter: blur(8px); }
+        }
+        @keyframes app-browser-in-right {
+          from { opacity: 0; transform: translateX(56px) scale(0.985); filter: blur(8px); }
+          to { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
+        }
+        @keyframes app-context-out-up {
+          from { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+          to { opacity: 0; transform: translateY(-18px) scale(0.985); filter: blur(8px); }
+        }
+        @keyframes app-context-in-up {
+          from { opacity: 0; transform: translateY(18px) scale(0.985); filter: blur(8px); }
+          to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+        ::view-transition-group(app-browser),
+        ::view-transition-group(app-plan),
+        ::view-transition-group(app-context) {
+          animation-duration: 540ms;
+          animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        body[data-mode-direction="to-plan"] ::view-transition-old(app-browser) { animation: 380ms both app-browser-out-left; }
+        body[data-mode-direction="to-plan"] ::view-transition-new(app-plan) { animation: 560ms both app-browser-in-right; }
+        body[data-mode-direction="to-plan"] ::view-transition-old(app-context) { animation: 280ms both app-context-out-up; }
+        body[data-mode-direction="to-plan"] ::view-transition-new(app-context) { animation: 520ms 40ms both app-context-in-up; }
+        body[data-mode-direction="to-home"] ::view-transition-old(app-plan) { animation: 380ms both app-browser-out-right; }
+        body[data-mode-direction="to-home"] ::view-transition-new(app-browser) { animation: 560ms both app-browser-in-left; }
+        body[data-mode-direction="to-home"] ::view-transition-old(app-context) { animation: 280ms both app-context-out-up; }
+        body[data-mode-direction="to-home"] ::view-transition-new(app-context) { animation: 520ms 40ms both app-context-in-up; }
+
+        body.app-mode-animating .app-context-strip { will-change: transform, opacity, filter; }
+        body.app-mode-animating[data-mode-direction="to-plan"] .app-context-strip,
+        body.app-mode-animating[data-mode-direction="to-home"] .app-context-strip {
+          animation: 520ms cubic-bezier(0.22, 1, 0.36, 1) app-context-in-up;
+        }
+        body.app-mode-animating[data-mode-direction="to-plan"] #plan-view:not(.hidden) {
+          animation: 560ms cubic-bezier(0.22, 1, 0.36, 1) app-browser-in-right;
+        }
+        body.app-mode-animating[data-mode-direction="to-home"] .app-wrapper:not(.hidden) {
+          animation: 560ms cubic-bezier(0.22, 1, 0.36, 1) app-browser-in-left;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          ::view-transition-group(app-browser),
+          ::view-transition-group(app-plan),
+          ::view-transition-group(app-context),
+          body.app-mode-animating .app-context-strip,
+          body.app-mode-animating[data-mode-direction="to-plan"] #plan-view:not(.hidden),
+          body.app-mode-animating[data-mode-direction="to-home"] .app-wrapper:not(.hidden) { animation: none; }
+        }
     </style>
 </head>
 <body>
@@ -2820,8 +2873,22 @@
         switchView = function(view) {
             const isDesktop = window.innerWidth >= DESKTOP_WIDTH;
             const isModeSwitch = isDesktop && ((document.body.classList.contains('plan-mode') && view !== 'plan') || (!document.body.classList.contains('plan-mode') && view === 'plan'));
+            const cleanupModeAnimation = () => {
+                document.body.classList.remove('app-mode-animating');
+                delete document.body.dataset.modeDirection;
+            };
             if (isModeSwitch && document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.startViewTransition(() => applyModeView(view));
+                document.body.dataset.modeDirection = view === 'plan' ? 'to-plan' : 'to-home';
+                document.body.classList.add('app-mode-animating');
+                const transition = document.startViewTransition(() => applyModeView(view));
+                transition.finished.finally(cleanupModeAnimation);
+                return;
+            }
+            if (isModeSwitch && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.body.dataset.modeDirection = view === 'plan' ? 'to-plan' : 'to-home';
+                document.body.classList.add('app-mode-animating');
+                applyModeView(view);
+                window.setTimeout(cleanupModeAnimation, 620);
                 return;
             }
             applyModeView(view);
