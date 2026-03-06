@@ -31,10 +31,10 @@
   <script src="/nav-floating.js" defer></script>
   <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin>
   <title>Fort de Gagel — Peuteruitje in Utrecht | PeuterPlannen</title>
-  <meta name="description" content="Sfeervolle horecagelegenheid op historisch fort aan de Gageldijk. Website vermeldt speeltuin en kindvriendelijkheid. Prachtige buitenlocatie aan het water,…">
+  <meta name="description" content="Kindvriendelijk restaurant op een forteiland in Overvecht met buitenspeeltuin naast het terras en binnenhoek. Speeltuin heeft waterpompen, klimrek en…">
   <link rel="canonical" href="https://peuterplannen.nl/utrecht/fort-de-gagel-2/">
   <meta property="og:title" content="Fort de Gagel — Utrecht | PeuterPlannen">
-  <meta property="og:description" content="Sfeervolle horecagelegenheid op historisch fort aan de Gageldijk. Website vermeldt speeltuin en kindvriendelijkheid. Prachtige buitenlocatie aan het water,…">
+  <meta property="og:description" content="Kindvriendelijk restaurant op een forteiland in Overvecht met buitenspeeltuin naast het terras en binnenhoek. Speeltuin heeft waterpompen, klimrek en…">
   <meta property="og:url" content="https://peuterplannen.nl/utrecht/fort-de-gagel-2/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
@@ -44,7 +44,7 @@
   <meta property="og:image:alt" content="Fort de Gagel — peuteruitje in Utrecht">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Fort de Gagel | PeuterPlannen">
-  <meta name="twitter:description" content="Sfeervolle horecagelegenheid op historisch fort aan de Gageldijk. Website vermeldt speeltuin en kindvriendelijkheid. Prachtige buitenlocatie aan het water,…">
+  <meta name="twitter:description" content="Kindvriendelijk restaurant op een forteiland in Overvecht met buitenspeeltuin naast het terras en binnenhoek. Speeltuin heeft waterpompen, klimrek en…">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -53,13 +53,13 @@
     "TouristAttraction"
   ],
   "name": "Fort de Gagel",
-  "description": "Sfeervolle horecagelegenheid op historisch fort aan de Gageldijk. Website vermeldt speeltuin en kindvriendelijkheid. Prachtige buitenlocatie aan het water,…",
+  "description": "Kindvriendelijk restaurant op een forteiland in Overvecht met buitenspeeltuin naast het terras en binnenhoek. Speeltuin heeft waterpompen, klimrek en…",
   "url": "https://peuterplannen.nl/utrecht/fort-de-gagel-2/",
   "sameAs": "https://fortdegagel.nl/",
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": 52.129543,
-    "longitude": 5.102418
+    "latitude": 52.1195,
+    "longitude": 5.0981
   },
   "address": {
     "@type": "PostalAddress",
@@ -75,6 +75,11 @@
     {
       "@type": "LocationFeatureSpecification",
       "name": "Luierruimte",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Alcohol beschikbaar",
       "value": true
     }
   ],
@@ -172,16 +177,16 @@
     <p class="location-subtitle">Horeca in Utrecht</p>
   </div>
 
-  <p class="location-description">Sfeervolle horecagelegenheid op historisch fort aan de Gageldijk. Website vermeldt speeltuin en kindvriendelijkheid. Prachtige buitenlocatie aan het water, dagelijks open.</p>
+  <p class="location-description">Kindvriendelijk restaurant op een forteiland in Overvecht met buitenspeeltuin naast het terras en binnenhoek. Speeltuin heeft waterpompen, klimrek en zandbad.</p>
 
-  <div class="location-highlight"><strong>Peutertip:</strong> Speeltuin aanwezig op het terrein, kindvriendelijk fort aan het water met terras.</div>
+  <div class="location-highlight"><strong>Peutertip:</strong> Terras met speeltuin erbij. Peuters vermaken zich terwijl jij je koffie drinkt.</div>
 
   <div class="location-info">
     <div class="info-item"><div><div class="info-label">Weer</div><div class="info-value">Overdekt & buiten</div></div></div>
     <div class="info-item"><div><div class="info-label">Leeftijd</div><div class="info-value">0–12 jaar</div></div></div>
     <div class="info-item"><div><div class="info-label">Faciliteit</div><div class="info-value">Koffie voor ouders</div></div></div>
     <div class="info-item"><div><div class="info-label">Faciliteit</div><div class="info-value">Luierruimte</div></div></div>
-    <div class="info-item verified-badge"><div><div class="info-label">Status</div><div class="info-value">✓ Geverifieerd maart 2026</div></div></div>
+    <div class="info-item"><div><div class="info-label">Faciliteit</div><div class="info-value">Alcohol beschikbaar</div></div></div>
     <div class="info-item"><div><div class="info-label">Website</div><div class="info-value"><a href="https://fortdegagel.nl/" target="_blank" rel="noopener" aria-label="Website van Fort de Gagel">fortdegagel.nl</a></div></div></div>
   </div>
 
@@ -193,7 +198,7 @@
 </div>
 
   <div class="location-actions">
-    <a href="https://www.google.com/maps/dir/?api=1&destination=52.129543,5.102418" target="_blank" rel="noopener" class="btn-route">Route plannen</a>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=52.1195,5.0981" target="_blank" rel="noopener" class="btn-route">Route plannen</a>
   </div>
 
   <div class="share-buttons">
@@ -293,11 +298,11 @@
         var map = new maplibregl.Map({
           container: 'map',
           style: 'https://tiles.openfreemap.org/styles/positron',
-          center: [5.102418, 52.129543],
+          center: [5.0981, 52.1195],
           zoom: 14,
           attributionControl: false
         });
-        new maplibregl.Marker({ color: '#D4775A' }).setLngLat([5.102418, 52.129543]).addTo(map);
+        new maplibregl.Marker({ color: '#D4775A' }).setLngLat([5.0981, 52.1195]).addTo(map);
       };
       document.head.appendChild(s);
     }
