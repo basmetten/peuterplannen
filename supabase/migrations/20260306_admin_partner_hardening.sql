@@ -157,6 +157,9 @@ GRANT EXECUTE ON FUNCTION public.admin_approve_claim(UUID, UUID) TO service_role
 -- ----------------------------------------------------------------
 -- 4) Owner edit log trigger on partner-editable fields
 -- ----------------------------------------------------------------
+ALTER TABLE public.locations
+  ADD COLUMN IF NOT EXISTS opening_hours TEXT;
+
 CREATE OR REPLACE FUNCTION public.trg_log_owner_location_edits()
 RETURNS TRIGGER
 LANGUAGE plpgsql

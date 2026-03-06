@@ -47,6 +47,15 @@ fi
 
 mkdir -p "$OUTPUT_DIR"
 
+management_query() {
+  local sql="$1"
+  curl -fsS -X POST \
+    -H "Authorization: Bearer ${SUPABASE_ACCESS_TOKEN}" \
+    -H "Content-Type: application/json" \
+    "${SUPABASE_MANAGEMENT_API}/projects/${PROJECT_REF}/database/query" \
+    --data-binary @<(jq -n --arg query "${sql}" '{query:$query}')
+}
+
 detect_migration_changes() {
   local mode="${DEPLOY_SUPABASE_MIGRATIONS:-auto}"
 
@@ -167,18 +176,47 @@ deploy_functions() {
 }
 
 push_migrations_if_needed() {
+  local applied_json migration_file basename applied_version migration_name legacy_version
+
   if ! detect_migration_changes; then
     echo "No migration changes detected; skipping remote db push."
     return 0
   fi
 
-  if [[ -z "${SUPABASE_DB_PASSWORD:-}" ]]; then
-    echo "Migration changes detected but SUPABASE_DB_PASSWORD is missing." >&2
-    exit 1
-  fi
+  applied_json="$(
+    management_query "select version, coalesce(name, '') as name from supabase_migrations.schema_migrations order by version"
+  )"
 
-  supabase link --project-ref "${PROJECT_REF}" --password "${SUPABASE_DB_PASSWORD}" >/dev/null
-  supabase db push --linked --password "${SUPABASE_DB_PASSWORD}"
+  shopt -s nullglob
+  for migration_file in "${ROOT_DIR}"/supabase/migrations/*.sql; do
+    basename="$(basename "${migration_file}" .sql)"
+    migration_name="${basename#*_}"
+    legacy_version="${basename%%_*}"
+    applied_version="$(
+      printf '%s\n' "${applied_json}" | jq -r \
+        --arg version "${basename}" \
+        --arg legacy_version "${legacy_version}" \
+        --arg name "${migration_name}" \
+        '
+          map(select(
+            .version == $version
+            or (.version == $legacy_version and ((.name // "") == $name or (.name // "") == ""))
+          ))
+          | first
+          | .version // empty
+        '
+    )"
+
+    if [[ -n "${applied_version}" ]]; then
+      echo "Migration ${basename} already applied as ${applied_version}; skipping."
+      continue
+    fi
+
+    echo "Applying migration ${basename} via Supabase management API..."
+    management_query "$(cat "${migration_file}")" >/dev/null
+    management_query "insert into supabase_migrations.schema_migrations(version, name) values ('${basename}', '${migration_name}') on conflict (version) do nothing" >/dev/null
+  done
+  shopt -u nullglob
 }
 
 smoke_check() {
