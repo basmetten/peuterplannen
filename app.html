@@ -776,13 +776,13 @@
         }
         body.app-mode-animating[data-mode-direction="to-plan"] .app-context-strip,
         body.app-mode-animating[data-mode-direction="to-home"] .app-context-strip {
-          animation: 260ms cubic-bezier(0.22, 1, 0.36, 1) shell-enter-up;
+          animation: 320ms cubic-bezier(0.22, 1, 0.36, 1) shell-enter-up;
         }
         body.app-mode-animating[data-mode-direction="to-plan"] #plan-view:not(.hidden) {
-          animation: 320ms cubic-bezier(0.22, 1, 0.36, 1) shell-enter-right;
+          animation: 400ms cubic-bezier(0.22, 1, 0.36, 1) shell-enter-right;
         }
         body.app-mode-animating[data-mode-direction="to-home"] .app-wrapper:not(.hidden) {
-          animation: 320ms cubic-bezier(0.22, 1, 0.36, 1) shell-enter-left;
+          animation: 400ms cubic-bezier(0.22, 1, 0.36, 1) shell-enter-left;
         }
         @media (prefers-reduced-motion: reduce) {
           body.app-mode-animating .app-context-strip,
@@ -2854,7 +2854,7 @@
                 document.body.dataset.modeDirection = view === 'plan' ? 'to-plan' : 'to-home';
                 document.body.classList.add('app-mode-animating');
                 applyModeView(view);
-                window.setTimeout(cleanupModeAnimation, 360);
+                window.setTimeout(cleanupModeAnimation, 440);
                 return;
             }
             applyModeView(view);
