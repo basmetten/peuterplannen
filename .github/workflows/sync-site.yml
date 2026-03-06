@@ -52,13 +52,25 @@ jobs:
             exit 0
           fi
 
-          response="$(curl -sS -f \
-            -H "apikey: ${SUPABASE_SERVICE_KEY}" \
-            -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
-            -H "Content-Type: application/json" \
-            "${SUPABASE_URL}/rest/v1/site_publish_state?id=eq.1&select=dirty,pending_count" || true)"
+          tmp_response="$(mktemp)"
+          http_code="$(
+            curl -sS -o "${tmp_response}" -w "%{http_code}" \
+              -H "apikey: ${SUPABASE_SERVICE_KEY}" \
+              -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
+              -H "Content-Type: application/json" \
+              "${SUPABASE_URL}/rest/v1/site_publish_state?id=eq.1&select=dirty,pending_count" \
+              || true
+          )"
+          response="$(cat "${tmp_response}")"
+          rm -f "${tmp_response}"
 
-          if [[ -z "${response}" ]]; then
+          if [[ "${http_code}" == "404" ]]; then
+            echo "site_publish_state ontbreekt live; scheduled fallback wordt overgeslagen."
+            echo "run_build=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [[ ! "${http_code}" =~ ^[0-9]{3}$ || -z "${response}" || "${http_code}" -ge 400 ]]; then
             echo "Dirty-state niet leesbaar; build wordt uitgevoerd als fallback."
             echo "run_build=true" >> "$GITHUB_OUTPUT"
             exit 0
@@ -99,7 +111,7 @@ jobs:
         run: |
           set -euo pipefail
           TODAY="$(date -u +%Y-%m-%d)"
-          if [[ "${TODAY}" <= "2026-03-12" ]]; then
+          if [[ "${TODAY}" < "2026-03-13" ]]; then
             echo "Running consistency audit in warn-only mode (${TODAY})."
             node .scripts/audit_internal_consistency.js || true
           else
