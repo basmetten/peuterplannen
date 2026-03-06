@@ -147,6 +147,112 @@ main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
 .intro-box p:last-child { margin-bottom: 0; }
 .intro-box strong { color: var(--navy); }
 
+.guide-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin: 0 0 40px;
+}
+.guide-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,248,242,0.98));
+  border-radius: 16px;
+  padding: 24px 24px 22px;
+  border: 1px solid rgba(212,119,90,0.12);
+  box-shadow: 0 10px 26px rgba(45,41,38,0.07);
+}
+.guide-kicker {
+  display: inline-flex;
+  margin-bottom: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(212,119,90,0.08);
+  color: var(--primary-dark);
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-ui);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.guide-card h2,
+.guide-card h3 {
+  color: var(--navy);
+  font-size: clamp(24px, 2.2vw, 32px);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+  margin-bottom: 12px;
+}
+.guide-card h3 {
+  font-size: 22px;
+}
+.guide-card p {
+  color: var(--navy-light);
+  font-size: 15px;
+  line-height: 1.75;
+}
+.guide-list {
+  margin-top: 16px;
+  padding-left: 18px;
+  color: var(--navy-light);
+}
+.guide-list li {
+  margin-bottom: 10px;
+}
+.guide-links {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+.guide-link {
+  display: grid;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.75);
+  border: 1px solid rgba(45,41,38,0.08);
+  text-decoration: none;
+  color: var(--navy);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.guide-link:hover {
+  transform: translateY(-2px);
+  border-color: rgba(212,119,90,0.25);
+  box-shadow: 0 10px 20px rgba(45,41,38,0.08);
+}
+.guide-link strong {
+  font-size: 15px;
+}
+.guide-link span {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.guide-inline-link {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--primary-dark);
+  font-weight: 700;
+  text-decoration: none;
+}
+.guide-inline-link:hover {
+  text-decoration: underline;
+}
+.coverage-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.coverage-chip {
+  display: inline-flex;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: rgba(212,119,90,0.08);
+  border: 1px solid rgba(212,119,90,0.14);
+  color: var(--primary-dark);
+  font-size: 12px;
+  font-weight: 600;
+}
+
 /* Type sections (city pages) */
 .type-section { margin-bottom: 52px; }
 .type-section h2 { font-size: clamp(24px, 2.6vw, 32px); font-weight: 700; color: var(--navy); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(45,41,38,0.1); letter-spacing: -0.055em; line-height: 0.98; }

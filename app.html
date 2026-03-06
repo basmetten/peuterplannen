@@ -17,8 +17,8 @@
     <script src="/consent.js" defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>PeuterPlannen — Vind kindvriendelijke uitjes bij jou in de buurt</title>
-    <meta name="description" content="Ontdek uitjes voor peuters bij jou in de buurt. Filter op leeftijd, weer en vervoer. Alle locaties handmatig gecheckt — slimmer dan een chatbot.">
+    <title>PeuterPlannen app — vind peuteruitjes op afstand, type en weer</title>
+    <meta name="description" content="Gebruik de PeuterPlannen app om kindvriendelijke uitjes te vinden op afstand, type, leeftijd en weer. Met regiogidsen, planning en gecheckte locaties in Nederland.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://peuterplannen.nl/app.html">
 
@@ -36,7 +36,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://peuterplannen.nl/app.html">
     <meta property="og:title" content="PeuterPlannen — Kindvriendelijke uitjes in de buurt">
-    <meta property="og:description" content="1000 geverifieerde locaties: speeltuinen, restaurants, musea en natuur voor gezinnen in 18 regio's door heel Nederland.">
+    <meta property="og:description" content="2170 geverifieerde locaties: speeltuinen, restaurants, musea en natuur voor gezinnen in 18 regio's door heel Nederland.">
     <meta property="og:locale" content="nl_NL">
     <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
     <meta property="og:image:width" content="1408">
@@ -54,7 +54,7 @@
       "@type": "WebApplication",
       "name": "PeuterPlannen",
       "url": "https://peuterplannen.nl/app.html",
-      "description": "Interactieve kaart met 1000 kindvriendelijke locaties. Filter op type: speeltuin, restaurant, museum, natuur.",
+      "description": "Interactieve kaart met 2170 kindvriendelijke locaties. Filter op type: speeltuin, restaurant, museum, natuur.",
       "applicationCategory": "LifestyleApplication",
       "operatingSystem": "Any",
       "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
@@ -230,6 +230,92 @@
             transform: translateY(-1px);
         }
         .plan-mode-toolbar { margin-bottom: 18px; }
+        .app-seo-content {
+            max-width: 1280px;
+            margin: 28px auto 84px;
+            padding: 0 16px;
+        }
+        .app-seo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+        .app-seo-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,248,242,0.98));
+            border: 1px solid rgba(212, 119, 90, 0.12);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 14px 30px rgba(45, 41, 38, 0.08);
+        }
+        .app-seo-kicker {
+            display: inline-flex;
+            margin-bottom: 12px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(212, 119, 90, 0.09);
+            color: var(--primary-dark);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            font-family: var(--font-ui);
+        }
+        .app-seo-card h2, .app-seo-card h3 {
+            font-family: var(--font-heading);
+            font-size: clamp(24px, 2.2vw, 34px);
+            line-height: 0.98;
+            letter-spacing: -0.05em;
+            margin-bottom: 12px;
+        }
+        .app-seo-card h3 { font-size: 22px; }
+        .app-seo-card p, .app-seo-card li {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.75;
+        }
+        .app-seo-card ul {
+            padding-left: 18px;
+            margin-top: 14px;
+        }
+        .app-seo-card li { margin-bottom: 8px; }
+        .app-seo-links {
+            display: grid;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .app-seo-link {
+            display: grid;
+            gap: 4px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.75);
+            border: 1px solid rgba(45,41,38,0.08);
+            text-decoration: none;
+            color: var(--text);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        }
+        .app-seo-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(45,41,38,0.08);
+            border-color: rgba(212,119,90,0.24);
+        }
+        .app-seo-link strong { font-size: 15px; }
+        .app-seo-link span { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+        .app-seo-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .app-seo-chip {
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: rgba(212, 119, 90, 0.08);
+            border: 1px solid rgba(212, 119, 90, 0.14);
+            color: var(--primary-dark);
+            font-size: 12px;
+            font-weight: 600;
+        }
 
         @media (prefers-reduced-motion: no-preference) {
           ::view-transition-old(app-browser) {
@@ -796,27 +882,27 @@
 <noscript>
   <div>
     <h1>PeuterPlannen</h1>
-    <p>1000 uitjes voor gezinnen met jonge kinderen.</p>
+    <p>2170 uitjes voor gezinnen met jonge kinderen.</p>
     <h2>Per stad</h2>
     <ul>
-      <li><a href="amsterdam.html">Amsterdam (160 locaties)</a></li>
-      <li><a href="rotterdam.html">Rotterdam (85 locaties)</a></li>
-      <li><a href="den-haag.html">Den Haag (86 locaties)</a></li>
-      <li><a href="utrecht.html">Utrecht (98 locaties)</a></li>
-      <li><a href="haarlem.html">Haarlem (58 locaties)</a></li>
-      <li><a href="amersfoort.html">Amersfoort (13 locaties)</a></li>
-      <li><a href="leiden.html">Leiden (24 locaties)</a></li>
-      <li><a href="utrechtse-heuvelrug.html">Utrechtse Heuvelrug (64 locaties)</a></li>
-      <li><a href="eindhoven.html">Eindhoven (36 locaties)</a></li>
-      <li><a href="groningen.html">Groningen (58 locaties)</a></li>
-      <li><a href="almere.html">Almere (42 locaties)</a></li>
-      <li><a href="tilburg.html">Tilburg (28 locaties)</a></li>
-      <li><a href="breda.html">Breda (39 locaties)</a></li>
-      <li><a href="nijmegen.html">Nijmegen (28 locaties)</a></li>
-      <li><a href="arnhem.html">Arnhem (34 locaties)</a></li>
-      <li><a href="apeldoorn.html">Apeldoorn (42 locaties)</a></li>
-      <li><a href="s-hertogenbosch.html">'s-Hertogenbosch (72 locaties)</a></li>
-      <li><a href="gooi-en-vechtstreek.html">Gooi en Vechtstreek (33 locaties)</a></li>
+      <li><a href="amsterdam.html">Amsterdam (314 locaties)</a></li>
+      <li><a href="rotterdam.html">Rotterdam (166 locaties)</a></li>
+      <li><a href="den-haag.html">Den Haag (215 locaties)</a></li>
+      <li><a href="utrecht.html">Utrecht (230 locaties)</a></li>
+      <li><a href="haarlem.html">Haarlem (128 locaties)</a></li>
+      <li><a href="amersfoort.html">Amersfoort (44 locaties)</a></li>
+      <li><a href="leiden.html">Leiden (86 locaties)</a></li>
+      <li><a href="utrechtse-heuvelrug.html">Utrechtse Heuvelrug (126 locaties)</a></li>
+      <li><a href="eindhoven.html">Eindhoven (74 locaties)</a></li>
+      <li><a href="groningen.html">Groningen (110 locaties)</a></li>
+      <li><a href="almere.html">Almere (74 locaties)</a></li>
+      <li><a href="tilburg.html">Tilburg (81 locaties)</a></li>
+      <li><a href="breda.html">Breda (85 locaties)</a></li>
+      <li><a href="nijmegen.html">Nijmegen (73 locaties)</a></li>
+      <li><a href="arnhem.html">Arnhem (88 locaties)</a></li>
+      <li><a href="apeldoorn.html">Apeldoorn (82 locaties)</a></li>
+      <li><a href="s-hertogenbosch.html">'s-Hertogenbosch (121 locaties)</a></li>
+      <li><a href="gooi-en-vechtstreek.html">Gooi en Vechtstreek (73 locaties)</a></li>
     </ul>
     <h2>Per type</h2>
     <ul>
@@ -1051,6 +1137,49 @@
         </div>
     </section>
 
+    <section class="app-seo-content" aria-labelledby="app-seo-heading">
+        <div class="app-seo-grid">
+            <article class="app-seo-card">
+                <p class="app-seo-kicker">Waarom deze pagina bestaat</p>
+                <h2 id="app-seo-heading">De app is bedoeld om sneller tot een echte shortlist te komen</h2>
+                <p>PeuterPlannen is geen losse kaart met willekeurige pins. De app combineert afstand, type uitje, leeftijd, weer en praktische voorzieningen zodat ouders niet steeds opnieuw hoeven te zoeken. Daardoor werkt deze pagina anders dan een standaard stads- of lijstpagina: hier begin je met je situatie van vandaag.</p>
+                <ul>
+                    <li><strong>Zoeken op afstand:</strong> handig als je niet weet welke wijk of gemeente het beste uitkomt.</li>
+                    <li><strong>Filteren op dagtype:</strong> buiten, regenproof, koffie, verschonen of alleen favorieten.</li>
+                    <li><strong>Plan mijn dag:</strong> logischer voor ouders die niet één plek zoeken maar een dagritme willen bouwen.</li>
+                </ul>
+            </article>
+            <article class="app-seo-card">
+                <p class="app-seo-kicker">Regionale shortcuts</p>
+                <h3>Begin desnoods toch met een regio- of themapagina</h3>
+                <p>Voor Google en voor ouders werkt het vaak beter om eerst te landen op een regio- of themapagina en daarna pas de app te openen. Daarom horen deze pagina’s bij elkaar.</p>
+                <div class="app-seo-links">
+                    <a href="/amsterdam.html" class="app-seo-link"><strong>Amsterdam met peuters</strong><span>Stadsgids met locaties, context en link naar de app.</span></a>
+                    <a href="/utrecht.html" class="app-seo-link"><strong>Utrecht met peuters</strong><span>Voor wie eerst een regio-overzicht wil en daarna op afstand zoekt.</span></a>
+                    <a href="/speeltuinen.html" class="app-seo-link"><strong>Speeltuinen voor peuters</strong><span>Landelijke typepagina voor buitenspeelplekken en indoor regenbackup.</span></a>
+                    <a href="/horeca.html" class="app-seo-link"><strong>Kindvriendelijke horeca</strong><span>Voor lunch, koffie en plekken waar kinderen niet alleen stil hoeven te zitten.</span></a>
+                </div>
+            </article>
+            <article class="app-seo-card">
+                <p class="app-seo-kicker">Waarop je kunt filteren</p>
+                <h3>De app is het sterkst voor praktische keuzes</h3>
+                <p>De filterlaag is gebouwd voor de vragen die ouders echt stellen op een drukke dag: wat is dichtbij, wat werkt met een dreumes, wat kan binnen, en waar kun je onderweg nog fatsoenlijk zitten of verschonen.</p>
+                <div class="app-seo-chip-row">
+                    <span class="app-seo-chip">Speeltuin</span>
+                    <span class="app-seo-chip">Kinderboerderij</span>
+                    <span class="app-seo-chip">Museum</span>
+                    <span class="app-seo-chip">Pannenkoeken</span>
+                    <span class="app-seo-chip">Binnen</span>
+                    <span class="app-seo-chip">Buiten</span>
+                    <span class="app-seo-chip">Koffie</span>
+                    <span class="app-seo-chip">Verschonen</span>
+                    <span class="app-seo-chip">Dreumes</span>
+                    <span class="app-seo-chip">Peuter</span>
+                </div>
+            </article>
+        </div>
+    </section>
+
     <!-- Info panel (slide-up bottom sheet) -->
     <div class="info-overlay" id="info-overlay" onclick="closeInfoPanel()" aria-hidden="true"></div>
     <div class="info-panel" id="info-panel" role="dialog" aria-label="Over PeuterPlannen" aria-hidden="true">
@@ -1067,7 +1196,7 @@
             <!-- BEGIN:INFO_STATS -->
             <div class="info-stats">
                 <div class="info-stat">
-                    <strong>1000+</strong>
+                    <strong>2170+</strong>
                     <span>Locaties</span>
                 </div>
                 <div class="info-stat">

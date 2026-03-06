@@ -364,6 +364,21 @@ function slugify(text) {
     .replace(/(^-|-$)/g, '');
 }
 
+function normalizeExternalUrl(url) {
+  if (!url || typeof url !== 'string') return '';
+  const trimmed = url.trim();
+  if (!trimmed) return '';
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (/^\/\//.test(trimmed)) return `https:${trimmed}`;
+  return `https://${trimmed.replace(/^\/+/, '')}`;
+}
+
+function displayExternalUrl(url) {
+  const normalized = normalizeExternalUrl(url);
+  if (!normalized) return '';
+  return normalized.replace(/^https?:\/\/(www\.)?/i, '').replace(/\/$/, '');
+}
+
 async function fetchJSON(endpoint, query = '') {
   const base = SB_URL.includes('supabase.co') ? SB_URL : SB_PROJECT;
   const url = `${base}/rest/v1/${endpoint}?${query}`;
@@ -376,6 +391,22 @@ async function fetchJSON(endpoint, query = '') {
     throw err;
   }
   return res.json();
+}
+
+async function fetchAllJSON(endpoint, query = '', pageSize = 1000) {
+  const rows = [];
+  let offset = 0;
+
+  while (true) {
+    const pageQuery = `${query}${query ? '&' : ''}limit=${pageSize}&offset=${offset}`;
+    const page = await fetchJSON(endpoint, pageQuery);
+    if (!Array.isArray(page) || page.length === 0) break;
+    rows.push(...page);
+    if (page.length < pageSize) break;
+    offset += page.length;
+  }
+
+  return rows;
 }
 
 // === Reusable HTML Snippets ===
@@ -536,7 +567,7 @@ async function fetchData() {
     }
   }
 
-  const locations = await fetchJSON('locations', 'select=*&order=name');
+  const locations = await fetchAllJSON('locations', 'select=*&order=name');
   console.log(`  ${locations.length} locations\n`);
 
   // Counts
@@ -882,7 +913,8 @@ function updateManifest(data) {
 
 function locationHTML_city(loc) {
   const locationUrl = loc.pageUrl || '#';
-  const websiteLink = loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van ${escapeHtml(loc.name)}">Website</a>` : '';
+  const normalizedWebsite = normalizeExternalUrl(loc.website);
+  const websiteLink = normalizedWebsite ? `<a href="${escapeHtml(normalizedWebsite)}" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van ${escapeHtml(loc.name)}">Website</a>` : '';
   const desc = isFillerDescription(loc.description) ? '' : (loc.description || '');
   return `
       <article class="loc-item">
@@ -935,6 +967,40 @@ function generateCityPage(region, locs, allRegions) {
     : '';
 
   const cityFaqItems = CITY_FAQ[region.slug] || [];
+  const strongestTypes = TYPE_ORDER
+    .map((type) => ({ type, count: byType[type]?.length || 0 }))
+    .filter((entry) => entry.count > 0)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 3);
+  const topPicks = locs.slice(0, 3);
+  const municipalityChips = coverage?.length
+    ? coverage.map((name) => `<span class="coverage-chip">${escapeHtml(name)}</span>`).join('')
+    : '';
+  const cityGuideHTML = `<section class="guide-section city-guide">
+    <div class="guide-card">
+      <p class="guide-kicker">Sneller kiezen in ${region.name}</p>
+      <h2>Begin niet met alle kaarten tegelijk</h2>
+      <p>Deze regiopagina werkt het best als je eerst kiest op soort dag. In ${region.name} zijn vooral ${strongestTypes.map((entry) => (TYPE_MAP[entry.type]?.labelSingle || entry.type).toLowerCase()).join(', ')} sterk vertegenwoordigd. Daardoor kun je sneller van “wat zullen we doen?” naar een shortlist die echt past bij jonge kinderen.</p>
+      <ul class="guide-list">
+        <li><strong>Ochtend:</strong> buiten, dieren of een rustige speeltuin werkt meestal beter dan direct horeca.</li>
+        <li><strong>Regenbackup:</strong> kies daarna pas een museum, binnenspeelplek of horeca met speelhoek.</li>
+        <li><strong>Minder centrumstress:</strong> veel goede peuterplekken liggen net buiten de drukste winkelstraten.</li>
+      </ul>
+    </div>
+    <div class="guide-card">
+      <p class="guide-kicker">Regiodekking</p>
+      <h2>${coverage?.length ? 'Niet alleen de stad zelf' : `Wat je hier vindt in ${region.name}`}</h2>
+      <p>${coverage?.length ? `Deze pagina bundelt ook omliggende gemeenten, zodat je niet onnodig hoeft te wisselen tussen losse stadspagina’s. Dat past beter bij hoe ouders echt zoeken: binnen een redelijke fiets- of rijafstand.` : `Deze overzichtspagina verzamelt de plekken die in ${region.name} het vaakst bruikbaar zijn voor een peuterdag, met directe links naar detailpagina’s en de app.`}</p>
+      ${municipalityChips ? `<div class="coverage-chip-row">${municipalityChips}</div>` : ''}
+    </div>
+    ${topPicks.length ? `<div class="guide-card">
+      <p class="guide-kicker">Snelste shortlist</p>
+      <h2>Drie plekken om mee te beginnen</h2>
+      <div class="guide-links">
+        ${topPicks.map((loc) => `<a href="${loc.pageUrl}" class="guide-link"><strong>${escapeHtml(loc.name)}</strong><span>${escapeHtml(TYPE_MAP[loc.type]?.labelSingle || loc.type)}${loc.toddler_highlight ? ` · ${escapeHtml(cleanToddlerHighlight(loc.toddler_highlight).split(/[.!?]/)[0])}` : ''}</span></a>`).join('')}
+      </div>
+    </div>` : ''}
+  </section>`;
   const cityFaqLd = cityFaqItems.length > 0 ? JSON.stringify({
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -1026,6 +1092,8 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
     <p>${region.blurb} ${weatherNote}Op deze pagina vind je <strong>${locs.length} locaties</strong> in de regio ${region.name}.${coverageNote} Gecheckt op kindvriendelijkheid en of het echt werkt met een peuter.</p>
   </div>
 
+  ${cityGuideHTML}
+
   <div class="city-app-cta">
     <span>Zoek op jouw locatie en ontdek wat dichtbij is</span>
     <a href="/app.html?regio=${encodeURIComponent(region.name)}" class="btn-app-cta">Open de app</a>
@@ -1082,7 +1150,8 @@ function generateCityPages(data) {
 
 function locationHTML_type(loc) {
   const locationUrl = loc.pageUrl || '#';
-  const websiteLink = loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van ${escapeHtml(loc.name)}">Website</a>` : '';
+  const normalizedWebsite = normalizeExternalUrl(loc.website);
+  const websiteLink = normalizedWebsite ? `<a href="${escapeHtml(normalizedWebsite)}" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van ${escapeHtml(loc.name)}">Website</a>` : '';
   const regionLabel = loc.region === 'Overig' ? 'Overig Nederland' : loc.region;
   const desc = isFillerDescription(loc.description) ? '' : (loc.description || '');
   return `
@@ -1133,6 +1202,31 @@ function generateTypePage(page, locs, regions) {
     .join(' &middot; ');
 
   const cityLinks = regions.map(r => `<a href="/${r.slug}.html">${r.name}</a>`).join(' &middot; ');
+  const strongestRegions = regionOrder.filter((r) => byRegion[r]?.length > 0).slice(0, 6);
+  const typeGuideHTML = `<section class="guide-section type-guide">
+    <div class="guide-card">
+      <p class="guide-kicker">Hoe we selecteren</p>
+      <h2>Niet elke plek met dit label haalt de site</h2>
+      <p>Deze pagina is geen kale categorie-export. We kiezen locaties op bruikbaarheid voor ouders met peuters: tempo, overzicht, praktische voorzieningen en de vraag of een plek ook op een rommelige dag nog werkt.</p>
+      <ul class="guide-list">
+        <li><strong>Praktisch eerst:</strong> werkt het met kinderwagen, korte spanningsboog en wisselend weer?</li>
+        <li><strong>Niet alleen populair:</strong> een drukke hotspot is niet automatisch prettig met jonge kinderen.</li>
+        <li><strong>Doorzoeken per regio:</strong> gebruik deze pagina om eerst op type te kiezen en daarna pas op stad of detailpagina.</li>
+      </ul>
+    </div>
+    ${strongestRegions.map((regionName) => {
+      const picks = byRegion[regionName].slice(0, 2);
+      return `<article class="guide-card">
+        <p class="guide-kicker">${escapeHtml(regionName)}</p>
+        <h3>${page.sectionLabel} in ${escapeHtml(regionName)}</h3>
+        <p>${byRegion[regionName].length} locaties in deze regio. Handig als je meteen vanuit het type wilt inzoomen naar een concrete stadsgids.</p>
+        <div class="guide-links">
+          ${picks.map((loc) => `<a href="${loc.pageUrl}" class="guide-link"><strong>${escapeHtml(loc.name)}</strong><span>${loc.toddler_highlight ? escapeHtml(cleanToddlerHighlight(loc.toddler_highlight).split(/[.!?]/)[0]) : `Bekijk de detailpagina van ${escapeHtml(loc.name)}`}</span></a>`).join('')}
+        </div>
+        <a href="/${slugify(regionName)}.html" class="guide-inline-link">Bekijk heel ${escapeHtml(regionName)}</a>
+      </article>`;
+    }).join('')}
+  </section>`;
 
   const regionNamesStr = regions.slice(0, 4).map(r => r.name).join(', ') + ' en omgeving';
 
@@ -1213,6 +1307,8 @@ ${navHTML()}
   <div class="intro-box">
     ${page.intro.split('\n\n').map(p => `<p>${p.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>`).join('\n    ')}
   </div>
+
+  ${typeGuideHTML}
 
   ${sectionsHTML}
 
@@ -1466,7 +1562,8 @@ function locationPageHTML(loc, region, similarLocs) {
     const label = `Geverifieerd ${d.toLocaleString('nl-NL', { month: 'long', year: 'numeric' })}`;
     infoItems.push(`<div class="info-item verified-badge"><div><div class="info-label">Status</div><div class="info-value">✓ ${label}</div></div></div>`);
   }
-  if (loc.website) infoItems.push(`<div class="info-item"><div><div class="info-label">Website</div><div class="info-value"><a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" aria-label="Website van ${escapeHtml(loc.name)}">${escapeHtml(loc.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''))}</a></div></div></div>`);
+  const normalizedWebsite = normalizeExternalUrl(loc.website);
+  if (normalizedWebsite) infoItems.push(`<div class="info-item"><div><div class="info-label">Website</div><div class="info-value"><a href="${escapeHtml(normalizedWebsite)}" target="_blank" rel="noopener" aria-label="Website van ${escapeHtml(loc.name)}">${escapeHtml(displayExternalUrl(normalizedWebsite))}</a></div></div></div>`);
 
   const regionSlug = (region.slug || '').toLowerCase();
   const publishedBlogSlugs = getPublishedBlogSlugSet();
@@ -1499,7 +1596,7 @@ function locationPageHTML(loc, region, similarLocs) {
     "name": loc.name,
     "description": metaDesc,
     "url": fullUrl,
-    ...(loc.website && { "sameAs": loc.website }),
+    ...(normalizedWebsite && { "sameAs": normalizedWebsite }),
     ...(loc.lat && loc.lng && {
       "geo": { "@type": "GeoCoordinates", "latitude": loc.lat, "longitude": loc.lng }
     }),
@@ -1689,6 +1786,7 @@ function generateLocationPages(data) {
   for (const [rSlug, locs] of Object.entries(regionGroups)) {
     const regionBase = regionMap[rSlug] || { name: locs[0]?.region || rSlug, slug: rSlug, blurb: '' };
     const region = { ...regionBase, subtitleLabel: subtitleLabelMap[rSlug] };
+    const expectedSlugs = new Set(locs.map((loc) => loc.locSlug));
 
     // Create region directory
     const regionDir = path.join(ROOT, rSlug);
@@ -1707,6 +1805,16 @@ function generateLocationPages(data) {
 
       fs.writeFileSync(path.join(locDir, 'index.html'), html);
       count++;
+    }
+
+    for (const entry of fs.readdirSync(regionDir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      if (expectedSlugs.has(entry.name)) continue;
+      const staleDir = path.join(regionDir, entry.name);
+      const staleIndex = path.join(staleDir, 'index.html');
+      if (fs.existsSync(staleIndex)) {
+        fs.rmSync(staleDir, { recursive: true, force: true });
+      }
     }
   }
 
@@ -1892,6 +2000,9 @@ ${analyticsHTML()}
       "url": "https://peuterplannen.nl/"
     }
   }, null, 2);
+  const featuredBlogTags = Array.from(new Set(publishedPosts.flatMap((p) => p.tags || []))).slice(0, 8);
+  const cityGuidePosts = publishedPosts.filter((p) => /(met-peuters|met-peuters-en-kleuters)/.test(p.slug)).slice(0, 6);
+  const practicalGuidePosts = publishedPosts.filter((p) => !cityGuidePosts.includes(p)).slice(0, 6);
 
   const indexHTML = `<!DOCTYPE html>
 <html lang="nl">
@@ -1934,6 +2045,31 @@ ${navHTML()}
 </nav>
 
 <main id="main-content">
+  <section class="guide-section blog-guide">
+    <div class="guide-card">
+      <p class="guide-kicker">Wat je hier krijgt</p>
+      <h2>Geen generieke lijstjes, wel gidsen waar je direct iets aan hebt</h2>
+      <p>Deze blog is geschreven voor ouders die sneller een werkbare dag willen plannen. Daarom combineren we regiogidsen, regenopties, horeca-keuzes en leeftijdsspecifieke tips tot artikelen die logisch op elkaar aansluiten.</p>
+      <div class="coverage-chip-row">
+        ${featuredBlogTags.map((tag) => `<span class="coverage-chip">${escapeHtml(tag)}</span>`).join('')}
+      </div>
+    </div>
+    <div class="guide-card">
+      <p class="guide-kicker">Stadsgidsen</p>
+      <h2>Begin met een regio die op jouw dag lijkt</h2>
+      <div class="guide-links">
+        ${cityGuidePosts.map((p) => `<a href="/blog/${p.slug}/" class="guide-link"><strong>${escapeHtml(p.title)}</strong><span>${escapeHtml(p.description)}</span></a>`).join('')}
+      </div>
+    </div>
+    <div class="guide-card">
+      <p class="guide-kicker">Praktische thema's</p>
+      <h2>Of kies eerst op leeftijd, regen of budget</h2>
+      <div class="guide-links">
+        ${practicalGuidePosts.map((p) => `<a href="/blog/${p.slug}/" class="guide-link"><strong>${escapeHtml(p.title)}</strong><span>${escapeHtml(p.description)}</span></a>`).join('')}
+      </div>
+    </div>
+  </section>
+
   <div class="blog-grid">
     ${postCards}
   </div>
