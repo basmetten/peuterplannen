@@ -1656,6 +1656,25 @@
         }
 
         // === Data Loading ===
+        async function fetchAllPages(baseUrl, signal) {
+            const BATCH = 1000;
+            const headers = { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" };
+            let all = [], offset = 0;
+            while (true) {
+                const url = `${baseUrl}&limit=${BATCH}&offset=${offset}`;
+                const opts = { method: 'GET', headers };
+                if (signal) opts.signal = signal;
+                const resp = await fetch(url, opts);
+                if (!resp.ok) throw new Error('Fetch failed: ' + resp.status);
+                const batch = await resp.json();
+                if (!Array.isArray(batch) || batch.length === 0) break;
+                all = all.concat(batch);
+                if (batch.length < BATCH) break;
+                offset += BATCH;
+            }
+            return all;
+        }
+
         let currentAbort = null;
         async function loadLocations() {
             if (currentAbort) currentAbort.abort();
@@ -1671,9 +1690,7 @@
                 if (activeFacilities.diaper) url += "&diaper=eq.true";
                 if (activeRegion) url += "&region=eq." + encodeURIComponent(activeRegion);
                 url += "&order=created_at.desc";
-                const response = await fetch(url, { method: 'GET', signal: currentAbort.signal, headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" } });
-                if (!response.ok) throw new Error('Fetch failed: ' + response.status);
-                allLocations = await response.json();
+                allLocations = await fetchAllPages(url, currentAbort.signal);
 
                 if (activeTag === 'favorites') {
                     const favorites = getFavorites();
@@ -2502,9 +2519,7 @@
         async function fetchPlanLocations() {
             if (planLocationsCache && planLocationsCache.length > 0) return planLocationsCache;
             const url = SB_URL + "?select=id,name,type,region,lat,lng,weather,min_age,max_age,toddler_highlight,is_featured,coffee,diaper&order=created_at.desc";
-            const res = await fetch(url, { headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY } });
-            if (!res.ok) throw new Error('Could not fetch locations for plan');
-            planLocationsCache = await res.json();
+            planLocationsCache = await fetchAllPages(url);
             return planLocationsCache;
         }
 

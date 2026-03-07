@@ -71,7 +71,7 @@ const TYPE_PAGES = [
     slug: 'speeltuinen', dbType: 'play',
     title: 'Speeltuinen voor peuters in Nederland',
     metaTitle: 'Speeltuinen voor peuters, indoor en outdoor | PeuterPlannen',
-    metaDesc: 'Speeltuinen en speelparadijzen voor peuters in 17 regio\'s door heel Nederland. Indoor en outdoor, gecheckt en actueel.',
+    metaDesc: 'Speeltuinen en speelparadijzen voor peuters in 18 regio\'s door heel Nederland. Indoor en outdoor, gecheckt en actueel.',
     h1: 'Speeltuinen voor peuters in Nederland',
     intro: `Niet elke speeltuin werkt voor peuters. Een klimrek van twee meter hoog en een schommel zonder beugel: leuk voor een zesjarige, niet voor je dreumes. De speeltuinen op deze pagina zijn allemaal gecheckt op geschiktheid voor kinderen van 1 tot 5 jaar.\n\nGrofweg twee smaken: **buitenspeeltuinen** (gratis, lekker in de zon) en **indoor speelparadijzen** (redding bij regen). Ketens als Monkey Town en Ballorig zitten door het hele land, wat handig is als je weet wat je kunt verwachten.`,
     sectionLabel: 'Speeltuinen',
@@ -85,7 +85,7 @@ const TYPE_PAGES = [
     slug: 'kinderboerderijen', dbType: 'farm',
     title: 'Kinderboerderijen voor peuters in Nederland',
     metaTitle: 'Kinderboerderijen voor peuters, gratis en betaald | PeuterPlannen',
-    metaDesc: 'De leukste kinderboerderijen en stadsboerderijen voor peuters in 17 regio\'s door heel Nederland. Gratis, met dieren aaien en speeltuinen.',
+    metaDesc: 'De leukste kinderboerderijen en stadsboerderijen voor peuters in 18 regio\'s door heel Nederland. Gratis, met dieren aaien en speeltuinen.',
     h1: 'Kinderboerderijen voor peuters in Nederland',
     intro: `Kinderboerderijen zijn de ideale uitjes voor peuters. Dieren aaien, geiten voeren, kippen bekijken en ondertussen lekker buiten spelen. De meeste stadsboerderijen in Nederland zijn gratis toegankelijk en hebben ook een zandbak of speeltuintje.\n\nVan **Kinderboerderij Westerpark** in Amsterdam tot **Stadsboerderij De Veldhoeve** in Utrecht en **Kinderboerderij Vroesenpark** in Rotterdam — er is altijd een kinderboerderij in de buurt. Veel boerderijen hebben ook een terrasje waar ouders een kop koffie kunnen drinken.`,
     sectionLabel: 'Kinderboerderijen',
@@ -99,7 +99,7 @@ const TYPE_PAGES = [
     slug: 'musea', dbType: 'museum',
     title: 'Musea voor peuters in Nederland',
     metaTitle: 'Musea voor peuters, interactief en ontdekkend | PeuterPlannen',
-    metaDesc: 'Welke musea zijn echt leuk voor peuters? 60+ kindvriendelijke musea in 17 regio\'s door heel Nederland. Met leeftijdsadvies.',
+    metaDesc: 'Welke musea zijn echt leuk voor peuters? 60+ kindvriendelijke musea in 18 regio\'s door heel Nederland. Met leeftijdsadvies.',
     h1: 'Musea voor peuters in Nederland',
     intro: `De meeste musea zijn niets voor peuters. "Niet aankomen" en "stil zijn" werkt niet met een tweejarige. Maar een handvol musea in Nederland snapt dat wel: lage vitrines, knoppen om op te drukken, en dingen die tegen een stootje kunnen.\n\nDe toppers: het **Nijntje Museum** in Utrecht (0–6 jaar, alles op kruiphoogte), **NEMO** in Amsterdam (water, licht, geluid) en **Villa Zebra** in Rotterdam (kunst waarbij je mag kliederen). Musea als het Anne Frank Huis of het Verzetsmuseum? Bewaar die voor als ze 10 zijn.`,
     sectionLabel: 'Musea',
@@ -113,7 +113,7 @@ const TYPE_PAGES = [
     slug: 'pannenkoeken', dbType: 'pancake',
     title: 'Pannenkoekenrestaurants voor kinderen in Nederland',
     metaTitle: 'Pannenkoekenrestaurants voor kinderen, heel Nederland | PeuterPlannen',
-    metaDesc: 'Pannenkoekenrestaurants voor gezinnen met jonge kinderen in 17 regio\'s door heel Nederland. Met info over kindvriendelijkheid, terras en luierruimte.',
+    metaDesc: 'Pannenkoekenrestaurants voor gezinnen met jonge kinderen in 18 regio\'s door heel Nederland. Met info over kindvriendelijkheid, terras en luierruimte.',
     h1: 'Pannenkoekenrestaurants voor kinderen in Nederland',
     intro: `Pannenkoeken zijn de veiligste gok als je uit eten gaat met een peuter. Bijna elk kind lust ze, je hoeft niet lang te wachten, en het maakt niet uit als de helft op de grond belandt. Nederland zit vol met pannenkoekenrestaurants, van een hutje in het bos tot een boot op de rivier.\n\nWaar let je op? **Ruimte voor de kinderwagen**, een **kindermenu met kleine pannenkoeken** (scheelt knoeien), en het liefst een **speelhoek of terras**. Ketens als **Pannenkoe** zijn specifiek op gezinnen gericht. Klassiekers als **De Nachtegaal** in Rotterdam of **Oudt Leyden** bij Leiden bestaan al tientallen jaren.`,
     sectionLabel: 'Pannenkoeken',
@@ -127,7 +127,7 @@ const TYPE_PAGES = [
     slug: 'natuur', dbType: 'nature',
     title: 'Natuur met peuters in Nederland',
     metaTitle: 'Natuur met peuters, parken, bossen en duinen | PeuterPlannen',
-    metaDesc: 'Stadsparken, duinen, bossen en natuurspeelplaatsen voor peuters in 17 regio\'s door heel Nederland. Gratis en betaald, altijd buiten.',
+    metaDesc: 'Stadsparken, duinen, bossen en natuurspeelplaatsen voor peuters in 18 regio\'s door heel Nederland. Gratis en betaald, altijd buiten.',
     h1: 'Natuur met peuters in Nederland',
     intro: `Naar buiten met je peuter hoeft niet ingewikkeld te zijn. Een stadspark met een zandbak, een bos met een klauterparcours, of de duinen met een picknick — kinderen vermaken zich overal waar ze kunnen rennen, graven en ontdekken.\n\n**Stadsparken** voor een rustige ochtend met een picknick, **duinen** bij Den Haag of het **Nationaal Park Zuid-Kennemerland** bij Haarlem voor als je iets avontuurlijkers wilt, of **natuurspeelplaatsen** waar kinderen met water, zand en hout kunnen spelen. En het mooie is dat je hier nauwelijks geld aan kwijt bent.`,
     sectionLabel: 'Natuur',
@@ -155,7 +155,7 @@ const TYPE_PAGES = [
     slug: 'horeca', dbType: 'horeca',
     title: 'Kindvriendelijke restaurants en cafes in Nederland',
     metaTitle: 'Kindvriendelijke horeca voor gezinnen, heel Nederland | PeuterPlannen',
-    metaDesc: 'Kindvriendelijke restaurants en cafes in 17 regio\'s door heel Nederland. Met speelhoek, kindermenu, terras en luierruimte. Gecheckt op kindvriendelijkheid.',
+    metaDesc: 'Kindvriendelijke restaurants en cafes in 18 regio\'s door heel Nederland. Met speelhoek, kindermenu, terras en luierruimte. Gecheckt op kindvriendelijkheid.',
     h1: 'Kindvriendelijke restaurants en cafes in Nederland',
     intro: `Uit eten met een peuter is een sport. De kinderwagen moet ergens staan, er moet iets op de kaart staan dat ze lusten, en het liefst is er een speelhoek zodat jij je koffie op kunt drinken. Niet elk restaurant kan dat. De plekken op deze pagina wel.\n\nVan **kindercafes** (speciaal voor ouders met baby's en peuters) tot een **grand cafe met groot terras**, van een **pannenkoekenboot** tot een **strandpaviljoen**. We checken op de dingen die ertoe doen: koffie, luierruimte, en of er ook een biertje kan.`,
     sectionLabel: 'Horeca',
@@ -761,6 +761,16 @@ ${areaServed}
 
   // Also update OG/Twitter descriptions with correct count
   content = content.replace(/\d+ geverifieerde kindvriendelijke locaties/g, `${total} geverifieerde kindvriendelijke locaties`);
+  // Also update meta name="description" (different phrasing, not matched by above)
+  content = content.replace(
+    /(<meta name="description" content=")\d+ kindvriendelijke locaties in Nederland/,
+    `$1${total} kindvriendelijke locaties in Nederland`
+  );
+  // Hero badge — scoped to the exact span to avoid false positives
+  content = content.replace(
+    /(style="color:var\(--ink-muted\);"[^>]*>)\d+\+ locaties/,
+    `$1${total}+ locaties`
+  );
 
   fs.writeFileSync(path.join(ROOT, 'index.html'), content);
   console.log(`Updated index.html (${total} locaties, ${regions.length} regio's)`);
@@ -846,6 +856,11 @@ ${areaServed}
   content = content.replace(/\d+ kindvriendelijke locaties/g, `${total} kindvriendelijke locaties`);
   content = content.replace(/\d+ geverifieerde locaties/g, `${total} geverifieerde locaties`);
   content = content.replace(/\d+ geverifieerde uitjes voor gezinnen/g, `${total} geverifieerde uitjes voor gezinnen`);
+  // Donation carousel hardcoded counts
+  content = content.replace(/\d+\+ uitjes/g, `${total}+ uitjes`);
+  content = content.replace(/\d+\+ locaties, gratis/g, `${total}+ locaties, gratis`);
+  // Info panel
+  content = content.replace(/Alle \d+ locaties zijn handmatig geverifieerd/g, `Alle ${total} locaties zijn handmatig geverifieerd`);
 
   fs.writeFileSync(path.join(ROOT, 'app.html'), content);
   console.log(`Updated app.html (${total} locaties, ${regions.length} regio's)`);
@@ -894,6 +909,7 @@ function updateAbout(data) {
             </div>
         </div>`;
   content = replaceMarker(content, 'SUPPORT_ABOUT', supportAboutHTML);
+  content = content.replace(/\d+ locaties waarover je kunt vertrouwen/g, `${total} locaties waarover je kunt vertrouwen`);
 
   fs.writeFileSync(path.join(ROOT, 'about.html'), content);
   console.log(`Updated about.html (${total}+ locaties, ${regions.length} regio's)`);
@@ -909,7 +925,17 @@ function updateManifest(data) {
   console.log(`Updated manifest.json (${total} locaties)`);
 }
 
-// === 5. Generate city pages ===
+// === 5. Update 404.html ===
+
+function update404(data) {
+  const { total } = data;
+  let content = fs.readFileSync(path.join(ROOT, '404.html'), 'utf8');
+  content = content.replace(/\d+\+ geverifieerde uitjes/g, `${total}+ geverifieerde uitjes`);
+  fs.writeFileSync(path.join(ROOT, '404.html'), content);
+  console.log(`Updated 404.html (${total}+ uitjes)`);
+}
+
+// === 6. Generate city pages ===
 
 function locationHTML_city(loc) {
   const locationUrl = loc.pageUrl || '#';
@@ -2199,6 +2225,7 @@ async function main() {
   updateApp(data);
   updateAbout(data);
   updateManifest(data);
+  update404(data);
 
   console.log('\nGenerating city pages...');
   generateCityPages(data);
