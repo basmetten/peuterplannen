@@ -5,6 +5,31 @@ const {
   mapLimit,
 } = require('./config');
 
+// Roterende proxy-ondersteuning via PIPELINE_PROXY_URLS (komma-gescheiden)
+// of PIPELINE_PROXY_URL (enkelvoudig, backwards compat)
+let _proxyAgents = [];
+let _proxyIdx = 0;
+
+(function initProxies() {
+  const raw = process.env.PIPELINE_PROXY_URLS || process.env.PIPELINE_PROXY_URL || '';
+  const urls = raw.split(',').map((s) => s.trim()).filter(Boolean);
+  if (!urls.length) return;
+  try {
+    const { ProxyAgent } = require('undici');
+    _proxyAgents = urls.map((u) => new ProxyAgent(u));
+    console.log(`[enrich] ${_proxyAgents.length} proxy(s) geladen`);
+  } catch (e) {
+    console.warn(`[enrich] Proxy instellen mislukt: ${e.message}`);
+  }
+})();
+
+function nextProxyDispatcher() {
+  if (!_proxyAgents.length) return undefined;
+  const agent = _proxyAgents[_proxyIdx % _proxyAgents.length];
+  _proxyIdx += 1;
+  return agent;
+}
+
 function normalizeText(html) {
   return (html || '')
     .replace(/\u0000/g, ' ')
@@ -151,8 +176,9 @@ async function fetchWithRetries(url, options, retries = 3, timeoutMs = Number(pr
   while (attempt <= retries) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    const dispatcher = nextProxyDispatcher();
     try {
-      const response = await fetch(url, { ...(options || {}), signal: controller.signal });
+      const response = await fetch(url, { ...(options || {}), signal: controller.signal, ...(dispatcher ? { dispatcher } : {}) });
       clearTimeout(timeout);
       if (!response.ok) {
         const body = await response.text();
