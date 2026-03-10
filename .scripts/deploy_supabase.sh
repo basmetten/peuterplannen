@@ -87,6 +87,51 @@ detect_migration_changes() {
   return 1
 }
 
+git_changed_paths() {
+  if [[ -n "${CI_BASE_SHA:-}" && -n "${CI_HEAD_SHA:-}" ]]; then
+    if git rev-parse --verify "${CI_BASE_SHA}^{commit}" >/dev/null 2>&1 && git rev-parse --verify "${CI_HEAD_SHA}^{commit}" >/dev/null 2>&1; then
+      git diff --name-only "${CI_BASE_SHA}" "${CI_HEAD_SHA}" -- "$@" || true
+      return 0
+    fi
+  fi
+
+  if git rev-parse --verify HEAD^ >/dev/null 2>&1; then
+    git diff --name-only HEAD^ HEAD -- "$@" || true
+  fi
+  git diff --name-only -- "$@" || true
+  git diff --cached --name-only -- "$@" || true
+}
+
+function_deploy_targets() {
+  local entries=(
+    "admin-api:no-verify"
+    "create-checkout-session:no-verify"
+    "create-customer-portal-session:no-verify"
+    "public-feedback:verify"
+  )
+  local changed_shared changed entries_out=() entry fn
+
+  changed_shared="$(git_changed_paths supabase/functions/_shared)"
+  if [[ -n "${changed_shared}" ]]; then
+    printf '%s\n' "${entries[@]}"
+    return 0
+  fi
+
+  for entry in "${entries[@]}"; do
+    fn="${entry%%:*}"
+    changed="$(git_changed_paths "supabase/functions/${fn}")"
+    if [[ -n "${changed}" ]]; then
+      entries_out+=("${entry}")
+    fi
+  done
+
+  if [[ ${#entries_out[@]} -eq 0 ]]; then
+    return 0
+  fi
+
+  printf '%s\n' "${entries_out[@]}"
+}
+
 patch_auth_config() {
   local backup_path current_config allow_list_csv defaults_json payload verify_json
   backup_path="${OUTPUT_DIR}/auth-config-before-$(date -u +%Y%m%dT%H%M%SZ).json"
@@ -155,23 +200,39 @@ patch_auth_config() {
 }
 
 deploy_functions() {
-  local functions=(
-    "admin-api:no-verify"
-    "create-checkout-session:no-verify"
-    "create-customer-portal-session:no-verify"
-    "public-feedback:verify"
-  )
+  local functions
+  mapfile -t functions < <(function_deploy_targets)
 
   supabase login --token "${SUPABASE_ACCESS_TOKEN}" >/dev/null
 
+  if [[ ${#functions[@]} -eq 0 ]]; then
+    echo "No function changes detected; skipping function deploy."
+    return 0
+  fi
+
   for entry in "${functions[@]}"; do
-    local fn="${entry%%:*}"
-    local mode="${entry##*:}"
-    if [[ "${mode}" == "no-verify" ]]; then
-      supabase functions deploy "${fn}" --project-ref "${PROJECT_REF}" --use-api --no-verify-jwt
-    else
-      supabase functions deploy "${fn}" --project-ref "${PROJECT_REF}" --use-api
-    fi
+    local fn="${entry%%:*}" mode="${entry##*:}" attempt=1
+    while true; do
+      echo "Deploying function ${fn} (attempt ${attempt})..."
+      set +e
+      if [[ "${mode}" == "no-verify" ]]; then
+        supabase functions deploy "${fn}" --project-ref "${PROJECT_REF}" --use-api --no-verify-jwt
+      else
+        supabase functions deploy "${fn}" --project-ref "${PROJECT_REF}" --use-api
+      fi
+      local status=$?
+      set -e
+      if [[ ${status} -eq 0 ]]; then
+        break
+      fi
+      if [[ ${attempt} -ge 3 ]]; then
+        echo "Function deploy failed for ${fn} after ${attempt} attempts." >&2
+        exit ${status}
+      fi
+      echo "Function deploy for ${fn} failed; retrying after backoff..." >&2
+      sleep $((attempt * 10))
+      attempt=$((attempt + 1))
+    done
   done
 }
 
