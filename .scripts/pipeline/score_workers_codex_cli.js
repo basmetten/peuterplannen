@@ -227,7 +227,34 @@ function buildPrompt(candidate) {
   ].join('\n');
 }
 
+async function callClaudeCLI({ model, prompt, timeoutMs }) {
+  return await new Promise((resolve, reject) => {
+    const child = spawn('claude', [
+      '--model', model,
+      '--output-format', 'text',
+      '-p', prompt,
+    ], { env: process.env, stdio: ['pipe', 'pipe', 'pipe'] });
+
+    let stdout = '';
+    let stderr = '';
+    const killTimer = setTimeout(() => child.kill('SIGTERM'), timeoutMs);
+
+    child.stdout.on('data', (d) => { stdout += d; });
+    child.stderr.on('data', (d) => { stderr += d; });
+    child.on('error', reject);
+    child.on('close', (code) => {
+      clearTimeout(killTimer);
+      if (code === 0) return resolve(extractJsonObject(stdout));
+      reject(new Error(`claude exited ${code}: ${stderr.slice(0, 600)} stdout: ${stdout.slice(0, 300)}`));
+    });
+  });
+}
+
 async function callCodexCLI({ model, prompt, timeoutMs }) {
+  if (model.startsWith('claude-')) {
+    return callClaudeCLI({ model, prompt, timeoutMs });
+  }
+
   const outFile = path.join(os.tmpdir(), `codex_last_message_${Date.now()}_${Math.random().toString(36).slice(2)}.txt`);
   const args = [
     'exec',
@@ -331,8 +358,8 @@ async function scoreSingleCandidate({ db, candidate, model, timeoutMs }) {
 
 async function scoreCandidatesViaCodex({ db, candidates, model }) {
   const chosenModel = model || DEFAULT_MODEL;
-  if (chosenModel !== DEFAULT_MODEL) {
-    throw new Error(`Unsupported model: ${chosenModel}. Required: ${DEFAULT_MODEL}`);
+  if (!chosenModel.startsWith('claude-') && chosenModel !== 'gpt-5.1-codex-mini') {
+    throw new Error(`Unsupported model: ${chosenModel}`);
   }
 
   if (!candidates.length) {

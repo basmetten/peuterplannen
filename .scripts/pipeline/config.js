@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-const DEFAULT_MODEL = 'gpt-5.1-codex-mini';
+const DEFAULT_MODEL = 'claude-haiku-4-5-20251001';
 const SCORING_PROMPT_VERSION = 'v1';
 
 const REGIONS = {
@@ -64,6 +64,84 @@ const REGIONS = {
   'Boxtel':              { osmName: 'Boxtel', adminLevel: 8, supabaseRegion: "'s-Hertogenbosch" },
   'Oss':                 { osmName: 'Oss', adminLevel: 8, supabaseRegion: "'s-Hertogenbosch" },
   'Maasdriel':           { osmName: 'Maasdriel', adminLevel: 8, supabaseRegion: "'s-Hertogenbosch" },
+
+  // Rotterdam
+  'Capelle aan den IJssel': { osmName: 'Capelle aan den IJssel', adminLevel: 8, supabaseRegion: 'Rotterdam' },
+  'Schiedam':               { osmName: 'Schiedam',               adminLevel: 8, supabaseRegion: 'Rotterdam' },
+  'Vlaardingen':            { osmName: 'Vlaardingen',            adminLevel: 8, supabaseRegion: 'Rotterdam' },
+  'Maassluis':              { osmName: 'Maassluis',              adminLevel: 8, supabaseRegion: 'Rotterdam' },
+  'Barendrecht':            { osmName: 'Barendrecht',            adminLevel: 8, supabaseRegion: 'Rotterdam' },
+  'Ridderkerk':             { osmName: 'Ridderkerk',             adminLevel: 8, supabaseRegion: 'Rotterdam' },
+  'Nissewaard':             { osmName: 'Nissewaard',             adminLevel: 8, supabaseRegion: 'Rotterdam' },
+  'Lansingerland':          { osmName: 'Lansingerland',          adminLevel: 8, supabaseRegion: 'Rotterdam' },
+  'Krimpen aan den IJssel': { osmName: 'Krimpen aan den IJssel', adminLevel: 8, supabaseRegion: 'Rotterdam' },
+
+  // Amersfoort
+  'Nijkerk':                { osmName: 'Nijkerk',                adminLevel: 8, supabaseRegion: 'Amersfoort' },
+  'Bunschoten':             { osmName: 'Bunschoten',             adminLevel: 8, supabaseRegion: 'Amersfoort' },
+  'Barneveld':              { osmName: 'Barneveld',              adminLevel: 8, supabaseRegion: 'Amersfoort' },
+
+  // Leiden
+  'Oegstgeest':             { osmName: 'Oegstgeest',             adminLevel: 8, supabaseRegion: 'Leiden' },
+  'Voorschoten':            { osmName: 'Voorschoten',            adminLevel: 8, supabaseRegion: 'Leiden' },
+  'Leiderdorp':             { osmName: 'Leiderdorp',             adminLevel: 8, supabaseRegion: 'Leiden' },
+  'Katwijk':                { osmName: 'Katwijk',                adminLevel: 8, supabaseRegion: 'Leiden' },
+  'Kaag en Braassem':       { osmName: 'Kaag en Braassem',       adminLevel: 8, supabaseRegion: 'Leiden' },
+
+  // Eindhoven (Stedelijk Gebied Eindhoven)
+  'Veldhoven':              { osmName: 'Veldhoven',              adminLevel: 8, supabaseRegion: 'Eindhoven' },
+  'Waalre':                 { osmName: 'Waalre',                 adminLevel: 8, supabaseRegion: 'Eindhoven' },
+  'Son en Breugel':         { osmName: 'Son en Breugel',         adminLevel: 8, supabaseRegion: 'Eindhoven' },
+  'Nuenen c.a.':            { osmName: 'Nuenen c.a.',            adminLevel: 8, supabaseRegion: 'Eindhoven' },
+  'Geldrop-Mierlo':         { osmName: 'Geldrop-Mierlo',         adminLevel: 8, supabaseRegion: 'Eindhoven' },
+  'Best':                   { osmName: 'Best',                   adminLevel: 8, supabaseRegion: 'Eindhoven' },
+  'Heeze-Leende':           { osmName: 'Heeze-Leende',           adminLevel: 8, supabaseRegion: 'Eindhoven' },
+
+  // Groningen (regio Noord)
+  'Tynaarlo':               { osmName: 'Tynaarlo',               adminLevel: 8, supabaseRegion: 'Groningen' },
+  'Noordenveld':            { osmName: 'Noordenveld',            adminLevel: 8, supabaseRegion: 'Groningen' },
+  'Westerkwartier':         { osmName: 'Westerkwartier',         adminLevel: 8, supabaseRegion: 'Groningen' },
+  'Midden-Groningen':       { osmName: 'Midden-Groningen',       adminLevel: 8, supabaseRegion: 'Groningen' },
+
+  // Tilburg (Regio Hart van Brabant)
+  'Goirle':                 { osmName: 'Goirle',                 adminLevel: 8, supabaseRegion: 'Tilburg' },
+  'Dongen':                 { osmName: 'Dongen',                 adminLevel: 8, supabaseRegion: 'Tilburg' },
+  'Hilvarenbeek':           { osmName: 'Hilvarenbeek',           adminLevel: 8, supabaseRegion: 'Tilburg' },
+  'Oisterwijk':             { osmName: 'Oisterwijk',             adminLevel: 8, supabaseRegion: 'Tilburg' },
+  'Loon op Zand':           { osmName: 'Loon op Zand',           adminLevel: 8, supabaseRegion: 'Tilburg' },
+  'Waalwijk':               { osmName: 'Waalwijk',               adminLevel: 8, supabaseRegion: 'Tilburg' },
+
+  // Almere (Flevoland)
+  'Zeewolde':               { osmName: 'Zeewolde',               adminLevel: 8, supabaseRegion: 'Almere' },
+
+  // Breda (Regio West-Brabant)
+  'Etten-Leur':             { osmName: 'Etten-Leur',             adminLevel: 8, supabaseRegion: 'Breda' },
+  'Oosterhout':             { osmName: 'Oosterhout',             adminLevel: 8, supabaseRegion: 'Breda' },
+  'Halderberge':            { osmName: 'Halderberge',            adminLevel: 8, supabaseRegion: 'Breda' },
+  'Zundert':                { osmName: 'Zundert',                adminLevel: 8, supabaseRegion: 'Breda' },
+  'Drimmelen':              { osmName: 'Drimmelen',              adminLevel: 8, supabaseRegion: 'Breda' },
+
+  // Nijmegen (Regio Arnhem-Nijmegen, Nijmegen deel)
+  'Berg en Dal':            { osmName: 'Berg en Dal',            adminLevel: 8, supabaseRegion: 'Nijmegen' },
+  'Beuningen':              { osmName: 'Beuningen',              adminLevel: 8, supabaseRegion: 'Nijmegen' },
+  'Wijchen':                { osmName: 'Wijchen',                adminLevel: 8, supabaseRegion: 'Nijmegen' },
+  'Druten':                 { osmName: 'Druten',                 adminLevel: 8, supabaseRegion: 'Nijmegen' },
+  'Heumen':                 { osmName: 'Heumen',                 adminLevel: 8, supabaseRegion: 'Nijmegen' },
+
+  // Arnhem (Regio Arnhem-Nijmegen, Arnhem deel)
+  'Duiven':                 { osmName: 'Duiven',                 adminLevel: 8, supabaseRegion: 'Arnhem' },
+  'Westervoort':            { osmName: 'Westervoort',            adminLevel: 8, supabaseRegion: 'Arnhem' },
+  'Zevenaar':               { osmName: 'Zevenaar',               adminLevel: 8, supabaseRegion: 'Arnhem' },
+  'Rheden':                 { osmName: 'Rheden',                 adminLevel: 8, supabaseRegion: 'Arnhem' },
+  'Rozendaal':              { osmName: 'Rozendaal',              adminLevel: 8, supabaseRegion: 'Arnhem' },
+  'Overbetuwe':             { osmName: 'Overbetuwe',             adminLevel: 8, supabaseRegion: 'Arnhem' },
+  'Lingewaard':             { osmName: 'Lingewaard',             adminLevel: 8, supabaseRegion: 'Arnhem' },
+
+  // Apeldoorn (Stedendriehoek)
+  'Epe':                    { osmName: 'Epe',                    adminLevel: 8, supabaseRegion: 'Apeldoorn' },
+  'Voorst':                 { osmName: 'Voorst',                 adminLevel: 8, supabaseRegion: 'Apeldoorn' },
+  'Brummen':                { osmName: 'Brummen',                adminLevel: 8, supabaseRegion: 'Apeldoorn' },
+  'Heerde':                 { osmName: 'Heerde',                 adminLevel: 8, supabaseRegion: 'Apeldoorn' },
 };
 
 const BAR_KEYWORDS = [
