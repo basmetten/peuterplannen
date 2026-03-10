@@ -105,11 +105,19 @@ async function main() {
     }
 
     console.log('\n[3/4] Enriching sources...');
-    await enrichCandidates({
-      db,
-      candidates,
-      googleKey: null,
-    });
+    try {
+      await enrichCandidates({
+        db,
+        candidates,
+        googleKey: null,
+      });
+    } catch (enrichErr) {
+      // Gedeeltelijke enrichment-fouten (bijv. netwerk terminated) mogen pipeline niet stoppen.
+      // Candidates die enriched zijn worden gescoord; rest krijgt only-OSM signals.
+      console.warn(`[3/4] Enrichment partial failure: ${enrichErr.message} — doorgaan met scoring`);
+      // Markeer niet-enriched candidates toch als enriched zodat ze gescoord worden
+      await db.patchCandidatesByRun(runId, 'new', { status: 'enriched' });
+    }
 
     const freshCandidates = await db.getCandidatesByRun(runId, ['enriched']);
     const scoringPool = maxCandidates && maxCandidates > 0

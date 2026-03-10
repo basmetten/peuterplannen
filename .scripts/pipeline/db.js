@@ -122,6 +122,14 @@ function createSupabaseClient(projectRoot) {
     });
   }
 
+  async function patchCandidatesByRun(runId, fromStatus, patch) {
+    await rest(`location_candidates?run_id=eq.${encodeURIComponent(runId)}&status=eq.${fromStatus}`, {
+      method: 'PATCH',
+      headers: { Prefer: 'return=minimal' },
+      body: patch,
+    });
+  }
+
   async function insertEvidence(rows) {
     if (!rows.length) return;
     const chunkSize = 200;
@@ -214,6 +222,7 @@ function createSupabaseClient(projectRoot) {
     upsertCandidates,
     getCandidatesByRun,
     patchCandidate,
+    patchCandidatesByRun,
     insertEvidence,
     insertReview,
     getReviewsByCandidateIds,
