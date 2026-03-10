@@ -537,6 +537,39 @@ function normalizeExternalUrl(url) {
   return `https://${trimmed.replace(/^\/+/, '')}`;
 }
 
+function normalizeExternalHost(url) {
+  const normalized = normalizeExternalUrl(url);
+  if (!normalized) return '';
+  try {
+    return new URL(normalized).hostname.replace(/^www\./i, '').toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+function locationGeoFingerprint(loc) {
+  if (loc.lat == null || loc.lng == null) return '';
+  const lat = Number(loc.lat);
+  const lng = Number(loc.lng);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return '';
+  return `${lat.toFixed(3)},${lng.toFixed(3)}`;
+}
+
+function duplicateGroupKey(loc) {
+  const locality = slugify(loc.seo_primary_locality || '');
+  const host = normalizeExternalHost(loc.website);
+  const geo = locationGeoFingerprint(loc);
+  const fingerprint = host || locality || geo || `id-${loc.id}`;
+  return `${loc.regionSlug}::${slugify(loc.name || '')}::${fingerprint}`;
+}
+
+function selectHubLocations(locs, fallbackLimit = 24) {
+  const ranked = sortLocationsForSeo(locs.filter((loc) => loc.seoTierResolved !== 'alias'));
+  const indexable = ranked.filter((loc) => loc.seoTierResolved === 'index');
+  if (indexable.length > 0) return indexable;
+  return ranked.slice(0, Math.min(fallbackLimit, ranked.length));
+}
+
 function displayExternalUrl(url) {
   const normalized = normalizeExternalUrl(url);
   if (!normalized) return '';
@@ -841,7 +874,7 @@ function applySeoPolicy(data) {
     loc.seoPath = cleanPathLike(loc.pageUrl);
     loc.seoHasGscSignal = gscSignals.pathSignals.has(loc.seoPath);
     loc.seoQualityScore = calculateLocationSeoScore(loc) + (loc.seoHasGscSignal ? 2 : 0);
-    const groupKey = `${loc.regionSlug}::${slugify(loc.name || '')}`;
+    const groupKey = duplicateGroupKey(loc);
     if (!duplicateGroups.has(groupKey)) duplicateGroups.set(groupKey, []);
     duplicateGroups.get(groupKey).push(loc);
   }
@@ -1151,8 +1184,6 @@ ${areaServed}
     /(style="color:var\(--ink-muted\);"[^>]*>)\d+\+ locaties/,
     `$1${total}+ locaties`
   );
-
-  content = content.replace(/(<meta name="description" content="[^"]*?)(\d+)([^"]*">)/, `$1${seoSummary?.index || total}$3`);
 
   fs.writeFileSync(path.join(ROOT, 'index.html'), content);
   console.log(`Updated index.html (${total} locaties, ${regions.length} regio's)`);
@@ -1561,7 +1592,7 @@ function generateCityPages(data) {
   const { regions, locations } = data;
 
   for (const region of regions) {
-    const locs = locations.filter(l => l.region === region.name && l.seoTierResolved !== 'alias');
+    const locs = selectHubLocations(locations.filter(l => l.region === region.name));
     const html = generateCityPage(region, locs, regions);
     const outPath = path.join(ROOT, `${region.slug}.html`);
     fs.writeFileSync(outPath, html);
@@ -1781,7 +1812,7 @@ function generateTypePages(data) {
   const { regions, locations } = data;
 
   for (const page of TYPE_PAGES) {
-    const locs = locations.filter(l => l.type === page.dbType && l.seoTierResolved !== 'alias');
+    const locs = selectHubLocations(locations.filter(l => l.type === page.dbType));
     const html = generateTypePage(page, locs, regions);
     const outPath = path.join(ROOT, `${page.slug}.html`);
     fs.writeFileSync(outPath, html);
@@ -1792,10 +1823,9 @@ function generateTypePages(data) {
 // === 7. Generate cluster pages ===
 
 function buildClusterLocationSet(cluster, data) {
-  const matched = data.locations
-    .filter((loc) => loc.seoTierResolved !== 'alias')
-    .filter((loc) => matchesClusterPage(cluster, loc));
-  return sortLocationsForSeo(matched).slice(0, SEO_MAX_CLUSTER_LOCATIONS);
+  const matched = data.locations.filter((loc) => matchesClusterPage(cluster, loc));
+  const curated = selectHubLocations(matched, SEO_MAX_CLUSTER_LOCATIONS);
+  return curated.slice(0, SEO_MAX_CLUSTER_LOCATIONS);
 }
 
 function generateClusterPage(cluster, data, locs) {
@@ -1928,7 +1958,7 @@ ${navHTML()}
     </div>
     <div class="guide-card">
       <p class="guide-kicker">Begin hier</p>
-      <h2>Zes locaties die meteen richting geven</h2>
+      <h2>${topPicks.length} locaties die meteen richting geven</h2>
       <div class="guide-links">
         ${topPicks.map((loc) => `<a href="${loc.pageUrl}" class="guide-link"><strong>${escapeHtml(loc.name)}</strong><span>${escapeHtml(TYPE_MAP[loc.type]?.labelSingle || loc.type)}${loc.toddler_highlight ? ` · ${escapeHtml(cleanToddlerHighlight(loc.toddler_highlight).split(/[.!?]/)[0])}` : ''}</span></a>`).join('')}
       </div>
@@ -2146,6 +2176,7 @@ function locationPageHTML(loc, region, similarLocs) {
   const metaDesc = (loc.seo_description_override || '').trim()
     || (rawDesc.length >= SEO_DESCRIPTION_MIN_LENGTH ? truncateDesc(rawDesc) : '')
     || buildMetaDesc(loc, region);
+  const visibleDescription = rawDesc || metaDesc.replace(/\s*Bekijk waarom deze plek werkt[\s\S]*$/i, '').trim();
   const localityLabel = (loc.seo_primary_locality || '').trim();
   const titleBase = loc.seo_title_override
     ? loc.seo_title_override.trim()
@@ -2246,7 +2277,7 @@ function locationPageHTML(loc, region, similarLocs) {
     ...(loc.lat && loc.lng && {
       "geo": { "@type": "GeoCoordinates", "latitude": loc.lat, "longitude": loc.lng }
     }),
-    "address": { "@type": "PostalAddress", "addressLocality": region.name, "addressCountry": "NL" },
+    "address": { "@type": "PostalAddress", "addressLocality": localityLabel || region.name, "addressCountry": "NL" },
     ...(facilities.length > 0 && {
       "amenityFeature": facilities.map(f => ({ "@type": "LocationFeatureSpecification", "name": f, "value": true }))
     }),
@@ -2368,7 +2399,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
   </div>
 
   ${introOverride ? `<div class="location-highlight"><strong>Waarom dit werkt:</strong> ${escapeHtml(introOverride)}</div>` : ''}
-  ${!isFillerDescription(loc.description) ? `<p class="location-description">${escapeHtml(loc.description)}</p>` : ''}
+  ${visibleDescription ? `<p class="location-description">${escapeHtml(visibleDescription)}</p>` : ''}
 
   ${loc.toddler_highlight ? `<div class="location-highlight"><strong>Peutertip:</strong> ${escapeHtml(cleanToddlerHighlight(loc.toddler_highlight))}</div>` : ''}
 
@@ -2901,6 +2932,12 @@ function chunk(list, size) {
 }
 
 function generateSitemapsFromCatalog(catalog) {
+  for (const entry of fs.readdirSync(ROOT, { withFileTypes: true })) {
+    if (!entry.isFile()) continue;
+    if (!/^sitemap-locations-\d+\.xml$/.test(entry.name)) continue;
+    fs.rmSync(path.join(ROOT, entry.name), { force: true });
+  }
+
   const corePages = catalog.filter((page) => page.inSitemap && page.tier === 'core');
   const hubPages = catalog.filter((page) => page.inSitemap && page.tier === 'hub' && !['blog_index', 'blog_article'].includes(page.pageType));
   const blogPages = catalog.filter((page) => page.inSitemap && ['blog_index', 'blog_article'].includes(page.pageType));

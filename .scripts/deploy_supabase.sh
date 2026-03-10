@@ -56,35 +56,17 @@ management_query() {
     --data-binary @<(jq -n --arg query "${sql}" '{query:$query}')
 }
 
-detect_migration_changes() {
+should_consider_migrations() {
   local mode="${DEPLOY_SUPABASE_MIGRATIONS:-auto}"
 
   case "$mode" in
-    always) return 0 ;;
+    always|auto) return 0 ;;
     never) return 1 ;;
-    auto) ;;
     *)
       echo "Invalid DEPLOY_SUPABASE_MIGRATIONS value: ${mode}" >&2
       exit 1
       ;;
   esac
-
-  if [[ -n "${CI_BASE_SHA:-}" && -n "${CI_HEAD_SHA:-}" ]]; then
-    if git diff --quiet "${CI_BASE_SHA}" "${CI_HEAD_SHA}" -- supabase/migrations; then
-      return 1
-    fi
-    return 0
-  fi
-
-  if [[ -n "${GITHUB_ACTIONS:-}" && -n "${SUPABASE_DB_PASSWORD:-}" ]]; then
-    return 0
-  fi
-
-  if ! git diff --quiet -- supabase/migrations || ! git diff --cached --quiet -- supabase/migrations; then
-    return 0
-  fi
-
-  return 1
 }
 
 git_changed_paths() {
@@ -103,25 +85,41 @@ git_changed_paths() {
 }
 
 function_deploy_targets() {
-  local entries=(
-    "admin-api:no-verify"
-    "create-checkout-session:no-verify"
-    "create-customer-portal-session:no-verify"
-    "public-feedback:verify"
-  )
-  local changed_shared changed entries_out=() entry fn
+  local function_dirs=()
+  local changed_shared changed entries_out=() fn mode
+
+  while IFS= read -r fn; do
+    [[ -n "${fn}" ]] && function_dirs+=("${fn}")
+  done < <(find supabase/functions -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | grep -v '^_shared$' | sort)
 
   changed_shared="$(git_changed_paths supabase/functions/_shared)"
   if [[ -n "${changed_shared}" ]]; then
-    printf '%s\n' "${entries[@]}"
+    for fn in "${function_dirs[@]}"; do
+      case "${fn}" in
+        admin-api|create-checkout-session|create-customer-portal-session|generate-plan|stripe-webhook)
+          mode="no-verify"
+          ;;
+        *)
+          mode="verify"
+          ;;
+      esac
+      printf '%s:%s\n' "${fn}" "${mode}"
+    done
     return 0
   fi
 
-  for entry in "${entries[@]}"; do
-    fn="${entry%%:*}"
+  for fn in "${function_dirs[@]}"; do
     changed="$(git_changed_paths "supabase/functions/${fn}")"
     if [[ -n "${changed}" ]]; then
-      entries_out+=("${entry}")
+      case "${fn}" in
+        admin-api|create-checkout-session|create-customer-portal-session|generate-plan|stripe-webhook)
+          mode="no-verify"
+          ;;
+        *)
+          mode="verify"
+          ;;
+      esac
+      entries_out+=("${fn}:${mode}")
     fi
   done
 
@@ -239,8 +237,8 @@ deploy_functions() {
 push_migrations_if_needed() {
   local applied_json migration_file basename applied_version migration_name legacy_version
 
-  if ! detect_migration_changes; then
-    echo "No migration changes detected; skipping remote db push."
+  if ! should_consider_migrations; then
+    echo "Migration deploy disabled by DEPLOY_SUPABASE_MIGRATIONS=${DEPLOY_SUPABASE_MIGRATIONS:-auto}."
     return 0
   fi
 
@@ -248,6 +246,7 @@ push_migrations_if_needed() {
     management_query "select version, coalesce(name, '') as name from supabase_migrations.schema_migrations order by version"
   )"
 
+  local pending_count=0
   shopt -s nullglob
   for migration_file in "${ROOT_DIR}"/supabase/migrations/*.sql; do
     basename="$(basename "${migration_file}" .sql)"
@@ -269,15 +268,19 @@ push_migrations_if_needed() {
     )"
 
     if [[ -n "${applied_version}" ]]; then
-      echo "Migration ${basename} already applied as ${applied_version}; skipping."
       continue
     fi
 
+    pending_count=$((pending_count + 1))
     echo "Applying migration ${basename} via Supabase management API..."
     management_query "$(cat "${migration_file}")" >/dev/null
     management_query "insert into supabase_migrations.schema_migrations(version, name) values ('${basename}', '${migration_name}') on conflict (version) do nothing" >/dev/null
   done
   shopt -u nullglob
+
+  if [[ ${pending_count} -eq 0 ]]; then
+    echo "No pending migrations detected; remote schema is current."
+  fi
 }
 
 smoke_check() {

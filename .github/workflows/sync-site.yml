@@ -65,8 +65,8 @@ jobs:
           rm -f "${tmp_response}"
 
           if [[ "${http_code}" == "404" ]]; then
-            echo "site_publish_state ontbreekt live; scheduled fallback wordt overgeslagen."
-            echo "run_build=false" >> "$GITHUB_OUTPUT"
+            echo "site_publish_state ontbreekt live; build draait als veilige fallback."
+            echo "run_build=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -106,18 +106,11 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
 
-      - name: Run consistency audit (warn-only until 2026-03-12)
+      - name: Run consistency audit (strict)
         if: steps.gate.outputs.run_build == 'true'
         run: |
           set -euo pipefail
-          TODAY="$(date -u +%Y-%m-%d)"
-          if [[ "${TODAY}" < "2026-03-13" ]]; then
-            echo "Running consistency audit in warn-only mode (${TODAY})."
-            node .scripts/audit_internal_consistency.js || true
-          else
-            echo "Running consistency audit in strict mode (${TODAY})."
-            node .scripts/audit_internal_consistency.js --strict
-          fi
+          node .scripts/audit_internal_consistency.js --strict
 
       - name: Run portal audit (strict)
         if: steps.gate.outputs.run_build == 'true'
@@ -134,13 +127,14 @@ jobs:
           git config user.name "PeuterPlannen Bot"
           git config user.email "bot@peuterplannen.nl"
 
-          if git diff --quiet; then
+          git add -A
+
+          if git diff --cached --quiet; then
             echo "pushed=false" >> "$GITHUB_OUTPUT"
             echo "publish_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          git add -A
           git commit -m "Auto-sync: update data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
           git push
 
@@ -170,4 +164,4 @@ jobs:
             -H "Prefer: return=minimal" \
             -d "${payload}" \
             "${SUPABASE_URL}/rest/v1/site_publish_state?id=eq.1" \
-            || echo "Waarschuwing: publish-state kon niet op clean gezet worden."
+            >/dev/null

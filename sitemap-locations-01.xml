@@ -2,7 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://peuterplannen.nl/utrechtse-heuvelrug/t-jagershuis/</loc>
-    <lastmod>2026-03-02T17:00:44.331+00:00</lastmod>
+    <lastmod>2026-03-10T11:40:25.561+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/apeldoorn/t-pannekoekhuis-2/</loc>
+    <lastmod>2026-03-06T14:39:36.237+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -115,14 +121,14 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/groningen/ballorig/</loc>
-    <lastmod>2026-03-06T16:40:30.86+00:00</lastmod>
+    <loc>https://peuterplannen.nl/almere/ballorig/</loc>
+    <lastmod>2026-03-06T14:39:13.302+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/almere/ballorig/</loc>
-    <lastmod>2026-03-06T14:39:13.302+00:00</lastmod>
+    <loc>https://peuterplannen.nl/groningen/ballorig/</loc>
+    <lastmod>2026-03-06T16:40:30.86+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -415,8 +421,14 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/haarlem/de-beren/</loc>
-    <lastmod>2026-03-06T12:54:15.816+00:00</lastmod>
+    <loc>https://peuterplannen.nl/den-haag/de-beren/</loc>
+    <lastmod>2026-03-06T13:49:12.672+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/almere/de-beren/</loc>
+    <lastmod>2026-03-06T14:39:13.01+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -427,14 +439,8 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/den-haag/de-beren/</loc>
-    <lastmod>2026-03-06T13:49:12.672+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://peuterplannen.nl/almere/de-beren/</loc>
-    <lastmod>2026-03-06T14:39:13.01+00:00</lastmod>
+    <loc>https://peuterplannen.nl/haarlem/de-beren/</loc>
+    <lastmod>2026-03-06T12:54:15.816+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -452,12 +458,12 @@
   </url>
   <url>
     <loc>https://peuterplannen.nl/utrechtse-heuvelrug/de-bosrand/</loc>
-    <lastmod>2026-03-06T16:40:34.422+00:00</lastmod>
+    <lastmod>2026-03-10T11:40:25.83+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/arnhem/de-buren-van-thialf-2/</loc>
+    <loc>https://peuterplannen.nl/arnhem/de-buren-van-thialf/</loc>
     <lastmod>2026-03-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
@@ -506,7 +512,7 @@
   </url>
   <url>
     <loc>https://peuterplannen.nl/gooi-en-vechtstreek/de-leeuwenkuil/</loc>
-    <lastmod>2026-03-02T17:00:44.035+00:00</lastmod>
+    <lastmod>2026-03-10T11:37:57.658+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -559,14 +565,14 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/s-hertogenbosch/de-pannekoekenbakker/</loc>
-    <lastmod>2026-03-02T22:33:33.965+00:00</lastmod>
+    <loc>https://peuterplannen.nl/rotterdam/de-pannekoekenbakker/</loc>
+    <lastmod>2026-03-06T13:33:32.658+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/rotterdam/de-pannekoekenbakker/</loc>
-    <lastmod>2026-03-06T13:33:32.658+00:00</lastmod>
+    <loc>https://peuterplannen.nl/s-hertogenbosch/de-pannekoekenbakker/</loc>
+    <lastmod>2026-03-02T22:33:33.965+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -668,7 +674,7 @@
   </url>
   <url>
     <loc>https://peuterplannen.nl/utrechtse-heuvelrug/de-vuursche-boer/</loc>
-    <lastmod>2026-03-02T17:00:44.331+00:00</lastmod>
+    <lastmod>2026-03-10T11:40:26.058+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -697,7 +703,7 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/rotterdam/diergaarde-blijdorp-2/</loc>
+    <loc>https://peuterplannen.nl/rotterdam/diergaarde-blijdorp/</loc>
     <lastmod>2026-03-06T13:33:24.742+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
@@ -721,7 +727,7 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/den-haag/duinrell-2/</loc>
+    <loc>https://peuterplannen.nl/den-haag/duinrell/</loc>
     <lastmod>2026-03-06T13:49:20.978+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
@@ -883,7 +889,7 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/rotterdam/happy-italy/</loc>
+    <loc>https://peuterplannen.nl/rotterdam/happy-italy-2/</loc>
     <lastmod>2026-03-06T13:33:29.723+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
@@ -938,7 +944,7 @@
   </url>
   <url>
     <loc>https://peuterplannen.nl/almere/het-eksternest/</loc>
-    <lastmod>2026-03-06T14:39:13.098+00:00</lastmod>
+    <lastmod>2026-03-10T11:29:00.663+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -1046,7 +1052,7 @@
   </url>
   <url>
     <loc>https://peuterplannen.nl/haarlem/ikea-restaurant/</loc>
-    <lastmod>2026-03-02T17:41:55.033+00:00</lastmod>
+    <lastmod>2026-03-10T12:20:46.782+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -1063,14 +1069,14 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/den-haag/intratuin/</loc>
-    <lastmod>2026-03-06T13:49:23.68+00:00</lastmod>
+    <loc>https://peuterplannen.nl/utrecht/intratuin-3/</loc>
+    <lastmod>2026-03-06T12:37:58.847+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/utrecht/intratuin-3/</loc>
-    <lastmod>2026-03-06T12:37:58.847+00:00</lastmod>
+    <loc>https://peuterplannen.nl/den-haag/intratuin/</loc>
+    <lastmod>2026-03-06T13:49:23.68+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -1081,7 +1087,7 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/utrechtse-heuvelrug/janssen-pannenkoekenhuis/</loc>
+    <loc>https://peuterplannen.nl/utrechtse-heuvelrug/janssen-pannenkoekenhuis-2/</loc>
     <lastmod>2026-03-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
@@ -1195,8 +1201,14 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/haarlem/kraantje-lek/</loc>
-    <lastmod>2026-03-06T12:54:19.765+00:00</lastmod>
+    <loc>https://peuterplannen.nl/haarlem/kraantje-lek-2/</loc>
+    <lastmod>2026-03-10T12:20:58.408+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/eindhoven/krakenburg/</loc>
+    <lastmod>2026-03-10T12:32:47.627+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -1256,7 +1268,7 @@
   </url>
   <url>
     <loc>https://peuterplannen.nl/gooi-en-vechtstreek/leuk/</loc>
-    <lastmod>2026-03-02T17:00:44.035+00:00</lastmod>
+    <lastmod>2026-03-10T11:38:03.271+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -1267,7 +1279,7 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/haarlem/loetje-2/</loc>
+    <loc>https://peuterplannen.nl/haarlem/loetje/</loc>
     <lastmod>2026-03-06T12:54:18.961+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
@@ -1417,7 +1429,7 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/nijmegen/monkey-town-wijchen-2/</loc>
+    <loc>https://peuterplannen.nl/nijmegen/monkey-town-wijchen/</loc>
     <lastmod>2026-03-06T14:39:34.2+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
@@ -1465,7 +1477,7 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/tilburg/natuurmuseum-brabant-2/</loc>
+    <loc>https://peuterplannen.nl/tilburg/natuurmuseum-brabant/</loc>
     <lastmod>2026-03-06T14:39:42.602+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
@@ -1574,7 +1586,7 @@
   </url>
   <url>
     <loc>https://peuterplannen.nl/utrecht/pancake-in-the-park-2/</loc>
-    <lastmod>2026-03-06T12:38:11.968+00:00</lastmod>
+    <lastmod>2026-03-05T15:23:35.092+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -1585,20 +1597,20 @@
     <priority>0.64</priority>
   </url>
   <url>
+    <loc>https://peuterplannen.nl/utrechtse-heuvelrug/pannenkoe/</loc>
+    <lastmod>2026-03-10T11:40:35.001+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.64</priority>
+  </url>
+  <url>
     <loc>https://peuterplannen.nl/den-haag/pannenkoe/</loc>
     <lastmod>2026-03-02T20:26:30.648+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/rotterdam/pannenkoe/</loc>
+    <loc>https://peuterplannen.nl/rotterdam/pannenkoe-4/</loc>
     <lastmod>2026-03-06T13:33:31.772+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.64</priority>
-  </url>
-  <url>
-    <loc>https://peuterplannen.nl/utrechtse-heuvelrug/pannenkoe/</loc>
-    <lastmod>2026-03-02T17:00:44.413+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -1700,7 +1712,7 @@
   </url>
   <url>
     <loc>https://peuterplannen.nl/haarlem/pannenkoekenrestaurant-de-konijnenberg/</loc>
-    <lastmod>2026-03-02T17:41:55.114+00:00</lastmod>
+    <lastmod>2026-03-10T12:20:51.98+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -1753,7 +1765,7 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/groningen/paviljoen-appelbergen/</loc>
+    <loc>https://peuterplannen.nl/groningen/paviljoen-appelbergen-2/</loc>
     <lastmod>2026-03-06T16:40:29.624+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
@@ -1784,7 +1796,7 @@
   </url>
   <url>
     <loc>https://peuterplannen.nl/gooi-en-vechtstreek/paviljoen-heidezicht/</loc>
-    <lastmod>2026-03-02T17:00:44.035+00:00</lastmod>
+    <lastmod>2026-03-10T11:37:59.852+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -1825,7 +1837,7 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/rotterdam/plaswijckpark/</loc>
+    <loc>https://peuterplannen.nl/rotterdam/plaswijckpark-2/</loc>
     <lastmod>2026-03-06T13:33:26.491+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
@@ -1843,14 +1855,14 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/den-haag/proeflokaal-bregje/</loc>
-    <lastmod>2026-03-06T13:49:10.469+00:00</lastmod>
+    <loc>https://peuterplannen.nl/s-hertogenbosch/proeflokaal-bregje/</loc>
+    <lastmod>2026-03-02T22:33:34.092+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/s-hertogenbosch/proeflokaal-bregje/</loc>
-    <lastmod>2026-03-02T22:33:34.092+00:00</lastmod>
+    <loc>https://peuterplannen.nl/den-haag/proeflokaal-bregje/</loc>
+    <lastmod>2026-03-06T13:49:10.469+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>
@@ -1999,7 +2011,7 @@
     <priority>0.64</priority>
   </url>
   <url>
-    <loc>https://peuterplannen.nl/haarlem/speeltuin-jeugdland-2/</loc>
+    <loc>https://peuterplannen.nl/haarlem/speeltuin-jeugdland/</loc>
     <lastmod>2026-03-06T12:54:16.869+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>

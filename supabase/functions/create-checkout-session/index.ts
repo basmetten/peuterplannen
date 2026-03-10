@@ -36,6 +36,16 @@ function json(payload: unknown, status = 200): Response {
   });
 }
 
+function hasActiveBilling(owner: {
+  subscription_status?: string | null;
+  subscription_id?: string | null;
+  plan_tier?: string | null;
+}) {
+  return ["trial", "featured", "past_due"].includes(owner.subscription_status ?? "") ||
+    owner.plan_tier === "featured" ||
+    !!owner.subscription_id;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   if (req.method !== "POST") {
@@ -70,7 +80,7 @@ serve(async (req) => {
     // 3. Get or create venue_owner record
     let { data: owner } = await supabase
       .from("venue_owners")
-      .select("id, stripe_customer_id")
+      .select("id, stripe_customer_id, subscription_status, subscription_id, plan_tier")
       .eq("user_id", user.id)
       .single();
 
@@ -78,10 +88,17 @@ serve(async (req) => {
       const { data: newOwner, error: insertErr } = await supabase
         .from("venue_owners")
         .insert({ user_id: user.id })
-        .select("id, stripe_customer_id")
+        .select("id, stripe_customer_id, subscription_status, subscription_id, plan_tier")
         .single();
       if (insertErr) throw insertErr;
       owner = newOwner;
+    }
+
+    if (hasActiveBilling(owner)) {
+      return json({
+        error: "Er bestaat al een actief of herstelbaar abonnement. Beheer dit via het klantportaal.",
+        code: "ACTIVE_SUBSCRIPTION_EXISTS",
+      }, 409);
     }
 
     // 4. Get or create Stripe customer

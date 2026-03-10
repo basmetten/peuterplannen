@@ -55,6 +55,8 @@ html { scroll-behavior: smooth; scroll-padding-top: 70px; }
 
 /* Skip link */
 .skip-link { position: absolute; left: -9999px; top: 0; padding: 8px; background: var(--primary); color: white; z-index: 200; font-size: 14px; }
+.skip-link:focus,
+.skip-link:focus-visible { left: 16px; top: 16px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.18); }
 
 /* Nav */
 nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(250,247,242,0.96); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid rgba(212,119,90,0.12); }

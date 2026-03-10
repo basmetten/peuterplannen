@@ -14,6 +14,26 @@ const supabase = createClient(
 
 const WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET")!;
 
+function mapStripeSubscriptionStatus(stripeStatus: Stripe.Subscription.Status) {
+  switch (stripeStatus) {
+    case "trialing":
+      return { subscriptionStatus: "trial", planTier: "featured", isFeatured: true };
+    case "active":
+      return { subscriptionStatus: "featured", planTier: "featured", isFeatured: true };
+    case "past_due":
+      return { subscriptionStatus: "past_due", planTier: "featured", isFeatured: false };
+    case "canceled":
+      return { subscriptionStatus: "canceled", planTier: "none", isFeatured: false };
+    case "paused":
+    case "unpaid":
+    case "incomplete":
+    case "incomplete_expired":
+      return { subscriptionStatus: "past_due", planTier: "none", isFeatured: false };
+    default:
+      return { subscriptionStatus: "past_due", planTier: "none", isFeatured: false };
+  }
+}
+
 serve(async (req) => {
   const body = await req.text();
   const sig  = req.headers.get("stripe-signature")!;
@@ -35,34 +55,27 @@ serve(async (req) => {
         const ownerId = sub.metadata?.venue_owner_id;
         if (!ownerId) break;
 
-        // Map Stripe status → internal status
         const stripeStatus = sub.status;
-        let status: string;
-        if (stripeStatus === "trialing")        status = "trial";
-        else if (stripeStatus === "active")     status = "featured";
-        else if (stripeStatus === "past_due")   status = "past_due";
-        else if (stripeStatus === "canceled")   status = "canceled";
-        else                                    status = stripeStatus;
+        const mapped = mapStripeSubscriptionStatus(stripeStatus);
 
         const expiresAt = sub.current_period_end
           ? new Date(sub.current_period_end * 1000).toISOString()
           : null;
-        const isFeatured = stripeStatus === "active";
 
-        // Update venue_owners
-        await supabase
+        const { error: ownerUpdateError } = await supabase
           .from("venue_owners")
           .update({
-            subscription_status: status,
+            subscription_status: mapped.subscriptionStatus,
             subscription_id:     sub.id,
-            plan_tier:           "featured",
+            plan_tier:           mapped.planTier,
             plan_expires_at:     expiresAt,
             updated_at:          new Date().toISOString(),
           })
           .eq("id", ownerId);
+        if (ownerUpdateError) throw ownerUpdateError;
 
         // Update linked location
-        await updateLocationBadges(ownerId, isFeatured, expiresAt);
+        await updateLocationBadges(ownerId, mapped.isFeatured, expiresAt);
         break;
       }
 
@@ -71,7 +84,7 @@ serve(async (req) => {
         const ownerId = sub.metadata?.venue_owner_id;
         if (!ownerId) break;
 
-        await supabase
+        const { error: ownerUpdateError } = await supabase
           .from("venue_owners")
           .update({
             subscription_status: "canceled",
@@ -80,6 +93,7 @@ serve(async (req) => {
             updated_at:          new Date().toISOString(),
           })
           .eq("id", ownerId);
+        if (ownerUpdateError) throw ownerUpdateError;
 
         await updateLocationBadges(ownerId, false, null);
         break;
@@ -89,10 +103,11 @@ serve(async (req) => {
         const invoice  = event.data.object as Stripe.Invoice;
         const customerId = invoice.customer as string;
 
-        await supabase
+        const { error: paymentFailedError } = await supabase
           .from("venue_owners")
           .update({ subscription_status: "past_due", updated_at: new Date().toISOString() })
           .eq("stripe_customer_id", customerId);
+        if (paymentFailedError) throw paymentFailedError;
         break;
       }
     }
