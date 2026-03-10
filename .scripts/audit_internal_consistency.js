@@ -84,16 +84,39 @@ function scanBrokenMarkdownLinks(mdFiles) {
   return issues;
 }
 
-function getSitemapPaths() {
-  const sitemapPath = path.join(ROOT, 'sitemap.xml');
-  if (!fs.existsSync(sitemapPath)) return new Set();
-  const xml = fs.readFileSync(sitemapPath, 'utf8');
+function normalizeSitemapPath(rawPath) {
+  if (!rawPath || rawPath === '/') return '/';
+  if (rawPath === '/blog') return '/blog/';
+  if (rawPath === '/app') return '/app.html';
+  return rawPath.endsWith('/') || rawPath.endsWith('.html') ? rawPath : `${rawPath}/`;
+}
+
+function getSitemapPathsFromFile(filePath, visited = new Set()) {
+  if (!fs.existsSync(filePath)) return new Set();
+  if (visited.has(filePath)) return new Set();
+  visited.add(filePath);
+
+  const xml = fs.readFileSync(filePath, 'utf8');
+  const results = new Set();
+
+  if (/<sitemapindex/i.test(xml)) {
+    const sitemapRefs = [...xml.matchAll(/<loc>https:\/\/peuterplannen\.nl\/([^<]+\.xml)<\/loc>/g)].map((match) => match[1]);
+    for (const ref of sitemapRefs) {
+      const nested = getSitemapPathsFromFile(path.join(ROOT, ref), visited);
+      for (const item of nested) results.add(item);
+    }
+    return results;
+  }
+
   const matches = [...xml.matchAll(/<loc>https:\/\/peuterplannen\.nl([^<]*)<\/loc>/g)];
-  const paths = matches.map((m) => {
-    const p = m[1] || '/';
-    return p.endsWith('/') ? p : `${p}/`;
-  });
-  return new Set(paths);
+  for (const match of matches) {
+    results.add(normalizeSitemapPath(match[1] || '/'));
+  }
+  return results;
+}
+
+function getSitemapPaths() {
+  return getSitemapPathsFromFile(path.join(ROOT, 'sitemap.xml'));
 }
 
 function getRedirectSources() {
@@ -130,8 +153,11 @@ function findOrphanLocationPages() {
     for (const entry of fs.readdirSync(regionPath, { withFileTypes: true })) {
       if (!entry.isDirectory()) continue;
       const p = `/${region}/${entry.name}/`;
-      if (!fs.existsSync(path.join(regionPath, entry.name, 'index.html'))) continue;
+      const indexPath = path.join(regionPath, entry.name, 'index.html');
+      if (!fs.existsSync(indexPath)) continue;
       if (redirectSources.has(p)) continue;
+      const html = fs.readFileSync(indexPath, 'utf8');
+      if (/<meta\s+name="robots"\s+content="noindex,follow"/i.test(html)) continue;
       if (!sitemapPaths.has(p)) {
         orphans.push(p);
       }
