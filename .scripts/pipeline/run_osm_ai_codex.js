@@ -111,7 +111,7 @@ async function main() {
       googleKey: null,
     });
 
-    const freshCandidates = await db.getCandidatesByRun(runId, ['new']);
+    const freshCandidates = await db.getCandidatesByRun(runId, ['enriched']);
     const scoringPool = maxCandidates && maxCandidates > 0
       ? freshCandidates.slice(0, maxCandidates)
       : freshCandidates;

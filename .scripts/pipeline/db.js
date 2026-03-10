@@ -124,11 +124,14 @@ function createSupabaseClient(projectRoot) {
 
   async function insertEvidence(rows) {
     if (!rows.length) return;
-    await rest('location_source_evidence', {
-      method: 'POST',
-      headers: { Prefer: 'return=minimal' },
-      body: rows,
-    });
+    const chunkSize = 200;
+    for (let i = 0; i < rows.length; i += chunkSize) {
+      await rest('location_source_evidence', {
+        method: 'POST',
+        headers: { Prefer: 'return=minimal' },
+        body: rows.slice(i, i + chunkSize),
+      });
+    }
   }
 
   async function insertReview(row) {
