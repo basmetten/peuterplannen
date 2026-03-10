@@ -466,6 +466,7 @@ async function enrichCandidates({ db, candidates, googleKey }) {
   const enableWebsite = process.env.PIPELINE_ENABLE_WEBSITE !== 'false';
   const enableGoogle = process.env.PIPELINE_ENABLE_GOOGLE !== 'false';
   const enableTripadvisor = process.env.PIPELINE_ENABLE_TRIPADVISOR !== 'false';
+  const enableGooglePuppeteer = process.env.PIPELINE_ENABLE_GOOGLE_PUPPETEER === 'true';
   const evidenceRows = [];
   const signalsByCandidate = new Map();
 
@@ -496,6 +497,16 @@ async function enrichCandidates({ db, candidates, googleKey }) {
     const tripadvisorResults = await mapLimit(candidates, tripadvisorConcurrency, async (candidate) => fetchTripadvisorEvidence(candidate));
     for (const row of tripadvisorResults) {
       evidenceRows.push(sanitizeJson(row.evidence));
+      const merged = mergeSignals(signalsByCandidate.get(row.evidence.candidate_id), row.signals);
+      signalsByCandidate.set(row.evidence.candidate_id, merged);
+    }
+  }
+
+  if (enableGooglePuppeteer) {
+    const { enrichWithGooglePuppeteer } = require('./enrich_google_puppeteer');
+    console.log(`[enrich] Google Maps Puppeteer (${candidates.length} candidates)...`);
+    const puppeteerResults = await enrichWithGooglePuppeteer({ candidates, db });
+    for (const row of puppeteerResults) {
       const merged = mergeSignals(signalsByCandidate.get(row.evidence.candidate_id), row.signals);
       signalsByCandidate.set(row.evidence.candidate_id, merged);
     }
