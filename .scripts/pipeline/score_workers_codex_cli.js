@@ -228,12 +228,16 @@ function buildPrompt(candidate) {
 }
 
 async function callClaudeCLI({ model, prompt, timeoutMs }) {
+  // Verwijder CLAUDECODE uit child env — anders blokkeert Claude Code nested spawns
+  const childEnv = { ...process.env };
+  delete childEnv.CLAUDECODE;
+
   return await new Promise((resolve, reject) => {
     const child = spawn('claude', [
       '--model', model,
       '--output-format', 'text',
       '-p', prompt,
-    ], { env: process.env, stdio: ['pipe', 'pipe', 'pipe'] });
+    ], { env: childEnv, stdio: ['pipe', 'pipe', 'pipe'] });
 
     let stdout = '';
     let stderr = '';
