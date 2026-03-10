@@ -31,11 +31,11 @@
   <script src="/nav-floating.js" defer></script>
   <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin>
   <title>Scheveningse Bosjes — peuteruitje in Den Haag | PeuterPlannen</title>
-  <meta name="description" content="Groot bosgebied tussen Den Haag en Scheveningen met wandelpaden, vijvers en speelgelegenheid. Strollervriendelijk en dicht bij het strand.">
+  <meta name="description" content="Groot bosgebied tussen Den Haag en Scheveningen. Prachtige bospaden, vijvers en ruimte om te rennen. Wikipedia-vermeld.">
   <meta name="robots" content="noindex,follow">
   <link rel="canonical" href="https://peuterplannen.nl/den-haag/scheveningse-bosjes/">
   <meta property="og:title" content="Scheveningse Bosjes — Den Haag | PeuterPlannen">
-  <meta property="og:description" content="Groot bosgebied tussen Den Haag en Scheveningen met wandelpaden, vijvers en speelgelegenheid. Strollervriendelijk en dicht bij het strand.">
+  <meta property="og:description" content="Groot bosgebied tussen Den Haag en Scheveningen. Prachtige bospaden, vijvers en ruimte om te rennen. Wikipedia-vermeld.">
   <meta property="og:url" content="https://peuterplannen.nl/den-haag/scheveningse-bosjes/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
@@ -45,19 +45,14 @@
   <meta property="og:image:alt" content="Scheveningse Bosjes — peuteruitje in Den Haag">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Scheveningse Bosjes | PeuterPlannen">
-  <meta name="twitter:description" content="Groot bosgebied tussen Den Haag en Scheveningen met wandelpaden, vijvers en speelgelegenheid. Strollervriendelijk en dicht bij het strand.">
+  <meta name="twitter:description" content="Groot bosgebied tussen Den Haag en Scheveningen. Prachtige bospaden, vijvers en ruimte om te rennen. Wikipedia-vermeld.">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "TouristAttraction",
   "name": "Scheveningse Bosjes",
-  "description": "Groot bosgebied tussen Den Haag en Scheveningen met wandelpaden, vijvers en speelgelegenheid. Strollervriendelijk en dicht bij het strand.",
+  "description": "Groot bosgebied tussen Den Haag en Scheveningen. Prachtige bospaden, vijvers en ruimte om te rennen. Wikipedia-vermeld.",
   "url": "https://peuterplannen.nl/den-haag/scheveningse-bosjes/",
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 52.10032,
-    "longitude": 4.292243
-  },
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Den Haag",
@@ -157,14 +152,12 @@
   </div>
 
   
-  <p class="location-description">Groot bosgebied tussen Den Haag en Scheveningen met wandelpaden, vijvers en speelgelegenheid. Strollervriendelijk en dicht bij het strand.</p>
+  <p class="location-description">Groot bosgebied tussen Den Haag en Scheveningen. Prachtige bospaden, vijvers en ruimte om te rennen. Wikipedia-vermeld.</p>
 
-  <div class="location-highlight"><strong>Peutertip:</strong> Bosgebied met wandelpaden en vijvers, strollervriendelijk nabij Scheveningen.</div>
+  <div class="location-highlight"><strong>Peutertip:</strong> Uitgestrekte bossen met brede paden, ideaal voor buggywandelingen en natuur ontdekken.</div>
 
   <div class="location-info">
-    <div class="info-item"><div><div class="info-label">Weer</div><div class="info-value">Buiten (outdoor)</div></div></div>
     <div class="info-item"><div><div class="info-label">Leeftijd</div><div class="info-value">0–12 jaar</div></div></div>
-    <div class="info-item verified-badge"><div><div class="info-label">Status</div><div class="info-value">✓ Geverifieerd maart 2026</div></div></div>
   </div>
 
   
@@ -175,7 +168,7 @@
 </div>
 
   <div class="location-actions">
-    <a href="https://www.google.com/maps/dir/?api=1&destination=52.10032,4.292243" target="_blank" rel="noopener" class="btn-route">Route plannen</a>
+    
   </div>
 
   <div class="share-buttons">
@@ -183,8 +176,7 @@
     <button class="share-native" onclick="shareNative()">Delen</button>
   </div>
 
-  <div class="location-map" id="map-container"><div id="map"></div></div>
-  <p class="map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>
+  
 
   <div class="similar-locations">
     <h2>Vergelijkbare locaties in Den Haag</h2>
@@ -230,7 +222,7 @@
   <div class="support-inner">
     <h3>Iets nuttigs gevonden?</h3>
     <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>
-    <p class="support-count">1745+ locaties beschikbaar in heel Nederland.</p>
+    <p class="support-count">1883+ locaties beschikbaar in heel Nederland.</p>
     <div class="support-amounts">
       <span class="support-pill">€2</span>
       <span class="support-pill support-pill-mid">€5</span>
@@ -262,36 +254,6 @@
   </nav>
 </footer>
 
-<script>
-(function() {
-  var loaded = false;
-  var observer = new IntersectionObserver(function(entries) {
-    if (entries[0].isIntersecting && !loaded) {
-      loaded = true;
-      observer.disconnect();
-      var link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = 'https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.css';
-      document.head.appendChild(link);
-      var s = document.createElement('script');
-      s.src = 'https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.js';
-      s.onload = function() {
-        var map = new maplibregl.Map({
-          container: 'map',
-          style: 'https://tiles.openfreemap.org/styles/positron',
-          center: [4.292243, 52.10032],
-          zoom: 14,
-          attributionControl: false
-        });
-        new maplibregl.Marker({ color: '#D4775A' }).setLngLat([4.292243, 52.10032]).addTo(map);
-      };
-      document.head.appendChild(s);
-    }
-  }, { rootMargin: '200px' });
-  var mapContainer = document.getElementById('map-container');
-  if (mapContainer) observer.observe(mapContainer);
-})();
-</script>
 
 <script>
 if (navigator.share) { document.querySelector('.share-native').style.display = 'inline-flex'; }
