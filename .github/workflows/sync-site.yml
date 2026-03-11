@@ -118,6 +118,12 @@ jobs:
           set -euo pipefail
           node .scripts/audit_portals.js --strict
 
+      - name: Run SEO audit (strict)
+        if: steps.gate.outputs.run_build == 'true'
+        run: |
+          set -euo pipefail
+          node .scripts/audit_seo_quality.js --strict
+
       - name: Commit and push when build changed files
         if: steps.gate.outputs.run_build == 'true'
         id: publish

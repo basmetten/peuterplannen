@@ -28,6 +28,7 @@ const SB_PROJECT = 'https://piujsvgbfflrrvauzsxe.supabase.co';
 const SB_URL = process.env.SUPABASE_URL || SB_PROJECT;
 const SB_KEY = process.env.SUPABASE_SERVICE_KEY || Buffer.from('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5CcGRXcHpkbWRpWm1ac2NuSjJZWFY2YzNobElpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpJd05ETXhOekFzSW1WNGNDSTZNakE0TnpZeE9URTNNSDAuNXkzZ3FpUGZWdnB2ZmFEWUFfUGdxRS1LVHZ1ZjZ6Z042dkd6cWZVcGVTbw==', 'base64').toString('utf8');
 const ROOT = path.resolve(__dirname, '..');
+const SEO_CONTENT_DIR = path.join(ROOT, 'content', 'seo');
 
 const CF_ANALYTICS_TOKEN = '74c21d127cea482bb454b6c85071a46f';
 function analyticsHTML() {
@@ -232,6 +233,12 @@ const GENERIC_DESCRIPTION_PATTERNS = [
   /^Ontdek de beste uitjes/i,
   /^PeuterPlannen helpt ouders/i,
   /^De beste uitjes voor peuters/i,
+];
+const AI_SLOP_PATTERNS = [
+  /\bcomplete gids\b/gi,
+  /\bkindvriendelijke hotspot\b/gi,
+  /\bperfect voor\b/gi,
+  /\bideaal voor gezinnen\b/gi,
 ];
 
 const NEARBY_CITIES = {
@@ -493,6 +500,181 @@ function loadGscSignals() {
   return { pathSignals, source: richRows.length > 0 ? 'telemetry' : 'legacy-audit' };
 }
 
+function fallbackMarkdownToHtml(markdown) {
+  return (markdown || '')
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .filter(Boolean)
+    .map((block) => {
+      if (/^##\s+/.test(block)) return `<h2>${escapeHtml(block.replace(/^##\s+/, ''))}</h2>`;
+      if (/^###\s+/.test(block)) return `<h3>${escapeHtml(block.replace(/^###\s+/, ''))}</h3>`;
+      if (/^- /m.test(block)) {
+        const items = block.split('\n').map((line) => line.replace(/^- /, '').trim()).filter(Boolean);
+        return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+      }
+      return `<p>${escapeHtml(block).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>`;
+    })
+    .join('\n');
+}
+
+function parseMarkdownDoc(raw, filePath) {
+  if (matter) {
+    const parsed = matter(raw);
+    return { data: parsed.data || {}, content: parsed.content || '' };
+  }
+
+  const match = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+  if (!match) return { data: {}, content: raw };
+
+  // Fallback parser is intentionally simple; real builds use gray-matter.
+  const data = {};
+  for (const line of match[1].split('\n')) {
+    const idx = line.indexOf(':');
+    if (idx === -1) continue;
+    const key = line.slice(0, idx).trim();
+    const value = line.slice(idx + 1).trim().replace(/^"(.*)"$/, '$1');
+    data[key] = value;
+  }
+  return { data, content: match[2] };
+}
+
+function renderMarkdownDoc(markdown) {
+  if (!markdown) return '';
+  if (marked) {
+    const rendered = marked.parse ? marked.parse(markdown) : marked(markdown);
+    return typeof rendered === 'string' ? rendered : `${rendered || ''}`;
+  }
+  return fallbackMarkdownToHtml(markdown);
+}
+
+function readSeoDoc(filePath) {
+  if (!fs.existsSync(filePath)) return null;
+  const raw = fs.readFileSync(filePath, 'utf8');
+  const { data: frontmatter, content } = parseMarkdownDoc(raw, filePath);
+  return {
+    filePath,
+    slug: path.basename(filePath, path.extname(filePath)),
+    ...frontmatter,
+    bodyMarkdown: (content || '').trim(),
+    bodyHtml: renderMarkdownDoc((content || '').trim()),
+  };
+}
+
+function loadSeoDirectory(dirPath) {
+  if (!fs.existsSync(dirPath)) return {};
+  const entries = {};
+  for (const entry of fs.readdirSync(dirPath, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+    const doc = readSeoDoc(path.join(dirPath, entry.name));
+    if (doc) entries[doc.slug] = doc;
+  }
+  return entries;
+}
+
+function loadSeoLocationDirectory(dirPath) {
+  if (!fs.existsSync(dirPath)) return {};
+  const out = {};
+  for (const regionEntry of fs.readdirSync(dirPath, { withFileTypes: true })) {
+    if (!regionEntry.isDirectory()) continue;
+    out[regionEntry.name] = loadSeoDirectory(path.join(dirPath, regionEntry.name));
+  }
+  return out;
+}
+
+let BLOG_METADATA_CACHE = null;
+function loadBlogMetadata() {
+  if (BLOG_METADATA_CACHE) return BLOG_METADATA_CACHE;
+  const postsDir = path.join(ROOT, 'content', 'posts');
+  const metadata = new Map();
+  if (!fs.existsSync(postsDir)) {
+    BLOG_METADATA_CACHE = metadata;
+    return metadata;
+  }
+
+  for (const file of fs.readdirSync(postsDir)) {
+    if (!file.endsWith('.md')) continue;
+    const slug = file.replace(/\.md$/, '');
+    const raw = fs.readFileSync(path.join(postsDir, file), 'utf8');
+    const parsed = parseMarkdownDoc(raw, file);
+    const publishedAt = parsed.data?.date ? isoDateInTimeZone(new Date(parsed.data.date), 'Europe/Amsterdam') : todayISOAmsterdam();
+    metadata.set(slug, {
+      slug,
+      title: parsed.data?.title || slug,
+      description: parsed.data?.description || '',
+      date: publishedAt,
+      published: publishedAt <= todayISOAmsterdam(),
+    });
+  }
+
+  BLOG_METADATA_CACHE = metadata;
+  return metadata;
+}
+
+function getBlogEntriesBySlug(slugs = []) {
+  const metadata = loadBlogMetadata();
+  return (slugs || [])
+    .map((slug) => metadata.get(slug))
+    .filter((entry) => entry && entry.published);
+}
+
+function loadSeoContentLibrary() {
+  const shared = loadSeoDirectory(path.join(SEO_CONTENT_DIR, 'shared'));
+  return {
+    shared,
+    regions: loadSeoDirectory(path.join(SEO_CONTENT_DIR, 'regions')),
+    types: loadSeoDirectory(path.join(SEO_CONTENT_DIR, 'types')),
+    clusters: loadSeoDirectory(path.join(SEO_CONTENT_DIR, 'clusters')),
+    locations: loadSeoLocationDirectory(path.join(SEO_CONTENT_DIR, 'locations')),
+  };
+}
+
+function formatEditorialDate(value) {
+  const d = parseDateSafe(value);
+  if (!d) return '';
+  return d.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function editorialMetaHTML(entry) {
+  if (!entry) return '';
+  const label = entry.editorial_label || 'PeuterPlannen redactie';
+  const updated = formatEditorialDate(entry.updated_at);
+  const bits = [`<span>${escapeHtml(label)}</span>`];
+  if (updated) bits.push(`<span>Laatst bijgewerkt ${escapeHtml(updated)}</span>`);
+  bits.push('<a href="/methode/">Hoe we selecteren</a>');
+  return `<div class="editorial-meta">${bits.join('')}</div>`;
+}
+
+function editorialBodyHTML(entry, extraClass = '') {
+  if (!entry?.bodyHtml) return '';
+  const className = ['editorial-body', extraClass].filter(Boolean).join(' ');
+  return `<div class="${className}">${entry.bodyHtml}</div>`;
+}
+
+function relatedBlogLinksHTML(slugs = [], heading = 'Meer inspiratie') {
+  const entries = getBlogEntriesBySlug(slugs);
+  if (!entries.length) return '';
+  return `<div class="related-blogs">
+      <h3>${escapeHtml(heading)}</h3>
+      <ul>${entries.map((entry) => `<li><a href="/blog/${entry.slug}/">${escapeHtml(entry.title)}</a></li>`).join('')}</ul>
+    </div>`;
+}
+
+function applyRepoSeoOverrides(data) {
+  const content = data.seoContent || {};
+  for (const loc of data.locations) {
+    const regionOverrides = content.locations?.[loc.regionSlug];
+    const override = regionOverrides?.[loc.locSlug];
+    if (!override) continue;
+    if (override.title_override) loc.seo_title_override = override.title_override;
+    if (override.description_override) loc.seo_description_override = override.description_override;
+    if (override.intro_override) loc.seo_intro_override = override.intro_override;
+    if (override.bodyHtml) loc.seo_repo_body_html = override.bodyHtml;
+    if (override.bodyMarkdown) loc.seo_repo_body_markdown = override.bodyMarkdown;
+    if (override.updated_at) loc.seo_repo_updated_at = override.updated_at;
+    if (Array.isArray(override.related_blog_slugs)) loc.seo_related_blog_slugs = override.related_blog_slugs;
+  }
+}
+
 function normalizeManualSeoTier(rawTier) {
   const tier = `${rawTier || ''}`.trim().toLowerCase();
   if (!tier || tier === 'standard') return 'auto';
@@ -620,6 +802,7 @@ function navHTML(ctaText = 'Open App', ctaHref = '/app.html') {
     </a>
     <div class="nav-links">
       <a href="/" class="nav-link">Home</a>
+      <a href="/ontdekken/" class="nav-link">Ontdekken</a>
       <a href="/about.html" class="nav-link">Over</a>
       <a href="/blog/" class="nav-link">Inspiratie</a>
       <a href="/contact.html" class="nav-link">Contact</a>
@@ -633,6 +816,7 @@ function navHTML(ctaText = 'Open App', ctaHref = '/app.html') {
   </div>
   <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
     <a href="/" class="nav-mobile-link">Home</a>
+    <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
     <a href="/about.html" class="nav-mobile-link">Over</a>
     <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
     <a href="/contact.html" class="nav-mobile-link">Contact</a>
@@ -644,7 +828,7 @@ function navHTML(ctaText = 'Open App', ctaHref = '/app.html') {
 function footerHTML() {
   return `<footer>
   <nav aria-label="Footernavigatie">
-  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="${TIKKIE_URL}" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="${TIKKIE_URL}" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
   </nav>
 </footer>`;
 }
@@ -1018,8 +1202,13 @@ function updateRedirects(data) {
 // === 1. Update index.html ===
 
 function updateIndex(data) {
-  const { regions, regionCounts, typeCounts, total, seoSummary } = data;
+  const { regions, regionCounts, typeCounts, total, seoSummary, seoContent } = data;
   let content = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+  const discoverEntry = seoContent?.shared?.ontdekken;
+  const featuredBlogEntries = [...loadBlogMetadata().values()]
+    .filter((entry) => entry.published)
+    .sort((a, b) => `${b.date}`.localeCompare(`${a.date}`))
+    .slice(0, 6);
 
   // STATS
   const statsHTML = `    <section class="stats">
@@ -1088,6 +1277,33 @@ ${clusterCards}
                 </a>`;
   }).join('\n');
 
+  const crawlHubHTML = `          <div class="guide-section" style="margin-top:32px;">
+                <div class="guide-card">
+                    <p class="guide-kicker">Zoek niet te breed</p>
+                    <h3>${escapeHtml(discoverEntry?.hero_title || 'Begin bij een route die bij je dag past')}</h3>
+                    <p>${escapeHtml(discoverEntry?.hero_sub || 'Gebruik regio’s, typen en themapagina’s als ingang. Dat werkt sneller voor ouders en geeft Google ook een duidelijker beeld van wat de belangrijkste pagina’s zijn.')}</p>
+                    ${editorialMetaHTML(discoverEntry)}
+                    <div class="guide-links">
+                      <a href="/ontdekken/" class="guide-link"><strong>Alles geordend bekijken</strong><span>Regio’s, typen, situaties en blogroutes op één crawlbare pagina.</span></a>
+                      <a href="/methode/" class="guide-link"><strong>Hoe PeuterPlannen selecteert</strong><span>Waarom sommige pagina’s zwaarder wegen dan andere, en hoe we kindpraktijk meewegen.</span></a>
+                    </div>
+                </div>
+                <div class="guide-card">
+                    <p class="guide-kicker">Belangrijkste ingangen</p>
+                    <h3>Snelle routes door de site</h3>
+                    <div class="guide-links">
+                      ${regions.slice(0, 9).map((region) => `<a href="/${region.slug}.html" class="guide-link"><strong>${region.name}</strong><span>${regionCounts[region.name] || 0} locaties in deze regio</span></a>`).join('')}
+                    </div>
+                </div>
+                <div class="guide-card">
+                    <p class="guide-kicker">Verder lezen</p>
+                    <h3>Gebruik blog en clusterpagina’s als keuzehulp</h3>
+                    <div class="guide-links">
+                      ${featuredBlogEntries.map((entry) => `<a href="/blog/${entry.slug}/" class="guide-link"><strong>${escapeHtml(entry.title)}</strong><span>${escapeHtml(entry.description || 'Praktische gids voor ouders met jonge kinderen.')}</span></a>`).join('')}
+                    </div>
+                </div>
+            </div>`;
+
   const cityGridHTML = `    <section class="cities-section">
         <div class="container">
             <h2 class="section-title">Uitjes per regio</h2>
@@ -1095,6 +1311,7 @@ ${clusterCards}
             <div class="cities-grid">
 ${cityCards}
             </div>
+${crawlHubHTML}
         </div>
     </section>`;
   content = replaceMarker(content, 'CITY_GRID', cityGridHTML);
@@ -1179,6 +1396,14 @@ ${areaServed}
     /(<meta name="description" content=")\d+ kindvriendelijke locaties in Nederland/,
     `$1${total} kindvriendelijke locaties in Nederland`
   );
+  const homeTitle = 'PeuterPlannen | Uitjes voor peuters in heel Nederland';
+  const homeDescription = `${total} kindvriendelijke locaties in Nederland, handmatig geverifieerd. Vind het perfecte uitje voor je peuter op type, leeftijd, weer en afstand.`;
+  content = content.replace(/<title>.*?<\/title>/, `<title>${homeTitle}</title>`);
+  content = content.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${escapeHtml(homeDescription)}">`);
+  content = content.replace(/<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="${escapeHtml(homeTitle)}">`);
+  content = content.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${escapeHtml(homeDescription)}">`);
+  content = content.replace(/<meta name="twitter:title" content="[^"]*">/, `<meta name="twitter:title" content="${escapeHtml(homeTitle)}">`);
+  content = content.replace(/<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${escapeHtml(homeDescription)}">`);
   // Hero badge — scoped to the exact span to avoid false positives
   content = content.replace(
     /(style="color:var\(--ink-muted\);"[^>]*>)\d+\+ locaties/,
@@ -1279,6 +1504,14 @@ ${areaServed}
   content = content.replace(/\d+\+ locaties, gratis/g, `${total}+ locaties, gratis`);
   // Info panel
   content = content.replace(/Alle \d+ locaties zijn handmatig geverifieerd/g, `Alle ${total} locaties zijn handmatig geverifieerd`);
+  const appTitle = 'PeuterPlannen app — vind peuteruitjes op afstand, type en weer';
+  const appDescription = `Gebruik de PeuterPlannen app om ${total} kindvriendelijke uitjes te vinden op afstand, type, leeftijd en weer. Met regiogidsen, planning en gecheckte locaties in Nederland.`;
+  content = content.replace(/<title>.*?<\/title>/, `<title>${appTitle}</title>`);
+  content = content.replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${escapeHtml(appDescription)}">`);
+  content = content.replace(/<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="${escapeHtml(appTitle)}">`);
+  content = content.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${escapeHtml(appDescription)}">`);
+  content = content.replace(/<meta name="twitter:title" content="[^"]*">/, `<meta name="twitter:title" content="${escapeHtml(appTitle)}">`);
+  content = content.replace(/<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${escapeHtml(appDescription)}">`);
 
   fs.writeFileSync(path.join(ROOT, 'app.html'), content);
   console.log(`Updated app.html (${total} locaties, ${regions.length} regio's)`);
@@ -1353,6 +1586,107 @@ function update404(data) {
   console.log(`Updated 404.html (${total}+ uitjes)`);
 }
 
+function generateSharedSeoPage(slug, entry, options = {}) {
+  if (!entry) return null;
+  const title = entry.meta_title || entry.title || options.title || 'PeuterPlannen';
+  const description = entry.meta_description || options.description || '';
+  const heroTitle = entry.hero_title || entry.title || options.heroTitle || title;
+  const heroSub = entry.hero_sub || options.heroSub || description;
+  const relatedBlogSlugs = Array.isArray(entry.related_blog_slugs) ? entry.related_blog_slugs : [];
+  const relatedBlogs = getBlogEntriesBySlug(relatedBlogSlugs);
+  const extraSections = options.extraSections || '';
+
+  const html = `<!DOCTYPE html>
+<html lang="nl">
+<head>
+${headCommon()}
+  <title>${escapeHtml(title)}</title>
+  <meta name="description" content="${escapeHtml(description)}">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://peuterplannen.nl/${slug}/">
+  <meta property="og:title" content="${escapeHtml(title)}">
+  <meta property="og:description" content="${escapeHtml(description)}">
+  <meta property="og:url" content="https://peuterplannen.nl/${slug}/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="nl_NL">
+  <meta property="og:image" content="${DEFAULT_OG}">
+</head>
+<body>
+${navHTML()}
+<div class="hero hero-blog">
+  <p class="hero-kicker">${escapeHtml(entry.editorial_label || 'PeuterPlannen redactie')}</p>
+  <h1 class="hero-blog-title">${escapeHtml(heroTitle)}</h1>
+  <p class="hero-blog-sub">${escapeHtml(heroSub)}</p>
+  <div class="hero-blog-meta">
+    ${formatEditorialDate(entry.updated_at) ? `<span>Laatst bijgewerkt ${escapeHtml(formatEditorialDate(entry.updated_at))}</span>` : '<span>Redactioneel bijgehouden</span>'}
+    <span>Nederland breed</span>
+    <span>Peuter- en kleuterpraktijk</span>
+  </div>
+</div>
+<nav aria-label="Kruimelpad" class="breadcrumb">
+  <a href="/">PeuterPlannen</a> &rsaquo; ${escapeHtml(entry.title || heroTitle)}
+</nav>
+<main id="main-content">
+  ${editorialMetaHTML(entry)}
+  ${editorialBodyHTML(entry)}
+  ${extraSections}
+  ${relatedBlogs.length ? `<section class="guide-section">
+    <div class="guide-card">
+      <p class="guide-kicker">Verder lezen</p>
+      <h2>Relevante gidsen</h2>
+      <div class="guide-links">
+        ${relatedBlogs.map((blog) => `<a href="/blog/${blog.slug}/" class="guide-link"><strong>${escapeHtml(blog.title)}</strong><span>${escapeHtml(blog.description || 'Praktische gids voor ouders met jonge kinderen.')}</span></a>`).join('')}
+      </div>
+    </div>
+  </section>` : ''}
+  ${supportHTML()}
+</main>
+${footerHTML()}
+${revealScript()}
+${analyticsHTML()}
+</body>
+</html>`;
+
+  const targetDir = path.join(ROOT, slug);
+  fs.mkdirSync(targetDir, { recursive: true });
+  fs.writeFileSync(path.join(targetDir, 'index.html'), html);
+  console.log(`  ${slug}/index.html`);
+  return { slug, title, description, path: `/${slug}/` };
+}
+
+function generateDiscoverPage(data) {
+  const entry = data.seoContent?.shared?.ontdekken;
+  if (!entry) return null;
+  const regionLinks = data.regions.map((region) => `<a href="/${region.slug}.html" class="guide-link"><strong>${region.name}</strong><span>${data.regionCounts[region.name] || 0} locaties in deze regio</span></a>`).join('');
+  const typeLinks = TYPE_PAGES.map((page) => `<a href="/${page.slug}.html" class="guide-link"><strong>${page.sectionLabel}</strong><span>${page.metaDesc}</span></a>`).join('');
+  const clusterLinks = CLUSTER_PAGES.map((cluster) => `<a href="/${cluster.slug}.html" class="guide-link"><strong>${cluster.h1}</strong><span>${cluster.metaDesc}</span></a>`).join('');
+  const extraSections = `
+  <section class="guide-section">
+    <div class="guide-card">
+      <p class="guide-kicker">Regio’s</p>
+      <h2>Kies eerst waar je ongeveer wilt zijn</h2>
+      <div class="guide-links">${regionLinks}</div>
+    </div>
+    <div class="guide-card">
+      <p class="guide-kicker">Typen uitjes</p>
+      <h2>Of start met het soort plek dat past bij de dag</h2>
+      <div class="guide-links">${typeLinks}</div>
+    </div>
+    <div class="guide-card">
+      <p class="guide-kicker">Situaties</p>
+      <h2>Gebruik een themapagina als het ritme belangrijker is dan de exacte plek</h2>
+      <div class="guide-links">${clusterLinks}</div>
+    </div>
+  </section>`;
+  return generateSharedSeoPage('ontdekken', entry, { extraSections });
+}
+
+function generateMethodologyPage(data) {
+  const entry = data.seoContent?.shared?.methodologie;
+  if (!entry) return null;
+  return generateSharedSeoPage('methode', entry);
+}
+
 // === 6. Generate city pages ===
 
 function locationHTML_city(loc) {
@@ -1372,10 +1706,12 @@ function locationHTML_city(loc) {
       </article>`;
 }
 
-function generateCityPage(region, locs, allRegions) {
+function generateCityPage(region, locs, allRegions, seoContent) {
   const byType = {};
   TYPE_ORDER.forEach(t => { byType[t] = locs.filter(l => l.type === t); });
   const relatedClusters = relatedClustersForLocations(locs);
+  const editorial = seoContent?.regions?.[region.slug];
+  const relatedEditorialBlogs = Array.isArray(editorial?.related_blog_slugs) ? getBlogEntriesBySlug(editorial.related_blog_slugs) : [];
 
   // Insert ad container after 2nd type section
   const typesWithLocs = TYPE_ORDER.filter(t => byType[t].length > 0);
@@ -1418,11 +1754,19 @@ function generateCityPage(region, locs, allRegions) {
     .sort((a, b) => b.count - a.count)
     .slice(0, 3);
   const strongestTypeLabel = strongestTypes.map((entry) => TYPE_MAP[entry.type]?.labelSingle?.toLowerCase() || entry.type).join(', ');
+  const pageTitle = editorial?.meta_title || `${region.name} met peuters — speeltuinen, musea & restaurants | PeuterPlannen`;
+  const pageDescription = editorial?.meta_description || `${region.name} met peuters: ${locs.length} werkbare uitjes, met focus op ${strongestTypeLabel}. Inclusief regenopties, eten & spelen en locaties die ook in de praktijk prettig zijn.`;
   const topPicks = sortLocationsForSeo(locs).slice(0, 3);
   const municipalityChips = coverage?.length
     ? coverage.map((name) => `<span class="coverage-chip">${escapeHtml(name)}</span>`).join('')
     : '';
   const cityGuideHTML = `<section class="guide-section city-guide">
+    ${editorial ? `<div class="guide-card">
+      <p class="guide-kicker">${escapeHtml(editorial.editorial_label || 'PeuterPlannen redactie')}</p>
+      <h2>Waarom ${region.name} niet om volume maar om slimme keuzes vraagt</h2>
+      ${editorialMetaHTML(editorial)}
+      ${editorialBodyHTML(editorial)}
+    </div>` : ''}
     <div class="guide-card">
       <p class="guide-kicker">Sneller kiezen in ${region.name}</p>
       <h2>Begin niet met alle kaarten tegelijk</h2>
@@ -1451,6 +1795,13 @@ function generateCityPage(region, locs, allRegions) {
       <h2>Begin liever met een situatie dan met 100 losse pins</h2>
       <div class="guide-links">
         ${relatedClusters.map((cluster) => `<a href="/${cluster.slug}.html" class="guide-link"><strong>${cluster.h1}</strong><span>${cluster.metaDesc}</span></a>`).join('')}
+      </div>
+    </div>` : ''}
+    ${relatedEditorialBlogs.length ? `<div class="guide-card">
+      <p class="guide-kicker">Verder lezen</p>
+      <h2>Redactionele gidsen voor ${region.name}</h2>
+      <div class="guide-links">
+        ${relatedEditorialBlogs.map((blog) => `<a href="/blog/${blog.slug}/" class="guide-link"><strong>${escapeHtml(blog.title)}</strong><span>${escapeHtml(blog.description || 'Praktische gids voor ouders met jonge kinderen.')}</span></a>`).join('')}
       </div>
     </div>` : ''}
   </section>`;
@@ -1501,12 +1852,12 @@ function generateCityPage(region, locs, allRegions) {
 <html lang="nl">
 <head>
 ${headCommon()}
-  <title>${region.name} met peuters — speeltuinen, musea & restaurants | PeuterPlannen</title>
-  <meta name="description" content="${region.name} met peuters: ${locs.length} werkbare uitjes, met focus op ${strongestTypeLabel}. Inclusief regenopties, eten & spelen en locaties die ook in de praktijk prettig zijn.">
+  <title>${escapeHtml(pageTitle)}</title>
+  <meta name="description" content="${escapeHtml(pageDescription)}">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://peuterplannen.nl/${region.slug}.html">
-  <meta property="og:title" content="${region.name} met peuters | PeuterPlannen">
-  <meta property="og:description" content="${region.name} met peuters: ${locs.length} locaties, geselecteerd op bruikbaarheid, dagritme en kindvriendelijke context.">
+  <meta property="og:title" content="${escapeHtml(pageTitle)}">
+  <meta property="og:description" content="${escapeHtml(pageDescription)}">
   <meta property="og:url" content="https://peuterplannen.nl/${region.slug}.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
@@ -1589,11 +1940,11 @@ ${analyticsHTML()}
 }
 
 function generateCityPages(data) {
-  const { regions, locations } = data;
+  const { regions, locations, seoContent } = data;
 
   for (const region of regions) {
     const locs = selectHubLocations(locations.filter(l => l.region === region.name));
-    const html = generateCityPage(region, locs, regions);
+    const html = generateCityPage(region, locs, regions, seoContent);
     const outPath = path.join(ROOT, `${region.slug}.html`);
     fs.writeFileSync(outPath, html);
     console.log(`  ${region.slug}.html — ${locs.length} locaties`);
@@ -1621,7 +1972,8 @@ function locationHTML_type(loc) {
       </article>`;
 }
 
-function generateTypePage(page, locs, regions) {
+function generateTypePage(page, locs, regions, seoContent) {
+  const editorial = seoContent?.types?.[page.slug];
   // Group by region, use DB order
   const byRegion = {};
   locs.forEach(loc => {
@@ -1658,7 +2010,16 @@ function generateTypePage(page, locs, regions) {
   const cityLinks = regions.map(r => `<a href="/${r.slug}.html">${r.name}</a>`).join(' &middot; ');
   const strongestRegions = regionOrder.filter((r) => byRegion[r]?.length > 0).slice(0, 6);
   const relatedClusters = relatedClustersForLocations(locs);
+  const relatedEditorialBlogs = Array.isArray(editorial?.related_blog_slugs) ? getBlogEntriesBySlug(editorial.related_blog_slugs) : [];
+  const pageTitle = editorial?.meta_title || page.metaTitle;
+  const pageDescription = editorial?.meta_description || page.metaDesc;
   const typeGuideHTML = `<section class="guide-section type-guide">
+    ${editorial ? `<div class="guide-card">
+      <p class="guide-kicker">${escapeHtml(editorial.editorial_label || 'PeuterPlannen redactie')}</p>
+      <h2>Waarom deze categorie een keuzehulp is, geen export</h2>
+      ${editorialMetaHTML(editorial)}
+      ${editorialBodyHTML(editorial)}
+    </div>` : ''}
     <div class="guide-card">
       <p class="guide-kicker">Hoe we selecteren</p>
       <h2>Niet elke plek met dit label haalt de site</h2>
@@ -1678,6 +2039,7 @@ function generateTypePage(page, locs, regions) {
         <div class="guide-links">
           ${picks.map((loc) => `<a href="${loc.pageUrl}" class="guide-link"><strong>${escapeHtml(loc.name)}</strong><span>${loc.toddler_highlight ? escapeHtml(cleanToddlerHighlight(loc.toddler_highlight).split(/[.!?]/)[0]) : `Bekijk de detailpagina van ${escapeHtml(loc.name)}`}</span></a>`).join('')}
         </div>
+        <a href="/methode/" class="guide-inline-link">Lees hoe we selecteren</a>
         <a href="/${slugify(regionName)}.html" class="guide-inline-link">Bekijk heel ${escapeHtml(regionName)}</a>
       </article>`;
     }).join('')}
@@ -1686,6 +2048,13 @@ function generateTypePage(page, locs, regions) {
       <h3>Gebruik deze categorie samen met een situatiepagina</h3>
       <div class="guide-links">
         ${relatedClusters.map((cluster) => `<a href="/${cluster.slug}.html" class="guide-link"><strong>${cluster.h1}</strong><span>${cluster.metaDesc}</span></a>`).join('')}
+      </div>
+    </div>` : ''}
+    ${relatedEditorialBlogs.length ? `<div class="guide-card">
+      <p class="guide-kicker">Verder lezen</p>
+      <h3>Redactionele gidsen die hierbij passen</h3>
+      <div class="guide-links">
+        ${relatedEditorialBlogs.map((blog) => `<a href="/blog/${blog.slug}/" class="guide-link"><strong>${escapeHtml(blog.title)}</strong><span>${escapeHtml(blog.description || 'Praktische gids voor ouders met jonge kinderen.')}</span></a>`).join('')}
       </div>
     </div>` : ''}
   </section>`;
@@ -1730,19 +2099,19 @@ function generateTypePage(page, locs, regions) {
 <html lang="nl">
 <head>
 ${headCommon()}
-  <title>${page.metaTitle}</title>
-  <meta name="description" content="${page.metaDesc}">
+  <title>${escapeHtml(pageTitle)}</title>
+  <meta name="description" content="${escapeHtml(pageDescription)}">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://peuterplannen.nl/${page.slug}.html">
-  <meta property="og:title" content="${page.metaTitle}">
-  <meta property="og:description" content="${page.metaDesc}">
+  <meta property="og:title" content="${escapeHtml(pageTitle)}">
+  <meta property="og:description" content="${escapeHtml(pageDescription)}">
   <meta property="og:url" content="https://peuterplannen.nl/${page.slug}.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
   <meta property="og:image" content="${TYPE_OG_IMAGE[page.dbType] || DEFAULT_OG}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="${escapeHtml(page.metaTitle)}">
+  <meta property="og:image:alt" content="${escapeHtml(pageTitle)}">
   <script type="application/ld+json">
 ${jsonLdItemList}
   </script>
@@ -1768,7 +2137,7 @@ ${navHTML()}
 
 <main id="main-content">
   <div class="intro-box">
-    ${page.intro.split('\n\n').map(p => `<p>${p.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>`).join('\n    ')}
+    ${(editorial?.bodyMarkdown || page.intro).split('\n\n').map(p => `<p>${p.replace(/^##\s+/, '').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>`).join('\n    ')}
   </div>
 
   ${typeGuideHTML}
@@ -1809,11 +2178,11 @@ ${analyticsHTML()}
 }
 
 function generateTypePages(data) {
-  const { regions, locations } = data;
+  const { regions, locations, seoContent } = data;
 
   for (const page of TYPE_PAGES) {
     const locs = selectHubLocations(locations.filter(l => l.type === page.dbType));
-    const html = generateTypePage(page, locs, regions);
+    const html = generateTypePage(page, locs, regions, seoContent);
     const outPath = path.join(ROOT, `${page.slug}.html`);
     fs.writeFileSync(outPath, html);
     console.log(`  ${page.slug}.html — ${locs.length} locaties, ${page.faqItems.length} FAQ-items`);
@@ -1829,7 +2198,8 @@ function buildClusterLocationSet(cluster, data) {
 }
 
 function generateClusterPage(cluster, data, locs) {
-  const { regions } = data;
+  const { regions, seoContent } = data;
+  const editorial = seoContent?.clusters?.[cluster.slug];
   const byRegion = {};
   for (const loc of locs) {
     if (!byRegion[loc.region]) byRegion[loc.region] = [];
@@ -1841,6 +2211,10 @@ function generateClusterPage(cluster, data, locs) {
     .slice(0, 6);
   const topPicks = locs.slice(0, 6);
   const supportingTypes = Array.from(new Set(locs.map((loc) => TYPE_MAP[loc.type]?.labelSingle || loc.type))).slice(0, 5);
+  const relatedEditorialBlogs = Array.isArray(editorial?.related_blog_slugs) ? getBlogEntriesBySlug(editorial.related_blog_slugs) : [];
+  const clusterTitle = editorial?.meta_title || cluster.metaTitle;
+  const clusterDescription = editorial?.meta_description || cluster.metaDesc;
+  const clusterIntro = editorial?.hero_sub || cluster.intro;
   const regionSections = topRegions.map((region) => `
     <section class="region-section">
       <h2>${cluster.h1} in ${region.name}</h2>
@@ -1890,7 +2264,7 @@ function generateClusterPage(cluster, data, locs) {
     "@context": "https://schema.org",
     "@type": "ItemList",
     "name": cluster.h1,
-    "description": cluster.metaDesc,
+    "description": clusterDescription,
     "numberOfItems": locs.length,
     "itemListElement": locs.map((loc, idx) => ({
       "@type": "ListItem",
@@ -1905,12 +2279,12 @@ function generateClusterPage(cluster, data, locs) {
 <html lang="nl">
 <head>
 ${headCommon()}
-  <title>${cluster.metaTitle}</title>
-  <meta name="description" content="${cluster.metaDesc}">
+  <title>${escapeHtml(clusterTitle)}</title>
+  <meta name="description" content="${escapeHtml(clusterDescription)}">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://peuterplannen.nl/${cluster.slug}.html">
-  <meta property="og:title" content="${cluster.metaTitle}">
-  <meta property="og:description" content="${cluster.metaDesc}">
+  <meta property="og:title" content="${escapeHtml(clusterTitle)}">
+  <meta property="og:description" content="${escapeHtml(clusterDescription)}">
   <meta property="og:url" content="https://peuterplannen.nl/${cluster.slug}.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
@@ -1932,7 +2306,7 @@ ${navHTML()}
 <div class="hero">
   <p class="hero-kicker">${cluster.kicker}</p>
   <h1>${cluster.h1.replace('peuter', '<span>peuter</span>')}</h1>
-  <p>${cluster.intro}</p>
+  <p>${escapeHtml(clusterIntro)}</p>
   <div class="hero-stats">
     <div class="hero-stat"><strong>${locs.length}</strong><span>sterke matches</span></div>
     <div class="hero-stat"><strong>${topRegions.length}</strong><span>regio's</span></div>
@@ -1946,10 +2320,16 @@ ${navHTML()}
 
 <main id="main-content">
   <section class="guide-section">
+    ${editorial ? `<div class="guide-card">
+      <p class="guide-kicker">${escapeHtml(editorial.editorial_label || 'PeuterPlannen redactie')}</p>
+      <h2>Waarom deze route menselijker werkt dan eindeloos scrollen</h2>
+      ${editorialMetaHTML(editorial)}
+      ${editorialBodyHTML(editorial)}
+    </div>` : ''}
     <div class="guide-card">
       <p class="guide-kicker">Waarom deze pagina bestaat</p>
       <h2>Van zoekintentie naar een shortlist die wel klopt</h2>
-      <p>${cluster.intro}</p>
+      <p>${escapeHtml(clusterIntro)}</p>
       <ul class="guide-list">
         <li><strong>Niet alles tegelijk:</strong> eerst de situatie, daarna pas de exacte plek.</li>
         <li><strong>Praktisch geselecteerd:</strong> voorzieningen, leeftijdsfit en dagritme wegen mee.</li>
@@ -1971,6 +2351,13 @@ ${navHTML()}
         ${TYPE_PAGES.filter((page) => locs.some((loc) => loc.type === page.dbType)).slice(0, 4).map((page) => `<a href="/${page.slug}.html" class="guide-link"><strong>${page.sectionLabel}</strong><span>${page.metaDesc}</span></a>`).join('')}
       </div>
     </div>
+    ${relatedEditorialBlogs.length ? `<div class="guide-card">
+      <p class="guide-kicker">Verder lezen</p>
+      <h2>Gidsen die deze route versterken</h2>
+      <div class="guide-links">
+        ${relatedEditorialBlogs.map((blog) => `<a href="/blog/${blog.slug}/" class="guide-link"><strong>${escapeHtml(blog.title)}</strong><span>${escapeHtml(blog.description || 'Praktische gids voor ouders met jonge kinderen.')}</span></a>`).join('')}
+      </div>
+    </div>` : ''}
   </section>
 
   ${regionSections}
@@ -2182,6 +2569,7 @@ function locationPageHTML(loc, region, similarLocs) {
     ? loc.seo_title_override.trim()
     : (localityLabel && loc.seoDuplicateGroupSize > 1 ? `${loc.name} ${localityLabel}` : loc.name);
   const introOverride = (loc.seo_intro_override || '').trim();
+  const editorialBody = loc.seo_repo_body_html || '';
   const clusterLinks = getClusterPagesForLocation(loc);
 
   // Weather
@@ -2238,7 +2626,11 @@ function locationPageHTML(loc, region, similarLocs) {
 
   const regionSlug = (region.slug || '').toLowerCase();
   const publishedBlogSlugs = getPublishedBlogSlugSet();
-  const relatedBlogs = (REGION_BLOG_MAP[regionSlug] || []).filter((b) => publishedBlogSlugs.has(b.slug));
+  const editorialBlogEntries = getBlogEntriesBySlug(loc.seo_related_blog_slugs || []);
+  const relatedBlogs = [
+    ...editorialBlogEntries.map((entry) => ({ slug: entry.slug, title: entry.title })),
+    ...(REGION_BLOG_MAP[regionSlug] || []).filter((b) => publishedBlogSlugs.has(b.slug)),
+  ].filter((entry, index, arr) => arr.findIndex((candidate) => candidate.slug === entry.slug) === index);
   const blogLinksHTML = relatedBlogs.length > 0
     ? `<div class="related-blogs">
       <h3>Meer inspiratie</h3>
@@ -2338,16 +2730,17 @@ function shareNative() {
   navigator.share({ title: ${JSON.stringify(loc.name + ' — PeuterPlannen')}, url: ${JSON.stringify(fullUrl)} }).catch(function(){});
 }
 </script>`;
+  const detailTitle = `${titleBase} — peuteruitje in ${region.name} | PeuterPlannen`;
 
   return `<!DOCTYPE html>
 <html lang="nl">
 <head>
 ${headCommon(`\n  <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin>`)}
-  <title>${escapeHtml(titleBase)} — peuteruitje in ${region.name} | PeuterPlannen</title>
+  <title>${escapeHtml(detailTitle)}</title>
   <meta name="description" content="${escapeHtml(metaDesc)}">
   <meta name="robots" content="${loc.seoRobots || 'index,follow'}">
   <link rel="canonical" href="${fullUrl}">
-  <meta property="og:title" content="${escapeHtml(titleBase)} — ${region.name} | PeuterPlannen">
+  <meta property="og:title" content="${escapeHtml(detailTitle)}">
   <meta property="og:description" content="${escapeHtml(metaDesc)}">
   <meta property="og:url" content="${fullUrl}">
   <meta property="og:type" content="website">
@@ -2357,7 +2750,7 @@ ${headCommon(`\n  <link rel="preconnect" href="https://tiles.openfreemap.org" cr
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="${escapeHtml(titleBase)} — peuteruitje in ${escapeHtml(region.name)}">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="${escapeHtml(titleBase)} | PeuterPlannen">
+  <meta name="twitter:title" content="${escapeHtml(detailTitle)}">
   <meta name="twitter:description" content="${escapeHtml(metaDesc)}">
   <script type="application/ld+json">
 ${jsonLd}
@@ -2400,6 +2793,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 
   ${introOverride ? `<div class="location-highlight"><strong>Waarom dit werkt:</strong> ${escapeHtml(introOverride)}</div>` : ''}
   ${visibleDescription ? `<p class="location-description">${escapeHtml(visibleDescription)}</p>` : ''}
+  ${editorialBody ? `${editorialMetaHTML({ editorial_label: 'PeuterPlannen redactie', updated_at: loc.seo_repo_updated_at })}${editorialBodyHTML({ bodyHtml: editorialBody }, 'location-editorial')}` : ''}
 
   ${loc.toddler_highlight ? `<div class="location-highlight"><strong>Peutertip:</strong> ${escapeHtml(cleanToddlerHighlight(loc.toddler_highlight))}</div>` : ''}
 
@@ -2423,6 +2817,14 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 
   ${blogLinksHTML}
   ${clusterLinksHTML}
+  <div class="related-blogs">
+    <h3>Praktische context</h3>
+    <ul>
+      <li><a href="/methode/">Lees hoe PeuterPlannen locaties selecteert</a></li>
+      <li><a href="/${region.slug}.html">Terug naar de regiogids van ${escapeHtml(region.name)}</a></li>
+      ${TYPE_MAP[loc.type]?.slug ? `<li><a href="/${TYPE_MAP[loc.type].slug}.html">Bekijk alle ${escapeHtml(TYPE_MAP[loc.type].label)} in Nederland</a></li>` : ''}
+    </ul>
+  </div>
 
   ${supportHTML()}
 
@@ -2598,16 +3000,18 @@ function buildBlog(data) {
   for (const p of publishedPosts) {
     const postDir = path.join(blogDir, p.slug);
     if (!fs.existsSync(postDir)) fs.mkdirSync(postDir, { recursive: true });
+    const postTitle = `${p.title} | PeuterPlannen Blog`;
+    const postDescription = p.description || '';
 
     const postHTML = `<!DOCTYPE html>
 <html lang="nl">
 <head>
 ${headCommon()}
-  <title>${escapeHtml(p.title)} | PeuterPlannen Blog</title>
-  <meta name="description" content="${escapeHtml(p.description || '')}">
+  <title>${escapeHtml(postTitle)}</title>
+  <meta name="description" content="${escapeHtml(postDescription)}">
   <link rel="canonical" href="https://peuterplannen.nl/blog/${p.slug}/">
-  <meta property="og:title" content="${escapeHtml(p.title)} | PeuterPlannen">
-  <meta property="og:description" content="${escapeHtml(p.description || '')}">
+  <meta property="og:title" content="${escapeHtml(postTitle)}">
+  <meta property="og:description" content="${escapeHtml(postDescription)}">
   <meta property="og:url" content="https://peuterplannen.nl/blog/${p.slug}/">
   <meta property="og:type" content="article">
   <meta property="og:locale" content="nl_NL">
@@ -2616,15 +3020,15 @@ ${headCommon()}
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="${escapeHtml(p.title)} | PeuterPlannen">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="${escapeHtml(p.title)}">
-  <meta name="twitter:description" content="${escapeHtml(p.description || '')}">
+  <meta name="twitter:title" content="${escapeHtml(postTitle)}">
+  <meta name="twitter:description" content="${escapeHtml(postDescription)}">
   <meta name="twitter:image" content="https://peuterplannen.nl/${p.featured_image ? p.featured_image.replace(/^\//, '') : 'homepage_hero_ai.jpeg'}">
   <script type="application/ld+json">
 ${JSON.stringify({
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": p.title,
-  "description": p.description || '',
+  "description": postDescription,
   "datePublished": p.date,
   "author": { "@type": "Person", "name": "Bas Metten" },
   "publisher": { "@type": "Organization", "name": "PeuterPlannen" },
@@ -2708,17 +3112,19 @@ ${analyticsHTML()}
   const featuredBlogTags = Array.from(new Set(publishedPosts.flatMap((p) => p.tags || []))).slice(0, 8);
   const cityGuidePosts = publishedPosts.filter((p) => /(met-peuters|met-peuters-en-kleuters)/.test(p.slug)).slice(0, 6);
   const practicalGuidePosts = publishedPosts.filter((p) => !cityGuidePosts.includes(p)).slice(0, 6);
+  const blogIndexTitle = 'Blog — Tips voor uitjes met peuters | PeuterPlannen';
+  const blogIndexDescription = 'Redactionele gidsen voor ouders met peuters en kleuters: regiokeuzes, regenroutes, horeca-tips en werkbare dagindelingen voor Nederland.';
 
   const indexHTML = `<!DOCTYPE html>
 <html lang="nl">
 <head>
 ${headCommon()}
-  <title>Blog — Tips voor uitjes met peuters | PeuterPlannen</title>
-  <meta name="description" content="Redactionele gidsen voor ouders met peuters en kleuters: regiokeuzes, regenroutes, horeca-tips en werkbare dagindelingen voor Nederland.">
+  <title>${escapeHtml(blogIndexTitle)}</title>
+  <meta name="description" content="${escapeHtml(blogIndexDescription)}">
   <link rel="canonical" href="https://peuterplannen.nl/blog/">
   <link rel="alternate" type="application/rss+xml" title="PeuterPlannen Blog" href="https://peuterplannen.nl/blog/feed.xml">
-  <meta property="og:title" content="PeuterPlannen Blog">
-  <meta property="og:description" content="Tips en inspiratie voor uitjes met peuters">
+  <meta property="og:title" content="${escapeHtml(blogIndexTitle)}">
+  <meta property="og:description" content="${escapeHtml(blogIndexDescription)}">
   <meta property="og:url" content="https://peuterplannen.nl/blog/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
@@ -2726,6 +3132,10 @@ ${headCommon()}
   <meta property="og:image:width" content="1408">
   <meta property="og:image:height" content="768">
   <meta property="og:image:alt" content="PeuterPlannen Blog — uitjes voor peuters in Nederland">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${escapeHtml(blogIndexTitle)}">
+  <meta name="twitter:description" content="${escapeHtml(blogIndexDescription)}">
+  <meta name="twitter:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
   <script type="application/ld+json">
 ${blogIndexLd}
   </script>
@@ -2834,7 +3244,7 @@ function sitePathToFile(sitePath) {
   return path.join(ROOT, clean.slice(1));
 }
 
-function buildPageCatalog(data, blogPosts, clusterPages) {
+function buildPageCatalog(data, blogPosts, clusterPages, sharedPages = []) {
   const pages = [];
   const lastmod = todayISO();
 
@@ -2851,6 +3261,8 @@ function buildPageCatalog(data, blogPosts, clusterPages) {
   pushPage({ path: '/about.html', pageType: 'core', tier: 'core', filePath: path.join(ROOT, 'about.html'), priority: '0.5', changefreq: 'monthly', inSitemap: true });
   pushPage({ path: '/contact.html', pageType: 'core', tier: 'core', filePath: path.join(ROOT, 'contact.html'), priority: '0.4', changefreq: 'monthly', inSitemap: true });
   pushPage({ path: '/blog/', pageType: 'blog_index', tier: 'hub', filePath: path.join(ROOT, 'blog', 'index.html'), priority: '0.8', changefreq: 'weekly', inSitemap: true });
+  pushPage({ path: '/ontdekken/', pageType: 'discover_hub', tier: 'hub', filePath: path.join(ROOT, 'ontdekken', 'index.html'), priority: '0.82', changefreq: 'weekly', inSitemap: true });
+  pushPage({ path: '/methode/', pageType: 'methodology_page', tier: 'hub', filePath: path.join(ROOT, 'methode', 'index.html'), priority: '0.55', changefreq: 'monthly', inSitemap: true });
 
   for (const region of data.regions) {
     pushPage({
@@ -2901,6 +3313,19 @@ function buildPageCatalog(data, blogPosts, clusterPages) {
     });
   }
 
+  for (const page of sharedPages || []) {
+    if (!page?.path || page.path === '/ontdekken/' || page.path === '/methode/') continue;
+    pushPage({
+      path: page.path,
+      pageType: 'shared_editorial',
+      tier: 'hub',
+      filePath: sitePathToFile(page.path),
+      priority: '0.6',
+      changefreq: 'monthly',
+      inSitemap: true,
+    });
+  }
+
   for (const loc of data.locations) {
     pushPage({
       path: loc.pageUrl,
@@ -2914,6 +3339,8 @@ function buildPageCatalog(data, blogPosts, clusterPages) {
       robots: loc.seoRobots,
       hasGscSignal: !!loc.seoHasGscSignal,
       qualityScore: loc.seoQualityScore,
+      parentHubPath: `/${loc.regionSlug}.html`,
+      typeHubPath: TYPE_MAP[loc.type]?.slug ? `/${TYPE_MAP[loc.type].slug}.html` : null,
     });
   }
 
@@ -2973,6 +3400,11 @@ function extractMetaContent(html, name) {
   return match ? match[1].trim() : '';
 }
 
+function extractPropertyContent(html, property) {
+  const match = html.match(new RegExp(`<meta\\s+property="${property.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"\\s+content="([^"]*)"`, 'i'));
+  return match ? match[1].trim() : '';
+}
+
 function extractCanonicalHref(html) {
   const match = html.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i);
   return match ? match[1].trim() : '';
@@ -2992,11 +3424,47 @@ function stripHtml(html) {
     .trim();
 }
 
+function stripHtmlForSlopAudit(html) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<nav[\s\S]*?<\/nav>/gi, ' ')
+    .replace(/<footer[\s\S]*?<\/footer>/gi, ' ')
+    .replace(/<div class="guide-links"[\s\S]*?<\/div>/gi, ' ')
+    .replace(/<div class="cities-grid"[\s\S]*?<\/div>/gi, ' ')
+    .replace(/<div class="blog-grid"[\s\S]*?<\/div>/gi, ' ')
+    .replace(/<div class="blog-tags"[\s\S]*?<\/div>/gi, ' ')
+    .replace(/<section class="blog-grid-section"[\s\S]*?<\/section>/gi, ' ')
+    .replace(/<section class="regions-section"[\s\S]*?<\/section>/gi, ' ')
+    .replace(/<div class="loc-list"[\s\S]*?<\/div>/gi, ' ')
+    .replace(/<div class="loc-grid"[\s\S]*?<\/div>/gi, ' ')
+    .replace(/<div class="related-links"[\s\S]*?<\/div>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function countInternalLinks(html) {
   return [...html.matchAll(/href="([^"]+)"/g)]
     .map((match) => match[1])
     .filter((href) => href.startsWith('/') || href.startsWith('https://peuterplannen.nl'))
     .length;
+}
+
+function hasInternalLinkTo(html, targetPath) {
+  if (!targetPath) return false;
+  const canonicalTarget = cleanPathLike(targetPath);
+  const fullTarget = fullSiteUrl(canonicalTarget);
+  return [...html.matchAll(/href="([^"]+)"/g)]
+    .map((match) => match[1])
+    .some((href) => cleanPathLike(href) === canonicalTarget || href === fullTarget);
+}
+
+function countPatternHits(text, patterns) {
+  return patterns.reduce((total, pattern) => {
+    const matches = `${text || ''}`.match(pattern);
+    return total + (matches ? matches.length : 0);
+  }, 0);
 }
 
 function buildSeoRegistry(catalog) {
@@ -3014,6 +3482,7 @@ function buildSeoRegistry(catalog) {
     }
     const html = fs.readFileSync(page.filePath, 'utf8');
     const text = stripHtml(html);
+    const slopAuditText = stripHtmlForSlopAudit(html);
     registry.push({
       url: fullSiteUrl(page.path),
       path: cleanPathLike(page.path),
@@ -3022,10 +3491,18 @@ function buildSeoRegistry(catalog) {
       canonical: extractCanonicalHref(html),
       title: extractTitle(html),
       description: extractMetaContent(html, 'description'),
+      og_title: extractPropertyContent(html, 'og:title'),
+      og_description: extractPropertyContent(html, 'og:description'),
+      twitter_title: extractMetaContent(html, 'twitter:title'),
+      twitter_description: extractMetaContent(html, 'twitter:description'),
       robots: extractMetaContent(html, 'robots') || page.robots || 'index,follow',
       in_sitemap: page.inSitemap,
       wordcount: text ? text.split(/\s+/).filter(Boolean).length : 0,
       internal_link_count: countInternalLinks(html),
+      methodology_link_present: hasInternalLinkTo(html, '/methode/'),
+      parent_hub_link_present: hasInternalLinkTo(html, page.parentHubPath),
+      type_hub_link_present: hasInternalLinkTo(html, page.typeHubPath),
+      slop_phrase_hits: countPatternHits(slopAuditText, AI_SLOP_PATTERNS),
       has_gsc_signal: !!page.hasGscSignal,
       quality_score: page.qualityScore ?? null,
       lastmod: page.lastmod,
@@ -3051,9 +3528,16 @@ function buildSeoRegistry(catalog) {
     if (!entry.title) errors.push(`Missing <title>: ${entry.path}`);
     if (!entry.canonical) errors.push(`Missing canonical: ${entry.path}`);
     if (!entry.description || entry.description.length < SEO_DESCRIPTION_MIN_LENGTH) errors.push(`Weak description: ${entry.path}`);
+    if (entry.og_title && entry.og_title !== entry.title) errors.push(`Title mismatch OG: ${entry.path}`);
+    if (entry.twitter_title && entry.twitter_title !== entry.title && !entry.twitter_title.includes('PeuterPlannen')) errors.push(`Title mismatch Twitter: ${entry.path}`);
+    if (entry.og_description && entry.og_description !== entry.description) errors.push(`Description mismatch OG: ${entry.path}`);
+    if (entry.twitter_description && entry.twitter_description !== entry.description) errors.push(`Description mismatch Twitter: ${entry.path}`);
     if (['region_hub', 'type_hub', 'cluster_hub', 'blog_index', 'blog_article', 'location_detail'].includes(entry.page_type)
       && GENERIC_DESCRIPTION_PATTERNS.some((pattern) => pattern.test(entry.description || ''))) {
       errors.push(`Generic description: ${entry.path}`);
+    }
+    if (entry.page_type === 'location_detail' && entry.tier === 'index' && !entry.parent_hub_link_present) {
+      errors.push(`Missing parent hub link: ${entry.path}`);
     }
     if (entry.duplicate_status !== 'unique') errors.push(`Duplicate indexable title: ${entry.title}`);
   }
@@ -3103,10 +3587,12 @@ async function main() {
   console.log('=== PeuterPlannen sync_all.js ===\n');
 
   const data = await fetchData();
+  data.seoContent = loadSeoContentLibrary();
   LOCATION_COUNT = data.locations.length;
 
   console.log('Computing slugs...');
   computeSlugs(data);
+  applyRepoSeoOverrides(data);
   applySeoPolicy(data);
 
   console.log('\nUpdating static pages...');
@@ -3125,6 +3611,9 @@ async function main() {
   console.log('\nGenerating cluster pages...');
   const clusterPages = generateClusterPages(data);
 
+  console.log('\nGenerating shared editorial pages...');
+  const sharedPages = [generateDiscoverPage(data), generateMethodologyPage(data)].filter(Boolean);
+
   console.log('\nGenerating location pages...');
   generateLocationPages(data);
 
@@ -3135,7 +3624,7 @@ async function main() {
   updateRedirects(data);
 
   console.log('\nGenerating split sitemaps...');
-  const catalog = buildPageCatalog(data, blogPosts, clusterPages);
+  const catalog = buildPageCatalog(data, blogPosts, clusterPages, sharedPages);
   generateSitemapsFromCatalog(catalog);
 
   console.log('\nBuilding SEO registry...');

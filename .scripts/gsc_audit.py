@@ -14,6 +14,8 @@ CLIENT_FILE = Path('/Users/basmetten/Downloads/client_secret_639736156221-u492c5
 OUT_DIR = ROOT / 'output'
 OUT_JSON = OUT_DIR / 'gsc-audit.json'
 OUT_MD = OUT_DIR / 'gsc-audit.md'
+OUT_TRENDS = OUT_DIR / 'gsc-trends.json'
+OUT_COVERAGE = OUT_DIR / 'index-coverage-sample.json'
 HISTORY_DIR = OUT_DIR / 'gsc-history'
 SITE = 'sc-domain:peuterplannen.nl'
 ENCODED_SITE = quote(SITE, safe='')
@@ -40,7 +42,7 @@ CATEGORY_SLUGS = {'speeltuinen', 'kinderboerderijen', 'musea', 'pannenkoeken', '
 
 
 def sh(cmd):
-    return subprocess.check_output(cmd, text=True)
+    return subprocess.check_output(cmd, text=True, timeout=45)
 
 
 def parse_json(raw):
@@ -88,6 +90,8 @@ def gget(url, token):
         return parse_json(sh([
             'curl',
             '-sS',
+            '--max-time',
+            '8',
             '-H',
             f'Authorization: Bearer {token}',
             url,
@@ -101,6 +105,8 @@ def gpost(url, payload, token):
         return parse_json(sh([
             'curl',
             '-sS',
+            '--max-time',
+            '10',
             '-X',
             'POST',
             '-H',
@@ -353,7 +359,7 @@ def sitemap_urls():
     return sitemap_urls_from_file(ROOT / 'sitemap.xml')
 
 
-def build_sample(urls, limit=120):
+def build_sample(urls, limit=24):
     sample = []
     seen = set()
     for url in urls:
@@ -689,11 +695,17 @@ def write_outputs(report):
     timestamp = report['run_id']
     history_json = HISTORY_DIR / f'gsc-audit-{timestamp}.json'
     history_md = HISTORY_DIR / f'gsc-audit-{timestamp}.md'
+    history_trends = HISTORY_DIR / f'gsc-trends-{timestamp}.json'
+    history_coverage = HISTORY_DIR / f'index-coverage-sample-{timestamp}.json'
     report['outputs'] = {
         'latest_json': str(OUT_JSON.relative_to(ROOT)),
         'latest_md': str(OUT_MD.relative_to(ROOT)),
+        'latest_trends': str(OUT_TRENDS.relative_to(ROOT)),
+        'latest_coverage': str(OUT_COVERAGE.relative_to(ROOT)),
         'history_json': str(history_json.relative_to(ROOT)),
         'history_md': str(history_md.relative_to(ROOT)),
+        'history_trends': str(history_trends.relative_to(ROOT)),
+        'history_coverage': str(history_coverage.relative_to(ROOT)),
     }
     payload = json.dumps(report, ensure_ascii=False, indent=2)
     OUT_JSON.write_text(payload, encoding='utf-8')
@@ -701,6 +713,39 @@ def write_outputs(report):
     rendered_markdown = render_markdown(report)
     OUT_MD.write_text(rendered_markdown, encoding='utf-8')
     history_md.write_text(rendered_markdown, encoding='utf-8')
+    trends_payload = {
+        'run_id': report['run_id'],
+        'generated_at': report['generated_at'],
+        'site': report['site'],
+        'window': report['report_window'],
+        'summary': report['summary'],
+        'top_pages': report['top_pages'],
+        'top_queries': report['top_queries'],
+        'page_type_breakdown': report['page_type_breakdown'],
+        'comparison': {
+            'near_win_pages': report['comparison']['near_win_pages'],
+            'low_ctr_pages': report['comparison']['low_ctr_pages'],
+            'page_gainers': report['comparison']['page_gainers'],
+            'page_decliners': report['comparison']['page_decliners'],
+            'query_gainers': report['comparison']['query_gainers'],
+            'query_decliners': report['comparison']['query_decliners'],
+        },
+    }
+    coverage_payload = {
+        'run_id': report['run_id'],
+        'generated_at': report['generated_at'],
+        'site': report['site'],
+        'sample_size': report['inspection']['sample_size'],
+        'coverage_counts': report['inspection']['coverage_counts'],
+        'verdict_counts': report['inspection']['verdict_counts'],
+        'non_pass_examples': report['inspection']['non_pass_examples'],
+        'errors': report['inspection']['errors'],
+        'rows': report['inspection']['rows'],
+    }
+    OUT_TRENDS.write_text(json.dumps(trends_payload, ensure_ascii=False, indent=2), encoding='utf-8')
+    history_trends.write_text(json.dumps(trends_payload, ensure_ascii=False, indent=2), encoding='utf-8')
+    OUT_COVERAGE.write_text(json.dumps(coverage_payload, ensure_ascii=False, indent=2), encoding='utf-8')
+    history_coverage.write_text(json.dumps(coverage_payload, ensure_ascii=False, indent=2), encoding='utf-8')
     return history_json, history_md
 
 
