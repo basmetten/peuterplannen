@@ -1361,13 +1361,18 @@ function updateIndex(data) {
             <div class="cities-grid">
 ${typeCards}
             </div>
-            <div class="guide-section" style="margin-top:32px;">
-                <div class="guide-card">
+            <div class="guide-section guide-section-featured" style="margin-top:32px;">
+                <div class="guide-card guide-card-lead">
                     <p class="guide-kicker">Start bij situatie</p>
                     <h3>Niet zoeken op locatie, maar op de dag die je hebt</h3>
-                    <p>Deze routes helpen Google én ouders sneller naar de juiste pagina: regen, dreumes, horeca met speelhoek of een plek waar koffie en spelen logisch samengaan.</p>
+                    <p class="guide-card-intro">Deze routes helpen ouders sneller naar de juiste keuze en geven de site een heldere structuur: regen, dreumes, horeca met speelhoek of een plek waar koffie en spelen logisch samengaan.</p>
+                    <div class="guide-pills">
+                      <span class="guide-pill">Regenproof</span>
+                      <span class="guide-pill">Dreumes</span>
+                      <span class="guide-pill">Koffie + spelen</span>
+                    </div>
                 </div>
-                <div class="guide-card">
+                <div class="guide-card guide-card-compact">
                     <div class="guide-links">
 ${clusterCards}
                     </div>
@@ -1386,25 +1391,30 @@ ${clusterCards}
                 </a>`;
   }).join('\n');
 
-  const crawlHubHTML = `          <div class="guide-section" style="margin-top:32px;">
-                <div class="guide-card">
+  const crawlHubHTML = `          <div class="guide-section guide-section-hub" style="margin-top:32px;">
+                <div class="guide-card guide-card-lead">
                     <p class="guide-kicker">Zoek niet te breed</p>
                     <h3>${escapeHtml(discoverEntry?.hero_title || 'Begin bij een route die bij je dag past')}</h3>
-                    <p>${escapeHtml(discoverEntry?.hero_sub || 'Gebruik regio’s, typen en themapagina’s als ingang. Dat werkt sneller voor ouders en geeft Google ook een duidelijker beeld van wat de belangrijkste pagina’s zijn.')}</p>
+                    <p class="guide-card-intro">${escapeHtml(discoverEntry?.hero_sub || 'Gebruik regio’s, typen en themapagina’s als ingang. Dat werkt sneller voor ouders en geeft Google ook een duidelijker beeld van wat de belangrijkste pagina’s zijn.')}</p>
                     ${editorialMetaHTML(discoverEntry)}
+                    <div class="guide-pills">
+                      <span class="guide-pill">Regio</span>
+                      <span class="guide-pill">Type uitje</span>
+                      <span class="guide-pill">Situatie</span>
+                    </div>
                     <div class="guide-links">
                       <a href="/ontdekken/" class="guide-link"><strong>Alles geordend bekijken</strong><span>Regio’s, typen, situaties en blogroutes op één crawlbare pagina.</span></a>
                       <a href="/methode/" class="guide-link"><strong>Hoe PeuterPlannen selecteert</strong><span>Waarom sommige pagina’s zwaarder wegen dan andere, en hoe we kindpraktijk meewegen.</span></a>
                     </div>
                 </div>
-                <div class="guide-card">
+                <div class="guide-card guide-card-compact">
                     <p class="guide-kicker">Belangrijkste ingangen</p>
                     <h3>Snelle routes door de site</h3>
                     <div class="guide-links">
                       ${regions.slice(0, 9).map((region) => `<a href="/${region.slug}.html" class="guide-link"><strong>${region.name}</strong><span>${regionCounts[region.name] || 0} locaties in deze regio</span></a>`).join('')}
                     </div>
                 </div>
-                <div class="guide-card">
+                <div class="guide-card guide-card-compact">
                     <p class="guide-kicker">Verder lezen</p>
                     <h3>Gebruik blog en clusterpagina’s als keuzehulp</h3>
                     <div class="guide-links">
@@ -1736,8 +1746,23 @@ ${navHTML()}
   <a href="/">PeuterPlannen</a> &rsaquo; ${escapeHtml(entry.title || heroTitle)}
 </nav>
 <main id="main-content">
-  ${editorialMetaHTML(entry)}
-  ${editorialBodyHTML(entry)}
+  <section class="editorial-shell">
+    ${editorialMetaHTML(entry)}
+    ${editorialBodyHTML(entry)}
+    <div class="editorial-support">
+      <div class="editorial-support-card">
+        <h3>Zo werk je het snelst</h3>
+        <p>Begin met een route die past bij je dag, niet met eindeloze losse pins. Dat scheelt ouders tijd en houdt de site voor Google logisch en navigeerbaar.</p>
+      </div>
+      <div class="editorial-support-card">
+        <h3>Handige ingangen</h3>
+        <div class="editorial-support-links">
+          <a href="/methode/"><strong>Hoe we selecteren</strong><span>Wat gecheckt betekent en hoe kindpraktijk zwaarder weegt dan losse listingdata.</span></a>
+          <a href="/app.html"><strong>Open de app</strong><span>Gebruik afstand, type en situatie om snel een shortlist voor vandaag te maken.</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
   ${extraSections}
   ${relatedBlogs.length ? `<section class="guide-section">
     <div class="guide-card">
