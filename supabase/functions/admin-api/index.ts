@@ -276,6 +276,18 @@ function validateQualityTaskStatus(value: string): string {
   return value;
 }
 
+function summarizeQualityTaskDetails(taskType: string, details: unknown): string {
+  if (!details || typeof details !== "object") return taskType;
+  const payload = details as Record<string, unknown>;
+  if (typeof payload.summary === "string" && payload.summary.trim()) return payload.summary.trim();
+  if (Array.isArray(payload.missing_fields) && payload.missing_fields.length) {
+    return `Ontbreekt: ${payload.missing_fields.map((field) => String(field)).join(", ")}`;
+  }
+  if (typeof payload.reason === "string" && payload.reason.trim()) return payload.reason.trim();
+  if (typeof payload.target_url === "string" && payload.target_url.trim()) return `Doel: ${payload.target_url.trim()}`;
+  return taskType;
+}
+
 function isMissingRpcError(message: string): boolean {
   const normalized = message.toLowerCase();
   return normalized.includes("could not find the function") ||
@@ -1085,6 +1097,29 @@ serve(async (req) => {
         break;
       }
 
+      case "resolve_quality_task": {
+        const taskId = asString(params.task_id);
+        const status = validateQualityTaskStatus(asString(params.status, "resolved"));
+        if (!taskId) throw new AppError("task_id ontbreekt", "MISSING_TASK_ID", 400);
+        assertUuid(taskId, "task_id");
+        if (!["in_progress", "resolved", "dismissed"].includes(status)) {
+          throw new AppError("Gebruik in_progress, resolved of dismissed", "INVALID_QUALITY_TASK_STATUS", 400);
+        }
+        const now = new Date().toISOString();
+        const patch: Record<string, unknown> = { status };
+        if (status === "resolved" || status === "dismissed") {
+          patch.resolved_at = now;
+          patch.resolved_by = admin.id;
+        } else {
+          patch.resolved_at = null;
+          patch.resolved_by = null;
+        }
+        const { error } = await supabase.from("location_quality_tasks").update(patch).eq("id", taskId);
+        if (error) throw new AppError(error.message, "RESOLVE_QUALITY_TASK_FAILED", 400);
+        result = { ok: true, task_id: taskId, status };
+        break;
+      }
+
       case "list_duplicate_candidates": {
         const { data, error } = await supabase
           .from("locations")
@@ -1121,6 +1156,85 @@ serve(async (req) => {
         break;
       }
 
+      case "apply_duplicate_merge": {
+        const canonicalLocationId = asInteger(params.canonical_location_id);
+        const aliasLocationIds = Array.isArray(params.alias_location_ids)
+          ? [...new Set(params.alias_location_ids.map((value) => asInteger(value)).filter((value) => value > 0))]
+          : [];
+        if (!canonicalLocationId) throw new AppError("canonical_location_id ontbreekt", "MISSING_CANONICAL_LOCATION_ID", 400);
+        if (!aliasLocationIds.length) throw new AppError("alias_location_ids ontbreekt", "MISSING_ALIAS_LOCATION_IDS", 400);
+        if (aliasLocationIds.includes(canonicalLocationId)) {
+          throw new AppError("Canonical mag niet tegelijk alias zijn", "INVALID_DUPLICATE_MERGE", 400);
+        }
+
+        const allIds = [canonicalLocationId, ...aliasLocationIds];
+        const { data: locationsForMerge, error: mergeFetchError } = await supabase
+          .from("locations")
+          .select("id, name, region, seo_primary_locality, seo_tier")
+          .in("id", allIds);
+        if (mergeFetchError) throw new AppError(mergeFetchError.message, "DUPLICATE_MERGE_FETCH_FAILED", 400);
+        if ((locationsForMerge ?? []).length !== allIds.length) {
+          throw new AppError("Niet alle locaties voor duplicate merge zijn gevonden", "DUPLICATE_MERGE_NOT_FOUND", 404);
+        }
+
+        const canonical = (locationsForMerge ?? []).find((row) => Number(row.id) === canonicalLocationId);
+        if (!canonical) throw new AppError("Canonical locatie niet gevonden", "CANONICAL_NOT_FOUND", 404);
+        const canonicalTargetUrl = `/${slugify(asString(canonical.region))}/${slugify(asString(canonical.name))}/`;
+        const now = new Date().toISOString();
+
+        for (const aliasLocationId of aliasLocationIds) {
+          const aliasLocation = (locationsForMerge ?? []).find((row) => Number(row.id) === aliasLocationId);
+          if (!aliasLocation) continue;
+
+          const { error: aliasUpdateError } = await supabase
+            .from("locations")
+            .update({
+              seo_tier: "alias",
+              seo_canonical_target: canonicalLocationId,
+              seo_exclude_from_sitemap: true,
+              seo_last_decided_at: now,
+              seo_notes: `Canonical merge naar ${canonicalTargetUrl} op ${now}`,
+            })
+            .eq("id", aliasLocationId);
+          if (aliasUpdateError) throw new AppError(aliasUpdateError.message, "DUPLICATE_MERGE_UPDATE_FAILED", 400);
+
+          const aliasPayload = {
+            location_id: aliasLocationId,
+            alias: asString(aliasLocation.name),
+            alias_normalized: slugify(asString(aliasLocation.name)) || null,
+            old_region_slug: slugify(asString(aliasLocation.region)) || null,
+            old_loc_slug: slugify(asString(aliasLocation.name)) || null,
+            target_url: canonicalTargetUrl,
+            reason: `admin-canonical-merge:${canonicalLocationId}`,
+            is_active: true,
+          };
+          const { error: aliasInsertError } = await supabase
+            .from("location_aliases")
+            .upsert(aliasPayload, { onConflict: "location_id,alias" });
+          if (aliasInsertError) throw new AppError(aliasInsertError.message, "DUPLICATE_MERGE_ALIAS_FAILED", 400);
+        }
+
+        const { error: canonicalUpdateError } = await supabase
+          .from("locations")
+          .update({
+            seo_tier: "index",
+            seo_canonical_target: null,
+            seo_exclude_from_sitemap: false,
+            seo_last_decided_at: now,
+            seo_notes: `Canonical winnaar bevestigd op ${now}`,
+          })
+          .eq("id", canonicalLocationId);
+        if (canonicalUpdateError) throw new AppError(canonicalUpdateError.message, "DUPLICATE_MERGE_CANONICAL_FAILED", 400);
+
+        result = {
+          ok: true,
+          canonical_location_id: canonicalLocationId,
+          alias_location_ids: aliasLocationIds,
+          target_url: canonicalTargetUrl,
+        };
+        break;
+      }
+
       case "get_insights": {
         const [publishState, pendingObs, openTasks, latestGscRows, locations, qualityTasks] = await Promise.all([
           supabase.from("site_publish_state").select("*").eq("id", 1).maybeSingle(),
@@ -1133,7 +1247,7 @@ serve(async (req) => {
             .order("name", { ascending: true }),
           supabase
             .from("location_quality_tasks")
-            .select("id, task_type, priority, status, location_id, notes, metadata_json")
+            .select("id, task_type, priority, status, location_id, details_json, source, created_at")
             .eq("status", "open")
             .order("priority", { ascending: false })
             .order("created_at", { ascending: false })
@@ -1142,13 +1256,19 @@ serve(async (req) => {
 
         const gaps = locations.error ? [] : computeContextGaps((locations.data ?? []) as Array<Record<string, unknown>>).slice(0, 25);
         const latestGscPayload = latestGscRows.error ? null : summarizeGscSnapshots((latestGscRows.data ?? []) as Array<Record<string, unknown>>);
+        const topQualityTasks = qualityTasks.error && isMissingRelationError(qualityTasks.error.message, "location_quality_tasks")
+          ? []
+          : (qualityTasks.data ?? []).map((row: Record<string, unknown>) => ({
+            ...row,
+            notes: summarizeQualityTaskDetails(asString(row.task_type), row.details_json),
+          }));
         result = {
           publish_state: publishState.data ?? null,
           pending_observations: pendingObs.count ?? 0,
           open_quality_tasks: openTasks.error && isMissingRelationError(openTasks.error.message, "location_quality_tasks") ? 0 : (openTasks.count ?? 0),
           top_context_gaps: gaps,
           latest_gsc_snapshot: latestGscPayload,
-          top_quality_tasks: qualityTasks.error && isMissingRelationError(qualityTasks.error.message, "location_quality_tasks") ? [] : (qualityTasks.data ?? []),
+          top_quality_tasks: topQualityTasks,
         };
         break;
       }

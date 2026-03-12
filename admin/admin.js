@@ -599,7 +599,17 @@ function fillLocationForms(payload) {
 
   const tasks = payload?.quality_tasks || [];
   $('location-tasks-list').innerHTML = tasks.length
-    ? tasks.map((task) => `<li><strong>${escapeHtml(task.task_type)}</strong> · ${escapeHtml(task.status)} · prioriteit ${escapeHtml(task.priority)}</li>`).join('')
+    ? tasks.map((task) => `
+      <li>
+        <strong>${escapeHtml(task.task_type)}</strong>
+        <span class="portal-muted">· ${escapeHtml(task.status)} · prioriteit ${escapeHtml(String(task.priority))}</span>
+        <br><span class="portal-muted">${escapeHtml(summarizeQualityTask(task))}</span>
+        <div class="portal-btn-row" style="margin-top:8px;">
+          <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-open-location="content" data-location-id="${escapeAttr(state.selectedLocationId)}">Open locatie</button>
+          <button class="portal-btn portal-btn-success portal-btn-sm" type="button" data-quality-task-action="resolved" data-task-id="${escapeAttr(task.id)}">Resolved</button>
+          <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-quality-task-action="dismissed" data-task-id="${escapeAttr(task.id)}">Dismiss</button>
+        </div>
+      </li>`).join('')
     : '<li class="portal-muted">Geen open quality tasks voor deze locatie.</li>';
 }
 
@@ -853,6 +863,7 @@ async function onEditorialTableClick(event) {
 async function loadDuplicates() {
   const tbody = $('duplicates-tbody');
   tbody.innerHTML = '<tr class="portal-loading-row"><td colspan="4"><span class="portal-spinner"></span></td></tr>';
+  PortalShell.setAlert('duplicates-alert', '', 'info');
   try {
     const groups = await api('list_duplicate_candidates');
     if (!groups?.length) {
@@ -860,16 +871,53 @@ async function loadDuplicates() {
       return;
     }
     tbody.innerHTML = groups.map((group) => {
-      const items = group.items.map((item) => `${item.id}: ${escapeHtml(item.name)}${item.seo_primary_locality ? ` (${escapeHtml(item.seo_primary_locality)})` : ''}`).join('<br>');
+      const items = group.items.map((item) => `${item.id}: ${escapeHtml(item.name)}${item.seo_primary_locality ? ` (${escapeHtml(item.seo_primary_locality)})` : ''}${Number(item.id) === Number(group.canonical_suggestion_id) ? ' <span class="portal-muted">· canonical</span>' : ''}`).join('<br>');
+      const aliasIds = group.items
+        .map((item) => Number(item.id))
+        .filter((id) => id && id !== Number(group.canonical_suggestion_id))
+        .join(',');
       return `<tr>
         <td><strong>${escapeHtml(group.group_label)}</strong></td>
         <td class="portal-inline-code">${escapeHtml(String(group.canonical_suggestion_id))}</td>
         <td>${items}</td>
-        <td><button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-open-location="seo" data-location-id="${escapeAttr(group.canonical_suggestion_id)}">Open in SEO</button></td>
+        <td>
+          <div class="portal-btn-row">
+            <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-open-location="seo" data-location-id="${escapeAttr(group.canonical_suggestion_id)}">Open in SEO</button>
+            <button class="portal-btn portal-btn-primary portal-btn-sm" type="button" data-duplicate-merge="true" data-canonical-id="${escapeAttr(group.canonical_suggestion_id)}" data-alias-ids="${escapeAttr(aliasIds)}">Canonical toepassen</button>
+          </div>
+        </td>
       </tr>`;
     }).join('');
   } catch (error) {
     PortalShell.setAlert('duplicates-alert', `Duplicate candidates laden mislukt: ${error.message}`, 'error', { assertive: true });
+  }
+}
+
+async function onDuplicatesTableClick(event) {
+  const mergeBtn = event.target.closest('[data-duplicate-merge]');
+  if (!mergeBtn) {
+    await onLocationsTableClick(event);
+    return;
+  }
+  const canonicalId = Number(mergeBtn.dataset.canonicalId);
+  const aliasIds = (mergeBtn.dataset.aliasIds || '').split(',').map((value) => Number(value)).filter(Boolean);
+  if (!canonicalId || !aliasIds.length) return;
+  PortalShell.setButtonBusy(mergeBtn, true, 'Toepassen...', 'Canonical toepassen');
+  try {
+    await api('apply_duplicate_merge', {
+      canonical_location_id: canonicalId,
+      alias_location_ids: aliasIds,
+    });
+    PortalShell.setAlert('duplicates-alert', 'Canonical merge toegepast.', 'success');
+    await loadDuplicates();
+    await loadInsights();
+    if (state.selectedLocationId && [canonicalId, ...aliasIds].includes(Number(state.selectedLocationId))) {
+      await loadLocationDetail(canonicalId);
+    }
+  } catch (error) {
+    PortalShell.setAlert('duplicates-alert', `Canonical merge mislukt: ${error.message}`, 'error', { assertive: true });
+  } finally {
+    PortalShell.setButtonBusy(mergeBtn, false, null, 'Canonical toepassen');
   }
 }
 
@@ -962,10 +1010,38 @@ async function loadInsights() {
           <span class="portal-muted">· prioriteit ${escapeHtml(String(row.priority ?? '-'))}</span>
           ${row.location_id ? `<button class="portal-link-btn" type="button" data-open-location="content" data-location-id="${escapeAttr(row.location_id)}">open locatie ${escapeHtml(String(row.location_id))}</button>` : ''}
           ${row.notes ? `<br><span class="portal-muted">${escapeHtml(row.notes)}</span>` : ''}
+          <div class="portal-btn-row" style="margin-top:8px;">
+            <button class="portal-btn portal-btn-success portal-btn-sm" type="button" data-quality-task-action="resolved" data-task-id="${escapeAttr(row.id)}">Resolved</button>
+            <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-quality-task-action="dismissed" data-task-id="${escapeAttr(row.id)}">Dismiss</button>
+          </div>
         </li>`).join('')
       : '<li class="portal-muted">Geen open quality tasks.</li>';
   } catch (error) {
     PortalShell.setAlert('insights-alert', `Insights laden mislukt: ${error.message}`, 'error', { assertive: true });
+  }
+}
+
+async function onQualityTaskClick(event) {
+  const actionBtn = event.target.closest('[data-quality-task-action]');
+  if (!actionBtn) {
+    await onLocationsTableClick(event);
+    return;
+  }
+  const taskId = actionBtn.dataset.taskId;
+  const status = actionBtn.dataset.qualityTaskAction;
+  if (!taskId || !status) return;
+  const originalLabel = actionBtn.textContent || 'Actie';
+  PortalShell.setButtonBusy(actionBtn, true, 'Bezig...', originalLabel);
+  try {
+    await api('resolve_quality_task', { task_id: taskId, status });
+    PortalShell.setAlert('insights-alert', `Quality task op ${status} gezet.`, 'success');
+    if (state.selectedLocationId) await loadLocationDetail(state.selectedLocationId);
+    await loadInsights();
+    await loadStats();
+  } catch (error) {
+    PortalShell.setAlert('insights-alert', `Quality task bijwerken mislukt: ${error.message}`, 'error', { assertive: true });
+  } finally {
+    PortalShell.setButtonBusy(actionBtn, false, null, originalLabel);
   }
 }
 
@@ -1011,6 +1087,18 @@ function valueOrDash(value) {
   return String(value);
 }
 
+function summarizeQualityTask(task) {
+  const details = task?.details_json && typeof task.details_json === 'object' ? task.details_json : null;
+  if (task?.notes) return String(task.notes);
+  if (details?.summary) return String(details.summary);
+  if (Array.isArray(details?.missing_fields) && details.missing_fields.length) {
+    return `Ontbreekt: ${details.missing_fields.join(', ')}`;
+  }
+  if (details?.reason) return String(details.reason);
+  if (details?.target_url) return `Doel: ${details.target_url}`;
+  return task?.task_type || '-';
+}
+
 function bindUI() {
   $('send-otp-btn').addEventListener('click', sendOtp);
   $('verify-otp-btn').addEventListener('click', verifyOtp);
@@ -1030,8 +1118,10 @@ function bindUI() {
   $('locations-tbody').addEventListener('change', onLocationsTableChange);
   $('observations-tbody').addEventListener('click', onObservationsTableClick);
   $('editorial-tbody').addEventListener('click', onEditorialTableClick);
-  $('duplicates-tbody').addEventListener('click', onLocationsTableClick);
+  $('duplicates-tbody').addEventListener('click', onDuplicatesTableClick);
   $('insight-context-gaps').addEventListener('click', onLocationsTableClick);
+  $('location-tasks-list').addEventListener('click', onQualityTaskClick);
+  $('insight-quality-backlog').addEventListener('click', onQualityTaskClick);
 
   $('modal-save-btn').addEventListener('click', saveOwnerEdit);
   $('save-location-detail-btn').addEventListener('click', saveLocationDetail);
