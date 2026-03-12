@@ -90,7 +90,7 @@ function_deploy_targets() {
 
   while IFS= read -r fn; do
     [[ -n "${fn}" ]] && function_dirs+=("${fn}")
-  done < <(find supabase/functions -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | grep -v '^_shared$' | sort)
+  done < <(find supabase/functions -mindepth 1 -maxdepth 1 -type d | while IFS= read -r dir; do basename "${dir}"; done | grep -v '^_shared$' | sort)
 
   changed_shared="$(git_changed_paths supabase/functions/_shared)"
   if [[ -n "${changed_shared}" ]]; then
@@ -198,8 +198,10 @@ patch_auth_config() {
 }
 
 deploy_functions() {
-  local functions
-  mapfile -t functions < <(function_deploy_targets)
+  local functions=() entry
+  while IFS= read -r entry; do
+    [[ -n "${entry}" ]] && functions+=("${entry}")
+  done < <(function_deploy_targets)
 
   supabase login --token "${SUPABASE_ACCESS_TOKEN}" >/dev/null
 
