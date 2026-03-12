@@ -3,6 +3,7 @@ title_override: "Duinrell — groot daguitje voor peuters en kleuters bij Den Ha
 description_override: "Duinrell is een van de weinige grotere parken die ook voor jonge kinderen echt genoeg eigen aanbod hebben, zowel buiten als binnen."
 intro_override: "Voor gezinnen die wel een groter daguitje willen, maar niet meteen richting oudere-kinderpark hoeven, is Duinrell een logische kandidaat. De peuter- en kleuterlaag is hier inhoudelijk sterk genoeg om de dag te dragen."
 updated_at: "2026-03-10"
+location_match_id: 1550
 ---
 ## Belangrijk om vooraf te weten
 

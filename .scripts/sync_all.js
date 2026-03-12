@@ -628,6 +628,71 @@ function loadSeoContentLibrary() {
   };
 }
 
+function normalizeEditorialPageRecord(entry) {
+  if (!entry) return null;
+  const bodyMarkdown = `${entry.body_md || ''}`.trim();
+  const heroBody = `${entry.hero_body_md || ''}`.trim();
+  return {
+    ...entry,
+    slug: entry.slug,
+    title: entry.title || entry.meta_title || entry.slug || '',
+    meta_title: entry.meta_title || '',
+    meta_description: entry.meta_description || '',
+    hero_title: entry.title || entry.meta_title || entry.slug || '',
+    hero_sub: heroBody || entry.meta_description || '',
+    bodyMarkdown,
+    bodyHtml: renderMarkdownDoc(bodyMarkdown),
+    related_blog_slugs: Array.isArray(entry.related_blog_slugs) ? entry.related_blog_slugs : [],
+    curated_location_ids: Array.isArray(entry.curated_location_ids) ? entry.curated_location_ids : [],
+    editorial_label: entry.editorial_label || 'PeuterPlannen redactie',
+  };
+}
+
+function mergeSeoContentLibrary(seedContent, editorialPages = []) {
+  const merged = {
+    shared: { ...(seedContent?.shared || {}) },
+    regions: { ...(seedContent?.regions || {}) },
+    types: { ...(seedContent?.types || {}) },
+    clusters: { ...(seedContent?.clusters || {}) },
+    locations: { ...(seedContent?.locations || {}) },
+  };
+
+  for (const page of editorialPages) {
+    if (!page || page.status !== 'published') continue;
+    const entry = normalizeEditorialPageRecord(page);
+    if (!entry) continue;
+
+    if (page.page_type === 'discover_hub') {
+      merged.shared.ontdekken = entry;
+      continue;
+    }
+
+    if (page.page_type === 'methodology_page') {
+      merged.shared.methodologie = entry;
+      continue;
+    }
+
+    if (page.page_type === 'region_hub') {
+      const key = page.region_slug || page.slug;
+      if (key) merged.regions[key] = entry;
+      continue;
+    }
+
+    if (page.page_type === 'type_hub') {
+      const key = page.type_slug || page.slug;
+      if (key) merged.types[key] = entry;
+      continue;
+    }
+
+    if (page.page_type === 'cluster_hub') {
+      const key = page.cluster_slug || page.slug;
+      if (key) merged.clusters[key] = entry;
+    }
+  }
+
+  return merged;
+}
+
 function formatEditorialDate(value) {
   const d = parseDateSafe(value);
   if (!d) return '';
@@ -661,6 +726,12 @@ function relatedBlogLinksHTML(slugs = [], heading = 'Meer inspiratie') {
 
 function applyRepoSeoOverrides(data) {
   const content = data.seoContent || {};
+  const locationEditorialById = new Map(
+    (data.editorialPages || [])
+      .filter((page) => page?.status === 'published' && page.page_type === 'location_detail_override' && page.location_id)
+      .map((page) => [Number(page.location_id), normalizeEditorialPageRecord(page)])
+  );
+
   for (const loc of data.locations) {
     const regionOverrides = content.locations?.[loc.regionSlug];
     const override = regionOverrides?.[loc.locSlug];
@@ -672,6 +743,20 @@ function applyRepoSeoOverrides(data) {
     if (override.bodyMarkdown) loc.seo_repo_body_markdown = override.bodyMarkdown;
     if (override.updated_at) loc.seo_repo_updated_at = override.updated_at;
     if (Array.isArray(override.related_blog_slugs)) loc.seo_related_blog_slugs = override.related_blog_slugs;
+  }
+
+  for (const loc of data.locations) {
+    const override = locationEditorialById.get(Number(loc.id));
+    if (!override) continue;
+    if (override.meta_title || override.title) loc.seo_title_override = override.meta_title || override.title;
+    if (override.meta_description) loc.seo_description_override = override.meta_description;
+    if (override.hero_sub) loc.seo_intro_override = override.hero_sub;
+    if (override.bodyHtml) loc.seo_repo_body_html = override.bodyHtml;
+    if (override.bodyMarkdown) loc.seo_repo_body_markdown = override.bodyMarkdown;
+    if (override.updated_at) loc.seo_repo_updated_at = override.updated_at;
+    if (Array.isArray(override.related_blog_slugs) && override.related_blog_slugs.length) {
+      loc.seo_related_blog_slugs = override.related_blog_slugs;
+    }
   }
 }
 
@@ -937,6 +1022,8 @@ async function fetchData() {
 
   let regions;
   let locationAliases = [];
+  let editorialPages = [];
+  let gscSnapshots = [];
   try {
     regions = await fetchJSON('regions', 'select=*&is_active=eq.true&order=display_order');
     console.log(`  ${regions.length} active regions (from DB)`);
@@ -963,6 +1050,28 @@ async function fetchData() {
     }
   }
 
+  try {
+    editorialPages = await fetchAllJSON('editorial_pages', 'select=*&status=eq.published&order=updated_at.desc');
+    console.log(`  ${editorialPages.length} published editorial pages`);
+  } catch (err) {
+    if (err.status === 404) {
+      console.log('  editorial_pages table not found, using repo seed content only');
+    } else {
+      throw err;
+    }
+  }
+
+  try {
+    gscSnapshots = await fetchJSON('gsc_snapshots', 'select=*&order=created_at.desc&limit=12');
+    console.log(`  ${gscSnapshots.length} GSC snapshots`);
+  } catch (err) {
+    if (err.status === 404) {
+      console.log('  gsc_snapshots table not found, skipping DB telemetry overlay');
+    } else {
+      throw err;
+    }
+  }
+
   // Counts
   const regionCounts = {};
   const typeCounts = {};
@@ -971,7 +1080,7 @@ async function fetchData() {
     typeCounts[loc.type] = (typeCounts[loc.type] || 0) + 1;
   }
 
-  return { regions, locations, locationAliases, regionCounts, typeCounts, total: locations.length };
+  return { regions, locations, locationAliases, editorialPages, gscSnapshots, regionCounts, typeCounts, total: locations.length };
 }
 
 // === Compute Slugs ===
@@ -3666,7 +3775,7 @@ async function main() {
   console.log('=== PeuterPlannen sync_all.js ===\n');
 
   const data = await fetchData();
-  data.seoContent = loadSeoContentLibrary();
+  data.seoContent = mergeSeoContentLibrary(loadSeoContentLibrary(), data.editorialPages);
   LOCATION_COUNT = data.locations.length;
 
   console.log('Computing slugs...');

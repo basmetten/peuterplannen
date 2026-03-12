@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - PeuterPlannen</title>
-  <meta name="description" content="Adminportal voor PeuterPlannen: beheer claims, locaties en abonnementen.">
+  <meta name="description" content="Adminportal voor PeuterPlannen: beheer claims, content, SEO, trustsignalen en publicatie.">
   <link rel="canonical" href="https://admin.peuterplannen.nl/">
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" href="favicon.ico" sizes="any">
@@ -20,19 +20,19 @@
     }
 
     .admin-auth {
-      max-width: 500px;
+      max-width: 540px;
       margin: 22px auto 0;
     }
 
     .admin-auth .portal-card {
       border-radius: 22px;
-      padding: 26px;
+      padding: 28px;
     }
 
     .admin-hero-grid {
       display: grid;
-      gap: 12px;
-      grid-template-columns: 1.15fr 1fr;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
       align-items: stretch;
     }
 
@@ -40,9 +40,9 @@
       background: rgba(255, 255, 255, 0.12);
       border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 14px;
-      padding: 14px;
+      padding: 16px;
       font-size: 13px;
-      color: rgba(255, 255, 255, 0.9);
+      color: rgba(255, 255, 255, 0.92);
     }
 
     .admin-kpi-card {
@@ -64,12 +64,113 @@
       text-transform: uppercase;
     }
 
+    .admin-tabs-card {
+      padding: 18px;
+    }
+
+    .admin-two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .admin-three-col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .admin-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px 14px;
+    }
+
+    .admin-form-grid .portal-form-group.full,
+    .admin-form-grid .admin-full {
+      grid-column: 1 / -1;
+    }
+
+    .admin-panel-stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .admin-summary-card {
+      min-height: 126px;
+    }
+
+    .admin-summary-card .portal-muted {
+      display: inline-block;
+      margin-top: 4px;
+      line-height: 1.6;
+    }
+
+    .admin-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .admin-info-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-info-item {
+      border: 1px solid rgba(35, 31, 26, 0.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.75);
+    }
+
+    .admin-info-item strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--pp-text-muted);
+    }
+
+    .admin-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      border: 1px solid rgba(35, 31, 26, 0.12);
+      border-radius: 8px;
+      background: #f7f3ee;
+      padding: 2px 6px;
+    }
+
+    .portal-link-btn {
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--pp-primary-deep);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .portal-link-btn:hover {
+      text-decoration: underline;
+    }
+
     .portal-table td.actions {
-      width: 180px;
+      width: 220px;
+    }
+
+    .portal-table td.tight,
+    .portal-table th.tight {
+      white-space: nowrap;
     }
 
     .portal-inline-code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 12px;
       border: 1px solid rgba(35, 31, 26, 0.12);
       border-radius: 6px;
@@ -77,9 +178,25 @@
       padding: 2px 6px;
     }
 
-    @media (max-width: 860px) {
-      .admin-hero-grid {
+    .admin-empty-note {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px dashed rgba(35, 31, 26, 0.14);
+      color: var(--pp-text-muted);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    @media (max-width: 980px) {
+      .admin-hero-grid,
+      .admin-two-col,
+      .admin-three-col,
+      .admin-form-grid,
+      .admin-info-grid {
         grid-template-columns: 1fr;
+      }
+
+      .portal-stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .portal-table td.actions {
@@ -108,7 +225,7 @@
     <section id="screen-login" class="admin-auth">
       <div class="portal-card">
         <h1 class="portal-screen-title">Admin toegang</h1>
-        <p class="portal-subtitle">Log in met je e-mail op het vaste admin-account. Je krijgt eerst een 6-cijferige code en daarnaast een fallback-link.</p>
+        <p class="portal-subtitle">Log in op het vaste admin-account. Je krijgt eerst een 6-cijferige code en daarnaast een fallback-link.</p>
         <div id="login-alert" class="portal-alert-wrap" aria-live="assertive"></div>
         <div class="portal-form-group">
           <label class="portal-label" for="admin-email">E-mailadres</label>
@@ -140,58 +257,65 @@
       <article class="portal-hero">
         <div class="admin-hero-grid">
           <div>
-            <p class="portal-chip">Control panel</p>
-            <h2 class="portal-title" style="margin-top:8px;">Claims, abonnementen en locatiekwaliteit</h2>
-            <p style="margin:10px 0 0;color:rgba(255,255,255,0.82);font-size:14px;max-width:58ch;">Dit dashboard beheert ownership en zichtbaarheid in de app. Alle mutaties zijn gekoppeld aan auditlog en stricte servervalidatie.</p>
+            <p class="portal-chip">Control plane</p>
+            <h2 class="portal-title" style="margin-top:8px;">PeuterPlannen beheren als redactioneel product</h2>
+            <p style="margin:10px 0 0;color:rgba(255,255,255,0.82);font-size:14px;max-width:58ch;">Beheer claims, datakwaliteit, trustsignalen, SEO-governance, redactionele hubs en de live publicatiestatus vanuit één backoffice.</p>
           </div>
           <div class="admin-hero-note">
             <strong style="display:block;font-family:var(--pp-font-head);margin-bottom:6px;">Live-operatie</strong>
-            Claims en featured-status beïnvloeden ranking en badges op peuterplannen.nl direct na sync.
+            Wijzigingen op locaties, editorial content en SEO-governance lopen via audittrail en kunnen de statische site direct opnieuw klaarzetten voor publicatie.
           </div>
         </div>
       </article>
 
       <section class="portal-stat-grid" id="stat-grid" aria-label="Kerncijfers">
-        <div class="portal-stat-card admin-kpi-card">
-          <span class="admin-kpi-value is-loading" id="stat-pending">-</span>
-          <span class="admin-kpi-label">Open claims</span>
-        </div>
-        <div class="portal-stat-card admin-kpi-card">
-          <span class="admin-kpi-value is-loading" id="stat-subs">-</span>
-          <span class="admin-kpi-label">Actieve subscriptions</span>
-        </div>
-        <div class="portal-stat-card admin-kpi-card">
-          <span class="admin-kpi-value is-loading" id="stat-edits">-</span>
-          <span class="admin-kpi-label">Edits 7 dagen</span>
-        </div>
-        <div class="portal-stat-card admin-kpi-card">
-          <span class="admin-kpi-value is-loading" id="stat-owners">-</span>
-          <span class="admin-kpi-label">Totaal owners</span>
-        </div>
+        <div class="portal-stat-card admin-kpi-card"><span class="admin-kpi-value is-loading" id="stat-pending">-</span><span class="admin-kpi-label">Open claims</span></div>
+        <div class="portal-stat-card admin-kpi-card"><span class="admin-kpi-value is-loading" id="stat-subs">-</span><span class="admin-kpi-label">Actieve subscriptions</span></div>
+        <div class="portal-stat-card admin-kpi-card"><span class="admin-kpi-value is-loading" id="stat-edits">-</span><span class="admin-kpi-label">Edits 7 dagen</span></div>
+        <div class="portal-stat-card admin-kpi-card"><span class="admin-kpi-value is-loading" id="stat-owners">-</span><span class="admin-kpi-label">Owners</span></div>
+        <div class="portal-stat-card admin-kpi-card"><span class="admin-kpi-value is-loading" id="stat-observations">-</span><span class="admin-kpi-label">Pending trust</span></div>
+        <div class="portal-stat-card admin-kpi-card"><span class="admin-kpi-value is-loading" id="stat-tasks">-</span><span class="admin-kpi-label">Open quality tasks</span></div>
       </section>
 
-      <section class="portal-card portal-card-soft">
+      <section class="portal-card portal-card-soft admin-tabs-card">
         <div class="portal-tabs" role="tablist" aria-label="Admin onderdelen">
           <button class="portal-tab active" id="tab-btn-overview" data-tab-target="tab-overview" role="tab" aria-selected="true" type="button">Overzicht</button>
           <button class="portal-tab" id="tab-btn-claims" data-tab-target="tab-claims" role="tab" aria-selected="false" type="button">Claims</button>
           <button class="portal-tab" id="tab-btn-owners" data-tab-target="tab-owners" role="tab" aria-selected="false" type="button">Abonnees</button>
           <button class="portal-tab" id="tab-btn-locations" data-tab-target="tab-locations" role="tab" aria-selected="false" type="button">Locaties</button>
+          <button class="portal-tab" id="tab-btn-location-detail" data-tab-target="tab-location-detail" role="tab" aria-selected="false" type="button">Locatie-inhoud</button>
+          <button class="portal-tab" id="tab-btn-trust" data-tab-target="tab-trust" role="tab" aria-selected="false" type="button">Trust queue</button>
+          <button class="portal-tab" id="tab-btn-seo" data-tab-target="tab-seo" role="tab" aria-selected="false" type="button">SEO</button>
+          <button class="portal-tab" id="tab-btn-editorial" data-tab-target="tab-editorial" role="tab" aria-selected="false" type="button">Editorial</button>
+          <button class="portal-tab" id="tab-btn-duplicates" data-tab-target="tab-duplicates" role="tab" aria-selected="false" type="button">Duplicates</button>
+          <button class="portal-tab" id="tab-btn-publishing" data-tab-target="tab-publishing" role="tab" aria-selected="false" type="button">Publishing</button>
+          <button class="portal-tab" id="tab-btn-insights" data-tab-target="tab-insights" role="tab" aria-selected="false" type="button">Insights</button>
           <button class="portal-tab" id="tab-btn-editlog" data-tab-target="tab-editlog" role="tab" aria-selected="false" type="button">Edit log</button>
         </div>
       </section>
 
       <section id="tab-overview" class="portal-card">
-        <div class="portal-heading-row">
-          <h2>Systeemstatus</h2>
-        </div>
-        <p class="portal-subtitle">Gebruik de tabs om operationele taken uit te voeren. Claims worden transactioneel verwerkt en duplicates worden automatisch afgewezen.</p>
+        <div class="portal-heading-row"><h2>Systeemstatus</h2></div>
+        <p class="portal-subtitle">Gebruik de tabs om productkwaliteit, trustsignalen, SEO-governance, redactionele content en publicatie centraal te beheren.</p>
         <div id="overview-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="admin-three-col">
+          <div class="portal-card portal-card-soft admin-summary-card">
+            <h3>Vandaag prioriteit</h3>
+            <p class="portal-subtitle">Werk eerst pending observations en open quality tasks weg; die verbeteren direct trust- en SEO-kwaliteit.</p>
+          </div>
+          <div class="portal-card portal-card-soft admin-summary-card">
+            <h3>Editorial ritme</h3>
+            <p class="portal-subtitle">Gebruik regio- en clusterhubs als primaire groeilaag. Detailpagina’s zijn selectief en moeten een duidelijke reden hebben om `index` te blijven.</p>
+          </div>
+          <div class="portal-card portal-card-soft admin-summary-card">
+            <h3>Publicatie</h3>
+            <p class="portal-subtitle">De publish-state blijft leidend. In Publishing kun je de dirty-status zien en handmatig opnieuw klaarzetten.</p>
+          </div>
+        </div>
       </section>
 
       <section id="tab-claims" class="portal-card hidden">
-        <div class="portal-heading-row">
-          <h2>Claim-aanvragen</h2>
-        </div>
+        <div class="portal-heading-row"><h2>Claim-aanvragen</h2></div>
         <div class="portal-pill-row" id="claims-filter-row">
           <button class="portal-pill active" type="button" data-claims-filter="pending">Openstaand</button>
           <button class="portal-pill" type="button" data-claims-filter="approved">Goedgekeurd</button>
@@ -201,43 +325,19 @@
         <div id="claims-alert" class="portal-alert-wrap" aria-live="polite"></div>
         <div class="portal-table-wrap">
           <table class="portal-table" aria-label="Claims tabel">
-            <thead>
-              <tr>
-                <th>Datum</th>
-                <th>Email</th>
-                <th>Locatie</th>
-                <th>Bericht</th>
-                <th>Status</th>
-                <th>Acties</th>
-              </tr>
-            </thead>
-            <tbody id="claims-tbody">
-              <tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr>
-            </tbody>
+            <thead><tr><th>Datum</th><th>Email</th><th>Locatie</th><th>Bericht</th><th>Status</th><th>Acties</th></tr></thead>
+            <tbody id="claims-tbody"><tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr></tbody>
           </table>
         </div>
       </section>
 
       <section id="tab-owners" class="portal-card hidden">
-        <div class="portal-heading-row">
-          <h2>Abonnees</h2>
-        </div>
+        <div class="portal-heading-row"><h2>Abonnees</h2></div>
         <div id="owners-alert" class="portal-alert-wrap" aria-live="polite"></div>
         <div class="portal-table-wrap">
           <table class="portal-table" aria-label="Owners tabel">
-            <thead>
-              <tr>
-                <th>Email</th>
-                <th>Locatie</th>
-                <th>Plan</th>
-                <th>Status</th>
-                <th>Vervalt</th>
-                <th>Actie</th>
-              </tr>
-            </thead>
-            <tbody id="owners-tbody">
-              <tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr>
-            </tbody>
+            <thead><tr><th>Email</th><th>Locatie</th><th>Plan</th><th>Status</th><th>Vervalt</th><th>Actie</th></tr></thead>
+            <tbody id="owners-tbody"><tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr></tbody>
           </table>
         </div>
       </section>
@@ -258,40 +358,236 @@
         <div id="locations-alert" class="portal-alert-wrap" aria-live="polite"></div>
         <div class="portal-table-wrap">
           <table class="portal-table" aria-label="Locaties tabel">
-            <thead>
-              <tr>
-                <th>Naam</th>
-                <th>Regio</th>
-                <th>Featured</th>
-                <th>Geverifieerd</th>
-              </tr>
-            </thead>
-            <tbody id="locations-tbody">
-              <tr class="portal-loading-row"><td colspan="4"><span class="portal-spinner"></span></td></tr>
-            </tbody>
+            <thead><tr><th>Naam</th><th>Regio</th><th>Locality</th><th>Tier</th><th>Featured</th><th>Geverifieerd</th><th>Acties</th></tr></thead>
+            <tbody id="locations-tbody"><tr class="portal-loading-row"><td colspan="7"><span class="portal-spinner"></span></td></tr></tbody>
           </table>
         </div>
       </section>
 
-      <section id="tab-editlog" class="portal-card hidden">
-        <div class="portal-heading-row">
-          <h2>Edit log</h2>
+      <section id="tab-location-detail" class="portal-card hidden">
+        <div class="portal-heading-row"><h2>Locatie-inhoud</h2></div>
+        <div class="admin-two-col">
+          <div class="admin-panel-stack">
+            <div class="portal-card portal-card-soft admin-summary-card" id="location-detail-summary">
+              <div class="portal-empty-state"><strong>Nog geen locatie gekozen</strong>Open eerst een locatie vanuit de tab Locaties.</div>
+            </div>
+            <div id="location-detail-alert" class="portal-alert-wrap" aria-live="polite"></div>
+            <div class="admin-form-grid">
+              <div class="portal-form-group full"><label class="portal-label" for="field-location-description">Beschrijving</label><textarea id="field-location-description" class="portal-textarea" rows="5"></textarea></div>
+              <div class="portal-form-group full"><label class="portal-label" for="field-location-toddler-highlight">Praktische samenvatting</label><textarea id="field-location-toddler-highlight" class="portal-textarea" rows="3"></textarea></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-website">Website</label><input id="field-location-website" class="portal-input" type="url"></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-weather">Binnen/buiten</label><select id="field-location-weather" class="portal-select"></select></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-min-age">Minimumleeftijd</label><input id="field-location-min-age" class="portal-input" type="number" min="0" max="18"></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-max-age">Maximumleeftijd</label><input id="field-location-max-age" class="portal-input" type="number" min="0" max="18"></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-price-band">Prijsniveau</label><select id="field-location-price-band" class="portal-select"></select></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-time-of-day-fit">Dagdeel-fit</label><select id="field-location-time-of-day-fit" class="portal-select"></select></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-verification-mode">Verification mode</label><select id="field-location-verification-mode" class="portal-select"></select></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-verification-confidence">Verification confidence</label><input id="field-location-verification-confidence" class="portal-input" type="number" min="0" max="1" step="0.05"></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-rain-backup-quality">Regenkwaliteit</label><input id="field-location-rain-backup-quality" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-shade-or-shelter">Schaduw of beschutting</label><input id="field-location-shade-or-shelter" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-parking-ease">Parkeren</label><input id="field-location-parking-ease" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-buggy-friendliness">Buggyvriendelijkheid</label><input id="field-location-buggy-friendliness" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-toilet-confidence">Toiletvertrouwen</label><input id="field-location-toilet-confidence" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-noise-level">Geluidsniveau</label><input id="field-location-noise-level" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-food-fit">Eten / lunch-fit</label><input id="field-location-food-fit" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-play-corner-quality">Speelhoek / speelkans</label><input id="field-location-play-corner-quality" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-location-crowd-pattern">Druktepatroon</label><input id="field-location-crowd-pattern" class="portal-input" type="text"></div>
+              <div class="portal-form-group">
+                <label class="portal-label">Voorzieningen</label>
+                <div class="portal-btn-row">
+                  <label><input id="field-location-coffee" type="checkbox"> Koffie</label>
+                  <label><input id="field-location-diaper" type="checkbox"> Verschonen</label>
+                  <label><input id="field-location-alcohol" type="checkbox"> Alcohol</label>
+                </div>
+              </div>
+            </div>
+            <div class="portal-btn-row"><button id="save-location-detail-btn" class="portal-btn portal-btn-primary" type="button">Opslaan</button></div>
+          </div>
+          <div class="admin-panel-stack">
+            <div class="portal-card portal-card-soft">
+              <h3>Open quality tasks</h3>
+              <ul id="location-tasks-list" class="admin-list"><li class="portal-muted">Geen open quality tasks voor deze locatie.</li></ul>
+            </div>
+            <div class="portal-card portal-card-soft">
+              <h3>Recente wijzigingen</h3>
+              <div class="portal-table-wrap">
+                <table class="portal-table" aria-label="Recente locatie-edits">
+                  <thead><tr><th>Datum</th><th>Veld</th><th>Van</th><th>Naar</th><th>Door</th></tr></thead>
+                  <tbody id="location-history-tbody"><tr><td colspan="5" class="portal-muted">Open eerst een locatie vanuit de tab Locaties.</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
+
+      <section id="tab-trust" class="portal-card hidden">
+        <div class="portal-heading-row">
+          <h2>Trust queue</h2>
+          <div class="portal-form-group" style="margin:0;min-width:220px;">
+            <label class="portal-label" for="observation-status-filter">Status</label>
+            <select id="observation-status-filter" class="portal-select"></select>
+          </div>
+        </div>
+        <p class="portal-subtitle">Observaties uit editor-, partner- of ouderbronnen worden hier eerst beoordeeld voordat ze publieksdata mogen aanpassen.</p>
+        <div id="trust-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="portal-table-wrap">
+          <table class="portal-table" aria-label="Observaties tabel">
+            <thead><tr><th>Datum</th><th>Locatie</th><th>Bron</th><th>Veld</th><th>Waarde</th><th>Confidence</th><th>Bewijs</th><th>Actie</th></tr></thead>
+            <tbody id="observations-tbody"><tr class="portal-loading-row"><td colspan="8"><span class="portal-spinner"></span></td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-seo" class="portal-card hidden">
+        <div class="portal-heading-row"><h2>SEO</h2></div>
+        <div class="admin-two-col">
+          <div class="admin-panel-stack">
+            <div class="portal-card portal-card-soft admin-summary-card" id="seo-location-summary">
+              <div class="portal-empty-state"><strong>Nog geen locatie gekozen</strong>Open eerst een locatie vanuit de tab Locaties.</div>
+            </div>
+            <div id="seo-alert" class="portal-alert-wrap" aria-live="polite"></div>
+            <div class="admin-form-grid">
+              <div class="portal-form-group"><label class="portal-label" for="field-seo-primary-locality">Primary locality</label><input id="field-seo-primary-locality" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-seo-tier">SEO tier</label><select id="field-seo-tier" class="portal-select"></select></div>
+              <div class="portal-form-group full"><label class="portal-label" for="field-seo-title-override">Title override</label><input id="field-seo-title-override" class="portal-input" type="text"></div>
+              <div class="portal-form-group full"><label class="portal-label" for="field-seo-description-override">Meta description override</label><textarea id="field-seo-description-override" class="portal-textarea" rows="3"></textarea></div>
+              <div class="portal-form-group full"><label class="portal-label" for="field-seo-intro-override">Intro override</label><textarea id="field-seo-intro-override" class="portal-textarea" rows="5"></textarea></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-seo-canonical-target">Canonical target locatie-ID</label><input id="field-seo-canonical-target" class="portal-input" type="number" min="1"></div>
+              <div class="portal-form-group"><label class="portal-label">Sitemap</label><label><input id="field-seo-exclude-from-sitemap" type="checkbox"> Uitsluiten van sitemap</label></div>
+            </div>
+            <div class="portal-btn-row"><button id="save-location-seo-btn" class="portal-btn portal-btn-primary" type="button">Opslaan</button></div>
+          </div>
+          <div class="admin-panel-stack">
+            <div class="portal-card portal-card-soft">
+              <h3>SEO-notes</h3>
+              <p class="portal-subtitle">Gebruik deze tab voor canonical merges, locality-disambiguatie en overrides op pagina’s met GSC-signaal of duplicate-risico.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-editorial" class="portal-card hidden">
+        <div class="portal-heading-row">
+          <h2>Editorial</h2>
+          <div class="portal-btn-row">
+            <div class="portal-form-group" style="margin:0;min-width:220px;">
+              <label class="portal-label" for="editorial-status-filter">Filter status</label>
+              <select id="editorial-status-filter" class="portal-select"><option value="">Alle statussen</option></select>
+            </div>
+            <button id="new-editorial-page-btn" class="portal-btn portal-btn-secondary" type="button">Nieuw</button>
+          </div>
+        </div>
+        <div id="editorial-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="admin-two-col">
+          <div class="portal-table-wrap">
+            <table class="portal-table" aria-label="Editorial pages tabel">
+              <thead><tr><th>Type</th><th>Slug</th><th>Status</th><th>Bijgewerkt</th><th>Actie</th></tr></thead>
+              <tbody id="editorial-tbody"><tr class="portal-loading-row"><td colspan="5"><span class="portal-spinner"></span></td></tr></tbody>
+            </table>
+          </div>
+          <div class="admin-panel-stack">
+            <div class="portal-card portal-card-soft admin-summary-card" id="editorial-summary">
+              <div class="portal-empty-state"><strong>Nieuwe redactionele pagina</strong>Vul de velden in en sla op als draft of published.</div>
+            </div>
+            <input id="editorial-page-id" type="hidden">
+            <div class="admin-form-grid">
+              <div class="portal-form-group"><label class="portal-label" for="editorial-page-type">Page type</label><select id="editorial-page-type" class="portal-select"></select></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-status">Status</label><select id="editorial-status" class="portal-select"></select></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-slug">Slug</label><input id="editorial-slug" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-title">Publieke titel</label><input id="editorial-title" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-region-slug">Region slug</label><input id="editorial-region-slug" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-type-slug">Type slug</label><input id="editorial-type-slug" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-cluster-slug">Cluster slug</label><input id="editorial-cluster-slug" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-location-id">Location ID</label><input id="editorial-location-id" class="portal-input" type="number" min="1"></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-meta-title">Meta title</label><input id="editorial-meta-title" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-meta-description">Meta description</label><textarea id="editorial-meta-description" class="portal-textarea" rows="3"></textarea></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-hero-kicker">Hero kicker</label><input id="editorial-hero-kicker" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-label">Redactioneel label</label><input id="editorial-label" class="portal-input" type="text"></div>
+              <div class="portal-form-group full"><label class="portal-label" for="editorial-hero-body">Hero body (Markdown)</label><textarea id="editorial-hero-body" class="portal-textarea" rows="4"></textarea></div>
+              <div class="portal-form-group full"><label class="portal-label" for="editorial-body">Body (Markdown)</label><textarea id="editorial-body" class="portal-textarea" rows="10"></textarea></div>
+              <div class="portal-form-group full"><label class="portal-label" for="editorial-faq-json">FAQ JSON</label><textarea id="editorial-faq-json" class="portal-textarea" rows="6">[]</textarea></div>
+              <div class="portal-form-group full"><label class="portal-label" for="editorial-curated-location-ids">Curated locatie-ID's (komma's)</label><textarea id="editorial-curated-location-ids" class="portal-textarea" rows="3"></textarea></div>
+              <div class="portal-form-group full"><label class="portal-label" for="editorial-related-blog-slugs">Gerelateerde blog slugs (komma's)</label><textarea id="editorial-related-blog-slugs" class="portal-textarea" rows="3"></textarea></div>
+            </div>
+            <div class="portal-btn-row"><button id="save-editorial-page-btn" class="portal-btn portal-btn-primary" type="button">Opslaan</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-duplicates" class="portal-card hidden">
+        <div class="portal-heading-row"><h2>Duplicate candidates</h2></div>
+        <p class="portal-subtitle">Gebruik deze lijst om canonical candidates te reviewen. Open de voorgestelde winnaar direct in de SEO-tab.</p>
+        <div id="duplicates-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="portal-table-wrap">
+          <table class="portal-table" aria-label="Duplicate candidates tabel">
+            <thead><tr><th>Groep</th><th>Canonical suggestie</th><th>Items</th><th>Actie</th></tr></thead>
+            <tbody id="duplicates-tbody"><tr class="portal-loading-row"><td colspan="4"><span class="portal-spinner"></span></td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-publishing" class="portal-card hidden">
+        <div class="portal-heading-row"><h2>Publishing</h2></div>
+        <p class="portal-subtitle">De publish-state is de centrale dirty/clean bron voor DB -> GitHub -> Cloudflare synchronisatie.</p>
+        <div id="publishing-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="admin-info-grid">
+          <div class="admin-info-item"><strong>Dirty</strong><span id="publish-dirty">-</span></div>
+          <div class="admin-info-item"><strong>Pending count</strong><span id="publish-pending-count">-</span></div>
+          <div class="admin-info-item"><strong>Last change reason</strong><span id="publish-last-change">-</span></div>
+          <div class="admin-info-item"><strong>Laatste publish</strong><span id="publish-last-published">-</span></div>
+          <div class="admin-info-item admin-full"><strong>Laatste ref</strong><span id="publish-last-ref">-</span></div>
+        </div>
+        <div class="portal-btn-row" style="margin-top:16px;"><button id="publish-trigger-btn" class="portal-btn portal-btn-primary" type="button">Site opnieuw klaarzetten</button></div>
+      </section>
+
+      <section id="tab-insights" class="portal-card hidden">
+        <div class="portal-heading-row"><h2>Insights</h2></div>
+        <div id="insights-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div id="insight-summary" class="admin-panel-stack"><div class="admin-empty-note">Insights worden geladen.</div></div>
+        <div class="admin-two-col" style="margin-top:16px;">
+          <div class="portal-card portal-card-soft">
+            <h3>Top context gaps</h3>
+            <ul id="insight-context-gaps" class="admin-list"><li class="portal-muted">Nog geen data geladen.</li></ul>
+          </div>
+          <div class="portal-card portal-card-soft">
+            <h3>GSC snapshot</h3>
+            <div id="insight-gsc-summary" class="portal-subtitle">Nog geen data geladen.</div>
+          </div>
+        </div>
+        <div class="admin-two-col" style="margin-top:16px;">
+          <div class="portal-card portal-card-soft">
+            <h3>Top pages</h3>
+            <ul id="insight-top-pages" class="admin-list"><li class="portal-muted">Nog geen data geladen.</li></ul>
+          </div>
+          <div class="portal-card portal-card-soft">
+            <h3>Top queries</h3>
+            <ul id="insight-top-queries" class="admin-list"><li class="portal-muted">Nog geen data geladen.</li></ul>
+          </div>
+        </div>
+        <div class="admin-two-col" style="margin-top:16px;">
+          <div class="portal-card portal-card-soft">
+            <h3>CTR-verliezers</h3>
+            <ul id="insight-low-ctr" class="admin-list"><li class="portal-muted">Nog geen data geladen.</li></ul>
+          </div>
+          <div class="portal-card portal-card-soft">
+            <h3>Near-win pagina's</h3>
+            <ul id="insight-near-win" class="admin-list"><li class="portal-muted">Nog geen data geladen.</li></ul>
+          </div>
+        </div>
+        <div class="portal-card portal-card-soft" style="margin-top:16px;">
+          <h3>Quality backlog</h3>
+          <ul id="insight-quality-backlog" class="admin-list"><li class="portal-muted">Nog geen data geladen.</li></ul>
+        </div>
+      </section>
+
+      <section id="tab-editlog" class="portal-card hidden">
+        <div class="portal-heading-row"><h2>Edit log</h2></div>
+        <div id="editlog-alert" class="portal-alert-wrap" aria-live="polite"></div>
         <div class="portal-table-wrap">
           <table class="portal-table" aria-label="Editlog tabel">
-            <thead>
-              <tr>
-                <th>Datum</th>
-                <th>Locatie</th>
-                <th>Owner</th>
-                <th>Veld</th>
-                <th>Van</th>
-                <th>Naar</th>
-              </tr>
-            </thead>
-            <tbody id="editlog-tbody">
-              <tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr>
-            </tbody>
+            <thead><tr><th>Datum</th><th>Locatie</th><th>Owner</th><th>Veld</th><th>Van</th><th>Naar</th></tr></thead>
+            <tbody id="editlog-tbody"><tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr></tbody>
           </table>
         </div>
       </section>
@@ -339,650 +635,8 @@
       </div>
     </div>
   </div>
-  <script src="portal-shell.js" defer></script>
 
-  <script type="module">
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-    const SB_URL = 'https://piujsvgbfflrrvauzsxe.supabase.co';
-    const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpdWpzdmdiZmZscnJ2YXV6c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNDMxNzAsImV4cCI6MjA4NzYxOTE3MH0.5y3gqiPfVvpvfaDYA_PgqE-KTvuf6zgN6vGzqfUpeSo';
-    const EDGE_BASE = `${SB_URL}/functions/v1`;
-    const ADMIN_EMAIL = 'basmetten@gmail.com';
-
-    const supabase = createClient(SB_URL, SB_ANON);
-
-    const state = {
-      currentUser: null,
-      accessToken: null,
-      otpEmail: '',
-      claimsFilter: 'pending',
-      locPage: 0,
-      locSearch: '',
-      locSearchTimer: null,
-      ownerModal: null,
-      bootstrapNonce: 0,
-    };
-
-    document.addEventListener('DOMContentLoaded', () => {
-      bindUI();
-      maybeHandleAuthCallback();
-      showScreen('login');
-    });
-
-    function bindUI() {
-      document.getElementById('send-otp-btn').addEventListener('click', sendOtp);
-      document.getElementById('verify-otp-btn').addEventListener('click', verifyOtp);
-      document.getElementById('otp-back-btn').addEventListener('click', () => showScreen('login'));
-      document.getElementById('nav-logout').addEventListener('click', handleLogout);
-      document.getElementById('otp-code').addEventListener('input', () => normalizeOtpField('otp-code'));
-
-      document.querySelectorAll('[data-tab-target]').forEach((btn) => {
-        btn.addEventListener('click', () => switchTab(btn.dataset.tabTarget));
-      });
-
-      document.querySelectorAll('[data-claims-filter]').forEach((btn) => {
-        btn.addEventListener('click', () => setClaimsFilter(btn.dataset.claimsFilter, btn));
-      });
-
-      document.getElementById('loc-search').addEventListener('input', debounceLocSearch);
-      document.getElementById('loc-prev-btn').addEventListener('click', () => changeLocPage(-1));
-      document.getElementById('loc-next-btn').addEventListener('click', () => changeLocPage(1));
-
-      document.getElementById('claims-tbody').addEventListener('click', onClaimsTableClick);
-      document.getElementById('owners-tbody').addEventListener('click', onOwnersTableClick);
-      document.getElementById('locations-tbody').addEventListener('change', onLocationsTableChange);
-
-      document.getElementById('modal-save-btn').addEventListener('click', saveOwnerEdit);
-
-      state.ownerModal = document.getElementById('edit-owner-modal');
-    }
-
-    function showScreen(screen) {
-      ['login', 'otp', 'dashboard'].forEach((name) => {
-        document.getElementById(`screen-${name}`).classList.toggle('hidden', name !== screen);
-      });
-    }
-
-    function normalizeOtpField(fieldId) {
-      const input = document.getElementById(fieldId);
-      const value = (input?.value || '').replace(/\D/g, '').slice(0, 6);
-      if (input) input.value = value;
-      return value;
-    }
-
-    function setSignedInChrome(email) {
-      document.getElementById('nav-user').textContent = email;
-      document.getElementById('nav-user').classList.remove('hidden');
-      document.getElementById('nav-logout').classList.remove('hidden');
-    }
-
-    function setSignedOutChrome() {
-      document.getElementById('nav-user').classList.add('hidden');
-      document.getElementById('nav-logout').classList.add('hidden');
-    }
-
-    function markStatsLoading() {
-      ['stat-pending', 'stat-subs', 'stat-edits', 'stat-owners'].forEach((id) => {
-        const el = document.getElementById(id);
-        el.textContent = '...';
-        el.classList.add('is-loading');
-      });
-    }
-
-    async function sendOtp() {
-      const email = document.getElementById('admin-email').value.trim().toLowerCase();
-      const btn = document.getElementById('send-otp-btn');
-
-      PortalShell.setAlert('login-alert', '', 'info');
-
-      if (!email) {
-        PortalShell.setAlert('login-alert', 'Vul je e-mailadres in.', 'error', { assertive: true });
-        return;
-      }
-
-      if (email !== ADMIN_EMAIL) {
-        PortalShell.setAlert('login-alert', 'Dit dashboard is alleen toegankelijk voor het vaste admin-account.', 'error', { assertive: true });
-        return;
-      }
-
-      PortalShell.setButtonBusy(btn, true, 'Versturen...', 'Inlogcode sturen');
-
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          shouldCreateUser: false,
-          emailRedirectTo: `${location.origin}${location.pathname}`,
-        },
-      });
-
-      if (error) {
-        PortalShell.setButtonBusy(btn, false, null, 'Inlogcode sturen');
-        PortalShell.setAlert('login-alert', `Inloggen mislukt: ${error.message}`, 'error', { assertive: true });
-        return;
-      }
-
-      state.otpEmail = email;
-      document.getElementById('otp-email-display').textContent = email;
-      document.getElementById('otp-code').value = '';
-      PortalShell.setAlert('otp-alert', '', 'info');
-      showScreen('otp');
-      startOtpCooldown(btn, 60);
-      setTimeout(() => document.getElementById('otp-code').focus(), 60);
-    }
-
-    async function maybeHandleAuthCallback() {
-      const params = new URLSearchParams(location.search);
-      const tokenHash = params.get('token_hash');
-      const type = params.get('type');
-      const errorDescription = params.get('error_description');
-
-      if (errorDescription) {
-        PortalShell.setAlert('login-alert', errorDescription, 'error', { assertive: true });
-      }
-
-      if (!tokenHash || !type) return;
-
-      try {
-        const { error } = await supabase.auth.verifyOtp({
-          type,
-          token_hash: tokenHash,
-        });
-        if (error) {
-          PortalShell.setAlert('login-alert', 'De inloglink is ongeldig of verlopen. Vraag een nieuwe login aan.', 'error', { assertive: true });
-          return;
-        }
-      } finally {
-        history.replaceState({}, '', location.pathname);
-      }
-    }
-
-    function startOtpCooldown(button, seconds) {
-      let remaining = seconds;
-      button.disabled = true;
-      button.textContent = `Opnieuw sturen (${remaining}s)`;
-      const timer = setInterval(() => {
-        remaining -= 1;
-        if (remaining <= 0) {
-          clearInterval(timer);
-          button.disabled = false;
-          button.textContent = 'Inlogcode sturen';
-        } else {
-          button.textContent = `Opnieuw sturen (${remaining}s)`;
-        }
-      }, 1000);
-    }
-
-    async function verifyOtp() {
-      const token = normalizeOtpField('otp-code');
-      const btn = document.getElementById('verify-otp-btn');
-
-      PortalShell.setAlert('otp-alert', '', 'info');
-      if (token.length !== 6) {
-        PortalShell.setAlert('otp-alert', 'Vul de 6-cijferige code in.', 'error', { assertive: true });
-        return;
-      }
-
-      PortalShell.setButtonBusy(btn, true, 'Controleren...', 'Inloggen');
-      const { error } = await supabase.auth.verifyOtp({
-        email: state.otpEmail,
-        token,
-        type: 'email',
-      });
-      PortalShell.setButtonBusy(btn, false, null, 'Inloggen');
-
-      if (error) {
-        PortalShell.setAlert('otp-alert', 'Ongeldige of verlopen code. Vraag een nieuwe code aan.', 'error', { assertive: true });
-      }
-    }
-
-    async function bootstrapDashboard() {
-      const bootstrapNonce = ++state.bootstrapNonce;
-      markStatsLoading();
-      showScreen('dashboard');
-      await loadStats();
-      if (bootstrapNonce !== state.bootstrapNonce || !state.currentUser) return;
-      await switchTab('tab-overview');
-    }
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        if (session.user.email !== ADMIN_EMAIL) {
-          PortalShell.setAlert('otp-alert', 'Geen toegang: dit dashboard is alleen voor Bas Metten.', 'error', { assertive: true });
-          supabase.auth.signOut().catch((error) => console.error('signOut failed', error));
-          showScreen('otp');
-          return;
-        }
-
-        state.currentUser = session.user;
-        state.accessToken = session.access_token;
-        setSignedInChrome(session.user.email);
-        Promise.resolve().then(() => bootstrapDashboard()).catch((error) => {
-          console.error('bootstrapDashboard failed', error);
-          PortalShell.setAlert('overview-alert', 'Dashboard laden mislukt. Vernieuw de pagina of log opnieuw in.', 'error', { assertive: true });
-        });
-      } else {
-        state.bootstrapNonce += 1;
-        state.currentUser = null;
-        state.accessToken = null;
-        setSignedOutChrome();
-        showScreen('login');
-      }
-    });
-
-    async function handleLogout() {
-      await supabase.auth.signOut();
-    }
-
-    async function api(action, params = {}) {
-      const { data: { session } } = await supabase.auth.getSession();
-      const accessToken = session?.access_token || state.accessToken;
-      if (!accessToken) throw new Error('Sessie verlopen. Log opnieuw in.');
-      state.accessToken = accessToken;
-
-      const response = await fetch(`${EDGE_BASE}/admin-api`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          apikey: SB_ANON,
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ action, params }),
-      });
-
-      let payload = null;
-      try {
-        payload = await response.json();
-      } catch {
-        payload = null;
-      }
-
-      if (!response.ok) {
-        const message = payload?.error || (response.status === 401 ? 'Sessie niet geaccepteerd' : 'Onbekende API-fout');
-        const code = payload?.code || 'API_ERROR';
-        throw new Error(`${message} (${code})`);
-      }
-
-      return payload?.data;
-    }
-
-    async function switchTab(tabId) {
-      const tabs = ['tab-overview', 'tab-claims', 'tab-owners', 'tab-locations', 'tab-editlog'];
-      tabs.forEach((id) => {
-        const tabSection = document.getElementById(id);
-        const button = document.querySelector(`[data-tab-target="${id}"]`);
-        const active = id === tabId;
-        tabSection.classList.toggle('hidden', !active);
-        button.classList.toggle('active', active);
-        button.setAttribute('aria-selected', active ? 'true' : 'false');
-      });
-
-      if (tabId === 'tab-claims') await loadClaims();
-      if (tabId === 'tab-owners') await loadOwners();
-      if (tabId === 'tab-locations') await loadLocations();
-      if (tabId === 'tab-editlog') await loadEditLog();
-    }
-
-    async function loadStats() {
-      try {
-        const stats = await api('get_stats');
-        document.getElementById('stat-pending').textContent = stats.pending_claims ?? 0;
-        document.getElementById('stat-subs').textContent = stats.active_subs ?? 0;
-        document.getElementById('stat-edits').textContent = stats.edits_last_7days ?? 0;
-        document.getElementById('stat-owners').textContent = stats.total_owners ?? 0;
-        ['stat-pending', 'stat-subs', 'stat-edits', 'stat-owners'].forEach((id) => {
-          document.getElementById(id).classList.remove('is-loading');
-        });
-      } catch (error) {
-        console.error('loadStats failed', error);
-        ['stat-pending', 'stat-subs', 'stat-edits', 'stat-owners'].forEach((id) => {
-          const el = document.getElementById(id);
-          el.textContent = '—';
-          el.classList.remove('is-loading');
-        });
-        PortalShell.setAlert('overview-alert', 'Dashboard laden mislukt. Vernieuw de pagina of log opnieuw in.', 'error', { assertive: true });
-      }
-    }
-
-    function setClaimsFilter(status, triggerButton) {
-      state.claimsFilter = status;
-      document.querySelectorAll('[data-claims-filter]').forEach((btn) => {
-        btn.classList.toggle('active', btn === triggerButton);
-      });
-      loadClaims();
-    }
-
-    async function loadClaims() {
-      const tbody = document.getElementById('claims-tbody');
-      tbody.innerHTML = '<tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr>';
-
-      try {
-        const claims = await api('list_claims', { status: state.claimsFilter });
-        if (!claims?.length) {
-          tbody.innerHTML = '<tr><td colspan="6"><div class="portal-empty-state"><strong>Geen claim-aanvragen</strong>Er staan nu geen aanvragen in deze status.</div></td></tr>';
-          return;
-        }
-
-        tbody.innerHTML = claims.map((claim) => {
-          const status = safeClaimStatus(claim.status);
-          const actionHtml = status === 'pending'
-            ? `<div class="portal-btn-row">
-                <button class="portal-btn portal-btn-success portal-btn-sm" type="button" data-claim-action="approve" data-claim-id="${escapeAttr(claim.id)}">Goedkeuren</button>
-                <button class="portal-btn portal-btn-danger portal-btn-sm" type="button" data-claim-action="reject" data-claim-id="${escapeAttr(claim.id)}">Afwijzen</button>
-               </div>`
-            : '<span class="portal-muted">-</span>';
-
-          return `<tr>
-            <td class="portal-muted">${fmtDate(claim.created_at)}</td>
-            <td>${escapeHtml(claim.requester_email || 'onbekend')}</td>
-            <td>
-              <strong>${escapeHtml(claim.locations?.name || '-')}</strong><br>
-              <span class="portal-muted">${escapeHtml(claim.locations?.region || '')}</span>
-            </td>
-            <td class="portal-truncate">${escapeHtml(claim.message || '')}</td>
-            <td><span class="portal-badge portal-badge-${status}">${status}</span></td>
-            <td class="actions">${actionHtml}</td>
-          </tr>`;
-        }).join('');
-      } catch (error) {
-        PortalShell.setAlert('claims-alert', `Claims laden mislukt: ${error.message}`, 'error', { assertive: true });
-      }
-    }
-
-    async function onClaimsTableClick(event) {
-      const button = event.target.closest('[data-claim-action]');
-      if (!button) return;
-
-      const claimId = button.dataset.claimId;
-      const action = button.dataset.claimAction;
-
-      if (!claimId) return;
-
-      if (action === 'approve') {
-        const confirmed = await PortalShell.showConfirm({
-          title: 'Claim goedkeuren?',
-          text: 'Deze claim wordt goedgekeurd en andere open claims op dezelfde locatie worden automatisch afgewezen.',
-          confirmLabel: 'Goedkeuren',
-          trigger: button,
-        });
-        if (!confirmed) return;
-
-        PortalShell.setButtonBusy(button, true, 'Bezig...', 'Goedkeuren');
-        try {
-          const result = await api('approve_claim', { claim_id: claimId });
-          const autoRejectedCount = Array.isArray(result?.auto_rejected_claim_ids)
-            ? result.auto_rejected_claim_ids.length
-            : 0;
-          PortalShell.setAlert(
-            'claims-alert',
-            `Claim goedgekeurd. Auto-afgewezen duplicate claims: ${autoRejectedCount}.`,
-            'success'
-          );
-          await loadClaims();
-          await loadStats();
-        } catch (error) {
-          PortalShell.setAlert('claims-alert', `Goedkeuren mislukt: ${error.message}`, 'error', { assertive: true });
-        } finally {
-          PortalShell.setButtonBusy(button, false, null, 'Goedkeuren');
-        }
-      }
-
-      if (action === 'reject') {
-        const confirmed = await PortalShell.showConfirm({
-          title: 'Claim afwijzen?',
-          text: 'Deze claim krijgt status afgewezen.',
-          confirmLabel: 'Afwijzen',
-          trigger: button,
-        });
-        if (!confirmed) return;
-
-        PortalShell.setButtonBusy(button, true, 'Bezig...', 'Afwijzen');
-        try {
-          await api('reject_claim', { claim_id: claimId });
-          PortalShell.setAlert('claims-alert', 'Claim afgewezen.', 'success');
-          await loadClaims();
-          await loadStats();
-        } catch (error) {
-          PortalShell.setAlert('claims-alert', `Afwijzen mislukt: ${error.message}`, 'error', { assertive: true });
-        } finally {
-          PortalShell.setButtonBusy(button, false, null, 'Afwijzen');
-        }
-      }
-    }
-
-    async function loadOwners() {
-      const tbody = document.getElementById('owners-tbody');
-      tbody.innerHTML = '<tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr>';
-
-      try {
-        const owners = await api('list_owners');
-        if (!owners?.length) {
-          tbody.innerHTML = '<tr><td colspan="6"><div class="portal-empty-state"><strong>Geen owners gevonden</strong>Er zijn nog geen gekoppelde eigenaar-accounts om te beheren.</div></td></tr>';
-          return;
-        }
-
-        tbody.innerHTML = owners.map((owner) => {
-          const status = safeOwnerStatus(owner.subscription_status);
-          const tier = safePlanTier(owner.plan_tier);
-          return `<tr>
-            <td>${escapeHtml(owner.email || 'onbekend')}</td>
-            <td>${escapeHtml(owner.locations?.name || '-')}</td>
-            <td>${escapeHtml(tier)}</td>
-            <td><span class="portal-badge portal-badge-${status}">${status}</span></td>
-            <td class="portal-muted">${owner.plan_expires_at ? fmtDate(owner.plan_expires_at) : '-'}</td>
-            <td>
-              <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button"
-                data-owner-edit="true"
-                data-owner-id="${escapeAttr(owner.id)}"
-                data-owner-status="${escapeAttr(status)}"
-                data-owner-tier="${escapeAttr(tier)}">Bewerk</button>
-            </td>
-          </tr>`;
-        }).join('');
-      } catch (error) {
-        PortalShell.setAlert('owners-alert', `Owners laden mislukt: ${error.message}`, 'error', { assertive: true });
-      }
-    }
-
-    function onOwnersTableClick(event) {
-      const button = event.target.closest('[data-owner-edit]');
-      if (!button) return;
-      openEditOwner(button.dataset.ownerId, button.dataset.ownerStatus, button.dataset.ownerTier, button);
-    }
-
-    function openEditOwner(ownerId, status, tier, trigger) {
-      document.getElementById('modal-owner-id').value = ownerId;
-      document.getElementById('modal-status').value = safeOwnerStatus(status);
-      document.getElementById('modal-tier').value = safePlanTier(tier);
-      PortalShell.setAlert('modal-alert', '', 'info');
-      PortalShell.openModal('edit-owner-modal', trigger);
-    }
-
-    async function saveOwnerEdit() {
-      const ownerId = document.getElementById('modal-owner-id').value;
-      const status = safeOwnerStatus(document.getElementById('modal-status').value);
-      const tier = safePlanTier(document.getElementById('modal-tier').value);
-      const saveBtn = document.getElementById('modal-save-btn');
-
-      PortalShell.setButtonBusy(saveBtn, true, 'Opslaan...', 'Opslaan');
-
-      try {
-        await api('update_owner', {
-          owner_id: ownerId,
-          subscription_status: status,
-          plan_tier: tier,
-        });
-
-        PortalShell.closeModal('edit-owner-modal');
-        PortalShell.setAlert('owners-alert', 'Abonnement bijgewerkt.', 'success');
-        await loadOwners();
-      } catch (error) {
-        PortalShell.setAlert('modal-alert', `Opslaan mislukt: ${error.message}`, 'error', { assertive: true });
-      } finally {
-        PortalShell.setButtonBusy(saveBtn, false, null, 'Opslaan');
-      }
-    }
-
-    function debounceLocSearch() {
-      clearTimeout(state.locSearchTimer);
-      state.locSearchTimer = setTimeout(() => {
-        state.locSearch = document.getElementById('loc-search').value.trim();
-        state.locPage = 0;
-        loadLocations();
-      }, 280);
-    }
-
-    function changeLocPage(direction) {
-      state.locPage = Math.max(0, state.locPage + direction);
-      loadLocations();
-    }
-
-    async function loadLocations() {
-      const tbody = document.getElementById('locations-tbody');
-      tbody.innerHTML = '<tr class="portal-loading-row"><td colspan="4"><span class="portal-spinner"></span></td></tr>';
-
-      document.getElementById('loc-page-label').textContent = `Pagina ${state.locPage + 1}`;
-      document.getElementById('loc-prev-btn').disabled = state.locPage === 0;
-
-      try {
-        const locations = await api('list_locations', {
-          search: state.locSearch,
-          page: state.locPage,
-        });
-
-        document.getElementById('loc-next-btn').disabled = (locations?.length || 0) < 50;
-
-        if (!locations?.length) {
-          tbody.innerHTML = '<tr><td colspan="4" class="portal-muted">Geen locaties gevonden.</td></tr>';
-          return;
-        }
-
-        tbody.innerHTML = locations.map((location) => `
-          <tr>
-            <td><strong>${escapeHtml(location.name)}</strong></td>
-            <td class="portal-muted">${escapeHtml(location.region || '')}</td>
-            <td>
-              <label class="portal-toggle">
-                <input type="checkbox" ${location.is_featured ? 'checked' : ''}
-                  data-toggle-type="featured" data-location-id="${location.id}">
-                <span class="portal-toggle-track"></span>
-              </label>
-            </td>
-            <td>
-              <label class="portal-toggle">
-                <input type="checkbox" ${location.owner_verified ? 'checked' : ''}
-                  data-toggle-type="verified" data-location-id="${location.id}">
-                <span class="portal-toggle-track"></span>
-              </label>
-            </td>
-          </tr>
-        `).join('');
-      } catch (error) {
-        PortalShell.setAlert('locations-alert', `Locaties laden mislukt: ${error.message}`, 'error', { assertive: true });
-      }
-    }
-
-    async function onLocationsTableChange(event) {
-      const input = event.target.closest('[data-toggle-type]');
-      if (!input) return;
-
-      const locationId = Number(input.dataset.locationId);
-      const action = input.dataset.toggleType;
-      if (!locationId || !action) return;
-
-      input.disabled = true;
-      try {
-        if (action === 'featured') {
-          const result = await api('toggle_featured', { location_id: locationId });
-          input.checked = !!result.is_featured;
-        }
-        if (action === 'verified') {
-          const result = await api('toggle_verified', { location_id: locationId });
-          input.checked = !!result.owner_verified;
-        }
-      } catch (error) {
-        input.checked = !input.checked;
-        PortalShell.setAlert('locations-alert', `Wijzigen mislukt: ${error.message}`, 'error', { assertive: true });
-      } finally {
-        input.disabled = false;
-      }
-    }
-
-    async function loadEditLog() {
-      const tbody = document.getElementById('editlog-tbody');
-      tbody.innerHTML = '<tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr>';
-
-      try {
-        const logs = await api('list_edit_log');
-        if (!logs?.length) {
-          tbody.innerHTML = '<tr><td colspan="6" class="portal-muted">Geen edits gevonden.</td></tr>';
-          return;
-        }
-
-        tbody.innerHTML = logs.map((entry) => `
-          <tr>
-            <td class="portal-muted">${fmtDateTime(entry.created_at)}</td>
-            <td>${escapeHtml(entry.locations?.name || '-')}</td>
-            <td class="portal-muted">${escapeHtml(entry.owner_email || 'onbekend')}</td>
-            <td><span class="portal-inline-code">${escapeHtml(entry.field_name || '-')}</span></td>
-            <td class="portal-truncate portal-muted">${escapeHtml(valueOrDash(entry.old_value))}</td>
-            <td class="portal-truncate">${escapeHtml(valueOrDash(entry.new_value))}</td>
-          </tr>
-        `).join('');
-      } catch (error) {
-        PortalShell.setAlert('owners-alert', `Editlog laden mislukt: ${error.message}`, 'error', { assertive: true });
-      }
-    }
-
-    function safeClaimStatus(status) {
-      const allowed = ['pending', 'approved', 'rejected', 'auto_rejected_duplicate'];
-      return allowed.includes(status) ? status : 'pending';
-    }
-
-    function safeOwnerStatus(status) {
-      const allowed = ['none', 'trial', 'featured', 'past_due', 'canceled'];
-      return allowed.includes(status) ? status : 'none';
-    }
-
-    function safePlanTier(tier) {
-      return tier === 'featured' ? 'featured' : 'none';
-    }
-
-    function valueOrDash(value) {
-      if (value === null || value === undefined || value === '') return '-';
-      return String(value);
-    }
-
-    function fmtDate(iso) {
-      if (!iso) return '-';
-      return new Date(iso).toLocaleDateString('nl-NL', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      });
-    }
-
-    function fmtDateTime(iso) {
-      if (!iso) return '-';
-      return new Date(iso).toLocaleString('nl-NL', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-    }
-
-    function escapeHtml(value) {
-      return PortalShell.escapeHtml(value);
-    }
-
-    function escapeAttr(value) {
-      return String(value == null ? '' : value)
-        .replace(/&/g, '&amp;')
-        .replace(/"/g, '&quot;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-    }
-  </script>
+  <script src="portal-shell.js"></script>
+  <script type="module" src="admin.js"></script>
 </body>
 </html>

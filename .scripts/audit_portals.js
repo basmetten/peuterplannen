@@ -13,6 +13,7 @@ const targets = [
   {
     name: 'admin',
     file: path.join(ROOT, 'admin', 'index.html'),
+    extraFiles: [path.join(ROOT, 'admin', 'admin.js')],
     requiredTokens: ['admin-api'],
   },
   {
@@ -38,6 +39,11 @@ function auditPortal(target) {
   }
 
   const html = fs.readFileSync(target.file, 'utf8');
+  const extraContent = (target.extraFiles || [])
+    .filter((file) => fs.existsSync(file))
+    .map((file) => fs.readFileSync(file, 'utf8'))
+    .join('\n');
+  const searchableContent = [html, extraContent].filter(Boolean).join('\n');
 
   ensure(/<main[^>]*id="main-content"/i.test(html), issues, { type: 'missing_main_landmark', detail: 'main#main-content ontbreekt' });
   ensure(/<nav[^>]*aria-label="Hoofdnavigatie"/i.test(html), issues, { type: 'missing_nav_aria', detail: 'nav[aria-label="Hoofdnavigatie"] ontbreekt' });
@@ -49,7 +55,7 @@ function auditPortal(target) {
   ensure(!/href\s*=\s*"javascript:/i.test(html), issues, { type: 'javascript_href_found', detail: 'javascript: href gevonden' });
 
   target.requiredTokens.forEach((token) => {
-    ensure(html.includes(token), issues, { type: 'missing_endpoint_binding', detail: `Token ontbreekt: ${token}` });
+    ensure(searchableContent.includes(token), issues, { type: 'missing_endpoint_binding', detail: `Token ontbreekt: ${token}` });
   });
 
   return issues;

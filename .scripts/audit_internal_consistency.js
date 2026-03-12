@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const OUTPUT_DIR = path.join(ROOT, 'output');
@@ -21,6 +22,18 @@ function walk(dir, out = []) {
     out.push(full);
   }
   return out;
+}
+
+function getTrackedFiles() {
+  try {
+    return execFileSync('git', ['-C', ROOT, 'ls-files'], { encoding: 'utf8' })
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((rel) => path.join(ROOT, rel));
+  } catch {
+    return walk(ROOT);
+  }
 }
 
 function toRel(file) {
@@ -231,7 +244,7 @@ function buildMarkdownSummary(report) {
 }
 
 function main() {
-  const allFiles = walk(ROOT);
+  const allFiles = getTrackedFiles().filter((file) => fs.existsSync(file));
   const htmlFiles = allFiles.filter((f) => f.endsWith('.html'));
   const mdFiles = allFiles.filter((f) => f.endsWith('.md') && toRel(f).startsWith('content/posts/'));
 

@@ -2,6 +2,8 @@
 title_override: "Griftpark Utrecht — speeltuin en parkstop die vaak gewoon werkt"
 description_override: "Het Griftpark in Utrecht is vooral nuttig als je een toegankelijke parkstop zoekt waar spelen, lopen en even uitwaaien logisch samenkomen."
 intro_override: "Het Griftpark is niet interessant omdat het groot of spectaculair is, maar omdat het voor veel Utrechtse ouders een plek is die je relatief makkelijk in een gewone dag schuift."
+location_match_name: "Griftpark"
+location_match_type: "nature"
 updated_at: "2026-03-12"
 related_blog_slugs:
   - utrecht-met-peuters
