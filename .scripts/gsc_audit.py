@@ -8,7 +8,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import quote, urlparse
 
-ROOT = Path('/Users/basmetten/peuterplannen')
+ROOT = Path(__file__).resolve().parent.parent
 TOKEN_FILE = Path('/Users/basmetten/.config/peuterplannen/gsc_oauth.json')
 CLIENT_FILE = Path('/Users/basmetten/Downloads/client_secret_639736156221-u492c5qpui14ofupf1mug6asml1rmkdq.apps.googleusercontent.com.json')
 OUT_DIR = ROOT / 'output'

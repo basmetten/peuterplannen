@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = '/Users/basmetten/peuterplannen';
+const ROOT = path.resolve(__dirname, '..');
 const STRICT = process.argv.includes('--strict');
 const registryPath = path.join(ROOT, 'output', 'seo-registry.json');
 const reportPath = path.join(ROOT, 'output', 'seo-report.md');
