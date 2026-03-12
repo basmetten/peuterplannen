@@ -97,8 +97,8 @@
 
     <!-- Fonts (swap for faster paint) -->
     <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/nav-floating.css?v=202603122135">
-    <script src="/nav-floating.js?v=202603122135" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603122220">
+    <script src="/nav-floating.js?v=202603122220" defer></script>
 
     <style>
         :root {
@@ -392,6 +392,29 @@
         .gps-status.error { color: var(--accent); }
 
         /* Filter chips */
+        .filter-panel { margin-bottom: 6px; }
+        .filter-panel-toggle {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            border-radius: 18px;
+            border: 1px solid rgba(212, 119, 90, 0.16);
+            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,248,243,0.96));
+            box-shadow: var(--shadow-sm);
+            color: var(--text);
+            font-family: inherit;
+            text-align: left;
+            cursor: pointer;
+        }
+        .filter-panel-toggle strong { display: block; font-size: 13px; line-height: 1.2; }
+        .filter-panel-toggle span { display: block; font-size: 12px; line-height: 1.4; color: var(--text-muted); }
+        .filter-panel-toggle svg { width: 18px; height: 18px; stroke: var(--primary-dark); fill: none; stroke-width: 2; flex-shrink: 0; transition: transform 0.2s ease; }
+        .filter-panel:not(.collapsed) .filter-panel-toggle svg { transform: rotate(180deg); }
+        .filter-panel.collapsed .filter-chips { display: none; }
         .filter-chips { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 4px 0 16px; position: sticky; top: 84px; z-index: 10; background: linear-gradient(to bottom, var(--bg) 82%, rgba(250,247,242,0)); margin: 0 -4px; padding-left: 4px; padding-right: 4px; }
         .filter-chips::-webkit-scrollbar { display: none; }
         .chip { flex-shrink: 0; scroll-snap-align: start; padding: 10px 16px; border-radius: var(--radius-pill); border: 1.5px solid rgba(212, 119, 90, 0.2); background: var(--surface); font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--text-secondary); white-space: nowrap; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease; touch-action: manipulation; box-shadow: var(--shadow-sm); }
@@ -917,6 +940,8 @@
 
         /* Desktop split view — CSS media query */
         @media (min-width: 680px) {
+          .filter-panel-toggle { display: none; }
+          .filter-panel.collapsed .filter-chips { display: flex; }
           body { overflow: hidden; padding-bottom: 0; }
           .app-wrapper { display: grid; grid-template-rows: auto 1fr; height: calc(100dvh - 92px); overflow: hidden; margin-top: 92px; }
           .app-context-strip {
@@ -974,6 +999,8 @@
         html.pp-desktop #map-container { display: block !important; height: 100% !important; position: relative !important; width: 100% !important; }
         html.pp-desktop .map-container { width: 100% !important; margin: 0 !important; height: 100% !important; max-height: none !important; min-height: unset !important; border-top: none !important; }
         html.pp-desktop .bottom-nav { display: none !important; }
+        html.pp-desktop .filter-panel-toggle { display: none !important; }
+        html.pp-desktop .filter-panel.collapsed .filter-chips { display: flex !important; }
         html.pp-desktop .filter-chips { flex-wrap: wrap; overflow-x: visible; padding-bottom: 8px; gap: 4px; top: 0 !important; }
         html.pp-desktop .preset-strip { overflow-x: visible; flex-wrap: wrap; padding-bottom: 10px; }
         html.pp-desktop .chip-label { display: none; }
@@ -1182,31 +1209,41 @@
             </button>
         </div>
 
-        <div class="filter-chips" role="toolbar" aria-label="Filter categorieën">
-            <button class="chip active" onclick="toggleTag('all', event)" aria-selected="true">Alles</button>
-            <button class="chip" onclick="toggleTag('favorites', event)" aria-selected="false">Favorieten</button>
-            <span class="chip-label">Type:</span>
-            <button class="chip" onclick="toggleTag('play', event)" aria-selected="false">Speeltuin</button>
-            <button class="chip" onclick="toggleTag('farm', event)" aria-selected="false">Boerderij</button>
-            <button class="chip" onclick="toggleTag('nature', event)" aria-selected="false">Natuur</button>
-            <button class="chip" onclick="toggleTag('museum', event)" aria-selected="false">Museum</button>
-            <button class="chip" onclick="toggleTag('swim', event)" aria-selected="false">Zwemmen</button>
-            <button class="chip" onclick="toggleTag('pancake', event)" aria-selected="false">Pannenkoeken</button>
-            <button class="chip" onclick="toggleTag('horeca', event)" aria-selected="false">Horeca</button>
-            <span class="chip-label">Weer:</span>
-            <button class="chip" onclick="toggleWeather('indoor', event)" aria-selected="false">Binnen</button>
-            <button class="chip" onclick="toggleWeather('outdoor', event)" aria-selected="false">Buiten</button>
-            <span class="chip-label">Extra:</span>
-            <button class="chip" onclick="toggleFacility('coffee', event)" aria-selected="false">Koffie</button>
-            <button class="chip" onclick="toggleFacility('diaper', event)" aria-selected="false">Verschonen</button>
-            <button class="chip" onclick="toggleFacility('alcohol', event)" aria-selected="false">Alcohol</button>
-            <span class="chip-label">Leeftijd:</span>
-            <button class="chip" onclick="toggleAge('dreumes', event)" aria-selected="false">Dreumes (0–2)</button>
-            <button class="chip" onclick="toggleAge('peuter', event)" aria-selected="false">Peuter (2–5)</button>
-            <span class="chip-label">Afstand:</span>
-            <button class="chip radius-chip" onclick="toggleRadius(5, event)" aria-selected="false">5 km</button>
-            <button class="chip radius-chip" onclick="toggleRadius(10, event)" aria-selected="false">10 km</button>
-            <button class="chip radius-chip" onclick="toggleRadius(25, event)" aria-selected="false">25 km</button>
+        <div class="filter-panel collapsed" id="filter-panel">
+            <button class="filter-panel-toggle" id="filter-panel-toggle" type="button" onclick="toggleFilterPanel()" aria-expanded="false" aria-controls="filter-chip-toolbar">
+                <div>
+                    <span>Meer filters</span>
+                    <strong id="filter-panel-summary">Type, weer en extra filters</strong>
+                    <span id="filter-panel-meta">Toon of verberg de uitgebreide filters</span>
+                </div>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="filter-chips" id="filter-chip-toolbar" role="toolbar" aria-label="Filter categorieën">
+                <button class="chip active" onclick="toggleTag('all', event)" aria-selected="true">Alles</button>
+                <button class="chip" onclick="toggleTag('favorites', event)" aria-selected="false">Favorieten</button>
+                <span class="chip-label">Type:</span>
+                <button class="chip" onclick="toggleTag('play', event)" aria-selected="false">Speeltuin</button>
+                <button class="chip" onclick="toggleTag('farm', event)" aria-selected="false">Boerderij</button>
+                <button class="chip" onclick="toggleTag('nature', event)" aria-selected="false">Natuur</button>
+                <button class="chip" onclick="toggleTag('museum', event)" aria-selected="false">Museum</button>
+                <button class="chip" onclick="toggleTag('swim', event)" aria-selected="false">Zwemmen</button>
+                <button class="chip" onclick="toggleTag('pancake', event)" aria-selected="false">Pannenkoeken</button>
+                <button class="chip" onclick="toggleTag('horeca', event)" aria-selected="false">Horeca</button>
+                <span class="chip-label">Weer:</span>
+                <button class="chip" onclick="toggleWeather('indoor', event)" aria-selected="false">Binnen</button>
+                <button class="chip" onclick="toggleWeather('outdoor', event)" aria-selected="false">Buiten</button>
+                <span class="chip-label">Extra:</span>
+                <button class="chip" onclick="toggleFacility('coffee', event)" aria-selected="false">Koffie</button>
+                <button class="chip" onclick="toggleFacility('diaper', event)" aria-selected="false">Verschonen</button>
+                <button class="chip" onclick="toggleFacility('alcohol', event)" aria-selected="false">Alcohol</button>
+                <span class="chip-label">Leeftijd:</span>
+                <button class="chip" onclick="toggleAge('dreumes', event)" aria-selected="false">Dreumes (0–2)</button>
+                <button class="chip" onclick="toggleAge('peuter', event)" aria-selected="false">Peuter (2–5)</button>
+                <span class="chip-label">Afstand:</span>
+                <button class="chip radius-chip" onclick="toggleRadius(5, event)" aria-selected="false">5 km</button>
+                <button class="chip radius-chip" onclick="toggleRadius(10, event)" aria-selected="false">10 km</button>
+                <button class="chip radius-chip" onclick="toggleRadius(25, event)" aria-selected="false">25 km</button>
+            </div>
         </div>
 
         <div class="active-filters" id="active-filters" style="display:none;">
@@ -1708,6 +1745,7 @@
             activePreset = activePreset === preset ? null : preset;
             syncPresetAria();
             updateFilterCount();
+            collapseFilterPanelAfterSelection();
             loadLocations();
         }
 
@@ -1770,6 +1808,7 @@
             }
             syncChipAria();
             updateFilterCount();
+            collapseFilterPanelAfterSelection();
             loadLocations();
         }
 
@@ -1790,6 +1829,7 @@
             });
             syncChipAria();
             updateFilterCount();
+            collapseFilterPanelAfterSelection();
             loadLocations();
         }
 
@@ -1801,6 +1841,7 @@
             }
             syncChipAria();
             updateFilterCount();
+            collapseFilterPanelAfterSelection();
             loadLocations();
         }
 
@@ -1831,6 +1872,57 @@
                 bar.style.display = 'none';
                 if (summary) summary.textContent = '';
             }
+            updateFilterPanelSummary(labels, count);
+        }
+
+        function updateFilterPanelSummary(labels = [], count = 0) {
+            const title = document.getElementById('filter-panel-summary');
+            const meta = document.getElementById('filter-panel-meta');
+            if (!title || !meta) return;
+            if (count === 0) {
+                title.textContent = 'Type, weer en extra filters';
+                meta.textContent = 'Toon of verberg de uitgebreide filters';
+                return;
+            }
+            title.textContent = count === 1 ? '1 filter actief' : `${count} filters actief`;
+            meta.textContent = labels.join(' · ');
+        }
+
+        function syncFilterPanelForViewport() {
+            const panel = document.getElementById('filter-panel');
+            const toggle = document.getElementById('filter-panel-toggle');
+            if (!panel || !toggle) return;
+            const desktop = window.innerWidth >= 680 || document.documentElement.classList.contains('pp-desktop');
+            if (desktop) {
+                panel.classList.remove('collapsed');
+                toggle.setAttribute('aria-expanded', 'true');
+                return;
+            }
+            if (!panel.dataset.initialized) {
+                panel.classList.add('collapsed');
+                toggle.setAttribute('aria-expanded', 'false');
+                panel.dataset.initialized = 'true';
+            }
+        }
+
+        function toggleFilterPanel(forceOpen = null) {
+            const panel = document.getElementById('filter-panel');
+            const toggle = document.getElementById('filter-panel-toggle');
+            if (!panel || !toggle) return;
+            if (window.innerWidth >= 680 || document.documentElement.classList.contains('pp-desktop')) {
+                panel.classList.remove('collapsed');
+                toggle.setAttribute('aria-expanded', 'true');
+                return;
+            }
+            const nextCollapsed = forceOpen === null ? !panel.classList.contains('collapsed') : !forceOpen;
+            panel.classList.toggle('collapsed', nextCollapsed);
+            toggle.setAttribute('aria-expanded', nextCollapsed ? 'false' : 'true');
+        }
+
+        function collapseFilterPanelAfterSelection() {
+            if (window.innerWidth < 680 && !document.documentElement.classList.contains('pp-desktop')) {
+                toggleFilterPanel(false);
+            }
         }
 
         function toggleAge(group, evt) {
@@ -1842,6 +1934,7 @@
             });
             syncChipAria();
             updateFilterCount();
+            collapseFilterPanelAfterSelection();
             loadLocations();
         }
 
@@ -1862,6 +1955,7 @@
             }
             syncChipAria();
             updateFilterCount();
+            collapseFilterPanelAfterSelection();
             loadLocations();
         }
 
@@ -1880,6 +1974,7 @@
             syncPresetAria();
             syncChipAria();
             updateFilterCount();
+            collapseFilterPanelAfterSelection();
             loadLocations();
         }
 
@@ -2116,6 +2211,9 @@
             throw lastError || new Error('Unknown fetch failure');
         }
 
+        const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,price_band,time_of_day_fit,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,noise_level,food_fit,play_corner_quality,crowd_pattern,verification_confidence,verification_mode,seo_primary_locality';
+        const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url';
+
         async function fetchAllPages(baseUrl, signal) {
             const BATCH = 1000;
             const headers = { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" };
@@ -2133,6 +2231,52 @@
             return all;
         }
 
+        function normalizeLocationRow(row) {
+            return {
+                ...row,
+                price_band: row.price_band ?? null,
+                time_of_day_fit: row.time_of_day_fit ?? null,
+                rain_backup_quality: row.rain_backup_quality ?? null,
+                shade_or_shelter: row.shade_or_shelter ?? null,
+                parking_ease: row.parking_ease ?? null,
+                buggy_friendliness: row.buggy_friendliness ?? null,
+                toilet_confidence: row.toilet_confidence ?? null,
+                noise_level: row.noise_level ?? null,
+                food_fit: row.food_fit ?? null,
+                play_corner_quality: row.play_corner_quality ?? null,
+                crowd_pattern: row.crowd_pattern ?? null,
+                verification_confidence: row.verification_confidence ?? null,
+                verification_mode: row.verification_mode ?? null,
+                seo_primary_locality: row.seo_primary_locality ?? null
+            };
+        }
+
+        async function fetchLocationsLive(signal) {
+            const baseFilters = [];
+            if (activeTag !== 'all' && activeTag !== 'favorites') baseFilters.push("&type=eq." + activeTag);
+            if (activeWeather) {
+                if (activeWeather === "indoor") baseFilters.push("&weather=in.(indoor,hybrid,both)");
+                else if (activeWeather === "outdoor") baseFilters.push("&weather=in.(outdoor,hybrid,both)");
+                else baseFilters.push("&weather=eq." + activeWeather);
+            }
+            if (activeFacilities.coffee) baseFilters.push("&coffee=eq.true");
+            if (activeFacilities.diaper) baseFilters.push("&diaper=eq.true");
+            if (activeFacilities.alcohol) baseFilters.push("&alcohol=eq.true");
+            if (activeRegion) baseFilters.push("&region=eq." + encodeURIComponent(activeRegion));
+            const suffix = `${baseFilters.join('')}&order=created_at.desc`;
+            const fullUrl = `${SB_URL}?select=${FULL_LOCATION_SELECT}${suffix}`;
+            try {
+                const rows = await fetchAllPages(fullUrl, signal);
+                return rows.map(normalizeLocationRow);
+            } catch (fullError) {
+                if (fullError?.name === 'AbortError') throw fullError;
+                console.warn('Primary location payload failed, retrying with fallback fields', fullError);
+                const fallbackUrl = `${SB_URL}?select=${FALLBACK_LOCATION_SELECT}${suffix}`;
+                const rows = await fetchAllPages(fallbackUrl, signal);
+                return rows.map(normalizeLocationRow);
+            }
+        }
+
         let currentAbort = null;
         async function loadLocations() {
             if (currentAbort) currentAbort.abort();
@@ -2141,18 +2285,10 @@
             if (currentDisplayMode !== 'map') { container.innerHTML = ''; loader.classList.remove('hidden'); }
             error.classList.add('hidden');
             try {
-                let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,price_band,time_of_day_fit,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,noise_level,food_fit,play_corner_quality,crowd_pattern,verification_confidence,verification_mode,seo_primary_locality";
-                if (activeTag !== 'all' && activeTag !== 'favorites') url += "&type=eq." + activeTag;
-                if (activeWeather) { if (activeWeather === "indoor") url += "&weather=in.(indoor,hybrid,both)"; else if (activeWeather === "outdoor") url += "&weather=in.(outdoor,hybrid,both)"; else url += "&weather=eq." + activeWeather; }
-                if (activeFacilities.coffee) url += "&coffee=eq.true";
-                if (activeFacilities.diaper) url += "&diaper=eq.true";
-                if (activeFacilities.alcohol) url += "&alcohol=eq.true";
-                if (activeRegion) url += "&region=eq." + encodeURIComponent(activeRegion);
-                url += "&order=created_at.desc";
                 let fetchedLocations;
                 let usingCachedData = false;
                 try {
-                    fetchedLocations = await fetchAllPages(url, currentAbort.signal);
+                    fetchedLocations = await fetchLocationsLive(currentAbort.signal);
                     await writeLocationsCache(fetchedLocations);
                 } catch (fetchError) {
                     if (fetchError?.name === 'AbortError') throw fetchError;
@@ -3069,13 +3205,14 @@
         // Start loading data immediately
         updateShortlistBar();
         updateFilterCount();
+        syncFilterPanelForViewport();
         loadLocations();
         checkWeather();
 
         // Apply layout (desktop/mobile) via CSS class + media query (belt AND suspenders)
         applyLayout();
         syncDesktopModeSwitch('home');
-        window.addEventListener('resize', applyLayout);
+        window.addEventListener('resize', () => { applyLayout(); syncFilterPanelForViewport(); });
 
         // Preload MapLibre — immediately on desktop, lazily on mobile
         if (window.innerWidth >= DESKTOP_WIDTH) {
