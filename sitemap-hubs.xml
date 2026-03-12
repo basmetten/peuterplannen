@@ -121,6 +121,30 @@
     <priority>0.75</priority>
   </url>
   <url>
+    <loc>https://peuterplannen.nl/enschede.html</loc>
+    <lastmod>2026-03-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/zwolle.html</loc>
+    <lastmod>2026-03-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/maastricht.html</loc>
+    <lastmod>2026-03-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/dordrecht.html</loc>
+    <lastmod>2026-03-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
     <loc>https://peuterplannen.nl/speeltuinen.html</loc>
     <lastmod>2026-03-12</lastmod>
     <changefreq>weekly</changefreq>
