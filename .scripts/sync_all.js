@@ -29,6 +29,7 @@ const SB_URL = process.env.SUPABASE_URL || SB_PROJECT;
 const SB_KEY = process.env.SUPABASE_SERVICE_KEY || Buffer.from('ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5CcGRXcHpkbWRpWm1ac2NuSjJZWFY2YzNobElpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpJd05ETXhOekFzSW1WNGNDSTZNakE0TnpZeE9URTNNSDAuNXkzZ3FpUGZWdnB2ZmFEWUFfUGdxRS1LVHZ1ZjZ6Z042dkd6cWZVcGVTbw==', 'base64').toString('utf8');
 const ROOT = path.resolve(__dirname, '..');
 const SEO_CONTENT_DIR = path.join(ROOT, 'content', 'seo');
+const ASSET_VERSION = new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 12);
 
 const CF_ANALYTICS_TOKEN = '74c21d127cea482bb454b6c85071a46f';
 function analyticsHTML() {
@@ -973,6 +974,9 @@ function supportHTML(variant = 'default') {
 }
 
 function headCommon(extra = '') {
+  const styleHref = `/style.min.css?v=${ASSET_VERSION}`;
+  const navCssHref = `/nav-floating.css?v=${ASSET_VERSION}`;
+  const navJsHref = `/nav-floating.js?v=${ASSET_VERSION}`;
   return `  <!-- Google tag (gtag.js) — Consent Mode v2 -->
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -998,9 +1002,32 @@ function headCommon(extra = '') {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.min.css">
-  <link rel="stylesheet" href="/nav-floating.css">
-  <script src="/nav-floating.js" defer></script>${extra}`;
+  <link rel="stylesheet" href="${styleHref}">
+  <link rel="stylesheet" href="${navCssHref}">
+  <script src="${navJsHref}" defer></script>${extra}`;
+}
+
+function rewriteAssetVersions(filePath) {
+  if (!fs.existsSync(filePath)) return;
+  let html = fs.readFileSync(filePath, 'utf8');
+  const replacements = [
+    [/\/style\.min\.css(?:\?v=[^"]*)?/g, `/style.min.css?v=${ASSET_VERSION}`],
+    [/\/nav-floating\.css(?:\?v=[^"]*)?/g, `/nav-floating.css?v=${ASSET_VERSION}`],
+    [/\/nav-floating\.js(?:\?v=[^"]*)?/g, `/nav-floating.js?v=${ASSET_VERSION}`],
+    [/\/admin\/portal-shell\.css(?:\?v=[^"]*)?/g, `/admin/portal-shell.css?v=${ASSET_VERSION}`],
+    [/\/partner\/portal-shell\.css(?:\?v=[^"]*)?/g, `/partner/portal-shell.css?v=${ASSET_VERSION}`],
+    [/\/admin\/admin\.js(?:\?v=[^"]*)?/g, `/admin/admin.js?v=${ASSET_VERSION}`],
+    [/\/partner\/partner\.js(?:\?v=[^"]*)?/g, `/partner/partner.js?v=${ASSET_VERSION}`],
+  ];
+  let changed = false;
+  for (const [pattern, replacement] of replacements) {
+    const next = html.replace(pattern, replacement);
+    if (next !== html) {
+      changed = true;
+      html = next;
+    }
+  }
+  if (changed) fs.writeFileSync(filePath, html);
 }
 
 // Fallback regions when the DB table doesn't exist yet
@@ -3863,6 +3890,18 @@ async function main() {
       fs.copyFileSync(cssPath, path.join(ROOT, 'style.min.css'));
     }
   }
+
+  console.log('\nRefreshing asset versions on hand-written pages...');
+  [
+    path.join(ROOT, 'about.html'),
+    path.join(ROOT, 'contact.html'),
+    path.join(ROOT, 'app.html'),
+    path.join(ROOT, '404.html'),
+    path.join(ROOT, 'privacy', 'index.html'),
+    path.join(ROOT, 'disclaimer', 'index.html'),
+    path.join(ROOT, 'admin', 'index.html'),
+    path.join(ROOT, 'partner', 'index.html'),
+  ].forEach(rewriteAssetVersions);
 
   console.log(`\nDone! Laatst bijgewerkt: ${today()}`);
   console.log('Review changes with: git diff');

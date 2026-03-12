@@ -97,8 +97,8 @@
 
     <!-- Fonts (swap for faster paint) -->
     <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/nav-floating.css">
-    <script src="/nav-floating.js" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603122121">
+    <script src="/nav-floating.js?v=202603122121" defer></script>
 
     <style>
         :root {
@@ -2034,6 +2034,88 @@
         }
 
         // === Data Loading ===
+        const LOCATIONS_CACHE_KEY = 'pp_locations_cache_v4';
+        const LOCATIONS_CACHE_TTL_MS = 1000 * 60 * 60 * 12;
+        const LOCATIONS_CACHE_DB = 'pp-app-cache';
+        const LOCATIONS_CACHE_STORE = 'kv';
+
+        function openLocationsCacheDb() {
+            return new Promise((resolve, reject) => {
+                if (!('indexedDB' in window)) {
+                    reject(new Error('indexedDB unavailable'));
+                    return;
+                }
+                const request = indexedDB.open(LOCATIONS_CACHE_DB, 1);
+                request.onupgradeneeded = () => {
+                    const db = request.result;
+                    if (!db.objectStoreNames.contains(LOCATIONS_CACHE_STORE)) {
+                        db.createObjectStore(LOCATIONS_CACHE_STORE);
+                    }
+                };
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error || new Error('Failed to open cache DB'));
+            });
+        }
+
+        async function readLocationsCache() {
+            try {
+                const db = await openLocationsCacheDb();
+                const parsed = await new Promise((resolve, reject) => {
+                    const tx = db.transaction(LOCATIONS_CACHE_STORE, 'readonly');
+                    const store = tx.objectStore(LOCATIONS_CACHE_STORE);
+                    const request = store.get(LOCATIONS_CACHE_KEY);
+                    request.onsuccess = () => resolve(request.result || null);
+                    request.onerror = () => reject(request.error || new Error('Failed to read cache'));
+                });
+                db.close();
+                if (!parsed || !Array.isArray(parsed.items) || !parsed.savedAt) return null;
+                if ((Date.now() - parsed.savedAt) > LOCATIONS_CACHE_TTL_MS) return null;
+                return parsed;
+            } catch (_) {
+                return null;
+            }
+        }
+
+        async function writeLocationsCache(items) {
+            try {
+                const cachedItems = Array.isArray(items) ? items.slice(0, 250) : [];
+                const payload = {
+                    savedAt: Date.now(),
+                    count: Array.isArray(items) ? items.length : 0,
+                    partial: Array.isArray(items) && items.length > cachedItems.length,
+                    items: cachedItems
+                };
+                const db = await openLocationsCacheDb();
+                await new Promise((resolve, reject) => {
+                    const tx = db.transaction(LOCATIONS_CACHE_STORE, 'readwrite');
+                    const store = tx.objectStore(LOCATIONS_CACHE_STORE);
+                    const request = store.put(payload, LOCATIONS_CACHE_KEY);
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error || new Error('Failed to write cache'));
+                });
+                db.close();
+            } catch (_) {
+                // Opportunistic cache only.
+            }
+        }
+
+        async function fetchJsonWithRetry(url, opts, attempts = 3) {
+            let lastError = null;
+            for (let attempt = 1; attempt <= attempts; attempt++) {
+                try {
+                    const resp = await fetch(url, opts);
+                    if (!resp.ok) throw new Error('Fetch failed: ' + resp.status);
+                    return await resp.json();
+                } catch (err) {
+                    lastError = err;
+                    if (err?.name === 'AbortError') throw err;
+                    if (attempt === attempts) break;
+                    await new Promise(resolve => setTimeout(resolve, attempt * 500));
+                }
+            }
+            throw lastError || new Error('Unknown fetch failure');
+        }
+
         async function fetchAllPages(baseUrl, signal) {
             const BATCH = 1000;
             const headers = { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" };
@@ -2042,9 +2124,7 @@
                 const url = `${baseUrl}&limit=${BATCH}&offset=${offset}`;
                 const opts = { method: 'GET', headers };
                 if (signal) opts.signal = signal;
-                const resp = await fetch(url, opts);
-                if (!resp.ok) throw new Error('Fetch failed: ' + resp.status);
-                const batch = await resp.json();
+                const batch = await fetchJsonWithRetry(url, opts);
                 if (!Array.isArray(batch) || batch.length === 0) break;
                 all = all.concat(batch);
                 if (batch.length < BATCH) break;
@@ -2069,7 +2149,22 @@
                 if (activeFacilities.alcohol) url += "&alcohol=eq.true";
                 if (activeRegion) url += "&region=eq." + encodeURIComponent(activeRegion);
                 url += "&order=created_at.desc";
-                allLocations = await fetchAllPages(url, currentAbort.signal);
+                let fetchedLocations;
+                let usingCachedData = false;
+                try {
+                    fetchedLocations = await fetchAllPages(url, currentAbort.signal);
+                    await writeLocationsCache(fetchedLocations);
+                } catch (fetchError) {
+                    if (fetchError?.name === 'AbortError') throw fetchError;
+                    const cached = await readLocationsCache();
+                    if (!cached) throw fetchError;
+                    usingCachedData = true;
+                    fetchedLocations = cached.items;
+                    error.classList.remove('hidden');
+                    error.innerHTML = `${cached.partial ? 'Live data laden lukte niet. Je ziet een recente beperkte versie.' : 'Live data laden lukte niet. Je ziet een recente opgeslagen versie.'} <button onclick="loadLocations()" style="margin-left:8px;padding:6px 16px;border-radius:8px;border:1px solid var(--primary);color:var(--primary);background:white;cursor:pointer;font-family:var(--font-body)">Probeer opnieuw</button>`;
+                    console.warn('Using cached locations after load failure', fetchError);
+                }
+                allLocations = fetchedLocations;
 
                 if (activeTag === 'favorites') {
                     const favorites = getFavorites();
@@ -2117,6 +2212,7 @@
                     renderCards(allLocations, {});
                     updateMapMarkers(allLocations); updateResultsCount(allLocations.length);
                 }
+                if (!usingCachedData) error.classList.add('hidden');
             } catch (e) { if (e.name === 'AbortError') return; console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.innerHTML = 'Kon data niet laden. <button onclick="loadLocations()" style="margin-left:8px;padding:6px 16px;border-radius:8px;border:1px solid var(--primary);color:var(--primary);background:white;cursor:pointer;font-family:var(--font-body)">Probeer opnieuw</button>'; }
         }
 
