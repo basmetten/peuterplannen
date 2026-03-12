@@ -3893,6 +3893,7 @@ async function main() {
 
   console.log('\nRefreshing asset versions on hand-written pages...');
   [
+    path.join(ROOT, 'index.html'),
     path.join(ROOT, 'about.html'),
     path.join(ROOT, 'contact.html'),
     path.join(ROOT, 'app.html'),
