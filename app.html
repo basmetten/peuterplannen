@@ -97,8 +97,8 @@
 
     <!-- Fonts (swap for faster paint) -->
     <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/nav-floating.css?v=202603122220">
-    <script src="/nav-floating.js?v=202603122220" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603122355">
+    <script src="/nav-floating.js?v=202603122355" defer></script>
 
     <style>
         :root {
@@ -391,8 +391,47 @@
         .gps-status.loading::before { content: ''; width: 14px; height: 14px; border: 2px solid rgba(212,119,90,0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
         .gps-status.error { color: var(--accent); }
 
+        .decision-stage {
+            margin-bottom: 14px;
+            padding: 18px 18px 14px;
+            border-radius: 22px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,247,241,0.95));
+            border: 1px solid rgba(212, 119, 90, 0.14);
+            box-shadow: var(--shadow-md);
+        }
+        .decision-stage-header {
+            display: grid;
+            gap: 4px;
+            margin-bottom: 14px;
+        }
+        .decision-stage-kicker {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .decision-stage-header strong {
+            font-family: var(--font-heading);
+            font-size: 21px;
+            line-height: 1.02;
+            color: var(--text);
+        }
+        .decision-stage-header p {
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.55;
+            max-width: 56ch;
+        }
+
         /* Filter chips */
-        .filter-panel { margin-bottom: 6px; }
+        .filter-panel {
+            margin-bottom: 6px;
+            border-radius: 18px;
+            border: 1px solid rgba(212, 119, 90, 0.12);
+            background: rgba(255,255,255,0.74);
+            padding: 10px 12px 6px;
+        }
         .filter-panel-toggle {
             width: 100%;
             display: flex;
@@ -428,7 +467,7 @@
             gap: 8px;
             overflow-x: auto;
             scrollbar-width: none;
-            padding: 2px 0 12px;
+            padding: 2px 0 8px;
             margin: 0 -4px;
             padding-left: 4px;
             padding-right: 4px;
@@ -459,7 +498,12 @@
         .preset-chip span { display: block; font-size: 11px; line-height: 1.3; color: var(--text-muted); }
         .preset-chip.active span { color: var(--text-secondary); }
         .preset-chip svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; color: var(--primary-dark); }
-        .active-filters { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 14px; margin-bottom: 10px; background: var(--primary-light); border-radius: var(--radius-xs); font-size: 13px; color: var(--primary-dark); font-weight: 600; }
+        .results-utilities {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .active-filters { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; margin-bottom: 0; background: rgba(246, 231, 217, 0.72); border-radius: 16px; font-size: 13px; color: var(--primary-dark); font-weight: 600; border: 1px solid rgba(212, 119, 90, 0.12); }
         .active-filters-copy { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
         .active-filters button + button { margin-left: 4px; }
         .active-filters button { background: none; border: none; color: var(--accent); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; }
@@ -470,8 +514,8 @@
             justify-content: space-between;
             gap: 14px;
             padding: 12px 14px;
-            margin-bottom: 12px;
-            border-radius: var(--radius-sm);
+            margin-bottom: 0;
+            border-radius: 16px;
             background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(255,246,240,0.96));
             border: 1px solid rgba(212, 119, 90, 0.18);
             box-shadow: var(--shadow-sm);
@@ -563,18 +607,49 @@
             border-color: rgba(107, 149, 144, 0.18);
             color: #4E746F;
         }
-        .card-reasons {
+        .card-decision {
+            margin-bottom: 12px;
+            padding: 13px 14px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(212,119,90,0.12), rgba(255,248,243,0.96));
+            border: 1px solid rgba(212, 119, 90, 0.14);
+        }
+        .card-decision-label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--primary-dark);
+        }
+        .card-decision-title {
+            display: block;
+            margin-bottom: 4px;
+            font-family: var(--font-heading);
+            font-size: 17px;
+            line-height: 1.08;
+            color: var(--text);
+        }
+        .card-decision-copy {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.55;
+            font-weight: 500;
+        }
+        .card-subreasons {
             display: grid;
             gap: 8px;
             margin-bottom: 14px;
         }
-        .card-reason {
+        .card-subreason {
             padding: 10px 12px;
             border-radius: 12px;
             background: rgba(255, 248, 243, 0.92);
             border: 1px solid rgba(212, 119, 90, 0.1);
         }
-        .card-reason-label {
+        .card-subreason-label {
             display: block;
             margin-bottom: 4px;
             font-size: 10px;
@@ -583,7 +658,7 @@
             text-transform: uppercase;
             color: var(--text-muted);
         }
-        .card-reason-value {
+        .card-subreason-value {
             display: block;
             color: var(--text-secondary);
             font-size: 13px;
@@ -680,8 +755,16 @@
         :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
 
         /* Results count */
-        .results-count { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-bottom: 10px; }
+        .results-count { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-bottom: 0; }
         .results-count:empty { display: none; }
+        .results-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 0 2px;
+        }
 
         /* Map container */
         .map-container { width: calc(100% + 32px); margin-left: -16px; height: calc(100vh - 240px); min-height: 400px; max-height: 700px; position: relative; border-top: 1px solid rgba(212, 119, 90, 0.1); }
@@ -999,12 +1082,32 @@
         html.pp-desktop #map-container { display: block !important; height: 100% !important; position: relative !important; width: 100% !important; }
         html.pp-desktop .map-container { width: 100% !important; margin: 0 !important; height: 100% !important; max-height: none !important; min-height: unset !important; border-top: none !important; }
         html.pp-desktop .bottom-nav { display: none !important; }
-        html.pp-desktop .filter-panel-toggle { display: none !important; }
-        html.pp-desktop .filter-panel.collapsed .filter-chips { display: flex !important; }
-        html.pp-desktop .filter-chips { flex-wrap: wrap; overflow-x: visible; padding-bottom: 8px; gap: 4px; top: 0 !important; }
-        html.pp-desktop .preset-strip { overflow-x: visible; flex-wrap: wrap; padding-bottom: 10px; }
+        html.pp-desktop .filter-panel-toggle { display: flex !important; }
+        html.pp-desktop .filter-panel {
+          margin-top: 14px;
+          padding: 14px 16px 16px;
+          border-radius: 18px;
+          background: rgba(255,250,246,0.94);
+        }
+        html.pp-desktop .filter-panel.collapsed .filter-chips { display: none !important; }
+        html.pp-desktop .filter-panel:not(.collapsed) .filter-chips { display: flex !important; }
+        html.pp-desktop .filter-chips { flex-wrap: wrap; overflow-x: visible; padding-bottom: 0; gap: 6px; top: 0 !important; }
+        html.pp-desktop .preset-strip {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          overflow: visible;
+          flex-wrap: nowrap;
+          padding-bottom: 0;
+        }
+        html.pp-desktop .preset-chip { min-height: 92px; }
         html.pp-desktop .chip-label { display: none; }
         html.pp-desktop .chip { padding: 5px 10px; font-size: 11px; }
+        html.pp-desktop .results-utilities {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr);
+          gap: 10px;
+        }
+        html.pp-desktop .card-subreasons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         html.pp-desktop body.plan-mode { overflow: auto !important; }
         html.pp-desktop body.plan-mode .app-wrapper { display: none !important; }
         html.pp-desktop body.plan-mode #plan-view { display: block !important; }
@@ -1182,6 +1285,12 @@
             <div id="gps-status" class="gps-status hidden" role="status" aria-live="polite"></div>
         </div>
 
+        <section class="decision-stage" aria-label="Kies eerst hoe de dag voelt">
+        <div class="decision-stage-header">
+            <div class="decision-stage-kicker">Kies eerst hoe de dag voelt</div>
+            <strong>Minder filters, sneller naar een shortlist die echt past.</strong>
+            <p>Begin met een situatie. Gebruik de extra filters pas als je daarna wilt finetunen op type, afstand of faciliteiten.</p>
+        </div>
         <div class="preset-strip" role="toolbar" aria-label="Situatie-presets">
             <button class="preset-chip" data-preset="rain" onclick="togglePreset('rain', event)" aria-pressed="false">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10"/><path d="M8 9a4 4 0 1 1 8 0c0 3-4 8-4 8s-4-5-4-8z"/></svg>
@@ -1245,33 +1354,36 @@
                 <button class="chip radius-chip" onclick="toggleRadius(25, event)" aria-selected="false">25 km</button>
             </div>
         </div>
+        </section>
 
-        <div class="active-filters" id="active-filters" style="display:none;">
-            <div class="active-filters-copy">
-                <span id="filter-count"></span>
-                <span id="filter-summary"></span>
+        <div class="results-utilities">
+            <div class="active-filters" id="active-filters" style="display:none;">
+                <div class="active-filters-copy">
+                    <span id="filter-count"></span>
+                    <span id="filter-summary"></span>
+                </div>
+                <div>
+                    <button onclick="clearSharedShortlist()" id="clear-shared-shortlist" style="display:none;">Verlaat gedeelde shortlist</button>
+                    <button onclick="resetAllFilters()">Wis filters</button>
+                </div>
             </div>
-            <div>
-                <button onclick="clearSharedShortlist()" id="clear-shared-shortlist" style="display:none;">Verlaat gedeelde shortlist</button>
-                <button onclick="resetAllFilters()">Wis filters</button>
-            </div>
-        </div>
 
-        <div class="shortlist-bar" id="shortlist-bar">
-            <div class="shortlist-copy">
-                <strong id="shortlist-title">Je shortlist</strong>
-                <span id="shortlist-subtitle">Sla locaties op terwijl je vergelijkt en deel ze later als een compacte shortlist.</span>
-            </div>
-            <div class="shortlist-actions">
-                <button class="shortlist-btn" type="button" onclick="showShortlist()">Open shortlist</button>
-                <button class="shortlist-btn primary" type="button" onclick="shareShortlist()">Deel shortlist</button>
-                <button class="shortlist-btn secondary" type="button" onclick="clearShortlist()">Wis</button>
+            <div class="shortlist-bar" id="shortlist-bar">
+                <div class="shortlist-copy">
+                    <strong id="shortlist-title">Je shortlist</strong>
+                    <span id="shortlist-subtitle">Sla locaties op terwijl je vergelijkt en deel ze later als een compacte shortlist.</span>
+                </div>
+                <div class="shortlist-actions">
+                    <button class="shortlist-btn" type="button" onclick="showShortlist()">Open shortlist</button>
+                    <button class="shortlist-btn primary" type="button" onclick="shareShortlist()">Deel shortlist</button>
+                    <button class="shortlist-btn secondary" type="button" onclick="clearShortlist()">Wis</button>
+                </div>
             </div>
         </div>
 
         <div id="weather-banner"></div>
 
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div class="results-toolbar">
             <div class="results-count" id="results-count"></div>
             <select id="sort-select" class="sort-select" onchange="applySort(this.value)" aria-label="Sorteer op">
                 <option value="default">Standaard</option>
@@ -1573,6 +1685,7 @@
         let activeFacilities = { coffee: false, diaper: false, alcohol: false };
         let activePreset = null;
         let sharedShortlistIds = [];
+        let filterPanelUserExpanded = false;
 
         // Parse URL parameters (from quick-action buttons on homepage and city pages)
         (function() {
@@ -1845,6 +1958,18 @@
             loadLocations();
         }
 
+        function getAdvancedFilterCount() {
+            let count = 0;
+            if (activeTag !== 'all' && activeTag !== 'favorites') count++;
+            if (activeWeather) count++;
+            if (activeFacilities.coffee) count++;
+            if (activeFacilities.diaper) count++;
+            if (activeFacilities.alcohol) count++;
+            if (activeAgeGroup) count++;
+            if (activeRadius) count++;
+            return count;
+        }
+
         function updateFilterCount() {
             let count = 0;
             const labels = [];
@@ -1873,6 +1998,7 @@
                 if (summary) summary.textContent = '';
             }
             updateFilterPanelSummary(labels, count);
+            syncFilterPanelForViewport();
         }
 
         function updateFilterPanelSummary(labels = [], count = 0) {
@@ -1894,8 +2020,9 @@
             if (!panel || !toggle) return;
             const desktop = window.innerWidth >= 680 || document.documentElement.classList.contains('pp-desktop');
             if (desktop) {
-                panel.classList.remove('collapsed');
-                toggle.setAttribute('aria-expanded', 'true');
+                const shouldOpen = filterPanelUserExpanded || getAdvancedFilterCount() > 0;
+                panel.classList.toggle('collapsed', !shouldOpen);
+                toggle.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
                 return;
             }
             if (!panel.dataset.initialized) {
@@ -1909,12 +2036,9 @@
             const panel = document.getElementById('filter-panel');
             const toggle = document.getElementById('filter-panel-toggle');
             if (!panel || !toggle) return;
-            if (window.innerWidth >= 680 || document.documentElement.classList.contains('pp-desktop')) {
-                panel.classList.remove('collapsed');
-                toggle.setAttribute('aria-expanded', 'true');
-                return;
-            }
+            const desktop = window.innerWidth >= 680 || document.documentElement.classList.contains('pp-desktop');
             const nextCollapsed = forceOpen === null ? !panel.classList.contains('collapsed') : !forceOpen;
+            if (desktop) filterPanelUserExpanded = !nextCollapsed;
             panel.classList.toggle('collapsed', nextCollapsed);
             toggle.setAttribute('aria-expanded', nextCollapsed ? 'false' : 'true');
         }
@@ -1967,6 +2091,7 @@
             activeRadius = null;
             activeSort = 'default';
             activePreset = null;
+            filterPanelUserExpanded = false;
             const sortSelect = document.getElementById('sort-select');
             if (sortSelect) sortSelect.value = 'default';
             document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
@@ -2399,12 +2524,29 @@
             return 'Praktisch in te passen in een korte peuterroute.';
         }
 
+        function getDecisionHeadline(item, travelInfo) {
+            if (activePreset === 'rain') return 'Sterke keuze als het weer kan omslaan';
+            if (activePreset === 'outdoor-coffee') return 'Buitenlucht voor kinderen, landingsplek voor ouders';
+            if (activePreset === 'dreumesproof') return 'Rustiger en overzichtelijk voor de jongste kinderen';
+            if (activePreset === 'peuterproof') return 'Genoeg speelenergie kwijt zonder veel uitleg';
+            if (activePreset === 'short-drive' && travelInfo?.distanceKm != null) return `Dichtbij voor een korte rit van ${Math.round(travelInfo.distanceKm)} km`;
+            if (activePreset === 'lunch-play') return 'Eten en spelen vallen hier logisch samen';
+            if (item.rain_backup_quality === 'strong') return 'Zekerder als je een plan B voor het weer wilt';
+            if (travelInfo?.distanceKm != null && travelInfo.distanceKm <= 5) return 'Snel geregeld zonder lange rit';
+            if (item.play_corner_quality === 'strong') return 'Makkelijk kiezen als je vooral speelruimte zoekt';
+            if (item.coffee && item.diaper) return 'Praktisch voor oudercomfort onderweg';
+            return 'Goede kanshebber voor een soepel peuteruitje';
+        }
+
         function getCardReasons(item, travelInfo) {
-            return [
-                { label: 'Waarom nu', value: getPrimaryFitReason(item) },
-                { label: 'Logistiek', value: getLogisticsReason(item, travelInfo) },
-                { label: 'Voor ouders', value: getComfortReason(item) }
-            ];
+            return {
+                headline: getDecisionHeadline(item, travelInfo),
+                primary: getPrimaryFitReason(item),
+                secondary: [
+                    { label: 'Logistiek', value: getLogisticsReason(item, travelInfo) },
+                    { label: 'Voor ouders', value: getComfortReason(item) }
+                ]
+            };
         }
 
         function getVerificationModeLabel(mode) {
@@ -2633,8 +2775,13 @@
                     <p class="card-desc">${escapeHtml(item.description || '')}</p>
                     ${highlight}
                     ${trustChips.length ? `<div class="card-trust">${trustChips.map((chip) => `<span class="trust-chip ${chip.tone === 'positive' ? 'is-positive' : 'is-neutral'}">${escapeHtml(chip.label)}</span>`).join('')}</div>` : ''}
-                    <div class="card-reasons">
-                        ${reasons.map((reason) => `<div class="card-reason"><span class="card-reason-label">${escapeHtml(reason.label)}</span><span class="card-reason-value">${escapeHtml(reason.value)}</span></div>`).join('')}
+                    <div class="card-decision">
+                        <span class="card-decision-label">Waarom dit nu logisch voelt</span>
+                        <strong class="card-decision-title">${escapeHtml(reasons.headline)}</strong>
+                        <p class="card-decision-copy">${escapeHtml(reasons.primary)}</p>
+                    </div>
+                    <div class="card-subreasons">
+                        ${reasons.secondary.map((reason) => `<div class="card-subreason"><span class="card-subreason-label">${escapeHtml(reason.label)}</span><span class="card-subreason-value">${escapeHtml(reason.value)}</span></div>`).join('')}
                     </div>
                     ${facilities.length ? `<div class="card-facilities">${facilities.join('')}</div>` : ''}
                     <div class="card-actions">
@@ -3124,8 +3271,13 @@
                 <p class="card-desc">${escapeHtml(loc.description || '')}</p>
                 ${highlight}
                 ${trustChips.length ? `<div class="card-trust">${trustChips.map((chip) => `<span class="trust-chip ${chip.tone === 'positive' ? 'is-positive' : 'is-neutral'}">${escapeHtml(chip.label)}</span>`).join('')}</div>` : ''}
-                <div class="card-reasons">
-                    ${reasons.map((reason) => `<div class="card-reason"><span class="card-reason-label">${escapeHtml(reason.label)}</span><span class="card-reason-value">${escapeHtml(reason.value)}</span></div>`).join('')}
+                <div class="card-decision">
+                    <span class="card-decision-label">Waarom dit nu logisch voelt</span>
+                    <strong class="card-decision-title">${escapeHtml(reasons.headline)}</strong>
+                    <p class="card-decision-copy">${escapeHtml(reasons.primary)}</p>
+                </div>
+                <div class="card-subreasons">
+                    ${reasons.secondary.map((reason) => `<div class="card-subreason"><span class="card-subreason-label">${escapeHtml(reason.label)}</span><span class="card-subreason-value">${escapeHtml(reason.value)}</span></div>`).join('')}
                 </div>
                 ${(trustBullets.length || practicalBullets.length) ? `<div class="sheet-trust">
                     ${trustBullets.length ? `<section class="sheet-trust-card"><h3>Waarom we dit vertrouwen</h3><ul>${trustBullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join('')}</ul></section>` : ''}
