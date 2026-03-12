@@ -1513,6 +1513,18 @@
             try { const u = new URL(url); return ['http:', 'https:'].includes(u.protocol) ? url : null; }
             catch { return null; }
         }
+        function cleanToddlerHighlight(text) {
+            return String(text || '')
+                .replace(/\s+/g, ' ')
+                .replace(/[•·]+/g, ' · ')
+                .replace(/\s*[|/]\s*/g, ' · ')
+                .replace(/\s*-\s*/g, ' · ')
+                .replace(/\b(ideaal|perfect|superleuk|aanrader)\b/gi, '')
+                .replace(/\s+([.,!?;:])/g, '$1')
+                .replace(/(?:\s*·\s*){2,}/g, ' · ')
+                .replace(/^\s*·\s*|\s*·\s*$/g, '')
+                .trim();
+        }
 
         let activeTag = 'all';
         let activeWeather = null;
