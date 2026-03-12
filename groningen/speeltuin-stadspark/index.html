@@ -53,6 +53,11 @@
   "name": "Speeltuin Stadspark",
   "description": "Speeltuin Stadspark in Groningen: gratis toegang, enorme zandbak en picknicktafels naast kiosk met versnapering. Speeltuin voor peuters en kleuters Bekijk waarom deze plek werkt, welke voorzieningen er zijn en welke alternatieven in de buurt liggen via PeuterPlannen.",
   "url": "https://peuterplannen.nl/groningen/speeltuin-stadspark/",
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 53.205618,
+    "longitude": 6.546524
+  },
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Groningen",
@@ -158,7 +163,11 @@
   
 
   <div class="location-highlight"><strong>Peutertip:</strong> Gratis toegang, enorme zandbak en picknicktafels naast kiosk met versnapering.</div>
-  <p class="location-highlight"><strong>Beste keuze als je iets zoekt dat</strong> sluit het best aan bij ongeveer 0–12 jaar.</p>
+  <p class="location-highlight"><strong>Beste keuze als je iets zoekt dat</strong> sluit het best aan bij ongeveer 0–12 jaar.</p><div class="related-blogs">
+      <h3>Waarom deze info te vertrouwen is</h3>
+      <ul><li>Status: redactioneel beoordeeld.</li><li>Vertrouwensniveau 60%.</li><li>Context bijgewerkt op 12 maart 2026.</li></ul>
+      <p style="margin-top:12px;"><a href="/methode/">Lees hoe PeuterPlannen locaties selecteert en controleert</a>.</p>
+    </div>
 
   <div class="location-info">
     <div class="info-item"><div><div class="info-label">Leeftijd</div><div class="info-value">0–12 jaar</div></div></div>
@@ -172,7 +181,7 @@
 </div>
 
   <div class="location-actions">
-    
+    <a href="https://www.google.com/maps/dir/?api=1&destination=53.205618,6.546524" target="_blank" rel="noopener" class="btn-route">Route plannen</a>
   </div>
 
   <div class="share-buttons">
@@ -180,7 +189,8 @@
     <button class="share-native" onclick="shareNative()">Delen</button>
   </div>
 
-  
+  <div class="location-map" id="map-container"><div id="map"></div></div>
+  <p class="map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>
 
   <div class="similar-locations">
     <h2>Vergelijkbare locaties in Groningen</h2>
@@ -195,15 +205,15 @@
         <p>Trampolinepark in Groningen met aparte peuter-sessies en toezicht, zodat ook de kleintjes veilig kunnen springen.</p>
       </article>
       <article class="loc-item">
-        <h3><a href="/groningen/bsv-paddepoel/">BSV Paddepoel</a></h3>
-        <p>Buurt Speelvereniging Paddepoel met omheinde speeltuin, speeltoestellen en activiteiten voor jonge kinderen.</p>
+        <h3><a href="/groningen/monkey-town/">Monkey Town</a></h3>
+        <p>Indoor speelparadijs Monkey Town in Groningen met klimbanen, ballenbak en speeltoestellen voor kinderen.</p>
       </article>
       <article class="loc-item">
         <h3><a href="/groningen/bospaviljoen-de-norgerberg/">Bospaviljoen De Norgerberg</a></h3>
         <p>Speeltuin en speelhoek aanwezig. Kinderstoel beschikbaar en zeer kindvriendelijke sfeer met prijsbuckette na eten.</p>
       </article>
       <article class="loc-item">
-        <h3><a href="/groningen/paviljoen-appelbergen-2/">Paviljoen Appelbergen</a></h3>
+        <h3><a href="/groningen/paviljoen-appelbergen/">Paviljoen Appelbergen</a></h3>
         <p>Pannenkoekenrestaurant in bosgebied Appelbergen bij Glimmen. Terras, binnen- en buitenzitplaatsen, toilet aanwezig. Rols...</p>
       </article>
       <article class="loc-item">
@@ -234,7 +244,7 @@
   <div class="support-inner">
     <h3>Iets nuttigs gevonden?</h3>
     <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>
-    <p class="support-count">1883+ locaties beschikbaar in heel Nederland.</p>
+    <p class="support-count">2102+ locaties beschikbaar in heel Nederland.</p>
     <div class="support-amounts">
       <span class="support-pill">€2</span>
       <span class="support-pill support-pill-mid">€5</span>
@@ -266,6 +276,36 @@
   </nav>
 </footer>
 
+<script>
+(function() {
+  var loaded = false;
+  var observer = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && !loaded) {
+      loaded = true;
+      observer.disconnect();
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.css';
+      document.head.appendChild(link);
+      var s = document.createElement('script');
+      s.src = 'https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.js';
+      s.onload = function() {
+        var map = new maplibregl.Map({
+          container: 'map',
+          style: 'https://tiles.openfreemap.org/styles/positron',
+          center: [6.546524, 53.205618],
+          zoom: 14,
+          attributionControl: false
+        });
+        new maplibregl.Marker({ color: '#D4775A' }).setLngLat([6.546524, 53.205618]).addTo(map);
+      };
+      document.head.appendChild(s);
+    }
+  }, { rootMargin: '200px' });
+  var mapContainer = document.getElementById('map-container');
+  if (mapContainer) observer.observe(mapContainer);
+})();
+</script>
 
 <script>
 if (navigator.share) { document.querySelector('.share-native').style.display = 'inline-flex'; }

@@ -53,6 +53,12 @@
   "name": "You Jump Arnhem",
   "description": "You Jump Arnhem in Arnhem is een speeltuin voor peuters en dreumesen. Bekijk waarom deze plek werkt, welke voorzieningen er zijn en welke alternatieven in de buurt liggen via PeuterPlannen.",
   "url": "https://peuterplannen.nl/arnhem/you-jump-arnhem/",
+  "sameAs": "https://www.trampolinepark.nl/nl/locaties/arnhem",
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 51.975079,
+    "longitude": 5.922008
+  },
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Arnhem",
@@ -158,10 +164,15 @@
   
 
   
-  <p class="location-highlight"><strong>Beste keuze als je iets zoekt dat</strong> sluit het best aan bij ongeveer 0–12 jaar.</p>
+  <p class="location-highlight"><strong>Beste keuze als je iets zoekt dat</strong> sluit het best aan bij ongeveer 0–12 jaar.</p><div class="related-blogs">
+      <h3>Waarom deze info te vertrouwen is</h3>
+      <ul><li>Status: redactioneel beoordeeld.</li><li>Vertrouwensniveau 60%.</li><li>Context bijgewerkt op 12 maart 2026.</li></ul>
+      <p style="margin-top:12px;"><a href="/methode/">Lees hoe PeuterPlannen locaties selecteert en controleert</a>.</p>
+    </div>
 
   <div class="location-info">
     <div class="info-item"><div><div class="info-label">Leeftijd</div><div class="info-value">0–12 jaar</div></div></div>
+    <div class="info-item"><div><div class="info-label">Website</div><div class="info-value"><a href="https://www.trampolinepark.nl/nl/locaties/arnhem" target="_blank" rel="noopener" aria-label="Website van You Jump Arnhem">trampolinepark.nl/nl/locaties/arnhem</a></div></div></div>
   </div>
 
   
@@ -172,7 +183,7 @@
 </div>
 
   <div class="location-actions">
-    
+    <a href="https://www.google.com/maps/dir/?api=1&destination=51.975079,5.922008" target="_blank" rel="noopener" class="btn-route">Route plannen</a>
   </div>
 
   <div class="share-buttons">
@@ -180,7 +191,8 @@
     <button class="share-native" onclick="shareNative()">Delen</button>
   </div>
 
-  
+  <div class="location-map" id="map-container"><div id="map"></div></div>
+  <p class="map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>
 
   <div class="similar-locations">
     <h2>Vergelijkbare locaties in Arnhem</h2>
@@ -195,8 +207,8 @@
         <p>Grote indoor speeltuin van 2.600 m² met klimstructuren, glijbanen en ballenbak, gelegen op industrieterrein Cruquiusweg....</p>
       </article>
       <article class="loc-item">
-        <h3><a href="/arnhem/bouwspeelplaats-de-leuke-linde/">Bouwspeelplaats De Leuke Linde</a></h3>
-        <p>Bijzondere bouwspeelplaats in de Klarendalse wijk, gerund door vrijwilligers, met klimfort, waterworkshop, schommels en ...</p>
+        <h3><a href="/arnhem/de-klimtuin/">De Klimtuin</a></h3>
+        <p>Klimspeelplaats binnen Intratuin Duiven, specifiek ingericht voor kinderen met klimstructuren.</p>
       </article>
       <article class="loc-item">
         <h3><a href="/arnhem/boerderij-de-lande-pannenkoekenrestaurant/">Boerderij De Lande Pannenkoekenrestaurant</a></h3>
@@ -231,7 +243,7 @@
   <div class="support-inner">
     <h3>Iets nuttigs gevonden?</h3>
     <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>
-    <p class="support-count">1883+ locaties beschikbaar in heel Nederland.</p>
+    <p class="support-count">2102+ locaties beschikbaar in heel Nederland.</p>
     <div class="support-amounts">
       <span class="support-pill">€2</span>
       <span class="support-pill support-pill-mid">€5</span>
@@ -263,6 +275,36 @@
   </nav>
 </footer>
 
+<script>
+(function() {
+  var loaded = false;
+  var observer = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && !loaded) {
+      loaded = true;
+      observer.disconnect();
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.css';
+      document.head.appendChild(link);
+      var s = document.createElement('script');
+      s.src = 'https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.js';
+      s.onload = function() {
+        var map = new maplibregl.Map({
+          container: 'map',
+          style: 'https://tiles.openfreemap.org/styles/positron',
+          center: [5.922008, 51.975079],
+          zoom: 14,
+          attributionControl: false
+        });
+        new maplibregl.Marker({ color: '#D4775A' }).setLngLat([5.922008, 51.975079]).addTo(map);
+      };
+      document.head.appendChild(s);
+    }
+  }, { rootMargin: '200px' });
+  var mapContainer = document.getElementById('map-container');
+  if (mapContainer) observer.observe(mapContainer);
+})();
+</script>
 
 <script>
 if (navigator.share) { document.querySelector('.share-native').style.display = 'inline-flex'; }

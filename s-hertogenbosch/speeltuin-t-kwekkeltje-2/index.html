@@ -53,6 +53,12 @@
   "name": "Speeltuin 't Kwekkeltje",
   "description": "Rolstoeltoegankelijke speeltuin in Rosmalen met speeltoestellen voor jonge kinderen, gratis toegankelijk.",
   "url": "https://peuterplannen.nl/s-hertogenbosch/speeltuin-t-kwekkeltje-2/",
+  "sameAs": "https://kwekkeltje.nl/",
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 51.712212,
+    "longitude": 5.366046
+  },
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "'s-Hertogenbosch",
@@ -158,10 +164,15 @@
   
 
   <div class="location-highlight"><strong>Peutertip:</strong> Rolstoeltoegankelijk en speciaal ingericht voor jonge kinderen.</div>
-  <p class="location-highlight"><strong>Beste keuze als je iets zoekt dat</strong> sluit het best aan bij ongeveer 0–12 jaar.</p>
+  <p class="location-highlight"><strong>Beste keuze als je iets zoekt dat</strong> sluit het best aan bij ongeveer 0–12 jaar.</p><div class="related-blogs">
+      <h3>Waarom deze info te vertrouwen is</h3>
+      <ul><li>Status: redactioneel beoordeeld.</li><li>Vertrouwensniveau 60%.</li><li>Context bijgewerkt op 12 maart 2026.</li></ul>
+      <p style="margin-top:12px;"><a href="/methode/">Lees hoe PeuterPlannen locaties selecteert en controleert</a>.</p>
+    </div>
 
   <div class="location-info">
     <div class="info-item"><div><div class="info-label">Leeftijd</div><div class="info-value">0–12 jaar</div></div></div>
+    <div class="info-item"><div><div class="info-label">Website</div><div class="info-value"><a href="https://kwekkeltje.nl/" target="_blank" rel="noopener" aria-label="Website van Speeltuin 't Kwekkeltje">kwekkeltje.nl</a></div></div></div>
   </div>
 
   
@@ -172,7 +183,7 @@
 </div>
 
   <div class="location-actions">
-    
+    <a href="https://www.google.com/maps/dir/?api=1&destination=51.712212,5.366046" target="_blank" rel="noopener" class="btn-route">Route plannen</a>
   </div>
 
   <div class="share-buttons">
@@ -180,7 +191,8 @@
     <button class="share-native" onclick="shareNative()">Delen</button>
   </div>
 
-  
+  <div class="location-map" id="map-container"><div id="map"></div></div>
+  <p class="map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>
 
   <div class="similar-locations">
     <h2>Vergelijkbare locaties in 's-Hertogenbosch</h2>
@@ -231,7 +243,7 @@
   <div class="support-inner">
     <h3>Iets nuttigs gevonden?</h3>
     <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>
-    <p class="support-count">1883+ locaties beschikbaar in heel Nederland.</p>
+    <p class="support-count">2102+ locaties beschikbaar in heel Nederland.</p>
     <div class="support-amounts">
       <span class="support-pill">€2</span>
       <span class="support-pill support-pill-mid">€5</span>
@@ -263,6 +275,36 @@
   </nav>
 </footer>
 
+<script>
+(function() {
+  var loaded = false;
+  var observer = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && !loaded) {
+      loaded = true;
+      observer.disconnect();
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.css';
+      document.head.appendChild(link);
+      var s = document.createElement('script');
+      s.src = 'https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.js';
+      s.onload = function() {
+        var map = new maplibregl.Map({
+          container: 'map',
+          style: 'https://tiles.openfreemap.org/styles/positron',
+          center: [5.366046, 51.712212],
+          zoom: 14,
+          attributionControl: false
+        });
+        new maplibregl.Marker({ color: '#D4775A' }).setLngLat([5.366046, 51.712212]).addTo(map);
+      };
+      document.head.appendChild(s);
+    }
+  }, { rootMargin: '200px' });
+  var mapContainer = document.getElementById('map-container');
+  if (mapContainer) observer.observe(mapContainer);
+})();
+</script>
 
 <script>
 if (navigator.share) { document.querySelector('.share-native').style.display = 'inline-flex'; }
