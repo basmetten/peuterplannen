@@ -952,7 +952,7 @@ serve(async (req) => {
           .single();
         if (error || !location) throw new AppError("Locatie niet gevonden", "LOCATION_NOT_FOUND", 404);
 
-        const [observationsResult, qualityTasksResult, editLogResult] = await Promise.all([
+        const [observationsResult, qualityTasksResult, editLogResult, editorialDraftResult] = await Promise.all([
           supabase
             .from("location_observations")
             .select("id, source_type, field_name, value_json, confidence, evidence_url, notes, status, created_at, reviewed_at, review_notes, approved_at, applied_at")
@@ -972,6 +972,14 @@ serve(async (req) => {
             .eq("location_id", Math.trunc(locationId))
             .order("created_at", { ascending: false })
             .limit(20),
+          supabase
+            .from("editorial_pages")
+            .select("id, page_type, slug, status, updated_at, published_at, title, editorial_label")
+            .eq("page_type", "location_detail_override")
+            .eq("location_id", Math.trunc(locationId))
+            .order("updated_at", { ascending: false })
+            .limit(1)
+            .maybeSingle(),
         ]);
 
         const recentEdits = editLogResult.data ?? [];
@@ -981,6 +989,7 @@ serve(async (req) => {
           location,
           observations: observationsResult.error && isMissingRelationError(observationsResult.error.message, "location_observations") ? [] : (observationsResult.data ?? []),
           quality_tasks: qualityTasksResult.error && isMissingRelationError(qualityTasksResult.error.message, "location_quality_tasks") ? [] : (qualityTasksResult.data ?? []),
+          editorial_draft: editorialDraftResult.error && isMissingRelationError(editorialDraftResult.error.message, "editorial_pages") ? null : (editorialDraftResult.data ?? null),
           recent_edits: recentEdits.map((row: Record<string, unknown>) => ({ ...row, owner_email: editEmails[String(row.user_id)] || "onbekend" })),
         };
         break;

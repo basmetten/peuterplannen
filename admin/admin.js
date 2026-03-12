@@ -522,6 +522,28 @@ async function onLocationsTableClick(event) {
   await switchTab(button.dataset.openLocation === 'seo' ? 'tab-seo' : 'tab-location-detail');
 }
 
+async function createDraftForLocation(locationId, alertTarget = 'insights-alert') {
+  if (!locationId) return;
+  const previousLocationId = state.selectedLocationId;
+  state.selectedLocationId = locationId;
+  try {
+    const result = await api('ensure_location_editorial_draft', { location_id: locationId });
+    await loadEditorialPages();
+    if (previousLocationId !== locationId || !state.selectedLocation) {
+      await loadLocationDetail(locationId);
+    }
+    fillEditorialForm(result.page);
+    await switchTab('tab-editorial');
+    PortalShell.setAlert(
+      alertTarget,
+      result.created ? 'Nieuw redactioneel draft aangemaakt.' : 'Bestaand redactioneel draft geopend.',
+      'success',
+    );
+  } catch (error) {
+    PortalShell.setAlert(alertTarget, `Draft aanmaken mislukt: ${error.message}`, 'error', { assertive: true });
+  }
+}
+
 async function onLocationsTableChange(event) {
   const input = event.target.closest('[data-toggle-type]');
   if (!input) return;
@@ -597,6 +619,20 @@ function fillLocationForms(payload) {
     ? history.map((entry) => `<tr><td class="portal-muted">${fmtDateTime(entry.created_at)}</td><td>${escapeHtml(entry.field_name || '-')}</td><td class="portal-truncate">${escapeHtml(valueOrDash(entry.old_value))}</td><td class="portal-truncate">${escapeHtml(valueOrDash(entry.new_value))}</td><td class="portal-muted">${escapeHtml(entry.owner_email || 'onbekend')}</td></tr>`).join('')
     : '<tr><td colspan="5" class="portal-muted">Nog geen recente wijzigingen.</td></tr>';
 
+  const editorialDraft = payload?.editorial_draft || null;
+  $('location-editorial-draft').innerHTML = editorialDraft
+    ? `
+      <div><strong>${escapeHtml(editorialDraft.title || 'Location detail override')}</strong></div>
+      <div class="portal-muted">${escapeHtml(editorialDraft.status || 'draft')} · bijgewerkt ${fmtDateTime(editorialDraft.updated_at || editorialDraft.published_at)}</div>
+      <div class="portal-btn-row" style="margin-top:8px;">
+        <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-editorial-open="${escapeAttr(editorialDraft.id)}">Open draft</button>
+      </div>`
+    : `
+      <div class="portal-muted">Nog geen redactioneel detaildraft voor deze locatie.</div>
+      <div class="portal-btn-row" style="margin-top:8px;">
+        <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-create-draft="location" data-location-id="${escapeAttr(state.selectedLocationId)}">Maak draft</button>
+      </div>`;
+
   const tasks = payload?.quality_tasks || [];
   $('location-tasks-list').innerHTML = tasks.length
     ? tasks.map((task) => `
@@ -606,6 +642,7 @@ function fillLocationForms(payload) {
         <br><span class="portal-muted">${escapeHtml(summarizeQualityTask(task))}</span>
         <div class="portal-btn-row" style="margin-top:8px;">
           <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-open-location="content" data-location-id="${escapeAttr(state.selectedLocationId)}">Open locatie</button>
+          ${task.task_type === 'missing_editorial_draft' ? `<button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-create-draft="location" data-location-id="${escapeAttr(state.selectedLocationId)}">Maak draft</button>` : ''}
           <button class="portal-btn portal-btn-success portal-btn-sm" type="button" data-quality-task-action="resolved" data-task-id="${escapeAttr(task.id)}">Resolved</button>
           <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-quality-task-action="dismissed" data-task-id="${escapeAttr(task.id)}">Dismiss</button>
         </div>
@@ -680,17 +717,7 @@ async function ensureLocationEditorialDraft() {
   const btn = $('create-location-draft-btn');
   PortalShell.setButtonBusy(btn, true, 'Aanmaken...', 'Maak redactioneel draft');
   try {
-    const result = await api('ensure_location_editorial_draft', { location_id: state.selectedLocationId });
-    fillEditorialForm(result.page);
-    await loadEditorialPages();
-    await switchTab('tab-editorial');
-    PortalShell.setAlert(
-      'editorial-alert',
-      result.created ? 'Nieuw redactioneel draft aangemaakt vanuit deze locatie.' : 'Bestaand redactioneel draft geopend.',
-      'success',
-    );
-  } catch (error) {
-    PortalShell.setAlert('location-detail-alert', `Draft aanmaken mislukt: ${error.message}`, 'error', { assertive: true });
+    await createDraftForLocation(state.selectedLocationId, 'editorial-alert');
   } finally {
     PortalShell.setButtonBusy(btn, false, null, 'Maak redactioneel draft');
   }
@@ -992,7 +1019,7 @@ async function loadInsights() {
       </div>`;
 
     $('insight-context-gaps').innerHTML = (insights.top_context_gaps || []).length
-      ? insights.top_context_gaps.map((row) => `<li><button class="portal-link-btn" type="button" data-open-location="content" data-location-id="${escapeAttr(row.location_id)}">${escapeHtml(row.name)}</button> <span class="portal-muted">(${escapeHtml(row.region)} · tier ${escapeHtml(row.seo_tier)})</span><br><span class="portal-muted">Ontbreekt: ${escapeHtml((row.missing_fields || []).join(', '))}</span></li>`).join('')
+      ? insights.top_context_gaps.map((row) => `<li><button class="portal-link-btn" type="button" data-open-location="content" data-location-id="${escapeAttr(row.location_id)}">${escapeHtml(row.name)}</button> <span class="portal-muted">(${escapeHtml(row.region)} · tier ${escapeHtml(row.seo_tier)})</span><br><span class="portal-muted">Ontbreekt: ${escapeHtml((row.missing_fields || []).join(', '))}</span><div class="portal-btn-row" style="margin-top:8px;"><button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-create-draft="location" data-location-id="${escapeAttr(row.location_id)}">Maak draft</button></div></li>`).join('')
       : '<li class="portal-muted">Geen context gaps gevonden.</li>';
 
     $('insight-gsc-summary').innerHTML = gsc
@@ -1037,6 +1064,7 @@ async function loadInsights() {
           <span class="portal-inline-code">${escapeHtml(row.task_type || '-')}</span>
           <span class="portal-muted">· prioriteit ${escapeHtml(String(row.priority ?? '-'))}</span>
           ${row.location_id ? `<button class="portal-link-btn" type="button" data-open-location="content" data-location-id="${escapeAttr(row.location_id)}">open locatie ${escapeHtml(String(row.location_id))}</button>` : ''}
+          ${row.task_type === 'missing_editorial_draft' && row.location_id ? `<button class="portal-link-btn" type="button" data-create-draft="location" data-location-id="${escapeAttr(row.location_id)}">maak draft</button>` : ''}
           ${row.notes ? `<br><span class="portal-muted">${escapeHtml(row.notes)}</span>` : ''}
           <div class="portal-btn-row" style="margin-top:8px;">
             <button class="portal-btn portal-btn-success portal-btn-sm" type="button" data-quality-task-action="resolved" data-task-id="${escapeAttr(row.id)}">Resolved</button>
@@ -1083,6 +1111,17 @@ async function refreshQualityTasks() {
 }
 
 async function onQualityTaskClick(event) {
+  const draftBtn = event.target.closest('[data-create-draft]');
+  if (draftBtn) {
+    await createDraftForLocation(Number(draftBtn.dataset.locationId), 'insights-alert');
+    return;
+  }
+  const editorialBtn = event.target.closest('[data-editorial-open]');
+  if (editorialBtn) {
+    await loadEditorialPage(editorialBtn.dataset.editorialOpen);
+    await switchTab('tab-editorial');
+    return;
+  }
   const actionBtn = event.target.closest('[data-quality-task-action]');
   if (!actionBtn) {
     await onLocationsTableClick(event);
@@ -1180,8 +1219,9 @@ function bindUI() {
   $('observations-tbody').addEventListener('click', onObservationsTableClick);
   $('editorial-tbody').addEventListener('click', onEditorialTableClick);
   $('duplicates-tbody').addEventListener('click', onDuplicatesTableClick);
-  $('insight-context-gaps').addEventListener('click', onLocationsTableClick);
+  $('insight-context-gaps').addEventListener('click', onQualityTaskClick);
   $('location-tasks-list').addEventListener('click', onQualityTaskClick);
+  $('location-editorial-draft').addEventListener('click', onQualityTaskClick);
   $('insight-quality-backlog').addEventListener('click', onQualityTaskClick);
 
   $('modal-save-btn').addEventListener('click', saveOwnerEdit);
