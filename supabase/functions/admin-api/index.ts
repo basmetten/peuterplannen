@@ -38,7 +38,7 @@ const EDITORIAL_STATUSES = ["draft", "published", "archived"];
 const QUALITY_TASK_STATUSES = ["open", "in_progress", "resolved", "dismissed"];
 
 const LOCATION_DETAIL_SELECT = [
-  "id", "name", "region", "type", "website", "description", "toddler_highlight", "weather",
+  "id", "name", "region", "type", "website", "opening_hours", "owner_photo_url", "description", "toddler_highlight", "weather",
   "min_age", "max_age", "coffee", "diaper", "alcohol", "is_featured", "featured_until", "owner_verified",
   "claimed_by_user_id", "last_verified", "last_verified_at",
   "seo_tier", "seo_quality_score", "seo_primary_locality", "seo_title_override", "seo_description_override",
@@ -420,6 +420,12 @@ async function approveClaim(claimId: string, adminUserId: string) {
 
 function normalizeObservationFieldValue(fieldName: string, valueJson: unknown): unknown {
   const stringFields = new Set([
+    "description",
+    "toddler_highlight",
+    "website",
+    "opening_hours",
+    "weather",
+    "owner_photo_url",
     "seo_primary_locality",
     "verification_mode",
     "time_of_day_fit",
@@ -443,6 +449,23 @@ function normalizeObservationFieldValue(fieldName: string, valueJson: unknown): 
     return value;
   }
 
+  if (fieldName === "min_age" || fieldName === "max_age") {
+    const value = asNullableNumber(valueJson);
+    if (value == null) return null;
+    if (value < 0 || value > 18) {
+      throw new AppError(`${fieldName} moet tussen 0 en 18 liggen`, "INVALID_OBSERVATION_VALUE", 400);
+    }
+    return Math.trunc(value);
+  }
+
+  if (fieldName === "coffee" || fieldName === "diaper" || fieldName === "alcohol") {
+    const value = asNullableBoolean(valueJson);
+    if (value == null) {
+      throw new AppError(`${fieldName} moet true of false zijn`, "INVALID_OBSERVATION_VALUE", 400);
+    }
+    return value;
+  }
+
   if (stringFields.has(fieldName)) {
     const value = asNullableString(valueJson);
     if (fieldName === "price_band") return validatePriceBand(value);
@@ -460,6 +483,8 @@ function normalizeLocationPatch(params: Record<string, unknown>) {
     "description",
     "toddler_highlight",
     "website",
+    "opening_hours",
+    "owner_photo_url",
     "seo_primary_locality",
     "seo_title_override",
     "seo_description_override",

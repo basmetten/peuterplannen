@@ -562,6 +562,8 @@ function fillLocationForms(payload) {
   $('field-location-description').value = location.description || '';
   $('field-location-toddler-highlight').value = location.toddler_highlight || '';
   $('field-location-website').value = location.website || '';
+  $('field-location-opening-hours').value = location.opening_hours || '';
+  $('field-location-owner-photo-url').value = location.owner_photo_url || '';
   $('field-location-weather').value = location.weather || '';
   $('field-location-min-age').value = location.min_age ?? '';
   $('field-location-max-age').value = location.max_age ?? '';
@@ -626,6 +628,8 @@ async function saveLocationDetail() {
       description: $('field-location-description').value,
       toddler_highlight: $('field-location-toddler-highlight').value,
       website: $('field-location-website').value,
+      opening_hours: $('field-location-opening-hours').value,
+      owner_photo_url: $('field-location-owner-photo-url').value,
       weather: $('field-location-weather').value,
       min_age: $('field-location-min-age').value === '' ? null : Number($('field-location-min-age').value),
       max_age: $('field-location-max-age').value === '' ? null : Number($('field-location-max-age').value),

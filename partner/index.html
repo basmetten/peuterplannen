@@ -257,6 +257,11 @@
             <textarea id="edit-description" class="portal-textarea" placeholder="Beschrijf je locatie voor ouders met peuters en kleuters..."></textarea>
           </div>
 
+          <div class="portal-form-group">
+            <label class="portal-label" for="edit-toddler-highlight">Korte praktische samenvatting</label>
+            <textarea id="edit-toddler-highlight" class="portal-textarea" placeholder="Bijv. grote speelhoek, snelle lunch en veel schaduw bij warm weer."></textarea>
+          </div>
+
           <div class="portal-row">
             <div class="portal-form-group">
               <label class="portal-label" for="edit-website">Website</label>
@@ -266,6 +271,22 @@
               <label class="portal-label" for="edit-hours">Openingstijden</label>
               <input id="edit-hours" class="portal-input" type="text" placeholder="Bijv. ma-vr 09:00-17:00">
             </div>
+          </div>
+
+          <div class="portal-row">
+            <div class="portal-form-group">
+              <label class="portal-label" for="edit-locality">Wijk of plaatselijke context</label>
+              <input id="edit-locality" class="portal-input" type="text" placeholder="Bijv. Kralingen, Vondelpark, centrum">
+            </div>
+            <div class="portal-form-group">
+              <label class="portal-label" for="edit-food-fit">Eten / lunch-fit</label>
+              <input id="edit-food-fit" class="portal-input" type="text" placeholder="Bijv. snelle lunch, kindermenu, terras">
+            </div>
+          </div>
+
+          <div class="portal-form-group">
+            <label class="portal-label" for="edit-play-corner-quality">Speelhoek of speelkans</label>
+            <input id="edit-play-corner-quality" class="portal-input" type="text" placeholder="Bijv. speelhoek binnen, zandplek buiten, veel ruimte om te bewegen">
           </div>
 
           <div class="partner-divider"></div>
@@ -306,8 +327,19 @@
           </div>
 
           <div class="portal-btn-row">
-            <button id="save-btn" class="portal-btn portal-btn-primary" type="button">Wijzigingen opslaan</button>
+            <button id="save-btn" class="portal-btn portal-btn-primary" type="button">Wijzigingen ter review indienen</button>
             <button id="reload-btn" class="portal-btn portal-btn-secondary" type="button">Herladen</button>
+          </div>
+
+          <div class="partner-divider"></div>
+          <h3 class="partner-section-title" style="font-size:16px;">Ingediende voorstellen</h3>
+          <p class="portal-subtitle" style="margin-bottom:10px;">Wijzigingen gaan eerst naar de redactie. Pas na review worden ze live zichtbaar op peuterplannen.nl.</p>
+          <div id="proposal-alert" class="portal-alert-wrap" aria-live="polite"></div>
+          <div class="portal-table-wrap">
+            <table class="portal-table" aria-label="Ingediende voorstellen">
+              <thead><tr><th>Datum</th><th>Veld</th><th>Waarde</th><th>Status</th><th>Notitie</th></tr></thead>
+              <tbody id="proposal-tbody"><tr><td colspan="5" class="portal-muted">Nog geen voorstellen geladen.</td></tr></tbody>
+            </table>
           </div>
         </div>
       </section>
@@ -766,8 +798,12 @@
       state.claimedLoc = location;
       document.getElementById('edit-loc-name').textContent = location.name || '-';
       document.getElementById('edit-description').value = location.description || '';
+      document.getElementById('edit-toddler-highlight').value = location.toddler_highlight || '';
       document.getElementById('edit-website').value = location.website || '';
       document.getElementById('edit-hours').value = location.opening_hours || '';
+      document.getElementById('edit-locality').value = location.seo_primary_locality || '';
+      document.getElementById('edit-food-fit').value = location.food_fit || '';
+      document.getElementById('edit-play-corner-quality').value = location.play_corner_quality || '';
       document.getElementById('edit-coffee').checked = !!location.coffee;
       document.getElementById('edit-diaper').checked = !!location.diaper;
       document.getElementById('edit-alcohol').checked = !!location.alcohol;
@@ -779,6 +815,7 @@
       document.getElementById('photo-upload-section').classList.toggle('hidden', !canUploadPhoto);
 
       refreshStatusBoxes();
+      await loadObservationProposals();
     }
 
     function updateBillingUI() {
@@ -821,12 +858,67 @@
       document.getElementById('status-updated').textContent = updated;
     }
 
+    function statusLabel(status) {
+      return {
+        pending: 'In review',
+        approved: 'Goedgekeurd',
+        rejected: 'Afgewezen',
+        applied: 'Live',
+      }[status] || status || '-';
+    }
+
+    function formatObservationValue(value) {
+      if (value == null || value === '') return '-';
+      if (typeof value === 'boolean') return value ? 'Ja' : 'Nee';
+      return String(value);
+    }
+
+    async function loadObservationProposals() {
+      const tbody = document.getElementById('proposal-tbody');
+      if (!state.venueOwner?.location_id) {
+        tbody.innerHTML = '<tr><td colspan="5" class="portal-muted">Nog geen gekoppelde locatie.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = '<tr><td colspan="5" class="portal-muted">Voorstellen laden...</td></tr>';
+      PortalShell.setAlert('proposal-alert', '', 'info');
+
+      const { data, error } = await supabase
+        .from('location_observations')
+        .select('id, field_name, value_json, status, notes, created_at')
+        .eq('location_id', state.venueOwner.location_id)
+        .eq('source_type', 'partner')
+        .order('created_at', { ascending: false })
+        .limit(20);
+
+      if (error) {
+        tbody.innerHTML = '<tr><td colspan="5" class="portal-muted">Voorstellen laden mislukt.</td></tr>';
+        PortalShell.setAlert('proposal-alert', `Voorstellen laden mislukt: ${error.message}`, 'error', { assertive: true });
+        return;
+      }
+
+      if (!data?.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="portal-muted">Nog geen ingediende voorstellen.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = data.map((row) => `
+        <tr>
+          <td class="portal-muted">${fmtDateTime(row.created_at)}</td>
+          <td><span class="portal-inline-code">${escapeHtml(row.field_name || '-')}</span></td>
+          <td class="portal-truncate">${escapeHtml(formatObservationValue(row.value_json))}</td>
+          <td>${escapeHtml(statusLabel(row.status))}</td>
+          <td class="portal-truncate">${escapeHtml(row.notes || '-')}</td>
+        </tr>
+      `).join('');
+    }
+
     async function saveLocationEdits() {
       if (!state.claimedLoc) return;
 
       const button = document.getElementById('save-btn');
       PortalShell.setAlert('edit-alert', '', 'info');
-      PortalShell.setButtonBusy(button, true, 'Opslaan...', 'Wijzigingen opslaan');
+      PortalShell.setButtonBusy(button, true, 'Indienen...', 'Wijzigingen ter review indienen');
 
       try {
         const minAgeRaw = document.getElementById('edit-min-age').value.trim();
@@ -856,46 +948,86 @@
           }
         }
 
-        const updates = {
+        const proposedValues = {
           description: document.getElementById('edit-description').value.trim() || null,
+          toddler_highlight: document.getElementById('edit-toddler-highlight').value.trim() || null,
           website: website || null,
           opening_hours: document.getElementById('edit-hours').value.trim() || null,
+          seo_primary_locality: document.getElementById('edit-locality').value.trim() || null,
+          food_fit: document.getElementById('edit-food-fit').value.trim() || null,
+          play_corner_quality: document.getElementById('edit-play-corner-quality').value.trim() || null,
           coffee: document.getElementById('edit-coffee').checked,
           diaper: document.getElementById('edit-diaper').checked,
           alcohol: document.getElementById('edit-alcohol').checked,
           min_age: minAge,
           max_age: maxAge,
           weather: document.getElementById('edit-weather').value,
-          last_owner_update: new Date().toISOString(),
         };
+
+        const observations = Object.entries(proposedValues)
+          .filter(([field, value]) => JSON.stringify(state.claimedLoc[field] ?? null) !== JSON.stringify(value))
+          .map(([field_name, value_json]) => ({
+            field_name,
+            value_json,
+            notes: 'Voorgesteld via partnerportal',
+          }));
 
         const file = document.getElementById('edit-photo').files?.[0];
         if (file) {
-          const photoErr = await uploadPhoto(state.claimedLoc.id, file);
-          if (photoErr) throw new Error(photoErr);
+          const photoUrl = await uploadPhoto(state.claimedLoc.id, file);
+          observations.push({
+            field_name: 'owner_photo_url',
+            value_json: photoUrl,
+            notes: 'Nieuwe ownerfoto voorgesteld via partnerportal',
+          });
         }
 
-        const { error } = await supabase
-          .from('locations')
-          .update(updates)
-          .eq('id', state.claimedLoc.id);
+        if (!observations.length) {
+          PortalShell.setAlert('edit-alert', 'Geen nieuwe wijzigingen om in te dienen.', 'info');
+          return;
+        }
 
-        if (error) throw error;
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) throw new Error('Je sessie is verlopen. Log opnieuw in.');
 
-        state.claimedLoc = { ...state.claimedLoc, ...updates };
-        PortalShell.setAlert('edit-alert', 'Wijzigingen opgeslagen.', 'success');
-        refreshStatusBoxes();
+        const response = await fetch(`${EDGE_BASE}/submit-partner-observations`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: SB_ANON,
+            Authorization: `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            location_id: state.claimedLoc.id,
+            observations,
+          }),
+        });
+
+        let payload = {};
+        try {
+          payload = await response.json();
+        } catch {
+          payload = {};
+        }
+
+        if (!response.ok) {
+          throw new Error(payload.error || 'Wijzigingen konden niet ter review worden ingestuurd.');
+        }
+
+        PortalShell.setAlert('edit-alert', `Voorstellen ingestuurd: ${payload.inserted || 0} nieuw, ${payload.updated || 0} bijgewerkt.`, 'success');
+        document.getElementById('edit-photo').value = '';
+        await loadObservationProposals();
       } catch (error) {
         PortalShell.setAlert('edit-alert', `Opslaan mislukt: ${error.message}`, 'error', { assertive: true });
       } finally {
-        PortalShell.setButtonBusy(button, false, null, 'Wijzigingen opslaan');
+        PortalShell.setButtonBusy(button, false, null, 'Wijzigingen ter review indienen');
       }
     }
 
     async function uploadPhoto(locationId, file) {
       const allowed = ['image/jpeg', 'image/png', 'image/webp'];
-      if (!allowed.includes(file.type)) return 'Alleen JPG, PNG of WebP is toegestaan.';
-      if (file.size > 5 * 1024 * 1024) return 'Bestand te groot (max 5MB).';
+      if (!allowed.includes(file.type)) throw new Error('Alleen JPG, PNG of WebP is toegestaan.');
+      if (file.size > 5 * 1024 * 1024) throw new Error('Bestand te groot (max 5MB).');
 
       const ext = file.name.split('.').pop();
       const path = `${locationId}/owner-${Date.now()}.${ext}`;
@@ -904,16 +1036,10 @@
         .from('location-images')
         .upload(path, file, { upsert: true, contentType: file.type });
 
-      if (uploadError) return uploadError.message;
+      if (uploadError) throw new Error(uploadError.message);
 
       const { data } = supabase.storage.from('location-images').getPublicUrl(path);
-      const { error: updateError } = await supabase
-        .from('locations')
-        .update({ owner_photo_url: data.publicUrl })
-        .eq('id', locationId);
-
-      if (updateError) return updateError.message;
-      return null;
+      return data.publicUrl;
     }
 
     async function startCheckout(interval) {
