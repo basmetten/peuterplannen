@@ -1004,6 +1004,52 @@ async function triggerPublish() {
   }
 }
 
+async function seedPriorityDrafts() {
+  const btn = $('seed-priority-drafts-btn');
+  PortalShell.setButtonBusy(btn, true, 'Seeden...', 'Seed top drafts');
+  PortalShell.setAlert('insights-alert', '', 'info');
+  try {
+    const result = await api('seed_priority_editorial_drafts', { limit: 25 });
+    PortalShell.setAlert(
+      'insights-alert',
+      `Top drafts verwerkt. ${Number(result?.created ?? 0)} nieuw, queue ${Number(result?.queue_size ?? 0)} locaties.`,
+      'success',
+    );
+    await loadEditorialPages();
+    await loadInsights();
+    if (state.selectedLocationId) await loadLocationDetail(state.selectedLocationId);
+  } catch (error) {
+    PortalShell.setAlert('insights-alert', `Top drafts seeden mislukt: ${error.message}`, 'error', { assertive: true });
+  } finally {
+    PortalShell.setButtonBusy(btn, false, null, 'Seed top drafts');
+  }
+}
+
+async function openNextPriorityLocation() {
+  const btn = $('next-priority-location-btn');
+  PortalShell.setButtonBusy(btn, true, 'Zoeken...', 'Werk volgende prioritaire locatie');
+  PortalShell.setAlert('insights-alert', '', 'info');
+  try {
+    const row = await api('get_next_priority_location', { prefer_without_draft: true });
+    if (!row?.location_id) {
+      PortalShell.setAlert('insights-alert', 'Geen prioritaire locaties gevonden in de huidige backlog.', 'success');
+      return;
+    }
+    state.selectedLocationId = Number(row.location_id);
+    await loadLocationDetail(state.selectedLocationId);
+    await switchTab('tab-location-detail');
+    PortalShell.setAlert(
+      'location-detail-alert',
+      `Prioritaire locatie geopend: ${row.name || 'locatie'} · ${((row.task_types || [])).join(', ') || 'quality task'}.`,
+      'success',
+    );
+  } catch (error) {
+    PortalShell.setAlert('insights-alert', `Volgende prioritaire locatie laden mislukt: ${error.message}`, 'error', { assertive: true });
+  } finally {
+    PortalShell.setButtonBusy(btn, false, null, 'Werk volgende prioritaire locatie');
+  }
+}
+
 async function loadInsights() {
   PortalShell.setAlert('insights-alert', '', 'info');
   try {
@@ -1017,6 +1063,22 @@ async function loadInsights() {
         <div class="portal-card portal-card-soft"><strong>GSC klikken (7d)</strong><div>${gscSummary ? escapeHtml(String(Math.round(Number(gscSummary.clicks ?? 0)))) : '-'}</div></div>
         <div class="portal-card portal-card-soft"><strong>GSC vertoningen (7d)</strong><div>${gscSummary ? escapeHtml(String(Math.round(Number(gscSummary.impressions ?? 0)))) : '-'}</div></div>
       </div>`;
+
+    $('insight-priority-queue').innerHTML = (insights.priority_locations || []).length
+      ? insights.priority_locations.map((row) => `
+        <li>
+          <button class="portal-link-btn" type="button" data-open-location="content" data-location-id="${escapeAttr(row.location_id)}">${escapeHtml(row.name)}</button>
+          <span class="portal-muted">(${escapeHtml(row.region || '')}${row.seo_primary_locality ? ` · ${escapeHtml(row.seo_primary_locality)}` : ''} · tier ${escapeHtml(row.seo_tier || 'auto')})</span>
+          <br><span class="portal-muted">Prioriteit ${escapeHtml(String(row.top_priority ?? '-'))} · ${escapeHtml(String(row.task_count ?? 0))} taken · ${escapeHtml((row.task_types || []).join(', '))}</span>
+          ${row.summaries?.length ? `<br><span class="portal-muted">${escapeHtml(row.summaries.join(' · '))}</span>` : ''}
+          <div class="portal-btn-row" style="margin-top:8px;">
+            ${row.has_editorial_draft && row.editorial_draft?.id
+              ? `<button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-editorial-open="${escapeAttr(row.editorial_draft.id)}">Open draft</button>`
+              : `<button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-create-draft="location" data-location-id="${escapeAttr(row.location_id)}">Maak draft</button>`}
+            <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-open-location="seo" data-location-id="${escapeAttr(row.location_id)}">Open SEO</button>
+          </div>
+        </li>`).join('')
+      : '<li class="portal-muted">Geen prioritaire locaties gevonden.</li>';
 
     $('insight-context-gaps').innerHTML = (insights.top_context_gaps || []).length
       ? insights.top_context_gaps.map((row) => `<li><button class="portal-link-btn" type="button" data-open-location="content" data-location-id="${escapeAttr(row.location_id)}">${escapeHtml(row.name)}</button> <span class="portal-muted">(${escapeHtml(row.region)} · tier ${escapeHtml(row.seo_tier)})</span><br><span class="portal-muted">Ontbreekt: ${escapeHtml((row.missing_fields || []).join(', '))}</span><div class="portal-btn-row" style="margin-top:8px;"><button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-create-draft="location" data-location-id="${escapeAttr(row.location_id)}">Maak draft</button></div></li>`).join('')
@@ -1220,6 +1282,7 @@ function bindUI() {
   $('editorial-tbody').addEventListener('click', onEditorialTableClick);
   $('duplicates-tbody').addEventListener('click', onDuplicatesTableClick);
   $('insight-context-gaps').addEventListener('click', onQualityTaskClick);
+  $('insight-priority-queue').addEventListener('click', onQualityTaskClick);
   $('location-tasks-list').addEventListener('click', onQualityTaskClick);
   $('location-editorial-draft').addEventListener('click', onQualityTaskClick);
   $('insight-quality-backlog').addEventListener('click', onQualityTaskClick);
@@ -1231,6 +1294,8 @@ function bindUI() {
   $('save-editorial-page-btn').addEventListener('click', saveEditorialPage);
   $('new-editorial-page-btn').addEventListener('click', resetEditorialForm);
   $('publish-trigger-btn').addEventListener('click', triggerPublish);
+  $('next-priority-location-btn').addEventListener('click', openNextPriorityLocation);
+  $('seed-priority-drafts-btn').addEventListener('click', seedPriorityDrafts);
   $('refresh-quality-tasks-btn').addEventListener('click', refreshQualityTasks);
   $('observation-status-filter').addEventListener('change', loadObservations);
   $('editorial-status-filter').addEventListener('change', loadEditorialPages);

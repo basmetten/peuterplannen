@@ -554,11 +554,17 @@
         <div class="portal-heading-row">
           <h2>Insights</h2>
           <div class="portal-btn-row">
+            <button id="next-priority-location-btn" class="portal-btn portal-btn-secondary" type="button">Werk volgende prioritaire locatie</button>
+            <button id="seed-priority-drafts-btn" class="portal-btn portal-btn-secondary" type="button">Seed top drafts</button>
             <button id="refresh-quality-tasks-btn" class="portal-btn portal-btn-secondary" type="button">Quality backlog verversen</button>
           </div>
         </div>
         <div id="insights-alert" class="portal-alert-wrap" aria-live="polite"></div>
         <div id="insight-summary" class="admin-panel-stack"><div class="admin-empty-note">Insights worden geladen.</div></div>
+        <div class="portal-card portal-card-soft" style="margin-top:16px;">
+          <h3>Priority queue</h3>
+          <ul id="insight-priority-queue" class="admin-list"><li class="portal-muted">Nog geen data geladen.</li></ul>
+        </div>
         <div class="admin-two-col" style="margin-top:16px;">
           <div class="portal-card portal-card-soft">
             <h3>Top context gaps</h3>

@@ -798,6 +798,110 @@ function summarizeGscSnapshots(rows: Array<Record<string, unknown>>) {
   };
 }
 
+async function fetchPriorityLocationQueue(limit: number) {
+  const normalizedLimit = Math.min(Math.max(Math.trunc(limit || 12), 1), 100);
+  const trackedTaskTypes = [
+    "missing_trust_fields",
+    "high_signal_missing_context",
+    "missing_editorial_draft",
+    "near_win_detail_page",
+    "support_page_rising_impressions",
+    "orphan_detail_page",
+  ];
+
+  const { data: taskRows, error } = await supabase
+    .from("location_quality_tasks")
+    .select("id, location_id, task_type, priority, status, details_json, source, created_at, locations ( id, name, region, seo_tier, seo_primary_locality, verification_mode, verification_confidence )")
+    .in("status", ["open", "in_progress"])
+    .in("task_type", trackedTaskTypes)
+    .order("priority", { ascending: false })
+    .order("created_at", { ascending: false })
+    .limit(Math.max(normalizedLimit * 8, 80));
+
+  if (error) {
+    if (isMissingRelationError(error.message, "location_quality_tasks")) return [];
+    throw new AppError(error.message, "PRIORITY_QUEUE_QUERY_FAILED", 400);
+  }
+
+  const grouped = new Map<number, Record<string, unknown>>();
+  for (const row of taskRows ?? []) {
+    const locationId = asNullableNumber(row.location_id);
+    const location = (row.locations && typeof row.locations === "object") ? row.locations as Record<string, unknown> : null;
+    if (!locationId || !location) continue;
+    const existing = grouped.get(locationId) || {
+      location_id: locationId,
+      name: asString(location.name),
+      region: asString(location.region),
+      seo_tier: asString(location.seo_tier, "auto"),
+      seo_primary_locality: asString(location.seo_primary_locality),
+      verification_mode: asString(location.verification_mode),
+      verification_confidence: location.verification_confidence ?? null,
+      top_priority: 0,
+      task_count: 0,
+      task_types: [] as string[],
+      summaries: [] as string[],
+      score: 0,
+    };
+
+    const taskType = asString(row.task_type);
+    const priority = asInteger(row.priority, 0);
+    const summary = summarizeQualityTaskDetails(taskType, row.details_json);
+    existing.top_priority = Math.max(asInteger(existing.top_priority, 0), priority);
+    existing.task_count = asInteger(existing.task_count, 0) + 1;
+    if (!asTextArray(existing.task_types).includes(taskType)) {
+      (existing.task_types as string[]).push(taskType);
+    }
+    if (summary && !(existing.summaries as string[]).includes(summary)) {
+      (existing.summaries as string[]).push(summary);
+    }
+    grouped.set(locationId, existing);
+  }
+
+  const locationIds = [...grouped.keys()];
+  let draftByLocationId = new Map<number, Record<string, unknown>>();
+  if (locationIds.length) {
+    const { data: draftRows, error: draftError } = await supabase
+      .from("editorial_pages")
+      .select("id, location_id, status, updated_at, published_at, title")
+      .eq("page_type", "location_detail_override")
+      .in("location_id", locationIds)
+      .neq("status", "archived");
+    if (draftError && !isMissingRelationError(draftError.message, "editorial_pages")) {
+      throw new AppError(draftError.message, "PRIORITY_QUEUE_DRAFTS_FAILED", 400);
+    }
+    draftByLocationId = new Map((draftRows ?? []).map((row: Record<string, unknown>) => [Number(row.location_id), row]));
+  }
+
+  const queue = [...grouped.values()].map((row) => {
+    const hasDraft = draftByLocationId.has(Number(row.location_id));
+    const taskTypes = asTextArray(row.task_types);
+    const score =
+      asInteger(row.top_priority, 0) * 100 +
+      asInteger(row.task_count, 0) * 10 +
+      (hasDraft ? 0 : 40) +
+      (row.seo_tier === "index" ? 20 : row.seo_tier === "support" ? 5 : 10) +
+      (taskTypes.includes("high_signal_missing_context") ? 25 : 0) +
+      (taskTypes.includes("missing_editorial_draft") ? 20 : 0) +
+      (taskTypes.includes("orphan_detail_page") ? 15 : 0);
+    return {
+      ...row,
+      has_editorial_draft: hasDraft,
+      editorial_draft: hasDraft ? draftByLocationId.get(Number(row.location_id)) : null,
+      task_types: taskTypes,
+      summaries: asTextArray(row.summaries).slice(0, 3),
+      score,
+    };
+  })
+    .sort((a, b) =>
+      asInteger(b.score, 0) - asInteger(a.score, 0) ||
+      asInteger(b.top_priority, 0) - asInteger(a.top_priority, 0) ||
+      asInteger(b.task_count, 0) - asInteger(a.task_count, 0) ||
+      asString(a.name).localeCompare(asString(b.name), "nl"))
+    .slice(0, normalizedLimit);
+
+  return queue;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: CORS });
@@ -1221,6 +1325,94 @@ serve(async (req) => {
         break;
       }
 
+      case "seed_priority_editorial_drafts": {
+        const limit = Math.min(Math.max(asInteger(params.limit, 25), 1), 100);
+        const queue = await fetchPriorityLocationQueue(limit * 4);
+        const targets = queue
+          .filter((row) => !row.has_editorial_draft)
+          .slice(0, limit);
+
+        if (!targets.length) {
+          result = { ok: true, created: 0, skipped_existing: 0, queue_size: queue.length, created_targets: [] };
+          break;
+        }
+
+        const locationIds = targets.map((row) => Math.trunc(Number(row.location_id))).filter(Boolean);
+        const { data: locations, error: locationsError } = await supabase
+          .from("locations")
+          .select(LOCATION_DETAIL_SELECT)
+          .in("id", locationIds);
+        if (locationsError) throw new AppError(locationsError.message, "PRIORITY_DRAFT_LOCATIONS_FAILED", 400);
+
+        const { data: taskRows, error: taskRowsError } = await supabase
+          .from("location_quality_tasks")
+          .select("location_id, task_type, details_json, priority, created_at")
+          .in("location_id", locationIds)
+          .in("status", ["open", "in_progress"])
+          .order("priority", { ascending: false })
+          .order("created_at", { ascending: false });
+        if (taskRowsError && !isMissingRelationError(taskRowsError.message, "location_quality_tasks")) {
+          throw new AppError(taskRowsError.message, "PRIORITY_DRAFT_TASKS_FAILED", 400);
+        }
+
+        const taskSummaryByLocation = new Map<number, string>();
+        for (const row of taskRows ?? []) {
+          const locationId = asNullableNumber(row.location_id);
+          if (!locationId || taskSummaryByLocation.has(locationId)) continue;
+          const summary = summarizeQualityTaskDetails(asString(row.task_type), row.details_json);
+          if (summary) taskSummaryByLocation.set(locationId, summary);
+        }
+
+        const locationById = new Map((locations ?? []).map((row: Record<string, unknown>) => [Number(row.id), row]));
+        const payload = targets
+          .map((target) => {
+            const location = locationById.get(Number(target.location_id));
+            if (!location) return null;
+            return {
+              ...buildLocationEditorialDraft(location, taskSummaryByLocation.get(Number(target.location_id)) || ""),
+              updated_by: admin.id,
+              updated_at: new Date().toISOString(),
+            };
+          })
+          .filter(Boolean) as Array<Record<string, unknown>>;
+
+        if (!payload.length) {
+          result = { ok: true, created: 0, skipped_existing: 0, queue_size: queue.length, created_targets: [] };
+          break;
+        }
+
+        const { data: insertedPages, error: insertError } = await supabase
+          .from("editorial_pages")
+          .insert(payload)
+          .select("id, location_id, slug, status, title");
+        if (insertError) throw new AppError(insertError.message, "PRIORITY_DRAFT_INSERT_FAILED", 400);
+
+        result = {
+          ok: true,
+          created: insertedPages?.length ?? 0,
+          skipped_existing: queue.filter((row) => row.has_editorial_draft).length,
+          queue_size: queue.length,
+          created_targets: (insertedPages ?? []).map((row: Record<string, unknown>) => ({
+            page_id: row.id,
+            location_id: row.location_id,
+            slug: row.slug,
+            title: row.title,
+            status: row.status,
+          })),
+        };
+        break;
+      }
+
+      case "get_next_priority_location": {
+        const preferWithoutDraft = params.prefer_without_draft !== false;
+        const queue = await fetchPriorityLocationQueue(25);
+        const candidate = preferWithoutDraft
+          ? queue.find((row) => !row.has_editorial_draft) || queue[0]
+          : queue[0];
+        result = candidate || null;
+        break;
+      }
+
       case "get_publish_state": {
         const { data, error } = await supabase.from("site_publish_state").select("*").eq("id", 1).maybeSingle();
         if (error) throw new AppError(error.message, "PUBLISH_STATE_QUERY_FAILED", 400);
@@ -1399,7 +1591,7 @@ serve(async (req) => {
       }
 
       case "get_insights": {
-        const [publishState, pendingObs, openTasks, latestGscRows, locations, qualityTasks, opsBriefs] = await Promise.all([
+        const [publishState, pendingObs, openTasks, latestGscRows, locations, qualityTasks, opsBriefs, priorityQueue] = await Promise.all([
           supabase.from("site_publish_state").select("*").eq("id", 1).maybeSingle(),
           supabase.from("location_observations").select("id", { count: "exact", head: true }).eq("status", "pending"),
           supabase.from("location_quality_tasks").select("id", { count: "exact", head: true }).eq("status", "open"),
@@ -1421,6 +1613,7 @@ serve(async (req) => {
             .eq("status", "active")
             .order("updated_at", { ascending: false })
             .limit(6),
+          fetchPriorityLocationQueue(12),
         ]);
 
         const gaps = locations.error ? [] : computeContextGaps((locations.data ?? []) as Array<Record<string, unknown>>).slice(0, 25);
@@ -1445,6 +1638,7 @@ serve(async (req) => {
           latest_gsc_snapshot: latestGscPayload,
           top_quality_tasks: topQualityTasks,
           ops_briefs: normalizedOpsBriefs,
+          priority_locations: priorityQueue,
         };
         break;
       }
