@@ -633,7 +633,7 @@ async function saveLocationDetail() {
   const btn = $('save-location-detail-btn');
   PortalShell.setButtonBusy(btn, true, 'Opslaan...', 'Opslaan');
   try {
-    const result = await api('update_location_detail', {
+    await api('update_location_detail', {
       location_id: state.selectedLocationId,
       description: $('field-location-description').value,
       toddler_highlight: $('field-location-toddler-highlight').value,
@@ -661,8 +661,10 @@ async function saveLocationDetail() {
       crowd_pattern: $('field-location-crowd-pattern').value,
     });
     PortalShell.setAlert('location-detail-alert', 'Locatie-inhoud opgeslagen.', 'success');
-    fillLocationForms({ location: result.location, recent_edits: [], quality_tasks: [] });
+    await loadLocationDetail(state.selectedLocationId);
     await loadLocations();
+    await loadInsights();
+    await loadStats();
   } catch (error) {
     PortalShell.setAlert('location-detail-alert', `Opslaan mislukt: ${error.message}`, 'error', { assertive: true });
   } finally {
@@ -678,7 +680,7 @@ async function saveLocationSeo() {
   const btn = $('save-location-seo-btn');
   PortalShell.setButtonBusy(btn, true, 'Opslaan...', 'Opslaan');
   try {
-    const result = await api('update_location_detail', {
+    await api('update_location_detail', {
       location_id: state.selectedLocationId,
       seo_primary_locality: $('field-seo-primary-locality').value,
       seo_tier: $('field-seo-tier').value,
@@ -689,8 +691,10 @@ async function saveLocationSeo() {
       seo_canonical_target: $('field-seo-canonical-target').value === '' ? null : Number($('field-seo-canonical-target').value),
     });
     PortalShell.setAlert('seo-alert', 'SEO-instellingen opgeslagen.', 'success');
-    fillLocationForms({ location: result.location, recent_edits: [], quality_tasks: [] });
+    await loadLocationDetail(state.selectedLocationId);
     await loadLocations();
+    await loadInsights();
+    await loadStats();
   } catch (error) {
     PortalShell.setAlert('seo-alert', `SEO opslaan mislukt: ${error.message}`, 'error', { assertive: true });
   } finally {
@@ -1021,6 +1025,24 @@ async function loadInsights() {
   }
 }
 
+async function refreshQualityTasks() {
+  const btn = $('refresh-quality-tasks-btn');
+  PortalShell.setButtonBusy(btn, true, 'Verversen...', 'Quality backlog verversen');
+  PortalShell.setAlert('insights-alert', '', 'info');
+  try {
+    const result = await api('refresh_quality_tasks');
+    const inserted = Number(result?.inserted ?? 0);
+    PortalShell.setAlert('insights-alert', `Quality backlog ververst. ${inserted} open taken opnieuw opgebouwd.`, 'success');
+    await loadInsights();
+    await loadStats();
+    if (state.selectedLocationId) await loadLocationDetail(state.selectedLocationId);
+  } catch (error) {
+    PortalShell.setAlert('insights-alert', `Quality backlog verversen mislukt: ${error.message}`, 'error', { assertive: true });
+  } finally {
+    PortalShell.setButtonBusy(btn, false, null, 'Quality backlog verversen');
+  }
+}
+
 async function onQualityTaskClick(event) {
   const actionBtn = event.target.closest('[data-quality-task-action]');
   if (!actionBtn) {
@@ -1129,6 +1151,7 @@ function bindUI() {
   $('save-editorial-page-btn').addEventListener('click', saveEditorialPage);
   $('new-editorial-page-btn').addEventListener('click', resetEditorialForm);
   $('publish-trigger-btn').addEventListener('click', triggerPublish);
+  $('refresh-quality-tasks-btn').addEventListener('click', refreshQualityTasks);
   $('observation-status-filter').addEventListener('change', loadObservations);
   $('editorial-status-filter').addEventListener('change', loadEditorialPages);
 }

@@ -132,6 +132,17 @@ function getSitemapPaths() {
   return getSitemapPathsFromFile(path.join(ROOT, 'sitemap.xml'));
 }
 
+function getSeoRegistryEntries() {
+  const registryPath = path.join(ROOT, 'output', 'seo-registry.json');
+  if (!fs.existsSync(registryPath)) return [];
+  try {
+    const parsed = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+    return Array.isArray(parsed?.entries) ? parsed.entries : [];
+  } catch {
+    return [];
+  }
+}
+
 function getRedirectSources() {
   const redirectsPath = path.join(ROOT, '_redirects');
   if (!fs.existsSync(redirectsPath)) return new Set();
@@ -151,6 +162,12 @@ function getRedirectSources() {
 function findOrphanLocationPages() {
   const sitemapPaths = getSitemapPaths();
   const redirectSources = getRedirectSources();
+  const registryEntries = getSeoRegistryEntries();
+  const registryMap = new Map(
+    registryEntries
+      .filter((entry) => entry?.page_type === 'location_detail' && entry?.path)
+      .map((entry) => [normalizeSitemapPath(entry.path), entry])
+  );
   const regionDirs = [];
   for (const entry of fs.readdirSync(ROOT, { withFileTypes: true })) {
     if (!entry.isDirectory()) continue;
@@ -170,8 +187,11 @@ function findOrphanLocationPages() {
       if (!fs.existsSync(indexPath)) continue;
       if (redirectSources.has(p)) continue;
       const html = fs.readFileSync(indexPath, 'utf8');
-      if (/<meta\s+name="robots"\s+content="noindex,follow"/i.test(html)) continue;
-      if (!sitemapPaths.has(p)) {
+      const registryEntry = registryMap.get(normalizeSitemapPath(p));
+      const robots = registryEntry?.robots || ((html.match(/<meta[^>]+name="robots"[^>]+content="([^"]+)"/i) || [])[1] ?? '');
+      const inSitemap = typeof registryEntry?.in_sitemap === 'boolean' ? registryEntry.in_sitemap : sitemapPaths.has(p);
+      if (/^noindex,follow$/i.test(String(robots).trim())) continue;
+      if (!inSitemap) {
         orphans.push(p);
       }
     }
