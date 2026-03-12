@@ -1,0 +1,79 @@
+name: PeuterPlannen Ops Cadence
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: ops-cadence
+  cancel-in-progress: false
+
+jobs:
+  ops:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Gate on required secrets
+        id: gate
+        run: |
+          set -euo pipefail
+          if [[ -z "${SUPABASE_URL:-}" || -z "${SUPABASE_SERVICE_KEY:-}" ]]; then
+            echo "run_ops=false" >> "$GITHUB_OUTPUT"
+            echo "Ops cadence skipped: missing Supabase secrets."
+            exit 0
+          fi
+          echo "run_ops=true" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.run_ops == 'true'
+        with:
+          node-version: '20'
+
+      - uses: actions/setup-python@v5
+        if: steps.gate.outputs.run_ops == 'true'
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        if: steps.gate.outputs.run_ops == 'true'
+        run: npm ci
+
+      - name: Build current public state
+        if: steps.gate.outputs.run_ops == 'true'
+        run: npm run build
+
+      - name: Refresh trust gaps
+        if: steps.gate.outputs.run_ops == 'true'
+        run: npm run ops:trust-gaps
+
+      - name: Seed priority location drafts
+        if: steps.gate.outputs.run_ops == 'true'
+        env:
+          EDITORIAL_DRAFT_LIMIT: '100'
+        run: npm run ops:seed-priority-drafts
+
+      - name: Refresh quality tasks
+        if: steps.gate.outputs.run_ops == 'true'
+        run: npm run ops:quality-tasks
+
+      - name: Generate ops briefs
+        if: steps.gate.outputs.run_ops == 'true'
+        run: npm run ops:briefs
+
+      - name: Export editorial snapshot
+        if: steps.gate.outputs.run_ops == 'true'
+        run: npm run ops:export-editorial
+
+      - name: Skip when secrets are missing
+        if: steps.gate.outputs.run_ops != 'true'
+        run: echo "Ops cadence intentionally skipped."

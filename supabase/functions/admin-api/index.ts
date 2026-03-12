@@ -288,6 +288,24 @@ function summarizeQualityTaskDetails(taskType: string, details: unknown): string
   return taskType;
 }
 
+function summarizeOpsBriefPayload(briefType: string, payload: unknown): string {
+  if (!payload || typeof payload !== "object") return briefType;
+  const data = payload as Record<string, unknown>;
+  if (briefType === "seo_ops") {
+    const summary = data.summary && typeof data.summary === "object" ? data.summary as Record<string, unknown> : {};
+    return `SEO brief · ${summary.clicks ?? 0} kliks · ${summary.impressions ?? 0} vertoningen`;
+  }
+  if (briefType === "newsletter") {
+    const regions = Array.isArray(data.priority_regions) ? data.priority_regions.slice(0, 3).map((item) => String(item)).join(", ") : "";
+    return regions ? `Nieuwsbriefkandidaten rond ${regions}` : "Nieuwsbriefkandidaten";
+  }
+  if (briefType === "distribution") {
+    const topPages = Array.isArray(data.top_pages) ? data.top_pages.length : 0;
+    return `Distribution angles op basis van ${topPages} page-signalen`;
+  }
+  return briefType;
+}
+
 function isMissingRpcError(message: string): boolean {
   const normalized = message.toLowerCase();
   return normalized.includes("could not find the function") ||
@@ -611,6 +629,82 @@ function normalizeEditorialPayload(params: Record<string, unknown>, adminUserId:
 
   if (payload.location_id != null) payload.location_id = Math.trunc(Number(payload.location_id));
   return payload;
+}
+
+function buildLocationEditorialDraft(location: Record<string, unknown>, taskSummary: string): Record<string, unknown> {
+  const region = asString(location.region);
+  const slug = slugify(asString(location.name));
+  const locality = asString(location.seo_primary_locality);
+  const website = asString(location.website);
+  const intro = asString(location.seo_intro_override) || asString(location.toddler_highlight) || asString(location.description);
+  const signalLabel = [
+    location.verification_mode ? `Verification mode: ${location.verification_mode}` : null,
+    location.last_verified ? `Laatst geverifieerd: ${location.last_verified}` : null,
+    location.time_of_day_fit ? `Dagdeel-fit: ${location.time_of_day_fit}` : null,
+  ].filter(Boolean).join(" · ");
+
+  const body = [
+    "## Redactionele opdracht",
+    "",
+    "Werk deze detailpagina uit als een praktisch profiel voor ouders met jonge kinderen. Vermijd generieke superlatieven en benoem alleen concrete observaties die helpen kiezen.",
+    "",
+    "## Huidige facts",
+    "",
+    `- Regio: ${region || "onbekend"}`,
+    `- Type: ${asString(location.type) || "onbekend"}`,
+    `- Locality/wijk: ${locality || "nog invullen"}`,
+    `- Website: ${website || "geen website opgeslagen"}`,
+    `- Signalen: ${signalLabel || "nog aanvullen"}`,
+    taskSummary ? `- Quality task: ${taskSummary}` : null,
+    "",
+    "## Bestaande omschrijving",
+    "",
+    intro || "_Nog geen bruikbare basisomschrijving aanwezig._",
+    "",
+    "## Nog uitwerken",
+    "",
+    "- Wat doet een kind hier concreet?",
+    "- Waarom werkt dit met peuters of dreumesen?",
+    "- Wat moet een ouder vooraf weten qua logistiek, tempo en faciliteiten?",
+    "- Wat zijn logische alternatieven of combinaties in de buurt?",
+    "",
+    "## Werkcopy",
+    "",
+    "### Waarom dit werkt met peuters",
+    "",
+    "_Schrijf hier een korte, concrete alinea._",
+    "",
+    "### Handig om vooraf te weten",
+    "",
+    "- _Vul in_",
+    "- _Vul in_",
+    "- _Vul in_",
+    "",
+    "### Combineer met",
+    "",
+    "- _Gerelateerde plek of hub_",
+  ].filter(Boolean).join("\n");
+
+  return {
+    page_type: "location_detail_override",
+    slug,
+    region_slug: slugify(region) || null,
+    type_slug: null,
+    cluster_slug: null,
+    location_id: Number(location.id),
+    status: "draft",
+    title: asString(location.seo_title_override) || `${asString(location.name)} — redactioneel detaildraft`,
+    meta_title: asNullableString(location.seo_title_override),
+    meta_description: asNullableString(location.seo_description_override),
+    hero_kicker: "Concept · detailpagina",
+    hero_body_md: asNullableString(location.seo_intro_override) || asNullableString(location.toddler_highlight) || asNullableString(location.description),
+    body_md: body,
+    faq_json: [],
+    curated_location_ids: [],
+    related_blog_slugs: [],
+    editorial_label: "Concept · PeuterPlannen redactie",
+    published_at: null,
+  };
 }
 
 function computeContextGaps(locations: Array<Record<string, unknown>>) {
@@ -1058,6 +1152,66 @@ serve(async (req) => {
         break;
       }
 
+      case "ensure_location_editorial_draft": {
+        const locationId = asNullableNumber(params.location_id);
+        if (!locationId) throw new AppError("location_id ontbreekt", "MISSING_LOCATION_ID", 400);
+        const normalizedLocationId = Math.trunc(locationId);
+
+        const { data: existingPage, error: existingPageError } = await supabase
+          .from("editorial_pages")
+          .select("*")
+          .eq("page_type", "location_detail_override")
+          .eq("location_id", normalizedLocationId)
+          .order("updated_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        if (existingPageError) throw new AppError(existingPageError.message, "EDITORIAL_DRAFT_QUERY_FAILED", 400);
+        if (existingPage) {
+          result = { ok: true, created: false, page: existingPage };
+          break;
+        }
+
+        const { data: location, error: locationError } = await supabase
+          .from("locations")
+          .select(LOCATION_DETAIL_SELECT)
+          .eq("id", normalizedLocationId)
+          .single();
+        if (locationError || !location) throw new AppError("Locatie niet gevonden", "LOCATION_NOT_FOUND", 404);
+
+        const { data: taskRows, error: taskError } = await supabase
+          .from("location_quality_tasks")
+          .select("task_type, details_json, priority, created_at")
+          .eq("location_id", normalizedLocationId)
+          .in("status", ["open", "in_progress"])
+          .order("priority", { ascending: false })
+          .order("created_at", { ascending: false })
+          .limit(3);
+        if (taskError && !isMissingRelationError(taskError.message, "location_quality_tasks")) {
+          throw new AppError(taskError.message, "EDITORIAL_DRAFT_TASKS_FAILED", 400);
+        }
+
+        const taskSummary = (taskRows ?? [])
+          .map((row: Record<string, unknown>) => summarizeQualityTaskDetails(asString(row.task_type), row.details_json))
+          .filter(Boolean)
+          .slice(0, 3)
+          .join(" · ");
+
+        const payload = buildLocationEditorialDraft(location as Record<string, unknown>, taskSummary);
+        const { data: insertedPage, error: insertError } = await supabase
+          .from("editorial_pages")
+          .insert({
+            ...payload,
+            updated_by: admin.id,
+            updated_at: new Date().toISOString(),
+          })
+          .select("*")
+          .single();
+        if (insertError) throw new AppError(insertError.message, "EDITORIAL_DRAFT_CREATE_FAILED", 400);
+
+        result = { ok: true, created: true, page: insertedPage };
+        break;
+      }
+
       case "get_publish_state": {
         const { data, error } = await supabase.from("site_publish_state").select("*").eq("id", 1).maybeSingle();
         if (error) throw new AppError(error.message, "PUBLISH_STATE_QUERY_FAILED", 400);
@@ -1236,7 +1390,7 @@ serve(async (req) => {
       }
 
       case "get_insights": {
-        const [publishState, pendingObs, openTasks, latestGscRows, locations, qualityTasks] = await Promise.all([
+        const [publishState, pendingObs, openTasks, latestGscRows, locations, qualityTasks, opsBriefs] = await Promise.all([
           supabase.from("site_publish_state").select("*").eq("id", 1).maybeSingle(),
           supabase.from("location_observations").select("id", { count: "exact", head: true }).eq("status", "pending"),
           supabase.from("location_quality_tasks").select("id", { count: "exact", head: true }).eq("status", "open"),
@@ -1252,6 +1406,12 @@ serve(async (req) => {
             .order("priority", { ascending: false })
             .order("created_at", { ascending: false })
             .limit(12),
+          supabase
+            .from("ops_briefs")
+            .select("id, brief_type, source, status, title, body_md, payload_json, updated_at, created_at")
+            .eq("status", "active")
+            .order("updated_at", { ascending: false })
+            .limit(6),
         ]);
 
         const gaps = locations.error ? [] : computeContextGaps((locations.data ?? []) as Array<Record<string, unknown>>).slice(0, 25);
@@ -1262,6 +1422,12 @@ serve(async (req) => {
             ...row,
             notes: summarizeQualityTaskDetails(asString(row.task_type), row.details_json),
           }));
+        const normalizedOpsBriefs = opsBriefs.error && isMissingRelationError(opsBriefs.error.message, "ops_briefs")
+          ? []
+          : (opsBriefs.data ?? []).map((row: Record<string, unknown>) => ({
+            ...row,
+            summary: summarizeOpsBriefPayload(asString(row.brief_type), row.payload_json),
+          }));
         result = {
           publish_state: publishState.data ?? null,
           pending_observations: pendingObs.count ?? 0,
@@ -1269,6 +1435,7 @@ serve(async (req) => {
           top_context_gaps: gaps,
           latest_gsc_snapshot: latestGscPayload,
           top_quality_tasks: topQualityTasks,
+          ops_briefs: normalizedOpsBriefs,
         };
         break;
       }

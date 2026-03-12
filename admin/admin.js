@@ -672,6 +672,30 @@ async function saveLocationDetail() {
   }
 }
 
+async function ensureLocationEditorialDraft() {
+  if (!state.selectedLocationId) {
+    PortalShell.setAlert('location-detail-alert', 'Open eerst een locatie vanuit de tab Locaties.', 'error', { assertive: true });
+    return;
+  }
+  const btn = $('create-location-draft-btn');
+  PortalShell.setButtonBusy(btn, true, 'Aanmaken...', 'Maak redactioneel draft');
+  try {
+    const result = await api('ensure_location_editorial_draft', { location_id: state.selectedLocationId });
+    fillEditorialForm(result.page);
+    await loadEditorialPages();
+    await switchTab('tab-editorial');
+    PortalShell.setAlert(
+      'editorial-alert',
+      result.created ? 'Nieuw redactioneel draft aangemaakt vanuit deze locatie.' : 'Bestaand redactioneel draft geopend.',
+      'success',
+    );
+  } catch (error) {
+    PortalShell.setAlert('location-detail-alert', `Draft aanmaken mislukt: ${error.message}`, 'error', { assertive: true });
+  } finally {
+    PortalShell.setButtonBusy(btn, false, null, 'Maak redactioneel draft');
+  }
+}
+
 async function saveLocationSeo() {
   if (!state.selectedLocationId) {
     PortalShell.setAlert('seo-alert', 'Open eerst een locatie vanuit de tab Locaties.', 'error', { assertive: true });
@@ -1020,6 +1044,21 @@ async function loadInsights() {
           </div>
         </li>`).join('')
       : '<li class="portal-muted">Geen open quality tasks.</li>';
+
+    $('insight-ops-briefs').innerHTML = (insights.ops_briefs || []).length
+      ? insights.ops_briefs.map((brief) => `
+        <article class="portal-card portal-card-soft">
+          <div class="portal-heading-row" style="align-items:flex-start;">
+            <div>
+              <strong>${escapeHtml(brief.title || brief.brief_type || 'Ops brief')}</strong>
+              <div class="portal-muted">${escapeHtml(brief.summary || brief.brief_type || '-')}</div>
+            </div>
+            <span class="portal-inline-code">${escapeHtml(brief.brief_type || '-')}</span>
+          </div>
+          <div class="portal-muted" style="margin-top:8px;">Bijgewerkt ${fmtDateTime(brief.updated_at || brief.created_at)}</div>
+          ${brief.body_md ? `<div class="portal-muted" style="margin-top:8px;">${escapeHtml(String(brief.body_md).split('\n').slice(0, 4).join(' ').slice(0, 260))}</div>` : ''}
+        </article>`).join('')
+      : '<div class="portal-muted">Nog geen ops briefs beschikbaar.</div>';
   } catch (error) {
     PortalShell.setAlert('insights-alert', `Insights laden mislukt: ${error.message}`, 'error', { assertive: true });
   }
@@ -1147,6 +1186,7 @@ function bindUI() {
 
   $('modal-save-btn').addEventListener('click', saveOwnerEdit);
   $('save-location-detail-btn').addEventListener('click', saveLocationDetail);
+  $('create-location-draft-btn').addEventListener('click', ensureLocationEditorialDraft);
   $('save-location-seo-btn').addEventListener('click', saveLocationSeo);
   $('save-editorial-page-btn').addEventListener('click', saveEditorialPage);
   $('new-editorial-page-btn').addEventListener('click', resetEditorialForm);

@@ -2,7 +2,7 @@
   "name": "peuterplannen",
   "version": "1.0.0",
   "private": true,
-  "description": "PeuterPlannen — Leuke uitjes voor kinderen",
+  "description": "PeuterPlannen \u2014 Leuke uitjes voor kinderen",
   "scripts": {
     "build": "node .scripts/optimize_images.js && node .scripts/sync_portal_assets.js && node .scripts/sync_all.js",
     "discover": "node .scripts/discover_horeca.js",
@@ -11,7 +11,12 @@
     "deploy:supabase": "bash .scripts/deploy_supabase.sh",
     "deploy": "bash .scripts/deploy_live.sh",
     "deploy:live": "bash .scripts/deploy_live.sh",
-    "deploy:wrangler": "wrangler deploy"
+    "deploy:wrangler": "wrangler deploy",
+    "ops:trust-gaps": "node .scripts/trust/report_context_gaps.js",
+    "ops:quality-tasks": "node .scripts/trust/sync_quality_tasks.js",
+    "ops:seed-priority-drafts": "node .scripts/editorial/seed_priority_location_drafts.js",
+    "ops:export-editorial": "node .scripts/editorial/export_editorial_pages.js",
+    "ops:briefs": "python3 .scripts/ops/generate_ops_briefs.py"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
