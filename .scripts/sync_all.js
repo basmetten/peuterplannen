@@ -2555,6 +2555,83 @@ function truncateDesc(text, max = 155) {
   return (cut > 80 ? text.slice(0, cut) : text.slice(0, max)) + '…';
 }
 
+function buildLocationPracticalBullets(loc) {
+  const bullets = [];
+  if (loc.time_of_day_fit) {
+    const labels = { morning: 'Werkt vooral goed in de ochtend.', midday: 'Past het best als lunch- of middagstop.', fullday: 'Kan de hoofdmoot van de dag dragen.' };
+    bullets.push(labels[loc.time_of_day_fit] || '');
+  }
+  if (loc.rain_backup_quality === 'strong') bullets.push('Ook bruikbaar als het weer omslaat of nat blijft.');
+  if (loc.buggy_friendliness === 'easy') bullets.push('Logistiek relatief prettig met buggy of jongere broertjes en zusjes.');
+  if (loc.toilet_confidence === 'high') bullets.push('Sanitaire basis voelt hier voorspelbaar en praktisch.');
+  if (loc.play_corner_quality === 'strong') bullets.push('Er is genoeg te doen om een korte stop niet meteen te laten vastlopen.');
+  if (loc.parking_ease === 'easy') bullets.push('Aankomen en uitstappen is hier meestal minder gedoe dan gemiddeld.');
+  if (loc.food_fit === 'strong') bullets.push('Handig als je spelen en iets eten in één stop wilt combineren.');
+  return bullets.filter(Boolean).slice(0, 4);
+}
+
+function buildLocationTrustBits(loc) {
+  const bits = [];
+  const verificationLabels = {
+    editorial: 'redactioneel beoordeeld',
+    partner: 'door locatie-eigenaar aangevuld',
+    parent_signal: 'aangevuld met oudersignalen',
+    web_verified: 'gecontroleerd op de eigen website',
+    phone_verified: 'telefonisch gecheckt',
+    visit_verified: 'op locatie geverifieerd',
+  };
+  if (loc.verification_mode && verificationLabels[loc.verification_mode]) {
+    bits.push(`Status: ${verificationLabels[loc.verification_mode]}.`);
+  } else if (loc.last_verified_at) {
+    bits.push('Status: recent opnieuw gecontroleerd.');
+  }
+  if (typeof loc.verification_confidence === 'number' && Number.isFinite(loc.verification_confidence)) {
+    const pct = Math.round(Math.max(0, Math.min(1, loc.verification_confidence)) * 100);
+    bits.push(`Vertrouwensniveau ${pct}%.`);
+  }
+  if (loc.last_context_refresh_at) {
+    const refreshed = formatEditorialDate(loc.last_context_refresh_at);
+    if (refreshed) bits.push(`Context bijgewerkt op ${refreshed}.`);
+  }
+  return bits.slice(0, 3);
+}
+
+function buildLocationDecisionHTML(loc, region) {
+  const bullets = buildLocationPracticalBullets(loc);
+  const trustBits = buildLocationTrustBits(loc);
+  const bestFor = [];
+  if (loc.min_age != null || loc.max_age != null) {
+    if (loc.min_age == null) bestFor.push(`werkt vooral vanaf ongeveer ${loc.max_age} jaar of jonger`);
+    else if (loc.max_age == null) bestFor.push(`past vooral vanaf ${loc.min_age} jaar`);
+    else bestFor.push(`sluit het best aan bij ongeveer ${loc.min_age}–${loc.max_age} jaar`);
+  }
+  if (loc.weather === 'indoor') bestFor.push('is sterk als slechtweer-optie');
+  if (loc.weather === 'outdoor') bestFor.push('werkt vooral op droge dagen');
+  if (loc.weather === 'hybrid' || loc.weather === 'both') bestFor.push('blijft bruikbaar bij wisselvallig weer');
+  if (loc.coffee && loc.diaper) bestFor.push('is praktisch als je spelen, koffie en verschonen wilt combineren');
+  else if (loc.coffee) bestFor.push('werkt goed als rustige koffie- of lunchstop');
+  else if (loc.diaper) bestFor.push('is handig op dagen met weinig logistieke marge');
+
+  const bestForSentence = bestFor.length
+    ? `<p class="location-highlight"><strong>Beste keuze als je iets zoekt dat</strong> ${escapeHtml(bestFor.join(', '))}.</p>`
+    : '';
+  const practicalHTML = bullets.length
+    ? `<div class="related-blogs">
+      <h3>Handig om vooraf te weten</h3>
+      <ul>${bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+    </div>`
+    : '';
+  const trustHTML = trustBits.length
+    ? `<div class="related-blogs">
+      <h3>Waarom deze info te vertrouwen is</h3>
+      <ul>${trustBits.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+      <p style="margin-top:12px;"><a href="/methode/">Lees hoe PeuterPlannen locaties selecteert en controleert</a>.</p>
+    </div>`
+    : '';
+
+  return `${bestForSentence}${practicalHTML}${trustHTML}`;
+}
+
 function locationPageHTML(loc, region, similarLocs) {
   const fullUrl = `https://peuterplannen.nl${loc.pageUrl}`;
   const typeLabel = TYPE_MAP[loc.type]?.label || loc.type;
@@ -2654,6 +2731,7 @@ function locationPageHTML(loc, region, similarLocs) {
     Bekijk alle ${typeLabel_explore} in ${loc.region} →
   </a>
 </div>`;
+  const decisionContextHTML = buildLocationDecisionHTML(loc, region);
 
   // JSON-LD
   const schemaType = (loc.type === 'horeca' || loc.type === 'pancake')
@@ -2796,6 +2874,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
   ${editorialBody ? `${editorialMetaHTML({ editorial_label: 'PeuterPlannen redactie', updated_at: loc.seo_repo_updated_at })}${editorialBodyHTML({ bodyHtml: editorialBody }, 'location-editorial')}` : ''}
 
   ${loc.toddler_highlight ? `<div class="location-highlight"><strong>Peutertip:</strong> ${escapeHtml(cleanToddlerHighlight(loc.toddler_highlight))}</div>` : ''}
+  ${decisionContextHTML}
 
   ${infoItems.length > 0 ? `<div class="location-info">\n    ${infoItems.join('\n    ')}\n  </div>` : ''}
 

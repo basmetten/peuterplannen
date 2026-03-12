@@ -396,9 +396,81 @@
         .chip.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 7px 18px rgba(212, 119, 90, 0.32); }
         .chip-divider { flex-shrink: 0; width: 1px; height: 24px; background: rgba(212, 119, 90, 0.15); align-self: center; }
         .chip-label { flex-shrink: 0; font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; align-self: center; padding: 0 2px 0 8px; }
-        .active-filters { display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; margin-bottom: 10px; background: var(--primary-light); border-radius: var(--radius-xs); font-size: 13px; color: var(--primary-dark); font-weight: 600; }
+        .preset-strip {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: 2px 0 12px;
+            margin: 0 -4px;
+            padding-left: 4px;
+            padding-right: 4px;
+        }
+        .preset-strip::-webkit-scrollbar { display: none; }
+        .preset-chip {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(45, 41, 38, 0.08);
+            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,248,243,0.96));
+            box-shadow: var(--shadow-sm);
+            color: var(--text);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            font-family: inherit;
+        }
+        .preset-chip:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); border-color: rgba(212, 119, 90, 0.22); }
+        .preset-chip.active {
+            background: linear-gradient(135deg, rgba(212,119,90,0.16), rgba(232,184,112,0.14));
+            border-color: rgba(212, 119, 90, 0.35);
+            box-shadow: 0 10px 20px rgba(45, 41, 38, 0.08);
+        }
+        .preset-chip strong { display: block; font-size: 12px; line-height: 1.1; }
+        .preset-chip span { display: block; font-size: 11px; line-height: 1.3; color: var(--text-muted); }
+        .preset-chip.active span { color: var(--text-secondary); }
+        .preset-chip svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; color: var(--primary-dark); }
+        .active-filters { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 14px; margin-bottom: 10px; background: var(--primary-light); border-radius: var(--radius-xs); font-size: 13px; color: var(--primary-dark); font-weight: 600; }
+        .active-filters-copy { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+        .active-filters button + button { margin-left: 4px; }
         .active-filters button { background: none; border: none; color: var(--accent); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; }
         .active-filters button:hover { background: rgba(242, 201, 76, 0.1); }
+        .shortlist-bar {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(255,246,240,0.96));
+            border: 1px solid rgba(212, 119, 90, 0.18);
+            box-shadow: var(--shadow-sm);
+        }
+        .shortlist-copy strong { display: block; font-size: 13px; color: var(--text); }
+        .shortlist-copy span { display: block; font-size: 12px; color: var(--text-muted); line-height: 1.45; }
+        .shortlist-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+        .shortlist-btn {
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(212, 119, 90, 0.2);
+            background: #fff;
+            color: var(--primary-dark);
+            font-size: 12px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+        }
+        .shortlist-btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .shortlist-btn.secondary { color: var(--text-secondary); }
+        .app-mode-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
 
         /* Results */
         .results-list { display: flex; flex-direction: column; gap: 14px; }
@@ -434,6 +506,63 @@
         .age-range { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
         .age-range::before { content: '\1F476'; font-size: 11px; }
         .card-highlight { font-size: 13px; color: var(--primary-dark); font-weight: 500; margin-bottom: 12px; padding: 8px 12px; background: var(--primary-light); border-radius: 8px; line-height: 1.5; }
+        .card-trust {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .trust-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            line-height: 1.2;
+            font-weight: 600;
+            border: 1px solid rgba(45, 41, 38, 0.08);
+            background: rgba(255, 255, 255, 0.92);
+            color: var(--text-secondary);
+        }
+        .trust-chip strong { font-weight: 700; color: var(--text); }
+        .trust-chip.is-positive {
+            background: rgba(82, 183, 136, 0.12);
+            border-color: rgba(82, 183, 136, 0.18);
+            color: #2D8B5E;
+        }
+        .trust-chip.is-neutral {
+            background: rgba(107, 149, 144, 0.10);
+            border-color: rgba(107, 149, 144, 0.18);
+            color: #4E746F;
+        }
+        .card-reasons {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .card-reason {
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: rgba(255, 248, 243, 0.92);
+            border: 1px solid rgba(212, 119, 90, 0.1);
+        }
+        .card-reason-label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .card-reason-value {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
 
         .card-fav { background: none; border: none; padding: 6px; cursor: pointer; transition: transform 0.2s; touch-action: manipulation; border-radius: 50%; }
         .card-fav:hover { background: var(--accent-light); }
@@ -569,6 +698,32 @@
         /* Featured & verified badges */
         .badge-featured { display: inline-flex; align-items: center; gap: 3px; padding: 3px 9px; border-radius: 8px; font-size: 11px; font-weight: 700; background: linear-gradient(135deg, #F6C34A, #E8A820); color: #6B4200; letter-spacing: 0.02em; }
         .badge-verified { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; color: #2D8B5E; font-weight: 600; }
+        .sheet-trust {
+            display: grid;
+            gap: 12px;
+            margin: 14px 0 16px;
+        }
+        .sheet-trust-card {
+            background: rgba(255,255,255,0.9);
+            border: 1px solid rgba(45,41,38,0.08);
+            border-radius: 18px;
+            padding: 14px 15px;
+        }
+        .sheet-trust-card h3 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .sheet-trust-card ul {
+            margin: 0;
+            padding-left: 18px;
+            display: grid;
+            gap: 6px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
 
         /* Info AI note */
         .info-ai-note { background: var(--primary-light); border-radius: 12px; padding: 16px 18px; margin-top: 16px; border-left: 3px solid var(--primary); }
@@ -782,6 +937,8 @@
           .map-container { width: 100%; margin: 0; height: 100%; max-height: none; min-height: unset; border-top: none; }
           .bottom-nav { display: none; }
           .filter-chips { top: 0; }
+          .preset-strip { padding-bottom: 10px; }
+          .shortlist-bar { align-items: center; }
           body.plan-mode { overflow: auto; }
           body.plan-mode .app-wrapper { display: none !important; }
           body.plan-mode #plan-view { display: block !important; }
@@ -814,6 +971,7 @@
         html.pp-desktop .map-container { width: 100% !important; margin: 0 !important; height: 100% !important; max-height: none !important; min-height: unset !important; border-top: none !important; }
         html.pp-desktop .bottom-nav { display: none !important; }
         html.pp-desktop .filter-chips { flex-wrap: wrap; overflow-x: visible; padding-bottom: 8px; gap: 4px; top: 0 !important; }
+        html.pp-desktop .preset-strip { overflow-x: visible; flex-wrap: wrap; padding-bottom: 10px; }
         html.pp-desktop .chip-label { display: none; }
         html.pp-desktop .chip { padding: 5px 10px; font-size: 11px; }
         html.pp-desktop body.plan-mode { overflow: auto !important; }
@@ -936,6 +1094,7 @@
             </a>
             <div class="nav-links">
                 <a href="/" class="nav-link">Home</a>
+                <a href="/ontdekken/" class="nav-link">Ontdekken</a>
                 <a href="/about.html" class="nav-link">Over</a>
                 <a href="/blog/" class="nav-link">Inspiratie</a>
                 <a href="/contact.html" class="nav-link">Contact</a>
@@ -947,6 +1106,7 @@
         </div>
         <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
             <a href="/" class="nav-mobile-link">Home</a>
+            <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
             <a href="/about.html" class="nav-mobile-link">Over</a>
             <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
             <a href="/contact.html" class="nav-mobile-link">Contact</a>
@@ -964,6 +1124,7 @@
             <div class="app-mode-switch compact" aria-label="Desktop app-modus">
                 <button type="button" class="app-mode-chip active" data-mode-target="home" onclick="switchView('home')">Ontdek locaties</button>
                 <button type="button" class="app-mode-chip" data-mode-target="plan" onclick="switchView('plan')">Plan mijn dag</button>
+                <a href="/ontdekken/" class="app-mode-chip app-mode-link">Per regio/thema</a>
             </div>
         </header>
     <div class="app-container" id="app-container">
@@ -984,6 +1145,33 @@
                 </button>
             </div>
             <div id="gps-status" class="gps-status hidden" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="preset-strip" role="toolbar" aria-label="Situatie-presets">
+            <button class="preset-chip" data-preset="rain" onclick="togglePreset('rain', event)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10"/><path d="M8 9a4 4 0 1 1 8 0c0 3-4 8-4 8s-4-5-4-8z"/></svg>
+                <div><strong>Regenproof</strong><span>Binnen of hybride keuzes</span></div>
+            </button>
+            <button class="preset-chip" data-preset="outdoor-coffee" onclick="togglePreset('outdoor-coffee', event)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M12 1v2M4.93 4.93l1.41 1.41M1 12h2"/></svg>
+                <div><strong>Buiten + koffie</strong><span>Spelen zonder haast</span></div>
+            </button>
+            <button class="preset-chip" data-preset="dreumesproof" onclick="togglePreset('dreumesproof', event)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M7 21v-4a5 5 0 0 1 10 0v4"/></svg>
+                <div><strong>Dreumesproof</strong><span>Rustiger en praktischer</span></div>
+            </button>
+            <button class="preset-chip" data-preset="peuterproof" onclick="togglePreset('peuterproof', event)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="3"/><path d="M5 21c1-4 3-6 7-6s6 2 7 6"/></svg>
+                <div><strong>Peuterproof</strong><span>Meer speelenergie kwijt</span></div>
+            </button>
+            <button class="preset-chip" data-preset="short-drive" onclick="togglePreset('short-drive', event)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h13l4 4v6a2 2 0 0 1-2 2h-2"/><circle cx="7.5" cy="17" r="2.5"/><circle cx="17.5" cy="17" r="2.5"/></svg>
+                <div><strong>Korte rit</strong><span>Dichtbij als tijd telt</span></div>
+            </button>
+            <button class="preset-chip" data-preset="lunch-play" onclick="togglePreset('lunch-play', event)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2v10"/><path d="M12 2v10"/><path d="M10 12v10"/><path d="M18 2v20"/></svg>
+                <div><strong>Lunch + spelen</strong><span>Eten zonder stilzitten</span></div>
+            </button>
         </div>
 
         <div class="filter-chips" role="toolbar" aria-label="Filter categorieën">
@@ -1014,8 +1202,26 @@
         </div>
 
         <div class="active-filters" id="active-filters" style="display:none;">
-            <span id="filter-count"></span>
-            <button onclick="resetAllFilters()">Wis filters</button>
+            <div class="active-filters-copy">
+                <span id="filter-count"></span>
+                <span id="filter-summary"></span>
+            </div>
+            <div>
+                <button onclick="clearSharedShortlist()" id="clear-shared-shortlist" style="display:none;">Verlaat gedeelde shortlist</button>
+                <button onclick="resetAllFilters()">Wis filters</button>
+            </div>
+        </div>
+
+        <div class="shortlist-bar" id="shortlist-bar">
+            <div class="shortlist-copy">
+                <strong id="shortlist-title">Je shortlist</strong>
+                <span id="shortlist-subtitle">Sla locaties op terwijl je vergelijkt en deel ze later als een compacte shortlist.</span>
+            </div>
+            <div class="shortlist-actions">
+                <button class="shortlist-btn" type="button" onclick="showShortlist()">Open shortlist</button>
+                <button class="shortlist-btn primary" type="button" onclick="shareShortlist()">Deel shortlist</button>
+                <button class="shortlist-btn secondary" type="button" onclick="clearShortlist()">Wis</button>
+            </div>
         </div>
 
         <div id="weather-banner"></div>
@@ -1158,6 +1364,9 @@
                     <li><strong>Filteren op dagtype:</strong> buiten, regenproof, koffie, verschonen of alleen favorieten.</li>
                     <li><strong>Plan mijn dag:</strong> logischer voor ouders die niet één plek zoeken maar een dagritme willen bouwen.</li>
                 </ul>
+                <div class="app-seo-links">
+                    <a href="/methode/" class="app-seo-link"><strong>Hoe PeuterPlannen selecteert</strong><span>Lees hoe geverifieerd, praktisch en oudercontext zwaarder wegen dan alleen listing-data.</span></a>
+                </div>
             </article>
             <article class="app-seo-card">
                 <p class="app-seo-kicker">Regionale shortcuts</p>
@@ -1185,6 +1394,9 @@
                     <span class="app-seo-chip">Verschonen</span>
                     <span class="app-seo-chip">Dreumes</span>
                     <span class="app-seo-chip">Peuter</span>
+                </div>
+                <div class="app-seo-links">
+                    <a href="/ontdekken/" class="app-seo-link"><strong>Bekijk eerst regio’s en routes</strong><span>Handig als je liever start bij een dagtype, stad of themapagina en daarna pas de app gebruikt.</span></a>
                 </div>
             </article>
         </div>
@@ -1301,6 +1513,9 @@
         let activeRadius = null;   // null | 5 | 10 | 25
         let activeSort = 'default';
         let lastTravelTimes = {};
+        let activeFacilities = { coffee: false, diaper: false, alcohol: false };
+        let activePreset = null;
+        let sharedShortlistIds = [];
 
         // Parse URL parameters (from quick-action buttons on homepage and city pages)
         (function() {
@@ -1330,8 +1545,13 @@
                 activeRegion = params.get('regio');
             }
             if (params.get('age')) activeAgeGroup = params.get('age');
+            if (params.get('ids')) {
+                sharedShortlistIds = params.get('ids')
+                    .split(',')
+                    .map((value) => Number.parseInt(value, 10))
+                    .filter((value) => Number.isInteger(value) && value > 0);
+            }
         })();
-        let activeFacilities = { coffee: false, diaper: false, alcohol: false };
         let userLocation = null;
         let allLocations = [];
         let autocomplete;
@@ -1351,12 +1571,125 @@
 
         const TYPE_LABELS = { play: 'Speeltuin', farm: 'Boerderij', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', swim: 'Zwemmen', pancake: 'Pannenkoeken' };
         const WEATHER_LABELS = { indoor: 'Binnen', outdoor: 'Buiten', both: 'Binnen & buiten', hybrid: 'Binnen & buiten' };
+        const PRESET_LABELS = {
+            rain: 'Regenproof',
+            'outdoor-coffee': 'Buiten + koffie',
+            dreumesproof: 'Dreumesproof',
+            peuterproof: 'Peuterproof',
+            'short-drive': 'Korte rit',
+            'lunch-play': 'Lunch + spelen',
+        };
         const WEATHER_ICONS = {
             indoor: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
             outdoor: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
             both: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="14" r="3"/></svg>',
             hybrid: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="14" r="3"/></svg>'
         };
+
+        const LUNCH_PLAY_PATTERN = /(speelhoek|speelruimte|speeltuin|terras|kinderstoel|lunchen|pannenkoek|pannenkoeken|boerderij|restaurant|cafe|café)/i;
+
+        function getShortlistIds() {
+            return sharedShortlistIds.length > 0 ? [...sharedShortlistIds] : getFavorites();
+        }
+
+        function updateShortlistBar() {
+            const bar = document.getElementById('shortlist-bar');
+            const title = document.getElementById('shortlist-title');
+            const subtitle = document.getElementById('shortlist-subtitle');
+            const ids = getShortlistIds();
+            const usingShared = sharedShortlistIds.length > 0;
+
+            if (!bar || !title || !subtitle) return;
+            if (ids.length === 0) {
+                bar.style.display = 'none';
+                return;
+            }
+
+            bar.style.display = 'flex';
+            title.textContent = usingShared ? `Gedeelde shortlist (${ids.length})` : `Je shortlist (${ids.length})`;
+            subtitle.textContent = usingShared
+                ? 'Deze link toont een gedeelde selectie locaties. Sla hem op of gebruik hem als startpunt voor vandaag.'
+                : 'Bewaar interessante plekken zonder account en deel ze later als compacte selectie.';
+        }
+
+        function buildShortlistUrl(ids = getShortlistIds()) {
+            const shortlistIds = ids.filter((value) => Number.isInteger(value) && value > 0);
+            const url = new URL('/app.html', window.location.origin);
+            if (shortlistIds.length > 0) url.searchParams.set('ids', shortlistIds.join(','));
+            return url.toString();
+        }
+
+        async function shareShortlist() {
+            const ids = getShortlistIds();
+            if (!ids.length) return;
+            const url = buildShortlistUrl(ids);
+            const title = sharedShortlistIds.length > 0 ? 'Gedeelde shortlist van PeuterPlannen' : 'Mijn shortlist op PeuterPlannen';
+            const text = sharedShortlistIds.length > 0
+                ? 'Hier is een compacte selectie peuteruitjes op PeuterPlannen.'
+                : 'Hier is mijn shortlist met peuteruitjes op PeuterPlannen.';
+            try {
+                if (navigator.share) {
+                    await navigator.share({ title, text, url });
+                    return;
+                }
+                await navigator.clipboard.writeText(url);
+                showGpsStatus('Shortlistlink gekopieerd', '');
+            } catch (error) {
+                window.open(`https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`, '_blank');
+            }
+        }
+
+        function showShortlist() {
+            if (sharedShortlistIds.length > 0) {
+                loadLocations();
+                return;
+            }
+            toggleTag('favorites');
+        }
+
+        function clearShortlist() {
+            if (sharedShortlistIds.length > 0) {
+                clearSharedShortlist();
+                return;
+            }
+            try { localStorage.removeItem('peuterplannen_favorites'); } catch (error) {}
+            if (activeTag === 'favorites') activeTag = 'all';
+            updateShortlistBar();
+            updateFilterCount();
+            loadLocations();
+        }
+
+        function clearSharedShortlist() {
+            sharedShortlistIds = [];
+            const url = new URL(window.location.href);
+            url.searchParams.delete('ids');
+            window.history.replaceState({}, '', url.toString());
+            document.getElementById('clear-shared-shortlist').style.display = 'none';
+            updateShortlistBar();
+            updateFilterCount();
+            loadLocations();
+        }
+
+        function syncPresetAria() {
+            document.querySelectorAll('.preset-chip').forEach((chip) => {
+                const active = chip.dataset.preset === activePreset;
+                chip.classList.toggle('active', active);
+                chip.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
+        }
+
+        function togglePreset(preset, evt) {
+            evt?.preventDefault();
+            if (preset === 'short-drive' && !userLocation) {
+                document.getElementById('location-input')?.focus();
+                showGpsStatus('Vul eerst een stad of gebruik je locatie voor een korte-rit filter', 'error');
+                return;
+            }
+            activePreset = activePreset === preset ? null : preset;
+            syncPresetAria();
+            updateFilterCount();
+            loadLocations();
+        }
 
         const TYPE_COLORS = {
             play: '#6B9590', farm: '#8B7355', nature: '#4A7A76', horeca: '#D4775A',
@@ -1387,6 +1720,7 @@
             const index = favorites.indexOf(locationId);
             if (index > -1) favorites.splice(index, 1); else favorites.push(locationId);
             try { localStorage.setItem('peuterplannen_favorites', JSON.stringify(favorites)); } catch(e) { /* storage unavailable */ }
+            updateShortlistBar();
             if (btn) { btn.classList.add('heart-pop'); setTimeout(() => btn.classList.remove('heart-pop'), 400); }
             if (activeTag === 'favorites') {
                 const filtered = allLocations.filter(item => getFavorites().includes(item.id));
@@ -1452,20 +1786,30 @@
 
         function updateFilterCount() {
             let count = 0;
+            const labels = [];
             if (activeTag !== 'all') count++;
-            if (activeWeather) count++;
-            if (activeFacilities.coffee) count++;
-            if (activeFacilities.diaper) count++;
-            if (activeFacilities.alcohol) count++;
-            if (activeAgeGroup) count++;
-            if (activeRadius) count++;
+            if (activeTag === 'favorites') labels.push('shortlist');
+            else if (activeTag !== 'all') labels.push(TYPE_LABELS[activeTag] || activeTag);
+            if (activeWeather) { count++; labels.push(activeWeather === 'indoor' ? 'binnen' : 'buiten'); }
+            if (activeFacilities.coffee) { count++; labels.push('koffie'); }
+            if (activeFacilities.diaper) { count++; labels.push('verschonen'); }
+            if (activeFacilities.alcohol) { count++; labels.push('alcohol'); }
+            if (activeAgeGroup) { count++; labels.push(activeAgeGroup === 'dreumes' ? '0–2 jaar' : '2–5 jaar'); }
+            if (activeRadius) { count++; labels.push(`${activeRadius} km`); }
+            if (activePreset) { count++; labels.push(PRESET_LABELS[activePreset] || activePreset); }
+            if (sharedShortlistIds.length) { count++; labels.push(`gedeelde shortlist (${sharedShortlistIds.length})`); }
             const bar = document.getElementById('active-filters');
             const label = document.getElementById('filter-count');
+            const summary = document.getElementById('filter-summary');
+            const clearSharedBtn = document.getElementById('clear-shared-shortlist');
+            if (clearSharedBtn) clearSharedBtn.style.display = sharedShortlistIds.length ? 'inline-flex' : 'none';
             if (count > 0) {
                 bar.style.display = 'flex';
                 label.textContent = count + ' filter' + (count !== 1 ? 's' : '') + ' actief';
+                if (summary) summary.textContent = labels.join(' · ');
             } else {
                 bar.style.display = 'none';
+                if (summary) summary.textContent = '';
             }
         }
 
@@ -1508,10 +1852,12 @@
             activeAgeGroup = null;
             activeRadius = null;
             activeSort = 'default';
+            activePreset = null;
             const sortSelect = document.getElementById('sort-select');
             if (sortSelect) sortSelect.value = 'default';
             document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
             document.querySelector('.chip').classList.add('active');
+            syncPresetAria();
             syncChipAria();
             updateFilterCount();
             loadLocations();
@@ -1695,7 +2041,7 @@
             if (currentDisplayMode !== 'map') { container.innerHTML = ''; loader.classList.remove('hidden'); }
             error.classList.add('hidden');
             try {
-                let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url";
+                let url = SB_URL + "?select=id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,price_band,time_of_day_fit,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,noise_level,food_fit,play_corner_quality,crowd_pattern,verification_confidence,verification_mode,seo_primary_locality";
                 if (activeTag !== 'all' && activeTag !== 'favorites') url += "&type=eq." + activeTag;
                 if (activeWeather) { if (activeWeather === "indoor") url += "&weather=in.(indoor,hybrid,both)"; else if (activeWeather === "outdoor") url += "&weather=in.(outdoor,hybrid,both)"; else url += "&weather=eq." + activeWeather; }
                 if (activeFacilities.coffee) url += "&coffee=eq.true";
@@ -1709,6 +2055,9 @@
                     const favorites = getFavorites();
                     allLocations = allLocations.filter(item => favorites.includes(item.id));
                 }
+                if (sharedShortlistIds.length) {
+                    allLocations = allLocations.filter(item => sharedShortlistIds.includes(item.id));
+                }
 
                 // Age filter
                 if (activeAgeGroup === 'dreumes') {
@@ -1720,10 +2069,13 @@
                     );
                 }
 
+                allLocations = allLocations.filter((loc) => matchesPreset(loc));
+
                 if (allLocations.length === 0) { loader.classList.add('hidden'); container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong><br>Probeer een andere categorie of filter</div>'; updateMapMarkers([]); updateResultsCount(0); return; }
 
                 if (userLocation) {
                     const travelTimes = await calculateTravelTimes(allLocations);
+                    allLocations = allLocations.filter((loc) => matchesPresetDistance(loc, travelTimes[loc.id]));
                     lastTravelTimes = travelTimes;
                     allLocations.sort((a, b) => (travelTimes[a.id]?.durationValue || 999999) - (travelTimes[b.id]?.durationValue || 999999));
                     // Radius filter (after distance sort)
@@ -1763,6 +2115,139 @@
             if (item.place_id) return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}&query_place_id=${item.place_id}`;
             if (item.lat && item.lng) return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name + ", " + (item.region || ""))}`;
             return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name)}`;
+        }
+
+        function getPrimaryFitReason(item) {
+            if (item.toddler_highlight) return cleanToddlerHighlight(item.toddler_highlight);
+            if (item.play_corner_quality === 'strong') return 'Duidelijke speelprikkel of speelhoek voor jonge kinderen.';
+            if (item.type === 'play') return 'Kinderen kunnen hier meteen zelf aan de slag zonder lange opstart.';
+            if (item.type === 'farm') return 'Dieren en buitenruimte maken dit vaak laagdrempelig voor peuters.';
+            if (item.type === 'museum') return 'Geschikt als kort en prikkelrijk uitje met duidelijke focus.';
+            if (item.type === 'horeca' || item.type === 'pancake') return 'Handig als je spelen en iets eten slim wilt combineren.';
+            return 'Praktische plek voor een peuteruitje met duidelijke oudercomfortsignalen.';
+        }
+
+        function getLogisticsReason(item, travelInfo) {
+            if (travelInfo?.distanceKm != null) {
+                if (travelInfo.distanceKm <= 5) return `Binnen ${Math.round(travelInfo.distanceKm)} km rijden.`;
+                return `${travelInfo.distance} vanaf jouw locatie.`;
+            }
+            if (item.seo_primary_locality) return `Ligt bij ${item.seo_primary_locality}.`;
+            if (item.region) return `Ligt in ${item.region}.`;
+            return 'Handig als lokaal uitje.';
+        }
+
+        function getComfortReason(item) {
+            if (item.diaper && item.coffee) return 'Verschonen en koffie voor ouders zijn geregeld.';
+            if (item.rain_backup_quality === 'strong') return 'Blijft bruikbaar als het weer omslaat.';
+            if (item.buggy_friendliness === 'easy') return 'Logistiek prettig met buggy of jongere kinderen.';
+            if (item.toilet_confidence === 'high') return 'Sanitair voelt hier voorspelbaar en praktisch.';
+            if (item.coffee) return 'Ook voor ouders een ontspannen stop.';
+            if (item.diaper) return 'Handig als je onderweg nog wilt verschonen.';
+            return 'Praktisch in te passen in een korte peuterroute.';
+        }
+
+        function getCardReasons(item, travelInfo) {
+            return [
+                { label: 'Waarom nu', value: getPrimaryFitReason(item) },
+                { label: 'Logistiek', value: getLogisticsReason(item, travelInfo) },
+                { label: 'Voor ouders', value: getComfortReason(item) }
+            ];
+        }
+
+        function getVerificationModeLabel(mode) {
+            const labels = {
+                editorial: 'Redactioneel gecontroleerd',
+                partner: 'Aangevuld door locatie',
+                parent_signal: 'Aangescherpt met oudersignaal',
+                web_verified: 'Website gecontroleerd',
+                phone_verified: 'Telefonisch gecheckt',
+                visit_verified: 'Op locatie gecheckt'
+            };
+            return labels[mode] || null;
+        }
+
+        function getTrustChips(item) {
+            const chips = [];
+            const verificationLabel = getVerificationModeLabel(item.verification_mode);
+            if (verificationLabel) chips.push({ tone: 'positive', label: verificationLabel });
+            if (typeof item.verification_confidence === 'number' && Number.isFinite(item.verification_confidence)) {
+                const pct = Math.round(Math.max(0, Math.min(1, item.verification_confidence)) * 100);
+                if (pct >= 70) chips.push({ tone: 'neutral', label: `Betrouwbaarheid ${pct}%` });
+            }
+            if (item.seo_primary_locality) chips.push({ tone: 'neutral', label: `Buurt: ${item.seo_primary_locality}` });
+            if (item.price_band) {
+                const priceLabels = { free: 'Gratis of bijna gratis', low: 'Laag budget', mid: 'Middenklasse', high: 'Duurdere stop' };
+                chips.push({ tone: 'neutral', label: priceLabels[item.price_band] || item.price_band });
+            }
+            return chips.slice(0, 3);
+        }
+
+        function getTrustBullets(item) {
+            const bullets = [];
+            const verificationLabel = getVerificationModeLabel(item.verification_mode);
+            if (verificationLabel) bullets.push(verificationLabel);
+            if (typeof item.verification_confidence === 'number' && Number.isFinite(item.verification_confidence)) {
+                bullets.push(`Interne betrouwbaarheidsscore ${Math.round(Math.max(0, Math.min(1, item.verification_confidence)) * 100)}%.`);
+            }
+            if (item.last_verified) bullets.push(`Laatste check: ${item.last_verified}.`);
+            return bullets.slice(0, 3);
+        }
+
+        function getPracticalBullets(item) {
+            const bullets = [];
+            const timeLabels = {
+                ochtend: 'Vooral handig als ochtendstop.',
+                middag: 'Sterker als middaguitje.',
+                'hele dag': 'Kan een langere halve of hele dag dragen.',
+                flexibel: 'Werkt zowel kort als langer, afhankelijk van je route.'
+            };
+            const simpleLabels = {
+                strong: 'sterk',
+                medium: 'redelijk',
+                low: 'beperkt',
+                easy: 'makkelijk',
+                mixed: 'wisselend',
+                calm: 'rustiger',
+                lively: 'levendiger',
+                high: 'hoog'
+            };
+            if (item.time_of_day_fit && timeLabels[item.time_of_day_fit]) bullets.push(timeLabels[item.time_of_day_fit]);
+            if (item.rain_backup_quality) bullets.push(`Slechtweeroptie: ${simpleLabels[item.rain_backup_quality] || item.rain_backup_quality}.`);
+            if (item.buggy_friendliness) bullets.push(`Buggyvriendelijkheid: ${simpleLabels[item.buggy_friendliness] || item.buggy_friendliness}.`);
+            if (item.parking_ease) bullets.push(`Parkeren: ${simpleLabels[item.parking_ease] || item.parking_ease}.`);
+            if (item.food_fit) bullets.push(`Eten combineren: ${simpleLabels[item.food_fit] || item.food_fit}.`);
+            if (item.play_corner_quality) bullets.push(`Speelwaarde: ${simpleLabels[item.play_corner_quality] || item.play_corner_quality}.`);
+            if (item.toilet_confidence) bullets.push(`Sanitairvertrouwen: ${simpleLabels[item.toilet_confidence] || item.toilet_confidence}.`);
+            if (item.noise_level) bullets.push(`Prikkel-/geluidsniveau: ${simpleLabels[item.noise_level] || item.noise_level}.`);
+            return bullets.slice(0, 4);
+        }
+
+        function matchesPreset(loc) {
+            if (!activePreset) return true;
+            switch (activePreset) {
+                case 'rain':
+                    return ['indoor', 'hybrid', 'both'].includes(loc.weather) || loc.rain_backup_quality === 'strong';
+                case 'outdoor-coffee':
+                    return ['outdoor', 'hybrid', 'both'].includes(loc.weather) && !!loc.coffee;
+                case 'dreumesproof':
+                    return (loc.min_age === null || loc.min_age <= 1)
+                        && ((loc.max_age === null || loc.max_age >= 1) || !!loc.diaper || loc.buggy_friendliness === 'easy');
+                case 'peuterproof':
+                    return (loc.min_age === null || loc.min_age <= 4) && (loc.max_age === null || loc.max_age >= 2);
+                case 'lunch-play':
+                    return (loc.type === 'horeca' || loc.type === 'pancake' || !!loc.coffee)
+                        && (loc.play_corner_quality === 'strong' || !!loc.toddler_highlight || /speel|speelhoek|spelen/i.test(`${loc.description || ''} ${loc.toddler_highlight || ''}`));
+                case 'short-drive':
+                    return true;
+                default:
+                    return true;
+            }
+        }
+
+        function matchesPresetDistance(loc, travelInfo) {
+            if (activePreset !== 'short-drive') return true;
+            return !!travelInfo && travelInfo.distanceKm <= 10;
         }
 
         // === Card Rendering ===
@@ -1868,6 +2353,8 @@
                 if (item.coffee) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>Koffie</span>');
                 if (item.diaper) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5z"/><path d="M6 9.01V9"/></svg>Verschonen</span>');
                 if (item.alcohol) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 3h10v9a5 5 0 0 1-10 0V3z"/></svg>Alcohol</span>');
+                const reasons = getCardReasons(item, travelInfo);
+                const trustChips = getTrustChips(item);
 
                 const card = document.createElement('article');
                 card.className = 'loc-card reveal';
@@ -1893,6 +2380,10 @@
                     <h2 class="card-name">${escapeHtml(item.name)}${verifiedBadge}</h2>
                     <p class="card-desc">${escapeHtml(item.description || '')}</p>
                     ${highlight}
+                    ${trustChips.length ? `<div class="card-trust">${trustChips.map((chip) => `<span class="trust-chip ${chip.tone === 'positive' ? 'is-positive' : 'is-neutral'}">${escapeHtml(chip.label)}</span>`).join('')}</div>` : ''}
+                    <div class="card-reasons">
+                        ${reasons.map((reason) => `<div class="card-reason"><span class="card-reason-label">${escapeHtml(reason.label)}</span><span class="card-reason-value">${escapeHtml(reason.value)}</span></div>`).join('')}
+                    </div>
                     ${facilities.length ? `<div class="card-facilities">${facilities.join('')}</div>` : ''}
                     <div class="card-actions">
                         ${buildDetailUrl(item) ? `<a href="${buildDetailUrl(item)}" class="btn btn-detail">
@@ -1912,7 +2403,7 @@
                 container.appendChild(card);
                 const shareButton = card.querySelector('.btn-share');
                 if (shareButton) {
-                    shareButton.addEventListener('click', () => shareLocation(item.name, item.region || ''));
+                    shareButton.addEventListener('click', () => shareLocation(item));
                 }
             }
 
@@ -1934,8 +2425,12 @@
         }
 
         // === Share ===
-        function shareLocation(name, region) {
-            const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + (region ? ", " + region : ""))}`;
+        function shareLocation(itemOrName, region = '') {
+            const item = typeof itemOrName === 'object' ? itemOrName : null;
+            const name = item ? item.name : itemOrName;
+            const detailUrl = item ? buildDetailUrl(item) : null;
+            const shortlistUrl = item ? buildShortlistUrl([item.id]) : '';
+            const url = detailUrl ? `${window.location.origin}${detailUrl}` : (shortlistUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + (region ? ", " + region : ""))}`);
             const text = `Bekijk ${name} op PeuterPlannen: ${url}`;
             if (navigator.share) { navigator.share({ title: name, text: text, url: url }); }
             else { window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'); }
@@ -2350,11 +2845,15 @@
                 `<span class="age-range">${loc.min_age}-${loc.max_age} jaar</span>` : '';
             const highlight = loc.toddler_highlight ?
                 `<p class="card-highlight">${escapeHtml(loc.toddler_highlight)}</p>` : '';
+            const trustChips = getTrustChips(loc);
+            const trustBullets = getTrustBullets(loc);
+            const practicalBullets = getPracticalBullets(loc);
 
             const facilities = [];
             if (loc.coffee) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>Koffie</span>');
             if (loc.diaper) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5z"/><path d="M6 9.01V9"/></svg>Verschonen</span>');
             if (loc.alcohol) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 3h10v9a5 5 0 0 1-10 0V3z"/></svg>Alcohol</span>');
+            const reasons = getCardReasons(loc, userLocation && loc.lat && loc.lng ? { distanceKm: calculateDistance(userLocation.lat, userLocation.lng, loc.lat, loc.lng), distance: distancePill.replace(/<[^>]+>/g, '') } : null);
 
             const content = document.getElementById('loc-sheet-content');
             content.innerHTML = `
@@ -2372,6 +2871,14 @@
                 <h2 class="card-name">${escapeHtml(loc.name)}</h2>
                 <p class="card-desc">${escapeHtml(loc.description || '')}</p>
                 ${highlight}
+                ${trustChips.length ? `<div class="card-trust">${trustChips.map((chip) => `<span class="trust-chip ${chip.tone === 'positive' ? 'is-positive' : 'is-neutral'}">${escapeHtml(chip.label)}</span>`).join('')}</div>` : ''}
+                <div class="card-reasons">
+                    ${reasons.map((reason) => `<div class="card-reason"><span class="card-reason-label">${escapeHtml(reason.label)}</span><span class="card-reason-value">${escapeHtml(reason.value)}</span></div>`).join('')}
+                </div>
+                ${(trustBullets.length || practicalBullets.length) ? `<div class="sheet-trust">
+                    ${trustBullets.length ? `<section class="sheet-trust-card"><h3>Waarom we dit vertrouwen</h3><ul>${trustBullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join('')}</ul></section>` : ''}
+                    ${practicalBullets.length ? `<section class="sheet-trust-card"><h3>Handig om vooraf te weten</h3><ul>${practicalBullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join('')}</ul></section>` : ''}
+                </div>` : ''}
                 ${facilities.length ? `<div class="card-facilities">${facilities.join('')}</div>` : ''}
                 <div class="card-actions">
                     ${buildDetailUrl(loc) ? `<a href="${buildDetailUrl(loc)}" class="btn btn-detail">
@@ -2390,7 +2897,7 @@
             `;
             const shareButton = content.querySelector('.btn-share');
             if (shareButton) {
-                shareButton.addEventListener('click', () => shareLocation(loc.name, loc.region || ''));
+                shareButton.addEventListener('click', () => shareLocation(loc));
             }
 
             const overlay = document.getElementById('loc-overlay');
@@ -2444,6 +2951,8 @@
         }, { once: true });
 
         // Start loading data immediately
+        updateShortlistBar();
+        updateFilterCount();
         loadLocations();
         checkWeather();
 
