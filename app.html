@@ -1003,6 +1003,7 @@
             <span class="chip-label">Extra:</span>
             <button class="chip" onclick="toggleFacility('coffee', event)" aria-selected="false">Koffie</button>
             <button class="chip" onclick="toggleFacility('diaper', event)" aria-selected="false">Verschonen</button>
+            <button class="chip" onclick="toggleFacility('alcohol', event)" aria-selected="false">Alcohol</button>
             <span class="chip-label">Leeftijd:</span>
             <button class="chip" onclick="toggleAge('dreumes', event)" aria-selected="false">Dreumes (0–2)</button>
             <button class="chip" onclick="toggleAge('peuter', event)" aria-selected="false">Peuter (2–5)</button>
@@ -1330,7 +1331,7 @@
             }
             if (params.get('age')) activeAgeGroup = params.get('age');
         })();
-        let activeFacilities = { coffee: false, diaper: false };
+        let activeFacilities = { coffee: false, diaper: false, alcohol: false };
         let userLocation = null;
         let allLocations = [];
         let autocomplete;
@@ -1428,6 +1429,7 @@
             document.querySelectorAll('.chip').forEach(c => {
                 if (c.textContent.trim() === 'Koffie' && activeFacilities.coffee) c.classList.add('active');
                 if (c.textContent.trim() === 'Verschonen' && activeFacilities.diaper) c.classList.add('active');
+                if (c.textContent.trim() === 'Alcohol' && activeFacilities.alcohol) c.classList.add('active');
                 if (c.textContent.trim() === 'Dreumes (0–2)' && activeAgeGroup === 'dreumes') c.classList.add('active');
                 if (c.textContent.trim() === 'Peuter (2–5)' && activeAgeGroup === 'peuter') c.classList.add('active');
                 if (activeRadius && c.classList.contains('radius-chip') && c.textContent.trim() === `${activeRadius} km`) c.classList.add('active');
@@ -1454,6 +1456,7 @@
             if (activeWeather) count++;
             if (activeFacilities.coffee) count++;
             if (activeFacilities.diaper) count++;
+            if (activeFacilities.alcohol) count++;
             if (activeAgeGroup) count++;
             if (activeRadius) count++;
             const bar = document.getElementById('active-filters');
@@ -1501,7 +1504,7 @@
         function resetAllFilters() {
             activeTag = 'all';
             activeWeather = null;
-            activeFacilities = { coffee: false, diaper: false };
+            activeFacilities = { coffee: false, diaper: false, alcohol: false };
             activeAgeGroup = null;
             activeRadius = null;
             activeSort = 'default';
@@ -1697,6 +1700,7 @@
                 if (activeWeather) { if (activeWeather === "indoor") url += "&weather=in.(indoor,hybrid,both)"; else if (activeWeather === "outdoor") url += "&weather=in.(outdoor,hybrid,both)"; else url += "&weather=eq." + activeWeather; }
                 if (activeFacilities.coffee) url += "&coffee=eq.true";
                 if (activeFacilities.diaper) url += "&diaper=eq.true";
+                if (activeFacilities.alcohol) url += "&alcohol=eq.true";
                 if (activeRegion) url += "&region=eq." + encodeURIComponent(activeRegion);
                 url += "&order=created_at.desc";
                 allLocations = await fetchAllPages(url, currentAbort.signal);
@@ -1986,7 +1990,7 @@
                 if (view === 'favorites') { activeTag = 'favorites'; loadLocations(); }
                 else if (view === 'info') { openInfoPanel(); }
                 else if (view === 'home') {
-                    activeTag = 'all'; activeWeather = null; activeFacilities = { coffee: false, diaper: false };
+                    activeTag = 'all'; activeWeather = null; activeFacilities = { coffee: false, diaper: false, alcohol: false };
                     activeAgeGroup = null; activeRadius = null;
                     document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
                     document.querySelector('.chip').classList.add('active');
@@ -2005,7 +2009,7 @@
                 case 'home':
                     activeTag = 'all';
                     activeWeather = null;
-                    activeFacilities = { coffee: false, diaper: false };
+                    activeFacilities = { coffee: false, diaper: false, alcohol: false };
                     document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
                     document.querySelector('.chip').classList.add('active');
                     updateFilterCount();
