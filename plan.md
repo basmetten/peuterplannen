@@ -1926,7 +1926,7 @@ Update deze sectie na het afronden van elke fase:
 | 11 | Data integriteit | `DONE` | 2026-03-13 |
 | 12 | SEO graduatiesysteem | `DONE` | 2026-03-13 |
 | 13 | Partner conversie-funnel | `DONE` | 2026-03-13 |
-| 14 | Incremental builds | `TODO` | |
-| 15 | Documentatie & bus factor | `TODO` | |
+| 14 | Incremental builds | `DONE` | 2026-03-13 |
+| 15 | Documentatie & bus factor | `DONE` | 2026-03-13 |
 | 16 | CI/CD hardening | `TODO` | |
 | 17 | Final cleanup & merge | `TODO` | |
