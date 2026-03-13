@@ -570,7 +570,7 @@ function redirectLocationPageHTML(loc, regionSlug, locSlug) {
 </html>`;
 }
 
-function generateLocationPages(data) {
+function generateLocationPages(data, onlyLocationIds) {
   const { regions, locations, total } = data;
   const regionMap = {};
   const byId = new Map();
@@ -592,6 +592,13 @@ function generateLocationPages(data) {
   for (const [rSlug, locs] of Object.entries(regionGroups)) {
     const regionBase = regionMap[rSlug] || { name: locs[0]?.region || rSlug, slug: rSlug, blurb: '' };
     const region = { ...regionBase, subtitleLabel: subtitleLabelMap[rSlug] };
+
+    // In incremental mode, skip regions that have no changed locations
+    if (onlyLocationIds) {
+      const hasChanged = locs.some(loc => onlyLocationIds.has(Number(loc.id)));
+      if (!hasChanged) continue;
+    }
+
     const expectedSlugs = new Set(locs.map((loc) => loc.locSlug));
 
     // Create region directory
@@ -599,6 +606,9 @@ function generateLocationPages(data) {
     if (!fs.existsSync(regionDir)) fs.mkdirSync(regionDir, { recursive: true });
 
     for (const loc of locs) {
+      // In incremental mode, only regenerate changed locations
+      if (onlyLocationIds && !onlyLocationIds.has(Number(loc.id))) continue;
+
       let html;
 
       if (loc.seoTierResolved === 'alias') {
@@ -627,21 +637,26 @@ function generateLocationPages(data) {
       fs.writeFileSync(path.join(locDir, 'index.html'), html);
     }
 
-    for (const entry of fs.readdirSync(regionDir, { withFileTypes: true })) {
-      if (!entry.isDirectory()) continue;
-      if (expectedSlugs.has(entry.name)) continue;
-      const staleDir = path.join(regionDir, entry.name);
-      const staleIndex = path.join(staleDir, 'index.html');
-      if (fs.existsSync(staleIndex)) {
-        fs.rmSync(staleDir, { recursive: true, force: true });
+    // Only clean up stale directories during full builds
+    if (!onlyLocationIds) {
+      for (const entry of fs.readdirSync(regionDir, { withFileTypes: true })) {
+        if (!entry.isDirectory()) continue;
+        if (expectedSlugs.has(entry.name)) continue;
+        const staleDir = path.join(regionDir, entry.name);
+        const staleIndex = path.join(staleDir, 'index.html');
+        if (fs.existsSync(staleIndex)) {
+          fs.rmSync(staleDir, { recursive: true, force: true });
+        }
       }
     }
   }
 
-  // Write runtime location manifest for support-tier locations
-  const outputDir = path.join(ROOT, 'output');
-  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
-  fs.writeFileSync(path.join(outputDir, 'runtime-location-map.json'), JSON.stringify(runtimeLocationMap, null, 2));
+  // Write runtime location manifest for support-tier locations (always, for consistency)
+  if (!onlyLocationIds) {
+    const outputDir = path.join(ROOT, 'output');
+    if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+    fs.writeFileSync(path.join(outputDir, 'runtime-location-map.json'), JSON.stringify(runtimeLocationMap, null, 2));
+  }
 
   const totalCount = staticCount + redirectCount;
   console.log(`Generated ${staticCount} static + ${redirectCount} redirect location pages (${totalCount} total)`);

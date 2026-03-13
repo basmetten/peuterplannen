@@ -261,10 +261,11 @@ ${analyticsHTML()}
 </html>`;
 }
 
-function generateCityPages(data) {
+function generateCityPages(data, onlyRegionSlugs) {
   const { regions, locations, seoContent } = data;
 
   for (const region of regions) {
+    if (onlyRegionSlugs && !onlyRegionSlugs.has(region.slug)) continue;
     const locs = selectHubLocations(locations.filter(l => l.region === region.name));
     const html = generateCityPage(region, locs, regions, seoContent, data.total);
     const outPath = path.join(ROOT, `${region.slug}.html`);

@@ -138,4 +138,19 @@ async function fetchData() {
   return { regions, locations, locationAliases, editorialPages, gscSnapshots, regionCounts, typeCounts, total: locations.length };
 }
 
-module.exports = { fetchJSON, fetchAllJSON, fetchData, FALLBACK_REGIONS };
+async function fetchPublishState() {
+  if (FIXTURE_MODE) return null;
+  try {
+    const rows = await fetchJSON(
+      'site_publish_state',
+      'id=eq.1&select=dirty,pending_count,changed_location_ids,changed_region_slugs,changed_editorial_slugs,last_published_at'
+    );
+    return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
+  } catch (err) {
+    if (err.status === 404) return null;
+    console.warn('Warning: could not fetch publish state:', err.message);
+    return null;
+  }
+}
+
+module.exports = { fetchJSON, fetchAllJSON, fetchData, fetchPublishState, FALLBACK_REGIONS };

@@ -1587,7 +1587,7 @@ Conversion event tracking throughout partner signup flow."
 ---
 
 ## FASE 14: INCREMENTAL BUILDS
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Opus (architectuur) + Sonnet (implementatie)
 **Geschatte duur:** 4-6 uur
 **Doel:** Build alleen de pagina's die veranderd zijn

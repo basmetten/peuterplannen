@@ -147,7 +147,7 @@ jobs:
             exit 0
           fi
 
-          payload="$(jq -nc --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg ref "$(git rev-parse HEAD)" '{dirty:false,pending_count:0,last_published_at:$ts,last_publish_ref:$ref,updated_at:$ts}')"
+          payload="$(jq -nc --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg ref "$(git rev-parse HEAD)" '{dirty:false,pending_count:0,changed_location_ids:[],changed_region_slugs:[],changed_editorial_slugs:[],last_published_at:$ts,last_publish_ref:$ref,updated_at:$ts}')"
 
           curl -sS -f -X PATCH \
             -H "apikey: ${SUPABASE_SERVICE_KEY}" \
