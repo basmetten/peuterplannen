@@ -988,6 +988,15 @@ Changes are pushed to staging branch first, then merged to main
 via PR. Provides review opportunity before production deployment."
 ```
 
+### Wat daadwerkelijk geïmplementeerd is (Route 2 + productie-switch):
+- **CF Pages project** `peuterplannen.pages.dev` voor branch previews (Direct Upload)
+- **Productie** blijft via Cloudflare Worker (`wrangler deploy`), niet CF Pages
+- **sync-site.yml**: geen HTML meer committen naar git; bouwt en deployt via `wrangler deploy`
+- **preview.yml**: nieuw workflow — push naar feature branch → automatische preview op CF Pages
+- **push trigger**: push naar main triggert automatisch een build + deploy
+- **deploy_live.sh**: vereenvoudigd naar build + `wrangler deploy`
+- GitHub secrets: `CLOUDFLARE_API_KEY`, `CLOUDFLARE_EMAIL`, `CLOUDFLARE_ACCOUNT_ID`
+
 ---
 
 ## FASE 8: MONITORING & OBSERVABILITY
