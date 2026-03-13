@@ -1755,7 +1755,7 @@ expected range to catch runaway generation or broken builds."
 ---
 
 ## FASE 17: FINAL CLEANUP & MERGE
-**Status:** `IN_PROGRESS`
+**Status:** `DONE`
 **Agent:** Sonnet (review) + Haiku (cleanup)
 **Geschatte duur:** 1 uur
 **Doel:** Review, cleanup, en merge naar main
