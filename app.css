@@ -1,34 +1,4 @@
-        :root {
-            --primary: #D4775A;
-            --primary-light: #FDF1ED;
-            --primary-dark: #B35D42;
-            --accent: #E8B870;
-            --accent-light: #FEF6E8;
-            --secondary: #6B9590;
-            --bg: #FAF7F2;
-            --bg-warm: #FFF5EB;
-            --surface: #FFFFFF;
-            --text: #2D2926;
-            --text-secondary: #7A5E60;
-            --text-muted: #A39490;
-            --gold: #E8B870;
-            --gold-text: #7A5028;
-            --success: #6B9590;
-            --shadow-sm: 0 1px 3px rgba(45, 41, 38, 0.08);
-            --shadow-md: 0 4px 12px rgba(45, 41, 38, 0.10);
-            --shadow-lg: 0 8px 30px rgba(45, 41, 38, 0.12);
-            --shadow-hover: 0 12px 40px rgba(45, 41, 38, 0.15);
-            --radius-xs: 10px;
-            --radius-sm: 14px;
-            --radius-md: 18px;
-            --radius-lg: 24px;
-            --radius-pill: 999px;
-            --font-heading: 'Familjen Grotesk', 'Plus Jakarta Sans', sans-serif;
-            --font-ui: 'Plus Jakarta Sans', sans-serif;
-            --font-body: 'DM Sans', -apple-system, sans-serif;
-            --safe-bottom: env(safe-area-inset-bottom, 20px);
-            --radius: 16px;
-        }
+        /* Tokens are defined in design-system.css — loaded before this file */
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         html { height: 100%; overflow-x: hidden; overscroll-behavior: none; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }

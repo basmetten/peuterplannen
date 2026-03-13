@@ -130,6 +130,7 @@ function supportHTML(variant = 'default', count = 0) {
 }
 
 function headCommon(extra = '') {
+  const dsHref = `/design-system.css?v=${ASSET_VERSION}`;
   const styleHref = `/style.min.css?v=${ASSET_VERSION}`;
   const navCssHref = `/nav-floating.css?v=${ASSET_VERSION}`;
   const navJsHref = `/nav-floating.js?v=${ASSET_VERSION}`;
@@ -145,10 +146,12 @@ function headCommon(extra = '') {
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="preload" href="/design-system.css" as="style">
   <link rel="preload" href="/style.min.css" as="style">
   <link rel="preload" href="/fonts/familjen-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="${dsHref}">
   <link rel="stylesheet" href="${styleHref}">
   <style>${CRITICAL_EDITORIAL_GUIDE_CSS}</style>
   <link rel="stylesheet" href="${navCssHref}">
@@ -160,6 +163,7 @@ function rewriteAssetVersions(filePath) {
   if (!fs.existsSync(filePath)) return;
   let html = fs.readFileSync(filePath, 'utf8');
   const replacements = [
+    [/\/design-system\.css(?:\?v=[^"]*)?/g, `/design-system.css?v=${ASSET_VERSION}`],
     [/\/style\.min\.css(?:\?v=[^"]*)?/g, `/style.min.css?v=${ASSET_VERSION}`],
     [/\/nav-floating\.css(?:\?v=[^"]*)?/g, `/nav-floating.css?v=${ASSET_VERSION}`],
     [/\/nav-floating\.js(?:\?v=[^"]*)?/g, `/nav-floating.js?v=${ASSET_VERSION}`],

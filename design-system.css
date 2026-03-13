@@ -1,0 +1,344 @@
+/* ============================================================
+   PeuterPlannen Design System
+   Single source of truth for all design tokens & shared utilities.
+   Load this BEFORE any page-specific stylesheet.
+   ============================================================ */
+
+:root {
+  /* === Colors — Primary === */
+  --pp-primary: #D4775A;
+  --pp-primary-light: #FDF1ED;
+  --pp-primary-dark: #B35D42;
+  --pp-primary-hover: #C46A4F;
+
+  /* === Colors — Accent (gold) === */
+  --pp-accent: #E8B870;
+  --pp-accent-light: #FEF6E8;
+  --pp-accent-dark: #C49A52;
+
+  /* === Colors — Secondary (teal) === */
+  --pp-secondary: #6B9590;
+  --pp-secondary-light: #E8F2F0;
+  --pp-secondary-dark: #4A7A76;
+
+  /* === Colors — Feedback === */
+  --pp-success: #2D8B5E;
+  --pp-success-bg: #E8F5EF;
+  --pp-error: #C0392B;
+  --pp-error-bg: #FDEDED;
+  --pp-info: #2F586F;
+  --pp-info-bg: #EAF2F7;
+
+  /* === Surfaces === */
+  --pp-bg: #FAF7F2;
+  --pp-bg-warm: #FFF5EB;
+  --pp-bg-cream: #FFF5EB;
+  --pp-surface: #FFFFFF;
+  --pp-surface-hover: #FEFCF9;
+  --pp-border: rgba(212, 119, 90, 0.15);
+  --pp-border-strong: rgba(212, 119, 90, 0.3);
+
+  /* === Text === */
+  --pp-text: #2D2926;
+  --pp-text-secondary: #5C4A48;
+  --pp-text-muted: #A39490;
+  --pp-text-inverse: #FFFFFF;
+
+  /* === Typography === */
+  --pp-font-heading: 'Familjen Grotesk', 'Plus Jakarta Sans', sans-serif;
+  --pp-font-ui: 'Plus Jakarta Sans', sans-serif;
+  --pp-font-body: 'DM Sans', -apple-system, sans-serif;
+
+  --pp-text-xs: 0.75rem;       /* 12px */
+  --pp-text-sm: 0.8125rem;     /* 13px */
+  --pp-text-base: 0.9375rem;   /* 15px */
+  --pp-text-lg: 1.125rem;      /* 18px */
+  --pp-text-xl: 1.375rem;      /* 22px */
+  --pp-text-2xl: 1.75rem;      /* 28px */
+  --pp-text-3xl: 2.25rem;      /* 36px */
+
+  /* === Spacing === */
+  --pp-space-xs: 4px;
+  --pp-space-sm: 8px;
+  --pp-space-md: 16px;
+  --pp-space-lg: 24px;
+  --pp-space-xl: 32px;
+  --pp-space-2xl: 48px;
+
+  /* === Shadows === */
+  --pp-shadow-sm: 0 1px 3px rgba(45, 41, 38, 0.08);
+  --pp-shadow-md: 0 4px 12px rgba(45, 41, 38, 0.10);
+  --pp-shadow-lg: 0 8px 30px rgba(45, 41, 38, 0.12);
+  --pp-shadow-hover: 0 12px 40px rgba(45, 41, 38, 0.15);
+
+  /* === Borders === */
+  --pp-radius-xs: 8px;
+  --pp-radius-sm: 12px;
+  --pp-radius-md: 16px;
+  --pp-radius-lg: 22px;
+  --pp-radius-xl: 28px;
+  --pp-radius-pill: 999px;
+
+  /* === Transitions === */
+  --pp-transition: 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  --pp-transition-slow: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* === Layout === */
+  --pp-max-width: 1200px;
+  --pp-content-width: 720px;
+  --pp-app-width: 540px;
+  --pp-safe-bottom: env(safe-area-inset-bottom, 20px);
+
+  /* === Map type colors === */
+  --pp-type-play: #52B788;
+  --pp-type-farm: #8B6F47;
+  --pp-type-nature: #2D6A4F;
+  --pp-type-museum: #7B2D8B;
+  --pp-type-culture: #5B3F8B;
+  --pp-type-swim: #2196F3;
+  --pp-type-pancake: #E9C46A;
+  --pp-type-horeca: #E76F51;
+
+  /* === Backward-compatible aliases ===
+     These map unprefixed vars (used in style.css, app.css, nav-floating.css)
+     to the canonical --pp-* tokens. This allows existing CSS to keep working
+     while we centralize the token definitions here. */
+  --primary: var(--pp-primary);
+  --primary-light: var(--pp-primary-light);
+  --primary-dark: var(--pp-primary-dark);
+  --accent: var(--pp-accent);
+  --accent-light: var(--pp-accent-light);
+  --secondary: var(--pp-secondary);
+  --secondary-light: var(--pp-secondary-light);
+  --navy: var(--pp-text);
+  --navy-light: var(--pp-text-secondary);
+  --gold: var(--pp-accent);
+  --gold-text: #7A5028;
+  --bg: var(--pp-bg);
+  --bg-cream: var(--pp-bg-cream);
+  --bg-warm: var(--pp-bg-warm);
+  --surface: var(--pp-surface);
+  --text: var(--pp-text);
+  --text-secondary: var(--pp-text-secondary);
+  --text-muted: var(--pp-text-muted);
+  --success: var(--pp-secondary);
+  --card-shadow: var(--pp-shadow-md);
+  --font-heading: var(--pp-font-heading);
+  --font-ui: var(--pp-font-ui);
+  --font-body: var(--pp-font-body);
+  --shadow-sm: var(--pp-shadow-sm);
+  --shadow-md: var(--pp-shadow-md);
+  --shadow-lg: var(--pp-shadow-lg);
+  --shadow-hover: var(--pp-shadow-hover);
+  --radius-xs: 10px;
+  --radius-sm: 14px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+  --radius: var(--pp-radius-md);
+  --safe-bottom: var(--pp-safe-bottom);
+  --ink: var(--pp-text);
+  --ink-light: var(--pp-text-secondary);
+}
+
+/* === Buttons === */
+.pp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--pp-radius-xs);
+  font-family: var(--pp-font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--pp-transition), box-shadow var(--pp-transition), transform var(--pp-transition);
+}
+.pp-btn:active { transform: translateY(1px); }
+.pp-btn[disabled] { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+.pp-btn-primary {
+  background: var(--pp-text);
+  color: var(--pp-text-inverse);
+}
+.pp-btn-primary:hover:not([disabled]) {
+  box-shadow: 0 8px 20px rgba(45, 41, 38, 0.22);
+}
+
+.pp-btn-accent {
+  background: var(--pp-primary);
+  color: var(--pp-text-inverse);
+}
+.pp-btn-accent:hover:not([disabled]) {
+  background: var(--pp-primary-dark);
+  box-shadow: 0 4px 16px rgba(212, 119, 90, 0.35);
+}
+
+.pp-btn-secondary {
+  background: transparent;
+  border: 1px solid var(--pp-border);
+  color: var(--pp-text);
+}
+.pp-btn-secondary:hover:not([disabled]) {
+  background: var(--pp-surface);
+  border-color: var(--pp-border-strong);
+}
+
+.pp-btn-ghost {
+  background: transparent;
+  color: var(--pp-text-secondary);
+}
+.pp-btn-ghost:hover:not([disabled]) {
+  background: rgba(45, 41, 38, 0.05);
+  color: var(--pp-text);
+}
+
+/* === Cards === */
+.pp-card {
+  background: var(--pp-surface);
+  border: 1px solid var(--pp-border);
+  border-radius: var(--pp-radius-md);
+  box-shadow: var(--pp-shadow-sm);
+  padding: 22px;
+}
+
+.pp-card-interactive {
+  transition: transform var(--pp-transition), box-shadow var(--pp-transition);
+}
+.pp-card-interactive:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--pp-shadow-hover);
+}
+
+/* === Badges === */
+.pp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--pp-radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* === Chips / Tags === */
+.pp-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: var(--pp-radius-pill);
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--pp-border);
+  background: transparent;
+  color: var(--pp-text-muted);
+  cursor: pointer;
+  transition: background var(--pp-transition), color var(--pp-transition), border-color var(--pp-transition);
+}
+.pp-chip:hover {
+  border-color: var(--pp-border-strong);
+  color: var(--pp-text);
+}
+.pp-chip-active,
+.pp-chip.active {
+  background: var(--pp-text);
+  color: var(--pp-text-inverse);
+  border-color: var(--pp-text);
+}
+
+/* === Form elements === */
+.pp-input,
+.pp-select,
+.pp-textarea {
+  width: 100%;
+  border: 1px solid var(--pp-border);
+  background: var(--pp-surface);
+  border-radius: 10px;
+  color: var(--pp-text);
+  font-family: var(--pp-font-body);
+  font-size: 14px;
+  padding: 11px 12px;
+  outline: none;
+  transition: border-color var(--pp-transition), box-shadow var(--pp-transition);
+}
+.pp-input:focus,
+.pp-select:focus,
+.pp-textarea:focus {
+  border-color: var(--pp-primary);
+  box-shadow: 0 0 0 3px rgba(212, 119, 90, 0.16);
+}
+.pp-textarea { min-height: 88px; resize: vertical; }
+
+/* === Location card (reusable across city, type, and cluster pages) === */
+.pp-location-card {
+  background: var(--pp-surface);
+  border-radius: 14px;
+  padding: 20px 22px;
+  box-shadow: var(--pp-shadow-sm), var(--pp-shadow-md);
+  border: 1px solid var(--pp-border);
+  transition: transform var(--pp-transition), box-shadow var(--pp-transition);
+  position: relative;
+  overflow: hidden;
+}
+.pp-location-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(45, 41, 38, 0.06), var(--pp-shadow-hover);
+}
+.pp-location-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--pp-primary), var(--pp-accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+  border-radius: 14px 14px 0 0;
+}
+.pp-location-card:hover::before { transform: scaleX(1); }
+
+/* === Motion — shared keyframes === */
+@keyframes pp-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pp-scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes pp-slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Staggered fade-up for lists and grids */
+.pp-stagger > * {
+  opacity: 0;
+  animation: pp-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.pp-stagger > *:nth-child(1) { animation-delay: 0s; }
+.pp-stagger > *:nth-child(2) { animation-delay: 0.06s; }
+.pp-stagger > *:nth-child(3) { animation-delay: 0.12s; }
+.pp-stagger > *:nth-child(4) { animation-delay: 0.18s; }
+.pp-stagger > *:nth-child(5) { animation-delay: 0.24s; }
+.pp-stagger > *:nth-child(6) { animation-delay: 0.30s; }
+.pp-stagger > *:nth-child(n+7) { animation-delay: 0.36s; }
+
+/* Accessibility: disable all motion for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .pp-stagger > *,
+  .pp-location-card,
+  .pp-card-interactive,
+  .pp-chip,
+  .pp-btn {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
