@@ -21,7 +21,7 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -124,44 +124,19 @@ jobs:
           set -euo pipefail
           node .scripts/audit_seo_quality.js --strict
 
-      - name: Deploy to Cloudflare Pages (production)
+      - name: Deploy to Cloudflare Worker (production)
         if: steps.gate.outputs.run_build == 'true'
         env:
           CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          npx wrangler pages deploy . --project-name=peuterplannen --branch=main --commit-dirty=true
-
-      - name: Commit and push when build changed files
-        if: steps.gate.outputs.run_build == 'true'
-        id: publish
-        run: |
-          set -euo pipefail
-
-          git config user.name "PeuterPlannen Bot"
-          git config user.email "bot@peuterplannen.nl"
-
-          git add -A
-
-          if git diff --cached --quiet; then
-            echo "pushed=false" >> "$GITHUB_OUTPUT"
-            echo "publish_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          git commit -m "Auto-sync: update data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          git push
-
-          echo "pushed=true" >> "$GITHUB_OUTPUT"
-          echo "publish_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+        run: npx wrangler deploy
 
       - name: Mark publish state clean
         if: steps.gate.outputs.run_build == 'true'
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-          PUBLISH_REF: ${{ steps.publish.outputs.publish_ref }}
         run: |
           set -euo pipefail
 
@@ -170,7 +145,7 @@ jobs:
             exit 0
           fi
 
-          payload="$(jq -nc --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg ref "${PUBLISH_REF}" '{dirty:false,pending_count:0,last_published_at:$ts,last_publish_ref:$ref,updated_at:$ts}')"
+          payload="$(jq -nc --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg ref "$(git rev-parse HEAD)" '{dirty:false,pending_count:0,last_published_at:$ts,last_publish_ref:$ref,updated_at:$ts}')"
 
           curl -sS -f -X PATCH \
             -H "apikey: ${SUPABASE_SERVICE_KEY}" \
