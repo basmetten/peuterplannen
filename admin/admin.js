@@ -18,11 +18,62 @@ const TABS = [
   'tab-insights',
   'tab-editlog',
 ];
-const PRICE_BANDS = ['', 'free', 'low', 'mid', 'high'];
-const TIME_OF_DAY_OPTIONS = ['', 'ochtend', 'middag', 'hele dag', 'flexibel'];
-const VERIFICATION_MODES = ['', 'editorial', 'partner', 'parent_signal', 'web_verified', 'phone_verified', 'visit_verified'];
-const SEO_TIERS = ['auto', 'index', 'support', 'alias'];
-const WEATHER_OPTIONS = ['', 'indoor', 'outdoor', 'hybrid', 'both'];
+const PRICE_BANDS = [
+  { value: '', label: '—' },
+  { value: 'free', label: 'Gratis' },
+  { value: 'low', label: 'Laag' },
+  { value: 'mid', label: 'Middenklasse' },
+  { value: 'high', label: 'Hoog' },
+];
+const TIME_OF_DAY_OPTIONS = [
+  { value: '', label: '—' },
+  { value: 'ochtend', label: 'Ochtend' },
+  { value: 'middag', label: 'Middag' },
+  { value: 'hele dag', label: 'Hele dag' },
+  { value: 'flexibel', label: 'Flexibel' },
+];
+const VERIFICATION_MODES = [
+  { value: '', label: '—' },
+  { value: 'editorial', label: 'Redactie' },
+  { value: 'partner', label: 'Partner' },
+  { value: 'parent_signal', label: 'Oudersignaal' },
+  { value: 'web_verified', label: 'Website gecontroleerd' },
+  { value: 'phone_verified', label: 'Telefonisch gecontroleerd' },
+  { value: 'visit_verified', label: 'Ter plekke gecontroleerd' },
+];
+const SEO_TIERS = [
+  { value: 'auto', label: 'Automatisch' },
+  { value: 'index', label: 'Actief vindbaar' },
+  { value: 'support', label: 'Alleen ondersteunend' },
+  { value: 'alias', label: 'Doorverwijzing' },
+];
+const WEATHER_OPTIONS = [
+  { value: '', label: '—' },
+  { value: 'indoor', label: 'Binnen' },
+  { value: 'outdoor', label: 'Buiten' },
+  { value: 'hybrid', label: 'Gemengd' },
+  { value: 'both', label: 'Binnen en buiten' },
+];
+const EDITORIAL_PAGE_TYPES = [
+  { value: '', label: '—' },
+  { value: 'discover_hub', label: 'Ontdekken-pagina' },
+  { value: 'methodology_page', label: 'Methodologiepagina' },
+  { value: 'region_hub', label: 'Regiopagina' },
+  { value: 'type_hub', label: 'Type-pagina' },
+  { value: 'cluster_hub', label: 'Themapagina' },
+  { value: 'blog_index', label: 'Blogoverzicht' },
+  { value: 'blog_article', label: 'Blogartikel' },
+  { value: 'location_detail_override', label: 'Locatiedetail' },
+];
+const ADVANCED_TABS = new Set([
+  'tab-locations',
+  'tab-seo',
+  'tab-editorial',
+  'tab-duplicates',
+  'tab-claims',
+  'tab-owners',
+  'tab-editlog',
+]);
 
 const supabase = createClient(SB_URL, SB_ANON);
 
@@ -40,6 +91,8 @@ const state = {
   selectedLocationId: null,
   selectedLocation: null,
   editorialPageId: null,
+  dashboardStats: null,
+  publishState: null,
 };
 
 const $ = (id) => document.getElementById(id);
@@ -73,6 +126,11 @@ function fmtDateTime(iso) {
   });
 }
 
+function safeText(value, fallback = '-') {
+  if (value === null || value === undefined || value === '') return fallback;
+  return String(value);
+}
+
 function setSignedInChrome(email) {
   $('nav-user').textContent = email;
   $('nav-user').classList.remove('hidden');
@@ -100,7 +158,11 @@ function normalizeOtpField(fieldId) {
 function setSelectOptions(selectId, options) {
   const select = $(selectId);
   if (!select) return;
-  select.innerHTML = options.map((value) => `<option value="${escapeAttr(value)}">${escapeHtml(value || '—')}</option>`).join('');
+  select.innerHTML = options.map((option) => {
+    const value = typeof option === 'object' ? option.value : option;
+    const label = typeof option === 'object' ? option.label : (option || '—');
+    return `<option value="${escapeAttr(value)}">${escapeHtml(label)}</option>`;
+  }).join('');
 }
 
 function markStatsLoading() {
@@ -110,6 +172,63 @@ function markStatsLoading() {
     el.textContent = '...';
     el.classList.add('is-loading');
   });
+}
+
+function describeNextStep() {
+  const stats = state.dashboardStats;
+  if (!stats) {
+    return 'Ik verzamel eerst de backlog, zodat ik kan aangeven wat nu de slimste volgende stap is.';
+  }
+  if (Number(stats.pending_observations || 0) > 0) {
+    return `Begin met de te controleren signalen. Daar staan nu ${Number(stats.pending_observations)} voorstellen klaar die de zichtbare informatie kunnen verbeteren.`;
+  }
+  if (Number(stats.open_quality_tasks || 0) > 0) {
+    return `Werk een aandachtspunt weg. Er staan nu ${Number(stats.open_quality_tasks)} open punten klaar voor inhoud, trust of vindbaarheid.`;
+  }
+  if (Number(stats.pending_claims || 0) > 0) {
+    return `Controleer de open claims. Er wachten nu ${Number(stats.pending_claims)} aanvragen op een beslissing.`;
+  }
+  return 'De directe backlog is rustig. Pak nu een toplocatie of belangrijke pagina op en verbeter de inhoud of vindbaarheid.';
+}
+
+function updateWorkbench() {
+  const nextStep = $('workbench-next-step-copy');
+  const selectedLocation = $('workbench-selected-location');
+  const publishState = $('workbench-publish-state');
+  if (nextStep) nextStep.textContent = describeNextStep();
+
+  if (selectedLocation) {
+    if (state.selectedLocation) {
+      const location = state.selectedLocation;
+      selectedLocation.textContent = `${location.name}${location.region ? ` · ${location.region}` : ''}${location.seo_primary_locality ? ` · ${location.seo_primary_locality}` : ''}. Tier ${location.seo_tier || 'auto'}, bron ${location.verification_mode || 'onbekend'}.`;
+    } else {
+      selectedLocation.textContent = 'Nog geen locatie gekozen. Open eerst een locatie vanuit Alle locaties of vanuit de prioriteitenrij.';
+    }
+  }
+
+  const hasLocation = Boolean(state.selectedLocationId);
+  ['workbench-open-selected-content-btn', 'workbench-open-selected-seo-btn', 'workbench-open-selected-editorial-btn'].forEach((id) => {
+    const button = $(id);
+    if (button) button.disabled = !hasLocation;
+  });
+
+  if (publishState) {
+    if (state.publishState?.dirty) {
+      publishState.textContent = `Er staan ${Number(state.publishState.pending_count || 0)} wijzigingen klaar om live te zetten.`;
+    } else if (state.publishState) {
+      publishState.textContent = 'De site staat op dit moment schoon en live.';
+    } else {
+      publishState.textContent = 'Ik controleer of er wijzigingen klaarstaan om live te zetten.';
+    }
+  }
+}
+
+function setAdvancedToolsVisible(visible) {
+  const advancedSection = $('advanced-admin-group');
+  const advancedToggle = $('toggle-advanced-tools');
+  if (advancedSection) advancedSection.classList.toggle('hidden', !visible);
+  if (advancedToggle) advancedToggle.checked = visible;
+  localStorage.setItem('ppAdminAdvancedTools', visible ? '1' : '0');
 }
 
 async function api(action, params = {}) {
@@ -240,7 +359,7 @@ async function bootstrapDashboard() {
   setSelectOptions('field-location-verification-mode', VERIFICATION_MODES);
   setSelectOptions('field-location-weather', WEATHER_OPTIONS);
   setSelectOptions('field-seo-tier', SEO_TIERS);
-  setSelectOptions('editorial-page-type', ['', 'discover_hub', 'methodology_page', 'region_hub', 'type_hub', 'cluster_hub', 'blog_index', 'blog_article', 'location_detail_override']);
+  setSelectOptions('editorial-page-type', EDITORIAL_PAGE_TYPES);
   setSelectOptions('editorial-status', ['draft', 'published', 'archived']);
   setSelectOptions('observation-status-filter', ['pending', 'approved', 'rejected', 'applied']);
   await loadStats();
@@ -277,6 +396,7 @@ async function handleLogout() {
 }
 
 async function switchTab(tabId) {
+  if (ADVANCED_TABS.has(tabId)) setAdvancedToolsVisible(true);
   TABS.forEach((id) => {
     const tabSection = $(id);
     const button = document.querySelector(`[data-tab-target="${id}"]`);
@@ -304,6 +424,7 @@ async function switchTab(tabId) {
 async function loadStats() {
   try {
     const stats = await api('get_stats');
+    state.dashboardStats = stats;
     $('stat-pending').textContent = stats.pending_claims ?? 0;
     $('stat-subs').textContent = stats.active_subs ?? 0;
     $('stat-edits').textContent = stats.edits_last_7days ?? 0;
@@ -311,6 +432,7 @@ async function loadStats() {
     $('stat-observations').textContent = stats.pending_observations ?? 0;
     $('stat-tasks').textContent = stats.open_quality_tasks ?? 0;
     ['stat-pending', 'stat-subs', 'stat-edits', 'stat-owners', 'stat-observations', 'stat-tasks'].forEach((id) => $(id).classList.remove('is-loading'));
+    updateWorkbench();
   } catch (error) {
     console.error('loadStats failed', error);
     ['stat-pending', 'stat-subs', 'stat-edits', 'stat-owners', 'stat-observations', 'stat-tasks'].forEach((id) => {
@@ -319,6 +441,8 @@ async function loadStats() {
       el.textContent = '—';
       el.classList.remove('is-loading');
     });
+    state.dashboardStats = null;
+    updateWorkbench();
     PortalShell.setAlert('overview-alert', 'Dashboard laden mislukt. Vernieuw de pagina of log opnieuw in.', 'error', { assertive: true });
   }
 }
@@ -570,7 +694,7 @@ async function onLocationsTableChange(event) {
 
 function renderLocationSummaries(location) {
   const summaryHtml = location
-    ? `<strong>${escapeHtml(location.name)}</strong><br><span class="portal-muted">${escapeHtml(location.region || '')}${location.seo_primary_locality ? ` · ${escapeHtml(location.seo_primary_locality)}` : ''}</span><br><span class="portal-muted">Tier: ${escapeHtml(location.seo_tier || 'auto')} · Verificatie: ${escapeHtml(location.verification_mode || 'onbekend')}</span>`
+    ? `<strong>${escapeHtml(location.name)}</strong><br><span class="portal-muted">${escapeHtml(location.region || '')}${location.seo_primary_locality ? ` · ${escapeHtml(location.seo_primary_locality)}` : ''}</span><br><span class="portal-muted">Vindbaarheidslaag: ${escapeHtml(location.seo_tier || 'auto')} · Laatste bron: ${escapeHtml(location.verification_mode || 'onbekend')}</span>`
     : '<div class="portal-empty-state"><strong>Nog geen locatie gekozen</strong>Open eerst een locatie vanuit de tab Locaties.</div>';
   $('location-detail-summary').innerHTML = summaryHtml;
   $('seo-location-summary').innerHTML = summaryHtml;
@@ -580,6 +704,7 @@ function fillLocationForms(payload) {
   const location = payload?.location || null;
   state.selectedLocation = location;
   renderLocationSummaries(location);
+  updateWorkbench();
   if (!location) return;
   $('field-location-description').value = location.description || '';
   $('field-location-toddler-highlight').value = location.toddler_highlight || '';
@@ -642,9 +767,9 @@ function fillLocationForms(payload) {
         <br><span class="portal-muted">${escapeHtml(summarizeQualityTask(task))}</span>
         <div class="portal-btn-row" style="margin-top:8px;">
           <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-open-location="content" data-location-id="${escapeAttr(state.selectedLocationId)}">Open locatie</button>
-          ${task.task_type === 'missing_editorial_draft' ? `<button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-create-draft="location" data-location-id="${escapeAttr(state.selectedLocationId)}">Maak draft</button>` : ''}
-          <button class="portal-btn portal-btn-success portal-btn-sm" type="button" data-quality-task-action="resolved" data-task-id="${escapeAttr(task.id)}">Resolved</button>
-          <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-quality-task-action="dismissed" data-task-id="${escapeAttr(task.id)}">Dismiss</button>
+          ${task.task_type === 'missing_editorial_draft' ? `<button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-create-draft="location" data-location-id="${escapeAttr(state.selectedLocationId)}">Maak pagina-inhoud</button>` : ''}
+          <button class="portal-btn portal-btn-success portal-btn-sm" type="button" data-quality-task-action="resolved" data-task-id="${escapeAttr(task.id)}">Markeer als klaar</button>
+          <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-quality-task-action="dismissed" data-task-id="${escapeAttr(task.id)}">Niet nodig</button>
         </div>
       </li>`).join('')
     : '<li class="portal-muted">Geen open quality tasks voor deze locatie.</li>';
@@ -980,12 +1105,16 @@ async function loadPublishing() {
   PortalShell.setAlert('publishing-alert', '', 'info');
   try {
     const stateData = await api('get_publish_state');
+    state.publishState = stateData;
     $('publish-dirty').textContent = stateData?.dirty ? 'Ja' : 'Nee';
     $('publish-pending-count').textContent = stateData?.pending_count ?? 0;
     $('publish-last-change').textContent = stateData?.last_change_reason || '-';
     $('publish-last-published').textContent = stateData?.last_published_at ? fmtDateTime(stateData.last_published_at) : '-';
     $('publish-last-ref').textContent = stateData?.last_publish_ref || '-';
+    updateWorkbench();
   } catch (error) {
+    state.publishState = null;
+    updateWorkbench();
     PortalShell.setAlert('publishing-alert', `Publish-state laden mislukt: ${error.message}`, 'error', { assertive: true });
   }
 }
@@ -1006,7 +1135,7 @@ async function triggerPublish() {
 
 async function seedPriorityDrafts() {
   const btn = $('seed-priority-drafts-btn');
-  PortalShell.setButtonBusy(btn, true, 'Seeden...', 'Seed top drafts');
+  PortalShell.setButtonBusy(btn, true, 'Aanmaken...', 'Maak concepten voor toplocaties');
   PortalShell.setAlert('insights-alert', '', 'info');
   try {
     const result = await api('seed_priority_editorial_drafts', { limit: 25 });
@@ -1021,13 +1150,13 @@ async function seedPriorityDrafts() {
   } catch (error) {
     PortalShell.setAlert('insights-alert', `Top drafts seeden mislukt: ${error.message}`, 'error', { assertive: true });
   } finally {
-    PortalShell.setButtonBusy(btn, false, null, 'Seed top drafts');
+    PortalShell.setButtonBusy(btn, false, null, 'Maak concepten voor toplocaties');
   }
 }
 
 async function openNextPriorityLocation() {
   const btn = $('next-priority-location-btn');
-  PortalShell.setButtonBusy(btn, true, 'Zoeken...', 'Werk volgende prioritaire locatie');
+  PortalShell.setButtonBusy(btn, true, 'Zoeken...', 'Open volgende locatie');
   PortalShell.setAlert('insights-alert', '', 'info');
   try {
     const row = await api('get_next_priority_location', { prefer_without_draft: true });
@@ -1046,7 +1175,7 @@ async function openNextPriorityLocation() {
   } catch (error) {
     PortalShell.setAlert('insights-alert', `Volgende prioritaire locatie laden mislukt: ${error.message}`, 'error', { assertive: true });
   } finally {
-    PortalShell.setButtonBusy(btn, false, null, 'Werk volgende prioritaire locatie');
+    PortalShell.setButtonBusy(btn, false, null, 'Open volgende locatie');
   }
 }
 
@@ -1056,10 +1185,10 @@ async function loadInsights() {
     const insights = await api('get_insights');
     const gsc = insights.latest_gsc_snapshot || null;
     const gscSummary = gsc?.summary || null;
-    $('insight-summary').innerHTML = `
+  $('insight-summary').innerHTML = `
       <div class="portal-grid portal-grid-two">
-        <div class="portal-card portal-card-soft"><strong>Pending observations</strong><div>${escapeHtml(String(insights.pending_observations ?? 0))}</div></div>
-        <div class="portal-card portal-card-soft"><strong>Open quality tasks</strong><div>${escapeHtml(String(insights.open_quality_tasks ?? 0))}</div></div>
+        <div class="portal-card portal-card-soft"><strong>Te controleren signalen</strong><div>${escapeHtml(String(insights.pending_observations ?? 0))}</div></div>
+        <div class="portal-card portal-card-soft"><strong>Open aandachtspunten</strong><div>${escapeHtml(String(insights.open_quality_tasks ?? 0))}</div></div>
         <div class="portal-card portal-card-soft"><strong>GSC klikken (7d)</strong><div>${gscSummary ? escapeHtml(String(Math.round(Number(gscSummary.clicks ?? 0)))) : '-'}</div></div>
         <div class="portal-card portal-card-soft"><strong>GSC vertoningen (7d)</strong><div>${gscSummary ? escapeHtml(String(Math.round(Number(gscSummary.impressions ?? 0)))) : '-'}</div></div>
       </div>`;
@@ -1068,20 +1197,20 @@ async function loadInsights() {
       ? insights.priority_locations.map((row) => `
         <li>
           <button class="portal-link-btn" type="button" data-open-location="content" data-location-id="${escapeAttr(row.location_id)}">${escapeHtml(row.name)}</button>
-          <span class="portal-muted">(${escapeHtml(row.region || '')}${row.seo_primary_locality ? ` · ${escapeHtml(row.seo_primary_locality)}` : ''} · tier ${escapeHtml(row.seo_tier || 'auto')})</span>
+          <span class="portal-muted">(${escapeHtml(row.region || '')}${row.seo_primary_locality ? ` · ${escapeHtml(row.seo_primary_locality)}` : ''} · laag ${escapeHtml(row.seo_tier || 'auto')})</span>
           <br><span class="portal-muted">Prioriteit ${escapeHtml(String(row.top_priority ?? '-'))} · ${escapeHtml(String(row.task_count ?? 0))} taken · ${escapeHtml((row.task_types || []).join(', '))}</span>
           ${row.summaries?.length ? `<br><span class="portal-muted">${escapeHtml(row.summaries.join(' · '))}</span>` : ''}
           <div class="portal-btn-row" style="margin-top:8px;">
             ${row.has_editorial_draft && row.editorial_draft?.id
               ? `<button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-editorial-open="${escapeAttr(row.editorial_draft.id)}">Open draft</button>`
-              : `<button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-create-draft="location" data-location-id="${escapeAttr(row.location_id)}">Maak draft</button>`}
-            <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-open-location="seo" data-location-id="${escapeAttr(row.location_id)}">Open SEO</button>
+              : `<button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-create-draft="location" data-location-id="${escapeAttr(row.location_id)}">Maak pagina-inhoud</button>`}
+            <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-open-location="seo" data-location-id="${escapeAttr(row.location_id)}">Open Google & vindbaarheid</button>
           </div>
         </li>`).join('')
       : '<li class="portal-muted">Geen prioritaire locaties gevonden.</li>';
 
     $('insight-context-gaps').innerHTML = (insights.top_context_gaps || []).length
-      ? insights.top_context_gaps.map((row) => `<li><button class="portal-link-btn" type="button" data-open-location="content" data-location-id="${escapeAttr(row.location_id)}">${escapeHtml(row.name)}</button> <span class="portal-muted">(${escapeHtml(row.region)} · tier ${escapeHtml(row.seo_tier)})</span><br><span class="portal-muted">Ontbreekt: ${escapeHtml((row.missing_fields || []).join(', '))}</span><div class="portal-btn-row" style="margin-top:8px;"><button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-create-draft="location" data-location-id="${escapeAttr(row.location_id)}">Maak draft</button></div></li>`).join('')
+      ? insights.top_context_gaps.map((row) => `<li><button class="portal-link-btn" type="button" data-open-location="content" data-location-id="${escapeAttr(row.location_id)}">${escapeHtml(row.name)}</button> <span class="portal-muted">(${escapeHtml(row.region)} · laag ${escapeHtml(row.seo_tier)})</span><br><span class="portal-muted">Ontbreekt: ${escapeHtml((row.missing_fields || []).join(', '))}</span><div class="portal-btn-row" style="margin-top:8px;"><button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-create-draft="location" data-location-id="${escapeAttr(row.location_id)}">Maak pagina-inhoud</button></div></li>`).join('')
       : '<li class="portal-muted">Geen context gaps gevonden.</li>';
 
     $('insight-gsc-summary').innerHTML = gsc
@@ -1126,11 +1255,11 @@ async function loadInsights() {
           <span class="portal-inline-code">${escapeHtml(row.task_type || '-')}</span>
           <span class="portal-muted">· prioriteit ${escapeHtml(String(row.priority ?? '-'))}</span>
           ${row.location_id ? `<button class="portal-link-btn" type="button" data-open-location="content" data-location-id="${escapeAttr(row.location_id)}">open locatie ${escapeHtml(String(row.location_id))}</button>` : ''}
-          ${row.task_type === 'missing_editorial_draft' && row.location_id ? `<button class="portal-link-btn" type="button" data-create-draft="location" data-location-id="${escapeAttr(row.location_id)}">maak draft</button>` : ''}
+          ${row.task_type === 'missing_editorial_draft' && row.location_id ? `<button class="portal-link-btn" type="button" data-create-draft="location" data-location-id="${escapeAttr(row.location_id)}">maak pagina-inhoud</button>` : ''}
           ${row.notes ? `<br><span class="portal-muted">${escapeHtml(row.notes)}</span>` : ''}
           <div class="portal-btn-row" style="margin-top:8px;">
-            <button class="portal-btn portal-btn-success portal-btn-sm" type="button" data-quality-task-action="resolved" data-task-id="${escapeAttr(row.id)}">Resolved</button>
-            <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-quality-task-action="dismissed" data-task-id="${escapeAttr(row.id)}">Dismiss</button>
+            <button class="portal-btn portal-btn-success portal-btn-sm" type="button" data-quality-task-action="resolved" data-task-id="${escapeAttr(row.id)}">Markeer als klaar</button>
+            <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-quality-task-action="dismissed" data-task-id="${escapeAttr(row.id)}">Niet nodig</button>
           </div>
         </li>`).join('')
       : '<li class="portal-muted">Geen open quality tasks.</li>';
@@ -1156,19 +1285,19 @@ async function loadInsights() {
 
 async function refreshQualityTasks() {
   const btn = $('refresh-quality-tasks-btn');
-  PortalShell.setButtonBusy(btn, true, 'Verversen...', 'Quality backlog verversen');
+  PortalShell.setButtonBusy(btn, true, 'Bijwerken...', 'Werk aandachtspunten bij');
   PortalShell.setAlert('insights-alert', '', 'info');
   try {
     const result = await api('refresh_quality_tasks');
     const inserted = Number(result?.inserted ?? 0);
-    PortalShell.setAlert('insights-alert', `Quality backlog ververst. ${inserted} open taken opnieuw opgebouwd.`, 'success');
+    PortalShell.setAlert('insights-alert', `Aandachtspunten bijgewerkt. ${inserted} open taken opnieuw opgebouwd.`, 'success');
     await loadInsights();
     await loadStats();
     if (state.selectedLocationId) await loadLocationDetail(state.selectedLocationId);
   } catch (error) {
-    PortalShell.setAlert('insights-alert', `Quality backlog verversen mislukt: ${error.message}`, 'error', { assertive: true });
+    PortalShell.setAlert('insights-alert', `Aandachtspunten bijwerken mislukt: ${error.message}`, 'error', { assertive: true });
   } finally {
-    PortalShell.setButtonBusy(btn, false, null, 'Quality backlog verversen');
+    PortalShell.setButtonBusy(btn, false, null, 'Werk aandachtspunten bij');
   }
 }
 
@@ -1297,12 +1426,29 @@ function bindUI() {
   $('next-priority-location-btn').addEventListener('click', openNextPriorityLocation);
   $('seed-priority-drafts-btn').addEventListener('click', seedPriorityDrafts);
   $('refresh-quality-tasks-btn').addEventListener('click', refreshQualityTasks);
+  $('workbench-next-location-btn').addEventListener('click', openNextPriorityLocation);
+  $('workbench-open-trust-btn').addEventListener('click', () => switchTab('tab-trust'));
+  $('workbench-open-publishing-btn').addEventListener('click', () => switchTab('tab-publishing'));
+  $('workbench-open-selected-content-btn').addEventListener('click', () => {
+    if (state.selectedLocationId) switchTab('tab-location-detail');
+  });
+  $('workbench-open-selected-seo-btn').addEventListener('click', () => {
+    if (state.selectedLocationId) switchTab('tab-seo');
+  });
+  $('workbench-open-selected-editorial-btn').addEventListener('click', () => {
+    if (state.selectedLocationId) createDraftForLocation(state.selectedLocationId, 'editorial-alert');
+  });
   $('observation-status-filter').addEventListener('change', loadObservations);
   $('editorial-status-filter').addEventListener('change', loadEditorialPages);
+  $('toggle-advanced-tools').addEventListener('change', (event) => {
+    setAdvancedToolsVisible(event.currentTarget.checked);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   bindUI();
+  setAdvancedToolsVisible(localStorage.getItem('ppAdminAdvancedTools') === '1');
+  updateWorkbench();
   maybeHandleAuthCallback();
   showScreen('login');
 });
