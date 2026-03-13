@@ -5,6 +5,8 @@
   "description": "PeuterPlannen \u2014 Leuke uitjes voor kinderen",
   "scripts": {
     "build": "node .scripts/optimize_images.js && node .scripts/sync_portal_assets.js && node .scripts/sync_all.js",
+    "build:local": "PP_FIXTURES=1 node .scripts/sync_all.js",
+    "dev": "npx serve -l 3000 --no-clipboard .",
     "test": "node --test .scripts/__tests__/*.test.js",
     "test:unit": "node --test .scripts/__tests__/helpers.test.js .scripts/__tests__/config.test.js",
     "test:snapshot": "node --test .scripts/__tests__/build-snapshot.test.js",

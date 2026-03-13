@@ -1,5 +1,10 @@
+const fs = require('fs');
+const path = require('path');
 const { SB_URL, SB_KEY, SB_PROJECT } = require('./config');
 const { slugify } = require('./helpers');
+
+const FIXTURE_MODE = process.env.PP_FIXTURES === '1';
+const FIXTURES_DIR = path.join(__dirname, '..', 'fixtures');
 
 async function fetchJSON(endpoint, query = '') {
   const base = SB_URL.includes('supabase.co') ? SB_URL : SB_PROJECT;
@@ -43,7 +48,31 @@ const FALLBACK_REGIONS = [
   { name: 'Utrechtse Heuvelrug', slug: 'utrechtse-heuvelrug', blurb: 'De Utrechtse Heuvelrug is een schatkamer voor gezinnen met peuters. Kastelen, kinderboerderijen, pannenkoekenrestaurants in het bos en prachtige natuurspeelplaatsen — hier combineer je natuur met avontuur op loopafstand.', display_order: 8, population: 50000, tier: 'region', schema_type: 'AdministrativeArea', is_active: true },
 ];
 
+function loadFixture(name) {
+  return JSON.parse(fs.readFileSync(path.join(FIXTURES_DIR, name), 'utf8'));
+}
+
 async function fetchData() {
+  if (FIXTURE_MODE) {
+    console.log('Loading data from fixtures (PP_FIXTURES=1)...\n');
+    const regions = loadFixture('regions.json');
+    const locations = loadFixture('locations.json');
+    const locationAliases = loadFixture('location_aliases.json');
+    const editorialPages = loadFixture('editorial_pages.json');
+    const gscSnapshots = loadFixture('gsc_snapshots.json');
+
+    console.log(`  ${regions.length} regions, ${locations.length} locations (fixtures)`);
+
+    const regionCounts = {};
+    const typeCounts = {};
+    for (const loc of locations) {
+      regionCounts[loc.region] = (regionCounts[loc.region] || 0) + 1;
+      typeCounts[loc.type] = (typeCounts[loc.type] || 0) + 1;
+    }
+
+    return { regions, locations, locationAliases, editorialPages, gscSnapshots, regionCounts, typeCounts, total: locations.length };
+  }
+
   console.log('Fetching data from Supabase...\n');
 
   let regions;

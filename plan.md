@@ -62,7 +62,7 @@ Na het afronden van elke fase:
 ---
 
 ## FASE 0: VOORBEREIDING & VEILIGHEID
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Sonnet
 **Geschatte duur:** 15 minuten
 **Doel:** Veilig startpunt creeren voordat we iets aanraken
@@ -103,7 +103,7 @@ Na het afronden van elke fase:
 ---
 
 ## FASE 1: SPLIT sync_all.js IN MODULES
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Opus (architectuurbeslissingen) + Sonnet (file-operaties)
 **Geschatte duur:** 2-3 uur
 **Doel:** Het 3864-regels god-file opsplitsen in logische modules zonder de output te veranderen
@@ -353,7 +353,7 @@ Zero output changes — verified via hash comparison and all 3 CI audits."
 ---
 
 ## FASE 2: TEST INFRASTRUCTURE
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Sonnet (test setup) + Haiku (repetitieve test cases)
 **Geschatte duur:** 2 uur
 **Doel:** Test framework opzetten met snapshot tests en unit tests
@@ -517,7 +517,7 @@ and build output snapshot comparison. Zero dependencies added."
 ---
 
 ## FASE 3: LOCAL DEV EXPERIENCE
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Sonnet
 **Geschatte duur:** 1 uur
 **Doel:** Lokaal ontwikkelen mogelijk maken zonder productie-database
@@ -1906,7 +1906,7 @@ Update deze sectie na het afronden van elke fase:
 | 0 | Voorbereiding & veiligheid | `DONE` | 2026-03-13 |
 | 1 | Split sync_all.js | `DONE` | 2026-03-13 |
 | 2 | Test infrastructure | `DONE` | 2026-03-13 |
-| 3 | Local dev experience | `TODO` | |
+| 3 | Local dev experience | `DONE` | 2026-03-13 |
 | 4 | Noindex → runtime rendering | `TODO` | |
 | 5 | Admin-API opsplitsen | `TODO` | |
 | 6 | Security hardening | `TODO` | |

@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "name": "Amsterdam",
+    "slug": "amsterdam",
+    "blurb": "Amsterdam heeft een verrassend rijk aanbod voor ouders met jonge kinderen. Van het Vondelpark tot NEMO, van de Amsterdamse Bos tot een pannenkoekenbootje op het IJ — er is altijd iets te doen.",
+    "display_order": 1,
+    "population": 942000,
+    "tier": "primary",
+    "schema_type": "City",
+    "is_active": true,
+    "created_at": "2026-02-28T09:30:37.885482+00:00",
+    "updated_at": "2026-02-28T09:30:37.885482+00:00"
+  },
+  {
+    "id": 4,
+    "name": "Utrecht",
+    "slug": "utrecht",
+    "blurb": "Utrecht is een van de kindvriendelijkste steden van Nederland. Het Nijntje Museum, de Griftsteede, het Spoorwegmuseum en tientallen speeltuinen maken de stad ideaal voor een dagje uit met peuters.",
+    "display_order": 4,
+    "population": 378000,
+    "tier": "primary",
+    "schema_type": "City",
+    "is_active": true,
+    "created_at": "2026-02-28T09:30:37.885482+00:00",
+    "updated_at": "2026-02-28T09:30:37.885482+00:00"
+  },
+  {
+    "id": 5,
+    "name": "Haarlem",
+    "slug": "haarlem",
+    "blurb": "Haarlem is compact en groen — perfect voor een relaxt dagje uit met jonge kinderen. Het Teylers Museum, het Reinaldapark en de Kennemerduinen liggen op fietsafstand van het centrum.",
+    "display_order": 5,
+    "population": 169000,
+    "tier": "standard",
+    "schema_type": "City",
+    "is_active": true,
+    "created_at": "2026-02-28T09:30:37.885482+00:00",
+    "updated_at": "2026-02-28T09:30:37.885482+00:00"
+  }
+]
