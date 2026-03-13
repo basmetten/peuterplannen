@@ -38,26 +38,43 @@ function createSupabaseClient(projectRoot) {
       ...headers,
     };
 
-    const res = await fetch(url, {
-      method,
-      headers: reqHeaders,
-      body: body === undefined ? undefined : JSON.stringify(body),
-    });
+    const maxAttempts = 4;
+    let lastErr;
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        const res = await fetch(url, {
+          method,
+          headers: reqHeaders,
+          body: body === undefined ? undefined : JSON.stringify(body),
+        });
 
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`Supabase ${method} ${path} failed: ${res.status} ${text.slice(0, 700)}`);
+        if (!res.ok) {
+          const text = await res.text();
+          // Niet retrien op 4xx client errors (behalve 429 rate limit)
+          if (res.status >= 400 && res.status < 500 && res.status !== 429) {
+            throw new Error(`Supabase ${method} ${path} failed: ${res.status} ${text.slice(0, 700)}`);
+          }
+          lastErr = new Error(`Supabase ${method} ${path} failed: ${res.status} ${text.slice(0, 700)}`);
+          await new Promise((r) => setTimeout(r, Math.min(1000 * Math.pow(2, attempt), 10000)));
+          continue;
+        }
+
+        if (res.status === 204) return null;
+
+        const text = await res.text();
+        if (!text) return null;
+        try {
+          return JSON.parse(text);
+        } catch {
+          return text;
+        }
+      } catch (err) {
+        if (err.message.includes('failed:')) throw err; // al geformateerde Supabase error
+        lastErr = err;
+        await new Promise((r) => setTimeout(r, Math.min(1000 * Math.pow(2, attempt), 10000)));
+      }
     }
-
-    if (res.status === 204) return null;
-
-    const text = await res.text();
-    if (!text) return null;
-    try {
-      return JSON.parse(text);
-    } catch {
-      return text;
-    }
+    throw lastErr;
   }
 
   async function createIngestionRun({ runType, regionRoot, withSurroundings }) {

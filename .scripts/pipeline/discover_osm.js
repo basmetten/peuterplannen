@@ -20,19 +20,30 @@ area["name"="${osmName}"]["admin_level"="${adminLevel}"]->.a;
 out center;`;
 }
 
+// Round-robin counter zodat gelijktijdige pipelines verschillende endpoints pakken
+let _overpassRoundRobinIdx = 0;
+
 async function fetchOverpassElements(regionName) {
   const cfg = REGIONS[regionName];
   if (!cfg) throw new Error(`Unknown OSM region: ${regionName}`);
 
   const query = buildOverpassQuery(cfg.osmName, cfg.adminLevel);
-  const endpoints = [
+  const baseEndpoints = [
+    'https://overpass.private.coffee/api/interpreter',
     'https://overpass-api.de/api/interpreter',
+    'https://maps.mail.ru/osm/tools/overpass/api/interpreter',
     'https://overpass.kumi.systems/api/interpreter',
     'https://overpass.openstreetmap.fr/api/interpreter',
   ];
-  const timeoutMs = Number(process.env.OVERPASS_TIMEOUT_MS || '20000');
+  // Roteer startpunt per aanroep zodat parallelle queries verspreid worden
+  const startIdx = _overpassRoundRobinIdx++ % baseEndpoints.length;
+  const endpoints = [
+    ...baseEndpoints.slice(startIdx),
+    ...baseEndpoints.slice(0, startIdx),
+  ];
+  const timeoutMs = Number(process.env.OVERPASS_TIMEOUT_MS || '45000');
   const maxAttempts = Number(process.env.OVERPASS_MAX_ATTEMPTS || '2');
-  const retryDelayMs = Number(process.env.OVERPASS_RETRY_DELAY_MS || '1500');
+  const retryDelayMs = Number(process.env.OVERPASS_RETRY_DELAY_MS || '3000');
 
   let lastErr = null;
   for (const endpoint of endpoints) {

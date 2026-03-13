@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beheer je locatie — PeuterPlannen Partner Portal</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #D4775A; --primary-light: #FDF1ED; --primary-dark: #B35D42;
+            --accent: #E8B870; --bg: #FAF7F2; --surface: #FFFFFF;
+            --text: #2D2926; --text-secondary: #7A5E60; --text-muted: #A39490;
+            --success: #2D8B5E; --success-bg: #E8F5EF;
+            --error: #C0392B; --error-bg: #FDEDED;
+            --shadow: 0 4px 12px rgba(45,41,38,0.10);
+            --radius: 14px; --font-heading: 'Plus Jakarta Sans', sans-serif; --font-body: 'DM Sans', sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+        :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
+        .hidden { display: none !important; }
+
+        /* Nav */
+        nav { background: rgba(250,247,242,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(212,119,90,0.12); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+        .nav-logo { font-family: var(--font-heading); font-weight: 800; font-size: 18px; color: var(--primary); text-decoration: none; }
+        .nav-logo span { color: var(--text); font-weight: 600; }
+        #nav-user { font-size: 13px; color: var(--text-secondary); }
+        #nav-logout { background: none; border: 1px solid rgba(212,119,90,0.3); color: var(--text-secondary); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; transition: all 0.2s; }
+        #nav-logout:hover { background: var(--primary-light); }
+
+        /* Container */
+        .container { max-width: 680px; margin: 0 auto; padding: 32px 20px 80px; }
+
+        /* Cards */
+        .card { background: var(--surface); border-radius: var(--radius); border: 1px solid rgba(212,119,90,0.15); box-shadow: var(--shadow); padding: 28px 32px; margin-bottom: 20px; }
+        .card h2 { font-family: var(--font-heading); font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+        .card p { color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
+        .card h3 { font-family: var(--font-heading); font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+
+        /* Forms */
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+        input[type=text], input[type=email], input[type=password], textarea, select {
+            width: 100%; padding: 12px 14px; border: 2px solid rgba(212,119,90,0.2); border-radius: 10px;
+            font-family: var(--font-body); font-size: 15px; color: var(--text); background: var(--bg);
+            transition: border-color 0.2s; outline: none;
+        }
+        input:focus, textarea:focus, select:focus { border-color: var(--primary); }
+        textarea { min-height: 80px; resize: vertical; }
+
+        /* Buttons */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 24px; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; border: none; text-decoration: none; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn-primary:active { transform: scale(0.99); }
+        .btn-secondary { background: var(--bg); border: 1px solid rgba(212,119,90,0.3); color: var(--text); }
+        .btn-secondary:hover { background: var(--primary-light); }
+        .btn-danger { background: var(--error-bg); color: var(--error); border: 1px solid rgba(192,57,43,0.2); }
+        .btn-full { width: 100%; }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+
+        /* Alert */
+        .alert { padding: 12px 16px; border-radius: 10px; font-size: 14px; margin-bottom: 16px; }
+        .alert-error   { background: var(--error-bg);   color: var(--error);   border: 1px solid rgba(192,57,43,0.2); }
+        .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(45,139,94,0.2); }
+        .alert-info    { background: var(--primary-light); color: var(--primary-dark); border: 1px solid rgba(212,119,90,0.2); }
+
+        /* Plan cards (billing) */
+        .plan-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+        @media (max-width: 600px) { .plan-cards { grid-template-columns: 1fr; } }
+        .plan-card { border: 2px solid rgba(212,119,90,0.2); border-radius: var(--radius); padding: 20px; text-align: center; transition: all 0.2s; }
+        .plan-card.current { border-color: var(--primary); background: var(--primary-light); }
+        .plan-card h4 { font-family: var(--font-heading); font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .plan-card .price { font-size: 26px; font-weight: 800; color: var(--primary-dark); font-family: var(--font-heading); margin: 8px 0; }
+        .plan-card .price span { font-size: 14px; font-weight: 400; color: var(--text-muted); }
+        .plan-card ul { list-style: none; font-size: 13px; color: var(--text-secondary); margin: 12px 0; text-align: left; }
+        .plan-card ul li::before { content: '✓ '; color: var(--success); font-weight: 700; }
+        .plan-card .btn { margin-top: 12px; font-size: 13px; padding: 10px 16px; width: 100%; }
+        .plan-featured { border-color: var(--accent); background: linear-gradient(135deg, #FFFBF0, #FEF6E4); }
+        .plan-badge { font-size: 11px; font-weight: 700; background: var(--accent); color: #6B4200; padding: 2px 10px; border-radius: 20px; margin-bottom: 8px; display: inline-block; }
+
+        /* Location search results */
+        .loc-result { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border: 1px solid rgba(212,119,90,0.15); border-radius: 10px; margin-bottom: 8px; background: var(--surface); }
+        .loc-result-name { font-weight: 600; font-size: 15px; }
+        .loc-result-region { font-size: 13px; color: var(--text-muted); }
+        .loc-result .btn { font-size: 12px; padding: 7px 14px; }
+
+        /* Edit form sections */
+        .edit-section { border-top: 1px solid rgba(212,119,90,0.12); margin-top: 20px; padding-top: 20px; }
+        .checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .checkbox-row input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
+        .checkbox-row label { margin: 0; cursor: pointer; font-size: 15px; color: var(--text); font-weight: 500; }
+
+        /* Spinner */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+        .spinner-primary { border-color: rgba(212,119,90,0.2); border-top-color: var(--primary); }
+
+        /* Status badge */
+        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.02em; }
+        .status-none, .status-canceled { background: #F0EDE8; color: #7A5E60; }
+        .status-trial { background: #EBF3F2; color: #2D6B60; }
+        .status-basis { background: var(--primary-light); color: var(--primary-dark); }
+        .status-featured { background: linear-gradient(135deg, #F6C34A22, #E8A82022); color: #6B4200; border: 1px solid #E8A82040; }
+        .status-past_due { background: var(--error-bg); color: var(--error); }
+
+        /* Tabs */
+        .portal-tabs { display: flex; gap: 4px; background: var(--bg); border-radius: 12px; padding: 4px; margin-bottom: 24px; border: 1px solid rgba(212,119,90,0.12); }
+        .portal-tab { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: 600; border-radius: 9px; cursor: pointer; transition: all 0.2s; color: var(--text-muted); background: none; border: none; font-family: inherit; }
+        .portal-tab.active { background: var(--surface); color: var(--primary-dark); box-shadow: 0 2px 8px rgba(45,41,38,0.08); }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo"><span>Peuter</span>Plannen <span style="font-size:12px;background:var(--primary);color:white;padding:2px 8px;border-radius:6px;margin-left:6px;">Partner</span></a>
+    <div style="display:flex;align-items:center;gap:12px;">
+        <span id="nav-user" class="hidden"></span>
+        <button id="nav-logout" class="hidden" onclick="handleLogout()">Uitloggen</button>
+    </div>
+</nav>
+
+<!-- ===================== SCREEN: LANDING ===================== -->
+<div id="screen-landing" class="container">
+    <div class="card" style="text-align:center;padding:48px 32px;">
+        <div style="font-size:48px;margin-bottom:16px;">🏠</div>
+        <h2 style="margin-bottom:12px;">Beheer je locatie op PeuterPlannen</h2>
+        <p>Sta je op PeuterPlannen? Claim je locatie, houd je gegevens actueel en bereik meer bezoekers met een Featured badge.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px;">
+            <button class="btn btn-primary" onclick="showScreen('login')">Inloggen</button>
+            <button class="btn btn-secondary" onclick="showScreen('signup')">Account aanmaken</button>
+        </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:4px;">
+        <div class="card" style="padding:20px;text-align:center;">
+            <div style="font-size:28px;margin-bottom:8px;">✏️</div>
+            <h3 style="margin-bottom:6px;">Bewerk je info</h3>
+            <p style="font-size:13px;margin:0;">Openingstijden, beschrijving, faciliteiten altijd up-to-date.</p>
+        </div>
+        <div class="card" style="padding:20px;text-align:center;">
+            <div style="font-size:28px;margin-bottom:8px;">✓</div>
+            <h3 style="margin-bottom:6px;">Geverifieerd badge</h3>
+            <p style="font-size:13px;margin:0;">Laat ouders weten dat jouw info klopt en vers is.</p>
+        </div>
+        <div class="card" style="padding:20px;text-align:center;">
+            <div style="font-size:28px;margin-bottom:8px;">★</div>
+            <h3 style="margin-bottom:6px;">Aanbevolen listing</h3>
+            <p style="font-size:13px;margin:0;">Bovenaan de zoekresultaten in jouw regio.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SCREEN: LOGIN ===================== -->
+<div id="screen-login" class="container hidden">
+    <div class="card">
+        <h2>Inloggen</h2>
+        <p>Log in met je PeuterPlannen Partner account.</p>
+        <div id="login-alert"></div>
+        <div class="form-group">
+            <label for="login-email">E-mailadres</label>
+            <input type="email" id="login-email" placeholder="jij@voorbeeld.nl" autocomplete="email">
+        </div>
+        <div class="form-group">
+            <label for="login-password">Wachtwoord</label>
+            <input type="password" id="login-password" placeholder="Je wachtwoord" autocomplete="current-password">
+        </div>
+        <button class="btn btn-primary btn-full" id="login-btn" onclick="handleLogin()">Inloggen</button>
+        <p style="text-align:center;margin-top:16px;font-size:14px;">
+            Nog geen account? <a href="#" onclick="showScreen('signup')" style="color:var(--primary);font-weight:600;">Maak er een aan</a>
+        </p>
+    </div>
+</div>
+
+<!-- ===================== SCREEN: SIGNUP ===================== -->
+<div id="screen-signup" class="container hidden">
+    <div class="card">
+        <h2>Account aanmaken</h2>
+        <p>Maak een gratis account om je locatie te claimen en te beheren.</p>
+        <div id="signup-alert"></div>
+        <div class="form-group">
+            <label for="signup-name">Je naam</label>
+            <input type="text" id="signup-name" placeholder="Jan de Vries" autocomplete="name">
+        </div>
+        <div class="form-group">
+            <label for="signup-email">E-mailadres</label>
+            <input type="email" id="signup-email" placeholder="jij@voorbeeld.nl" autocomplete="email">
+        </div>
+        <div class="form-group">
+            <label for="signup-password">Wachtwoord</label>
+            <input type="password" id="signup-password" placeholder="Minimaal 8 tekens" autocomplete="new-password">
+        </div>
+        <button class="btn btn-primary btn-full" id="signup-btn" onclick="handleSignup()">Account aanmaken</button>
+        <p style="text-align:center;margin-top:16px;font-size:14px;">
+            Al een account? <a href="#" onclick="showScreen('login')" style="color:var(--primary);font-weight:600;">Inloggen</a>
+        </p>
+    </div>
+</div>
+
+<!-- ===================== SCREEN: EMAIL VERIFICATION ===================== -->
+<div id="screen-verify" class="container hidden">
+    <div class="card" style="text-align:center;padding:40px;">
+        <div style="font-size:48px;margin-bottom:16px;">📬</div>
+        <h2>Bevestig je e-mail</h2>
+        <p>We hebben een verificatielink gestuurd naar <strong id="verify-email-display"></strong>. Klik op de link om door te gaan.</p>
+        <div class="alert alert-info" style="margin-top:16px;text-align:left;">Heb je geen mail ontvangen? Check je spam map, of stuur een nieuwe bevestigingsmail via de login-pagina.</div>
+    </div>
+</div>
+
+<!-- ===================== SCREEN: DASHBOARD ===================== -->
+<div id="screen-dashboard" class="container hidden">
+    <div class="portal-tabs">
+        <button class="portal-tab active" onclick="switchTab('tab-mijn-locatie')" id="tab-btn-mijn-locatie">Mijn locatie</button>
+        <button class="portal-tab" onclick="switchTab('tab-billing')" id="tab-btn-billing">Abonnement</button>
+    </div>
+
+    <!-- === Tab: Mijn Locatie === -->
+    <div id="tab-mijn-locatie">
+        <!-- Sub-screen A: geen locatie geclaimd -->
+        <div id="no-location-panel">
+            <div class="card">
+                <h2>Zoek jouw locatie</h2>
+                <p>Staat jouw locatie al in onze database? Zoek het op en dien een claim in. We controleren je aanvraag en koppelen de locatie aan jouw account.</p>
+                <div class="form-group" style="display:flex;gap:8px;margin-bottom:12px;">
+                    <input type="text" id="loc-search-input" placeholder="Naam van je locatie..." style="flex:1;">
+                    <button class="btn btn-primary" onclick="searchLocations()">Zoeken</button>
+                </div>
+                <div id="loc-search-results"></div>
+            </div>
+
+            <div id="claim-status-panel" class="hidden">
+                <div class="alert alert-info" id="claim-status-msg"></div>
+            </div>
+        </div>
+
+        <!-- Sub-screen B: locatie geclaimd + actief abonnement -->
+        <div id="has-location-panel" class="hidden">
+            <div class="card">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                    <h2 style="margin:0;" id="edit-loc-name">—</h2>
+                    <span class="status-badge" id="edit-plan-badge">Gratis</span>
+                </div>
+                <div id="edit-alert"></div>
+
+                <div class="form-group">
+                    <label for="edit-description">Beschrijving</label>
+                    <textarea id="edit-description" placeholder="Beschrijf wat bezoekers kunnen verwachten..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-website">Website</label>
+                    <input type="text" id="edit-website" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label for="edit-hours">Openingstijden</label>
+                    <textarea id="edit-hours" placeholder="Ma–Vr 9:00–17:00, Za–Zo 10:00–18:00" style="min-height:60px;"></textarea>
+                </div>
+
+                <div class="edit-section">
+                    <h3>Faciliteiten</h3>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="edit-coffee"><label for="edit-coffee">Koffie aanwezig</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="edit-diaper"><label for="edit-diaper">Verschoontafel aanwezig</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="edit-alcohol"><label for="edit-alcohol">Alcohol beschikbaar</label>
+                    </div>
+                </div>
+
+                <div class="edit-section">
+                    <h3>Leeftijdsrange</h3>
+                    <div style="display:flex;gap:12px;">
+                        <div class="form-group" style="flex:1;margin:0;">
+                            <label for="edit-min-age">Minimumleeftijd (jaar)</label>
+                            <input type="text" id="edit-min-age" placeholder="0">
+                        </div>
+                        <div class="form-group" style="flex:1;margin:0;">
+                            <label for="edit-max-age">Maximumleeftijd (jaar)</label>
+                            <input type="text" id="edit-max-age" placeholder="6">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="edit-section">
+                    <h3>Type locatie</h3>
+                    <div class="form-group" style="margin:0;">
+                        <label for="edit-weather">Binnen / Buiten</label>
+                        <select id="edit-weather">
+                            <option value="indoor">Binnen</option>
+                            <option value="outdoor">Buiten</option>
+                            <option value="both">Beide</option>
+                            <option value="hybrid">Hybride (overdekt buiten)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Foto upload (alleen Basis+ plan) -->
+                <div class="edit-section" id="photo-upload-section" style="display:none;">
+                    <h3>Foto uploaden</h3>
+                    <p style="font-size:13px;margin-bottom:12px;">Upload een foto van je locatie (JPG/PNG/WebP, max 5MB). Alleen beschikbaar voor Basis en Featured abonnees.</p>
+                    <input type="file" id="edit-photo" accept="image/jpeg,image/png,image/webp" style="font-size:14px;">
+                    <div id="photo-preview" style="margin-top:12px;"></div>
+                </div>
+
+                <div style="display:flex;gap:10px;margin-top:24px;">
+                    <button class="btn btn-primary" id="save-btn" onclick="saveLocationEdits()">Wijzigingen opslaan</button>
+                    <button class="btn btn-secondary" onclick="loadLocationData()">Annuleren</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- === Tab: Billing === -->
+    <div id="tab-billing" class="hidden">
+        <div class="card">
+            <h2>Abonnement</h2>
+            <p id="billing-current-plan">Huidig plan wordt geladen…</p>
+
+            <div id="billing-alert"></div>
+
+            <div class="plan-cards">
+                <!-- Gratis -->
+                <div class="plan-card" id="plan-card-none">
+                    <h4>Gratis</h4>
+                    <div class="price">€0<span>/maand</span></div>
+                    <ul>
+                        <li>Account aanmaken</li>
+                        <li>Locatie claimen</li>
+                        <li>Website + beschrijving bewerken</li>
+                    </ul>
+                    <span style="font-size:12px;color:var(--text-muted);">Huidig plan</span>
+                </div>
+
+                <!-- Basis -->
+                <div class="plan-card" id="plan-card-basis">
+                    <h4>Basis</h4>
+                    <div class="price">€9,95<span>/maand</span></div>
+                    <ul>
+                        <li>Alle velden bewerken</li>
+                        <li>Geverifieerd ✓ badge</li>
+                        <li>Foto uploaden</li>
+                        <li>14 dagen gratis trial</li>
+                    </ul>
+                    <button class="btn btn-primary" id="upgrade-basis-btn" onclick="startCheckout('basis')">Upgrade naar Basis</button>
+                </div>
+
+                <!-- Featured -->
+                <div class="plan-card plan-featured" id="plan-card-featured">
+                    <span class="plan-badge">Meest populair</span>
+                    <h4>Featured</h4>
+                    <div class="price">€29,95<span>/maand</span></div>
+                    <ul>
+                        <li>Alles van Basis</li>
+                        <li>★ Aanbevolen badge</li>
+                        <li>Bovenaan zoekresultaten</li>
+                        <li>Statistieken (views, kliks)</li>
+                    </ul>
+                    <button class="btn btn-primary" id="upgrade-featured-btn" onclick="startCheckout('featured')">Kies Featured</button>
+                </div>
+            </div>
+
+            <div id="cancel-subscription-section" class="hidden" style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(212,119,90,0.12);">
+                <p style="font-size:14px;color:var(--text-muted);">Je kunt je abonnement op elk moment opzeggen. Je behoudt toegang tot je huidige plan tot het einde van de betaalperiode.</p>
+                <button class="btn btn-danger" onclick="cancelSubscription()" style="margin-top:8px;font-size:13px;padding:8px 16px;">Abonnement opzeggen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SB_URL     = 'https://piujsvgbfflrrvauzsxe.supabase.co';
+    const SB_ANON    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpdWpzdmdiZmZscnJ2YXV6c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNDMxNzAsImV4cCI6MjA4NzYxOTE3MH0.5y3gqiPfVvpvfaDYA_PgqE-KTvuf6zgN6vGzqfUpeSo';
+    const EDGE_BASE  = `${SB_URL}/functions/v1`;
+
+    const supabase = createClient(SB_URL, SB_ANON);
+
+    // ---- State ----
+    let currentUser   = null;
+    let venueOwner    = null;
+    let claimedLoc    = null;
+
+    // ---- Expose helpers to inline onclick ----
+    window.showScreen        = showScreen;
+    window.switchTab         = switchTab;
+    window.handleLogin       = handleLogin;
+    window.handleLogout      = handleLogout;
+    window.handleSignup      = handleSignup;
+    window.searchLocations   = searchLocations;
+    window.saveLocationEdits = saveLocationEdits;
+    window.startCheckout     = startCheckout;
+    window.cancelSubscription = cancelSubscription;
+    window.loadLocationData  = loadLocationData;
+    window.changeKidsCount   = () => {};  // not needed here
+
+    // ---- Routing ----
+    function showScreen(id) {
+        ['landing','login','signup','verify','dashboard'].forEach(s => {
+            document.getElementById('screen-' + s)?.classList.add('hidden');
+        });
+        document.getElementById('screen-' + id)?.classList.remove('hidden');
+    }
+
+    function switchTab(tabId) {
+        ['tab-mijn-locatie','tab-billing'].forEach(t => {
+            document.getElementById(t)?.classList.add('hidden');
+            document.getElementById('tab-btn-' + t)?.classList.remove('active');
+        });
+        document.getElementById(tabId)?.classList.remove('hidden');
+        document.getElementById('tab-btn-' + tabId)?.classList.add('active');
+    }
+
+    // ---- Auth ----
+    supabase.auth.onAuthStateChange(async (event, session) => {
+        if (session?.user) {
+            currentUser = session.user;
+            document.getElementById('nav-user').textContent = session.user.email;
+            document.getElementById('nav-user').classList.remove('hidden');
+            document.getElementById('nav-logout').classList.remove('hidden');
+            await loadOwnerData();
+            showScreen('dashboard');
+        } else {
+            currentUser = null;
+            venueOwner  = null;
+            document.getElementById('nav-user').classList.add('hidden');
+            document.getElementById('nav-logout').classList.add('hidden');
+            // Check URL params for billing result
+            const params = new URLSearchParams(location.search);
+            if (params.get('billing') === 'success') {
+                showScreen('landing');
+            } else {
+                showScreen('landing');
+            }
+        }
+    });
+
+    async function handleLogin() {
+        const email = document.getElementById('login-email').value.trim();
+        const pass  = document.getElementById('login-password').value;
+        const btn   = document.getElementById('login-btn');
+        setAlert('login-alert', '', '');
+        btn.disabled = true; btn.textContent = 'Inloggen…';
+        const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
+        btn.disabled = false; btn.textContent = 'Inloggen';
+        if (error) setAlert('login-alert', error.message, 'error');
+    }
+
+    async function handleSignup() {
+        const name  = document.getElementById('signup-name').value.trim();
+        const email = document.getElementById('signup-email').value.trim();
+        const pass  = document.getElementById('signup-password').value;
+        const btn   = document.getElementById('signup-btn');
+        setAlert('signup-alert', '', '');
+        if (!name || !email || !pass) { setAlert('signup-alert', 'Vul alle velden in.', 'error'); return; }
+        if (pass.length < 8) { setAlert('signup-alert', 'Wachtwoord moet minimaal 8 tekens zijn.', 'error'); return; }
+        btn.disabled = true; btn.textContent = 'Account aanmaken…';
+        const { error } = await supabase.auth.signUp({
+            email, password: pass,
+            options: { data: { full_name: name } }
+        });
+        btn.disabled = false; btn.textContent = 'Account aanmaken';
+        if (error) {
+            setAlert('signup-alert', error.message, 'error');
+        } else {
+            document.getElementById('verify-email-display').textContent = email;
+            showScreen('verify');
+        }
+    }
+
+    async function handleLogout() {
+        await supabase.auth.signOut();
+    }
+
+    // ---- Owner data ----
+    async function loadOwnerData() {
+        const { data } = await supabase
+            .from('venue_owners')
+            .select('*')
+            .eq('user_id', currentUser.id)
+            .single();
+        venueOwner = data;
+
+        // Load claim requests if no location yet
+        if (!venueOwner?.location_id) {
+            const { data: claims } = await supabase
+                .from('location_claim_requests')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .order('created_at', { ascending: false })
+                .limit(1)
+                .single();
+            if (claims) {
+                const msg = claims.status === 'pending'
+                    ? '⏳ Aanvraag ingediend — wacht op goedkeuring van PeuterPlannen.'
+                    : claims.status === 'approved'
+                    ? '✅ Aanvraag goedgekeurd!'
+                    : '❌ Aanvraag afgewezen. Stuur een bericht via contact.html als je denkt dat dit een fout is.';
+                document.getElementById('claim-status-msg').textContent = msg;
+                document.getElementById('claim-status-panel').classList.remove('hidden');
+            }
+            document.getElementById('no-location-panel').classList.remove('hidden');
+            document.getElementById('has-location-panel').classList.add('hidden');
+        } else {
+            document.getElementById('no-location-panel').classList.add('hidden');
+            document.getElementById('has-location-panel').classList.remove('hidden');
+            await loadLocationData();
+        }
+
+        updateBillingUI();
+    }
+
+    async function loadLocationData() {
+        if (!venueOwner?.location_id) return;
+        const { data: loc } = await supabase
+            .from('locations')
+            .select('*')
+            .eq('id', venueOwner.location_id)
+            .single();
+        if (!loc) return;
+        claimedLoc = loc;
+
+        document.getElementById('edit-loc-name').textContent = loc.name;
+        document.getElementById('edit-description').value = loc.description || '';
+        document.getElementById('edit-website').value     = loc.website     || '';
+        document.getElementById('edit-hours').value       = loc.opening_hours || '';
+        document.getElementById('edit-coffee').checked   = !!loc.coffee;
+        document.getElementById('edit-diaper').checked   = !!loc.diaper;
+        document.getElementById('edit-alcohol').checked  = !!loc.alcohol;
+        document.getElementById('edit-min-age').value    = loc.min_age ?? '';
+        document.getElementById('edit-max-age').value    = loc.max_age ?? '';
+        document.getElementById('edit-weather').value    = loc.weather || 'indoor';
+
+        // Photo upload only for Basis+
+        const hasBasis = ['basis','featured','trial'].includes(venueOwner?.subscription_status);
+        document.getElementById('photo-upload-section').style.display = hasBasis ? 'block' : 'none';
+    }
+
+    function updateBillingUI() {
+        const status  = venueOwner?.subscription_status ?? 'none';
+        const tier    = venueOwner?.plan_tier ?? 'none';
+        const expires = venueOwner?.plan_expires_at;
+
+        const badge = document.getElementById('edit-plan-badge');
+        if (badge) {
+            badge.className = 'status-badge status-' + status;
+            badge.textContent = { none:'Gratis', trial:'Trial', basis:'Basis', featured:'Featured ★', past_due:'Betaling mislukt', canceled:'Opgezegd' }[status] ?? status;
+        }
+
+        const expiryStr = expires
+            ? new Date(expires).toLocaleDateString('nl-NL', { day:'numeric', month:'long', year:'numeric' })
+            : '';
+
+        document.getElementById('billing-current-plan').innerHTML =
+            `Huidig plan: <strong>${{ none:'Gratis', trial:'Trial (proefperiode)', basis:'Basis', featured:'Featured', past_due:'Basis (betaling mislukt)', canceled:'Geen actief abonnement' }[status] ?? status}</strong>` +
+            (expiryStr ? ` · Geldig tot ${expiryStr}` : '');
+
+        // Show/hide plan buttons
+        const hasActive = ['basis','featured','trial'].includes(status);
+        document.getElementById('cancel-subscription-section').classList.toggle('hidden', !hasActive);
+
+        // Mark current plan card
+        ['none','basis','featured'].forEach(p => {
+            document.getElementById('plan-card-' + p)?.classList.toggle('current', tier === p || (p === 'none' && tier === 'none'));
+        });
+    }
+
+    // ---- Location search & claim ----
+    async function searchLocations() {
+        const q = document.getElementById('loc-search-input').value.trim();
+        if (!q) return;
+        const resultsEl = document.getElementById('loc-search-results');
+        resultsEl.innerHTML = '<p style="color:var(--text-muted);font-size:14px;">Zoeken…</p>';
+
+        const { data, error } = await supabase
+            .from('locations')
+            .select('id, name, region, type')
+            .ilike('name', `%${q}%`)
+            .limit(10);
+
+        if (error || !data?.length) {
+            resultsEl.innerHTML = '<p style="color:var(--text-muted);font-size:14px;">Geen locaties gevonden. Staat je locatie nog niet in onze database? <a href="/contact.html" style="color:var(--primary);">Stuur een suggestie</a>.</p>';
+            return;
+        }
+
+        resultsEl.innerHTML = data.map(loc => `
+            <div class="loc-result">
+                <div>
+                    <div class="loc-result-name">${escapeHtml(loc.name)}</div>
+                    <div class="loc-result-region">${escapeHtml(loc.region || '')} · ${escapeHtml(loc.type || '')}</div>
+                </div>
+                <button class="btn btn-secondary" onclick="claimLocation(${loc.id}, '${escapeJs(loc.name)}')">Claimen</button>
+            </div>
+        `).join('');
+    }
+
+    window.claimLocation = async (locationId, locationName) => {
+        if (!currentUser) return;
+
+        // Rate limit: max 3 per dag
+        const since = new Date(); since.setDate(since.getDate() - 1);
+        const { count } = await supabase
+            .from('location_claim_requests')
+            .select('id', { count: 'exact', head: true })
+            .eq('user_id', currentUser.id)
+            .gte('created_at', since.toISOString());
+
+        if ((count ?? 0) >= 3) {
+            alert('Je hebt vandaag al 3 claim-aanvragen ingediend. Probeer het morgen opnieuw.');
+            return;
+        }
+
+        const message = `Ik ben de eigenaar van ${locationName} en wil dit beheren via PeuterPlannen.`;
+        const { error } = await supabase
+            .from('location_claim_requests')
+            .insert({ user_id: currentUser.id, location_id: locationId, message });
+
+        if (!error) {
+            document.getElementById('claim-status-msg').textContent =
+                `⏳ Aanvraag voor "${locationName}" ingediend — wacht op goedkeuring van PeuterPlannen.`;
+            document.getElementById('claim-status-panel').classList.remove('hidden');
+            document.getElementById('loc-search-results').innerHTML = '';
+        } else {
+            alert('Er ging iets mis. Probeer het opnieuw.');
+        }
+    };
+
+    // ---- Save location edits ----
+    async function saveLocationEdits() {
+        if (!claimedLoc) return;
+        const btn = document.getElementById('save-btn');
+        setAlert('edit-alert', '', '');
+        btn.disabled = true; btn.textContent = 'Opslaan…';
+
+        const updates = {
+            description:   document.getElementById('edit-description').value.trim() || null,
+            website:       document.getElementById('edit-website').value.trim() || null,
+            opening_hours: document.getElementById('edit-hours').value.trim() || null,
+            coffee:        document.getElementById('edit-coffee').checked,
+            diaper:        document.getElementById('edit-diaper').checked,
+            alcohol:       document.getElementById('edit-alcohol').checked,
+            min_age:       parseInt(document.getElementById('edit-min-age').value) || null,
+            max_age:       parseInt(document.getElementById('edit-max-age').value) || null,
+            weather:       document.getElementById('edit-weather').value,
+            last_owner_update: new Date().toISOString(),
+        };
+
+        // Validate website URL
+        if (updates.website) {
+            try { new URL(updates.website); } catch {
+                setAlert('edit-alert', 'Website-URL is niet geldig. Gebruik https://...', 'error');
+                btn.disabled = false; btn.textContent = 'Wijzigingen opslaan';
+                return;
+            }
+        }
+
+        // Handle photo upload first if provided
+        const photoFile = document.getElementById('edit-photo')?.files?.[0];
+        if (photoFile) {
+            const err = await uploadPhoto(claimedLoc.id, photoFile);
+            if (err) {
+                setAlert('edit-alert', 'Foto upload mislukt: ' + err, 'error');
+                btn.disabled = false; btn.textContent = 'Wijzigingen opslaan';
+                return;
+            }
+        }
+
+        const { error } = await supabase
+            .from('locations')
+            .update(updates)
+            .eq('id', claimedLoc.id);
+
+        btn.disabled = false; btn.textContent = 'Wijzigingen opslaan';
+
+        if (error) {
+            setAlert('edit-alert', 'Opslaan mislukt: ' + error.message, 'error');
+        } else {
+            setAlert('edit-alert', '✓ Wijzigingen opgeslagen!', 'success');
+            claimedLoc = { ...claimedLoc, ...updates };
+        }
+    }
+
+    async function uploadPhoto(locationId, file) {
+        // Validate type and size
+        if (!['image/jpeg','image/png','image/webp'].includes(file.type)) return 'Alleen JPG, PNG of WebP toegestaan.';
+        if (file.size > 5 * 1024 * 1024) return 'Bestand te groot (max 5MB).';
+
+        const ext  = file.name.split('.').pop();
+        const path = `${locationId}/owner-${Date.now()}.${ext}`;
+        const { error } = await supabase.storage
+            .from('location-images')
+            .upload(path, file, { upsert: true, contentType: file.type });
+
+        if (error) return error.message;
+
+        const { data: { publicUrl } } = supabase.storage
+            .from('location-images')
+            .getPublicUrl(path);
+
+        await supabase.from('locations').update({ owner_photo_url: publicUrl }).eq('id', locationId);
+        return null;
+    }
+
+    // ---- Stripe checkout ----
+    async function startCheckout(planTier) {
+        const btn = document.getElementById('upgrade-' + planTier + '-btn');
+        if (btn) { btn.disabled = true; btn.textContent = 'Laden…'; }
+        setAlert('billing-alert', '', '');
+
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            const res = await fetch(`${EDGE_BASE}/create-checkout-session`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.access_token}`,
+                },
+                body: JSON.stringify({ plan_tier: planTier }),
+            });
+            const json = await res.json();
+            if (json.url) {
+                window.location.href = json.url;
+            } else {
+                throw new Error(json.error ?? 'Onbekende fout');
+            }
+        } catch (err) {
+            setAlert('billing-alert', 'Checkout mislukt: ' + err.message, 'error');
+            if (btn) { btn.disabled = false; btn.textContent = planTier === 'basis' ? 'Upgrade naar Basis' : 'Kies Featured'; }
+        }
+    }
+
+    async function cancelSubscription() {
+        if (!confirm('Weet je zeker dat je je abonnement wilt opzeggen? Je behoudt toegang tot het einde van de betaalperiode.')) return;
+        // In production: call a cancel-subscription Edge Function
+        // For now, redirect to Stripe customer portal (set this URL after configuring in Stripe dashboard)
+        setAlert('billing-alert', 'Om je abonnement op te zeggen, neem contact op via <a href="/contact.html">contact.html</a>.', 'info');
+    }
+
+    // ---- Util ----
+    function setAlert(id, msg, type) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.className = 'alert' + (type ? ' alert-' + type : '');
+        el.innerHTML = msg;
+        el.style.display = msg ? 'block' : 'none';
+    }
+
+    function escapeHtml(s) {
+        return (s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function escapeJs(s) {
+        return (s ?? '').replace(/'/g,"\\'").replace(/"/g,'\\"');
+    }
+
+    // Handle billing return from Stripe
+    (() => {
+        const params = new URLSearchParams(location.search);
+        if (params.get('billing') === 'success') {
+            history.replaceState({}, '', location.pathname);
+            // The webhook will update the DB; just show a success message after auth loads
+            setTimeout(() => setAlert('billing-alert', '🎉 Betaling geslaagd! Je abonnement wordt binnen enkele seconden geactiveerd.', 'success'), 800);
+        } else if (params.get('billing') === 'canceled') {
+            history.replaceState({}, '', location.pathname);
+        }
+    })();
+</script>
+</body>
+</html>

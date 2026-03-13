@@ -82,6 +82,7 @@ const TYPE_MAP = {
   swim: { label: 'Zwemmen', slug: 'zwemmen', labelSingle: 'Zwemmen' },
   pancake: { label: 'Pannenkoeken', slug: 'pannenkoeken', labelSingle: 'Pannenkoeken' },
   horeca: { label: 'Horeca', slug: 'horeca', labelSingle: 'Horeca' },
+  culture: { label: 'Cultuur', slug: 'cultuur', labelSingle: 'Cultuur' },
 };
 
 const TYPE_LABELS_CITY = {
@@ -92,9 +93,10 @@ const TYPE_LABELS_CITY = {
   swim: 'Zwembaden & Waterplezier',
   pancake: 'Pannenkoekenrestaurants',
   horeca: 'Kindvriendelijke Horeca',
+  culture: 'Cultuur & Theater',
 };
 
-const TYPE_ORDER = ['play', 'farm', 'nature', 'museum', 'swim', 'pancake', 'horeca'];
+const TYPE_ORDER = ['play', 'farm', 'nature', 'museum', 'culture', 'swim', 'pancake', 'horeca'];
 
 const TYPE_IMAGES = {
   play: '/images/categories/speeltuinen.png',
@@ -104,6 +106,7 @@ const TYPE_IMAGES = {
   swim: '/images/categories/zwemmen.png',
   pancake: '/images/categories/pannenkoeken.png',
   horeca: '/images/categories/horeca.png',
+  culture: '/images/categories/cultuur.png',
 };
 
 const TYPE_PAGES = [
@@ -203,6 +206,20 @@ const TYPE_PAGES = [
       { q: 'Wat is een kindercafe en is dat anders dan een gewoon restaurant?', a: 'Een kindercafe is ingericht op ouders met baby\'s en peuters: zachte vloeren, laag meubilair, speelgoed en een speelhoek. Kindercafe Kikker in Den Haag en Wonderpark Cafe in Amsterdam zijn voorbeelden.' },
       { q: 'Moet ik reserveren bij kindvriendelijke restaurants?', a: 'Op drukke momenten (zaterdag lunch, schoolvakanties) is het slim om te reserveren. Veel restaurants hebben beperkte ruimte voor kinderwagens.' },
       { q: 'Welke restaurants hebben een buitenspeeltuin of terras?', a: 'Parkrestaurant Anafora in Utrecht, Boerderij Meerzicht in Amsterdam, en Strandpaviljoen Zuid in Den Haag hebben buitenruimte waar kinderen kunnen bewegen terwijl ouders eten.' },
+    ]
+  },
+  {
+    slug: 'cultuur', dbType: 'culture',
+    title: 'Cultuur & theater voor peuters in Nederland',
+    metaTitle: 'Kindertheater, poppentheater en cultuur voor peuters | PeuterPlannen',
+    metaDesc: 'Theaters, poppentheaters, bioscopen en culturele uitjes voor peuters in heel Nederland. Met leeftijdsadvies en praktische info.',
+    h1: 'Cultuur & theater voor peuters in Nederland',
+    intro: `Theaters en culturele uitjes zijn verrassend leuk voor peuters. Poppentheaters houden de aandacht vast met korte voorstellingen (30-45 minuten), bioscopen draaien speciale peuterfilms, en kindertheaters maken interactieve shows waar meedoen mag.\n\nVan het **Amsterdams Marionetten Theater** tot **Theater Kikker** in Utrecht en **Poppentheater Koos Kneus** in Amsterdam — er is veel meer voor kleine kinderen dan je zou denken. Tip: kies voorstellingen van maximaal 45 minuten, en boek stoelen aan het gangpad voor een snelle vluchtroute.`,
+    sectionLabel: 'Cultuur',
+    faqItems: [
+      { q: 'Vanaf welke leeftijd kan een peuter naar het theater?', a: 'Veel poppentheaters en kindertheaters hebben voorstellingen vanaf 2 jaar. Sommige baby-theaters zijn zelfs geschikt vanaf 0 jaar. Check altijd de leeftijdsaanduiding bij de voorstelling.' },
+      { q: 'Hoe lang duurt een theatervoorstelling voor peuters?', a: 'Peutervoorstellingen duren meestal 30-45 minuten, precies de concentratiespanne van jonge kinderen. Vaak is er daarna een nabespreking of knutselactiviteit.' },
+      { q: 'Welke bioscopen hebben peuterfilms?', a: 'Pathé en Vue draaien regelmatig peuterbioscoop met kortere films, gedimpt licht en zachter geluid. De Telekids Bioscoop in het Mediapark is speciaal ingericht voor jonge kinderen.' },
     ]
   },
 ];
@@ -2899,6 +2916,7 @@ function locationPageHTML(loc, region, similarLocs) {
     infoItems.push(`<div class="info-item verified-badge"><div><div class="info-label">Status</div><div class="info-value">✓ ${label}</div></div></div>`);
   }
   const normalizedWebsite = normalizeExternalUrl(loc.website);
+  if (loc.opening_hours) infoItems.push(`<div class="info-item"><div><div class="info-label">Openingstijden</div><div class="info-value">${escapeHtml(loc.opening_hours)}</div></div></div>`);
   if (normalizedWebsite) infoItems.push(`<div class="info-item"><div><div class="info-label">Website</div><div class="info-value"><a href="${escapeHtml(normalizedWebsite)}" target="_blank" rel="noopener" aria-label="Website van ${escapeHtml(loc.name)}">${escapeHtml(displayExternalUrl(normalizedWebsite))}</a></div></div></div>`);
 
   const regionSlug = (region.slug || '').toLowerCase();

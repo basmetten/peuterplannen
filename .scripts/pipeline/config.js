@@ -142,6 +142,34 @@ const REGIONS = {
   'Voorst':                 { osmName: 'Voorst',                 adminLevel: 8, supabaseRegion: 'Apeldoorn' },
   'Brummen':                { osmName: 'Brummen',                adminLevel: 8, supabaseRegion: 'Apeldoorn' },
   'Heerde':                 { osmName: 'Heerde',                 adminLevel: 8, supabaseRegion: 'Apeldoorn' },
+
+  // Enschede (Regio Twente)
+  'Enschede':               { osmName: 'Enschede',               adminLevel: 8 },
+  'Hengelo':                { osmName: 'Hengelo',                adminLevel: 8, supabaseRegion: 'Enschede' },
+  'Oldenzaal':              { osmName: 'Oldenzaal',              adminLevel: 8, supabaseRegion: 'Enschede' },
+  'Losser':                 { osmName: 'Losser',                 adminLevel: 8, supabaseRegion: 'Enschede' },
+  'Haaksbergen':            { osmName: 'Haaksbergen',            adminLevel: 8, supabaseRegion: 'Enschede' },
+
+  // Zwolle (IJssel-Vechtstreek)
+  'Zwolle':                 { osmName: 'Zwolle',                 adminLevel: 8 },
+  'Kampen':                 { osmName: 'Kampen',                 adminLevel: 8, supabaseRegion: 'Zwolle' },
+  'Dalfsen':                { osmName: 'Dalfsen',                adminLevel: 8, supabaseRegion: 'Zwolle' },
+  'Zwartewaterland':        { osmName: 'Zwartewaterland',        adminLevel: 8, supabaseRegion: 'Zwolle' },
+  'Hattem':                 { osmName: 'Hattem',                 adminLevel: 8, supabaseRegion: 'Zwolle' },
+
+  // Maastricht (Zuid-Limburg)
+  'Maastricht':             { osmName: 'Maastricht',             adminLevel: 8 },
+  'Meerssen':               { osmName: 'Meerssen',               adminLevel: 8, supabaseRegion: 'Maastricht' },
+  'Valkenburg aan de Geul': { osmName: 'Valkenburg aan de Geul', adminLevel: 8, supabaseRegion: 'Maastricht' },
+  'Eijsden-Margraten':      { osmName: 'Eijsden-Margraten',      adminLevel: 8, supabaseRegion: 'Maastricht' },
+
+  // Dordrecht (Drechtsteden)
+  'Dordrecht':              { osmName: 'Dordrecht',              adminLevel: 8 },
+  'Zwijndrecht':            { osmName: 'Zwijndrecht',            adminLevel: 8, supabaseRegion: 'Dordrecht' },
+  'Sliedrecht':             { osmName: 'Sliedrecht',             adminLevel: 8, supabaseRegion: 'Dordrecht' },
+  'Hendrik-Ido-Ambacht':    { osmName: 'Hendrik-Ido-Ambacht',    adminLevel: 8, supabaseRegion: 'Dordrecht' },
+  'Papendrecht':            { osmName: 'Papendrecht',            adminLevel: 8, supabaseRegion: 'Dordrecht' },
+  'Alblasserdam':           { osmName: 'Alblasserdam',           adminLevel: 8, supabaseRegion: 'Dordrecht' },
 };
 
 const BAR_KEYWORDS = [
@@ -160,9 +188,6 @@ const HARD_REJECT_PATTERNS = [
   /nachtclub/i,
   /stripclub/i,
   /hookah|shisha/i,
-  /alcohol\s*only/i,
-  /cocktail\s*bar/i,
-  /wine\s*bar|wijnbar/i,
 ];
 
 const KID_KEYWORDS = [

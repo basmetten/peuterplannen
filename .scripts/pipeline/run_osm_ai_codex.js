@@ -1,6 +1,21 @@
 #!/usr/bin/env node
 
 const path = require('path');
+const fs = require('fs');
+
+// Laad ANTHROPIC_API_KEY uit .supabase_env zodat claude CLI hem kan gebruiken
+(function loadAnthropicKey() {
+  if (process.env.ANTHROPIC_API_KEY) return;
+  try {
+    const envPath = path.resolve(__dirname, '..', '..', '.supabase_env');
+    const raw = fs.readFileSync(envPath, 'utf8');
+    for (const line of raw.split(/\r?\n/)) {
+      const m = line.match(/^ANTHROPIC_API_KEY\s*=\s*(.+)/);
+      if (m) { process.env.ANTHROPIC_API_KEY = m[1].trim().replace(/^['"]|['"]$/g, ''); return; }
+    }
+  } catch (_) {}
+})();
+
 const {
   parseArgs,
   resolveRegionSet,
@@ -104,19 +119,25 @@ async function main() {
       return;
     }
 
+    const skipEnrich = parseBool(process.env.SKIP_ENRICH, false);
     console.log('\n[3/4] Enriching sources...');
-    try {
-      await enrichCandidates({
-        db,
-        candidates,
-        googleKey: null,
-      });
-    } catch (enrichErr) {
-      // Gedeeltelijke enrichment-fouten (bijv. netwerk terminated) mogen pipeline niet stoppen.
-      // Candidates die enriched zijn worden gescoord; rest krijgt only-OSM signals.
-      console.warn(`[3/4] Enrichment partial failure: ${enrichErr.message} — doorgaan met scoring`);
-      // Markeer niet-enriched candidates toch als enriched zodat ze gescoord worden
+    if (skipEnrich) {
+      console.log('[3/4] SKIP_ENRICH=true — gebruik bestaande enriched_signals, markeer direct als enriched.');
       await db.patchCandidatesByRun(runId, 'new', { status: 'enriched' });
+    } else {
+      try {
+        await enrichCandidates({
+          db,
+          candidates,
+          googleKey: null,
+        });
+      } catch (enrichErr) {
+        // Gedeeltelijke enrichment-fouten (bijv. netwerk terminated) mogen pipeline niet stoppen.
+        // Candidates die enriched zijn worden gescoord; rest krijgt only-OSM signals.
+        console.warn(`[3/4] Enrichment partial failure: ${enrichErr.message} — doorgaan met scoring`);
+        // Markeer niet-enriched candidates toch als enriched zodat ze gescoord worden
+        await db.patchCandidatesByRun(runId, 'new', { status: 'enriched' });
+      }
     }
 
     const freshCandidates = await db.getCandidatesByRun(runId, ['enriched']);

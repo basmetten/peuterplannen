@@ -228,30 +228,57 @@ function buildPrompt(candidate) {
 }
 
 async function callClaudeCLI({ model, prompt, timeoutMs }) {
-  // Verwijder CLAUDECODE uit child env — anders blokkeert Claude Code nested spawns
-  const childEnv = { ...process.env };
-  delete childEnv.CLAUDECODE;
+  // Gebruik Anthropic API direct via fetch — bypast claude CLI OAuth sessie
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) throw new Error('ANTHROPIC_API_KEY niet gevonden in environment');
 
-  return await new Promise((resolve, reject) => {
-    const child = spawn('claude', [
-      '--model', model,
-      '--output-format', 'text',
-      '-p', prompt,
-    ], { env: childEnv, stdio: ['pipe', 'pipe', 'pipe'] });
+  const deadline = Date.now() + timeoutMs;
+  let attempt = 0;
 
-    let stdout = '';
-    let stderr = '';
-    const killTimer = setTimeout(() => child.kill('SIGTERM'), timeoutMs);
+  while (true) {
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) throw new Error('Anthropic API timeout (deadline bereikt)');
 
-    child.stdout.on('data', (d) => { stdout += d; });
-    child.stderr.on('data', (d) => { stderr += d; });
-    child.on('error', reject);
-    child.on('close', (code) => {
+    const controller = new AbortController();
+    const killTimer = setTimeout(() => controller.abort(), remaining);
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        signal: controller.signal,
+        headers: {
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 1024,
+          messages: [{ role: 'user', content: prompt }],
+        }),
+      });
+
+      if (res.status === 429 || res.status === 529) {
+        const retryAfter = Number(res.headers.get('retry-after') || '0');
+        const waitMs = Math.max(retryAfter * 1000, Math.min(2000 * Math.pow(2, attempt), 30000));
+        attempt++;
+        if (Date.now() + waitMs > deadline) throw new Error(`Anthropic rate limit, geen tijd meer om te wachten`);
+        await new Promise((r) => setTimeout(r, waitMs));
+        continue;
+      }
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Anthropic API ${res.status}: ${text.slice(0, 400)}`);
+      }
+
+      const data = await res.json();
+      const text = data.content?.[0]?.text || '';
+      return extractJsonObject(text);
+    } finally {
       clearTimeout(killTimer);
-      if (code === 0) return resolve(extractJsonObject(stdout));
-      reject(new Error(`claude exited ${code}: ${stderr.slice(0, 600)} stdout: ${stdout.slice(0, 300)}`));
-    });
-  });
+    }
+  }
 }
 
 async function callCodexCLI({ model, prompt, timeoutMs }) {
