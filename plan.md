@@ -705,7 +705,7 @@ Repo size reduction: ~60%. Build time reduction: ~70%."
 ---
 
 ## FASE 5: ADMIN-API OPSPLITSEN
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Sonnet (module extractie)
 **Geschatte duur:** 2 uur
 **Doel:** De 1400-regels admin-api edge function opsplitsen in handlers
