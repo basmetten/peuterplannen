@@ -124,6 +124,15 @@ jobs:
           set -euo pipefail
           node .scripts/audit_seo_quality.js --strict
 
+      - name: Deploy to Cloudflare Pages (production)
+        if: steps.gate.outputs.run_build == 'true'
+        env:
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          npx wrangler pages deploy . --project-name=peuterplannen --branch=main --commit-dirty=true
+
       - name: Commit and push when build changed files
         if: steps.gate.outputs.run_build == 'true'
         id: publish

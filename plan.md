@@ -916,7 +916,7 @@ security view for public API. Make admin email list configurable."
 ---
 
 ## FASE 7: STAGING/PREVIEW ENVIRONMENT
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Sonnet
 **Geschatte duur:** 1.5 uur
 **Doel:** Preview deployments voordat code live gaat

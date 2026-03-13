@@ -1,0 +1,37 @@
+# Build tooling & source — not part of the deployed site
+.git/
+.github/
+.scripts/
+.vscode/
+cloudflare-worker/
+supabase/
+node_modules/
+output/
+.archive/
+
+# Config & secrets
+.supabase_env
+.env
+.env.example
+.cfignore
+.gitignore
+.gitattributes
+package.json
+package-lock.json
+wrangler.jsonc
+plan.md
+CLAUDE.md
+SCRATCH.md
+
+# Data files
+*.json.bak
+all_locations_*.json
+batch_*.json
+
+# Root-level one-off scripts
+dedup_locations.js
+fix_incomplete_locations.js
+add_new_locations.js
+verify_place_ids.js
+alcohol_age_check.js
+process_suggestions.js
