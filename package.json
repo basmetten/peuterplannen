@@ -5,6 +5,10 @@
   "description": "PeuterPlannen \u2014 Leuke uitjes voor kinderen",
   "scripts": {
     "build": "node .scripts/optimize_images.js && node .scripts/sync_portal_assets.js && node .scripts/sync_all.js",
+    "test": "node --test .scripts/__tests__/*.test.js",
+    "test:unit": "node --test .scripts/__tests__/helpers.test.js .scripts/__tests__/config.test.js",
+    "test:snapshot": "node --test .scripts/__tests__/build-snapshot.test.js",
+    "test:snapshot:update": "UPDATE_SNAPSHOTS=1 node --test .scripts/__tests__/build-snapshot.test.js",
     "discover": "node .scripts/discover_horeca.js",
     "pipeline:utrecht:codex": "PIPELINE_SCORE_CONCURRENCY=20 node .scripts/pipeline/run_osm_ai_codex.js --region=Utrecht --with-surroundings=true",
     "pipeline:utrecht:codex:dry": "PIPELINE_SCORE_CONCURRENCY=20 node .scripts/pipeline/run_osm_ai_codex.js --region=Utrecht --with-surroundings=true --dry-run=true --limit=20",

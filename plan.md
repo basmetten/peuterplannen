@@ -1905,7 +1905,7 @@ Update deze sectie na het afronden van elke fase:
 |------|-------------|--------|-------|
 | 0 | Voorbereiding & veiligheid | `DONE` | 2026-03-13 |
 | 1 | Split sync_all.js | `DONE` | 2026-03-13 |
-| 2 | Test infrastructure | `TODO` | |
+| 2 | Test infrastructure | `DONE` | 2026-03-13 |
 | 3 | Local dev experience | `TODO` | |
 | 4 | Noindex → runtime rendering | `TODO` | |
 | 5 | Admin-API opsplitsen | `TODO` | |
