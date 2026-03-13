@@ -101,12 +101,30 @@ jobs:
         if: steps.gate.outputs.run_build == 'true'
         run: npm ci
 
+      - name: Run tests
+        if: steps.gate.outputs.run_build == 'true'
+        run: npm test
+
       - name: Build static site
         if: steps.gate.outputs.run_build == 'true'
         run: npm run build
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+      - name: Sanity check generated files
+        if: steps.gate.outputs.run_build == 'true'
+        run: |
+          count=$(find . -name '*.html' -not -path './node_modules/*' -not -path './.git/*' | wc -l)
+          echo "Generated HTML files: $count"
+          if [ "$count" -lt 100 ]; then
+            echo "ERROR: Too few HTML files generated ($count). Build may be broken."
+            exit 1
+          fi
+          if [ "$count" -gt 3000 ]; then
+            echo "ERROR: Too many HTML files generated ($count). Possible runaway generation."
+            exit 1
+          fi
 
       - name: Run consistency audit (strict)
         if: steps.gate.outputs.run_build == 'true'
