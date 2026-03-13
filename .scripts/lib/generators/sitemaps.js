@@ -27,6 +27,7 @@ function buildPageCatalog(data, blogPosts, clusterPages, sharedPages = []) {
   pushPage({ path: '/app.html', pageType: 'core', tier: 'core', filePath: path.join(ROOT, 'app.html'), priority: '0.9', changefreq: 'weekly', inSitemap: true });
   pushPage({ path: '/about.html', pageType: 'core', tier: 'core', filePath: path.join(ROOT, 'about.html'), priority: '0.5', changefreq: 'monthly', inSitemap: true });
   pushPage({ path: '/contact.html', pageType: 'core', tier: 'core', filePath: path.join(ROOT, 'contact.html'), priority: '0.4', changefreq: 'monthly', inSitemap: true });
+  pushPage({ path: '/voor-bedrijven/', pageType: 'core', tier: 'core', filePath: path.join(ROOT, 'voor-bedrijven', 'index.html'), priority: '0.6', changefreq: 'monthly', inSitemap: true });
   pushPage({ path: '/blog/', pageType: 'blog_index', tier: 'hub', filePath: path.join(ROOT, 'blog', 'index.html'), priority: '0.8', changefreq: 'weekly', inSitemap: true });
   pushPage({ path: '/ontdekken/', pageType: 'discover_hub', tier: 'hub', filePath: path.join(ROOT, 'ontdekken', 'index.html'), priority: '0.82', changefreq: 'weekly', inSitemap: true });
   pushPage({ path: '/methode/', pageType: 'methodology_page', tier: 'hub', filePath: path.join(ROOT, 'methode', 'index.html'), priority: '0.55', changefreq: 'monthly', inSitemap: true });

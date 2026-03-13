@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <!-- Google tag (gtag.js) — Consent Mode v2 -->
+  <script src="/ga-init.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+  <script src="/consent.js" defer></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
+  <meta name="theme-color" content="#D4775A">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="preload" href="/design-system.css" as="style">
+  <link rel="preload" href="/style.min.css" as="style">
+  <link rel="preload" href="/fonts/familjen-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="/design-system.css?v=202603132152">
+  <link rel="stylesheet" href="/style.min.css?v=202603132152">
+  <style>
+  .guide-section{display:grid;gap:18px;margin:36px 0}
+  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .guide-card-compact{padding:20px 18px}
+  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
+  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
+  .guide-card h2{font-size:clamp(28px,5vw,40px)}
+  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
+  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
+  .guide-card-intro{max-width:58ch}
+  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .guide-links{display:grid;gap:12px;margin-top:16px}
+  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  .guide-link:visited{color:var(--pp-text)}
+  .guide-link strong{font-size:15px;line-height:1.3}
+  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
+  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
+  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
+  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
+  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
+  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
+  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
+  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
+  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
+  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
+  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
+  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
+  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
+  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
+  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
+  .editorial-support-links a:visited{color:var(--pp-text)}
+  .editorial-support-links a strong{font-size:14px}
+  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
+  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
+</style>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603132152">
+  <script src="/nav-floating.js?v=202603132152" defer></script>
+  <script src="/error-reporter.js" defer></script>
+  <style>
+    .vb-hero{padding:100px 24px 72px;text-align:center;background:linear-gradient(180deg,var(--pp-bg-warm) 0%,var(--pp-bg) 100%)}
+    .vb-hero h1{font-family:var(--pp-font-heading);font-size:clamp(28px,5.5vw,48px);color:var(--pp-text);line-height:1.08;letter-spacing:-.03em;margin:0 auto 18px;max-width:720px}
+    .vb-hero p{font-size:clamp(16px,2.5vw,20px);color:var(--pp-text-secondary);max-width:560px;margin:0 auto 32px;line-height:1.6}
+    .vb-hero-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--pp-primary);color:#fff;border-radius:var(--pp-radius-xs);font-family:var(--pp-font-ui);font-size:16px;font-weight:600;text-decoration:none;transition:background var(--pp-transition),box-shadow var(--pp-transition)}
+    .vb-hero-cta:hover{background:var(--pp-primary-dark);box-shadow:0 8px 24px rgba(212,119,90,.3)}
+    .vb-hero-stat{display:inline-block;margin-top:24px;font-size:14px;color:var(--pp-text-muted);font-weight:500}
+    .vb-hero-stat strong{color:var(--pp-primary);font-weight:700}
+
+    .vb-section{max-width:var(--pp-max-width);margin:0 auto;padding:64px 24px}
+    .vb-section-title{font-family:var(--pp-font-heading);font-size:clamp(24px,4vw,36px);color:var(--pp-text);text-align:center;margin:0 0 12px;letter-spacing:-.02em}
+    .vb-section-sub{font-size:16px;color:var(--pp-text-secondary);text-align:center;max-width:520px;margin:0 auto 48px;line-height:1.6}
+
+    .vb-values{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;max-width:var(--pp-max-width);margin:0 auto;padding:0 24px 64px}
+    .vb-value{background:var(--pp-surface);border:1px solid var(--pp-border);border-radius:var(--pp-radius-md);padding:28px 24px;text-align:center;transition:transform var(--pp-transition),box-shadow var(--pp-transition)}
+    .vb-value:hover{transform:translateY(-3px);box-shadow:var(--pp-shadow-hover)}
+    .vb-value-icon{width:48px;height:48px;margin:0 auto 16px;background:var(--pp-primary-light);border-radius:var(--pp-radius-sm);display:flex;align-items:center;justify-content:center;color:var(--pp-primary)}
+    .vb-value h3{font-family:var(--pp-font-heading);font-size:20px;color:var(--pp-text);margin:0 0 8px}
+    .vb-value p{font-size:15px;color:var(--pp-text-secondary);line-height:1.6;margin:0}
+
+    .vb-tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;max-width:900px;margin:0 auto}
+    .vb-tier{background:var(--pp-surface);border:1px solid var(--pp-border);border-radius:var(--pp-radius-lg);padding:36px 28px;position:relative;text-align:center;transition:transform var(--pp-transition),box-shadow var(--pp-transition)}
+    .vb-tier:hover{transform:translateY(-3px);box-shadow:var(--pp-shadow-hover)}
+    .vb-tier-highlight{border-color:var(--pp-primary);box-shadow:0 0 0 1px var(--pp-primary),var(--pp-shadow-md)}
+    .vb-tier-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--pp-primary);color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:var(--pp-radius-pill);white-space:nowrap}
+    .vb-tier-name{font-family:var(--pp-font-heading);font-size:22px;color:var(--pp-text);margin:8px 0 4px}
+    .vb-tier-price{font-family:var(--pp-font-heading);font-size:42px;color:var(--pp-text);font-weight:700;letter-spacing:-.02em}
+    .vb-tier-period{font-size:16px;color:var(--pp-text-muted);font-weight:400}
+    .vb-tier-features{list-style:none;padding:0;margin:24px 0;text-align:left}
+    .vb-tier-features li{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--pp-text-secondary);padding:6px 0;line-height:1.5}
+    .vb-tier-features li svg{flex-shrink:0;color:var(--pp-secondary);margin-top:2px}
+    .vb-tier-cta{display:block;padding:12px;border:1px solid var(--pp-border);border-radius:var(--pp-radius-xs);font-family:var(--pp-font-ui);font-size:15px;font-weight:600;color:var(--pp-text);text-decoration:none;transition:background var(--pp-transition),border-color var(--pp-transition)}
+    .vb-tier-cta:hover{background:var(--pp-surface-hover);border-color:var(--pp-border-strong)}
+    .vb-tier-cta-primary{background:var(--pp-primary);color:#fff;border-color:var(--pp-primary)}
+    .vb-tier-cta-primary:hover{background:var(--pp-primary-dark);border-color:var(--pp-primary-dark)}
+
+    .vb-social{background:var(--pp-bg-warm);padding:48px 24px;text-align:center;border-radius:var(--pp-radius-lg);max-width:800px;margin:0 auto 64px}
+    .vb-social p{font-family:var(--pp-font-heading);font-size:clamp(20px,3.5vw,28px);color:var(--pp-text);margin:0;line-height:1.3}
+    .vb-social strong{color:var(--pp-primary)}
+
+    .vb-faq{max-width:680px;margin:0 auto}
+    .vb-faq-item{border-bottom:1px solid var(--pp-border);padding:0}
+    .vb-faq-item summary{padding:20px 0;font-family:var(--pp-font-heading);font-size:17px;color:var(--pp-text);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+    .vb-faq-item summary::-webkit-details-marker{display:none}
+    .vb-faq-item summary::after{content:'+';font-size:22px;color:var(--pp-text-muted);transition:transform var(--pp-transition)}
+    .vb-faq-item[open] summary::after{transform:rotate(45deg)}
+    .vb-faq-item p{padding:0 0 20px;font-size:15px;color:var(--pp-text-secondary);line-height:1.7;margin:0}
+
+    .vb-bottom-cta{text-align:center;padding:80px 24px;background:linear-gradient(180deg,var(--pp-bg) 0%,var(--pp-bg-warm) 100%)}
+    .vb-bottom-cta h2{font-family:var(--pp-font-heading);font-size:clamp(24px,4vw,36px);color:var(--pp-text);margin:0 0 16px;letter-spacing:-.02em}
+    .vb-bottom-cta p{font-size:16px;color:var(--pp-text-secondary);margin:0 0 28px}
+  </style>
+  <title>Voor bedrijven — PeuterPlannen</title>
+  <meta name="description" content="Beheer je locatie op PeuterPlannen. Claim je profiel, update je informatie en bereik meer gezinnen met kinderen in jouw regio.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://peuterplannen.nl/voor-bedrijven/">
+  <meta property="og:title" content="Voor bedrijven — PeuterPlannen">
+  <meta property="og:description" content="Beheer je locatie op PeuterPlannen. Claim je profiel, update je informatie en bereik meer gezinnen met kinderen in jouw regio.">
+  <meta property="og:url" content="https://peuterplannen.nl/voor-bedrijven/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="nl_NL">
+  <meta property="og:image" content="https://peuterplannen.nl/images/og/default.jpg">
+</head>
+<body>
+<a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
+<nav aria-label="Hoofdnavigatie" class="floating-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" class="nav-logo-svg" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>
+      <span class="logo-text"><span class="logo-top">Peuter</span><span class="logo-bottom">Plannen</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/ontdekken/" class="nav-link">Ontdekken</a>
+      <a href="/about.html" class="nav-link">Over</a>
+      <a href="/blog/" class="nav-link">Inspiratie</a>
+      <a href="/contact.html" class="nav-link">Contact</a>
+      <a href="/partner/" class="nav-cta">Partnerportaal</a>
+    </div>
+    <button class="nav-burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-mobile-menu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
+    <a href="/" class="nav-mobile-link">Home</a>
+    <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
+    <a href="/about.html" class="nav-mobile-link">Over</a>
+    <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
+    <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    <a href="/partner/" class="nav-mobile-link nav-mobile-cta nav-cta">Partnerportaal</a>
+  </div>
+</nav>
+
+<section class="vb-hero">
+  <h1>Sta je op PeuterPlannen? Beheer je profiel en bereik meer gezinnen.</h1>
+  <p>PeuterPlannen helpt ouders de beste uitjes en locaties voor jonge kinderen te vinden. Zorg dat jouw locatie er op z’n best uitziet.</p>
+  <a href="/partner/" class="vb-hero-cta">Ga naar het partnerportaal</a>
+  <br><span class="vb-hero-stat"><strong>2138+</strong> locaties in <strong>22</strong> regio’s vertrouwen op PeuterPlannen</span>
+</section>
+
+<nav aria-label="Kruimelpad" class="breadcrumb">
+  <a href="/">PeuterPlannen</a> &rsaquo; Voor bedrijven
+</nav>
+
+<main id="main-content">
+
+<section class="vb-values pp-stagger">
+  <div class="vb-value">
+    <div class="vb-value-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+    </div>
+    <h3>Geverifieerd badge</h3>
+    <p>Laat ouders zien dat jouw locatie door de eigenaar wordt beheerd. Actuele informatie vergroot het vertrouwen.</p>
+  </div>
+  <div class="vb-value">
+    <div class="vb-value-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <h3>Uitgelichte listing</h3>
+    <p>Featured locaties staan bovenaan in zoekresultaten en worden uitgelicht in hun regio. Meer zichtbaarheid, meer bezoekers.</p>
+  </div>
+  <div class="vb-value">
+    <div class="vb-value-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    </div>
+    <h3>Profielbeheer</h3>
+    <p>Pas je beschrijving, foto, openingstijden en faciliteiten aan. Houd je profiel actueel vanuit één plek.</p>
+  </div>
+</section>
+
+<section class="vb-section">
+  <h2 class="vb-section-title">Kies het plan dat bij je past</h2>
+  <p class="vb-section-sub">Van gratis profielbeheer tot maximale zichtbaarheid — je betaalt alleen voor wat je nodig hebt.</p>
+  <div class="vb-tiers pp-stagger">
+    <div class="vb-tier">
+      
+      <h3 class="vb-tier-name">Gratis</h3>
+      <div class="vb-tier-price">€0<span class="vb-tier-period"></span></div>
+      <ul class="vb-tier-features"><li><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Profiel claimen en beheren</li><li><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Beschrijving en openingstijden aanpassen</li><li><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Foto uploaden</li><li><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Zichtbaar op PeuterPlannen</li></ul>
+      <a href="/partner/" class="vb-tier-cta">Claim je profiel</a>
+    </div>
+    <div class="vb-tier vb-tier-highlight">
+      <span class="vb-tier-badge">Populairst</span>
+      <h3 class="vb-tier-name">Featured</h3>
+      <div class="vb-tier-price">€11<span class="vb-tier-period">/maand</span></div>
+      <ul class="vb-tier-features"><li><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Alles van Gratis</li><li><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Geverifieerd badge op je profiel</li><li><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Bovenaan in zoekresultaten</li><li><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Uitgelicht in je regio</li><li><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Maandelijks opzegbaar</li></ul>
+      <a href="/partner/" class="vb-tier-cta vb-tier-cta-primary">Start Featured</a>
+    </div>
+    <div class="vb-tier">
+      <span class="vb-tier-badge">Beste deal</span>
+      <h3 class="vb-tier-name">Featured Jaar</h3>
+      <div class="vb-tier-price">€90<span class="vb-tier-period">/jaar</span></div>
+      <ul class="vb-tier-features"><li><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Alles van Featured</li><li><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Jaarlijks abonnement</li><li><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>32% goedkoper dan maandelijks</li><li><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>Voorrang bij nieuwe features</li></ul>
+      <a href="/partner/" class="vb-tier-cta">Bespaar 32%</a>
+    </div>
+  </div>
+</section>
+
+<div class="vb-social">
+  <p><strong>2138+</strong> locaties in heel Nederland staan al op PeuterPlannen</p>
+</div>
+
+<section class="vb-section">
+  <h2 class="vb-section-title">Veelgestelde vragen</h2>
+  <p class="vb-section-sub">Alles wat je moet weten over je locatie op PeuterPlannen.</p>
+  <div class="vb-faq">
+    <details class="vb-faq-item">
+      <summary>Hoe kan ik mijn locatie claimen?</summary>
+      <p>Maak een gratis account aan in het partnerportaal. Zoek je locatie op en dien een claim in. Na verificatie krijg je volledige toegang tot je profiel.</p>
+    </details>
+    <details class="vb-faq-item">
+      <summary>Wat kost het om op PeuterPlannen te staan?</summary>
+      <p>Staan op PeuterPlannen is gratis. Je kunt je profiel claimen en beheren zonder kosten. Voor extra zichtbaarheid bieden we Featured-abonnementen aan.</p>
+    </details>
+    <details class="vb-faq-item">
+      <summary>Wat houdt het Geverifieerd-badge in?</summary>
+      <p>Het Geverifieerd-badge laat ouders zien dat jouw locatie door de eigenaar wordt beheerd en dat de informatie actueel is. Dit vergroot het vertrouwen.</p>
+    </details>
+    <details class="vb-faq-item">
+      <summary>Kan ik mijn abonnement opzeggen?</summary>
+      <p>Ja, het maandelijkse Featured-abonnement is per maand opzegbaar. Bij het jaarabonnement loop je het jaar uit.</p>
+    </details>
+    <details class="vb-faq-item">
+      <summary>Hoeveel ouders gebruiken PeuterPlannen?</summary>
+      <p>PeuterPlannen groeit gestaag. We hebben 2138+ locaties in 22 regio’s door heel Nederland. Ouders vinden ons via Google en mond-tot-mond.</p>
+    </details>
+    <details class="vb-faq-item">
+      <summary>Kan ik mijn openingstijden en beschrijving aanpassen?</summary>
+      <p>Ja, zodra je je locatie hebt geclaimd kun je je beschrijving, highlights, openingstijden, foto en faciliteiten aanpassen via het partnerportaal.</p>
+    </details>
+  </div>
+</section>
+
+<section class="vb-bottom-cta">
+  <h2>Klaar om je locatie te beheren?</h2>
+  <p>Claim je profiel in 2 minuten. Geen creditcard nodig.</p>
+  <a href="/partner/" class="vb-hero-cta">Open het partnerportaal</a>
+</section>
+
+</main>
+<footer>
+  <nav aria-label="Footernavigatie">
+  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  </nav>
+</footer>
+<script src="/reveal.js"></script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
+</body>
+</html>

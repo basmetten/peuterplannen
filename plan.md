@@ -1532,7 +1532,7 @@ progress. Foundation for automated content enrichment pipeline."
 ---
 
 ## FASE 13: PARTNER CONVERSIE-FUNNEL
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Opus (strategie + frontend-design skill) + Sonnet (implementatie)
 **Geschatte duur:** 4-6 uur
 **Doel:** Partner portal conversie verbeteren met een public-facing pagina en gestroomlijnde funnel
@@ -1916,16 +1916,16 @@ Update deze sectie na het afronden van elke fase:
 | 1 | Split sync_all.js | `DONE` | 2026-03-13 |
 | 2 | Test infrastructure | `DONE` | 2026-03-13 |
 | 3 | Local dev experience | `DONE` | 2026-03-13 |
-| 4 | Noindex → runtime rendering | `TODO` | |
-| 5 | Admin-API opsplitsen | `TODO` | |
-| 6 | Security hardening | `TODO` | |
-| 7 | Staging/preview environment | `TODO` | |
-| 8 | Monitoring & observability | `TODO` | |
-| 9 | Performance optimalisatie | `TODO` | |
-| 10 | Design system & frontend | `TODO` | |
-| 11 | Data integriteit | `TODO` | |
+| 4 | Noindex → runtime rendering | `DONE` | 2026-03-13 |
+| 5 | Admin-API opsplitsen | `DONE` | 2026-03-13 |
+| 6 | Security hardening | `DONE` | 2026-03-13 |
+| 7 | Staging/preview environment | `DONE` | 2026-03-13 |
+| 8 | Monitoring & observability | `DONE` | 2026-03-13 |
+| 9 | Performance optimalisatie | `DONE` | 2026-03-13 |
+| 10 | Design system & frontend | `DONE` | 2026-03-13 |
+| 11 | Data integriteit | `DONE` | 2026-03-13 |
 | 12 | SEO graduatiesysteem | `DONE` | 2026-03-13 |
-| 13 | Partner conversie-funnel | `TODO` | |
+| 13 | Partner conversie-funnel | `DONE` | 2026-03-13 |
 | 14 | Incremental builds | `TODO` | |
 | 15 | Documentatie & bus factor | `TODO` | |
 | 16 | CI/CD hardening | `TODO` | |

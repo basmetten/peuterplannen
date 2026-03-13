@@ -425,6 +425,55 @@ const WEATHER_LABELS = {
   both: 'Overdekt & buiten',
 };
 
+/* === Partner pricing tiers === */
+const PARTNER_TIERS = [
+  {
+    id: 'gratis',
+    name: 'Gratis',
+    price: '€0',
+    period: '',
+    highlight: false,
+    cta: 'Claim je profiel',
+    features: [
+      'Profiel claimen en beheren',
+      'Beschrijving en openingstijden aanpassen',
+      'Foto uploaden',
+      'Zichtbaar op PeuterPlannen',
+    ],
+  },
+  {
+    id: 'featured-monthly',
+    name: 'Featured',
+    price: '€11',
+    period: '/maand',
+    highlight: true,
+    cta: 'Start Featured',
+    badge: 'Populairst',
+    features: [
+      'Alles van Gratis',
+      'Geverifieerd badge op je profiel',
+      'Bovenaan in zoekresultaten',
+      'Uitgelicht in je regio',
+      'Maandelijks opzegbaar',
+    ],
+  },
+  {
+    id: 'featured-yearly',
+    name: 'Featured Jaar',
+    price: '€90',
+    period: '/jaar',
+    highlight: false,
+    cta: 'Bespaar 32%',
+    badge: 'Beste deal',
+    features: [
+      'Alles van Featured',
+      'Jaarlijks abonnement',
+      '32% goedkoper dan maandelijks',
+      'Voorrang bij nieuwe features',
+    ],
+  },
+];
+
 module.exports = {
   SB_PROJECT,
   SB_URL,
@@ -451,4 +500,5 @@ module.exports = {
   CITY_FAQ,
   TIKKIE_URL,
   WEATHER_LABELS,
+  PARTNER_TIERS,
 };

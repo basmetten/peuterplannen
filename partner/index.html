@@ -7,10 +7,13 @@
   <meta name="description" content="Partnerportal voor PeuterPlannen: claim en beheer je locatiegegevens voor ouders met peuters en kleuters.">
   <link rel="canonical" href="https://partner.peuterplannen.nl/">
   <meta name="robots" content="noindex, nofollow">
+  <script src="/ga-init.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+  <script src="/consent.js" defer></script>
   <link rel="icon" href="/partner/favicon.ico" sizes="any">
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603132123">
-  <link rel="stylesheet" href="/partner/portal-shell.css?v=202603132123">
+  <link rel="stylesheet" href="/design-system.css?v=202603132152">
+  <link rel="stylesheet" href="/partner/portal-shell.css?v=202603132152">
   <style>
     .partner-shell {
       max-width: 900px;
@@ -469,6 +472,7 @@
       if (!billing) return;
       history.replaceState({}, '', location.pathname);
       if (billing === 'success') {
+        trackEvent('partner_checkout_complete', { tier: 'featured' });
         PortalShell.setAlert('billing-alert', 'Betaling geslaagd. Je plan wordt binnen enkele seconden actief.', 'success');
       } else if (billing === 'canceled') {
         PortalShell.setAlert('billing-alert', 'Checkout afgebroken. Geen wijzigingen doorgevoerd.', 'info');
@@ -496,6 +500,7 @@
         return;
       }
 
+      trackEvent('partner_signup_start');
       PortalShell.setButtonBusy(button, true, 'Versturen...', 'Doorgaan met e-mail');
       const { error } = await supabase.auth.signInWithOtp({
         email,
@@ -585,6 +590,7 @@
     }
 
     async function bootstrapDashboard() {
+      trackEvent('partner_signup_complete');
       const bootstrapNonce = ++state.bootstrapNonce;
       showScreen('dashboard');
       switchTab('tab-mijn-locatie');
@@ -735,6 +741,7 @@
 
       if (!confirmed) return;
 
+      trackEvent('partner_claim_start', { location_id: locationId });
       PortalShell.setButtonBusy(button, true, 'Versturen...', 'Claimen');
 
       try {
@@ -770,6 +777,7 @@
 
         document.getElementById('loc-search-results').innerHTML = '';
         await loadLatestClaimStatus();
+        trackEvent('partner_claim_complete', { location_id: locationId });
         PortalShell.setAlert('claim-search-alert', 'Claim-aanvraag verstuurd. We laten je weten zodra deze beoordeeld is.', 'success');
       } catch (error) {
         PortalShell.setAlert('claim-search-alert', `Claim mislukt: ${error.message}`, 'error', { assertive: true });
@@ -1047,6 +1055,7 @@
       PortalShell.setAlert('billing-alert', '', 'info');
       PortalShell.setButtonBusy(button, true, 'Laden...', button.textContent);
 
+      trackEvent('partner_checkout_start', { tier: interval });
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session?.access_token) {
@@ -1139,6 +1148,10 @@
         hour: '2-digit',
         minute: '2-digit',
       });
+    }
+
+    function trackEvent(name, params) {
+      if (typeof gtag === 'function') gtag('event', name, params);
     }
 
     function escapeHtml(value) {

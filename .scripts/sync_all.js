@@ -31,6 +31,7 @@ const { buildBlog } = require('./lib/generators/blog');
 const { updateRedirects } = require('./lib/generators/redirects');
 const { buildPageCatalog, generateSitemapsFromCatalog } = require('./lib/generators/sitemaps');
 const { buildSeoRegistry } = require('./lib/generators/seo-registry');
+const { generatePartnerLanding } = require('./lib/generators/partner-landing');
 const { minifyCSS } = require('./lib/css-minify');
 
 async function main() {
@@ -62,6 +63,9 @@ async function main() {
 
   console.log('\nGenerating shared editorial pages...');
   const sharedPages = [generateDiscoverPage(data), generateMethodologyPage(data)].filter(Boolean);
+
+  console.log('\nGenerating partner landing page...');
+  const partnerLanding = generatePartnerLanding(data);
 
   console.log('\nGenerating location pages...');
   generateLocationPages(data);

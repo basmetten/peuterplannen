@@ -72,7 +72,7 @@ function navHTML(ctaText = 'Open App', ctaHref = '/app.html') {
 function footerHTML() {
   return `<footer>
   <nav aria-label="Footernavigatie">
-  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="${TIKKIE_URL}" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="${TIKKIE_URL}" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
   </nav>
 </footer>`;
 }
