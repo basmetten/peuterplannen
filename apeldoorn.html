@@ -2,18 +2,8 @@
 <html lang="nl">
 <head>
   <!-- Google tag (gtag.js) — Consent Mode v2 -->
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'default', {
-      analytics_storage: 'denied', ad_storage: 'denied',
-      ad_user_data: 'denied', ad_personalization: 'denied',
-      wait_for_update: 500
-    });
-    try { var _s = localStorage.getItem('pp_consent'); if (_s) gtag('consent', 'update', JSON.parse(_s)); } catch(e) {}
-  </script>
+  <script src="/ga-init.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
-  <script>gtag('js', new Date()); gtag('config', 'G-46RW178B97');</script>
   <script src="/consent.js" defer></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
@@ -23,50 +13,54 @@
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.min.css?v=202603130858">
+  <link rel="preload" href="/design-system.css" as="style">
+  <link rel="preload" href="/style.min.css" as="style">
+  <link rel="preload" href="/fonts/familjen-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="/design-system.css?v=202603132236">
+  <link rel="stylesheet" href="/style.min.css?v=202603132236">
   <style>
   .guide-section{display:grid;gap:18px;margin:36px 0}
-  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid rgba(212,119,90,.12);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
   .guide-card-compact{padding:20px 18px}
-  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8d6f64}
-  .guide-card h2,.guide-card h3{margin:0 0 12px;color:#2d2926;line-height:.98;letter-spacing:-.04em}
+  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
+  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
   .guide-card h2{font-size:clamp(28px,5vw,40px)}
   .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
-  .guide-card p,.guide-card li{color:#5f5149;font-size:16px;line-height:1.72}
+  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
   .guide-card-intro{max-width:58ch}
   .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:#9e5e4b;background:rgba(212,119,90,.08);border:1px solid rgba(212,119,90,.12)}
+  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
   .guide-links{display:grid;gap:12px;margin-top:16px}
-  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:#2d2926;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-  .guide-link:visited{color:#2d2926}
+  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  .guide-link:visited{color:var(--pp-text)}
   .guide-link strong{font-size:15px;line-height:1.3}
-  .guide-link span{font-size:13px;line-height:1.5;color:#7c6e66}
-  .guide-link:hover{transform:translateY(-1px);border-color:rgba(212,119,90,.25);box-shadow:0 10px 20px rgba(45,41,38,.08)}
-  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:#7c6e66;font-size:13px}
-  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid rgba(212,119,90,.12)}
-  .editorial-meta a,.editorial-meta a:visited{color:#9e5e4b;font-weight:700;text-decoration:none}
-  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid rgba(212,119,90,.12);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:#2d2926;line-height:.98;letter-spacing:-.05em}
+  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
+  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
+  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
+  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
+  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
   .editorial-body h2{font-size:clamp(28px,5vw,38px)}
   .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
-  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:#5f5149}
-  .editorial-body a{color:#9e5e4b;font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
+  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
+  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
   .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
-  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid rgba(212,119,90,.12);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
-  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:#2d2926}
-  .editorial-support-card p{font-size:14px;line-height:1.72;color:#5f5149}
+  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
+  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
+  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
   .editorial-support-links{display:grid;gap:10px;margin-top:14px}
-  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:#2d2926}
-  .editorial-support-links a:visited{color:#2d2926}
+  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
+  .editorial-support-links a:visited{color:var(--pp-text)}
   .editorial-support-links a strong{font-size:14px}
-  .editorial-support-links a span{font-size:12px;line-height:1.5;color:#7c6e66}
+  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
   @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
 </style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603130858">
-  <script src="/nav-floating.js?v=202603130858" defer></script>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603132236">
+  <script src="/nav-floating.js?v=202603132236" defer></script>
+  <script src="/error-reporter.js" defer></script>
   <title>Apeldoorn met peuters | bos, dieren en ruime gezinsuitjes</title>
   <meta name="description" content="Apeldoorn met peuters: bos, dieren en ruime uitjes voor gezinnen die graag buiten beginnen en overzicht houden.">
   <meta name="robots" content="index,follow">
@@ -86,7 +80,7 @@
   "@type": "ItemList",
   "name": "Uitjes met peuters in Apeldoorn",
   "description": "De beste kinderactiviteiten en uitjes voor peuters in Apeldoorn",
-  "numberOfItems": 23,
+  "numberOfItems": 53,
   "itemListElement": [
     {
       "@type": "ListItem",
@@ -113,6 +107,94 @@
     {
       "@type": "ListItem",
       "position": 2,
+      "name": "Brasserie De Jagerstee",
+      "description": "Brasserie op RCN vakantiepark De Jagerstee op de Veluwe. Speeltuin, speelparadijs, peuter- en kindermenu aanwezig.",
+      "url": "https://peuterplannen.nl/apeldoorn/brasserie-de-jagerstee/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Brasserie De Jagerstee",
+        "description": "Brasserie op RCN vakantiepark De Jagerstee op de Veluwe. Speeltuin, speelparadijs, peuter- en kindermenu aanwezig.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.3109,
+          "longitude": 5.9441
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "De Beren",
+      "description": "Familierestaurant De Beren in Apeldoorn met speelhoek, kindermenu en babyfaciliteiten. Rolstoeltoegankelijk.",
+      "url": "https://peuterplannen.nl/apeldoorn/de-beren/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Beren",
+        "description": "Familierestaurant De Beren in Apeldoorn met speelhoek, kindermenu en babyfaciliteiten. Rolstoeltoegankelijk.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.212368,
+          "longitude": 5.975835
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "De Boskantine Hoenderloo",
+      "description": "Kindvriendelijk familierestaurant bij Roompot Hoenderloo met speeltuin en gezinsgericht aanbod op de Veluwe.",
+      "url": "https://peuterplannen.nl/apeldoorn/de-boskantine-hoenderloo/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Boskantine Hoenderloo",
+        "description": "Kindvriendelijk familierestaurant bij Roompot Hoenderloo met speeltuin en gezinsgericht aanbod op de Veluwe.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.120182,
+          "longitude": 5.910929
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "De Kar",
+      "description": "Wegrestaurant De Kar in Klarenbeek met speeltuin buiten. Kindvriendelijk met tuin en terras. Regionale keuken.",
+      "url": "https://peuterplannen.nl/apeldoorn/de-kar/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Kar",
+        "description": "Wegrestaurant De Kar in Klarenbeek met speeltuin buiten. Kindvriendelijk met tuin en terras. Regionale keuken.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.2169,
+          "longitude": 6.0514
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
       "name": "De Proeftuin Hoenderloo",
       "description": "Kindvriendelijk restaurant in Hoenderloo met speeltuin, kinderkaart en babyfaciliteiten. Midden in de natuur op de Veluwe.",
       "url": "https://peuterplannen.nl/apeldoorn/de-proeftuin-hoenderloo/",
@@ -134,7 +216,51 @@
     },
     {
       "@type": "ListItem",
-      "position": 3,
+      "position": 7,
+      "name": "De Veldkamp",
+      "description": "Pannenkoekenrestaurant in Epe met speelhoek en kinderkaart. Open in het weekend. Landelijke locatie.",
+      "url": "https://peuterplannen.nl/apeldoorn/de-veldkamp/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Veldkamp",
+        "description": "Pannenkoekenrestaurant in Epe met speelhoek en kinderkaart. Open in het weekend. Landelijke locatie.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.3463,
+          "longitude": 5.9902
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "name": "Eetcafé De Nieuwe Ruysch",
+      "description": "Kindvriendelijk eetcafé in Lieren met speeltuin, kindermenu en terras. Fijne stop bij wandeling of fietstocht.",
+      "url": "https://peuterplannen.nl/apeldoorn/eetcafe-de-nieuwe-ruysch/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Eetcafé De Nieuwe Ruysch",
+        "description": "Kindvriendelijk eetcafé in Lieren met speeltuin, kindermenu en terras. Fijne stop bij wandeling of fietstocht.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.166111,
+          "longitude": 5.999284
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
       "name": "Gezinspark, kaarsenmakerij en forellenkwekerij 't Smallert",
       "description": "Gezinspark 't Smallert met kaarsenmakerij, forellenkwekerij, speelgebied en natuur. Unieke combinatie voor een dagje uit.",
       "url": "https://peuterplannen.nl/apeldoorn/gezinspark-kaarsenmakerij-en-forellenkwekerij-t-smallert/",
@@ -156,7 +282,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 4,
+      "position": 10,
       "name": "Partycentrum Teuge",
       "description": "Partycentrum Scherpenhof PlayCity in Terwolde met speeltuin en ballenbak. Indoor speelparadijs voor peuters en kleuters.",
       "url": "https://peuterplannen.nl/apeldoorn/partycentrum-teuge/",
@@ -178,7 +304,73 @@
     },
     {
       "@type": "ListItem",
-      "position": 5,
+      "position": 11,
+      "name": "Speelparadijs Pannenkoekenhuis Voorst Wilp-Achterhoek",
+      "description": "Pannenkoekenhuis Voorst met speelparadijs en speeltuin. Open wo t/m zo 12-19u. Buitenterras aanwezig.",
+      "url": "https://peuterplannen.nl/apeldoorn/speelparadijs-pannenkoekenhuis-voorst-wilp-achterhoek/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Speelparadijs Pannenkoekenhuis Voorst Wilp-Achterhoek",
+        "description": "Pannenkoekenhuis Voorst met speelparadijs en speeltuin. Open wo t/m zo 12-19u. Buitenterras aanwezig.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.2145,
+          "longitude": 6.0598
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 12,
+      "name": "Street Jump Apeldoorn",
+      "description": "Trampolinepark in Apeldoorn met apart kleuter/peuter-aanbod. Binnen springen, ook geschikt voor gezinnen.",
+      "url": "https://peuterplannen.nl/apeldoorn/street-jump-apeldoorn/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Street Jump Apeldoorn",
+        "description": "Trampolinepark in Apeldoorn met apart kleuter/peuter-aanbod. Binnen springen, ook geschikt voor gezinnen.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.204446,
+          "longitude": 5.953944
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 13,
+      "name": "Wok Sprengenhorst",
+      "description": "Chinees restaurant in Wenum Wiesel met speelruimte voor kinderen. Buiten Apeldoorn in groene omgeving.",
+      "url": "https://peuterplannen.nl/apeldoorn/wok-sprengenhorst/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Wok Sprengenhorst",
+        "description": "Chinees restaurant in Wenum Wiesel met speelruimte voor kinderen. Buiten Apeldoorn in groene omgeving.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.254129,
+          "longitude": 5.938172
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 14,
       "name": "'t Pannekoekhuis Apeldoorn",
       "description": "Gezellig pannenkoekenrestaurant aan de Deventerstraat in Apeldoorn, met een brede keuze aan pannenkoeken en een speciaal kindermenu. De speelhoek houdt kinderen bezig tijdens het wachten en na afloop mogen ze langs de schatkist vol kleine verassingen.",
       "url": "https://peuterplannen.nl/apeldoorn/t-pannekoekhuis-apeldoorn/",
@@ -200,7 +392,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 6,
+      "position": 15,
       "name": "'t Pannekoekhuis Ugchelen",
       "description": "Sfeervol pannenkoekenrestaurant in een bosrijke omgeving in Ugchelen, met een keuze uit meer dan 180 verschillende pannenkoeken. De speelruimte met diverse speeltoestellen houdt kinderen bezig terwijl ouders rustig kunnen genieten van een drankje.",
       "url": "https://peuterplannen.nl/apeldoorn/t-pannekoekhuis-ugchelen/",
@@ -222,7 +414,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 7,
+      "position": 16,
       "name": "Aquacentrum Malkander",
       "description": "Modern binnenzwembad in Apeldoorn met een wedstrijdbad, instructiebad, recreatiebad, wildwaterstroom, 52 meter lange glijbaan en een apart peuterbad. Voor kinderen tot 3 jaar is de toegang gratis bij aanmelding aan de balie.",
       "url": "https://peuterplannen.nl/apeldoorn/aquacentrum-malkander/",
@@ -244,7 +436,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 8,
+      "position": 17,
       "name": "CODA Museum",
       "description": "Dynamisch cultuurhuis in het hart van Apeldoorn met een museum, bibliotheek, archief en ExperienceLab. Wisselende tentoonstellingen over moderne kunst, mode en design worden aangevuld met kinderworkshops, speurtochten en een creatieve VR-beleving. Kinderen tot 17 jaar hebben gratis toegang.",
       "url": "https://peuterplannen.nl/apeldoorn/coda-museum/",
@@ -266,7 +458,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 9,
+      "position": 18,
       "name": "De Boskantine Ugchelen",
       "description": "Warm familiestrand-restaurant in het Veluwse Hoenderloo, gelegen op vakantiepark Roompot. Naast een uitgebreid kindermenu met biologische babymaaltijden biedt De Boskantine een binnenspeeltuin, een grote natuur buitenspeeltuin, springkussen en een waterspeelplaats.",
       "url": "https://peuterplannen.nl/apeldoorn/de-boskantine-ugchelen/",
@@ -288,7 +480,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 10,
+      "position": 19,
       "name": "Heggies Speelschuur",
       "description": "Gezellige binnenspeeltuin voor kinderen van 2–12 jaar, gelegen in Emst op de Veluwe op korte afstand van Apeldoorn. Naast de uitdagende binnenspeeltuin is er bij mooi weer ook een buitenspeeltuin met trampoline en luchtkussen. Toegangsprijs €7 per kind, ouders gratis.",
       "url": "https://peuterplannen.nl/apeldoorn/heggies-speelschuur/",
@@ -310,7 +502,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 11,
+      "position": 20,
       "name": "Monkey Town Indoor Speelparadijs",
       "description": "Groot overdekt speelparadijs met meerdere speelzones op verschillende niveaus, inclusief klimwanden, glijbanen en ballenbakken. Op schooldagen zijn er speciale peuteruurtjes met voordelig tarief voor de allerkleinsten.",
       "url": "https://peuterplannen.nl/apeldoorn/monkey-town-indoor-speelparadijs/",
@@ -332,7 +524,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 12,
+      "position": 21,
       "name": "Paleis Het Loo Kerschoten-West",
       "description": "Voormalig koninklijk paleis met schitterende barokke tuinen en interactieve tentoonstellingen over de Nederlandse koninklijke geschiedenis. Na een grootscheepse renovatie herbergt het museum nu ook het Juniorpaleis: een speelse, kleurrijke paleiswereld speciaal voor jonge kinderen.",
       "url": "https://peuterplannen.nl/apeldoorn/paleis-het-loo-kerschoten-west/",
@@ -354,7 +546,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 13,
+      "position": 22,
       "name": "Restaurant Bij Ruysch",
       "description": "Authentiek eetcafé met meer dan 100 jaar geschiedenis, gelegen in het pittoreske Lieren op de Veluwe, aan knooppunt 94 van het fietsknooppuntennetwerk. Een rustige, groene omgeving met kindvriendelijk interieur, uitgebreid kindermenu, speelhoek binnen en speeltuin buiten.",
       "url": "https://peuterplannen.nl/apeldoorn/restaurant-bij-ruysch/",
@@ -376,7 +568,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 14,
+      "position": 23,
       "name": "Restaurant Malkenschoten Orden",
       "description": "Kindvriendelijk restaurant in het groen, direct naast Speelboerderij Binky gelegen. Het combineert een kwalitatieve keuken voor volwassenen met een uitgebreid kindermenu (pannenkoeken, poffertjes, pizza, pasta), een binnenspeelkamer en buiten een trampoline en in de zomer een springkussen.",
       "url": "https://peuterplannen.nl/apeldoorn/restaurant-malkenschoten-orden/",
@@ -398,7 +590,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 15,
+      "position": 24,
       "name": "Speelparadijs Pannenkoekenhuis Voorst Wilp",
       "description": "Het enige attractie-pannenkoekenhuis van Nederland, vlakbij Apeldoorn in Voorst. Het circus-thema restaurant biedt zowel een uitgebreide binnenspeeltuin als een buitenattractiepark met een achtbaan in dinosfeer, zweefmolen, mini-reuzenrad en draaiende theekopjes.",
       "url": "https://peuterplannen.nl/apeldoorn/speelparadijs-pannenkoekenhuis-voorst-wilp/",
@@ -420,7 +612,139 @@
     },
     {
       "@type": "ListItem",
-      "position": 16,
+      "position": 25,
+      "name": "Brasserie Kriebelz",
+      "description": "Brasserie Kriebelz in Terwolde met speelhoek voor kinderen. Open di t/m zo. Regionale keuken.",
+      "url": "https://peuterplannen.nl/apeldoorn/brasserie-kriebelz/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Brasserie Kriebelz",
+        "description": "Brasserie Kriebelz in Terwolde met speelhoek voor kinderen. Open di t/m zo. Regionale keuken.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.2389,
+          "longitude": 6.0412
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 26,
+      "name": "CODA",
+      "description": "Kunst- en cultuurmuseum in Apeldoorn met regelmatig kinderprogramma, workshops en tentoonstellingen voor gezinnen.",
+      "url": "https://peuterplannen.nl/apeldoorn/coda/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "CODA",
+        "description": "Kunst- en cultuurmuseum in Apeldoorn met regelmatig kinderprogramma, workshops en tentoonstellingen voor gezinnen.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.21522,
+          "longitude": 5.957146
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 27,
+      "name": "IJssalon Stientje",
+      "description": "IJssalon in Beekbergen met speeltuin, kindvriendelijk en gezinsgericht. Buitenterras aanwezig.",
+      "url": "https://peuterplannen.nl/apeldoorn/ijssalon-stientje/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "IJssalon Stientje",
+        "description": "IJssalon in Beekbergen met speeltuin, kindvriendelijk en gezinsgericht. Buitenterras aanwezig.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.158909,
+          "longitude": 5.963676
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 28,
+      "name": "Orange",
+      "description": "Aziatisch restaurant in Apeldoorn met speelkamer voor kinderen. Gezinsrestaurant met kindermenu.",
+      "url": "https://peuterplannen.nl/apeldoorn/orange/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Orange",
+        "description": "Aziatisch restaurant in Apeldoorn met speelkamer voor kinderen. Gezinsrestaurant met kindermenu.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.212173,
+          "longitude": 5.999459
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 29,
+      "name": "Paleis het Loo",
+      "description": "Nationaal museum Paleis het Loo in Apeldoorn met prachtige tuinen en kindactiviteiten. Groot park om te wandelen.",
+      "url": "https://peuterplannen.nl/apeldoorn/paleis-het-loo/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Paleis het Loo",
+        "description": "Nationaal museum Paleis het Loo in Apeldoorn met prachtige tuinen en kindactiviteiten. Groot park om te wandelen.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.234198,
+          "longitude": 5.946019
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 30,
+      "name": "Restaurant Malkenschoten Wernem",
+      "description": "Restaurant bij Malkenschoten in Apeldoorn met kindermenu en speelkamer. Ideaal naast Binky speelparadijs.",
+      "url": "https://peuterplannen.nl/apeldoorn/restaurant-malkenschoten-wernem/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Restaurant Malkenschoten Wernem",
+        "description": "Restaurant bij Malkenschoten in Apeldoorn met kindermenu en speelkamer. Ideaal naast Binky speelparadijs.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.184169,
+          "longitude": 5.962779
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 31,
       "name": "Veluwsche Stoomtrein Maatschappij",
       "description": "Historische stoomtrein rijdt door de Veluwse natuur tussen Apeldoorn en Dieren. Sfeervolle beleving voor het hele gezin.",
       "url": "https://peuterplannen.nl/apeldoorn/veluwsche-stoomtrein-maatschappij/",
@@ -442,7 +766,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 17,
+      "position": 32,
       "name": "Apenheul",
       "description": "Uniek primatenpark in het Bergkwartier van Apeldoorn waar meer dan 35 soorten apen en maki's vrij door het park rondlopen tussen de bezoekers. Het park telt ruim 300 apen en biedt indrukwekkende belevenissen in een bosrijke omgeving.",
       "url": "https://peuterplannen.nl/apeldoorn/apenheul/",
@@ -464,7 +788,29 @@
     },
     {
       "@type": "ListItem",
-      "position": 18,
+      "position": 33,
+      "name": "Ballorig Hattem",
+      "description": "Indoorspeelparadijs in Hattem voor kinderen 0-12 jaar met speeltoestellen, speciaal kleuterenhoek en monorail.",
+      "url": "https://peuterplannen.nl/apeldoorn/ballorig-hattem/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Ballorig Hattem",
+        "description": "Indoorspeelparadijs in Hattem voor kinderen 0-12 jaar met speeltoestellen, speciaal kleuterenhoek en monorail.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.2083,
+          "longitude": 6.1817
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 34,
       "name": "Julianatoren",
       "description": "Vrolijk kinderpretpark met meer dan 50 attracties speciaal ontworpen voor kinderen tot 10 jaar. Van draaimolens en treintjes tot peutervriendelijke zweefmolens en een klein poppentheater — het park is volledig afgestemd op de belevingswereld van jonge kinderen.",
       "url": "https://peuterplannen.nl/apeldoorn/julianatoren/",
@@ -486,7 +832,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 19,
+      "position": 35,
       "name": "Kinderboerderij De Maten Bedrijvenpark Apeldoorn-Noord",
       "description": "Gratis toegankelijke kinderboerderij midden in de woonwijk De Maten, grenzen aan het Matenpark. Kinderen kunnen pony's, ezels, geiten, varkens, knaagdieren en pluimvee aaien en voeren in de knuffelweides, en naderhand spelen in de aangrenzende speeltuin.",
       "url": "https://peuterplannen.nl/apeldoorn/kinderboerderij-de-maten-bedrijvenpark-apeldoorn-noord/",
@@ -508,7 +854,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 20,
+      "position": 36,
       "name": "Kinderboerderij Laag Buurlo Stadhoudersmolen",
       "description": "Gratis kinderboerderij in Apeldoorn-Noord, gelegen tussen de wijken Zevenhuizen, Ossenveld-Woudhuis en Anklaar. Het biedt geiten, schapen, ezels, pony's, varkens, konijnen, kippen, eenden en volièrevogels, plus een grote speeltuin.",
       "url": "https://peuterplannen.nl/apeldoorn/kinderboerderij-laag-buurlo-stadhoudersmolen/",
@@ -530,7 +876,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 21,
+      "position": 37,
       "name": "Paviljoen Amalia",
       "description": "Charmant pannenkoekenrestaurant met honderdjarige tradities, gelegen in het sfeervolle Brinkpark in het centrum van Apeldoorn. Naast meer dan 120 soorten pannenkoeken bieden ze ook ambachtelijke poffertjes — een echte Apeldoornse klassieker voor gezinnen.",
       "url": "https://peuterplannen.nl/apeldoorn/paviljoen-amalia/",
@@ -552,7 +898,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 22,
+      "position": 38,
       "name": "Restaurant Triangel",
       "description": "Gastvrij familierestaurant in Wenum-Wiesel aan de rand van Apeldoorn-Noord, omgeven door groen. Het restaurant biedt een uitgebreid kindermenu, een binnenspeelkamer en bij mooi weer een opblaaskasteel op het terras — een van de populairste kindvriendelijke restaurants in de regio.",
       "url": "https://peuterplannen.nl/apeldoorn/restaurant-triangel/",
@@ -574,7 +920,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 23,
+      "position": 39,
       "name": "Speelboerderij Binky (Kinderparadijs Malkenschoten)",
       "description": "Uitgestrekt kinderparadijs van 4 hectare in de bosrijke omgeving van Malkenschoten, met een kinderboerderij, talrijke speeltuinen, een kabelbaan, waterfietsvijver en groot horecaterras. Kinderen kunnen dieren voeren, hutten bouwen en door het bos klimmen.",
       "url": "https://peuterplannen.nl/apeldoorn/speelboerderij-binky-kinderparadijs-malkenschoten/",
@@ -586,6 +932,314 @@
           "@type": "GeoCoordinates",
           "latitude": 52.2026,
           "longitude": 5.9285
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 40,
+      "name": "Partycentrum Terwolde",
+      "description": "Partycentrum met geïntegreerde speelfaciliteiten, gericht op kinderfeestjes en familiegebruik",
+      "url": "https://peuterplannen.nl/apeldoorn/partycentrum-terwolde/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Partycentrum Terwolde",
+        "description": "Partycentrum met geïntegreerde speelfaciliteiten, gericht op kinderfeestjes en familiegebruik",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.298475,
+          "longitude": 6.098112
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 41,
+      "name": "Bollo Speelhuis",
+      "description": "Speelhuis bij recreatiepark in Hoenderloo, specifiek gericht op kinderen. Overdekte speelbestemming op de Veluwe.",
+      "url": "https://peuterplannen.nl/apeldoorn/bollo-speelhuis/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Bollo Speelhuis",
+        "description": "Speelhuis bij recreatiepark in Hoenderloo, specifiek gericht op kinderen. Overdekte speelbestemming op de Veluwe.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.139661,
+          "longitude": 6.004857
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 42,
+      "name": "Bollo speelparadijs",
+      "description": "Indoor speelparadijs bij Landal Rabbit Hill. Overdekte speelgelegenheid, ideaal bij slecht weer.",
+      "url": "https://peuterplannen.nl/apeldoorn/bollo-speelparadijs/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Bollo speelparadijs",
+        "description": "Indoor speelparadijs bij Landal Rabbit Hill. Overdekte speelgelegenheid, ideaal bij slecht weer.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.21818,
+          "longitude": 5.787425
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 43,
+      "name": "De Boskabouter",
+      "description": "Pannenkoekenhuis De Boskabouter in Vaassen, onderdeel van bekende keten. Geopend van woensdag t/m zondag.",
+      "url": "https://peuterplannen.nl/apeldoorn/de-boskabouter/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Boskabouter",
+        "description": "Pannenkoekenhuis De Boskabouter in Vaassen, onderdeel van bekende keten. Geopend van woensdag t/m zondag.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.3035,
+          "longitude": 5.9803
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 44,
+      "name": "De Koperen Ezel",
+      "description": "Kinderboerderij en speelparadijs De Koperen Ezel in de regio Apeldoorn. Speeltuin, dieren en activiteiten voor jonge kinderen.",
+      "url": "https://peuterplannen.nl/apeldoorn/de-koperen-ezel/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Koperen Ezel",
+        "description": "Kinderboerderij en speelparadijs De Koperen Ezel in de regio Apeldoorn. Speeltuin, dieren en activiteiten voor jonge kinderen.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.3478,
+          "longitude": 5.9981
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 45,
+      "name": "Kinderboerderij de Maten",
+      "description": "Gratis kinderboerderij in het Matenpark, dagelijks open 8:30-17:30 (winter tot 16:30). Geen honden toegestaan.",
+      "url": "https://peuterplannen.nl/apeldoorn/kinderboerderij-de-maten/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Kinderboerderij de Maten",
+        "description": "Gratis kinderboerderij in het Matenpark, dagelijks open 8:30-17:30 (winter tot 16:30). Geen honden toegestaan.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.19874,
+          "longitude": 5.999217
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 46,
+      "name": "Kinderparadijs Malkenschoten | Binky",
+      "description": "Groot kinderparadijs bij Malkenschoten in Apeldoorn. Speeltuin, attracties en horecavoorzieningen.",
+      "url": "https://peuterplannen.nl/apeldoorn/kinderparadijs-malkenschoten-binky/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Kinderparadijs Malkenschoten | Binky",
+        "description": "Groot kinderparadijs bij Malkenschoten in Apeldoorn. Speeltuin, attracties en horecavoorzieningen.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.184343,
+          "longitude": 5.963133
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 47,
+      "name": "Landal Rabbit Hill",
+      "description": "Waterpark op Landal vakantiepark Rabbit Hill. Subtropisch zwembad met glijbanen en ondiep gedeelte.",
+      "url": "https://peuterplannen.nl/apeldoorn/landal-rabbit-hill/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Landal Rabbit Hill",
+        "description": "Waterpark op Landal vakantiepark Rabbit Hill. Subtropisch zwembad met glijbanen en ondiep gedeelte.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.218409,
+          "longitude": 5.786148
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 48,
+      "name": "De Gatherhof",
+      "description": "Biologische tuin en werkplaats De Gatherhof op de Veluwe. Tuin te bezichtigen, gezinsvriendelijk met kinderen.",
+      "url": "https://peuterplannen.nl/apeldoorn/de-gatherhof/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Gatherhof",
+        "description": "Biologische tuin en werkplaats De Gatherhof op de Veluwe. Tuin te bezichtigen, gezinsvriendelijk met kinderen.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.3149,
+          "longitude": 5.9518
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 49,
+      "name": "De Kakelhoeve",
+      "description": "Gratis kinderboerderij in Apeldoorn, open ma-vr 9:00-15:30. Dieren aaien en voeren voor peuters. Geen weekendopeningstijden.",
+      "url": "https://peuterplannen.nl/apeldoorn/de-kakelhoeve/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Kakelhoeve",
+        "description": "Gratis kinderboerderij in Apeldoorn, open ma-vr 9:00-15:30. Dieren aaien en voeren voor peuters. Geen weekendopeningstijden.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.208731,
+          "longitude": 6.00598
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 50,
+      "name": "Havikshof",
+      "description": "Valkerij Havikshof in Klarenbeek met roofvogelshows. Open in voor- en naseizoen op zaterdag en zondag, zomer dagelijks.",
+      "url": "https://peuterplannen.nl/apeldoorn/havikshof/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Havikshof",
+        "description": "Valkerij Havikshof in Klarenbeek met roofvogelshows. Open in voor- en naseizoen op zaterdag en zondag, zomer dagelijks.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.2178,
+          "longitude": 6.0521
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 51,
+      "name": "Kinderboerderij Laag Buurlo",
+      "description": "Gratis kinderboerderij bij natuurgebied Laag Buurlo. Dagelijks open, zomer 8:30-17:30, winter 8:30-16:30. Honden toegestaan.",
+      "url": "https://peuterplannen.nl/apeldoorn/kinderboerderij-laag-buurlo/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Kinderboerderij Laag Buurlo",
+        "description": "Gratis kinderboerderij bij natuurgebied Laag Buurlo. Dagelijks open, zomer 8:30-17:30, winter 8:30-16:30. Honden toegestaan.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.222014,
+          "longitude": 6.002534
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 52,
+      "name": "Paleispark het Loo",
+      "description": "Groot historisch park bij Paleis Het Loo, toegang met entreeticket. Prachtige lanen en vijvers.",
+      "url": "https://peuterplannen.nl/apeldoorn/paleispark-het-loo/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Paleispark het Loo",
+        "description": "Groot historisch park bij Paleis Het Loo, toegang met entreeticket. Prachtige lanen en vijvers.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.236852,
+          "longitude": 5.923632
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Apeldoorn",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 53,
+      "name": "Boschbad",
+      "description": "Grootste openluchtbad van Nederland met 3 verwarmde baden, competitie-, recreatie-, en peutersvijver. Speelplaats en water play area.",
+      "url": "https://peuterplannen.nl/apeldoorn/boschbad/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Boschbad",
+        "description": "Grootste openluchtbad van Nederland met 3 verwarmde baden, competitie-, recreatie-, en peutersvijver. Speelplaats en water play area.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.0833,
+          "longitude": 5.925
         },
         "address": {
           "@type": "PostalAddress",
@@ -695,10 +1349,10 @@
   <h1>Uitjes met peuters in <span>Apeldoorn</span></h1>
   <p>Apeldoorn aan de Veluwe: Apenheul, Julianatoren en prachtige natuur maken dit de ideale peuterbestemming in Gelderland.</p>
   <div class="hero-stats">
-    <div class="hero-stat"><strong>23</strong><span>locaties</span></div>
-    <div class="hero-stat"><strong>6</strong><span>speeltuinen</span></div>
-    <div class="hero-stat"><strong>3</strong><span>musea</span></div>
-    <div class="hero-stat"><strong>10</strong><span>eten & drinken</span></div>
+    <div class="hero-stat"><strong>53</strong><span>locaties</span></div>
+    <div class="hero-stat"><strong>11</strong><span>speeltuinen</span></div>
+    <div class="hero-stat"><strong>5</strong><span>musea</span></div>
+    <div class="hero-stat"><strong>24</strong><span>eten & drinken</span></div>
   </div>
 </div>
 
@@ -708,7 +1362,7 @@
 
 <main id="main-content">
   <div class="intro-box">
-    <p>Apeldoorn aan de Veluwe: Apenheul, Julianatoren en prachtige natuur maken dit de ideale peuterbestemming in Gelderland. Op deze pagina vind je <strong>23 locaties</strong> in de regio Apeldoorn. Gecheckt op kindvriendelijkheid en of het echt werkt met een peuter.</p>
+    <p>Apeldoorn aan de Veluwe: Apenheul, Julianatoren en prachtige natuur maken dit de ideale peuterbestemming in Gelderland. Op deze pagina vind je <strong>53 locaties</strong> in de regio Apeldoorn. Gecheckt op kindvriendelijkheid en of het echt werkt met een peuter.</p>
   </div>
 
   <section class="guide-section city-guide">
@@ -725,7 +1379,7 @@
     <div class="guide-card">
       <p class="guide-kicker">Sneller kiezen in Apeldoorn</p>
       <h2>Begin niet met alle kaarten tegelijk</h2>
-      <p>Deze regiopagina werkt het best als je eerst kiest op soort dag. In Apeldoorn zijn vooral speeltuinen, pannenkoeken, horeca sterk vertegenwoordigd. Daardoor kun je sneller van “wat zullen we doen?” naar een shortlist die echt past bij jonge kinderen.</p>
+      <p>Deze regiopagina werkt het best als je eerst kiest op soort dag. In Apeldoorn zijn vooral horeca, speeltuinen, kinderboerderijen sterk vertegenwoordigd. Daardoor kun je sneller van “wat zullen we doen?” naar een shortlist die echt past bij jonge kinderen.</p>
       <ul class="guide-list">
         <li><strong>Ochtend:</strong> buiten, dieren of een rustige speeltuin werkt meestal beter dan direct horeca.</li>
         <li><strong>Regenbackup:</strong> kies daarna pas een museum, binnenspeelplek of horeca met speelhoek.</li>
@@ -742,14 +1396,14 @@
       <p class="guide-kicker">Snelste shortlist</p>
       <h2>Drie plekken om mee te beginnen</h2>
       <div class="guide-links">
-        <a href="/apeldoorn/t-pannekoekhuis-hoenderloo/" class="guide-link"><strong>'t Pannekoekhuis Hoenderloo</strong><span>Pannenkoeken · Pannenkoeken voor peuters plus eigen speeltuin; perfecte combinatie voor een Veluwe-dagje</span></a><a href="/apeldoorn/de-proeftuin-hoenderloo/" class="guide-link"><strong>De Proeftuin Hoenderloo</strong><span>Horeca · Eigen speeltuin bij het restaurant, ideaal om kinderen bezig te houden voor en na het eten</span></a><a href="/apeldoorn/gezinspark-kaarsenmakerij-en-forellenkwekerij-t-smallert/" class="guide-link"><strong>Gezinspark, kaarsenmakerij en forellenkwekerij 't Smallert</strong><span>Speeltuinen · Kaarsen maken, forelletjes kijken en spelen in het park — een heel dagje eruit voor peuters</span></a>
+        <a href="/apeldoorn/t-pannekoekhuis-hoenderloo/" class="guide-link"><strong>'t Pannekoekhuis Hoenderloo</strong><span>Pannenkoeken · Pannenkoeken voor peuters plus eigen speeltuin; perfecte combinatie voor een Veluwe-dagje</span></a><a href="/apeldoorn/brasserie-de-jagerstee/" class="guide-link"><strong>Brasserie De Jagerstee</strong><span>Horeca · Speelparadijs en speeltuin op het park — peuters zijn de hele dag zoet</span></a><a href="/apeldoorn/de-beren/" class="guide-link"><strong>De Beren</strong><span>Horeca · Vaste speelhoek, kleurplaten en zes kindermenuopties van 6,50 — verjaardagsfeestjes voor peuters ook mogelijk</span></a>
       </div>
     </div>
     <div class="guide-card">
       <p class="guide-kicker">Slimme routes</p>
       <h2>Begin liever met een situatie dan met 100 losse pins</h2>
       <div class="guide-links">
-        <a href="/peuteruitjes-2-5-jaar.html" class="guide-link"><strong>Peuteruitjes voor 2-5 jaar</strong><span>Uitjes voor kinderen van ongeveer 2 tot 5 jaar: meer actie, meer ontdekken en nog steeds praktisch voor ouders. Van natuur en speeltuinen tot horeca en musea.</span></a><a href="/koffie-en-spelen.html" class="guide-link"><strong>Koffie en spelen</strong><span>Uitjes waar jonge kinderen kunnen spelen en ouders even kunnen landen. Met koffie, ruimte, verschonen en vaak een logische combinatie van buiten, horeca of dieren.</span></a><a href="/regenachtige-dag-met-peuter.html" class="guide-link"><strong>Regenachtige dag met peuter</strong><span>Binnenopties voor regenachtige dagen met peuters: musea, speelplekken, horeca met speelhoek en andere locaties die ook bij slecht weer werken.</span></a><a href="/binnenlocaties-peuters.html" class="guide-link"><strong>Binnenlocaties voor peuters</strong><span>Overdekte locaties voor peuters en dreumesen in Nederland. Handig voor regen, kou of een snelle indoor-back-up dicht bij huis.</span></a>
+        <a href="/peuteruitjes-2-5-jaar.html" class="guide-link"><strong>Peuteruitjes voor 2-5 jaar</strong><span>Uitjes voor kinderen van ongeveer 2 tot 5 jaar: meer actie, meer ontdekken en nog steeds praktisch voor ouders. Van natuur en speeltuinen tot horeca en musea.</span></a><a href="/koffie-en-spelen.html" class="guide-link"><strong>Koffie en spelen</strong><span>Uitjes waar jonge kinderen kunnen spelen en ouders even kunnen landen. Met koffie, ruimte, verschonen en vaak een logische combinatie van buiten, horeca of dieren.</span></a><a href="/binnenlocaties-peuters.html" class="guide-link"><strong>Binnenlocaties voor peuters</strong><span>Overdekte locaties voor peuters en dreumesen in Nederland. Handig voor regen, kou of een snelle indoor-back-up dicht bij huis.</span></a><a href="/regenachtige-dag-met-peuter.html" class="guide-link"><strong>Regenachtige dag met peuter</strong><span>Binnenopties voor regenachtige dagen met peuters: musea, speelplekken, horeca met speelhoek en andere locaties die ook bij slecht weer werken.</span></a>
       </div>
     </div>
     
@@ -784,6 +1438,15 @@
         </div>
       </article>
       <article class="loc-item">
+        <h3><a href="/apeldoorn/street-jump-apeldoorn/">Street Jump Apeldoorn</a></h3>
+        <p>Trampolinepark in Apeldoorn met apart kleuter/peuter-aanbod. Binnen springen, ook geschikt voor gezinnen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/street-jump-apeldoorn/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.streetjumpapeldoorn.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Street Jump Apeldoorn">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
         <h3><a href="/apeldoorn/aquacentrum-malkander/">Aquacentrum Malkander</a></h3>
         <p>Modern binnenzwembad in Apeldoorn met een wedstrijdbad, instructiebad, recreatiebad, wildwaterstroom, 52 meter lange glijbaan en een apart peuterbad. Voor kinderen tot 3 jaar is de toegang gratis bij aanmelding aan de balie.</p>
         <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
@@ -811,12 +1474,48 @@
         </div>
       </article>
       <article class="loc-item">
+        <h3><a href="/apeldoorn/ballorig-hattem/">Ballorig Hattem</a></h3>
+        <p>Indoorspeelparadijs in Hattem voor kinderen 0-12 jaar met speeltoestellen, speciaal kleuterenhoek en monorail.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/ballorig-hattem/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.ballorig.nl/hattem" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Ballorig Hattem">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
         <h3><a href="/apeldoorn/julianatoren/">Julianatoren</a></h3>
         <p>Vrolijk kinderpretpark met meer dan 50 attracties speciaal ontworpen voor kinderen tot 10 jaar. Van draaimolens en treintjes tot peutervriendelijke zweefmolens en een klein poppentheater — het park is volledig afgestemd op de belevingswereld van jonge kinderen.</p>
         <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
           <a href="/apeldoorn/julianatoren/" class="loc-detail-btn">Bekijk details</a>
           <a href="https://www.julianatoren.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Julianatoren">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/bollo-speelhuis/">Bollo Speelhuis</a></h3>
+        <p>Speelhuis bij recreatiepark in Hoenderloo, specifiek gericht op kinderen. Overdekte speelbestemming op de Veluwe.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/bollo-speelhuis/" class="loc-detail-btn">Bekijk details</a>
+          
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/bollo-speelparadijs/">Bollo speelparadijs</a></h3>
+        <p>Indoor speelparadijs bij Landal Rabbit Hill. Overdekte speelgelegenheid, ideaal bij slecht weer.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/bollo-speelparadijs/" class="loc-detail-btn">Bekijk details</a>
+          
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/kinderparadijs-malkenschoten-binky/">Kinderparadijs Malkenschoten | Binky</a></h3>
+        <p>Groot kinderparadijs bij Malkenschoten in Apeldoorn. Speeltuin, attracties en horecavoorzieningen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/kinderparadijs-malkenschoten-binky/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://binky.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Kinderparadijs Malkenschoten | Binky">Website</a>
         </div>
       </article>
       </div>
@@ -852,6 +1551,60 @@
           <a href="https://www.binky.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Speelboerderij Binky (Kinderparadijs Malkenschoten)">Website</a>
         </div>
       </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/de-koperen-ezel/">De Koperen Ezel</a></h3>
+        <p>Kinderboerderij en speelparadijs De Koperen Ezel in de regio Apeldoorn. Speeltuin, dieren en activiteiten voor jonge kinderen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/de-koperen-ezel/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.dekoperenezel.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Koperen Ezel">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/kinderboerderij-de-maten/">Kinderboerderij de Maten</a></h3>
+        <p>Gratis kinderboerderij in het Matenpark, dagelijks open 8:30-17:30 (winter tot 16:30). Geen honden toegestaan.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/kinderboerderij-de-maten/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://kinderboerderijenapeldoorn.nl/de-maten" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Kinderboerderij de Maten">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/de-gatherhof/">De Gatherhof</a></h3>
+        <p>Biologische tuin en werkplaats De Gatherhof op de Veluwe. Tuin te bezichtigen, gezinsvriendelijk met kinderen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/de-gatherhof/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.dewerkbij.nl/de-gatherhof" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Gatherhof">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/de-kakelhoeve/">De Kakelhoeve</a></h3>
+        <p>Gratis kinderboerderij in Apeldoorn, open ma-vr 9:00-15:30. Dieren aaien en voeren voor peuters. Geen weekendopeningstijden.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/de-kakelhoeve/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.sheerenloo.nl/in-de-buurt/kinderboerderij-de-kakelhoeve" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Kakelhoeve">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/havikshof/">Havikshof</a></h3>
+        <p>Valkerij Havikshof in Klarenbeek met roofvogelshows. Open in voor- en naseizoen op zaterdag en zondag, zomer dagelijks.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/havikshof/" class="loc-detail-btn">Bekijk details</a>
+          <a href="http://www.havikshof.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Havikshof">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/kinderboerderij-laag-buurlo/">Kinderboerderij Laag Buurlo</a></h3>
+        <p>Gratis kinderboerderij bij natuurgebied Laag Buurlo. Dagelijks open, zomer 8:30-17:30, winter 8:30-16:30. Honden toegestaan.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/kinderboerderij-laag-buurlo/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://kinderboerderijenapeldoorn.nl/laag-buurlo" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Kinderboerderij Laag Buurlo">Website</a>
+        </div>
+      </article>
       </div>
     </section>
     <section class="type-section">
@@ -865,6 +1618,15 @@
         <div class="loc-actions">
           <a href="/apeldoorn/apenheul/" class="loc-detail-btn">Bekijk details</a>
           <a href="https://www.apenheul.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Apenheul">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/paleispark-het-loo/">Paleispark het Loo</a></h3>
+        <p>Groot historisch park bij Paleis Het Loo, toegang met entreeticket. Prachtige lanen en vijvers.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/paleispark-het-loo/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://kroondomeinhetloo.nl/paleispark" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Paleispark het Loo">Website</a>
         </div>
       </article>
       </div>
@@ -892,12 +1654,54 @@
         </div>
       </article>
       <article class="loc-item">
+        <h3><a href="/apeldoorn/coda/">CODA</a></h3>
+        <p>Kunst- en cultuurmuseum in Apeldoorn met regelmatig kinderprogramma, workshops en tentoonstellingen voor gezinnen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/coda/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.coda-apeldoorn.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van CODA">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/paleis-het-loo/">Paleis het Loo</a></h3>
+        <p>Nationaal museum Paleis het Loo in Apeldoorn met prachtige tuinen en kindactiviteiten. Groot park om te wandelen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/paleis-het-loo/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.paleishetloo.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Paleis het Loo">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
         <h3><a href="/apeldoorn/veluwsche-stoomtrein-maatschappij/">Veluwsche Stoomtrein Maatschappij</a></h3>
         <p>Historische stoomtrein rijdt door de Veluwse natuur tussen Apeldoorn en Dieren. Sfeervolle beleving voor het hele gezin.</p>
         <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
           <a href="/apeldoorn/veluwsche-stoomtrein-maatschappij/" class="loc-detail-btn">Bekijk details</a>
           <a href="https://stoomtrein.org" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Veluwsche Stoomtrein Maatschappij">Website</a>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="type-section">
+      <h2><picture><source type="image/webp" srcset="/images/categories/zwemmen.webp"><img src="/images/categories/zwemmen.png" alt="" class="category-icon" width="36" height="36" loading="lazy"></picture>Zwembaden & Waterplezier</h2>
+      <div class="loc-list">
+        
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/landal-rabbit-hill/">Landal Rabbit Hill</a></h3>
+        <p>Waterpark op Landal vakantiepark Rabbit Hill. Subtropisch zwembad met glijbanen en ondiep gedeelte.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/landal-rabbit-hill/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.landal.nl/parken/rabbit-hill" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Landal Rabbit Hill">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/boschbad/">Boschbad</a></h3>
+        <p>Grootste openluchtbad van Nederland met 3 verwarmde baden, competitie-, recreatie-, en peutersvijver. Speelplaats en water play area.</p>
+        <span class="badges"><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/boschbad/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.zwembadenapeldoorn.nl/openluchtbad-boschbad" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Boschbad">Website</a>
         </div>
       </article>
       </div>
@@ -913,6 +1717,24 @@
         <div class="loc-actions">
           <a href="/apeldoorn/t-pannekoekhuis-hoenderloo/" class="loc-detail-btn">Bekijk details</a>
           <a href="https://pannekoekhuishoenderloo.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van 't Pannekoekhuis Hoenderloo">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/de-veldkamp/">De Veldkamp</a></h3>
+        <p>Pannenkoekenrestaurant in Epe met speelhoek en kinderkaart. Open in het weekend. Landelijke locatie.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/de-veldkamp/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.develdkampepe.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Veldkamp">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/speelparadijs-pannenkoekenhuis-voorst-wilp-achterhoek/">Speelparadijs Pannenkoekenhuis Voorst Wilp-Achterhoek</a></h3>
+        <p>Pannenkoekenhuis Voorst met speelparadijs en speeltuin. Open wo t/m zo 12-19u. Buitenterras aanwezig.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/speelparadijs-pannenkoekenhuis-voorst-wilp-achterhoek/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.pannenkoekenhuisvoorst.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Speelparadijs Pannenkoekenhuis Voorst Wilp-Achterhoek">Website</a>
         </div>
       </article>
       <article class="loc-item">
@@ -951,6 +1773,15 @@
           <a href="http://www.pannenkoekenrestaurantbrinkpark.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Paviljoen Amalia">Website</a>
         </div>
       </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/de-boskabouter/">De Boskabouter</a></h3>
+        <p>Pannenkoekenhuis De Boskabouter in Vaassen, onderdeel van bekende keten. Geopend van woensdag t/m zondag.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/de-boskabouter/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.pannenkoekenhuisdeboskabouter.nl/locaties/pannenkoekenhuis-vaassen" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Boskabouter">Website</a>
+        </div>
+      </article>
       </div>
     </section>
     <section class="type-section">
@@ -958,12 +1789,66 @@
       <div class="loc-list">
         
       <article class="loc-item">
+        <h3><a href="/apeldoorn/brasserie-de-jagerstee/">Brasserie De Jagerstee</a></h3>
+        <p>Brasserie op RCN vakantiepark De Jagerstee op de Veluwe. Speeltuin, speelparadijs, peuter- en kindermenu aanwezig.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/brasserie-de-jagerstee/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.rcn.nl/nl/vakantieparken/nederland/veluwe/rcn-de-jagerstee/faciliteiten" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Brasserie De Jagerstee">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/de-beren/">De Beren</a></h3>
+        <p>Familierestaurant De Beren in Apeldoorn met speelhoek, kindermenu en babyfaciliteiten. Rolstoeltoegankelijk.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/de-beren/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.beren.nl/vestigingen/apeldoorn" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Beren">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/de-boskantine-hoenderloo/">De Boskantine Hoenderloo</a></h3>
+        <p>Kindvriendelijk familierestaurant bij Roompot Hoenderloo met speeltuin en gezinsgericht aanbod op de Veluwe.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/de-boskantine-hoenderloo/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.deboskantine.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Boskantine Hoenderloo">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/de-kar/">De Kar</a></h3>
+        <p>Wegrestaurant De Kar in Klarenbeek met speeltuin buiten. Kindvriendelijk met tuin en terras. Regionale keuken.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/de-kar/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://wegrestaurantdekar.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Kar">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
         <h3><a href="/apeldoorn/de-proeftuin-hoenderloo/">De Proeftuin Hoenderloo</a></h3>
         <p>Kindvriendelijk restaurant in Hoenderloo met speeltuin, kinderkaart en babyfaciliteiten. Midden in de natuur op de Veluwe.</p>
         <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
           <a href="/apeldoorn/de-proeftuin-hoenderloo/" class="loc-detail-btn">Bekijk details</a>
           <a href="https://deproeftuinhoenderloo.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Proeftuin Hoenderloo">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/eetcafe-de-nieuwe-ruysch/">Eetcafé De Nieuwe Ruysch</a></h3>
+        <p>Kindvriendelijk eetcafé in Lieren met speeltuin, kindermenu en terras. Fijne stop bij wandeling of fietstocht.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/eetcafe-de-nieuwe-ruysch/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.nieuweruysch.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Eetcafé De Nieuwe Ruysch">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/wok-sprengenhorst/">Wok Sprengenhorst</a></h3>
+        <p>Chinees restaurant in Wenum Wiesel met speelruimte voor kinderen. Buiten Apeldoorn in groene omgeving.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/wok-sprengenhorst/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.woksprengenhorst.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Wok Sprengenhorst">Website</a>
         </div>
       </article>
       <article class="loc-item">
@@ -994,12 +1879,57 @@
         </div>
       </article>
       <article class="loc-item">
+        <h3><a href="/apeldoorn/brasserie-kriebelz/">Brasserie Kriebelz</a></h3>
+        <p>Brasserie Kriebelz in Terwolde met speelhoek voor kinderen. Open di t/m zo. Regionale keuken.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/brasserie-kriebelz/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://brasserie-kriebelz.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Brasserie Kriebelz">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/ijssalon-stientje/">IJssalon Stientje</a></h3>
+        <p>IJssalon in Beekbergen met speeltuin, kindvriendelijk en gezinsgericht. Buitenterras aanwezig.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/ijssalon-stientje/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://ijssalonstientje.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van IJssalon Stientje">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/orange/">Orange</a></h3>
+        <p>Aziatisch restaurant in Apeldoorn met speelkamer voor kinderen. Gezinsrestaurant met kindermenu.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/orange/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.restaurantorange.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Orange">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/restaurant-malkenschoten-wernem/">Restaurant Malkenschoten Wernem</a></h3>
+        <p>Restaurant bij Malkenschoten in Apeldoorn met kindermenu en speelkamer. Ideaal naast Binky speelparadijs.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/restaurant-malkenschoten-wernem/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.restaurant-malkenschoten.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Restaurant Malkenschoten Wernem">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
         <h3><a href="/apeldoorn/restaurant-triangel/">Restaurant Triangel</a></h3>
         <p>Gastvrij familierestaurant in Wenum-Wiesel aan de rand van Apeldoorn-Noord, omgeven door groen. Het restaurant biedt een uitgebreid kindermenu, een binnenspeelkamer en bij mooi weer een opblaaskasteel op het terras — een van de populairste kindvriendelijke restaurants in de regio.</p>
         <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
           <a href="/apeldoorn/restaurant-triangel/" class="loc-detail-btn">Bekijk details</a>
           <a href="https://www.triangel.nu" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Restaurant Triangel">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/apeldoorn/partycentrum-terwolde/">Partycentrum Terwolde</a></h3>
+        <p>Partycentrum met geïntegreerde speelfaciliteiten, gericht op kinderfeestjes en familiegebruik</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
+        <div class="loc-actions">
+          <a href="/apeldoorn/partycentrum-terwolde/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.scherpenhofplaycity.nl/partycentrum/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Partycentrum Terwolde">Website</a>
         </div>
       </article>
       </div>
@@ -1059,13 +1989,11 @@
 
 <footer>
   <nav aria-label="Footernavigatie">
-  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
   </nav>
 </footer>
 
-<script>
-(function(){var o=new IntersectionObserver(function(e){e.forEach(function(i){if(i.isIntersecting){i.target.classList.add('visible');o.unobserve(i.target);}});},{threshold:0,rootMargin:'0px 0px 300px 0px'});document.querySelectorAll('.loc-item,.type-section,.region-section,.blog-card,.cta-block,.support-section,.faq-section').forEach(function(el,i){el.classList.add('reveal');el.style.animationDelay=Math.min(i*0.04,0.24)+'s';o.observe(el);});})();
-</script>
+<script src="/reveal.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
 </html>

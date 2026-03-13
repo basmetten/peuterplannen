@@ -1,27 +1,17 @@
 :root {
+  /* Portal-specific overrides (design-system.css provides base --pp-* tokens) */
   --pp-bg: #f3efe8;
   --pp-bg-soft: #f7f3ed;
-  --pp-surface: #ffffff;
   --pp-surface-soft: #f8f6f2;
   --pp-text: #231f1a;
   --pp-text-muted: #746863;
   --pp-border: rgba(35, 31, 26, 0.12);
-  --pp-primary: #d4775a;
-  --pp-primary-deep: #b85d42;
-  --pp-success: #17613e;
-  --pp-success-bg: #e8f7ef;
-  --pp-error: #a62323;
-  --pp-error-bg: #fdeeee;
-  --pp-info: #2f586f;
-  --pp-info-bg: #eaf2f7;
+  --pp-primary-deep: var(--pp-primary-dark);
   --pp-shadow-sm: 0 4px 18px rgba(35, 31, 26, 0.08);
   --pp-shadow-md: 0 14px 42px rgba(35, 31, 26, 0.14);
-  --pp-radius-sm: 10px;
-  --pp-radius: 16px;
-  --pp-radius-lg: 24px;
-  --pp-font-display: 'Familjen Grotesk', 'Plus Jakarta Sans', sans-serif;
-  --pp-font-head: var(--pp-font-display);
-  --pp-font-body: 'DM Sans', sans-serif;
+  --pp-font-display: var(--pp-font-heading);
+  --pp-font-head: var(--pp-font-heading);
+  --pp-radius: var(--pp-radius-md);
 }
 
 * {

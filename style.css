@@ -22,27 +22,7 @@
   }
 }
 
-:root {
-  --primary: #D4775A;
-  --primary-light: #FDF1ED;
-  --primary-dark: #B35D42;
-  --accent: #E8B870;
-  --accent-light: #FEF6E8;
-  --secondary: #6B9590;
-  --secondary-light: #EBF3F2;
-  --navy: #2D2926;
-  --navy-light: #5C4A48;
-  --gold: #E8B870;
-  --gold-text: #7A5028;
-  --bg: #FAF7F2;
-  --bg-cream: #FFF5EB;
-  --bg-warm: #FFF5EB;
-  --text: #2D2926;
-  --text-muted: #A39490;
-  --card-shadow: 0 4px 12px rgba(45,41,38,0.10);
-  --font-heading: 'Familjen Grotesk', 'Plus Jakarta Sans', sans-serif;
-  --font-ui: 'Plus Jakarta Sans', sans-serif;
-}
+/* Tokens are defined in design-system.css — loaded before this file */
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }

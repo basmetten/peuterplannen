@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { fetchData } = require('./lib/supabase');
 
 const ROOT = path.resolve(__dirname, '..');
 const OUTPUT_DIR = path.join(ROOT, 'output');
@@ -240,6 +241,20 @@ function checkBlogSlugConsistency(allFiles) {
   return issues;
 }
 
+function auditRegionIntegrity(regions, locations) {
+  const regionNames = new Set(regions.map(r => r.name));
+  const issues = [];
+  for (const loc of locations) {
+    if (!regionNames.has(loc.region)) {
+      issues.push({
+        type: 'orphan_location',
+        detail: `Location "${loc.name}" (id=${loc.id}) references non-existent region "${loc.region}"`
+      });
+    }
+  }
+  return issues;
+}
+
 function buildMarkdownSummary(report) {
   return [
     '# Consistency Audit',
@@ -251,6 +266,7 @@ function buildMarkdownSummary(report) {
     `- Orphan location pages: ${report.counts.orphan_location_pages}`,
     `- Blog slug consistency issues: ${report.counts.blog_slug_issues}`,
     `- Admin/partner baseline issues: ${report.counts.admin_partner_issues}`,
+    `- Region integrity issues: ${report.counts.region_integrity_issues}`,
     '',
     '## Samples',
     '',
@@ -259,11 +275,12 @@ function buildMarkdownSummary(report) {
     `- Orphan pages sample: ${report.samples.orphan_location_pages.join(' | ') || 'none'}`,
     `- Blog slug issues sample: ${report.samples.blog_slug_issues.join(' | ') || 'none'}`,
     `- Admin/partner issues sample: ${report.samples.admin_partner_issues.map((x) => `${x.file}:${x.issue}`).join(' | ') || 'none'}`,
+    `- Region integrity issues sample: ${report.samples.region_integrity_issues.map((x) => x.detail).join(' | ') || 'none'}`,
     '',
   ].join('\n');
 }
 
-function main() {
+async function main() {
   const allFiles = getTrackedFiles().filter((file) => fs.existsSync(file));
   const htmlFiles = allFiles.filter((f) => f.endsWith('.html'));
   const mdFiles = allFiles.filter((f) => f.endsWith('.md') && toRel(f).startsWith('content/posts/'));
@@ -274,6 +291,15 @@ function main() {
   const blogSlugIssues = checkBlogSlugConsistency(allFiles);
   const adminPartnerIssues = checkAdminPartnerBaseline();
 
+  // Fetch regions & locations from Supabase (or fixtures) for integrity check
+  let regionIntegrityIssues = [];
+  try {
+    const { regions, locations } = await fetchData();
+    regionIntegrityIssues = auditRegionIntegrity(regions, locations);
+  } catch (err) {
+    console.warn(`Warning: could not fetch Supabase data for region integrity check: ${err.message}`);
+  }
+
   const report = {
     generated_at: new Date().toISOString(),
     strict_mode: STRICT,
@@ -283,6 +309,7 @@ function main() {
       orphan_location_pages: orphanLocationPages.length,
       blog_slug_issues: blogSlugIssues.length,
       admin_partner_issues: adminPartnerIssues.length,
+      region_integrity_issues: regionIntegrityIssues.length,
     },
     samples: {
       broken_html_links: brokenHtmlLinks.slice(0, 25),
@@ -290,6 +317,7 @@ function main() {
       orphan_location_pages: orphanLocationPages.slice(0, 25),
       blog_slug_issues: blogSlugIssues.slice(0, 25),
       admin_partner_issues: adminPartnerIssues.slice(0, 25),
+      region_integrity_issues: regionIntegrityIssues.slice(0, 25),
     },
     details: {
       broken_html_links: brokenHtmlLinks,
@@ -297,6 +325,7 @@ function main() {
       orphan_location_pages: orphanLocationPages,
       blog_slug_issues: blogSlugIssues,
       admin_partner_issues: adminPartnerIssues,
+      region_integrity_issues: regionIntegrityIssues,
     },
   };
 
@@ -313,7 +342,8 @@ function main() {
     brokenMarkdownLinks.length > 0 ||
     orphanLocationPages.length > 0 ||
     blogSlugIssues.length > 0 ||
-    adminPartnerIssues.length > 0;
+    adminPartnerIssues.length > 0 ||
+    regionIntegrityIssues.length > 0;
 
   if (STRICT && hasBlockingIssues) {
     process.exit(1);

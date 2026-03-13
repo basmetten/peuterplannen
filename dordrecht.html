@@ -2,18 +2,8 @@
 <html lang="nl">
 <head>
   <!-- Google tag (gtag.js) — Consent Mode v2 -->
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'default', {
-      analytics_storage: 'denied', ad_storage: 'denied',
-      ad_user_data: 'denied', ad_personalization: 'denied',
-      wait_for_update: 500
-    });
-    try { var _s = localStorage.getItem('pp_consent'); if (_s) gtag('consent', 'update', JSON.parse(_s)); } catch(e) {}
-  </script>
+  <script src="/ga-init.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
-  <script>gtag('js', new Date()); gtag('config', 'G-46RW178B97');</script>
   <script src="/consent.js" defer></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
@@ -23,56 +13,60 @@
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.min.css?v=202603130858">
+  <link rel="preload" href="/design-system.css" as="style">
+  <link rel="preload" href="/style.min.css" as="style">
+  <link rel="preload" href="/fonts/familjen-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="/design-system.css?v=202603132236">
+  <link rel="stylesheet" href="/style.min.css?v=202603132236">
   <style>
   .guide-section{display:grid;gap:18px;margin:36px 0}
-  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid rgba(212,119,90,.12);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
   .guide-card-compact{padding:20px 18px}
-  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8d6f64}
-  .guide-card h2,.guide-card h3{margin:0 0 12px;color:#2d2926;line-height:.98;letter-spacing:-.04em}
+  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
+  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
   .guide-card h2{font-size:clamp(28px,5vw,40px)}
   .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
-  .guide-card p,.guide-card li{color:#5f5149;font-size:16px;line-height:1.72}
+  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
   .guide-card-intro{max-width:58ch}
   .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:#9e5e4b;background:rgba(212,119,90,.08);border:1px solid rgba(212,119,90,.12)}
+  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
   .guide-links{display:grid;gap:12px;margin-top:16px}
-  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:#2d2926;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-  .guide-link:visited{color:#2d2926}
+  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  .guide-link:visited{color:var(--pp-text)}
   .guide-link strong{font-size:15px;line-height:1.3}
-  .guide-link span{font-size:13px;line-height:1.5;color:#7c6e66}
-  .guide-link:hover{transform:translateY(-1px);border-color:rgba(212,119,90,.25);box-shadow:0 10px 20px rgba(45,41,38,.08)}
-  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:#7c6e66;font-size:13px}
-  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid rgba(212,119,90,.12)}
-  .editorial-meta a,.editorial-meta a:visited{color:#9e5e4b;font-weight:700;text-decoration:none}
-  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid rgba(212,119,90,.12);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:#2d2926;line-height:.98;letter-spacing:-.05em}
+  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
+  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
+  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
+  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
+  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
   .editorial-body h2{font-size:clamp(28px,5vw,38px)}
   .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
-  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:#5f5149}
-  .editorial-body a{color:#9e5e4b;font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
+  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
+  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
   .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
-  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid rgba(212,119,90,.12);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
-  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:#2d2926}
-  .editorial-support-card p{font-size:14px;line-height:1.72;color:#5f5149}
+  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
+  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
+  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
   .editorial-support-links{display:grid;gap:10px;margin-top:14px}
-  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:#2d2926}
-  .editorial-support-links a:visited{color:#2d2926}
+  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
+  .editorial-support-links a:visited{color:var(--pp-text)}
   .editorial-support-links a strong{font-size:14px}
-  .editorial-support-links a span{font-size:12px;line-height:1.5;color:#7c6e66}
+  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
   @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
 </style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603130858">
-  <script src="/nav-floating.js?v=202603130858" defer></script>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603132236">
+  <script src="/nav-floating.js?v=202603132236" defer></script>
+  <script src="/error-reporter.js" defer></script>
   <title>Dordrecht met peuters — speeltuinen, musea &amp; restaurants | PeuterPlannen</title>
-  <meta name="description" content="Dordrecht met peuters: 24 werkbare uitjes, met focus op horeca, speeltuinen, musea. Inclusief regenopties, eten &amp; spelen en locaties die ook in de praktijk prettig zijn.">
+  <meta name="description" content="Dordrecht met peuters: 11 werkbare uitjes, met focus op musea, zwemmen, kinderboerderijen. Inclusief regenopties, eten &amp; spelen en locaties die ook in de praktijk prettig zijn.">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://peuterplannen.nl/dordrecht.html">
   <meta property="og:title" content="Dordrecht met peuters — speeltuinen, musea &amp; restaurants | PeuterPlannen">
-  <meta property="og:description" content="Dordrecht met peuters: 24 werkbare uitjes, met focus op horeca, speeltuinen, musea. Inclusief regenopties, eten &amp; spelen en locaties die ook in de praktijk prettig zijn.">
+  <meta property="og:description" content="Dordrecht met peuters: 11 werkbare uitjes, met focus op musea, zwemmen, kinderboerderijen. Inclusief regenopties, eten &amp; spelen en locaties die ook in de praktijk prettig zijn.">
   <meta property="og:url" content="https://peuterplannen.nl/dordrecht.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
@@ -86,55 +80,11 @@
   "@type": "ItemList",
   "name": "Uitjes met peuters in Dordrecht",
   "description": "De beste kinderactiviteiten en uitjes voor peuters in Dordrecht",
-  "numberOfItems": 24,
+  "numberOfItems": 11,
   "itemListElement": [
     {
       "@type": "ListItem",
       "position": 1,
-      "name": "Bluebirds in the Backyard Garden Café",
-      "description": "Tuincafé met speelhoek voor kinderen inclusief speelkeuken, poppenwagen en speelhuisje.",
-      "url": "https://peuterplannen.nl/dordrecht/bluebirds-in-the-backyard-garden-cafe/",
-      "item": {
-        "@type": "TouristAttraction",
-        "name": "Bluebirds in the Backyard Garden Café",
-        "description": "Tuincafé met speelhoek voor kinderen inclusief speelkeuken, poppenwagen en speelhuisje.",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 51.815,
-          "longitude": 4.6885
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dordrecht",
-          "addressCountry": "NL"
-        }
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "De Merwelanden",
-      "description": "Restaurant aan het water met grote speelplaats en glijbaan.",
-      "url": "https://peuterplannen.nl/dordrecht/de-merwelanden/",
-      "item": {
-        "@type": "TouristAttraction",
-        "name": "De Merwelanden",
-        "description": "Restaurant aan het water met grote speelplaats en glijbaan.",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 51.811,
-          "longitude": 4.7645
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dordrecht",
-          "addressCountry": "NL"
-        }
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
       "name": "De Remise",
       "description": "Kindvriendelijk restaurant voor ontspannen lunchen. Veel ruimte voor kinderwagens, warm welkom en kindermenu.",
       "url": "https://peuterplannen.nl/dordrecht/de-remise/",
@@ -156,7 +106,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 4,
+      "position": 2,
       "name": "Dordrechts Museum",
       "description": "Kunstmuseum met gratis toegang voor kinderen tot 18 jaar. Familie tentoonstellingen, speurtochten en workshops. Kindvriendelijke faciliteiten.",
       "url": "https://peuterplannen.nl/dordrecht/dordrechts-museum/",
@@ -178,51 +128,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 5,
-      "name": "Familieparadijs",
-      "description": "Groot binnenspeelparadijs (1600m2) in Zwijndrecht met 6 speelzones voor 2-12 jaar.",
-      "url": "https://peuterplannen.nl/dordrecht/familieparadijs/",
-      "item": {
-        "@type": "TouristAttraction",
-        "name": "Familieparadijs",
-        "description": "Groot binnenspeelparadijs (1600m2) in Zwijndrecht met 6 speelzones voor 2-12 jaar.",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 51.802,
-          "longitude": 4.659
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dordrecht",
-          "addressCountry": "NL"
-        }
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 6,
-      "name": "Happy Italy",
-      "description": "Kindvriendelijk Italiaans restaurant in H-I-Ambacht met speelhoek.",
-      "url": "https://peuterplannen.nl/dordrecht/happy-italy/",
-      "item": {
-        "@type": "TouristAttraction",
-        "name": "Happy Italy",
-        "description": "Kindvriendelijk Italiaans restaurant in H-I-Ambacht met speelhoek.",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 51.8235,
-          "longitude": 4.6198
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dordrecht",
-          "addressCountry": "NL"
-        }
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 7,
+      "position": 3,
       "name": "Huis van Gijn",
       "description": "Historisch museum uit 1900 met gratis toegang voor kinderen tot 18 jaar. Speeltuin, kleedkamer, speelhoek en speelzolder met oud speelgoed.",
       "url": "https://peuterplannen.nl/dordrecht/huis-van-gijn/",
@@ -244,7 +150,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 8,
+      "position": 4,
       "name": "Kat in 't Bakkie",
       "description": "Koffie en gebak restaurant met kinderplay area. Helft van ruimte gereserveerd voor de kleintjes.",
       "url": "https://peuterplannen.nl/dordrecht/kat-in-t-bakkie/",
@@ -266,117 +172,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 9,
-      "name": "LOES",
-      "description": "Bakkerij-cafe in Papendrecht met speelhoek en desembrood.",
-      "url": "https://peuterplannen.nl/dordrecht/loes/",
-      "item": {
-        "@type": "TouristAttraction",
-        "name": "LOES",
-        "description": "Bakkerij-cafe in Papendrecht met speelhoek en desembrood.",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 51.8422,
-          "longitude": 4.6367
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dordrecht",
-          "addressCountry": "NL"
-        }
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 10,
-      "name": "Monkey Town Sliedrecht",
-      "description": "Binnenspeeltuin met klimnetten, trampolines en ballenbaden voor 1-10 jaar.",
-      "url": "https://peuterplannen.nl/dordrecht/monkey-town-sliedrecht/",
-      "item": {
-        "@type": "TouristAttraction",
-        "name": "Monkey Town Sliedrecht",
-        "description": "Binnenspeeltuin met klimnetten, trampolines en ballenbaden voor 1-10 jaar.",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 51.823,
-          "longitude": 4.773
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dordrecht",
-          "addressCountry": "NL"
-        }
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 11,
-      "name": "Restaurant Post",
-      "description": "Gastrobar in voormalig postkantoor met speelhoek.",
-      "url": "https://peuterplannen.nl/dordrecht/restaurant-post/",
-      "item": {
-        "@type": "TouristAttraction",
-        "name": "Restaurant Post",
-        "description": "Gastrobar in voormalig postkantoor met speelhoek.",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 51.8099,
-          "longitude": 4.6278
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dordrecht",
-          "addressCountry": "NL"
-        }
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 12,
-      "name": "Speeltuin Oosterkwartier",
-      "description": "Buurtspecialtuin met speeltoestellen, zwembad en activiteiten. Gratis in winter, €1 ingang in zomer. Regelmatig kinderfeestjes en activiteiten.",
-      "url": "https://peuterplannen.nl/dordrecht/speeltuin-oosterkwartier/",
-      "item": {
-        "@type": "TouristAttraction",
-        "name": "Speeltuin Oosterkwartier",
-        "description": "Buurtspecialtuin met speeltoestellen, zwembad en activiteiten. Gratis in winter, €1 ingang in zomer. Regelmatig kinderfeestjes en activiteiten.",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 51.8145,
-          "longitude": 4.6915
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dordrecht",
-          "addressCountry": "NL"
-        }
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 13,
-      "name": "The Warehouse",
-      "description": "Restaurant met coole treehouse in de tuin voor kinderen en speeltoestellen.",
-      "url": "https://peuterplannen.nl/dordrecht/the-warehouse/",
-      "item": {
-        "@type": "TouristAttraction",
-        "name": "The Warehouse",
-        "description": "Restaurant met coole treehouse in de tuin voor kinderen en speeltoestellen.",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 51.8145,
-          "longitude": 4.688
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dordrecht",
-          "addressCountry": "NL"
-        }
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 14,
+      "position": 5,
       "name": "Zwembad Dordrecht (Optisport)",
       "description": "Recreatiebad met interactieve waterspeeltuin voor kinderen naast het zwembad. Zed & Sop zwemles beschikbaar.",
       "url": "https://peuterplannen.nl/dordrecht/zwembad-dordrecht-optisport/",
@@ -398,51 +194,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 15,
-      "name": "Biesboschcentrum Dordrecht",
-      "description": "Startpunt voor rondvaarten, wandelen, kanoën en natuurbeleving in Nationaal Park De Biesbosch. Activiteiten voor jong en oud.",
-      "url": "https://peuterplannen.nl/dordrecht/biesboschcentrum-dordrecht/",
-      "item": {
-        "@type": "TouristAttraction",
-        "name": "Biesboschcentrum Dordrecht",
-        "description": "Startpunt voor rondvaarten, wandelen, kanoën en natuurbeleving in Nationaal Park De Biesbosch. Activiteiten voor jong en oud.",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 51.8078,
-          "longitude": 4.7258
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dordrecht",
-          "addressCountry": "NL"
-        }
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 16,
-      "name": "De Beren Zwijndrecht",
-      "description": "Familierestaurant met speelplaats en kindermenu.",
-      "url": "https://peuterplannen.nl/dordrecht/de-beren-zwijndrecht/",
-      "item": {
-        "@type": "TouristAttraction",
-        "name": "De Beren Zwijndrecht",
-        "description": "Familierestaurant met speelplaats en kindermenu.",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 51.8185,
-          "longitude": 4.6283
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dordrecht",
-          "addressCountry": "NL"
-        }
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 17,
+      "position": 6,
       "name": "Dierenweide Wantijpark",
       "description": "Petting pasture in Wantijpark met geiten, schapen, kippen en eenden. Gratis toegang. Aangrenzend playground en paddling pool.",
       "url": "https://peuterplannen.nl/dordrecht/dierenweide-wantijpark/",
@@ -464,29 +216,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 18,
-      "name": "Kom Aan Tafel!",
-      "description": "Restaurant in Sliedrecht met unlimited tapas, 0-2 jaar gratis.",
-      "url": "https://peuterplannen.nl/dordrecht/kom-aan-tafel/",
-      "item": {
-        "@type": "TouristAttraction",
-        "name": "Kom Aan Tafel!",
-        "description": "Restaurant in Sliedrecht met unlimited tapas, 0-2 jaar gratis.",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 51.8378,
-          "longitude": 4.6179
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dordrecht",
-          "addressCountry": "NL"
-        }
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 19,
+      "position": 7,
       "name": "Nationaal Onderwijsmuseum",
       "description": "Interactief onderwijsmuseum met 325.000 objecten. Speurtochten, Letterbos, escape rooms. Voor kinderen 4-12 jaar €4.50.",
       "url": "https://peuterplannen.nl/dordrecht/nationaal-onderwijsmuseum/",
@@ -508,29 +238,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 20,
-      "name": "Patisserie Van der Sterre",
-      "description": "Banketbakkerij en lunchroom met speelkeukentje voor kinderen.",
-      "url": "https://peuterplannen.nl/dordrecht/patisserie-van-der-sterre/",
-      "item": {
-        "@type": "TouristAttraction",
-        "name": "Patisserie Van der Sterre",
-        "description": "Banketbakkerij en lunchroom met speelkeukentje voor kinderen.",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 51.8095,
-          "longitude": 4.6288
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Dordrecht",
-          "addressCountry": "NL"
-        }
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 21,
+      "position": 8,
       "name": "Pim's Poffertjes & Pannekoekenhuis",
       "description": "Pannenkoekenrestaurant in Dordrecht met speelse toy trains aan muren, poffertjes en pannenkoeken. Gezellige terras in zomer.",
       "url": "https://peuterplannen.nl/dordrecht/pim-s-poffertjes-pannekoekenhuis/",
@@ -552,18 +260,18 @@
     },
     {
       "@type": "ListItem",
-      "position": 22,
-      "name": "Speelbos De Viersprong",
-      "description": "Speelbos in Biesbosch met klimmen, tunnels, waterplay en verstopspelingen in pluimgras. Favoriete speelplaats in de natuur.",
-      "url": "https://peuterplannen.nl/dordrecht/speelbos-de-viersprong/",
+      "position": 9,
+      "name": "Stadsboerderij Weizigt",
+      "description": "Stadsboerderij met diverse dieren in petting pastures. Gratis toegang. Duurzaamheidscentrum Weizigt met aquarama tentoonstelling en klimaakas.",
+      "url": "https://peuterplannen.nl/dordrecht/stadsboerderij-weizigt/",
       "item": {
         "@type": "TouristAttraction",
-        "name": "Speelbos De Viersprong",
-        "description": "Speelbos in Biesbosch met klimmen, tunnels, waterplay en verstopspelingen in pluimgras. Favoriete speelplaats in de natuur.",
+        "name": "Stadsboerderij Weizigt",
+        "description": "Stadsboerderij met diverse dieren in petting pastures. Gratis toegang. Duurzaamheidscentrum Weizigt met aquarama tentoonstelling en klimaakas.",
         "geo": {
           "@type": "GeoCoordinates",
-          "latitude": 51.8162,
-          "longitude": 4.7082
+          "latitude": 51.8204,
+          "longitude": 4.6775
         },
         "address": {
           "@type": "PostalAddress",
@@ -574,18 +282,18 @@
     },
     {
       "@type": "ListItem",
-      "position": 23,
-      "name": "Speeltuin Stadspolders",
-      "description": "Gezellige kleinschalige speeltuin in Dordrecht voor kinderen tot 12 jaar met activiteiten zoals crafts, koken en kinderfeestjes.",
-      "url": "https://peuterplannen.nl/dordrecht/speeltuin-stadspolders/",
+      "position": 10,
+      "name": "Wantijbad",
+      "description": "Openlucht zwembad met diep en ondiep bad, ideaal voor ervaren zwemmers en beginners. Ruime zonneweide.",
+      "url": "https://peuterplannen.nl/dordrecht/wantijbad/",
       "item": {
         "@type": "TouristAttraction",
-        "name": "Speeltuin Stadspolders",
-        "description": "Gezellige kleinschalige speeltuin in Dordrecht voor kinderen tot 12 jaar met activiteiten zoals crafts, koken en kinderfeestjes.",
+        "name": "Wantijbad",
+        "description": "Openlucht zwembad met diep en ondiep bad, ideaal voor ervaren zwemmers en beginners. Ruime zonneweide.",
         "geo": {
           "@type": "GeoCoordinates",
-          "latitude": 51.813,
-          "longitude": 4.6901
+          "latitude": 51.8219,
+          "longitude": 4.6758
         },
         "address": {
           "@type": "PostalAddress",
@@ -596,18 +304,18 @@
     },
     {
       "@type": "ListItem",
-      "position": 24,
-      "name": "Strada del Vino",
-      "description": "Italiaans restaurant waar kinderen eigen pizza kunnen maken met de pizzaiolo.",
-      "url": "https://peuterplannen.nl/dordrecht/strada-del-vino/",
+      "position": 11,
+      "name": "Klaaswaalse zwembad",
+      "description": "Familie zwembad met drie zwembaden met dieptevariatie van 20cm in peuterbad tot 2m in wedstrijdbad. Spacious sun lawn.",
+      "url": "https://peuterplannen.nl/dordrecht/klaaswaalse-zwembad/",
       "item": {
         "@type": "TouristAttraction",
-        "name": "Strada del Vino",
-        "description": "Italiaans restaurant waar kinderen eigen pizza kunnen maken met de pizzaiolo.",
+        "name": "Klaaswaalse zwembad",
+        "description": "Familie zwembad met drie zwembaden met dieptevariatie van 20cm in peuterbad tot 2m in wedstrijdbad. Spacious sun lawn.",
         "geo": {
           "@type": "GeoCoordinates",
-          "latitude": 51.8108,
-          "longitude": 4.6433
+          "latitude": 51.8102,
+          "longitude": 4.6644
         },
         "address": {
           "@type": "PostalAddress",
@@ -678,10 +386,10 @@
   <h1>Uitjes met peuters in <span>Dordrecht</span></h1>
   <p></p>
   <div class="hero-stats">
-    <div class="hero-stat"><strong>24</strong><span>locaties</span></div>
-    <div class="hero-stat"><strong>4</strong><span>speeltuinen</span></div>
+    <div class="hero-stat"><strong>11</strong><span>locaties</span></div>
+    <div class="hero-stat"><strong>0</strong><span>speeltuinen</span></div>
     <div class="hero-stat"><strong>3</strong><span>musea</span></div>
-    <div class="hero-stat"><strong>13</strong><span>eten & drinken</span></div>
+    <div class="hero-stat"><strong>3</strong><span>eten & drinken</span></div>
   </div>
 </div>
 
@@ -691,7 +399,7 @@
 
 <main id="main-content">
   <div class="intro-box">
-    <p> Op deze pagina vind je <strong>24 locaties</strong> in de regio Dordrecht. Gecheckt op kindvriendelijkheid en of het echt werkt met een peuter.</p>
+    <p> Op deze pagina vind je <strong>11 locaties</strong> in de regio Dordrecht. Gecheckt op kindvriendelijkheid en of het echt werkt met een peuter.</p>
   </div>
 
   <section class="guide-section city-guide">
@@ -699,7 +407,7 @@
     <div class="guide-card">
       <p class="guide-kicker">Sneller kiezen in Dordrecht</p>
       <h2>Begin niet met alle kaarten tegelijk</h2>
-      <p>Deze regiopagina werkt het best als je eerst kiest op soort dag. In Dordrecht zijn vooral horeca, speeltuinen, musea sterk vertegenwoordigd. Daardoor kun je sneller van “wat zullen we doen?” naar een shortlist die echt past bij jonge kinderen.</p>
+      <p>Deze regiopagina werkt het best als je eerst kiest op soort dag. In Dordrecht zijn vooral musea, zwemmen, kinderboerderijen sterk vertegenwoordigd. Daardoor kun je sneller van “wat zullen we doen?” naar een shortlist die echt past bij jonge kinderen.</p>
       <ul class="guide-list">
         <li><strong>Ochtend:</strong> buiten, dieren of een rustige speeltuin werkt meestal beter dan direct horeca.</li>
         <li><strong>Regenbackup:</strong> kies daarna pas een museum, binnenspeelplek of horeca met speelhoek.</li>
@@ -716,14 +424,14 @@
       <p class="guide-kicker">Snelste shortlist</p>
       <h2>Drie plekken om mee te beginnen</h2>
       <div class="guide-links">
-        <a href="/dordrecht/bluebirds-in-the-backyard-garden-cafe/" class="guide-link"><strong>Bluebirds in the Backyard Garden Café</strong><span>Horeca · Speelkeuken, poppenwagen, speelhuisje buiten</span></a><a href="/dordrecht/de-merwelanden/" class="guide-link"><strong>De Merwelanden</strong><span>Horeca · De Merwelanden: restaurant aan zwemmeer, terras, speeltoestellen, kabelbaantje</span></a><a href="/dordrecht/de-remise/" class="guide-link"><strong>De Remise</strong><span>Horeca · Veel ruimte voor kinderwagens, warm welkom, speciaal kindermenu</span></a>
+        <a href="/dordrecht/de-remise/" class="guide-link"><strong>De Remise</strong><span>Horeca · Veel ruimte voor kinderwagens, warm welkom, speciaal kindermenu</span></a><a href="/dordrecht/dordrechts-museum/" class="guide-link"><strong>Dordrechts Museum</strong><span>Musea · Kindvriendelijke museum met familie-focus: rustig tempo voor ontdekking zonder prikkels</span></a><a href="/dordrecht/huis-van-gijn/" class="guide-link"><strong>Huis van Gijn</strong><span>Musea · Speelzolder en kleedkamer: peuters leren rollen naspelen, gratis voor kinderen</span></a>
       </div>
     </div>
     <div class="guide-card">
       <p class="guide-kicker">Slimme routes</p>
       <h2>Begin liever met een situatie dan met 100 losse pins</h2>
       <div class="guide-links">
-        <a href="/peuteruitjes-2-5-jaar.html" class="guide-link"><strong>Peuteruitjes voor 2-5 jaar</strong><span>Uitjes voor kinderen van ongeveer 2 tot 5 jaar: meer actie, meer ontdekken en nog steeds praktisch voor ouders. Van natuur en speeltuinen tot horeca en musea.</span></a><a href="/regenachtige-dag-met-peuter.html" class="guide-link"><strong>Regenachtige dag met peuter</strong><span>Binnenopties voor regenachtige dagen met peuters: musea, speelplekken, horeca met speelhoek en andere locaties die ook bij slecht weer werken.</span></a><a href="/binnenlocaties-peuters.html" class="guide-link"><strong>Binnenlocaties voor peuters</strong><span>Overdekte locaties voor peuters en dreumesen in Nederland. Handig voor regen, kou of een snelle indoor-back-up dicht bij huis.</span></a><a href="/koffie-en-spelen.html" class="guide-link"><strong>Koffie en spelen</strong><span>Uitjes waar jonge kinderen kunnen spelen en ouders even kunnen landen. Met koffie, ruimte, verschonen en vaak een logische combinatie van buiten, horeca of dieren.</span></a>
+        <a href="/peuteruitjes-2-5-jaar.html" class="guide-link"><strong>Peuteruitjes voor 2-5 jaar</strong><span>Uitjes voor kinderen van ongeveer 2 tot 5 jaar: meer actie, meer ontdekken en nog steeds praktisch voor ouders. Van natuur en speeltuinen tot horeca en musea.</span></a><a href="/binnenlocaties-peuters.html" class="guide-link"><strong>Binnenlocaties voor peuters</strong><span>Overdekte locaties voor peuters en dreumesen in Nederland. Handig voor regen, kou of een snelle indoor-back-up dicht bij huis.</span></a><a href="/regenachtige-dag-met-peuter.html" class="guide-link"><strong>Regenachtige dag met peuter</strong><span>Binnenopties voor regenachtige dagen met peuters: musea, speelplekken, horeca met speelhoek en andere locaties die ook bij slecht weer werken.</span></a><a href="/koffie-en-spelen.html" class="guide-link"><strong>Koffie en spelen</strong><span>Uitjes waar jonge kinderen kunnen spelen en ouders even kunnen landen. Met koffie, ruimte, verschonen en vaak een logische combinatie van buiten, horeca of dieren.</span></a>
       </div>
     </div>
     
@@ -735,48 +443,6 @@
   </div>
 
   
-    <section class="type-section">
-      <h2><picture><source type="image/webp" srcset="/images/categories/speeltuinen.webp"><img src="/images/categories/speeltuinen.png" alt="" class="category-icon" width="36" height="36" loading="lazy"></picture>Speeltuinen & Speelparadijzen</h2>
-      <div class="loc-list">
-        
-      <article class="loc-item">
-        <h3><a href="/dordrecht/familieparadijs/">Familieparadijs</a></h3>
-        <p>Groot binnenspeelparadijs (1600m2) in Zwijndrecht met 6 speelzones voor 2-12 jaar.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
-        <div class="loc-actions">
-          <a href="/dordrecht/familieparadijs/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.familieparadijs.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Familieparadijs">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <h3><a href="/dordrecht/monkey-town-sliedrecht/">Monkey Town Sliedrecht</a></h3>
-        <p>Binnenspeeltuin met klimnetten, trampolines en ballenbaden voor 1-10 jaar.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
-        <div class="loc-actions">
-          <a href="/dordrecht/monkey-town-sliedrecht/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://monkeytown.eu/nl/sliedrecht/home" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Monkey Town Sliedrecht">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <h3><a href="/dordrecht/speeltuin-oosterkwartier/">Speeltuin Oosterkwartier</a></h3>
-        <p>Buurtspecialtuin met speeltoestellen, zwembad en activiteiten. Gratis in winter, €1 ingang in zomer. Regelmatig kinderfeestjes en activiteiten.</p>
-        
-        <div class="loc-actions">
-          <a href="/dordrecht/speeltuin-oosterkwartier/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.oosterkwartierdordrecht.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Speeltuin Oosterkwartier">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <h3><a href="/dordrecht/speeltuin-stadspolders/">Speeltuin Stadspolders</a></h3>
-        <p>Gezellige kleinschalige speeltuin in Dordrecht voor kinderen tot 12 jaar met activiteiten zoals crafts, koken en kinderfeestjes.</p>
-        
-        <div class="loc-actions">
-          <a href="/dordrecht/speeltuin-stadspolders/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.oosterkwartierdordrecht.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Speeltuin Stadspolders">Website</a>
-        </div>
-      </article>
-      </div>
-    </section>
     <section class="type-section">
       <h2><picture><source type="image/webp" srcset="/images/categories/kinderboerderijen.webp"><img src="/images/categories/kinderboerderijen.png" alt="" class="category-icon" width="36" height="36" loading="lazy"></picture>Kinderboerderijen & Dieren</h2>
       <div class="loc-list">
@@ -790,28 +456,13 @@
           <a href="https://indordrecht.nl/en/locaties/dierenweide-wantijpark/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Dierenweide Wantijpark">Website</a>
         </div>
       </article>
-      </div>
-    </section>
-    <section class="type-section">
-      <h2><picture><source type="image/webp" srcset="/images/categories/natuur.webp"><img src="/images/categories/natuur.png" alt="" class="category-icon" width="36" height="36" loading="lazy"></picture>Natuur & Buiten</h2>
-      <div class="loc-list">
-        
       <article class="loc-item">
-        <h3><a href="/dordrecht/biesboschcentrum-dordrecht/">Biesboschcentrum Dordrecht</a></h3>
-        <p>Startpunt voor rondvaarten, wandelen, kanoën en natuurbeleving in Nationaal Park De Biesbosch. Activiteiten voor jong en oud.</p>
-        
+        <h3><a href="/dordrecht/stadsboerderij-weizigt/">Stadsboerderij Weizigt</a></h3>
+        <p>Stadsboerderij met diverse dieren in petting pastures. Gratis toegang. Duurzaamheidscentrum Weizigt met aquarama tentoonstelling en klimaakas.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span></span>
         <div class="loc-actions">
-          <a href="/dordrecht/biesboschcentrum-dordrecht/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.biesboschcentrumdordrecht.nl/home" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Biesboschcentrum Dordrecht">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <h3><a href="/dordrecht/speelbos-de-viersprong/">Speelbos De Viersprong</a></h3>
-        <p>Speelbos in Biesbosch met klimmen, tunnels, waterplay en verstopspelingen in pluimgras. Favoriete speelplaats in de natuur.</p>
-        
-        <div class="loc-actions">
-          <a href="/dordrecht/speelbos-de-viersprong/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.natuurmonumenten.nl/natuurgebieden/biesbosch" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Speelbos De Viersprong">Website</a>
+          <a href="/dordrecht/stadsboerderij-weizigt/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.weizigt.nl/stadsboerderij" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Stadsboerderij Weizigt">Website</a>
         </div>
       </article>
       </div>
@@ -862,6 +513,24 @@
           <a href="https://www.optisport.nl/zwembad-dordrecht" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Zwembad Dordrecht (Optisport)">Website</a>
         </div>
       </article>
+      <article class="loc-item">
+        <h3><a href="/dordrecht/wantijbad/">Wantijbad</a></h3>
+        <p>Openlucht zwembad met diep en ondiep bad, ideaal voor ervaren zwemmers en beginners. Ruime zonneweide.</p>
+        <span class="badges"><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/dordrecht/wantijbad/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://indordrecht.nl/en/locaties/wantijbad/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Wantijbad">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/dordrecht/klaaswaalse-zwembad/">Klaaswaalse zwembad</a></h3>
+        <p>Familie zwembad met drie zwembaden met dieptevariatie van 20cm in peuterbad tot 2m in wedstrijdbad. Spacious sun lawn.</p>
+        <span class="badges"><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/dordrecht/klaaswaalse-zwembad/" class="loc-detail-btn">Bekijk details</a>
+          
+        </div>
+      </article>
       </div>
     </section>
     <section class="type-section">
@@ -884,24 +553,6 @@
       <div class="loc-list">
         
       <article class="loc-item">
-        <h3><a href="/dordrecht/bluebirds-in-the-backyard-garden-cafe/">Bluebirds in the Backyard Garden Café</a></h3>
-        <p>Tuincafé met speelhoek voor kinderen inclusief speelkeuken, poppenwagen en speelhuisje.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/dordrecht/bluebirds-in-the-backyard-garden-cafe/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://indordrecht.nl/en/horeca/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Bluebirds in the Backyard Garden Café">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <h3><a href="/dordrecht/de-merwelanden/">De Merwelanden</a></h3>
-        <p>Restaurant aan het water met grote speelplaats en glijbaan.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/dordrecht/de-merwelanden/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.merwelanden.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Merwelanden">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
         <h3><a href="/dordrecht/de-remise/">De Remise</a></h3>
         <p>Kindvriendelijk restaurant voor ontspannen lunchen. Veel ruimte voor kinderwagens, warm welkom en kindermenu.</p>
         <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
@@ -911,84 +562,12 @@
         </div>
       </article>
       <article class="loc-item">
-        <h3><a href="/dordrecht/happy-italy/">Happy Italy</a></h3>
-        <p>Kindvriendelijk Italiaans restaurant in H-I-Ambacht met speelhoek.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/dordrecht/happy-italy/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://happyitaly.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Happy Italy">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
         <h3><a href="/dordrecht/kat-in-t-bakkie/">Kat in 't Bakkie</a></h3>
         <p>Koffie en gebak restaurant met kinderplay area. Helft van ruimte gereserveerd voor de kleintjes.</p>
         <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
         <div class="loc-actions">
           <a href="/dordrecht/kat-in-t-bakkie/" class="loc-detail-btn">Bekijk details</a>
           <a href="https://indordrecht.nl/en/horeca/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Kat in 't Bakkie">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <h3><a href="/dordrecht/loes/">LOES</a></h3>
-        <p>Bakkerij-cafe in Papendrecht met speelhoek en desembrood.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/dordrecht/loes/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.puurloes.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van LOES">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <h3><a href="/dordrecht/restaurant-post/">Restaurant Post</a></h3>
-        <p>Gastrobar in voormalig postkantoor met speelhoek.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/dordrecht/restaurant-post/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.restaurantpost.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Restaurant Post">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <h3><a href="/dordrecht/the-warehouse/">The Warehouse</a></h3>
-        <p>Restaurant met coole treehouse in de tuin voor kinderen en speeltoestellen.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/dordrecht/the-warehouse/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://indordrecht.nl/en/horeca/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van The Warehouse">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <h3><a href="/dordrecht/de-beren-zwijndrecht/">De Beren Zwijndrecht</a></h3>
-        <p>Familierestaurant met speelplaats en kindermenu.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/dordrecht/de-beren-zwijndrecht/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.beren.nl/zwijndrecht-restaurant" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Beren Zwijndrecht">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <h3><a href="/dordrecht/kom-aan-tafel/">Kom Aan Tafel!</a></h3>
-        <p>Restaurant in Sliedrecht met unlimited tapas, 0-2 jaar gratis.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/dordrecht/kom-aan-tafel/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.komaantafel.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Kom Aan Tafel!">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <h3><a href="/dordrecht/patisserie-van-der-sterre/">Patisserie Van der Sterre</a></h3>
-        <p>Banketbakkerij en lunchroom met speelkeukentje voor kinderen.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/dordrecht/patisserie-van-der-sterre/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://banketbakkerijvandersterre.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Patisserie Van der Sterre">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <h3><a href="/dordrecht/strada-del-vino/">Strada del Vino</a></h3>
-        <p>Italiaans restaurant waar kinderen eigen pizza kunnen maken met de pizzaiolo.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/dordrecht/strada-del-vino/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.stradadelvino.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Strada del Vino">Website</a>
         </div>
       </article>
       </div>
@@ -1029,13 +608,11 @@
 
 <footer>
   <nav aria-label="Footernavigatie">
-  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
   </nav>
 </footer>
 
-<script>
-(function(){var o=new IntersectionObserver(function(e){e.forEach(function(i){if(i.isIntersecting){i.target.classList.add('visible');o.unobserve(i.target);}});},{threshold:0,rootMargin:'0px 0px 300px 0px'});document.querySelectorAll('.loc-item,.type-section,.region-section,.blog-card,.cta-block,.support-section,.faq-section').forEach(function(el,i){el.classList.add('reveal');el.style.animationDelay=Math.min(i*0.04,0.24)+'s';o.observe(el);});})();
-</script>
+<script src="/reveal.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
 </html>

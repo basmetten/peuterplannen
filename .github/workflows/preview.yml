@@ -1,0 +1,55 @@
+name: Preview Deployment
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+concurrency:
+  group: preview-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        run: npm run build
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+      - name: Deploy preview to Cloudflare Pages
+        id: deploy
+        env:
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          deploy_output=$(npx wrangler pages deploy . --project-name=peuterplannen --branch="${GITHUB_REF_NAME}" --commit-dirty=true 2>&1)
+          echo "$deploy_output"
+          preview_url=$(echo "$deploy_output" | grep -oE 'https://[a-z0-9-]+\.peuterplannen\.pages\.dev' | tail -1)
+          echo "url=${preview_url}" >> "$GITHUB_OUTPUT"
+
+      - name: Comment preview URL on PR
+        if: steps.deploy.outputs.url != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pr_number=$(gh pr list --head "${GITHUB_REF_NAME}" --json number -q '.[0].number' 2>/dev/null || echo "")
+          if [ -n "$pr_number" ]; then
+            gh pr comment "$pr_number" --body "Preview deployment ready: ${{ steps.deploy.outputs.url }}"
+          fi

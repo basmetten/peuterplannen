@@ -2,18 +2,8 @@
 <html lang="nl">
 <head>
   <!-- Google tag (gtag.js) — Consent Mode v2 -->
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'default', {
-      analytics_storage: 'denied', ad_storage: 'denied',
-      ad_user_data: 'denied', ad_personalization: 'denied',
-      wait_for_update: 500
-    });
-    try { var _s = localStorage.getItem('pp_consent'); if (_s) gtag('consent', 'update', JSON.parse(_s)); } catch(e) {}
-  </script>
+  <script src="/ga-init.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
-  <script>gtag('js', new Date()); gtag('config', 'G-46RW178B97');</script>
   <script src="/consent.js" defer></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
@@ -23,50 +13,54 @@
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.min.css?v=202603130858">
+  <link rel="preload" href="/design-system.css" as="style">
+  <link rel="preload" href="/style.min.css" as="style">
+  <link rel="preload" href="/fonts/familjen-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="/design-system.css?v=202603132236">
+  <link rel="stylesheet" href="/style.min.css?v=202603132236">
   <style>
   .guide-section{display:grid;gap:18px;margin:36px 0}
-  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid rgba(212,119,90,.12);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
   .guide-card-compact{padding:20px 18px}
-  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8d6f64}
-  .guide-card h2,.guide-card h3{margin:0 0 12px;color:#2d2926;line-height:.98;letter-spacing:-.04em}
+  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
+  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
   .guide-card h2{font-size:clamp(28px,5vw,40px)}
   .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
-  .guide-card p,.guide-card li{color:#5f5149;font-size:16px;line-height:1.72}
+  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
   .guide-card-intro{max-width:58ch}
   .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:#9e5e4b;background:rgba(212,119,90,.08);border:1px solid rgba(212,119,90,.12)}
+  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
   .guide-links{display:grid;gap:12px;margin-top:16px}
-  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:#2d2926;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-  .guide-link:visited{color:#2d2926}
+  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  .guide-link:visited{color:var(--pp-text)}
   .guide-link strong{font-size:15px;line-height:1.3}
-  .guide-link span{font-size:13px;line-height:1.5;color:#7c6e66}
-  .guide-link:hover{transform:translateY(-1px);border-color:rgba(212,119,90,.25);box-shadow:0 10px 20px rgba(45,41,38,.08)}
-  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:#7c6e66;font-size:13px}
-  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid rgba(212,119,90,.12)}
-  .editorial-meta a,.editorial-meta a:visited{color:#9e5e4b;font-weight:700;text-decoration:none}
-  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid rgba(212,119,90,.12);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:#2d2926;line-height:.98;letter-spacing:-.05em}
+  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
+  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
+  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
+  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
+  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
   .editorial-body h2{font-size:clamp(28px,5vw,38px)}
   .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
-  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:#5f5149}
-  .editorial-body a{color:#9e5e4b;font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
+  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
+  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
   .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
-  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid rgba(212,119,90,.12);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
-  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:#2d2926}
-  .editorial-support-card p{font-size:14px;line-height:1.72;color:#5f5149}
+  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
+  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
+  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
   .editorial-support-links{display:grid;gap:10px;margin-top:14px}
-  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:#2d2926}
-  .editorial-support-links a:visited{color:#2d2926}
+  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
+  .editorial-support-links a:visited{color:var(--pp-text)}
   .editorial-support-links a strong{font-size:14px}
-  .editorial-support-links a span{font-size:12px;line-height:1.5;color:#7c6e66}
+  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
   @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
 </style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603130858">
-  <script src="/nav-floating.js?v=202603130858" defer></script>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603132236">
+  <script src="/nav-floating.js?v=202603132236" defer></script>
+  <script src="/error-reporter.js" defer></script>
   <title>Regenachtige dag met peuter | binnenroutes die niet meteen chaos worden</title>
   <meta name="description" content="Regenachtige dag met peuter? Kies uit rustige binnenroutes, musea, speelplekken en horeca waar je niet vastloopt op drukte of onpraktische opzet.">
   <meta name="robots" content="index,follow">
@@ -207,177 +201,177 @@
     {
       "@type": "ListItem",
       "position": 18,
+      "name": "'t Bospandje",
+      "url": "https://peuterplannen.nl/gooi-en-vechtstreek/t-bospandje/",
+      "description": "'t Bospandje is een pannenkoekenzaak met ruime speelruimte, speelgoed voor alle leeftijden en een verschoontafel."
+    },
+    {
+      "@type": "ListItem",
+      "position": 19,
       "name": "'t Jagershuis",
       "url": "https://peuterplannen.nl/utrechtse-heuvelrug/t-jagershuis/",
       "description": "'t Jagershuis is een gezellig en kindvriendelijk pannenkoekrestaurant met een grote natuurspeeltuin, huiselijke sfeer en bosligging."
     },
     {
       "@type": "ListItem",
-      "position": 19,
+      "position": 20,
+      "name": "Bij Inge",
+      "url": "https://peuterplannen.nl/tilburg/bij-inge/",
+      "description": "Gezellig café aan Havendijk Tilburg met speelhoek en speelgoed. Overdag open ma-vr 9:00-17:00. Kindvriendelijk."
+    },
+    {
+      "@type": "ListItem",
+      "position": 21,
+      "name": "Bijzonder Leuk",
+      "url": "https://peuterplannen.nl/utrechtse-heuvelrug/bijzonder-leuk/",
+      "description": "Bijzonder Leuk is kindvriendelijk met heerlijke speelhoek 'mini taartenfabriek' en ruim aanbod voor kids op het menu."
+    },
+    {
+      "@type": "ListItem",
+      "position": 22,
       "name": "Boerderij De Lande Pannenkoekenrestaurant",
       "url": "https://peuterplannen.nl/arnhem/boerderij-de-lande-pannenkoekenrestaurant/",
       "description": "Pannenkoekenrestaurant op een boerderij in Huissen, elke dag open van 11:30-20:00. Kindvriendelijk en sfeervolle locatie."
     },
     {
       "@type": "ListItem",
-      "position": 20,
+      "position": 23,
+      "name": "Bospaviljoen De Norgerberg",
+      "url": "https://peuterplannen.nl/groningen/bospaviljoen-de-norgerberg/",
+      "description": "Speeltuin en speelhoek aanwezig. Kinderstoel beschikbaar en zeer kindvriendelijke sfeer met prijsbuckette na eten."
+    },
+    {
+      "@type": "ListItem",
+      "position": 24,
+      "name": "Brasserie Park",
+      "url": "https://peuterplannen.nl/leiden/brasserie-park/",
+      "description": "Restaurant in Leiderdorp met kinderkaart en kindvriendelijke uitstraling. Mooi gelegen bij het park."
+    },
+    {
+      "@type": "ListItem",
+      "position": 25,
+      "name": "De Beren De Hoefslag",
+      "url": "https://peuterplannen.nl/rotterdam/de-beren-de-hoefslag/",
+      "description": "Kindvriendelijk grillrestaurant in Bleiswijk met speelhoek, kindermenu en hoge stoelen. Bekende ketenkwaliteit."
+    },
+    {
+      "@type": "ListItem",
+      "position": 26,
       "name": "De Hanekamp",
       "url": "https://peuterplannen.nl/arnhem/de-hanekamp/",
       "description": "Herberg in Nederlands Openluchtmuseum met oud-Hollandse pannenkoeken, belegde broodjes en salades. Uitzicht op speeltuin."
     },
     {
       "@type": "ListItem",
-      "position": 21,
+      "position": 27,
       "name": "De Pannekoekenbakker",
       "url": "https://peuterplannen.nl/arnhem/de-pannekoekenbakker/",
       "description": "De Pannekoekenbakker Slijk-Ewijk is een gespecialiseerde pannenkoekenzaak met expliciete aandacht voor families en kinderen"
     },
     {
       "@type": "ListItem",
-      "position": 22,
+      "position": 28,
       "name": "Den Overkant",
       "url": "https://peuterplannen.nl/tilburg/den-overkant/",
       "description": "Multifunctionele horeca met ruim eetcafé, terras en uitgebreide speelvoorzieningen. Chef-kok William werkt met streekproducten."
     },
     {
       "@type": "ListItem",
-      "position": 23,
+      "position": 29,
       "name": "Grandcafe Sands",
       "url": "https://peuterplannen.nl/tilburg/grandcafe-sands/",
       "description": "Grandcafe in de Loonse en Drunense Duinen met ruime binnen- en buitenspeeltuinen, geschikt voor families met jonge kinderen"
     },
     {
       "@type": "ListItem",
-      "position": 24,
+      "position": 30,
       "name": "Het Boscafé Oisterwijk",
       "url": "https://peuterplannen.nl/tilburg/het-boscafe-oisterwijk/",
       "description": "Restaurant met speeltuin in de Oisterwijkse bossen. Terras, verwarmde tent en buitenruimte. Uitgebreide menukaart met ontbijt, lunch en diner."
     },
     {
       "@type": "ListItem",
-      "position": 25,
+      "position": 31,
       "name": "Het Eksternest",
       "url": "https://peuterplannen.nl/almere/het-eksternest/",
       "description": "Kindvriendelijk café in Almere met speelhoek en speeltuin. Open doordeweeks tot 16:30, weekend tot 17:00. Fijne plek voor gezinnen met baby's en peuters."
     },
     {
       "@type": "ListItem",
-      "position": 26,
+      "position": 32,
+      "name": "Koeckers Den Hout",
+      "url": "https://peuterplannen.nl/breda/koeckers-den-hout/",
+      "description": "Pannenkoekenrestaurant in Den Hout met speeltuin en speelparadijs. Indoor en outdoor zitten mogelijk."
+    },
+    {
+      "@type": "ListItem",
+      "position": 33,
+      "name": "Pannekoekhuis Schaarsbergen",
+      "url": "https://peuterplannen.nl/arnhem/pannekoekhuis-schaarsbergen/",
+      "description": "Pannenkoekenrestaurant in bos bij Schaarsbergen met speeltuin en terras. Open di-zo 12-20 uur. Vlakbij Burgers' Zoo."
+    },
+    {
+      "@type": "ListItem",
+      "position": 34,
       "name": "Pannenkoe",
       "url": "https://peuterplannen.nl/utrechtse-heuvelrug/pannenkoe/",
       "description": "Pannenkoekzaak met overdekte binnenspeeltuin inclusief glijbaan en buiten speeltuin op het terras, speciaal ontworpen voor kinderen om zich uit te leven."
     },
     {
       "@type": "ListItem",
-      "position": 27,
+      "position": 35,
       "name": "Pannenkoe Krimpen aan den IJssel",
       "url": "https://peuterplannen.nl/rotterdam/pannenkoe-krimpen-aan-den-ijssel/",
       "description": "Pannenkoe Krimpen aan den IJssel: groot pannenkoekenrestaurant met speelhoek, ballenbak en buitenspeeltuin. Di t/m zo open."
     },
     {
       "@type": "ListItem",
-      "position": 28,
+      "position": 36,
+      "name": "Pannenkoeken Paradijs Haarlem",
+      "url": "https://peuterplannen.nl/haarlem/pannenkoeken-paradijs-haarlem/",
+      "description": "Pannenkoekrestaurant in het Reinaldapark in Haarlem, midden in de natuur met speelgelegenheid buiten."
+    },
+    {
+      "@type": "ListItem",
+      "position": 37,
       "name": "Pannenkoekenrestaurant De Konijnenberg",
       "url": "https://peuterplannen.nl/haarlem/pannenkoekenrestaurant-de-konijnenberg/",
       "description": "Pannenkoekenrestaurant De Konijnenberg is speciaal gericht op families, heeft gratis parkeren en ligt op 500m van speeltuin Linnaeushof."
     },
     {
       "@type": "ListItem",
-      "position": 29,
+      "position": 38,
       "name": "Paviljoen Heidezicht",
       "url": "https://peuterplannen.nl/gooi-en-vechtstreek/paviljoen-heidezicht/",
       "description": "Paviljoen Heidezicht heeft een grote speeltuin met klimtoestellen en is ideaal voor gezinnen die willen fietsen of wandelen."
     },
     {
       "@type": "ListItem",
-      "position": 30,
+      "position": 39,
+      "name": "Ristorante Oliva",
+      "url": "https://peuterplannen.nl/nijmegen/ristorante-oliva/",
+      "description": "Italiaans restaurant gespecialiseerd in steenovenpizza's met een speelzolder waar kinderen onder toezicht kunnen spelen"
+    },
+    {
+      "@type": "ListItem",
+      "position": 40,
       "name": "'t Pannekoekhuis Hoenderloo",
       "url": "https://peuterplannen.nl/apeldoorn/t-pannekoekhuis-hoenderloo/",
       "description": "Pannenkoekenrestaurant in Hoenderloo met speeltuin en terras, midden op de Veluwe. Ideale combinatie voor een dagje uit."
     },
     {
       "@type": "ListItem",
-      "position": 31,
+      "position": 41,
       "name": "Adventure City",
       "url": "https://peuterplannen.nl/rotterdam/adventure-city/",
       "description": "Grote indoor speelparadijs in Rotterdam-Zuid met klimtoestellen, trampolines en attracties voor kinderen. Eigen horecagelegenheid aanwezig."
     },
     {
       "@type": "ListItem",
-      "position": 32,
+      "position": 42,
       "name": "Aqua Mundo",
       "url": "https://peuterplannen.nl/haarlem/aqua-mundo/",
       "description": "Aqua Mundo subtropisch zwemparadijs bij Center Parcs Zandvoort. Groot waterpark met glijbanen, peuterbad en subtropische temperatuur. Dagje uit."
-    },
-    {
-      "@type": "ListItem",
-      "position": 33,
-      "name": "Avonturenland Ballorig Den Bosch",
-      "url": "https://peuterplannen.nl/s-hertogenbosch/avonturenland-ballorig-den-bosch/",
-      "description": "Groot indoor speelparadijs Ballorig in Den Bosch voor kinderen van 0 t/m 12 jaar. Speelruimtes, klimbanen en horecavoorzieningen aanwezig."
-    },
-    {
-      "@type": "ListItem",
-      "position": 34,
-      "name": "Ballorig",
-      "url": "https://peuterplannen.nl/groningen/ballorig/",
-      "description": "Groot indoor speelparadijs in Groningen speciaal voor kinderen van 0–12 jaar, met aparte peuter- en babyzone, glijbanen en attracties."
-    },
-    {
-      "@type": "ListItem",
-      "position": 35,
-      "name": "Ballorig 's-Gravenzande",
-      "url": "https://peuterplannen.nl/den-haag/ballorig-s-gravenzande/",
-      "description": "Ballorig 's-Gravenzande is een grote overdekte binnenspeeltuin voor kinderen van 0-12 jaar, met ballenbak, klim- en speeltoestellen en horeca voor ouders."
-    },
-    {
-      "@type": "ListItem",
-      "position": 36,
-      "name": "Bekir Usta",
-      "url": "https://peuterplannen.nl/den-haag/bekir-usta/",
-      "description": "Turks restaurant in Den Haag met aantoonbare speelruimte voor kinderen. Kindvriendelijke ontvangst met speelgelegenheid, geschikt voor gezinnen met peuters."
-    },
-    {
-      "@type": "ListItem",
-      "position": 37,
-      "name": "Belevenisboerderij Schieveen",
-      "url": "https://peuterplannen.nl/rotterdam/belevenisboerderij-schieveen/",
-      "description": "Belevenisboerderij van Natuurmonumenten bij de Schieveense Polder. Dieren, natuur en kinderactiviteiten in een polderlandschap. Kinderwagenvriendelijk."
-    },
-    {
-      "@type": "ListItem",
-      "position": 38,
-      "name": "Burgers' Zoo Alteveer/Cranevelt",
-      "url": "https://peuterplannen.nl/arnhem/burgers-zoo-alteveer-cranevelt/",
-      "description": "Wereldberoemde dierentuin in Arnhem met unieke ecodisplays. Dagje uit voor alle leeftijden, speeltuin aanwezig. Entree ca. €29."
-    },
-    {
-      "@type": "ListItem",
-      "position": 39,
-      "name": "Buurten in de Gaard",
-      "url": "https://peuterplannen.nl/utrecht/buurten-in-de-gaard/",
-      "description": "Buurtrestaurant in De Gaard (Utrecht Oost) met speelhoek. Dagelijks open, ook ontbijt. Vegetarisch aanbod, gezinsvriendelijke sfeer."
-    },
-    {
-      "@type": "ListItem",
-      "position": 40,
-      "name": "Café Lief",
-      "url": "https://peuterplannen.nl/haarlem/cafe-lief/",
-      "description": "Kindvriendelijk brunch-café in het Julianapark. Kindervermelding op website, rolstoeltoegankelijk en dus goed voor buggy's. Park rondom voor buitenspelen."
-    },
-    {
-      "@type": "ListItem",
-      "position": 41,
-      "name": "Candy Castle Speelparadijs",
-      "url": "https://peuterplannen.nl/amsterdam/candy-castle-speelparadijs/",
-      "description": "Groot indoor speelparadijs speciaal voor peuters en kinderen. Met speeltuin, klim- en klauterattracties en horeca voor ouders."
-    },
-    {
-      "@type": "ListItem",
-      "position": 42,
-      "name": "De Ballebak Rotterdam Zuid",
-      "url": "https://peuterplannen.nl/rotterdam/de-ballebak-rotterdam-zuid/",
-      "description": "Overdekt speelparadijs in Rotterdam-Zuid met ballenbak, speelruimte en peuterzone. Ideaal bij slecht weer. Met horeca voor ouders. Speciaal aanbod voor peuters."
     }
   ]
 }
@@ -506,8 +500,8 @@
       <p class="guide-kicker">Sneller verder</p>
       <h2>Combineer deze shortlist met regio- en typehubs</h2>
       <div class="guide-links">
-        <a href="/s-hertogenbosch.html" class="guide-link"><strong>'s-Hertogenbosch</strong><span>8 locaties in deze situatie</span></a><a href="/rotterdam.html" class="guide-link"><strong>Rotterdam</strong><span>5 locaties in deze situatie</span></a><a href="/arnhem.html" class="guide-link"><strong>Arnhem</strong><span>5 locaties in deze situatie</span></a><a href="/utrechtse-heuvelrug.html" class="guide-link"><strong>Utrechtse Heuvelrug</strong><span>4 locaties in deze situatie</span></a><a href="/tilburg.html" class="guide-link"><strong>Tilburg</strong><span>4 locaties in deze situatie</span></a><a href="/amsterdam.html" class="guide-link"><strong>Amsterdam</strong><span>3 locaties in deze situatie</span></a>
-        <a href="/speeltuinen.html" class="guide-link"><strong>Speeltuinen</strong><span>Speeltuinen en speelparadijzen voor peuters in 18 regio's door heel Nederland. Indoor en outdoor, gecheckt en actueel.</span></a><a href="/kinderboerderijen.html" class="guide-link"><strong>Kinderboerderijen</strong><span>De leukste kinderboerderijen en stadsboerderijen voor peuters in 18 regio's door heel Nederland. Gratis, met dieren aaien en speeltuinen.</span></a><a href="/musea.html" class="guide-link"><strong>Musea</strong><span>Welke musea zijn echt leuk voor peuters? 60+ kindvriendelijke musea in 18 regio's door heel Nederland. Met leeftijdsadvies.</span></a><a href="/pannenkoeken.html" class="guide-link"><strong>Pannenkoeken</strong><span>Pannenkoekenrestaurants voor gezinnen met jonge kinderen in 18 regio's door heel Nederland. Met info over kindvriendelijkheid, terras en luierruimte.</span></a>
+        <a href="/s-hertogenbosch.html" class="guide-link"><strong>'s-Hertogenbosch</strong><span>7 locaties in deze situatie</span></a><a href="/utrechtse-heuvelrug.html" class="guide-link"><strong>Utrechtse Heuvelrug</strong><span>5 locaties in deze situatie</span></a><a href="/tilburg.html" class="guide-link"><strong>Tilburg</strong><span>5 locaties in deze situatie</span></a><a href="/arnhem.html" class="guide-link"><strong>Arnhem</strong><span>5 locaties in deze situatie</span></a><a href="/rotterdam.html" class="guide-link"><strong>Rotterdam</strong><span>4 locaties in deze situatie</span></a><a href="/haarlem.html" class="guide-link"><strong>Haarlem</strong><span>3 locaties in deze situatie</span></a>
+        <a href="/speeltuinen.html" class="guide-link"><strong>Speeltuinen</strong><span>Speeltuinen en speelparadijzen voor peuters in 18 regio's door heel Nederland. Indoor en outdoor, gecheckt en actueel.</span></a><a href="/musea.html" class="guide-link"><strong>Musea</strong><span>Welke musea zijn echt leuk voor peuters? 60+ kindvriendelijke musea in 18 regio's door heel Nederland. Met leeftijdsadvies.</span></a><a href="/pannenkoeken.html" class="guide-link"><strong>Pannenkoeken</strong><span>Pannenkoekenrestaurants voor gezinnen met jonge kinderen in 18 regio's door heel Nederland. Met info over kindvriendelijkheid, terras en luierruimte.</span></a><a href="/zwemmen.html" class="guide-link"><strong>Zwemmen</strong><span>Zwembaden en waterplezier voor peuters in heel Nederland. Peuterbaden, subtropische zwemparadijzen en buitenzwembaden met peutergedeelte.</span></a>
       </div>
     </div>
     <div class="guide-card">
@@ -594,70 +588,116 @@
           <a href="https://www.pannenkoekenhuishetwonderbos.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Pannenkoekenhuis het Wonderbos Cromvoirt">Website</a>
         </div>
       </article>
+      </div>
+    </section>
+    <section class="region-section">
+      <h2>Regenachtige dag met peuter in Utrechtse Heuvelrug</h2>
+      <div class="loc-list">
+        
       <article class="loc-item">
-        <div class="loc-region">'s-Hertogenbosch</div>
-        <h3><a href="/s-hertogenbosch/avonturenland-ballorig-den-bosch/">Avonturenland Ballorig Den Bosch</a></h3>
-        <p>Groot indoor speelparadijs Ballorig in Den Bosch voor kinderen van 0 t/m 12 jaar. Speelruimtes, klimbanen en horecavoorzieningen aanwezig.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-region">Utrechtse Heuvelrug</div>
+        <h3><a href="/utrechtse-heuvelrug/pannenkoekenboerderij-de-smickel/">Pannenkoekenboerderij De Smickel</a></h3>
+        <p>Pannenkoekenboerderij De Smickel is ideaal voor gezinnen met peuters met meerdere speelmogelijkheden binnen en buiten, inclusief videokelder, speurtocht en dagverse pannenkoeken met aangepaste beslag.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
         <div class="loc-actions">
-          <a href="/s-hertogenbosch/avonturenland-ballorig-den-bosch/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.ballorig.nl/s-hertogenbosch" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Avonturenland Ballorig Den Bosch">Website</a>
+          <a href="/utrechtse-heuvelrug/pannenkoekenboerderij-de-smickel/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.smickel.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Pannenkoekenboerderij De Smickel">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <div class="loc-region">Utrechtse Heuvelrug</div>
+        <h3><a href="/utrechtse-heuvelrug/blik-burgers/">Blik &amp; Burgers</a></h3>
+        <p>Restaurant bij Speeltuin Blikkenburg met binnen- en buitenspeelgelegenheid. Vlees, vis en vegetarische burgers. Speeltuin geschikt voor verschillende leeftijden, ook peuterhoek aanwezig.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/utrechtse-heuvelrug/blik-burgers/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://blikenburgers.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Blik &amp; Burgers">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <div class="loc-region">Utrechtse Heuvelrug</div>
+        <h3><a href="/utrechtse-heuvelrug/t-jagershuis/">'t Jagershuis</a></h3>
+        <p>'t Jagershuis is een gezellig en kindvriendelijk pannenkoekrestaurant met een grote natuurspeeltuin, huiselijke sfeer en bosligging.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
+        <div class="loc-actions">
+          <a href="/utrechtse-heuvelrug/t-jagershuis/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.jagershuislagevuursche.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van 't Jagershuis">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <div class="loc-region">Utrechtse Heuvelrug</div>
+        <h3><a href="/utrechtse-heuvelrug/bijzonder-leuk/">Bijzonder Leuk</a></h3>
+        <p>Bijzonder Leuk is kindvriendelijk met heerlijke speelhoek 'mini taartenfabriek' en ruim aanbod voor kids op het menu.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
+        <div class="loc-actions">
+          <a href="/utrechtse-heuvelrug/bijzonder-leuk/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.bijzonderleuk-zeist.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Bijzonder Leuk">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <div class="loc-region">Utrechtse Heuvelrug</div>
+        <h3><a href="/utrechtse-heuvelrug/pannenkoe/">Pannenkoe</a></h3>
+        <p>Pannenkoekzaak met overdekte binnenspeeltuin inclusief glijbaan en buiten speeltuin op het terras, speciaal ontworpen voor kinderen om zich uit te leven.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
+        <div class="loc-actions">
+          <a href="/utrechtse-heuvelrug/pannenkoe/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.pannenkoe.nl/leusden/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Pannenkoe">Website</a>
         </div>
       </article>
       </div>
     </section>
     <section class="region-section">
-      <h2>Regenachtige dag met peuter in Rotterdam</h2>
+      <h2>Regenachtige dag met peuter in Tilburg</h2>
       <div class="loc-list">
         
       <article class="loc-item">
-        <div class="loc-region">Rotterdam</div>
-        <h3><a href="/rotterdam/euromast/">Euromast</a></h3>
-        <p>Nederlandes hoogste uitkijktoren (185 m) in Rotterdam met gratis entree voor kinderen onder 4 jaar. De glazen vloer en ronddraaiende Euroscoop maken het een spannend avontuur; activiteiten voor kids elke zondag.</p>
+        <div class="loc-region">Tilburg</div>
+        <h3><a href="/tilburg/happy-italy/">Happy Italy</a></h3>
+        <p>Happy Italy is een Italiaans familierestaurant met speciale kindervoorzieningen. Het biedt een dedicated Kids menu met interactieve elementen (gratis pizzaversiering) en beschikt over binnenspeeluimten.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
+        <div class="loc-actions">
+          <a href="/tilburg/happy-italy/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.happyitaly.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Happy Italy">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <div class="loc-region">Tilburg</div>
+        <h3><a href="/tilburg/bij-inge/">Bij Inge</a></h3>
+        <p>Gezellig café aan Havendijk Tilburg met speelhoek en speelgoed. Overdag open ma-vr 9:00-17:00. Kindvriendelijk.</p>
         <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
-          <a href="/rotterdam/euromast/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://euromast.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Euromast">Website</a>
+          <a href="/tilburg/bij-inge/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://bijinge.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Bij Inge">Website</a>
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-region">Rotterdam</div>
-        <h3><a href="/rotterdam/pannenkoe-krimpen-aan-den-ijssel/">Pannenkoe Krimpen aan den IJssel</a></h3>
-        <p>Pannenkoe Krimpen aan den IJssel: groot pannenkoekenrestaurant met speelhoek, ballenbak en buitenspeeltuin. Di t/m zo open.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-region">Tilburg</div>
+        <h3><a href="/tilburg/den-overkant/">Den Overkant</a></h3>
+        <p>Multifunctionele horeca met ruim eetcafé, terras en uitgebreide speelvoorzieningen. Chef-kok William werkt met streekproducten.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
         <div class="loc-actions">
-          <a href="/rotterdam/pannenkoe-krimpen-aan-den-ijssel/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.pannenkoe.nl/krimpen-aan-den-ijssel" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Pannenkoe Krimpen aan den IJssel">Website</a>
+          <a href="/tilburg/den-overkant/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://denoverkant.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Den Overkant">Website</a>
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-region">Rotterdam</div>
-        <h3><a href="/rotterdam/adventure-city/">Adventure City</a></h3>
-        <p>Grote indoor speelparadijs in Rotterdam-Zuid met klimtoestellen, trampolines en attracties voor kinderen. Eigen horecagelegenheid aanwezig.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-region">Tilburg</div>
+        <h3><a href="/tilburg/grandcafe-sands/">Grandcafe Sands</a></h3>
+        <p>Grandcafe in de Loonse en Drunense Duinen met ruime binnen- en buitenspeeltuinen, geschikt voor families met jonge kinderen</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
         <div class="loc-actions">
-          <a href="/rotterdam/adventure-city/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.adventurecityrotterdam.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Adventure City">Website</a>
+          <a href="/tilburg/grandcafe-sands/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://grandcafesands.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Grandcafe Sands">Website</a>
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-region">Rotterdam</div>
-        <h3><a href="/rotterdam/belevenisboerderij-schieveen/">Belevenisboerderij Schieveen</a></h3>
-        <p>Belevenisboerderij van Natuurmonumenten bij de Schieveense Polder. Dieren, natuur en kinderactiviteiten in een polderlandschap. Kinderwagenvriendelijk.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-region">Tilburg</div>
+        <h3><a href="/tilburg/het-boscafe-oisterwijk/">Het Boscafé Oisterwijk</a></h3>
+        <p>Restaurant met speeltuin in de Oisterwijkse bossen. Terras, verwarmde tent en buitenruimte. Uitgebreide menukaart met ontbijt, lunch en diner.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
         <div class="loc-actions">
-          <a href="/rotterdam/belevenisboerderij-schieveen/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.natuurmonumenten.nl/locaties/belevenisboerderij-schieveen" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Belevenisboerderij Schieveen">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <div class="loc-region">Rotterdam</div>
-        <h3><a href="/rotterdam/de-ballebak-rotterdam-zuid/">De Ballebak Rotterdam Zuid</a></h3>
-        <p>Overdekt speelparadijs in Rotterdam-Zuid met ballenbak, speelruimte en peuterzone. Ideaal bij slecht weer. Met horeca voor ouders. Speciaal aanbod voor peuters.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
-        <div class="loc-actions">
-          <a href="/rotterdam/de-ballebak-rotterdam-zuid/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.deballebak.nl/rotterdam-zuid/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Ballebak Rotterdam Zuid">Website</a>
+          <a href="/tilburg/het-boscafe-oisterwijk/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://hetboscafe.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Het Boscafé Oisterwijk">Website</a>
         </div>
       </article>
       </div>
@@ -708,140 +748,94 @@
       </article>
       <article class="loc-item">
         <div class="loc-region">Arnhem</div>
-        <h3><a href="/arnhem/burgers-zoo-alteveer-cranevelt/">Burgers' Zoo Alteveer/Cranevelt</a></h3>
-        <p>Wereldberoemde dierentuin in Arnhem met unieke ecodisplays. Dagje uit voor alle leeftijden, speeltuin aanwezig. Entree ca. €29.</p>
+        <h3><a href="/arnhem/pannekoekhuis-schaarsbergen/">Pannekoekhuis Schaarsbergen</a></h3>
+        <p>Pannenkoekenrestaurant in bos bij Schaarsbergen met speeltuin en terras. Open di-zo 12-20 uur. Vlakbij Burgers' Zoo.</p>
         <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
-          <a href="/arnhem/burgers-zoo-alteveer-cranevelt/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.burgerszoo.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Burgers' Zoo Alteveer/Cranevelt">Website</a>
+          <a href="/arnhem/pannekoekhuis-schaarsbergen/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.pannenkoekhuis-schaarsbergen.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Pannekoekhuis Schaarsbergen">Website</a>
         </div>
       </article>
       </div>
     </section>
     <section class="region-section">
-      <h2>Regenachtige dag met peuter in Utrechtse Heuvelrug</h2>
+      <h2>Regenachtige dag met peuter in Rotterdam</h2>
       <div class="loc-list">
         
       <article class="loc-item">
-        <div class="loc-region">Utrechtse Heuvelrug</div>
-        <h3><a href="/utrechtse-heuvelrug/pannenkoekenboerderij-de-smickel/">Pannenkoekenboerderij De Smickel</a></h3>
-        <p>Pannenkoekenboerderij De Smickel is ideaal voor gezinnen met peuters met meerdere speelmogelijkheden binnen en buiten, inclusief videokelder, speurtocht en dagverse pannenkoeken met aangepaste beslag.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/utrechtse-heuvelrug/pannenkoekenboerderij-de-smickel/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.smickel.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Pannenkoekenboerderij De Smickel">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <div class="loc-region">Utrechtse Heuvelrug</div>
-        <h3><a href="/utrechtse-heuvelrug/blik-burgers/">Blik &amp; Burgers</a></h3>
-        <p>Restaurant bij Speeltuin Blikkenburg met binnen- en buitenspeelgelegenheid. Vlees, vis en vegetarische burgers. Speeltuin geschikt voor verschillende leeftijden, ook peuterhoek aanwezig.</p>
+        <div class="loc-region">Rotterdam</div>
+        <h3><a href="/rotterdam/euromast/">Euromast</a></h3>
+        <p>Nederlandes hoogste uitkijktoren (185 m) in Rotterdam met gratis entree voor kinderen onder 4 jaar. De glazen vloer en ronddraaiende Euroscoop maken het een spannend avontuur; activiteiten voor kids elke zondag.</p>
         <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
-          <a href="/utrechtse-heuvelrug/blik-burgers/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://blikenburgers.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Blik &amp; Burgers">Website</a>
+          <a href="/rotterdam/euromast/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://euromast.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Euromast">Website</a>
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-region">Utrechtse Heuvelrug</div>
-        <h3><a href="/utrechtse-heuvelrug/t-jagershuis/">'t Jagershuis</a></h3>
-        <p>'t Jagershuis is een gezellig en kindvriendelijk pannenkoekrestaurant met een grote natuurspeeltuin, huiselijke sfeer en bosligging.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
+        <div class="loc-region">Rotterdam</div>
+        <h3><a href="/rotterdam/de-beren-de-hoefslag/">De Beren De Hoefslag</a></h3>
+        <p>Kindvriendelijk grillrestaurant in Bleiswijk met speelhoek, kindermenu en hoge stoelen. Bekende ketenkwaliteit.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
-          <a href="/utrechtse-heuvelrug/t-jagershuis/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.jagershuislagevuursche.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van 't Jagershuis">Website</a>
+          <a href="/rotterdam/de-beren-de-hoefslag/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.beren.nl/vestigingen/bleiswijk" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Beren De Hoefslag">Website</a>
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-region">Utrechtse Heuvelrug</div>
-        <h3><a href="/utrechtse-heuvelrug/pannenkoe/">Pannenkoe</a></h3>
-        <p>Pannenkoekzaak met overdekte binnenspeeltuin inclusief glijbaan en buiten speeltuin op het terras, speciaal ontworpen voor kinderen om zich uit te leven.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/utrechtse-heuvelrug/pannenkoe/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.pannenkoe.nl/leusden/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Pannenkoe">Website</a>
-        </div>
-      </article>
-      </div>
-    </section>
-    <section class="region-section">
-      <h2>Regenachtige dag met peuter in Tilburg</h2>
-      <div class="loc-list">
-        
-      <article class="loc-item">
-        <div class="loc-region">Tilburg</div>
-        <h3><a href="/tilburg/happy-italy/">Happy Italy</a></h3>
-        <p>Happy Italy is een Italiaans familierestaurant met speciale kindervoorzieningen. Het biedt een dedicated Kids menu met interactieve elementen (gratis pizzaversiering) en beschikt over binnenspeeluimten.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/tilburg/happy-italy/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.happyitaly.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Happy Italy">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <div class="loc-region">Tilburg</div>
-        <h3><a href="/tilburg/den-overkant/">Den Overkant</a></h3>
-        <p>Multifunctionele horeca met ruim eetcafé, terras en uitgebreide speelvoorzieningen. Chef-kok William werkt met streekproducten.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/tilburg/den-overkant/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://denoverkant.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Den Overkant">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <div class="loc-region">Tilburg</div>
-        <h3><a href="/tilburg/grandcafe-sands/">Grandcafe Sands</a></h3>
-        <p>Grandcafe in de Loonse en Drunense Duinen met ruime binnen- en buitenspeeltuinen, geschikt voor families met jonge kinderen</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/tilburg/grandcafe-sands/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://grandcafesands.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Grandcafe Sands">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <div class="loc-region">Tilburg</div>
-        <h3><a href="/tilburg/het-boscafe-oisterwijk/">Het Boscafé Oisterwijk</a></h3>
-        <p>Restaurant met speeltuin in de Oisterwijkse bossen. Terras, verwarmde tent en buitenruimte. Uitgebreide menukaart met ontbijt, lunch en diner.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/tilburg/het-boscafe-oisterwijk/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://hetboscafe.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Het Boscafé Oisterwijk">Website</a>
-        </div>
-      </article>
-      </div>
-    </section>
-    <section class="region-section">
-      <h2>Regenachtige dag met peuter in Amsterdam</h2>
-      <div class="loc-list">
-        
-      <article class="loc-item">
-        <div class="loc-region">Amsterdam</div>
-        <h3><a href="/amsterdam/fumi/">Fumi</a></h3>
-        <p>Uitstekend kindvriendelijk met speelhoek voor kruippeuters, speelruimte met schuiven, kindermenu met speciale prijzen voor kinderen.</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/amsterdam/fumi/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://fumi-amstelveen.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Fumi">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <div class="loc-region">Amsterdam</div>
-        <h3><a href="/amsterdam/dignita-hoftuin/">Dignita Hoftuin</a></h3>
-        <p>Dignita Hoftuin - restaurant, geschikt voor gezinnen met peuters</p>
-        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
-        <div class="loc-actions">
-          <a href="/amsterdam/dignita-hoftuin/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://eatwelldogood.nl/dignita-hoftuin/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Dignita Hoftuin">Website</a>
-        </div>
-      </article>
-      <article class="loc-item">
-        <div class="loc-region">Amsterdam</div>
-        <h3><a href="/amsterdam/candy-castle-speelparadijs/">Candy Castle Speelparadijs</a></h3>
-        <p>Groot indoor speelparadijs speciaal voor peuters en kinderen. Met speeltuin, klim- en klauterattracties en horeca voor ouders.</p>
+        <div class="loc-region">Rotterdam</div>
+        <h3><a href="/rotterdam/pannenkoe-krimpen-aan-den-ijssel/">Pannenkoe Krimpen aan den IJssel</a></h3>
+        <p>Pannenkoe Krimpen aan den IJssel: groot pannenkoekenrestaurant met speelhoek, ballenbak en buitenspeeltuin. Di t/m zo open.</p>
         <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
         <div class="loc-actions">
-          <a href="/amsterdam/candy-castle-speelparadijs/" class="loc-detail-btn">Bekijk details</a>
-          <a href="https://www.candycastle.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Candy Castle Speelparadijs">Website</a>
+          <a href="/rotterdam/pannenkoe-krimpen-aan-den-ijssel/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.pannenkoe.nl/krimpen-aan-den-ijssel" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Pannenkoe Krimpen aan den IJssel">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <div class="loc-region">Rotterdam</div>
+        <h3><a href="/rotterdam/adventure-city/">Adventure City</a></h3>
+        <p>Grote indoor speelparadijs in Rotterdam-Zuid met klimtoestellen, trampolines en attracties voor kinderen. Eigen horecagelegenheid aanwezig.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/adventure-city/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.adventurecityrotterdam.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Adventure City">Website</a>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="region-section">
+      <h2>Regenachtige dag met peuter in Haarlem</h2>
+      <div class="loc-list">
+        
+      <article class="loc-item">
+        <div class="loc-region">Haarlem</div>
+        <h3><a href="/haarlem/pannenkoeken-paradijs-haarlem/">Pannenkoeken Paradijs Haarlem</a></h3>
+        <p>Pannenkoekrestaurant in het Reinaldapark in Haarlem, midden in de natuur met speelgelegenheid buiten.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/haarlem/pannenkoeken-paradijs-haarlem/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.pannenkoekenparadijs.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Pannenkoeken Paradijs Haarlem">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <div class="loc-region">Haarlem</div>
+        <h3><a href="/haarlem/pannenkoekenrestaurant-de-konijnenberg/">Pannenkoekenrestaurant De Konijnenberg</a></h3>
+        <p>Pannenkoekenrestaurant De Konijnenberg is speciaal gericht op families, heeft gratis parkeren en ligt op 500m van speeltuin Linnaeushof.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span></span>
+        <div class="loc-actions">
+          <a href="/haarlem/pannenkoekenrestaurant-de-konijnenberg/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.dekonijnenberg.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Pannenkoekenrestaurant De Konijnenberg">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <div class="loc-region">Haarlem</div>
+        <h3><a href="/haarlem/aqua-mundo/">Aqua Mundo</a></h3>
+        <p>Aqua Mundo subtropisch zwemparadijs bij Center Parcs Zandvoort. Groot waterpark met glijbanen, peuterbad en subtropische temperatuur. Dagje uit.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/haarlem/aqua-mundo/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.centerparcs.eu/aqua-mundo" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Aqua Mundo">Website</a>
         </div>
       </article>
       </div>
@@ -862,10 +856,10 @@
 
   <div class="nav-links-box">
     <h3>Verder zoeken</h3>
-    <a href="/s-hertogenbosch.html">'s-Hertogenbosch</a> &middot; <a href="/rotterdam.html">Rotterdam</a> &middot; <a href="/arnhem.html">Arnhem</a> &middot; <a href="/utrechtse-heuvelrug.html">Utrechtse Heuvelrug</a> &middot; <a href="/tilburg.html">Tilburg</a> &middot; <a href="/amsterdam.html">Amsterdam</a>
+    <a href="/s-hertogenbosch.html">'s-Hertogenbosch</a> &middot; <a href="/utrechtse-heuvelrug.html">Utrechtse Heuvelrug</a> &middot; <a href="/tilburg.html">Tilburg</a> &middot; <a href="/arnhem.html">Arnhem</a> &middot; <a href="/rotterdam.html">Rotterdam</a> &middot; <a href="/haarlem.html">Haarlem</a>
     <div class="divider">
       <h3 style="margin-bottom:10px;">Per type</h3>
-      <a href="/speeltuinen.html">Speeltuinen</a> &middot; <a href="/kinderboerderijen.html">Kinderboerderijen</a> &middot; <a href="/musea.html">Musea</a> &middot; <a href="/pannenkoeken.html">Pannenkoeken</a> &middot; <a href="/zwemmen.html">Zwemmen</a>
+      <a href="/speeltuinen.html">Speeltuinen</a> &middot; <a href="/musea.html">Musea</a> &middot; <a href="/pannenkoeken.html">Pannenkoeken</a> &middot; <a href="/zwemmen.html">Zwemmen</a> &middot; <a href="/horeca.html">Horeca</a>
     </div>
   </div>
 
@@ -888,13 +882,11 @@
 
 <footer>
   <nav aria-label="Footernavigatie">
-  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
   </nav>
 </footer>
 
-<script>
-(function(){var o=new IntersectionObserver(function(e){e.forEach(function(i){if(i.isIntersecting){i.target.classList.add('visible');o.unobserve(i.target);}});},{threshold:0,rootMargin:'0px 0px 300px 0px'});document.querySelectorAll('.loc-item,.type-section,.region-section,.blog-card,.cta-block,.support-section,.faq-section').forEach(function(el,i){el.classList.add('reveal');el.style.animationDelay=Math.min(i*0.04,0.24)+'s';o.observe(el);});})();
-</script>
+<script src="/reveal.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
 </html>

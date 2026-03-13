@@ -2,34 +2,45 @@
 
 ## Overzicht
 
-PeuterPlannen is een gratis, mobile-first webapplicatie die Nederlandse ouders helpt kindvriendelijke activiteiten te vinden voor peuters (0–7 jaar). De app catalogiseert **418 geverifieerde locaties** in **14 steden**, verdeeld over 5 categorieën: speeltuinen, natuur, musea, horeca en pannenkoeken.
+PeuterPlannen is een gratis, mobile-first webapplicatie die Nederlandse ouders helpt kindvriendelijke activiteiten te vinden voor peuters (0–7 jaar). De app catalogiseert **2100+ geverifieerde locaties** in **22 regio's**, verdeeld over 8 categorieën: speeltuinen, kinderboerderijen, natuur, musea, horeca, pannenkoeken, zwembaden en cultureel.
 
-De architectuur is **static-first**: een Node.js build-script haalt data uit Supabase en genereert statische HTML-pagina's. De interactieve app (app.html) bevraagt Supabase direct vanuit de browser.
+De architectuur is **static-first met modulaire build**: een Node.js build-systeem haalt data uit Supabase, past SEO-beleid toe, en genereert ~2200 statische HTML-pagina's. De interactieve app (`app.html`) bevraagt Supabase direct vanuit de browser. Admin- en partnerportalen draaien als SPA's op subdomains.
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    Supabase (PostgreSQL)                 │
-│  ┌──────────────┐  ┌────────────────────────────────┐   │
-│  │   regions     │  │          locations              │   │
-│  │  (14 actief)  │◄─┤  (418 rijen, FK op region)     │   │
-│  └──────────────┘  └────────────────────────────────┘   │
-└──────────────┬──────────────────────┬───────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                     Supabase (PostgreSQL + Edge Functions)        │
+│  ┌──────────┐  ┌────────────┐  ┌───────────────┐  ┌──────────┐ │
+│  │ regions  │  │ locations  │  │ editorial_    │  │ venue_   │ │
+│  │ (22)     │◄─┤ (2100+)    │  │ pages (CMS)   │  │ owners   │ │
+│  └──────────┘  └────────────┘  └───────────────┘  └──────────┘ │
+│  ┌──────────────────┐  ┌─────────────────┐  ┌───────────────┐  │
+│  │ site_publish_    │  │ location_       │  │ client_       │  │
+│  │ state (dirty     │  │ candidates      │  │ errors +      │  │
+│  │ gate + change    │  │ (AI pipeline)   │  │ analytics     │  │
+│  │ tracking)        │  │                 │  │ _events       │  │
+│  └──────────────────┘  └─────────────────┘  └───────────────┘  │
+└──────────────┬──────────────────────┬────────────────────────────┘
                │                      │
      ┌─────────▼──────────┐   ┌──────▼──────────────┐
      │  sync_all.js        │   │  app.html (browser)  │
      │  (build-time)       │   │  (runtime)           │
      │                     │   │                      │
-     │  Genereert:         │   │  Fetch → filter →    │
-     │  - 14 stadspagina's │   │  render kaart/lijst  │
-     │  - 5 type-pagina's  │   │  + favoriten         │
-     │  - index/app/about  │   │  + locatiezoeken     │
-     │  - sitemap.xml      │   └──────────────────────┘
-     └─────────┬───────────┘
-               │
-     ┌─────────▼───────────┐
+     │  Modular build:     │   │  Fetch → filter →    │
+     │  - 22 stadspagina's │   │  render kaart/lijst  │
+     │  - 8 type-pagina's  │   │  + favoriten         │
+     │  - 2100+ locaties   │   │  + locatiezoeken     │
+     │  - 26 blogposts     │   └───────┬──────────────┘
+     │  - cluster pages    │           │
+     │  - editorial hubs   │   ┌───────▼──────────────┐
+     │  - split sitemaps   │   │  admin/partner       │
+     └─────────┬───────────┘   │  portals (SPA's)     │
+               │               │  via Edge Functions   │
+     ┌─────────▼───────────┐   └──────────────────────┘
      │  GitHub Pages        │
      │  peuterplannen.nl    │
-     │  (statische hosting) │
+     │  + Cloudflare CDN    │
+     │  + Worker (subdomain │
+     │    routing)          │
      └─────────────────────┘
 ```
 
@@ -40,532 +51,425 @@ De architectuur is **static-first**: een Node.js build-script haalt data uit Sup
 | Laag | Technologie |
 |------|-------------|
 | **Frontend** | Vanilla HTML5 / CSS3 / JavaScript — geen frameworks |
-| **Kaart** | MapLibre GL v5.19 (OpenStreetMap Positron tiles) |
+| **Design System** | CSS custom properties (`--pp-*` namespace) in `design-system.css` |
+| **Kaart** | MapLibre GL (OpenStreetMap Positron tiles via OpenFreeMap) |
 | **Locatiezoeken** | Google Maps API (Places Autocomplete + Geocoding) |
-| **Database** | Supabase (PostgreSQL + REST API) |
-| **Build** | Node.js script (`sync_all.js`, 995 regels) |
-| **CI/CD** | GitHub Actions (dagelijks + webhook) |
-| **Hosting** | GitHub Pages (statisch) + Cloudflare (CDN/DNS) |
+| **Database** | Supabase (PostgreSQL + REST API + Edge Functions) |
+| **Build** | Node.js modulair build-systeem (`.scripts/sync_all.js` + `lib/`) |
+| **Tests** | Node.js built-in `node:test` (unit + snapshot) |
+| **CI/CD** | GitHub Actions (elke 10 min + push + dispatch) |
+| **Hosting** | GitHub Pages (statisch) + Cloudflare (CDN/DNS/Worker) |
 | **PWA** | Service Worker + Web App Manifest |
+| **Betalingen** | Stripe (subscriptions voor featured listings) |
+| **AI Pipeline** | Anthropic Claude SDK (locatie-scoring en review) |
+| **Monitoring** | Client error tracking + product analytics (Supabase) |
+
+---
+
+## Build Systeem
+
+### Modulaire Architectuur
+
+Het build-systeem is opgesplitst in logische modules:
+
+```
+.scripts/
+  sync_all.js                     ← Orchestrator (197 regels)
+  lib/
+    config.js                     ← Configuratie: types, regio's, SEO constanten
+    helpers.js                    ← Utilities: slugify, escapeHtml, dates, URLs
+    supabase.js                   ← Data fetch: regions, locations, publish state
+    seo-content.js                ← SEO content library: markdown, blog metadata
+    seo-policy.js                 ← SEO beleid: slugs, overrides, graduation
+    html-shared.js                ← Gedeelde HTML: nav, footer, head, badges
+    css-minify.js                 ← CSS minificatie (clean-css)
+    generators/
+      index-page.js               ← Homepage
+      app-page.js                 ← Interactieve app
+      about-page.js               ← Over ons
+      manifest.js                 ← PWA manifest
+      four-oh-four.js             ← 404 pagina
+      city-pages.js               ← 22 stadspagina's
+      type-pages.js               ← 8 type-categoriepagina's
+      cluster-pages.js            ← Thematische clusterpagina's
+      location-pages.js           ← 2100+ locatie-detailpagina's
+      editorial-pages.js          ← Ontdekken + methode hubs
+      partner-landing.js          ← /voor-bedrijven/ landing
+      blog.js                     ← Blog vanuit markdown bestanden
+      redirects.js                ← _redirects bestand
+      sitemaps.js                 ← Split sitemaps (6 bestanden)
+      seo-registry.js             ← SEO metadata registry
+```
+
+### Build Flow
+
+```
+node .scripts/sync_all.js
+
+  1. Fetch publish state (incremental vs full beslissing)
+  2. Fetch regions + locations + editorial pages uit Supabase
+  3. Load en merge SEO content library (markdown + editorial)
+  4. Compute slugs + apply SEO overrides + SEO policy
+  5. Build mode kiezen:
+     - Incremental: < 50 wijzigingen → alleen gewijzigde pagina's
+     - Full: alle pagina's regenereren
+  6. Genereer alle pagina-types (zie generators/)
+  7. Build sitemaps + SEO registry
+  8. Minify CSS
+  9. Refresh asset versions op hand-geschreven pagina's
+```
+
+### Incremental Builds
+
+Het build-systeem ondersteunt incrementele builds via change tracking in `site_publish_state`:
+
+- Database triggers voegen gewijzigde location IDs, region slugs en editorial slugs toe
+- Bij < 50 wijzigingen: alleen betreffende pagina's + afhankelijkheden herbouwen
+- Bij >= 50 of `FORCE_FULL_BUILD=1`: volledige rebuild
+- Na succesvolle CI deploy: change arrays worden geleegd
+
+### Marker-Based Template Systeem
+
+Statische bestanden gebruiken comment-markers voor dynamische content:
+
+```html
+<!-- BEGIN:CITY_GRID -->
+<div class="cities-grid">...dynamische content...</div>
+<!-- END:CITY_GRID -->
+```
+
+Het script vervangt alles tussen `BEGIN:X` en `END:X`. Veilig en idempotent.
+
+### Type Mapping
+
+```javascript
+const TYPE_MAP = {
+  play:      { label: 'Speeltuinen',      slug: 'speeltuinen' },
+  farm:      { label: 'Kinderboerderijen', slug: 'kinderboerderijen' },
+  nature:    { label: 'Natuur',            slug: 'natuur' },
+  museum:    { label: 'Musea',             slug: 'musea' },
+  horeca:    { label: 'Restaurants',       slug: 'horeca' },
+  pancake:   { label: 'Pannenkoeken',      slug: 'pannenkoeken' },
+  swim:      { label: 'Zwembaden',         slug: 'zwembaden' },
+  culture:   { label: 'Cultureel',         slug: 'cultureel' },
+};
+```
 
 ---
 
 ## Database Schema
 
-### `regions` tabel
+### Core tabellen
 
-De single source of truth voor alle regio-metadata. Bepaalt welke steden op de site verschijnen en in welke volgorde.
+#### `regions`
+Regio-metadata. Bepaalt welke steden op de site verschijnen.
 
 ```sql
 CREATE TABLE regions (
   id            SERIAL PRIMARY KEY,
-  name          TEXT NOT NULL UNIQUE,        -- "Amsterdam", "Den Haag"
-  slug          TEXT NOT NULL UNIQUE,        -- "amsterdam", "den-haag"
-  blurb         TEXT NOT NULL DEFAULT '',    -- SEO intro voor stadspagina
-  display_order INTEGER NOT NULL,            -- volgorde overal (1 = eerst)
-  population    INTEGER,                     -- inwoneraantal
+  name          TEXT NOT NULL UNIQUE,
+  slug          TEXT NOT NULL UNIQUE,
+  blurb         TEXT NOT NULL DEFAULT '',
+  display_order INTEGER NOT NULL,
+  population    INTEGER,
   tier          TEXT DEFAULT 'standard',     -- 'primary' | 'standard' | 'region'
-  schema_type   TEXT DEFAULT 'City',         -- JSON-LD: "City" of "AdministrativeArea"
+  schema_type   TEXT DEFAULT 'City',
   is_active     BOOLEAN DEFAULT true,
   created_at    TIMESTAMPTZ DEFAULT now(),
   updated_at    TIMESTAMPTZ DEFAULT now()
 );
 ```
 
-### `locations` tabel
-
-Elke rij is één kindvriendelijke locatie met alle metadata die de app nodig heeft.
+#### `locations`
+Alle kindvriendelijke locaties met metadata.
 
 ```sql
 CREATE TABLE locations (
-  id                          SERIAL PRIMARY KEY,
-  name                        TEXT NOT NULL,
-  region                      TEXT NOT NULL REFERENCES regions(name),
-  type                        TEXT NOT NULL,  -- 'play' | 'nature' | 'museum' | 'horeca' | 'pancake'
-  description                 TEXT,
-  website                     TEXT,
-  weather                     TEXT,           -- 'indoor' | 'outdoor' | 'both'
-  coffee                      BOOLEAN DEFAULT false,
-  diaper                      BOOLEAN DEFAULT false,
-  alcohol                     BOOLEAN DEFAULT false,
-  lat                         DECIMAL,
-  lng                         DECIMAL,
-  min_age                     INTEGER DEFAULT 0,
-  max_age                     INTEGER DEFAULT 6,
-  toddler_highlight           TEXT,           -- marketing-beschrijving
-  last_verified               DATE,
-  verification_source         TEXT,           -- 'web_research' | 'phone_call' | 'visit'
-  place_id                    TEXT,           -- Google Places ID
-  distance_from_city_center_km DECIMAL
+  id                            SERIAL PRIMARY KEY,
+  name                          TEXT NOT NULL,
+  region                        TEXT NOT NULL REFERENCES regions(name),
+  type                          TEXT NOT NULL,
+  description                   TEXT,
+  website                       TEXT,
+  weather                       TEXT,           -- 'indoor' | 'outdoor' | 'both'
+  coffee                        BOOLEAN DEFAULT false,
+  diaper                        BOOLEAN DEFAULT false,
+  alcohol                       BOOLEAN DEFAULT false,
+  lat                           DECIMAL,
+  lng                           DECIMAL,
+  min_age                       INTEGER DEFAULT 0,
+  max_age                       INTEGER DEFAULT 6,
+  toddler_highlight             TEXT,
+  last_verified                 DATE,
+  verification_source           TEXT,
+  place_id                      TEXT,
+  distance_from_city_center_km  DECIMAL,
+  -- Ownership & featuring
+  claimed_by_user_id            UUID,
+  owner_verified                BOOLEAN DEFAULT false,
+  is_featured                   BOOLEAN DEFAULT false,
+  featured_until                TIMESTAMPTZ,
+  owner_photo_url               TEXT
 );
 ```
 
-### Data-verdeling
+### Partner & venue tabellen
 
-| Type | Aantal | Nederlandse naam |
-|------|--------|-----------------|
-| play | 108 | Speeltuinen |
-| nature | 125 | Natuur & Kinderboerderijen |
-| museum | 50 | Musea |
-| horeca | 82 | Restaurants & Cafés |
-| pancake | 53 | Pannenkoekenrestaurants |
+| Tabel | Doel |
+|-------|------|
+| `venue_owners` | Partner accounts met Stripe subscription (plan_tier, subscription_status) |
+| `location_claim_requests` | Claim workflow (pending → approved/rejected) |
+| `location_edit_log` | Audit trail voor alle wijzigingen |
+| `location_observations` | Gemodereerde observaties van partners/bezoekers |
+| `location_quality_tasks` | Quality improvement queue (priority 1-5, due dates) |
 
----
+### Content & SEO tabellen
 
-## Build Systeem: `sync_all.js`
+| Tabel | Doel |
+|-------|------|
+| `editorial_pages` | CMS content: hubs, clusters, blog, location overrides (status: draft/published/archived) |
+| `gsc_snapshots` | Google Search Console data voor SEO graduation |
 
-Het hart van de architectuur. Eén script dat alle statische pagina's regenereert vanuit de database.
+### AI Pipeline tabellen
 
-### Marker-Based Template Systeem
+| Tabel | Doel |
+|-------|------|
+| `ingestion_runs` | Batch intake runs (ingest/reaudit) |
+| `location_candidates` | Kandidaten vanuit OSM/bronnen (new → enriched → scored → approved/rejected → promoted) |
+| `location_source_evidence` | Multi-source bewijsmateriaal (osm/website/google/tripadvisor) |
+| `location_ai_reviews` | AI scores en beslissingen (Claude model, score 1-10, confidence) |
 
-In plaats van fragiele regex op willekeurige HTML, gebruikt het script **comment-markers** in de statische bestanden:
+### Infrastructuur tabellen
 
-```html
-<!-- BEGIN:CITY_GRID -->
-<div class="cities-grid">
-  ...dynamische content...
-</div>
-<!-- END:CITY_GRID -->
-```
+| Tabel | Doel |
+|-------|------|
+| `site_publish_state` | Build gate: dirty flag, pending_count, changed arrays, last_published_at |
+| `client_errors` | Frontend foutmeldingen (geen PII) |
+| `analytics_events` | Product event tracking |
 
-Het script vervangt alles tussen `BEGIN:X` en `END:X` met verse, database-gedreven HTML:
+### RLS (Row Level Security)
 
-```javascript
-function replaceMarker(content, marker, replacement) {
-  const regex = new RegExp(
-    `(<!-- BEGIN:${marker} -->)[\\s\\S]*(<!-- END:${marker} -->)`, 'g'
-  );
-  return content.replace(regex, `$1\n${replacement}\n$2`);
-}
-```
-
-Dit is **veilig en idempotent** — het script kan onbeperkt opnieuw gedraaid worden.
-
-### Markers per bestand
-
-| Bestand | Markers |
-|---------|---------|
-| `index.html` | `STATS`, `TYPE_GRID`, `CITY_GRID`, `JSONLD_INDEX` |
-| `app.html` | `NOSCRIPT`, `JSONLD_APP`, `INFO_STATS` |
-| `about.html` | `META_ABOUT`, `STATS_ABOUT` |
-
-### Uitvoeringsstappen
-
-```
-node .scripts/sync_all.js
-
-  1. Fetch regions tabel (gesorteerd op display_order)
-  2. Fetch locations tabel
-  3. Bereken counts per regio en per type
-  4. Update index.html    → city grid, type grid, stats, JSON-LD
-  5. Update app.html      → noscript, JSON-LD, info panel
-  6. Update about.html    → meta, stat cards
-  7. Update manifest.json → description met actueel aantal
-  8. Genereer {slug}.html → stadspagina per actieve regio
-  9. Genereer type pages  → speeltuinen.html, musea.html, etc.
-  10. Genereer sitemap.xml → alle URLs + vandaag als lastmod
-```
-
-### Type Mapping
-
-```javascript
-const TYPE_MAP = {
-  play:    { label: 'Speeltuinen',    slug: 'speeltuinen' },
-  nature:  { label: 'Natuur',         slug: 'natuur' },
-  museum:  { label: 'Musea',          slug: 'musea' },
-  horeca:  { label: 'Restaurants',    slug: 'horeca' },
-  pancake: { label: 'Pannenkoeken',   slug: 'pannenkoeken' },
-};
-```
-
-### Fallback Mechanisme
-
-Als de `regions` tabel niet bereikbaar is (HTTP 404), valt het script terug op een hardcoded array van 14 regio's. Zo werkt de build altijd, ook zonder database-verbinding.
+- `locations`: publiek leesbaar, eigenaar kan eigen locatie updaten (met actieve subscription)
+- `venue_owners`, `location_claim_requests`: gebruiker ziet alleen eigen records
+- `editorial_pages`: draft/published zichtbaarheid per rol
+- `client_errors`, `analytics_events`: anonieme insert, service role read
 
 ---
 
 ## CI/CD Pipeline
 
-```yaml
-# .github/workflows/sync-site.yml
-name: Sync PeuterPlannen Data
-on:
-  schedule:
-    - cron: '0 6 * * *'          # dagelijks 07:00 CET
-  workflow_dispatch:               # handmatige trigger
-  repository_dispatch:
-    types: [data-changed]          # webhook trigger
-```
+### Hoofdworkflow: `sync-site.yml`
 
-### Trigger Flow
+Draait elke 10 minuten + bij push naar main + bij repository_dispatch.
 
 ```
-Database wijziging
-    ↓
-GitHub repository_dispatch (via curl/webhook)
-    ↓
-GitHub Actions: sync-site.yml
-    ↓
-node .scripts/sync_all.js
-    ↓
-git commit + push (alleen als er changes zijn)
-    ↓
-GitHub Pages / Cloudflare auto-deploy
-    ↓
-Live site updated (~90 seconden)
+Schedule (*/10 * * * *)
+         │
+         ▼
+   ┌─────────────┐
+   │ Gate check   │ ── Supabase site_publish_state.dirty?
+   │              │    (fallback: altijd bouwen als check faalt)
+   └──────┬──────┘
+          │ dirty=true
+          ▼
+   ┌─────────────┐
+   │ npm ci       │
+   │ npm run build│ ── sync_all.js (incremental of full)
+   └──────┬──────┘
+          │
+   ┌──────▼──────┐
+   │ 3× Audit    │ ── internal consistency + portals + SEO
+   │ (--strict)  │    Faalt bij warnings → build stopt
+   └──────┬──────┘
+          │
+   ┌──────▼──────┐
+   │ Deploy      │ ── Cloudflare Worker (wrangler deploy)
+   └──────┬──────┘
+          │
+   ┌──────▼──────┐
+   │ Clean state │ ── dirty=false, clear change arrays
+   └─────────────┘
 ```
 
-### Webhook triggeren
+### Ops Cadence: `ops-cadence.yml`
 
-```bash
-curl -X POST \
-  -H "Authorization: Bearer $GITHUB_PAT" \
-  https://api.github.com/repos/basmetten/peuterplannen/dispatches \
-  -d '{"event_type":"data-changed"}'
-```
+Wekelijks (maandag 06:00 UTC): trust gaps, priority drafts, quality tasks, ops briefs, editorial export.
+
+### Deploy Supabase: `deploy-supabase.yml`
+
+Handmatige trigger voor database migrations.
+
+### Preview: `preview.yml`
+
+Preview builds voor pull requests.
 
 ---
 
-## Frontend Architectuur
+## Frontend
 
 ### Bestandsstructuur
 
 ```
 peuterplannen/
-├── .github/workflows/sync-site.yml    # CI/CD
-├── .scripts/sync_all.js               # Build script
-├── icons/                             # PWA icons (192px, 512px)
-├── data/                              # JSON data backups
+├── .github/workflows/          ← CI/CD (4 workflows)
+├── .scripts/                   ← Build systeem + pipeline + audits
+│   ├── sync_all.js             ← Orchestrator
+│   ├── lib/                    ← Modules (config, helpers, generators)
+│   ├── pipeline/               ← OSM + AI intake pipeline (30+ scripts)
+│   ├── trust/                  ← Data quality operaties
+│   ├── editorial/              ← Editorial CMS operaties
+│   ├── __tests__/              ← Unit + snapshot tests
+│   ├── audit_*.js              ← 3 audit scripts (CI gates)
+│   └── ops/                    ← Operationele briefings
+├── admin/                      ← Admin portal (SPA)
+├── partner/                    ← Partner/venue portal (SPA)
+├── cloudflare-worker/          ← Subdomain router
+├── supabase/
+│   ├── migrations/ (20 files)  ← Database schema
+│   └── functions/ (7 edge fn)  ← Serverless API's
+├── blog/                       ← 26 blogposts (markdown)
+├── content/seo/                ← SEO content library (markdown)
+├── fonts/                      ← Self-hosted fonts
+├── icons/, images/             ← Assets
 │
-├── index.html          ← Landing page (SEO-geoptimaliseerd)
-├── app.html            ← Interactieve app (kaart + lijst)
-├── about.html          ← Over ons
-├── contact.html        ← Contact
+├── index.html                  ← Landing page
+├── app.html                    ← Interactieve app (SPA)
+├── about.html, contact.html    ← Informatieve pagina's
+├── design-system.css           ← CSS tokens (--pp-* namespace)
+├── style.css                   ← Hoofd stylesheet (36 KB → 30 KB minified)
+├── error-reporter.js           ← Client-side error tracking
+├── _headers                    ← Security headers (CSP, X-Frame-Options)
 │
-├── amsterdam.html      ┐
-├── rotterdam.html      │
-├── den-haag.html       │  14 stadspagina's
-├── utrecht.html        │  (gegenereerd door sync_all.js)
-├── ...                 │
-├── nijmegen.html       ┘
+├── amsterdam/                  ┐
+├── rotterdam/                  │  22 stadsmappen met
+├── utrecht/                    │  locatie-detailpagina's
+├── ...                         ┘
 │
-├── speeltuinen.html    ┐
-├── natuur.html         │  5 type-pagina's
-├── musea.html          │  (gegenereerd door sync_all.js)
-├── horeca.html         │
-├── pannenkoeken.html   ┘
-│
-├── manifest.json       ← PWA manifest
-├── sw.js               ← Service Worker
-├── sitemap.xml         ← SEO sitemap (gegenereerd)
-├── robots.txt          ← Crawler regels
-├── CNAME               ← GitHub Pages domein
-└── favicon.ico
+├── ontdekken/, methode/        ← Editorial hub pagina's
+├── voor-bedrijven/             ← Partner landing page
+├── privacy/, disclaimer/       ← Juridische pagina's
+├── sitemap.xml                 ← Sitemap index (6 deelbestanden)
+└── _redirects                  ← SEO redirect aliases
 ```
 
-### Styling
+### Design System
 
-Alle CSS zit inline in elke HTML-pagina (geen externe stylesheets). Thema-variabelen:
+CSS custom properties in `design-system.css` met `--pp-*` namespace:
 
-```css
---primary:       #2A9D8F;     /* Teal */
---primary-light: #E6F5F3;     /* Licht teal achtergrond */
---accent:        #E76F51;     /* Peach / oranje */
---navy:          #264653;     /* Tekst kleur */
---gold:          #E9C46A;     /* Accent goud */
---bg:            #FEFBF6;     /* Pagina achtergrond */
-```
+| Token groep | Voorbeelden |
+|-------------|-------------|
+| Kleuren | `--pp-primary` (#D4775A), `--pp-accent` (#E8B870), `--pp-secondary` (#6B9590) |
+| Surfaces | `--pp-bg` (#FAF7F2), `--pp-surface`, `--pp-border` |
+| Typography | Familjen Grotesk (koppen), Plus Jakarta Sans (body), DM Sans (mono) |
+| Spacing | `--pp-space-xs` (4px) t/m `--pp-space-2xl` (48px) |
+| Borders | `--pp-radius-xs` (8px) t/m `--pp-radius-pill` (999px) |
+| Shadows | `--pp-shadow-sm/md/lg/hover` |
+| Type kleuren | Per locatietype (play groen, museum paars, etc.) |
 
-**Fonts:** Nunito (koppen), Inter (body) — geladen via Google Fonts.
+Fonts zijn self-hosted in `/fonts/` voor betere performance (geen externe Google Fonts dependency).
 
-**Responsive:** Mobile-first met `max-width: 540px` container voor de app.
+### app.html — Interactieve App
+
+Single-page applicatie in vanilla JavaScript met:
+- MapLibre GL kaart met GeoJSON clustering
+- Google Places Autocomplete locatiezoeken
+- Filter chips: type, weer (indoor/outdoor), faciliteiten (koffie, verschonen)
+- Regio-filter via URL parameter (`?regio=Amsterdam`)
+- Favorieten via localStorage
+- Skeleton loading met shimmer-animatie
+- AbortController voor request cancellation
+
+### Portalen
+
+| Portal | URL | Functie |
+|--------|-----|---------|
+| **Admin** | admin.peuterplannen.nl | Data management, quality tasks, editorial CMS, observation reviews |
+| **Partner** | partner.peuterplannen.nl | Locatie claimen, details updaten, featured listing kopen |
+
+Beide portalen delen `portal-shell.css` en `portal-shell.js` voor consistente UI en auth.
+
+Subdomain routing via Cloudflare Worker:
+- `partner.peuterplannen.nl` → `/partner/`
+- `admin.peuterplannen.nl` → `/admin/`
 
 ---
 
-## app.html — Interactieve App
+## Supabase Edge Functions
 
-De kern van PeuterPlannen. Een single-page applicatie in vanilla JavaScript.
-
-### Layout
-
-```
-┌─────────────────────────────┐
-│  Header (logo + stats)      │
-├─────────────────────────────┤
-│  Zoekbalk (Google Places)   │
-│  + GPS knop                 │
-├─────────────────────────────┤
-│  Filter chips (scrollbaar)  │
-│  Alles│Speeltuin│Natuur│... │
-├─────────────────────────────┤
-│                             │
-│  Resultaten (lijst)         │
-│  of                         │
-│  Kaart (MapLibre GL)        │
-│                             │
-├─────────────────────────────┤
-│  ◉ Home  ◉ Kaart  ♡ Fav  ℹ │  ← Bottom nav (mobiel)
-└─────────────────────────────┘
-```
-
-### Data Flow
-
-```javascript
-// 1. Fetch locaties direct vanuit Supabase
-const SB_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/locations";
-const SB_KEY = atob("...");  // Base64-encoded anon key
-
-async function loadLocations() {
-  let url = SB_URL + "?select=*";
-  if (activeTag !== 'all')     url += "&type=eq." + activeTag;
-  if (activeWeather)           url += "&weather=eq." + activeWeather;
-  if (activeRegion)            url += "&region=eq." + activeRegion;
-  // ... meer filters
-
-  const res = await fetch(url, {
-    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
-  });
-  const locations = await res.json();
-  renderResults(locations);
-}
-```
-
-### Filtersysteem
-
-| Filter | Type | Bron |
-|--------|------|------|
-| Type | `activeTag` | Chips: alles, play, nature, museum, horeca, pancake, favorites |
-| Weer | `activeWeather` | null, 'indoor', 'outdoor' |
-| Faciliteiten | `activeFacilities` | { coffee: bool, diaper: bool } |
-| Regio | `activeRegion` | URL param `?regio=Amsterdam` |
-| Locatie | `userLocation` | GPS of Google Places zoekopdracht |
-
-### Kaart (MapLibre GL)
-
-```javascript
-const map = new maplibregl.Map({
-  container: 'map',
-  style: 'https://tiles.openfreemap.org/styles/positron',
-  center: [5.1, 52.1],  // Nederland centrum
-  zoom: 7
-});
-
-// GeoJSON source met clustering
-map.addSource('locations', {
-  type: 'geojson',
-  data: buildGeoJSON(locations),
-  cluster: true,
-  clusterMaxZoom: 13,
-  clusterRadius: 45
-});
-```
-
-**Type-kleuren op de kaart:**
-
-| Type | Kleur |
-|------|-------|
-| Speeltuin | `#52B788` (groen) |
-| Natuur | `#2D6A4F` (donkergroen) |
-| Horeca | `#E76F51` (oranje) |
-| Museum | `#7B2D8B` (paars) |
-| Pannenkoeken | `#E9C46A` (goud) |
-
-### Locatiekaart
-
-```
-┌──────────────────────────────┐
-│  [Speeltuin]  2.3 km   ☀️   │
-│                          ♡   │
-│  Monkey Town Amsterdam       │
-│  Overdekte speeltuin met...  │
-│                              │
-│  👶 0-10 jaar                │
-│  ☕ Koffie  🚼 Verschonen    │
-│                              │
-│  [🗺 Maps]    [↗ Delen]      │
-└──────────────────────────────┘
-```
-
-### Favorieten
-
-Opgeslagen in `localStorage` als JSON array van locatie-IDs:
-
-```javascript
-const favKey = 'peuterplannen_favorites';
-let favorites = JSON.parse(localStorage.getItem(favKey) || '[]');
-
-function toggleFavorite(id) {
-  const idx = favorites.indexOf(id);
-  if (idx >= 0) favorites.splice(idx, 1);
-  else favorites.push(id);
-  localStorage.setItem(favKey, JSON.stringify(favorites));
-}
-```
-
-### URL Parameters
-
-| Parameter | Effect |
-|-----------|--------|
-| `?weather=indoor` | Pre-filter op binnen |
-| `?weather=outdoor` | Pre-filter op buiten |
-| `?type=play` | Pre-filter op type |
-| `?regio=Amsterdam` | Filter op specifieke regio |
-
-### Performance
-
-- **Lazy loading**: Google Maps API wordt pas geladen bij eerste zoekopdracht
-- **MapLibre**: Geladen via `requestIdleCallback` (achtergrond)
-- **Skeleton loading**: Shimmer-animatie tijdens data-fetch
-- **AbortController**: Vorige requests worden geannuleerd bij nieuwe filter
+| Functie | Doel |
+|---------|------|
+| `admin-api` | Admin control plane: observations, editorial, quality tasks |
+| `submit-partner-observations` | Partner observatie-indiening |
+| `stripe-webhook` | Stripe subscription lifecycle events |
+| `create-checkout-session` | Stripe checkout voor featured listings |
+| `create-customer-portal-session` | Stripe klantportaal toegang |
+| `generate-plan` | Daguitje-plannen genereren (AI of template) |
+| `public-feedback` | Publiek feedback/suggestie formulier |
 
 ---
 
-## Gegenereerde Pagina's
+## AI Data Pipeline
 
-### Stadspagina's (14 stuks)
-
-Gegenereerd door `generateCityPage()` per actieve regio.
+Automatische locatie-ontdekking en -beoordeling:
 
 ```
-amsterdam.html
-├── Nav (logo + "Zoek in Amsterdam" CTA)
-├── Hero ("Uitjes met peuters in Amsterdam")
-├── Breadcrumb (PeuterPlannen › Amsterdam)
-├── Intro (regio blurb + locatie-aantal)
-├── Secties per type:
-│   ├── Speeltuinen & Speelparadijzen (h2)
-│   │   ├── Locatie 1 (naam, beschrijving, website, badges)
-│   │   └── Locatie 2 ...
-│   ├── Natuur & Kinderboerderijen
-│   ├── Musea
-│   ├── Pannenkoekenrestaurants
-│   └── Kindvriendelijke Restaurants
-├── CTA ("Zoek op jouw locatie")
-├── Andere steden (links naar 13 andere stadspagina's)
-└── JSON-LD (ItemList met TouristAttraction items)
+OpenStreetMap data
+       │
+       ▼
+  ┌────────────┐     ┌──────────────────┐
+  │ Discover    │────►│ location_        │
+  │ (OSM tags)  │     │ candidates       │
+  └────────────┘     │ (status: new)     │
+                     └────────┬─────────┘
+                              │
+                     ┌────────▼─────────┐
+                     │ Enrich           │
+                     │ (Google, website, │
+                     │ TripAdvisor)      │
+                     │ status: enriched  │
+                     └────────┬─────────┘
+                              │
+                     ┌────────▼─────────┐
+                     │ Score (Claude)    │
+                     │ score 1-10,       │
+                     │ confidence,       │
+                     │ decision          │
+                     │ status: scored    │
+                     └────────┬─────────┘
+                              │
+              ┌───────────────┼───────────────┐
+              ▼               ▼               ▼
+         approved       needs_review      rejected
+              │               │
+              ▼               │
+         promoted ◄───────────┘ (na handmatige review)
+         (→ locations tabel)
 ```
 
-### Type-pagina's (5 stuks)
-
-Gegenereerd door `generateTypePage()` per locatietype.
-
-```
-speeltuinen.html
-├── Nav + Hero
-├── Breadcrumb (PeuterPlannen › Speeltuinen)
-├── Intro (type-beschrijving)
-├── Secties per regio:
-│   ├── Speeltuinen in Amsterdam (h2)
-│   ├── Speeltuinen in Rotterdam
-│   └── ... (14 regio's)
-├── FAQ sectie (3 veelgestelde vragen met <details>)
-├── CTA
-├── Links naar andere typen + steden
-└── JSON-LD (ItemList + FAQPage)
-```
+Pipeline scripts in `.scripts/pipeline/` (30+ bestanden).
+Configuratie in `.scripts/pipeline/config.js` (80+ gemeenten).
 
 ---
 
-## SEO & Structured Data
+## Monitoring & Observability
 
-### JSON-LD Schemas
+### Client-side error tracking
+- `error-reporter.js`: vangt `onerror` en `unhandledrejection`
+- Stuurt naar `client_errors` tabel via anon key (geen PII)
 
-| Pagina | Schema | Inhoud |
-|--------|--------|--------|
-| `index.html` | WebApplication | App-beschrijving, prijs (gratis), areaServed |
-| `index.html` | FAQPage | 3 veelgestelde vragen |
-| `app.html` | WebApplication | Idem met runtime-context |
-| Stadspagina's | ItemList | Alle locaties als TouristAttraction |
-| Type-pagina's | ItemList + FAQPage | Locaties + FAQ |
+### Product analytics
+- Google Analytics 4
+- Cloudflare Web Analytics
+- Custom `analytics_events` tabel voor behavioral tracking
 
-### Meta Tags
+### Build audits (CI gates)
+Drie audit scripts draaien bij elke build in strict mode:
 
-Elke pagina bevat:
-- `<title>` — Uniek per pagina
-- `<meta name="description">` — Dynamisch gegenereerd
-- `<link rel="canonical">` — Canonieke URL
-- **Open Graph**: `og:title`, `og:description`, `og:image`, `og:locale`
-- **Twitter Card**: `twitter:card`, `twitter:title`, `twitter:description`
-
-### Sitemap
-
-Gegenereerd door sync_all.js met prioriteiten:
-
-| URL | Priority | Changefreq |
-|-----|----------|------------|
-| `/` | 1.0 | weekly |
-| `/app.html` | 0.9 | daily |
-| Stadspagina (primary tier) | 0.85 | weekly |
-| Type-pagina's | 0.80 | weekly |
-| Stadspagina (standard tier) | 0.75 | weekly |
-| `/about.html` | 0.5 | monthly |
-| `/contact.html` | 0.4 | monthly |
-
----
-
-## PWA (Progressive Web App)
-
-### manifest.json
-
-```json
-{
-  "name": "PeuterPlannen",
-  "short_name": "PeuterPlannen",
-  "start_url": "/app.html",
-  "display": "standalone",
-  "background_color": "#FEFBF6",
-  "theme_color": "#2A9D8F",
-  "orientation": "portrait-primary",
-  "lang": "nl",
-  "categories": ["lifestyle", "kids"]
-}
-```
-
-### Service Worker (sw.js)
-
-**Strategie: Stale-While-Revalidate**
-
-1. **Install** — Cache statische assets (HTML, icons)
-2. **Activate** — Verwijder oude cache-versies
-3. **Fetch** — Serveer uit cache, update op achtergrond
-
-```
-Request → Cache hit?
-  ├── Ja  → Serveer uit cache + fetch in achtergrond → update cache
-  └── Nee → Fetch van netwerk → cache resultaat → serveer
-```
-
-Cache naam: `peuterplannen-v2`
-
----
-
-## Nieuwe Regio Toevoegen
-
-Na de herstructurering zijn er **2 stappen, 0 code-wijzigingen** nodig:
-
-### Stap 1: Regio toevoegen
-
-```sql
-INSERT INTO regions (name, slug, blurb, display_order, population, tier)
-VALUES ('Zwolle', 'zwolle', 'Zwolle is een bruisende...', 15, 134000, 'standard');
-```
-
-### Stap 2: Locaties toevoegen
-
-```sql
-INSERT INTO locations (name, type, region, lat, lng, description, ...)
-VALUES ('Speeltuin De Bult', 'play', 'Zwolle', 52.51, 6.10, '...', ...);
-```
-
-### Automatisch resultaat
-
-De pipeline regenereert alles:
-- Nieuwe stadspagina `zwolle.html`
-- Zwolle verschijnt in alle type-pagina's
-- Index city grid bevat Zwolle
-- Sitemap bevat nieuwe URL
-- JSON-LD areaServed is bijgewerkt
-- Alle counts zijn correct
+| Audit | Check |
+|-------|-------|
+| `audit_internal_consistency.js` | Broken links, orphan pages, blog slugs, regio-integriteit |
+| `audit_portals.js` | Admin/partner portal endpoints en toegankelijkheid |
+| `audit_seo_quality.js` | Meta tags, canonical URLs, structured data |
 
 ---
 
@@ -573,45 +477,171 @@ De pipeline regenereert alles:
 
 | Aspect | Implementatie |
 |--------|--------------|
-| **Database** | Row Level Security (RLS) op Supabase; anon key = read-only |
-| **API keys** | Anon key (publiek, alleen lezen) in client; service key alleen in CI/CD |
-| **Secrets** | GitHub Actions encrypted secrets voor Supabase credentials |
-| **XSS** | Geen user-generated content gerenderd; alle data server-gecontroleerd |
+| **Database** | Row Level Security (RLS); anon key = read-only |
+| **CSP** | Strict Content-Security-Policy in `_headers` |
+| **Headers** | X-Frame-Options: DENY, nosniff, strict referrer |
+| **API keys** | Anon key (publiek) in client; service key alleen in CI/CD |
+| **Secrets** | GitHub Actions encrypted secrets |
+| **XSS** | Geen ongecontroleerde user-generated content; `escapeHtml()` helper |
 | **HTTPS** | Afgedwongen via Cloudflare |
-| **robots.txt** | JSON data-bestanden geblokkeerd (`Disallow: /*.json`) |
+| **Permissions** | camera=(), microphone=(), payment=() geblokkeerd |
 
 ---
 
-## Samenvatting Dataflow
+## SEO
+
+### Pagina-types en volumes
+
+| Type | Aantal | Voorbeeld |
+|------|--------|-----------|
+| Homepage | 1 | `/` |
+| App | 1 | `/app.html` |
+| Stadspagina's | 22 | `/amsterdam/`, `/rotterdam/` |
+| Type-pagina's | 8 | `/speeltuinen/`, `/musea/` |
+| Clusterpagina's | 10+ | `/regen-uitjes/`, `/budget-uitjes/` |
+| Locatie-detailpagina's | 2100+ | `/amsterdam/speeltuin-vondelpark/` |
+| Blogposts | 26 | `/blog/kindvriendelijke-musea/` |
+| Editorial hubs | 2 | `/ontdekken/`, `/methode/` |
+
+### Split Sitemaps
+
+```
+sitemap.xml (index)
+├── sitemap-core.xml        ← Hub pages, type pages, editorial
+├── sitemap-blog.xml        ← Blog posts
+├── sitemap-hubs.xml        ← City + cluster pages
+├── sitemap-locations-01.xml ← Locatie detail batch 1
+├── sitemap-locations-02.xml ← Locatie detail batch 2
+└── sitemap-locations-03.xml ← Locatie detail batch 3
+```
+
+### SEO Graduation System
+
+Locatie-detailpagina's starten als `noindex` en gradueren naar indexeerbaar op basis van content-kwaliteit (beschrijving lengte, verified status, editorial override, etc.).
+
+### Structured Data (JSON-LD)
+
+Elke pagina bevat relevante JSON-LD: WebApplication, ItemList, TouristAttraction, FAQPage, BreadcrumbList.
+
+---
+
+## Nieuwe Regio Toevoegen
+
+**0 code-wijzigingen nodig:**
+
+```sql
+-- 1. Regio toevoegen
+INSERT INTO regions (name, slug, blurb, display_order, population, tier)
+VALUES ('Zwolle', 'zwolle', 'Zwolle is een bruisende...', 23, 134000, 'standard');
+
+-- 2. Locaties toevoegen
+INSERT INTO locations (name, type, region, lat, lng, description, ...)
+VALUES ('Speeltuin De Bult', 'play', 'Zwolle', 52.51, 6.10, '...', ...);
+```
+
+De pipeline regenereert automatisch: stadspagina, type-pagina's, index, sitemap, JSON-LD.
+
+---
+
+## Commando's
+
+```bash
+# Build
+npm run build              # Full site build (optimize images + sync portals + sync_all.js)
+npm run build:local        # Build met fixture data (geen Supabase nodig)
+
+# Tests
+npm test                   # Alle tests (unit + snapshot)
+npm run test:unit          # Alleen unit tests
+npm run test:snapshot      # Alleen snapshot tests
+
+# Development
+npm run dev                # Lokale dev server (port 3000)
+
+# Deploy
+npm run deploy             # Deploy naar GitHub Pages
+npm run deploy:supabase    # Deploy Supabase migrations
+npm run deploy:wrangler    # Deploy Cloudflare Worker
+
+# Pipeline
+npm run pipeline:utrecht:codex      # OSM+AI pipeline voor Utrecht
+npm run pipeline:utrecht:codex:dry  # Dry run (20 items)
+
+# Operationeel
+npm run ops:trust-gaps              # Rapport over content gaps
+npm run ops:quality-tasks           # Sync quality improvement tasks
+npm run ops:seed-priority-drafts    # Genereer editorial drafts
+npm run ops:export-editorial        # Export editorial snapshot
+npm run ops:briefs                  # Genereer ops briefings
+
+# Audits
+node .scripts/audit_internal_consistency.js --strict
+node .scripts/audit_portals.js --strict
+node .scripts/audit_seo_quality.js --strict
+```
+
+---
+
+## Environment Variabelen
+
+### CI (GitHub Actions secrets)
+
+| Variabele | Gebruik |
+|-----------|---------|
+| `SUPABASE_URL` | Supabase project URL |
+| `SUPABASE_SERVICE_KEY` | Service role key (build + deploy) |
+| `SUPABASE_ACCESS_TOKEN` | CLI access token (migrations) |
+| `SUPABASE_PROJECT_REF` | Project reference (migrations) |
+| `SUPABASE_DB_PASSWORD` | DB wachtwoord (migrations) |
+| `CLOUDFLARE_API_KEY` | Cloudflare API (Worker deploy) |
+| `CLOUDFLARE_EMAIL` | Cloudflare account email |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID |
+| `STRIPE_SECRET_KEY` | Stripe (edge functions) |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook verificatie |
+
+### Lokaal (optioneel)
+
+| Variabele | Gebruik |
+|-----------|---------|
+| `PP_FIXTURES=1` | Gebruik fixture data i.p.v. Supabase |
+| `FORCE_FULL_BUILD=1` | Forceer volledige rebuild |
+
+---
+
+## Dataflow Samenvatting
 
 ```
   Supabase DB
-  (regions + locations)
+  (regions + locations + editorial + candidates)
        │
-       ├──── BUILD-TIME ────────────────────────────┐
-       │     sync_all.js (dagelijks via GitHub       │
-       │     Actions of handmatig)                   │
-       │         │                                   │
-       │         ├── index.html (markers bijgewerkt) │
-       │         ├── app.html (markers bijgewerkt)   │
-       │         ├── about.html (markers bijgewerkt) │
-       │         ├── manifest.json                   │
-       │         ├── 14× {stad}.html (gegenereerd)   │
-       │         ├── 5× {type}.html (gegenereerd)    │
-       │         └── sitemap.xml (gegenereerd)        │
-       │                                             │
-       │              git push → GitHub Pages        │
-       │                                             │
-       └──── RUNTIME ───────────────────────────────┐
-             app.html laadt data via                 │
-             Supabase REST API (anon key)            │
-                 │                                   │
-                 ├── Filtering (type/weer/regio)      │
-                 ├── MapLibre kaart + clustering      │
-                 ├── Google Places locatiezoeken      │
-                 ├── Afstandsberekening (Haversine)   │
-                 └── Favorieten (localStorage)        │
-                                                     │
-             Browser ← Statische HTML + live data    │
-             └────────────────────────────────────────┘
+       ├──── BUILD-TIME ──────────────────────────────────┐
+       │     sync_all.js (elke 10 min via GitHub          │
+       │     Actions, gated door dirty flag)              │
+       │         │                                        │
+       │         ├── 22× stadspagina's                    │
+       │         ├── 8× type-pagina's                     │
+       │         ├── 10+ clusterpagina's                  │
+       │         ├── 2100+ locatie-detailpagina's          │
+       │         ├── 26 blogposts                         │
+       │         ├── editorial hubs                       │
+       │         ├── index, app, about, 404, manifest     │
+       │         ├── split sitemaps (6 bestanden)          │
+       │         └── SEO registry                          │
+       │                                                  │
+       │              → audits → deploy → clean state     │
+       │                                                  │
+       └──── RUNTIME ─────────────────────────────────────┐
+             app.html + admin/ + partner/                  │
+             via Supabase REST API + Edge Functions         │
+                 │                                         │
+                 ├── Filtering (type/weer/regio/faciliteit) │
+                 ├── MapLibre kaart + clustering            │
+                 ├── Google Places locatiezoeken             │
+                 ├── Partner claims + observations          │
+                 ├── Editorial CMS                         │
+                 ├── Stripe subscriptions                  │
+                 └── Error tracking + analytics            │
+                                                           │
+             Browser ← Statische HTML + live data          │
+             └─────────────────────────────────────────────┘
 ```

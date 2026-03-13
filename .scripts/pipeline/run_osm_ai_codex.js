@@ -54,6 +54,7 @@ async function main() {
 
   const scoreThreshold = parseIntArg(args['score-threshold'], 8);
   const confidenceThreshold = Number(args['confidence-threshold'] ?? 0.7);
+  const webSearch = parseBool(args['web-search'], false);
 
   const sourceRegions = resolveRegionSet(regionRoot, withSurroundings);
   const normalizedRoot = mapToRootRegion(regionRoot);
@@ -65,6 +66,7 @@ async function main() {
   console.log(`Source regions: ${sourceRegions.join(', ')}`);
   console.log(`Model: ${model}`);
   console.log(`Dry run: ${dryRun}`);
+  console.log(`Web search: ${webSearch}`);
 
   await db.markStaleRunningRunsFailed(normalizedRoot);
 
@@ -150,6 +152,7 @@ async function main() {
       db,
       candidates: scoringPool,
       model,
+      webSearch,
     });
 
     stats.scored = summary.total;

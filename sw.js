@@ -1,4 +1,4 @@
-const CACHE_NAME = 'peuterplannen-v3';
+const CACHE_NAME = 'peuterplannen-v4';
 const STATIC_ASSETS = [
   '/',
   '/app.html',
@@ -6,7 +6,9 @@ const STATIC_ASSETS = [
   '/about.html',
   '/contact.html',
   '/manifest.json',
-  '/style.min.css'
+  '/style.min.css',
+  '/fonts.css',
+  '/app.css'
 ];
 
 // Install: cache static assets

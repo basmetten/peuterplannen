@@ -1,6 +1,8 @@
 name: Sync PeuterPlannen Data
 
 on:
+  push:
+    branches: [main]
   schedule:
     - cron: '*/10 * * * *'
   workflow_dispatch:
@@ -21,7 +23,7 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -36,7 +38,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          if [[ "${EVENT_NAME}" == "repository_dispatch" ]]; then
+          if [[ "${EVENT_NAME}" == "push" || "${EVENT_NAME}" == "repository_dispatch" ]]; then
             echo "run_build=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -99,12 +101,30 @@ jobs:
         if: steps.gate.outputs.run_build == 'true'
         run: npm ci
 
+      - name: Run tests
+        if: steps.gate.outputs.run_build == 'true'
+        run: npm test
+
       - name: Build static site
         if: steps.gate.outputs.run_build == 'true'
         run: npm run build
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+      - name: Sanity check generated files
+        if: steps.gate.outputs.run_build == 'true'
+        run: |
+          count=$(find . -name '*.html' -not -path './node_modules/*' -not -path './.git/*' | wc -l)
+          echo "Generated HTML files: $count"
+          if [ "$count" -lt 100 ]; then
+            echo "ERROR: Too few HTML files generated ($count). Build may be broken."
+            exit 1
+          fi
+          if [ "$count" -gt 3000 ]; then
+            echo "ERROR: Too many HTML files generated ($count). Possible runaway generation."
+            exit 1
+          fi
 
       - name: Run consistency audit (strict)
         if: steps.gate.outputs.run_build == 'true'
@@ -124,35 +144,19 @@ jobs:
           set -euo pipefail
           node .scripts/audit_seo_quality.js --strict
 
-      - name: Commit and push when build changed files
+      - name: Deploy to Cloudflare Worker (production)
         if: steps.gate.outputs.run_build == 'true'
-        id: publish
-        run: |
-          set -euo pipefail
-
-          git config user.name "PeuterPlannen Bot"
-          git config user.email "bot@peuterplannen.nl"
-
-          git add -A
-
-          if git diff --cached --quiet; then
-            echo "pushed=false" >> "$GITHUB_OUTPUT"
-            echo "publish_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          git commit -m "Auto-sync: update data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          git push
-
-          echo "pushed=true" >> "$GITHUB_OUTPUT"
-          echo "publish_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+        env:
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy
 
       - name: Mark publish state clean
         if: steps.gate.outputs.run_build == 'true'
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-          PUBLISH_REF: ${{ steps.publish.outputs.publish_ref }}
         run: |
           set -euo pipefail
 
@@ -161,7 +165,7 @@ jobs:
             exit 0
           fi
 
-          payload="$(jq -nc --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg ref "${PUBLISH_REF}" '{dirty:false,pending_count:0,last_published_at:$ts,last_publish_ref:$ref,updated_at:$ts}')"
+          payload="$(jq -nc --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg ref "$(git rev-parse HEAD)" '{dirty:false,pending_count:0,changed_location_ids:[],changed_region_slugs:[],changed_editorial_slugs:[],last_published_at:$ts,last_publish_ref:$ref,updated_at:$ts}')"
 
           curl -sS -f -X PATCH \
             -H "apikey: ${SUPABASE_SERVICE_KEY}" \
