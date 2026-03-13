@@ -97,8 +97,8 @@
 
     <!-- Fonts (swap for faster paint) -->
     <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/nav-floating.css?v=202603131939">
-    <script src="/nav-floating.js?v=202603131939" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603132046">
+    <script src="/nav-floating.js?v=202603132046" defer></script>
 
     <style>
         :root {
@@ -1679,7 +1679,19 @@
         const DESKTOP_WIDTH = 680; // px — split view threshold
         const SB_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/locations";
         const SB_KEY = atob("ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBjM01pT2lKemRYQmhZbUZ6WlNJc0luSmxaaUk2SW5CcGRXcHpkbWRpWm1ac2NuSjJZWFY2YzNobElpd2ljbTlzWlNJNkltRnViMjRpTENKcFlYUWlPakUzTnpJd05ETXhOekFzSW1WNGNDSTZNakE0TnpZeE9URTNNSDAuNXkzZ3FpUGZWdnB2ZmFEWUFfUGdxRS1LVHZ1ZjZ6Z042dkd6cWZVcGVTbw==");
+        const SB_EVENTS_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/analytics_events";
 
+        // === Anonymous Event Tracking (zero PII) ===
+        function trackEvent(type, data) {
+            try {
+                fetch(SB_EVENTS_URL, {
+                    method: 'POST',
+                    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+                    body: JSON.stringify({ event_type: type, event_data: data || {}, page_path: location.pathname }),
+                    keepalive: true
+                });
+            } catch(e) {}
+        }
 
         // === Security Helpers ===
         function escapeHtml(str) {
@@ -1952,7 +1964,9 @@
         function toggleFavorite(locationId, btn) {
             const favorites = getFavorites();
             const index = favorites.indexOf(locationId);
+            const action = index > -1 ? 'remove' : 'add';
             if (index > -1) favorites.splice(index, 1); else favorites.push(locationId);
+            trackEvent('favorite_toggle', { action: action });
             try { localStorage.setItem('peuterplannen_favorites', JSON.stringify(favorites)); } catch(e) { /* storage unavailable */ }
             updateShortlistBar();
             if (btn) { btn.classList.add('heart-pop'); setTimeout(() => btn.classList.remove('heart-pop'), 400); }
@@ -1973,6 +1987,7 @@
 
         // === Filters ===
         function toggleWeather(weather, evt) {
+            trackEvent('filter', { weather: weather });
             if (activeWeather === weather) { activeWeather = null; } else { activeWeather = weather; }
             document.querySelectorAll('.chip').forEach(c => {
                 if (c.textContent.trim() === 'Binnen' || c.textContent.trim() === 'Buiten') c.classList.remove('active');
@@ -1989,6 +2004,7 @@
         }
 
         function toggleTag(tag, evt) {
+            trackEvent('filter', { type: tag });
             activeTag = tag;
             activeWeather = null;
             document.querySelectorAll('.chip').forEach(p => p.classList.remove('active'));
@@ -2204,6 +2220,7 @@
                     document.getElementById('app-container')?.classList.add('has-location');
                     document.getElementById('gps-btn')?.classList.remove('gps-active');
                     updatePlanLocationChip();
+                    trackEvent('search', { query_type: 'places' });
                     loadLocations(); updateUserLocationOnMap();
                 }
             });
@@ -2231,8 +2248,9 @@
                     document.getElementById('app-container')?.classList.add('has-location');
                     document.getElementById('gps-btn')?.classList.add('gps-active');
                     updatePlanLocationChip();
+                    trackEvent('search', { query_type: 'gps' });
                     loadLocations(); updateUserLocationOnMap();
-                } catch (err) { input.value = 'Mijn locatie'; showGpsStatus('Locatie gevonden', ''); setTimeout(() => statusEl.classList.add('hidden'), 2000); document.getElementById('app-container')?.classList.add('has-location'); document.getElementById('gps-btn')?.classList.add('gps-active'); updatePlanLocationChip(); loadLocations(); updateUserLocationOnMap(); }
+                } catch (err) { input.value = 'Mijn locatie'; showGpsStatus('Locatie gevonden', ''); setTimeout(() => statusEl.classList.add('hidden'), 2000); document.getElementById('app-container')?.classList.add('has-location'); document.getElementById('gps-btn')?.classList.add('gps-active'); updatePlanLocationChip(); trackEvent('search', { query_type: 'gps' }); loadLocations(); updateUserLocationOnMap(); }
             }, (err) => { let msg = 'Locatie niet beschikbaar'; if (err.code === 1) msg = 'Toestemming geweigerd'; if (err.code === 2) msg = 'Locatie niet gevonden'; if (err.code === 3) msg = 'Timeout'; showGpsStatus(msg, 'error'); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
         }
 
@@ -2476,6 +2494,7 @@
                 if (!Array.isArray(data) || data.length === 0) throw new Error('Locatie niet gevonden');
 
                 const loc = normalizeLocationRow(data[0]);
+                trackEvent('detail_view', { location_id: locationId });
 
                 // Step 3: Render the detail view
                 renderDetailView(loc, regionSlug);
@@ -3139,6 +3158,7 @@
             const shortlistUrl = item ? buildShortlistUrl([item.id]) : '';
             const url = detailUrl ? `${window.location.origin}${detailUrl}` : (shortlistUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + (region ? ", " + region : ""))}`);
             const text = `Bekijk ${name} op PeuterPlannen: ${url}`;
+            trackEvent('share', { method: navigator.share ? 'native' : 'whatsapp' });
             if (navigator.share) { navigator.share({ title: name, text: text, url: url }); }
             else { window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'); }
         }
@@ -3223,6 +3243,7 @@
                     break;
 
                 case 'map':
+                    trackEvent('map_view');
                     setDisplayMode('map');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     break;

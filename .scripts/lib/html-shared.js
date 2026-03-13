@@ -151,7 +151,8 @@ function headCommon(extra = '') {
   <link rel="stylesheet" href="${styleHref}">
   <style>${CRITICAL_EDITORIAL_GUIDE_CSS}</style>
   <link rel="stylesheet" href="${navCssHref}">
-  <script src="${navJsHref}" defer></script>${extra}`;
+  <script src="${navJsHref}" defer></script>
+  <script src="/error-reporter.js" defer></script>${extra}`;
 }
 
 function rewriteAssetVersions(filePath) {
