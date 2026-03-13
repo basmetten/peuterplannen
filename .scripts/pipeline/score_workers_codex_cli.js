@@ -202,11 +202,22 @@ function decide(review, candidate) {
   return { ...withConfidence, decision: 'needs_review' };
 }
 
-function buildPrompt(candidate) {
+function buildPrompt(candidate, { webSearch = false } = {}) {
   const evidence = candidate.enriched_signals || {};
 
-  return [
-    'Beoordeel deze Nederlandse horecalocatie voor ouders met peuters/kleuters.',
+  const lines = [
+    'Beoordeel deze Nederlandse locatie voor ouders met peuters/kleuters.',
+  ];
+
+  if (webSearch) {
+    lines.push(
+      'BELANGRIJK: Zoek op het web naar reviews en informatie over deze locatie.',
+      `Zoek naar: "${candidate.name} ${candidate.city || candidate.region_root || ''} reviews kinderen" en "${candidate.name} kindvriendelijk speelhoek".`,
+      'Lees Google reviews, blogs, de website, en ouderforums. Baseer je beoordeling op echte bronnen.',
+    );
+  }
+
+  lines.push(
     'Geef ALLEEN geldige JSON met exact deze velden:',
     '{is_suitable:boolean,score_10:int(0-10),confidence:number(0-1),decision:"approved|rejected|needs_review",reason_short:string,reasons:string[],risk_flags:string[],derived_fields:{has_kids_menu:boolean|null,has_play_area:boolean|null,has_high_chairs:boolean|null,has_diaper_changing:boolean|null,play_area_quality:"none|basic|significant"|null,weather:"indoor|outdoor|both|hybrid"|null,description:string|null,toddler_highlight:string|null,is_pancake_restaurant:boolean|null}}',
     '',
@@ -224,11 +235,12 @@ function buildPrompt(candidate) {
     '- Ontbreken van 1 faciliteit is niet automatisch afkeur.',
     '- Bij onvoldoende bewijs: needs_review.',
     '- Max 5 reasons, kort en feitelijk.',
-  ].join('\n');
+  );
+
+  return lines.join('\n');
 }
 
-async function callClaudeCLI({ model, prompt, timeoutMs }) {
-  // Gebruik Anthropic API direct via fetch — bypast claude CLI OAuth sessie
+async function callAnthropicAPI({ model, prompt, timeoutMs }) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) throw new Error('ANTHROPIC_API_KEY niet gevonden in environment');
 
@@ -281,9 +293,83 @@ async function callClaudeCLI({ model, prompt, timeoutMs }) {
   }
 }
 
-async function callCodexCLI({ model, prompt, timeoutMs }) {
+async function callXAI({ model, prompt, timeoutMs, webSearch = false }) {
+  const apiKey = process.env.XAI_API_KEY;
+  if (!apiKey) throw new Error('XAI_API_KEY niet gevonden in environment');
+
+  const deadline = Date.now() + timeoutMs;
+  let attempt = 0;
+
+  while (true) {
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) throw new Error('xAI API timeout (deadline bereikt)');
+
+    const controller = new AbortController();
+    const killTimer = setTimeout(() => controller.abort(), remaining);
+
+    try {
+      const body = {
+        model,
+        input: [
+          { role: 'system', content: 'Je bent een strenge data-annotator voor kindvriendelijke locaties in Nederland. Geef alleen valide JSON conform de gevraagde structuur.' },
+          { role: 'user', content: prompt },
+        ],
+      };
+
+      // Enable web search tool — Grok zoekt dan zelf reviews, websites etc.
+      if (webSearch) {
+        body.tools = [{ type: 'web_search' }];
+      }
+
+      const res = await fetch('https://api.x.ai/v1/responses', {
+        method: 'POST',
+        signal: controller.signal,
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (res.status === 429) {
+        const waitMs = Math.min(2000 * Math.pow(2, attempt), 30000);
+        attempt++;
+        if (Date.now() + waitMs > deadline) throw new Error('xAI rate limit, geen tijd meer');
+        await new Promise((r) => setTimeout(r, waitMs));
+        continue;
+      }
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`xAI API ${res.status}: ${text.slice(0, 400)}`);
+      }
+
+      const data = await res.json();
+
+      // responses API: output_text of output[].content[].text
+      let outputText = data?.output_text || '';
+      if (!outputText && Array.isArray(data?.output)) {
+        for (const item of data.output) {
+          if (item?.type !== 'message' || !Array.isArray(item.content)) continue;
+          for (const chunk of item.content) {
+            if (chunk?.type === 'output_text' && chunk.text) outputText += chunk.text;
+          }
+        }
+      }
+
+      return extractJsonObject(outputText);
+    } finally {
+      clearTimeout(killTimer);
+    }
+  }
+}
+
+async function callCodexCLI({ model, prompt, timeoutMs, webSearch = false }) {
   if (model.startsWith('claude-')) {
-    return callClaudeCLI({ model, prompt, timeoutMs });
+    return callAnthropicAPI({ model, prompt, timeoutMs });
+  }
+  if (model.startsWith('grok-')) {
+    return callXAI({ model, prompt, timeoutMs, webSearch });
   }
 
   const outFile = path.join(os.tmpdir(), `codex_last_message_${Date.now()}_${Math.random().toString(36).slice(2)}.txt`);
@@ -330,11 +416,16 @@ async function callCodexCLI({ model, prompt, timeoutMs }) {
   }
 }
 
-async function scoreSingleCandidate({ db, candidate, model, timeoutMs }) {
+async function scoreSingleCandidate({ db, candidate, model, timeoutMs, webSearch = false }) {
   let normalized;
 
   try {
-    const raw = await callCodexCLI({ model, prompt: buildPrompt(candidate), timeoutMs });
+    const raw = await callCodexCLI({
+      model,
+      prompt: buildPrompt(candidate, { webSearch }),
+      timeoutMs,
+      webSearch,
+    });
     normalized = validateAndNormalize(raw);
   } catch (err) {
     normalized = {
@@ -387,10 +478,14 @@ async function scoreSingleCandidate({ db, candidate, model, timeoutMs }) {
   return finalReview;
 }
 
-async function scoreCandidatesViaCodex({ db, candidates, model }) {
+async function scoreCandidatesViaCodex({ db, candidates, model, webSearch = false }) {
   const chosenModel = model || DEFAULT_MODEL;
-  if (!chosenModel.startsWith('claude-') && chosenModel !== 'gpt-5.1-codex-mini') {
-    throw new Error(`Unsupported model: ${chosenModel}`);
+  if (!chosenModel.startsWith('claude-') && !chosenModel.startsWith('grok-') && chosenModel !== 'gpt-5.1-codex-mini') {
+    throw new Error(`Unsupported model: ${chosenModel}. Supported: claude-*, grok-*, gpt-5.1-codex-mini`);
+  }
+
+  if (webSearch && !chosenModel.startsWith('grok-')) {
+    console.warn(`Warning: --web-search is alleen beschikbaar voor grok-* modellen, wordt genegeerd voor ${chosenModel}`);
   }
 
   if (!candidates.length) {
@@ -400,11 +495,19 @@ async function scoreCandidatesViaCodex({ db, candidates, model }) {
     };
   }
 
-  const scoreConcurrency = Number(process.env.PIPELINE_SCORE_CONCURRENCY || '20');
-  const timeoutMs = Number(process.env.PIPELINE_SCORE_TIMEOUT_MS || '120000');
+  const useWebSearch = webSearch && chosenModel.startsWith('grok-');
+  // Lagere concurrency bij web search — elke call duurt langer
+  const defaultConcurrency = useWebSearch ? '5' : '20';
+  const scoreConcurrency = Number(process.env.PIPELINE_SCORE_CONCURRENCY || defaultConcurrency);
+  const defaultTimeout = useWebSearch ? '180000' : '120000';
+  const timeoutMs = Number(process.env.PIPELINE_SCORE_TIMEOUT_MS || defaultTimeout);
+
+  if (useWebSearch) {
+    console.log(`Web search enabled — Grok zoekt reviews, blogs en websites per kandidaat`);
+  }
 
   const reviews = await mapLimit(candidates, scoreConcurrency, async (candidate) =>
-    scoreSingleCandidate({ db, candidate, model: chosenModel, timeoutMs })
+    scoreSingleCandidate({ db, candidate, model: chosenModel, timeoutMs, webSearch: useWebSearch })
   );
 
   const summary = {
