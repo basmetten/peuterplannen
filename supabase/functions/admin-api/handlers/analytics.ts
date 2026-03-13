@@ -205,6 +205,78 @@ export async function handleAnalytics(
       return (data ?? []).map((item: Record<string, unknown>) => ({ ...item, owner_email: emailMap[String(item.user_id)] || "onbekend" }));
     }
 
+    case "get_seo_graduation": {
+      const { data: locs, error } = await supabase
+        .from("locations")
+        .select("id, name, region, type, description, toddler_highlight, weather, lat, lng, min_age, max_age, coffee, diaper, alcohol, website, place_id, verification_confidence, seo_tier, seo_primary_locality, last_verified_at")
+        .order("name", { ascending: true });
+      if (error) throw new AppError(error.message, "SEO_GRADUATION_QUERY_FAILED", 400);
+
+      const locations = (locs ?? []) as Array<Record<string, unknown>>;
+      const total = locations.length;
+      const AI_SLOP = [/\bcomplete gids\b/gi, /\bkindvriendelijke hotspot\b/gi, /\bperfect voor\b/gi, /\bideaal voor gezinnen\b/gi];
+      const GENERIC_DESC = [/^Tips, inspiratie en praktische gidsen/i, /^Ontdek de beste uitjes/i, /^PeuterPlannen helpt ouders/i, /^De beste uitjes voor peuters/i];
+      const FILLER_RE = /^Geverifieerde vestiging van .+\. Altijd een veilige keuze voor peuters\.?$/;
+
+      function isFiller(d: unknown): boolean {
+        const s = typeof d === "string" ? d.trim() : "";
+        return !s || FILLER_RE.test(s);
+      }
+
+      function checkCriteria(loc: Record<string, unknown>) {
+        const desc = isFiller(loc.description) ? "" : String(loc.description || "").trim();
+        return {
+          hasDescription: desc.length >= 90,
+          hasHighlight: !!loc.toddler_highlight,
+          hasWeather: !!loc.weather,
+          hasCoords: loc.lat != null && loc.lng != null,
+          hasAgeRange: loc.min_age != null && loc.max_age != null,
+          hasFacility: !!(loc.coffee || loc.diaper || loc.alcohol),
+          noSlop: !AI_SLOP.some((p) => p.test(String(loc.description || ""))),
+          noGeneric: !GENERIC_DESC.some((p) => p.test(String(loc.description || ""))),
+        };
+      }
+
+      let indexed = 0;
+      const missingCriteria: Record<string, number> = {
+        hasDescription: 0, hasHighlight: 0, hasWeather: 0, hasCoords: 0,
+        hasAgeRange: 0, hasFacility: 0, noSlop: 0, noGeneric: 0,
+      };
+      const nearPromotion: Array<{ id: unknown; name: unknown; region: unknown; missing: string[] }> = [];
+
+      for (const loc of locations) {
+        const criteria = checkCriteria(loc);
+        const values = Object.values(criteria);
+        const passed = values.filter(Boolean).length;
+        if (passed === values.length) {
+          indexed++;
+        } else {
+          for (const [key, ok] of Object.entries(criteria)) {
+            if (!ok) missingCriteria[key]++;
+          }
+          if (passed >= values.length - 1) {
+            nearPromotion.push({
+              id: loc.id,
+              name: loc.name,
+              region: loc.region,
+              missing: Object.entries(criteria).filter(([, v]) => !v).map(([k]) => k),
+            });
+          }
+        }
+      }
+
+      nearPromotion.sort((a, b) => a.missing.length - b.missing.length || String(a.name).localeCompare(String(b.name), "nl"));
+
+      return {
+        total,
+        indexed,
+        support: total - indexed,
+        index_rate: total > 0 ? Math.round((indexed / total) * 1000) / 10 : 0,
+        missing_criteria: missingCriteria,
+        near_promotion: nearPromotion.slice(0, 25),
+      };
+    }
+
     default:
       throw new AppError(`Onbekende analytics actie: ${action}`, "UNKNOWN_ACTION", 400);
   }

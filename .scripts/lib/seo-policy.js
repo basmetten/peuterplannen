@@ -1,4 +1,4 @@
-const { CLUSTER_PAGES, SEO_INDEX_THRESHOLD } = require('./config');
+const { CLUSTER_PAGES, SEO_INDEX_THRESHOLD, GENERIC_DESCRIPTION_PATTERNS, AI_SLOP_PATTERNS } = require('./config');
 const { slugify, cleanPathLike, fullSiteUrl, daysSince, normalizeExternalUrl, normalizeExternalHost } = require('./helpers');
 const { loadGscSignals, normalizeEditorialPageRecord } = require('./seo-content');
 
@@ -205,7 +205,7 @@ function applySeoPolicy(data) {
       seoTier = 'index';
     } else if (manualTier === 'support') {
       seoTier = 'support';
-    } else if (!loc.seo_exclude_from_sitemap && !duplicateLoser && (loc.seoHasGscSignal || (strongContent && structuredSignals >= 4 && loc.seoQualityScore >= SEO_INDEX_THRESHOLD))) {
+    } else if (!loc.seo_exclude_from_sitemap && !duplicateLoser && (loc.seoHasGscSignal || computeLocationSeoTier(loc).tier === 'index' || (strongContent && structuredSignals >= 4 && loc.seoQualityScore >= SEO_INDEX_THRESHOLD))) {
       seoTier = 'index';
     }
 
@@ -278,6 +278,86 @@ function isFillerDescription(desc) {
   return false;
 }
 
+// SEO graduation: clear, explicit criteria for index eligibility
+function computeLocationSeoTier(loc) {
+  const desc = isFillerDescription(loc.description) ? '' : (loc.description || '').trim();
+  const hasDescription = desc.length >= 90;
+  const hasHighlight = !!loc.toddler_highlight;
+  const hasWeather = !!loc.weather;
+  const hasCoords = loc.lat != null && loc.lng != null;
+  const hasAgeRange = loc.min_age != null && loc.max_age != null;
+  const hasFacility = !!(loc.coffee || loc.diaper || loc.alcohol);
+  const noSlop = !AI_SLOP_PATTERNS.some(p => p.test(loc.description || ''));
+  const noGeneric = !GENERIC_DESCRIPTION_PATTERNS.some(p => p.test(loc.description || ''));
+
+  const criteria = { hasDescription, hasHighlight, hasWeather, hasCoords, hasAgeRange, hasFacility, noSlop, noGeneric };
+  const passed = Object.values(criteria).filter(Boolean).length;
+  const total = Object.keys(criteria).length;
+  const eligible = passed === total;
+
+  return { tier: eligible ? 'index' : 'support', criteria, passed, total };
+}
+
+// Bonus priority for sitemap (additive on base 0.64)
+function computeLocationBonusPriority(loc) {
+  let bonus = 0;
+  if (normalizeExternalUrl(loc.website)) bonus += 0.05;
+  if (loc.place_id) bonus += 0.05;
+  if (Number(loc.verification_confidence) >= 0.7) bonus += 0.05;
+  if (Number(loc.approved_observation_count) >= 1) bonus += 0.05;
+  return Math.min(bonus, 0.2); // cap at +0.2
+}
+
+// Summarize graduation metrics across all locations
+function computeGraduationMetrics(locations) {
+  const total = locations.length;
+  let indexed = 0;
+  const missingCriteria = {
+    hasDescription: 0,
+    hasHighlight: 0,
+    hasWeather: 0,
+    hasCoords: 0,
+    hasAgeRange: 0,
+    hasFacility: 0,
+    noSlop: 0,
+    noGeneric: 0,
+  };
+  const nearPromotion = [];
+
+  for (const loc of locations) {
+    const result = computeLocationSeoTier(loc);
+    if (result.tier === 'index') {
+      indexed++;
+    } else {
+      for (const [key, passed] of Object.entries(result.criteria)) {
+        if (!passed) missingCriteria[key]++;
+      }
+      if (result.passed >= result.total - 1) {
+        const missing = Object.entries(result.criteria)
+          .filter(([, v]) => !v)
+          .map(([k]) => k);
+        nearPromotion.push({
+          id: loc.id,
+          name: loc.name,
+          region: loc.region || loc.regionSlug,
+          missing,
+        });
+      }
+    }
+  }
+
+  nearPromotion.sort((a, b) => a.missing.length - b.missing.length || `${a.name}`.localeCompare(`${b.name}`, 'nl'));
+
+  return {
+    total,
+    indexed,
+    support: total - indexed,
+    indexRate: total > 0 ? Math.round((indexed / total) * 1000) / 10 : 0,
+    missingCriteria,
+    nearPromotion: nearPromotion.slice(0, 25),
+  };
+}
+
 module.exports = {
   applyRepoSeoOverrides,
   normalizeManualSeoTier,
@@ -294,4 +374,7 @@ module.exports = {
   getClusterPagesForLocation,
   relatedClustersForLocations,
   isFillerDescription,
+  computeLocationSeoTier,
+  computeLocationBonusPriority,
+  computeGraduationMetrics,
 };

@@ -1459,7 +1459,7 @@ Add CI audit check for region name consistency."
 ---
 
 ## FASE 12: SEO GRADUATIESYSTEEM
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Opus (strategie) + Sonnet (implementatie)
 **Geschatte duur:** 4-6 uur
 **Doel:** Meer location detail pages promoten van noindex naar index
@@ -1924,7 +1924,7 @@ Update deze sectie na het afronden van elke fase:
 | 9 | Performance optimalisatie | `TODO` | |
 | 10 | Design system & frontend | `TODO` | |
 | 11 | Data integriteit | `TODO` | |
-| 12 | SEO graduatiesysteem | `TODO` | |
+| 12 | SEO graduatiesysteem | `DONE` | 2026-03-13 |
 | 13 | Partner conversie-funnel | `TODO` | |
 | 14 | Incremental builds | `TODO` | |
 | 15 | Documentatie & bus factor | `TODO` | |

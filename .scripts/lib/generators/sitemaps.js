@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { ROOT, TYPE_PAGES, CLUSTER_PAGES, TYPE_MAP } = require('../config');
 const { fullSiteUrl, cleanPathLike, todayISO } = require('../helpers');
+const { computeLocationBonusPriority } = require('../seo-policy');
 
 function sitePathToFile(sitePath) {
   const clean = cleanPathLike(sitePath);
@@ -98,7 +99,7 @@ function buildPageCatalog(data, blogPosts, clusterPages, sharedPages = []) {
       pageType: 'location_detail',
       tier: loc.seoTierResolved,
       filePath: sitePathToFile(loc.pageUrl),
-      priority: loc.seoTierResolved === 'index' ? '0.64' : '0.3',
+      priority: loc.seoTierResolved === 'index' ? (0.64 + computeLocationBonusPriority(loc)).toFixed(2) : '0.3',
       changefreq: 'monthly',
       lastmod: loc.last_verified_at || lastmod,
       inSitemap: loc.seoTierResolved === 'index' && !loc.seo_exclude_from_sitemap,
