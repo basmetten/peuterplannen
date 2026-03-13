@@ -90,9 +90,7 @@ function badgeHTML(loc) {
 }
 
 function revealScript() {
-  return `<script>
-(function(){var o=new IntersectionObserver(function(e){e.forEach(function(i){if(i.isIntersecting){i.target.classList.add('visible');o.unobserve(i.target);}});},{threshold:0,rootMargin:'0px 0px 300px 0px'});document.querySelectorAll('.loc-item,.type-section,.region-section,.blog-card,.cta-block,.support-section,.faq-section').forEach(function(el,i){el.classList.add('reveal');el.style.animationDelay=Math.min(i*0.04,0.24)+'s';o.observe(el);});})();
-</script>`;
+  return `<script src="/reveal.js"></script>`;
 }
 
 function supportHTML(variant = 'default', count = 0) {
@@ -136,18 +134,8 @@ function headCommon(extra = '') {
   const navCssHref = `/nav-floating.css?v=${ASSET_VERSION}`;
   const navJsHref = `/nav-floating.js?v=${ASSET_VERSION}`;
   return `  <!-- Google tag (gtag.js) — Consent Mode v2 -->
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'default', {
-      analytics_storage: 'denied', ad_storage: 'denied',
-      ad_user_data: 'denied', ad_personalization: 'denied',
-      wait_for_update: 500
-    });
-    try { var _s = localStorage.getItem('pp_consent'); if (_s) gtag('consent', 'update', JSON.parse(_s)); } catch(e) {}
-  </script>
+  <script src="/ga-init.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
-  <script>gtag('js', new Date()); gtag('config', 'G-46RW178B97');</script>
   <script src="/consent.js" defer></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
   <meta charset="UTF-8">

@@ -1,7 +1,9 @@
 import { supabase } from "./db.ts";
 import { AppError } from "./errors.ts";
 
-export const ADMIN_EMAIL = "basmetten@gmail.com";
+const ADMIN_EMAILS = (Deno.env.get("ADMIN_EMAILS") || "basmetten@gmail.com")
+  .split(",")
+  .map(e => e.trim().toLowerCase());
 
 export async function requireAdminUser(authHeader: string | null): Promise<{ id: string; email: string }> {
   if (!authHeader?.startsWith("Bearer ")) {
@@ -14,8 +16,8 @@ export async function requireAdminUser(authHeader: string | null): Promise<{ id:
     throw new AppError("Unauthorized", "UNAUTHORIZED", 401);
   }
 
-  const email = data.user.email || "";
-  if (email !== ADMIN_EMAIL) {
+  const email = (data.user.email || "").toLowerCase();
+  if (!ADMIN_EMAILS.includes(email)) {
     throw new AppError("Forbidden", "FORBIDDEN", 403);
   }
 

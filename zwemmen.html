@@ -2,18 +2,8 @@
 <html lang="nl">
 <head>
   <!-- Google tag (gtag.js) — Consent Mode v2 -->
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'default', {
-      analytics_storage: 'denied', ad_storage: 'denied',
-      ad_user_data: 'denied', ad_personalization: 'denied',
-      wait_for_update: 500
-    });
-    try { var _s = localStorage.getItem('pp_consent'); if (_s) gtag('consent', 'update', JSON.parse(_s)); } catch(e) {}
-  </script>
+  <script src="/ga-init.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
-  <script>gtag('js', new Date()); gtag('config', 'G-46RW178B97');</script>
   <script src="/consent.js" defer></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
@@ -26,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.min.css?v=202603131337">
+  <link rel="stylesheet" href="/style.min.css?v=202603131939">
   <style>
   .guide-section{display:grid;gap:18px;margin:36px 0}
   .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid rgba(212,119,90,.12);box-shadow:0 16px 36px rgba(45,41,38,.08)}
@@ -65,8 +55,8 @@
   .editorial-support-links a span{font-size:12px;line-height:1.5;color:#7c6e66}
   @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
 </style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603131337">
-  <script src="/nav-floating.js?v=202603131337" defer></script>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603131939">
+  <script src="/nav-floating.js?v=202603131939" defer></script>
   <title>Zwemmen met peuters | warme baden, peuterzones en logische stops</title>
   <meta name="description" content="Zwembaden en waterplekken voor jonge kinderen, geselecteerd op peuterbad, temperatuur, kleedruimte en praktische gezinslogica.">
   <meta name="robots" content="index,follow">
@@ -91,23 +81,23 @@
     {
       "@type": "ListItem",
       "position": 1,
+      "name": "Aqua Mundo",
+      "description": "Aqua Mundo subtropisch zwemparadijs bij Center Parcs Zandvoort. Groot waterpark met glijbanen, peuterbad en subtropische temperatuur. Dagje uit.",
+      "url": "https://peuterplannen.nl/haarlem/aqua-mundo/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
       "name": "De Meent",
       "description": "Overdekt zwembad in Huizen (Optisport), gebouwd in 1998. Binnenlocatie, geschikt bij slecht weer. Waarschijnlijk peuterbad aanwezig; bel vooraf voor openingstijden.",
       "url": "https://peuterplannen.nl/gooi-en-vechtstreek/de-meent/"
     },
     {
       "@type": "ListItem",
-      "position": 2,
+      "position": 3,
       "name": "De Mirandabad",
       "description": "Groot subtropisch zwemparadijs van Amsterdam met peuterbad, glijbanen, golfslagbad en buitenbad. Ideaal voor gezinnen met jonge kinderen, met horecavoorzieningen.",
       "url": "https://peuterplannen.nl/amsterdam/de-mirandabad/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Aqua Mundo",
-      "description": "Aqua Mundo subtropisch zwemparadijs bij Center Parcs Zandvoort. Groot waterpark met glijbanen, peuterbad en subtropische temperatuur. Dagje uit.",
-      "url": "https://peuterplannen.nl/haarlem/aqua-mundo/"
     },
     {
       "@type": "ListItem",
@@ -140,51 +130,51 @@
     {
       "@type": "ListItem",
       "position": 8,
-      "name": "De Blinkerd",
-      "description": "Waterpark in Ten Boer bij Groningen met aanbod voor peuters en kinderen. Website bevestigt peuter- en kindervriendelijk aanbod.",
-      "url": "https://peuterplannen.nl/groningen/de-blinkerd/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 9,
-      "name": "Swimgym",
-      "description": "Indoor zwembad met zwemles en zwemactiviteiten voor baby's en peuters. Swimgym is gespecialiseerd in babyzwemmen en peuter-zwemles in warm water.",
-      "url": "https://peuterplannen.nl/amsterdam/swimgym/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 10,
-      "name": "Tikibad",
-      "description": "Bekend overdekt subtropisch zwemparadijs Tikibad in Duinrell, met glijbanen en peuterbad. Toegankelijk voor alle leeftijden.",
-      "url": "https://peuterplannen.nl/den-haag/tikibad/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 11,
-      "name": "Zwem- en recreatiecentrum De Boetzelaer",
-      "description": "Overdekt zwem- en recreatiecentrum in Monster met peuterbad en recreatiezwemmen. Rolstoeltoegankelijk en volledig uitgerust voor gezinnen.",
-      "url": "https://peuterplannen.nl/den-haag/zwem-en-recreatiecentrum-de-boetzelaer/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 12,
-      "name": "Zwembad De Meerkamp",
-      "description": "Zwembad De Meerkamp in Amstelveen heeft een peuterbad en babyzwemmen. Volledig overdekt en rolstoeltoegankelijk, ideaal voor jonge kinderen het hele jaar door.",
-      "url": "https://peuterplannen.nl/amsterdam/zwembad-de-meerkamp/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 13,
       "name": "Boerhaavebad",
       "description": "Binnenzwembad in Haarlem met kindvriendelijke voorzieningen. Geschikt voor peuters en kleuters. Check website voor peuterzwemmen en openingstijden.",
       "url": "https://peuterplannen.nl/haarlem/boerhaavebad/"
     },
     {
       "@type": "ListItem",
-      "position": 14,
+      "position": 9,
       "name": "De Baby Spa",
       "description": "Babyspa gespecialiseerd in babyfloaten en babymassage voor 0-12 maanden. Unieke ervaring voor baby's en ouders. Di-zo open, op afspraak. Speciaal voor de allerkleinsten.",
       "url": "https://peuterplannen.nl/rotterdam/de-baby-spa/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "name": "De Blinkerd",
+      "description": "Waterpark in Ten Boer bij Groningen met aanbod voor peuters en kinderen. Website bevestigt peuter- en kindervriendelijk aanbod.",
+      "url": "https://peuterplannen.nl/groningen/de-blinkerd/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 11,
+      "name": "Swimgym",
+      "description": "Indoor zwembad met zwemles en zwemactiviteiten voor baby's en peuters. Swimgym is gespecialiseerd in babyzwemmen en peuter-zwemles in warm water.",
+      "url": "https://peuterplannen.nl/amsterdam/swimgym/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 12,
+      "name": "Tikibad",
+      "description": "Bekend overdekt subtropisch zwemparadijs Tikibad in Duinrell, met glijbanen en peuterbad. Toegankelijk voor alle leeftijden.",
+      "url": "https://peuterplannen.nl/den-haag/tikibad/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 13,
+      "name": "Zwem- en recreatiecentrum De Boetzelaer",
+      "description": "Overdekt zwem- en recreatiecentrum in Monster met peuterbad en recreatiezwemmen. Rolstoeltoegankelijk en volledig uitgerust voor gezinnen.",
+      "url": "https://peuterplannen.nl/den-haag/zwem-en-recreatiecentrum-de-boetzelaer/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 14,
+      "name": "Zwembad De Meerkamp",
+      "description": "Zwembad De Meerkamp in Amstelveen heeft een peuterbad en babyzwemmen. Volledig overdekt en rolstoeltoegankelijk, ideaal voor jonge kinderen het hele jaar door.",
+      "url": "https://peuterplannen.nl/amsterdam/zwembad-de-meerkamp/"
     }
   ]
 }
@@ -618,9 +608,7 @@
   </nav>
 </footer>
 
-<script>
-(function(){var o=new IntersectionObserver(function(e){e.forEach(function(i){if(i.isIntersecting){i.target.classList.add('visible');o.unobserve(i.target);}});},{threshold:0,rootMargin:'0px 0px 300px 0px'});document.querySelectorAll('.loc-item,.type-section,.region-section,.blog-card,.cta-block,.support-section,.faq-section').forEach(function(el,i){el.classList.add('reveal');el.style.animationDelay=Math.min(i*0.04,0.24)+'s';o.observe(el);});})();
-</script>
+<script src="/reveal.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
 </html>

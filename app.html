@@ -97,8 +97,8 @@
 
     <!-- Fonts (swap for faster paint) -->
     <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/nav-floating.css?v=202603131337">
-    <script src="/nav-floating.js?v=202603131337" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603131939">
+    <script src="/nav-floating.js?v=202603131939" defer></script>
 
     <style>
         :root {
@@ -2399,7 +2399,7 @@
             throw lastError || new Error('Unknown fetch failure');
         }
 
-        const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,price_band,time_of_day_fit,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,noise_level,food_fit,play_corner_quality,crowd_pattern,verification_confidence,verification_mode,seo_primary_locality';
+        const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,opening_hours,seo_primary_locality,slug';
         const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url';
 
         async function fetchAllPages(baseUrl, signal) {

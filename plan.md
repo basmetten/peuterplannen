@@ -799,7 +799,7 @@ Auth, CORS, errors extracted to shared lib. Zero API changes."
 ---
 
 ## FASE 6: SECURITY HARDENING
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Opus (security review) + Sonnet (implementatie)
 **Geschatte duur:** 3 uur
 **Doel:** CSP fixen, inline handlers verwijderen, rate limiting, column-level security

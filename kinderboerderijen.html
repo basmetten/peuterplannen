@@ -2,18 +2,8 @@
 <html lang="nl">
 <head>
   <!-- Google tag (gtag.js) — Consent Mode v2 -->
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'default', {
-      analytics_storage: 'denied', ad_storage: 'denied',
-      ad_user_data: 'denied', ad_personalization: 'denied',
-      wait_for_update: 500
-    });
-    try { var _s = localStorage.getItem('pp_consent'); if (_s) gtag('consent', 'update', JSON.parse(_s)); } catch(e) {}
-  </script>
+  <script src="/ga-init.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
-  <script>gtag('js', new Date()); gtag('config', 'G-46RW178B97');</script>
   <script src="/consent.js" defer></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
   <meta charset="UTF-8">
@@ -26,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.min.css?v=202603131337">
+  <link rel="stylesheet" href="/style.min.css?v=202603131939">
   <style>
   .guide-section{display:grid;gap:18px;margin:36px 0}
   .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid rgba(212,119,90,.12);box-shadow:0 16px 36px rgba(45,41,38,.08)}
@@ -65,8 +55,8 @@
   .editorial-support-links a span{font-size:12px;line-height:1.5;color:#7c6e66}
   @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
 </style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603131337">
-  <script src="/nav-floating.js?v=202603131337" defer></script>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603131939">
+  <script src="/nav-floating.js?v=202603131939" defer></script>
   <title>Kinderboerderijen voor peuters | dieren, rust en korte uitjes</title>
   <meta name="description" content="Kinderboerderijen voor peuters en dreumesen, geselecteerd op dierencontact, overzicht, speelruimte en praktische rust voor ouders.">
   <meta name="robots" content="index,follow">
@@ -98,37 +88,37 @@
     {
       "@type": "ListItem",
       "position": 2,
+      "name": "Belevenisboerderij Schieveen",
+      "description": "Belevenisboerderij van Natuurmonumenten bij de Schieveense Polder. Dieren, natuur en kinderactiviteiten in een polderlandschap. Kinderwagenvriendelijk.",
+      "url": "https://peuterplannen.nl/rotterdam/belevenisboerderij-schieveen/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
       "name": "Burgers' Zoo Alteveer/Cranevelt",
       "description": "Wereldberoemde dierentuin in Arnhem met unieke ecodisplays. Dagje uit voor alle leeftijden, speeltuin aanwezig. Entree ca. €29.",
       "url": "https://peuterplannen.nl/arnhem/burgers-zoo-alteveer-cranevelt/"
     },
     {
       "@type": "ListItem",
-      "position": 3,
+      "position": 4,
       "name": "Eemlandhoeve",
       "description": "Biologische kinderboerderij en zorgboerderij aan de Eem bij Amersfoort. Dieren, speeltuin, horeca en arrangementen voor gezinnen.",
       "url": "https://peuterplannen.nl/amersfoort/eemlandhoeve/"
     },
     {
       "@type": "ListItem",
-      "position": 4,
+      "position": 5,
       "name": "Speelboerderij Het Buitenbeest",
       "description": "Speelboerderij open 7 dagen per week van 10:00 tot 17:30. Combinatie van dieren, speelgelegenheid en buitenruimte. Ideaal voor peuters.",
       "url": "https://peuterplannen.nl/den-haag/speelboerderij-het-buitenbeest/"
     },
     {
       "@type": "ListItem",
-      "position": 5,
+      "position": 6,
       "name": "Stadsboerderij De Weidemolen",
       "description": "Stadsboerderij met kinderboerderij (petting zoo), dagelijks open van 10:00 tot 17:00. Dieren aaien en buiten spelen voor peuters.",
       "url": "https://peuterplannen.nl/den-haag/stadsboerderij-de-weidemolen/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 6,
-      "name": "Belevenisboerderij Schieveen",
-      "description": "Belevenisboerderij van Natuurmonumenten bij de Schieveense Polder. Dieren, natuur en kinderactiviteiten in een polderlandschap. Kinderwagenvriendelijk.",
-      "url": "https://peuterplannen.nl/rotterdam/belevenisboerderij-schieveen/"
     },
     {
       "@type": "ListItem",
@@ -196,51 +186,51 @@
     {
       "@type": "ListItem",
       "position": 16,
+      "name": "Floating FARM",
+      "description": "Drijvende stadsboerderij op het water in de Merwehaven. Koeien, kaasmakerij en rondleidingen. Uniek concept, kinderwagenvriendelijk.",
+      "url": "https://peuterplannen.nl/rotterdam/floating-farm/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 17,
       "name": "kinderboerderij de Pluimgraaf",
       "description": "Kinderboerderij in Bussum, dagelijks open van 10:00-16:00. Onderdeel van Stichting De Gooische Ark. Gratis entree, veel dieren, prettig voor kleine kinderen.",
       "url": "https://peuterplannen.nl/gooi-en-vechtstreek/kinderboerderij-de-pluimgraaf/"
     },
     {
       "@type": "ListItem",
-      "position": 17,
+      "position": 18,
       "name": "Kinderboerderij Nieuw Bos en Lommer",
       "description": "Kinderboerderij in Bos en Lommer met dieren om te aaien. Gratis toegang, eigen website en speelgelegenheid voor kleuters.",
       "url": "https://peuterplannen.nl/amsterdam/kinderboerderij-nieuw-bos-en-lommer/"
     },
     {
       "@type": "ListItem",
-      "position": 18,
+      "position": 19,
       "name": "Kinderboerderij Westerweide",
       "description": "Gratis kinderboerderij in Rijnsburg met speeltuin. Dieren aaien, spelen op het terrein. Ideale bestemming voor peuters en kleuters.",
       "url": "https://peuterplannen.nl/leiden/kinderboerderij-westerweide/"
     },
     {
       "@type": "ListItem",
-      "position": 19,
+      "position": 20,
       "name": "Meierijsche Museumboerderij",
       "description": "Historische museumboerderij in Heeswijk-Dinther met levende dieren, oude gereedschappen en authentieke boerderijsfeer. Open apr–okt.",
       "url": "https://peuterplannen.nl/s-hertogenbosch/meierijsche-museumboerderij/"
     },
     {
       "@type": "ListItem",
-      "position": 20,
+      "position": 21,
       "name": "Stadsboerderij De Balijhoeve",
       "description": "Stadsboerderij met kinderboerderij bij recreatiegebied Balij in Zoetermeer. Dagelijks open 10:00-17:00, dieren aaien gratis.",
       "url": "https://peuterplannen.nl/den-haag/stadsboerderij-de-balijhoeve/"
     },
     {
       "@type": "ListItem",
-      "position": 21,
+      "position": 22,
       "name": "Zoo Veldhoven",
       "description": "Kleine maar gezellige dierentuin in Veldhoven met papegaaien, uilen, geitjes en prairiehonden. Ideaal voor een ochtend uit.",
       "url": "https://peuterplannen.nl/eindhoven/zoo-veldhoven/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 22,
-      "name": "Floating FARM",
-      "description": "Drijvende stadsboerderij op het water in de Merwehaven. Koeien, kaasmakerij en rondleidingen. Uniek concept, kinderwagenvriendelijk.",
-      "url": "https://peuterplannen.nl/rotterdam/floating-farm/"
     },
     {
       "@type": "ListItem",
@@ -1000,9 +990,7 @@
   </nav>
 </footer>
 
-<script>
-(function(){var o=new IntersectionObserver(function(e){e.forEach(function(i){if(i.isIntersecting){i.target.classList.add('visible');o.unobserve(i.target);}});},{threshold:0,rootMargin:'0px 0px 300px 0px'});document.querySelectorAll('.loc-item,.type-section,.region-section,.blog-card,.cta-block,.support-section,.faq-section').forEach(function(el,i){el.classList.add('reveal');el.style.animationDelay=Math.min(i*0.04,0.24)+'s';o.observe(el);});})();
-</script>
+<script src="/reveal.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
 </html>
