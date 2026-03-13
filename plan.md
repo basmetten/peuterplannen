@@ -1398,7 +1398,7 @@ Add tasteful motion and micro-interactions."
 ---
 
 ## FASE 11: DATA INTEGRITEIT & DATABASE VERBETERINGEN
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Sonnet
 **Geschatte duur:** 1.5 uur
 **Doel:** FK integriteit verbeteren, CI audit toevoegen
