@@ -3780,6 +3780,7 @@ function buildSeoRegistry(catalog) {
       internal_link_count: countInternalLinks(html),
       methodology_link_present: hasInternalLinkTo(html, '/methode/'),
       parent_hub_link_present: hasInternalLinkTo(html, page.parentHubPath),
+      type_hub_expected: !!page.typeHubPath,
       type_hub_link_present: hasInternalLinkTo(html, page.typeHubPath),
       slop_phrase_hits: countPatternHits(slopAuditText, AI_SLOP_PATTERNS),
       has_gsc_signal: !!page.hasGscSignal,

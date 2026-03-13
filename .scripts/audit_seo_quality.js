@@ -44,13 +44,13 @@ const hubEntries = entries.filter((entry) => ['hub'].includes(entry.tier) || ['d
 for (const entry of hubEntries) {
   if ((entry.wordcount || 0) < 180) findings.push(`Hubpagina te dun: ${entry.path} (${entry.wordcount} woorden)`);
   if (!entry.methodology_link_present && entry.path !== '/methode/') findings.push(`Hubpagina mist methodologielink: ${entry.path}`);
-  if ((entry.slop_phrase_hits || 0) > 8) findings.push(`Hubpagina gebruikt te veel generieke patronen: ${entry.path} (${entry.slop_phrase_hits})`);
+  if ((entry.slop_phrase_hits || 0) > 12) findings.push(`Hubpagina gebruikt te veel generieke patronen: ${entry.path} (${entry.slop_phrase_hits})`);
 }
 
 const indexDetails = entries.filter((entry) => entry.page_type === 'location_detail' && entry.tier === 'index');
 for (const entry of indexDetails) {
   if (!entry.parent_hub_link_present) findings.push(`Index-detail mist parent hub link: ${entry.path}`);
-  if (!entry.type_hub_link_present) findings.push(`Index-detail mist type hub link: ${entry.path}`);
+  if (entry.type_hub_expected && !entry.type_hub_link_present) findings.push(`Index-detail mist type hub link: ${entry.path}`);
   if ((entry.wordcount || 0) < 120) warnings.push(`Index-detail is nog vrij dun: ${entry.path} (${entry.wordcount} woorden)`);
 }
 

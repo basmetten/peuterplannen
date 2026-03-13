@@ -18,7 +18,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>PeuterPlannen app — vind peuteruitjes op afstand, type en weer</title>
-    <meta name="description" content="Gebruik de PeuterPlannen app om 2103 kindvriendelijke uitjes te vinden op afstand, type, leeftijd en weer. Met regiogidsen, planning en gecheckte locaties in Nederland.">
+    <meta name="description" content="Gebruik de PeuterPlannen app om 2052 kindvriendelijke uitjes te vinden op afstand, type, leeftijd en weer. Met regiogidsen, planning en gecheckte locaties in Nederland.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://peuterplannen.nl/app.html">
 
@@ -36,7 +36,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://peuterplannen.nl/app.html">
     <meta property="og:title" content="PeuterPlannen app — vind peuteruitjes op afstand, type en weer">
-    <meta property="og:description" content="Gebruik de PeuterPlannen app om 2103 kindvriendelijke uitjes te vinden op afstand, type, leeftijd en weer. Met regiogidsen, planning en gecheckte locaties in Nederland.">
+    <meta property="og:description" content="Gebruik de PeuterPlannen app om 2052 kindvriendelijke uitjes te vinden op afstand, type, leeftijd en weer. Met regiogidsen, planning en gecheckte locaties in Nederland.">
     <meta property="og:locale" content="nl_NL">
     <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
     <meta property="og:image:width" content="1408">
@@ -44,7 +44,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
     <meta name="twitter:title" content="PeuterPlannen app — vind peuteruitjes op afstand, type en weer">
-    <meta name="twitter:description" content="Gebruik de PeuterPlannen app om 2103 kindvriendelijke uitjes te vinden op afstand, type, leeftijd en weer. Met regiogidsen, planning en gecheckte locaties in Nederland.">
+    <meta name="twitter:description" content="Gebruik de PeuterPlannen app om 2052 kindvriendelijke uitjes te vinden op afstand, type, leeftijd en weer. Met regiogidsen, planning en gecheckte locaties in Nederland.">
 
     <!-- BEGIN:JSONLD_APP -->
     <!-- Structured Data (JSON-LD) -->
@@ -54,7 +54,7 @@
       "@type": "WebApplication",
       "name": "PeuterPlannen",
       "url": "https://peuterplannen.nl/app.html",
-      "description": "Interactieve kaart met 2103 kindvriendelijke locaties. Filter op type: speeltuin, restaurant, museum, natuur.",
+      "description": "Interactieve kaart met 2052 kindvriendelijke locaties. Filter op type: speeltuin, restaurant, museum, natuur.",
       "applicationCategory": "LifestyleApplication",
       "operatingSystem": "Any",
       "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
@@ -97,8 +97,8 @@
 
     <!-- Fonts (swap for faster paint) -->
     <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/nav-floating.css?v=202603122355">
-    <script src="/nav-floating.js?v=202603122355" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603130243">
+    <script src="/nav-floating.js?v=202603130243" defer></script>
 
     <style>
         :root {
@@ -576,18 +576,18 @@
         .pill-verified { background: rgba(82, 183, 136, 0.1); color: #2D8B5E; }
         .age-range { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
         .age-range::before { content: '\1F476'; font-size: 11px; }
-        .card-highlight { font-size: 13px; color: var(--primary-dark); font-weight: 500; margin-bottom: 12px; padding: 8px 12px; background: var(--primary-light); border-radius: 8px; line-height: 1.5; }
+        .card-supporting { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .card-trust {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         .trust-chip {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 10px;
+            padding: 7px 10px;
             border-radius: 999px;
             font-size: 12px;
             line-height: 1.2;
@@ -607,14 +607,14 @@
             border-color: rgba(107, 149, 144, 0.18);
             color: #4E746F;
         }
-        .card-decision {
-            margin-bottom: 12px;
-            padding: 13px 14px;
+        .card-summary {
+            margin-bottom: 10px;
+            padding: 12px 14px;
             border-radius: 16px;
             background: linear-gradient(135deg, rgba(212,119,90,0.12), rgba(255,248,243,0.96));
             border: 1px solid rgba(212, 119, 90, 0.14);
         }
-        .card-decision-label {
+        .card-summary-label {
             display: block;
             margin-bottom: 6px;
             font-size: 10px;
@@ -623,48 +623,32 @@
             text-transform: uppercase;
             color: var(--primary-dark);
         }
-        .card-decision-title {
+        .card-summary-title {
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             font-family: var(--font-heading);
-            font-size: 17px;
-            line-height: 1.08;
+            font-size: 16px;
+            line-height: 1.15;
             color: var(--text);
         }
-        .card-decision-copy {
-            display: block;
-            color: var(--text-secondary);
-            font-size: 13px;
-            line-height: 1.55;
-            font-weight: 500;
-        }
-        .card-subreasons {
-            display: grid;
-            gap: 8px;
-            margin-bottom: 14px;
-        }
-        .card-subreason {
-            padding: 10px 12px;
-            border-radius: 12px;
-            background: rgba(255, 248, 243, 0.92);
-            border: 1px solid rgba(212, 119, 90, 0.1);
-        }
-        .card-subreason-label {
-            display: block;
-            margin-bottom: 4px;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-        }
-        .card-subreason-value {
+        .card-summary-copy {
             display: block;
             color: var(--text-secondary);
             font-size: 13px;
             line-height: 1.5;
             font-weight: 500;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
+        .card-quickfacts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .quickfact-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 8px 11px; border-radius: 999px; background: rgba(255, 248, 243, 0.92); border: 1px solid rgba(212, 119, 90, 0.1); color: var(--text-secondary); font-size: 12px; line-height: 1.25; font-weight: 600; }
 
         .card-fav { background: none; border: none; padding: 6px; cursor: pointer; transition: transform 0.2s; touch-action: manipulation; border-radius: 50%; }
         .card-fav:hover { background: var(--accent-light); }
@@ -785,6 +769,15 @@
         .loc-sheet-content .card-top { margin-bottom: 8px; }
         .loc-sheet-content .card-name { font-size: 20px; }
         .loc-sheet-content .card-desc { font-size: 14px; margin-bottom: 12px; }
+        .loc-sheet-content .card-highlight { font-size: 13px; color: var(--primary-dark); font-weight: 500; margin-bottom: 12px; padding: 8px 12px; background: var(--primary-light); border-radius: 8px; line-height: 1.5; }
+        .loc-sheet-content .card-decision { margin-bottom: 12px; padding: 13px 14px; border-radius: 16px; background: linear-gradient(135deg, rgba(212,119,90,0.12), rgba(255,248,243,0.96)); border: 1px solid rgba(212, 119, 90, 0.14); }
+        .loc-sheet-content .card-decision-label { display: block; margin-bottom: 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary-dark); }
+        .loc-sheet-content .card-decision-title { display: block; margin-bottom: 4px; font-family: var(--font-heading); font-size: 17px; line-height: 1.08; color: var(--text); }
+        .loc-sheet-content .card-decision-copy { display: block; color: var(--text-secondary); font-size: 13px; line-height: 1.55; font-weight: 500; }
+        .loc-sheet-content .card-subreasons { display: grid; gap: 8px; margin-bottom: 14px; }
+        .loc-sheet-content .card-subreason { padding: 10px 12px; border-radius: 12px; background: rgba(255, 248, 243, 0.92); border: 1px solid rgba(212, 119, 90, 0.1); }
+        .loc-sheet-content .card-subreason-label { display: block; margin-bottom: 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+        .loc-sheet-content .card-subreason-value { display: block; color: var(--text-secondary); font-size: 13px; line-height: 1.5; font-weight: 500; }
         .loc-sheet-content .card-actions { margin-top: 14px; }
 
         /* User location dot */
@@ -1107,7 +1100,7 @@
           grid-template-columns: minmax(0, 1fr);
           gap: 10px;
         }
-        html.pp-desktop .card-subreasons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        html.pp-desktop .card-quickfacts { gap: 10px; }
         html.pp-desktop body.plan-mode { overflow: auto !important; }
         html.pp-desktop body.plan-mode .app-wrapper { display: none !important; }
         html.pp-desktop body.plan-mode #plan-view { display: block !important; }
@@ -1174,26 +1167,26 @@
 <noscript>
   <div>
     <h1>PeuterPlannen</h1>
-    <p>2103 uitjes voor gezinnen met jonge kinderen.</p>
+    <p>2052 uitjes voor gezinnen met jonge kinderen.</p>
     <h2>Per stad</h2>
     <ul>
-      <li><a href="amsterdam.html">Amsterdam (304 locaties)</a></li>
-      <li><a href="rotterdam.html">Rotterdam (140 locaties)</a></li>
-      <li><a href="den-haag.html">Den Haag (175 locaties)</a></li>
-      <li><a href="utrecht.html">Utrecht (192 locaties)</a></li>
-      <li><a href="haarlem.html">Haarlem (107 locaties)</a></li>
-      <li><a href="amersfoort.html">Amersfoort (82 locaties)</a></li>
-      <li><a href="leiden.html">Leiden (62 locaties)</a></li>
-      <li><a href="utrechtse-heuvelrug.html">Utrechtse Heuvelrug (111 locaties)</a></li>
-      <li><a href="eindhoven.html">Eindhoven (65 locaties)</a></li>
-      <li><a href="groningen.html">Groningen (117 locaties)</a></li>
-      <li><a href="almere.html">Almere (74 locaties)</a></li>
-      <li><a href="tilburg.html">Tilburg (88 locaties)</a></li>
+      <li><a href="amsterdam.html">Amsterdam (293 locaties)</a></li>
+      <li><a href="rotterdam.html">Rotterdam (138 locaties)</a></li>
+      <li><a href="den-haag.html">Den Haag (171 locaties)</a></li>
+      <li><a href="utrecht.html">Utrecht (186 locaties)</a></li>
+      <li><a href="haarlem.html">Haarlem (102 locaties)</a></li>
+      <li><a href="amersfoort.html">Amersfoort (80 locaties)</a></li>
+      <li><a href="leiden.html">Leiden (61 locaties)</a></li>
+      <li><a href="utrechtse-heuvelrug.html">Utrechtse Heuvelrug (109 locaties)</a></li>
+      <li><a href="eindhoven.html">Eindhoven (64 locaties)</a></li>
+      <li><a href="groningen.html">Groningen (115 locaties)</a></li>
+      <li><a href="almere.html">Almere (72 locaties)</a></li>
+      <li><a href="tilburg.html">Tilburg (86 locaties)</a></li>
       <li><a href="breda.html">Breda (73 locaties)</a></li>
-      <li><a href="nijmegen.html">Nijmegen (58 locaties)</a></li>
-      <li><a href="arnhem.html">Arnhem (69 locaties)</a></li>
-      <li><a href="apeldoorn.html">Apeldoorn (73 locaties)</a></li>
-      <li><a href="s-hertogenbosch.html">'s-Hertogenbosch (108 locaties)</a></li>
+      <li><a href="nijmegen.html">Nijmegen (53 locaties)</a></li>
+      <li><a href="arnhem.html">Arnhem (67 locaties)</a></li>
+      <li><a href="apeldoorn.html">Apeldoorn (72 locaties)</a></li>
+      <li><a href="s-hertogenbosch.html">'s-Hertogenbosch (105 locaties)</a></li>
       <li><a href="gooi-en-vechtstreek.html">Gooi en Vechtstreek (47 locaties)</a></li>
       <li><a href="enschede.html">Enschede (36 locaties)</a></li>
       <li><a href="zwolle.html">Zwolle (46 locaties)</a></li>
@@ -1575,7 +1568,7 @@
             <!-- BEGIN:INFO_STATS -->
             <div class="info-stats">
                 <div class="info-stat">
-                    <strong>2103+</strong>
+                    <strong>2052+</strong>
                     <span>Locaties</span>
                 </div>
                 <div class="info-stat">
@@ -1593,7 +1586,7 @@
 
             <div class="info-ai-note">
                 <h3>Hoe werkt de aanbeveling?</h3>
-                <p>PeuterPlannen combineert actuele weerdata, jouw locatie en de leeftijd van je kinderen om de meest geschikte uitjes naar boven te halen. Alle 2103 locaties zijn handmatig geverifieerd — niet gegenereerd door een chatbot.</p>
+                <p>PeuterPlannen combineert actuele weerdata, jouw locatie en de leeftijd van je kinderen om de meest geschikte uitjes naar boven te halen. Alle 2052 locaties zijn handmatig geverifieerd — niet gegenereerd door een chatbot.</p>
             </div>
 
             <div class="info-links">
@@ -1673,6 +1666,36 @@
                 .replace(/(?:\s*·\s*){2,}/g, ' · ')
                 .replace(/^\s*·\s*|\s*·\s*$/g, '')
                 .trim();
+        }
+        function comparableText(text) {
+            return String(text || '')
+                .toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9\s]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+        function isNearDuplicateCopy(a, b) {
+            const aa = comparableText(a);
+            const bb = comparableText(b);
+            if (!aa || !bb) return false;
+            if (aa === bb) return true;
+            if (aa.length > 28 && bb.includes(aa)) return true;
+            if (bb.length > 28 && aa.includes(bb)) return true;
+            const aWords = aa.split(' ').filter(Boolean);
+            const bWords = bb.split(' ').filter(Boolean);
+            const overlap = aWords.filter((word) => bWords.includes(word)).length;
+            const threshold = Math.min(aWords.length, bWords.length) * 0.72;
+            return overlap >= threshold;
+        }
+        function getCardSupportingCopy(item) {
+            const description = String(item.description || '').trim();
+            const highlight = cleanToddlerHighlight(item.toddler_highlight || '');
+            if (description && highlight && isNearDuplicateCopy(description, highlight)) {
+                return highlight.length < description.length ? highlight : description;
+            }
+            if (highlight && highlight.length <= 120) return highlight;
+            return description || highlight || '';
         }
 
         let activeTag = 'all';
@@ -2576,6 +2599,35 @@
             }
             return chips.slice(0, 3);
         }
+        function getCompactTrustChip(item) {
+            const verificationLabel = getVerificationModeLabel(item.verification_mode);
+            if (verificationLabel) {
+                return { tone: 'positive', label: verificationLabel.replace(' gecontroleerd', ' gecheckt').replace('Aangevuld door locatie', 'Locatie aangevuld') };
+            }
+            if (typeof item.verification_confidence === 'number' && Number.isFinite(item.verification_confidence)) {
+                const pct = Math.round(Math.max(0, Math.min(1, item.verification_confidence)) * 100);
+                if (pct >= 70) return { tone: 'neutral', label: `Betrouwbaarheid ${pct}%` };
+            }
+            return null;
+        }
+        function getCardQuickFacts(item, travelInfo) {
+            const facts = [];
+            if (travelInfo?.distanceKm != null) {
+                facts.push(travelInfo.distanceKm <= 5 ? `${Math.round(travelInfo.distanceKm)} km rijden` : travelInfo.distance);
+            } else if (item.seo_primary_locality) {
+                facts.push(`Bij ${item.seo_primary_locality}`);
+            } else if (item.region) {
+                facts.push(item.region);
+            }
+            if (item.diaper && item.coffee) facts.push('Koffie + verschonen');
+            else if (item.diaper) facts.push('Verschonen geregeld');
+            else if (item.coffee) facts.push('Koffie voor ouders');
+            else if (item.rain_backup_quality === 'strong') facts.push('Sterk bij regen');
+            else if (item.play_corner_quality === 'strong') facts.push('Sterke speelprikkel');
+            else if (item.time_of_day_fit === 'ochtend') facts.push('Fijn in de ochtend');
+            else if (item.time_of_day_fit === 'middag') facts.push('Sterker in de middag');
+            return facts.slice(0, 2);
+        }
 
         function getTrustBullets(item) {
             const bullets = [];
@@ -2654,10 +2706,10 @@
         // ─────────────────────────────────────────────────────────────────────
 
         const PROMO_ITEMS = [
-            { title: 'Dit is een hobbyproject', text: 'Geen team, geen budget. Wel 2103+ uitjes in Nederland. Stuur een koffie. ☕', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun PeuterPlannen', icon: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>', donation: true },
-            { title: 'Gemaakt door een vader, voor ouders', text: 'Geen team, geen budget. Wel 2103+ uitjes. Een kleine bijdrage helpt.', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun PeuterPlannen', icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>', donation: true },
+            { title: 'Dit is een hobbyproject', text: 'Geen team, geen budget. Wel 2052+ uitjes in Nederland. Stuur een koffie. ☕', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun PeuterPlannen', icon: '<path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>', donation: true },
+            { title: 'Gemaakt door een vader, voor ouders', text: 'Geen team, geen budget. Wel 2052+ uitjes. Een kleine bijdrage helpt.', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun PeuterPlannen', icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>', donation: true },
             { title: 'Iets nuttigs gevonden?', text: 'PeuterPlannen is gratis. Een kleine bijdrage houdt het zo.', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Trakteer de maker', icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>', donation: true },
-            { title: '2103+ locaties, gratis', text: 'Gemaakt voor ouders in Nederland. Help het gratis te houden.', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun via betaalverzoek', icon: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>', donation: true },
+            { title: '2052+ locaties, gratis', text: 'Gemaakt voor ouders in Nederland. Help het gratis te houden.', url: 'https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO', cta: 'Steun via betaalverzoek', icon: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>', donation: true },
         ];
 
         // === Batch rendering state ===
@@ -2740,15 +2792,15 @@
 
                 const ageInfo = (item.min_age !== null && item.max_age !== null) ?
                     `<span class="age-range">${item.min_age}-${item.max_age} jaar</span>` : '';
-                const highlight = item.toddler_highlight ?
-                    `<p class="card-highlight">${escapeHtml(item.toddler_highlight)}</p>` : '';
+                const supportingCopy = getCardSupportingCopy(item);
 
                 const facilities = [];
                 if (item.coffee) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>Koffie</span>');
                 if (item.diaper) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5z"/><path d="M6 9.01V9"/></svg>Verschonen</span>');
                 if (item.alcohol) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 3h10v9a5 5 0 0 1-10 0V3z"/></svg>Alcohol</span>');
                 const reasons = getCardReasons(item, travelInfo);
-                const trustChips = getTrustChips(item);
+                const trustChip = getCompactTrustChip(item);
+                const quickFacts = getCardQuickFacts(item, travelInfo);
 
                 const card = document.createElement('article');
                 card.className = 'loc-card reveal';
@@ -2772,16 +2824,15 @@
                     </div>
                     ${ageInfo}
                     <h2 class="card-name">${escapeHtml(item.name)}${verifiedBadge}</h2>
-                    <p class="card-desc">${escapeHtml(item.description || '')}</p>
-                    ${highlight}
-                    ${trustChips.length ? `<div class="card-trust">${trustChips.map((chip) => `<span class="trust-chip ${chip.tone === 'positive' ? 'is-positive' : 'is-neutral'}">${escapeHtml(chip.label)}</span>`).join('')}</div>` : ''}
-                    <div class="card-decision">
-                        <span class="card-decision-label">Waarom dit nu logisch voelt</span>
-                        <strong class="card-decision-title">${escapeHtml(reasons.headline)}</strong>
-                        <p class="card-decision-copy">${escapeHtml(reasons.primary)}</p>
-                    </div>
-                    <div class="card-subreasons">
-                        ${reasons.secondary.map((reason) => `<div class="card-subreason"><span class="card-subreason-label">${escapeHtml(reason.label)}</span><span class="card-subreason-value">${escapeHtml(reason.value)}</span></div>`).join('')}
+                    ${supportingCopy ? `<p class="card-supporting">${escapeHtml(supportingCopy)}</p>` : ''}
+                    ${(trustChip || quickFacts.length) ? `<div class="card-trust">
+                        ${trustChip ? `<span class="trust-chip ${trustChip.tone === 'positive' ? 'is-positive' : 'is-neutral'}">${escapeHtml(trustChip.label)}</span>` : ''}
+                        ${quickFacts.map((fact) => `<span class="quickfact-chip">${escapeHtml(fact)}</span>`).join('')}
+                    </div>` : ''}
+                    <div class="card-summary">
+                        <span class="card-summary-label">Beste match nu</span>
+                        <strong class="card-summary-title">${escapeHtml(reasons.headline)}</strong>
+                        <p class="card-summary-copy">${escapeHtml(reasons.primary)}</p>
                     </div>
                     ${facilities.length ? `<div class="card-facilities">${facilities.join('')}</div>` : ''}
                     <div class="card-actions">
