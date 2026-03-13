@@ -553,6 +553,23 @@ ${headCommon()}
 </html>`;
 }
 
+function redirectLocationPageHTML(loc, regionSlug, locSlug) {
+  const appPath = `/app.html?locatie=${regionSlug}/${locSlug}`;
+  return `<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,follow">
+<meta http-equiv="refresh" content="0;url=${appPath}">
+<link rel="canonical" href="https://peuterplannen.nl${appPath}">
+<title>${escapeHtml(loc.name)} | PeuterPlannen</title>
+</head>
+<body>
+<p>Je wordt doorgestuurd. <a href="${appPath}">Ga naar ${escapeHtml(loc.name)}</a></p>
+</body>
+</html>`;
+}
+
 function generateLocationPages(data) {
   const { regions, locations, total } = data;
   const regionMap = {};
@@ -560,7 +577,9 @@ function generateLocationPages(data) {
   regions.forEach(r => { regionMap[r.slug] = r; });
   locations.forEach((loc) => byId.set(Number(loc.id), loc));
 
-  let count = 0;
+  let staticCount = 0;
+  let redirectCount = 0;
+  const runtimeLocationMap = {};
   const regionGroups = {};
   locations.forEach(loc => {
     if (!regionGroups[loc.regionSlug]) regionGroups[loc.regionSlug] = [];
@@ -580,19 +599,32 @@ function generateLocationPages(data) {
     if (!fs.existsSync(regionDir)) fs.mkdirSync(regionDir, { recursive: true });
 
     for (const loc of locs) {
-      // Find similar locations (same region, same type first, then others)
-      const rankedPool = sortLocationsForSeo(locs.filter((candidate) => candidate !== loc && candidate.seoTierResolved !== 'alias'));
-      const sameType = rankedPool.filter(l => l.type === loc.type).slice(0, 3);
-      const otherType = rankedPool.filter(l => l.type !== loc.type).slice(0, 6 - sameType.length);
-      const similar = [...sameType, ...otherType].slice(0, 6);
-      const canonicalTarget = loc.seoTierResolved === 'alias' ? byId.get(Number(loc.seo_canonical_target)) : null;
-      const html = canonicalTarget ? aliasLocationPageHTML(loc, canonicalTarget) : locationPageHTML(loc, region, similar, total);
+      let html;
+
+      if (loc.seoTierResolved === 'alias') {
+        // Alias: redirect to canonical location page
+        const canonicalTarget = byId.get(Number(loc.seo_canonical_target));
+        html = canonicalTarget ? aliasLocationPageHTML(loc, canonicalTarget) : locationPageHTML(loc, region, [], total);
+        staticCount++;
+      } else if (loc.seoTierResolved === 'index') {
+        // Index: full static page
+        const rankedPool = sortLocationsForSeo(locs.filter((candidate) => candidate !== loc && candidate.seoTierResolved !== 'alias'));
+        const sameType = rankedPool.filter(l => l.type === loc.type).slice(0, 3);
+        const otherType = rankedPool.filter(l => l.type !== loc.type).slice(0, 6 - sameType.length);
+        const similar = [...sameType, ...otherType].slice(0, 6);
+        html = locationPageHTML(loc, region, similar, total);
+        staticCount++;
+      } else {
+        // Support (or any other tier): mini-redirect to app.html
+        html = redirectLocationPageHTML(loc, rSlug, loc.locSlug);
+        runtimeLocationMap[`${rSlug}/${loc.locSlug}`] = Number(loc.id);
+        redirectCount++;
+      }
 
       const locDir = path.join(regionDir, loc.locSlug);
       if (!fs.existsSync(locDir)) fs.mkdirSync(locDir, { recursive: true });
 
       fs.writeFileSync(path.join(locDir, 'index.html'), html);
-      count++;
     }
 
     for (const entry of fs.readdirSync(regionDir, { withFileTypes: true })) {
@@ -606,13 +638,20 @@ function generateLocationPages(data) {
     }
   }
 
-  console.log(`Generated ${count} location pages`);
-  return count;
+  // Write runtime location manifest for support-tier locations
+  const outputDir = path.join(ROOT, 'output');
+  if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+  fs.writeFileSync(path.join(outputDir, 'runtime-location-map.json'), JSON.stringify(runtimeLocationMap, null, 2));
+
+  const totalCount = staticCount + redirectCount;
+  console.log(`Generated ${staticCount} static + ${redirectCount} redirect location pages (${totalCount} total)`);
+  return totalCount;
 }
 
 module.exports = {
   cleanToddlerHighlight,
   locationPageHTML,
   aliasLocationPageHTML,
+  redirectLocationPageHTML,
   generateLocationPages,
 };

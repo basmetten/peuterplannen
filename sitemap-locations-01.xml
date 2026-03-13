@@ -1735,6 +1735,12 @@
     <priority>0.64</priority>
   </url>
   <url>
+    <loc>https://peuterplannen.nl/nijmegen/natuurspeeltuin-de-vieze-broek/</loc>
+    <lastmod>2026-03-06T14:39:31.763+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.64</priority>
+  </url>
+  <url>
     <loc>https://peuterplannen.nl/arnhem/nederland-watermuseum/</loc>
     <lastmod>2026-03-06T14:39:18.866+00:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -2073,6 +2079,12 @@
   <url>
     <loc>https://peuterplannen.nl/amsterdam/piccolino/</loc>
     <lastmod>2026-03-02T07:40:42.714+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.64</priority>
+  </url>
+  <url>
+    <loc>https://peuterplannen.nl/den-haag/piratenspeeltuin/</loc>
+    <lastmod>2026-03-06T13:49:13.79+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.64</priority>
   </url>

@@ -97,8 +97,8 @@
 
     <!-- Fonts (swap for faster paint) -->
     <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/nav-floating.css?v=202603130858">
-    <script src="/nav-floating.js?v=202603130858" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603131337">
+    <script src="/nav-floating.js?v=202603131337" defer></script>
 
     <style>
         :root {
@@ -1152,6 +1152,47 @@
           body.app-mode-animating #plan-view:not(.hidden),
           body.app-mode-animating .app-wrapper:not(.hidden) { animation: none; }
         }
+
+        /* === Detail View === */
+        .detail-view { max-width: 720px; margin: 104px auto 0; padding: 0 18px 60px; }
+        .detail-back { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; margin-bottom: 18px; border-radius: var(--radius-pill); background: var(--primary-light); color: var(--primary-dark); font-weight: 600; font-size: 14px; text-decoration: none; border: 1px solid rgba(212,119,90,.12); transition: background .2s; }
+        .detail-back:hover { background: var(--primary); color: #fff; }
+        .detail-back svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+        .detail-header { margin-bottom: 20px; }
+        .detail-header h1 { font-family: var(--font-heading); font-size: clamp(28px, 5vw, 42px); font-weight: 700; color: var(--text); letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 8px; }
+        .detail-type-badge { display: inline-block; padding: 5px 12px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #9e5e4b; background: rgba(212,119,90,.08); border: 1px solid rgba(212,119,90,.12); margin-bottom: 8px; }
+        .detail-region-link { display: inline-block; font-size: 15px; color: var(--primary-dark); font-weight: 600; text-decoration: none; }
+        .detail-region-link:hover { text-decoration: underline; }
+        .detail-description { font-size: 17px; line-height: 1.76; color: #5f5149; margin-bottom: 20px; }
+        .detail-highlight { padding: 16px 20px; border-radius: var(--radius-md); background: var(--bg-warm); border-left: 4px solid var(--primary); margin-bottom: 20px; font-size: 15px; line-height: 1.72; color: #5f5149; }
+        .detail-highlight strong { color: var(--primary-dark); }
+        .detail-info-grid { display: grid; gap: 10px; margin-bottom: 24px; }
+        .detail-info-item { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: var(--radius-sm); background: var(--surface); border: 1px solid rgba(45,41,38,.06); box-shadow: var(--shadow-sm); }
+        .detail-info-label { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; }
+        .detail-info-value { font-size: 15px; font-weight: 500; color: var(--text); }
+        .detail-info-value a { color: var(--primary-dark); text-decoration: none; font-weight: 600; }
+        .detail-info-value a:hover { text-decoration: underline; }
+        .detail-info-verified { color: #2D8B5E; font-weight: 600; }
+        .detail-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+        .detail-btn-route { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: var(--radius-sm); background: var(--primary); color: #fff; font-weight: 700; font-size: 15px; text-decoration: none; border: none; transition: background .2s; }
+        .detail-btn-route:hover { background: var(--primary-dark); }
+        .detail-btn-route svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; }
+        .detail-share { display: flex; gap: 8px; }
+        .detail-share-wa, .detail-share-native { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: var(--radius-sm); font-weight: 600; font-size: 14px; text-decoration: none; border: 1px solid rgba(45,41,38,.10); background: var(--surface); color: var(--text); cursor: pointer; transition: border-color .2s, box-shadow .2s; }
+        .detail-share-wa:hover, .detail-share-native:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
+        .detail-share-wa { color: #25D366; }
+        .detail-map-wrap { border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 12px; border: 1px solid rgba(45,41,38,.08); }
+        .detail-map-wrap #detail-map { width: 100%; height: 280px; }
+        .detail-map-attribution { font-size: 12px; color: var(--text-muted); margin-bottom: 24px; }
+        .detail-map-attribution a { color: var(--text-muted); }
+        .detail-explore-cta { text-align: center; margin: 28px 0; }
+        .detail-explore-cta a { display: inline-block; padding: 12px 24px; background: var(--primary-light); color: var(--primary-dark); border-radius: var(--radius-sm); text-decoration: none; font-weight: 600; font-size: 15px; transition: background .2s, color .2s; }
+        .detail-explore-cta a:hover { background: var(--primary); color: #fff; }
+        .detail-loading { text-align: center; padding: 60px 20px; color: var(--text-secondary); font-size: 16px; }
+        .detail-loading .spinner { display: inline-block; width: 28px; height: 28px; border: 3px solid rgba(212,119,90,.2); border-top-color: var(--primary); border-radius: 50%; animation: spin .7s linear infinite; margin-bottom: 14px; }
+        .detail-error { text-align: center; padding: 60px 20px; }
+        .detail-error p { color: var(--text-secondary); font-size: 16px; margin-bottom: 16px; }
+        .detail-error a { color: var(--primary-dark); font-weight: 600; }
     </style>
 </head>
 <body>
@@ -1394,6 +1435,9 @@
         </div>
     </div><!-- /#app-container -->
     </div><!-- /.app-wrapper -->
+
+    <!-- Detail view (shown when ?locatie= parameter is present) -->
+    <section id="detail-view" class="detail-view hidden" aria-label="Locatie detail"></section>
 
     <!-- Plan view (hidden until tab selected) -->
     <section id="plan-view" class="plan-view hidden">
@@ -1703,8 +1747,12 @@
         let filterPanelUserExpanded = false;
 
         // Parse URL parameters (from quick-action buttons on homepage and city pages)
+        let locatieParam = null;
         (function() {
             const params = new URLSearchParams(window.location.search);
+            if (params.get('locatie')) {
+                locatieParam = params.get('locatie');
+            }
             if (params.get('weather')) {
                 activeWeather = params.get('weather');
                 setTimeout(() => {
@@ -2389,6 +2437,200 @@
                 verification_mode: row.verification_mode ?? null,
                 seo_primary_locality: row.seo_primary_locality ?? null
             };
+        }
+
+        function slugify(text) {
+            return String(text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        }
+
+        async function showLocationDetail(regionSlug, locSlug) {
+            const detailView = document.getElementById('detail-view');
+            const appWrapper = document.querySelector('.app-wrapper');
+            const planView = document.getElementById('plan-view');
+            const bottomNav = document.getElementById('bottom-nav');
+
+            // Hide normal UI, show detail view
+            if (appWrapper) appWrapper.classList.add('hidden');
+            if (planView) planView.classList.add('hidden');
+            if (bottomNav) bottomNav.classList.add('hidden');
+            detailView.classList.remove('hidden');
+
+            // Show loading state
+            detailView.innerHTML = '<div class="detail-loading"><div class="spinner"></div><p>Locatie laden...</p></div>';
+
+            try {
+                // Step 1: Fetch the runtime location map
+                const mapResp = await fetch('/output/runtime-location-map.json');
+                if (!mapResp.ok) throw new Error('Kon locatiekaart niet laden');
+                const locationMap = await mapResp.json();
+
+                // Look up the location ID
+                const key = regionSlug + '/' + locSlug;
+                const locationId = locationMap[key];
+                if (!locationId) throw new Error('Locatie niet gevonden');
+
+                // Step 2: Fetch the single location from Supabase
+                const headers = { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" };
+                const url = SB_URL + '?id=eq.' + locationId + '&select=' + FULL_LOCATION_SELECT;
+                const data = await fetchJsonWithRetry(url, { method: 'GET', headers });
+                if (!Array.isArray(data) || data.length === 0) throw new Error('Locatie niet gevonden');
+
+                const loc = normalizeLocationRow(data[0]);
+
+                // Step 3: Render the detail view
+                renderDetailView(loc, regionSlug);
+            } catch (err) {
+                console.error('Detail view error:', err);
+                detailView.innerHTML = '<div class="detail-error"><p>' + escapeHtml(err.message || 'Er ging iets mis bij het laden van deze locatie.') + '</p><a href="/app.html">Terug naar de app</a></div>';
+            }
+        }
+
+        function renderDetailView(loc, regionSlug) {
+            const detailView = document.getElementById('detail-view');
+            const typeLabel = TYPE_LABELS[loc.type] || loc.type || 'Locatie';
+            const weatherLabel = WEATHER_LABELS[loc.weather] || loc.weather || '';
+            const safeWebsite = safeUrl(loc.website);
+            const highlight = cleanToddlerHighlight(loc.toddler_highlight || '');
+            const regionName = loc.region || '';
+
+            // Age range
+            let ageText = '';
+            if (loc.min_age != null && loc.max_age != null) {
+                ageText = loc.min_age + '–' + loc.max_age + ' jaar';
+            } else if (loc.min_age != null) {
+                ageText = 'Vanaf ' + loc.min_age + ' jaar';
+            } else if (loc.max_age != null) {
+                ageText = 'Tot ' + loc.max_age + ' jaar';
+            }
+
+            // Verified date
+            let verifiedText = '';
+            if (loc.last_verified) {
+                const d = new Date(loc.last_verified);
+                const months = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+                verifiedText = months[d.getMonth()] + ' ' + d.getFullYear();
+            }
+
+            // Facilities
+            const facilities = [];
+            if (loc.coffee) facilities.push('Koffie voor ouders');
+            if (loc.diaper) facilities.push('Luierruimte');
+            if (loc.alcohol) facilities.push('Alcohol beschikbaar');
+
+            // Share URL
+            const shareUrl = 'https://peuterplannen.nl/app.html?locatie=' + encodeURIComponent(regionSlug + '/' + slugify(loc.name));
+            const shareTitle = escapeHtml(loc.name) + ' — PeuterPlannen';
+            const waText = encodeURIComponent(loc.name + ' — Peuteruitje in ' + regionName + ' ' + shareUrl);
+
+            // Build HTML
+            let html = '';
+
+            // Back button
+            html += '<a href="/app.html" class="detail-back" onclick="event.preventDefault(); if (history.length > 1) { history.back(); } else { location.href=\'/app.html\'; }"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Terug</a>';
+
+            // Header
+            html += '<div class="detail-header">';
+            html += '<span class="detail-type-badge">' + escapeHtml(typeLabel) + '</span>';
+            html += '<h1>' + escapeHtml(loc.name) + '</h1>';
+            if (regionName) {
+                html += '<a href="/app.html?regio=' + encodeURIComponent(regionName) + '" class="detail-region-link">in ' + escapeHtml(regionName) + '</a>';
+            }
+            html += '</div>';
+
+            // Description
+            if (loc.description) {
+                html += '<p class="detail-description">' + escapeHtml(loc.description) + '</p>';
+            }
+
+            // Toddler highlight
+            if (highlight) {
+                html += '<div class="detail-highlight"><strong>Peutertip:</strong> ' + escapeHtml(highlight) + '</div>';
+            }
+
+            // Info grid
+            html += '<div class="detail-info-grid">';
+            if (weatherLabel) {
+                html += '<div class="detail-info-item"><div><div class="detail-info-label">Weer</div><div class="detail-info-value">' + escapeHtml(weatherLabel) + '</div></div></div>';
+            }
+            if (ageText) {
+                html += '<div class="detail-info-item"><div><div class="detail-info-label">Leeftijd</div><div class="detail-info-value">' + escapeHtml(ageText) + '</div></div></div>';
+            }
+            facilities.forEach(function(f) {
+                html += '<div class="detail-info-item"><div><div class="detail-info-label">Faciliteit</div><div class="detail-info-value">' + escapeHtml(f) + '</div></div></div>';
+            });
+            if (verifiedText) {
+                html += '<div class="detail-info-item"><div><div class="detail-info-label">Status</div><div class="detail-info-value detail-info-verified">' + escapeHtml('Geverifieerd ' + verifiedText) + '</div></div></div>';
+            }
+            if (safeWebsite) {
+                var displayUrl = safeWebsite.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+                html += '<div class="detail-info-item"><div><div class="detail-info-label">Website</div><div class="detail-info-value"><a class="detail-website-link" target="_blank" rel="noopener">' + escapeHtml(displayUrl) + '</a></div></div></div>';
+            }
+            html += '</div>';
+
+            // Actions
+            html += '<div class="detail-actions">';
+            if (loc.lat && loc.lng) {
+                html += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + loc.lat + ',' + loc.lng + '" target="_blank" rel="noopener" class="detail-btn-route"><svg viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg> Route plannen</a>';
+            }
+            html += '<div class="detail-share">';
+            html += '<a href="https://wa.me/?text=' + waText + '" target="_blank" rel="noopener" class="detail-share-wa">WhatsApp</a>';
+            if (typeof navigator !== 'undefined' && navigator.share) {
+                html += '<button class="detail-share-native" onclick="navigator.share({title:\'' + shareTitle.replace(/'/g, "\\'") + '\',url:\'' + shareUrl + '\'}).catch(function(){})">Delen</button>';
+            }
+            html += '</div>';
+            html += '</div>';
+
+            // Map
+            if (loc.lat && loc.lng) {
+                html += '<div class="detail-map-wrap"><div id="detail-map"></div></div>';
+                html += '<p class="detail-map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>';
+            }
+
+            // Explore CTA
+            html += '<div class="detail-explore-cta">';
+            html += '<a href="/app.html?type=' + encodeURIComponent(loc.type || '') + '&regio=' + encodeURIComponent(regionName) + '">Bekijk alle ' + escapeHtml(typeLabel) + ' in ' + escapeHtml(regionName) + ' &rarr;</a>';
+            html += '</div>';
+
+            detailView.innerHTML = html;
+
+            // Set website link href after innerHTML (avoids audit false positive on href in JS string)
+            if (safeWebsite) {
+                var websiteLink = detailView.querySelector('.detail-website-link');
+                if (websiteLink) websiteLink.href = safeWebsite;
+            }
+
+            // Update page title
+            document.title = loc.name + ' — PeuterPlannen';
+
+            // Lazy-load map
+            if (loc.lat && loc.lng) {
+                var mapEl = document.getElementById('detail-map');
+                if (mapEl && typeof maplibregl !== 'undefined') {
+                    var map = new maplibregl.Map({
+                        container: 'detail-map',
+                        style: 'https://tiles.openfreemap.org/styles/positron',
+                        center: [loc.lng, loc.lat],
+                        zoom: 14,
+                        attributionControl: false
+                    });
+                    new maplibregl.Marker({ color: '#D4775A' }).setLngLat([loc.lng, loc.lat]).addTo(map);
+                } else if (mapEl) {
+                    // Load MapLibre dynamically
+                    var s = document.createElement('script');
+                    s.src = 'https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.js';
+                    s.onload = function() {
+                        var map = new maplibregl.Map({
+                            container: 'detail-map',
+                            style: 'https://tiles.openfreemap.org/styles/positron',
+                            center: [loc.lng, loc.lat],
+                            zoom: 14,
+                            attributionControl: false
+                        });
+                        new maplibregl.Marker({ color: '#D4775A' }).setLngLat([loc.lng, loc.lat]).addTo(map);
+                    };
+                    document.head.appendChild(s);
+                }
+            }
         }
 
         async function fetchLocationsLive(signal) {
@@ -3421,15 +3663,31 @@
         }, { once: true });
 
         // Start loading data immediately
-        updateShortlistBar();
-        updateFilterCount();
-        syncFilterPanelForViewport();
-        loadLocations();
-        checkWeather();
+        if (locatieParam) {
+            // Detail view mode: skip normal app initialization
+            const locParts = locatieParam.split('/');
+            if (locParts.length === 2) {
+                showLocationDetail(locParts[0], locParts[1]);
+            } else {
+                // Invalid locatie param, fall back to normal app
+                locatieParam = null;
+                updateShortlistBar();
+                updateFilterCount();
+                syncFilterPanelForViewport();
+                loadLocations();
+                checkWeather();
+            }
+        } else {
+            updateShortlistBar();
+            updateFilterCount();
+            syncFilterPanelForViewport();
+            loadLocations();
+            checkWeather();
+        }
 
         // Apply layout (desktop/mobile) via CSS class + media query (belt AND suspenders)
         applyLayout();
-        syncDesktopModeSwitch('home');
+        syncDesktopModeSwitch(locatieParam ? null : 'home');
         window.addEventListener('resize', () => { applyLayout(); syncFilterPanelForViewport(); });
 
         // Preload MapLibre — immediately on desktop, lazily on mobile

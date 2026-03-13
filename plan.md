@@ -589,7 +589,7 @@ npx serve for local development. .env.example for onboarding."
 ---
 
 ## FASE 4: NOINDEX DETAIL PAGES → RUNTIME RENDERING
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Opus (architectuur) + Sonnet (implementatie)
 **Geschatte duur:** 4-6 uur
 **Doel:** ~1700 noindex location detail pages verplaatsen van static naar client-side rendered
