@@ -1138,7 +1138,7 @@ Zero PII stored. No consent required."
 ---
 
 ## FASE 9: PERFORMANCE OPTIMALISATIE
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Sonnet (implementatie) + Haiku (font download)
 **Geschatte duur:** 2 uur
 **Doel:** Self-host fonts, preload critical assets, reduce third-party requests
