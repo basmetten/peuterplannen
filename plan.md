@@ -1659,7 +1659,7 @@ Full rebuild fallback for larger changes or manual trigger."
 ---
 
 ## FASE 15: DOCUMENTATIE & BUS FACTOR
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Sonnet (documentatie) + Haiku (formatting)
 **Geschatte duur:** 2 uur
 **Doel:** ARCHITECTURE.md updaten, operationele documentatie toevoegen
@@ -1706,7 +1706,7 @@ Add pipeline documentation."
 ---
 
 ## FASE 16: CI/CD HARDENING
-**Status:** `TODO`
+**Status:** `DONE`
 **Agent:** Sonnet
 **Geschatte duur:** 1.5 uur
 **Doel:** Tests toevoegen aan CI, audit versterken
@@ -1755,7 +1755,7 @@ expected range to catch runaway generation or broken builds."
 ---
 
 ## FASE 17: FINAL CLEANUP & MERGE
-**Status:** `TODO`
+**Status:** `IN_PROGRESS`
 **Agent:** Sonnet (review) + Haiku (cleanup)
 **Geschatte duur:** 1 uur
 **Doel:** Review, cleanup, en merge naar main
