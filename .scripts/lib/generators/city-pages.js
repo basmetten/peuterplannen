@@ -2,11 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const { ROOT, TYPE_MAP, TYPE_ORDER, TYPE_IMAGES, TYPE_LABELS_CITY, CLUSTER_PAGES, NEARBY_CITIES, MUNICIPALITY_COVERAGE, CITY_FAQ, CF_ANALYTICS_TOKEN, analyticsHTML } = require('../config');
 const { escapeHtml, normalizeExternalUrl, slugify } = require('../helpers');
-const { navHTML, footerHTML, headCommon, supportHTML, badgeHTML, revealScript, newsletterHTML, editorialMetaHTML, editorialBodyHTML } = require('../html-shared');
+const { navHTML, footerHTML, headCommon, supportHTML, badgeHTML, svgSpriteDefs, revealScript, newsletterHTML, editorialMetaHTML, editorialBodyHTML } = require('../html-shared');
 const { isFillerDescription, sortLocationsForSeo, selectHubLocations, relatedClustersForLocations } = require('../seo-policy');
 const { getBlogEntriesBySlug } = require('../seo-content');
 
 const DEFAULT_OG = 'https://peuterplannen.nl/images/og/default.jpg';
+const MAX_ITEMLIST = 20;
 
 // Import from location-pages for cleanToddlerHighlight
 const { cleanToddlerHighlight } = require('./location-pages');
@@ -141,7 +142,7 @@ function generateCityPage(region, locs, allRegions, seoContent, total) {
     }))
   }, null, 2) : null;
 
-  const jsonLdItems = locs.map((loc, i) => ({
+  const jsonLdItems = locs.slice(0, MAX_ITEMLIST).map((loc, i) => ({
     "@type": "ListItem",
     "position": i + 1,
     "name": loc.name,
@@ -161,7 +162,7 @@ function generateCityPage(region, locs, allRegions, seoContent, total) {
     "@type": "ItemList",
     "name": `Uitjes met peuters in ${region.name}`,
     "description": `De beste kinderactiviteiten en uitjes voor peuters in ${region.name}`,
-    "numberOfItems": locs.length,
+    "numberOfItems": Math.min(locs.length, MAX_ITEMLIST),
     "itemListElement": jsonLdItems
   }, null, 2);
 
@@ -200,6 +201,8 @@ ${breadcrumbCityLd}
   </script>
 </head>
 <body>
+
+${svgSpriteDefs()}
 
 ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region.name)}`)}
 

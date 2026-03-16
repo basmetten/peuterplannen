@@ -9,6 +9,7 @@ const { locationHTML_type } = require('./type-pages');
 const { cleanToddlerHighlight } = require('./location-pages');
 
 const DEFAULT_OG = 'https://peuterplannen.nl/images/og/default.jpg';
+const MAX_ITEMLIST = 20;
 
 function buildClusterLocationSet(cluster, data) {
   const matched = data.locations.filter((loc) => matchesClusterPage(cluster, loc));
@@ -84,8 +85,8 @@ function generateClusterPage(cluster, data, locs) {
     "@type": "ItemList",
     "name": cluster.h1,
     "description": clusterDescription,
-    "numberOfItems": locs.length,
-    "itemListElement": locs.map((loc, idx) => ({
+    "numberOfItems": Math.min(locs.length, MAX_ITEMLIST),
+    "itemListElement": locs.slice(0, MAX_ITEMLIST).map((loc, idx) => ({
       "@type": "ListItem",
       "position": idx + 1,
       "name": loc.name,

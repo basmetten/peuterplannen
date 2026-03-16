@@ -81,11 +81,35 @@ function newsletterHTML() {
   return '';
 }
 
+function svgSpriteDefs() {
+  return `<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:none;position:absolute">
+  <symbol id="icon-coffee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17 8h1a4 4 0 1 1 0 8h-1"/>
+    <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/>
+    <line x1="6" y1="2" x2="6" y2="4"/>
+    <line x1="10" y1="2" x2="10" y2="4"/>
+    <line x1="14" y1="2" x2="14" y2="4"/>
+  </symbol>
+  <symbol id="icon-alcohol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 22h8"/>
+    <path d="M12 11v11"/>
+    <path d="m19 3-7 8-7-8Z"/>
+  </symbol>
+  <symbol id="icon-diaper" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 12h.01"/>
+    <path d="M15 12h.01"/>
+    <path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/>
+    <path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/>
+    <path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/>
+  </symbol>
+</svg>`;
+}
+
 function badgeHTML(loc) {
   const badges = [];
-  if (loc.coffee) badges.push(`<span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>Koffie</span>`);
-  if (loc.alcohol) badges.push(`<span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/></svg>Alcohol</span>`);
-  if (loc.diaper) badges.push(`<span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/><path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/></svg>Luierruimte</span>`);
+  if (loc.coffee) badges.push(`<span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span>`);
+  if (loc.alcohol) badges.push(`<span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span>`);
+  if (loc.diaper) badges.push(`<span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span>`);
   return badges.length ? `<span class="badges">${badges.join('')}</span>` : '';
 }
 
@@ -135,7 +159,7 @@ function headCommon(extra = '') {
   const navCssHref = `/nav-floating.css?v=${ASSET_VERSION}`;
   const navJsHref = `/nav-floating.js?v=${ASSET_VERSION}`;
   return `  <!-- Google tag (gtag.js) — Consent Mode v2 -->
-  <script src="/ga-init.js"></script>
+  <script src="/ga-init.js" defer></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
   <script src="/consent.js" defer></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
@@ -193,6 +217,7 @@ module.exports = {
   navHTML,
   footerHTML,
   newsletterHTML,
+  svgSpriteDefs,
   badgeHTML,
   revealScript,
   supportHTML,

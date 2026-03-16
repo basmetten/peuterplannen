@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { ROOT, TYPE_MAP, TYPE_ORDER, TYPE_LABELS_CITY, CF_ANALYTICS_TOKEN, analyticsHTML } = require('../config');
 const { escapeHtml, normalizeExternalUrl, slugify } = require('../helpers');
-const { navHTML, footerHTML, headCommon, supportHTML, badgeHTML, revealScript, newsletterHTML } = require('../html-shared');
+const { navHTML, footerHTML, headCommon, supportHTML, badgeHTML, svgSpriteDefs, revealScript, newsletterHTML } = require('../html-shared');
 const { isFillerDescription, selectHubLocations, relatedClustersForLocations } = require('../seo-policy');
 
 const DEFAULT_OG = 'https://peuterplannen.nl/images/og/default.jpg';
@@ -159,6 +159,8 @@ ${breadcrumbLd}
   </script>
 </head>
 <body>
+
+${svgSpriteDefs()}
 
 ${navHTML(`Zoek in ${cityName}`, `/app.html?regio=${encodeURIComponent(cityName)}`)}
 

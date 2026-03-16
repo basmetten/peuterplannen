@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { ROOT, TYPE_MAP, TYPE_ORDER, TYPE_IMAGES, TYPE_PAGES, CLUSTER_PAGES, CF_ANALYTICS_TOKEN, analyticsHTML } = require('../config');
 const { escapeHtml, normalizeExternalUrl, slugify } = require('../helpers');
-const { navHTML, footerHTML, headCommon, supportHTML, badgeHTML, revealScript, newsletterHTML, editorialMetaHTML, editorialBodyHTML } = require('../html-shared');
+const { navHTML, footerHTML, headCommon, supportHTML, badgeHTML, svgSpriteDefs, revealScript, newsletterHTML, editorialMetaHTML, editorialBodyHTML } = require('../html-shared');
 const { isFillerDescription, sortLocationsForSeo, selectHubLocations, relatedClustersForLocations } = require('../seo-policy');
 const { getBlogEntriesBySlug } = require('../seo-content');
 const { cleanToddlerHighlight } = require('./location-pages');
@@ -17,6 +17,7 @@ const TYPE_OG_IMAGE = {
   horeca:  'https://peuterplannen.nl/images/og/horeca.jpg',
 };
 const DEFAULT_OG = 'https://peuterplannen.nl/images/og/default.jpg';
+const MAX_ITEMLIST = 20;
 
 function locationHTML_type(loc) {
   const locationUrl = loc.pageUrl || '#';
@@ -138,8 +139,8 @@ function generateTypePage(page, locs, regions, seoContent, total) {
     "@type": "ItemList",
     "name": page.title,
     "description": page.metaDesc,
-    "numberOfItems": locs.length,
-    "itemListElement": locs.map((loc, i) => ({
+    "numberOfItems": Math.min(locs.length, MAX_ITEMLIST),
+    "itemListElement": locs.slice(0, MAX_ITEMLIST).map((loc, i) => ({
       "@type": "ListItem",
       "position": i + 1,
       "name": loc.name,
@@ -195,6 +196,8 @@ ${breadcrumbTypeLd}
   </script>
 </head>
 <body>
+
+${svgSpriteDefs()}
 
 ${navHTML()}
 

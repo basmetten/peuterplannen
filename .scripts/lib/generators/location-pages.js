@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { ROOT, TYPE_MAP, WEATHER_LABELS, SEO_DESCRIPTION_MIN_LENGTH, CF_ANALYTICS_TOKEN, analyticsHTML } = require('../config');
 const { escapeHtml, slugify, fullSiteUrl, normalizeExternalUrl, displayExternalUrl, isoDateInTimeZone, todayISOAmsterdam, parseDateSafe } = require('../helpers');
-const { navHTML, footerHTML, headCommon, supportHTML, badgeHTML, revealScript, newsletterHTML, formatEditorialDate, editorialMetaHTML, editorialBodyHTML, relatedBlogLinksHTML } = require('../html-shared');
+const { navHTML, footerHTML, headCommon, supportHTML, badgeHTML, svgSpriteDefs, revealScript, newsletterHTML, formatEditorialDate, editorialMetaHTML, editorialBodyHTML, relatedBlogLinksHTML } = require('../html-shared');
 const { isFillerDescription, sortLocationsForSeo, getClusterPagesForLocation, matchesClusterPage } = require('../seo-policy');
 const { loadBlogMetadata, getBlogEntriesBySlug, renderMarkdownDoc } = require('../seo-content');
 const { FALLBACK_REGIONS } = require('../supabase');
@@ -452,7 +452,7 @@ ${breadcrumbLd}
   </style>
 </head>
 <body>
-
+${svgSpriteDefs()}
 ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region.name)}`)}
 
 <div class="hero hero-location">
