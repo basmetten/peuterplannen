@@ -293,7 +293,11 @@ function computeLocationSeoTier(loc) {
   const criteria = { hasDescription, hasHighlight, hasWeather, hasCoords, hasAgeRange, hasFacility, noSlop, noGeneric };
   const passed = Object.values(criteria).filter(Boolean).length;
   const total = Object.keys(criteria).length;
-  const eligible = passed === total;
+  // Coords and non-filler/non-slop description are ALWAYS required (non-negotiable)
+  const mandatory = hasCoords && hasDescription && noSlop && noGeneric;
+  // At least 2 of 4 optional criteria must pass
+  const optionalPassed = [hasHighlight, hasWeather, hasAgeRange, hasFacility].filter(Boolean).length;
+  const eligible = mandatory && optionalPassed >= 2;
 
   return { tier: eligible ? 'index' : 'support', criteria, passed, total };
 }

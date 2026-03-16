@@ -263,7 +263,7 @@ Transformaties:
 ---
 
 ## FASE 2: SEO-GRADUATIE VERFIJNEN (NIET AFZWAKKEN)
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** `implementer` (seo-policy.js + config.js wijzigen) → `verifier` (build + tel index vs noindex)
 **Prioriteit:** HOOG
 **Doel:** Meer locaties laten gradueren naar volledige pagina's ZONDER kwaliteitsstandaard te verlagen
@@ -853,7 +853,7 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 | Fase | Titel | Status | Prioriteit | Wie |
 |------|-------|--------|------------|-----|
 | 1 | Typografie & visuele upgrade | `DONE` | HOOG | Claude Code |
-| 2 | SEO-graduatie verfijnen | `TODO` | HOOG | Claude Code |
+| 2 | SEO-graduatie verfijnen | `DONE` | HOOG | Claude Code |
 | 3 | City+type combinatiepagina's | `TODO` | HOOG | Claude Code |
 | 4 | Performance optimalisaties | `TODO` | HOOG | Claude Code |
 | 5 | UX-verbeteringen | `TODO` | HOOG | Claude Code |
