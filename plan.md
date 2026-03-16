@@ -342,7 +342,7 @@ Log de oude en nieuwe aantallen zodat we weten wat er veranderd is. Als het effe
 ---
 
 ## FASE 3: CITY+TYPE COMBINATIEPAGINA'S
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** `researcher` (bekijk bestaande city-pages.js en type-pages.js) → `implementer` in worktree (nieuwe generator + sitemap + audits aanpassen) → `verifier`
 **Prioriteit:** HOOG — grootste SEO-gap versus concurrenten
 **Doel:** ~100-154 nieuwe hub-pagina's voor zoekopdrachten als "speeltuin amsterdam"
@@ -854,7 +854,7 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 |------|-------|--------|------------|-----|
 | 1 | Typografie & visuele upgrade | `DONE` | HOOG | Claude Code |
 | 2 | SEO-graduatie verfijnen | `DONE` | HOOG | Claude Code |
-| 3 | City+type combinatiepagina's | `TODO` | HOOG | Claude Code |
+| 3 | City+type combinatiepagina's | `DONE` | HOOG | Claude Code |
 | 4 | Performance optimalisaties | `TODO` | HOOG | Claude Code |
 | 5 | UX-verbeteringen | `TODO` | HOOG | Claude Code |
 | 6 | E-mail capture & nieuwsbrief | `TODO` | HOOG | Claude Code + 🔴 Bas |

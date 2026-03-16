@@ -11,7 +11,7 @@ function sitePathToFile(sitePath) {
   return path.join(ROOT, clean.slice(1));
 }
 
-function buildPageCatalog(data, blogPosts, clusterPages, sharedPages = []) {
+function buildPageCatalog(data, blogPosts, clusterPages, sharedPages = [], cityTypeCombos = []) {
   const pages = [];
   const lastmod = todayISO();
 
@@ -90,6 +90,18 @@ function buildPageCatalog(data, blogPosts, clusterPages, sharedPages = []) {
       filePath: sitePathToFile(page.path),
       priority: '0.6',
       changefreq: 'monthly',
+      inSitemap: true,
+    });
+  }
+
+  for (const combo of cityTypeCombos || []) {
+    pushPage({
+      path: combo.path,
+      pageType: 'city_type_combo',
+      tier: 'hub',
+      filePath: combo.filePath,
+      priority: '0.82',
+      changefreq: 'weekly',
       inSitemap: true,
     });
   }

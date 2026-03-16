@@ -25,6 +25,7 @@ const { updateManifest } = require('./lib/generators/manifest');
 const { update404 } = require('./lib/generators/four-oh-four');
 const { generateCityPages } = require('./lib/generators/city-pages');
 const { generateTypePages } = require('./lib/generators/type-pages');
+const { generateCityTypePages } = require('./lib/generators/city-type-pages');
 const { generateClusterPages } = require('./lib/generators/cluster-pages');
 const { generateDiscoverPage, generateMethodologyPage } = require('./lib/generators/editorial-pages');
 const { generateLocationPages } = require('./lib/generators/location-pages');
@@ -51,6 +52,9 @@ async function fullBuild(data) {
   console.log('\nGenerating type pages...');
   generateTypePages(data);
 
+  console.log('\nGenerating city+type combination pages...');
+  const cityTypeCombos = generateCityTypePages(data);
+
   console.log('\nGenerating cluster pages...');
   const clusterPages = generateClusterPages(data);
 
@@ -70,7 +74,7 @@ async function fullBuild(data) {
   updateRedirects(data);
 
   console.log('\nGenerating split sitemaps...');
-  const catalog = buildPageCatalog(data, blogPosts, clusterPages, sharedPages);
+  const catalog = buildPageCatalog(data, blogPosts, clusterPages, sharedPages, cityTypeCombos);
   generateSitemapsFromCatalog(catalog);
 
   console.log('\nBuilding SEO registry...');
@@ -123,6 +127,10 @@ async function incrementalBuild(data, publishState) {
   console.log('\nGenerating type pages...');
   generateTypePages(data);
 
+  // 3b. City+type combination pages
+  console.log('\nGenerating city+type combination pages...');
+  const cityTypeCombos = generateCityTypePages(data);
+
   // 4. Cluster pages (affected locations may be in clusters)
   console.log('\nGenerating cluster pages...');
   const clusterPages = generateClusterPages(data);
@@ -149,7 +157,7 @@ async function incrementalBuild(data, publishState) {
   const sharedPages = changedEditorial.size > 0
     ? [generateDiscoverPage(data), generateMethodologyPage(data)].filter(Boolean)
     : [];
-  const catalog = buildPageCatalog(data, blogPosts, clusterPages, sharedPages);
+  const catalog = buildPageCatalog(data, blogPosts, clusterPages, sharedPages, cityTypeCombos);
   generateSitemapsFromCatalog(catalog);
 
   console.log('\nBuilding SEO registry...');

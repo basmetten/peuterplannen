@@ -600,6 +600,10 @@ function generateLocationPages(data, onlyLocationIds) {
     }
 
     const expectedSlugs = new Set(locs.map((loc) => loc.locSlug));
+    // Preserve city+type combo subdirectories (e.g. amsterdam/speeltuinen/)
+    for (const typeInfo of Object.values(TYPE_MAP)) {
+      if (typeInfo.slug) expectedSlugs.add(typeInfo.slug);
+    }
 
     // Create region directory
     const regionDir = path.join(ROOT, rSlug);

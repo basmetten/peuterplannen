@@ -51,15 +51,22 @@ function generateTypePage(page, locs, regions, seoContent, total) {
   const regionOrder = regions.map(r => r.name);
   regionOrder.push('Overig Nederland');
 
+  const regionByName = new Map(regions.map(r => [r.name, r]));
   const sectionsHTML = regionOrder
     .filter(r => byRegion[r]?.length > 0)
-    .map(r => `
+    .map(r => {
+      const regionObj = regionByName.get(r);
+      const cityTypeLink = regionObj && byRegion[r].length >= 3
+        ? ` <a href="/${regionObj.slug}/${page.slug}/" class="section-hub-link">Bekijk alle ${page.sectionLabel} in ${escapeHtml(r)} &rarr;</a>`
+        : '';
+      return `
     <section class="region-section">
-      <h2>${page.sectionLabel} in ${r}</h2>
+      <h2>${page.sectionLabel} in ${r}${cityTypeLink}</h2>
       <div class="loc-list">
         ${byRegion[r].map(locationHTML_type).join('')}
       </div>
-    </section>`).join('');
+    </section>`;
+    }).join('');
 
   const faqHTML = page.faqItems.map(item => `
     <details class="faq-item">

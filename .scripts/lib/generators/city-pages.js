@@ -41,9 +41,13 @@ function generateCityPage(region, locs, allRegions, seoContent, total) {
     .map((t, i) => {
       const typeImgSrc = TYPE_IMAGES[t];
       const typeImg = typeImgSrc ? `<picture><source type="image/webp" srcset="${typeImgSrc.replace('.png', '.webp')}"><img src="${typeImgSrc}" alt="" class="category-icon" width="36" height="36" loading="lazy"></picture>` : '';
+      const typeSlug = TYPE_MAP[t]?.slug;
+      const cityTypeLink = typeSlug && byType[t].length >= 3
+        ? ` <a href="/${region.slug}/${typeSlug}/" class="section-hub-link">Bekijk alle ${TYPE_LABELS_CITY[t]} &rarr;</a>`
+        : '';
       let section = `
     <section class="type-section">
-      <h2>${typeImg}${TYPE_LABELS_CITY[t]}</h2>
+      <h2>${typeImg}${TYPE_LABELS_CITY[t]}${cityTypeLink}</h2>
       <div class="loc-list">
         ${byType[t].map(locationHTML_city).join('')}
       </div>
