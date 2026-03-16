@@ -192,7 +192,7 @@ ${breadcrumbTypeLd}
 ${navHTML()}
 
 <div class="hero">
-  <h1>${page.h1.replace('Nederland', '<span>Nederland</span>')}</h1>
+  <h1>${page.h1.replace('Nederland', '<span class="accent">Nederland</span>')}</h1>
   <p>${locs.length} locaties in ${regionNamesStr}</p>
 </div>
 

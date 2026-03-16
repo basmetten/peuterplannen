@@ -27,7 +27,7 @@ function updateIndex(data) {
             </div>
             <div>
                 <div class="stat-number" data-target="100" data-suffix="%">100%</div>
-                <div class="stat-label">Gecheckt</div>
+                <div class="stat-label"><span class="accent">Gecheckt</span></div>
             </div>
         </div>
     </section>`;

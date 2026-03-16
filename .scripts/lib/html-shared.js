@@ -150,6 +150,7 @@ function headCommon(extra = '') {
   <link rel="preload" href="/style.min.css" as="style">
   <link rel="preload" href="/fonts/familjen-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
   <link rel="stylesheet" href="${dsHref}">
   <link rel="stylesheet" href="${styleHref}">

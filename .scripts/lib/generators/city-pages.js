@@ -200,7 +200,7 @@ ${breadcrumbCityLd}
 ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region.name)}`)}
 
 <div class="hero">
-  <h1>Uitjes met peuters in <span>${region.name}${omgevingLabel}</span></h1>
+  <h1>Uitjes met peuters in <span class="accent">${region.name}${omgevingLabel}</span></h1>
   <p>${escapeHtml(region.blurb)}</p>
   <div class="hero-stats">
     <div class="hero-stat"><strong>${locs.length}</strong><span>locaties</span></div>

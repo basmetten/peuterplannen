@@ -48,6 +48,7 @@
   --pp-font-heading: 'Familjen Grotesk', 'Plus Jakarta Sans', sans-serif;
   --pp-font-ui: 'Plus Jakarta Sans', sans-serif;
   --pp-font-body: 'DM Sans', -apple-system, sans-serif;
+  --pp-font-accent: 'Instrument Serif', Georgia, 'Times New Roman', serif;
 
   --pp-text-xs: 0.75rem;       /* 12px */
   --pp-text-sm: 0.8125rem;     /* 13px */
@@ -126,6 +127,7 @@
   --font-heading: var(--pp-font-heading);
   --font-ui: var(--pp-font-ui);
   --font-body: var(--pp-font-body);
+  --font-accent: var(--pp-font-accent);
   --shadow-sm: var(--pp-shadow-sm);
   --shadow-md: var(--pp-shadow-md);
   --shadow-lg: var(--pp-shadow-lg);

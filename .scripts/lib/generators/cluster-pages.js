@@ -36,7 +36,7 @@ function generateClusterPage(cluster, data, locs) {
   const clusterIntro = editorial?.hero_sub || cluster.intro;
   const regionSections = topRegions.map((region) => `
     <section class="region-section">
-      <h2>${cluster.h1} in ${region.name}</h2>
+      <h2>${cluster.h1} in <span class="accent">${region.name}</span></h2>
       <div class="loc-list">
         ${byRegion[region.name].slice(0, 8).map(locationHTML_type).join('')}
       </div>
@@ -124,7 +124,7 @@ ${navHTML()}
 
 <div class="hero">
   <p class="hero-kicker">${cluster.kicker}</p>
-  <h1>${cluster.h1.replace('peuter', '<span>peuter</span>')}</h1>
+  <h1>${cluster.h1.replace('peuter', '<span class="accent">peuter</span>')}</h1>
   <p>${escapeHtml(clusterIntro)}</p>
   <div class="hero-stats">
     <div class="hero-stat"><strong>${locs.length}</strong><span>sterke matches</span></div>
