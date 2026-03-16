@@ -143,11 +143,10 @@ function buildMetaDesc(loc, region) {
   if (['indoor', 'hybrid', 'both'].includes(loc.weather)) facilities.push('ook bij slecht weer');
   const facilityStr = facilities.length > 0 ? ` Met ${facilities.join(' en ')}.` : '';
 
-  const practicalTail = 'Bekijk waarom deze plek werkt, welke voorzieningen er zijn en welke alternatieven in de buurt liggen via PeuterPlannen.';
   if (parts.length > 0) {
-    return `${loc.name}${locality} in ${region.name}: ${parts[0].charAt(0).toLowerCase() + parts[0].slice(1)}. ${typeNoun.charAt(0).toUpperCase() + typeNoun.slice(1)} voor peuters en kleuters${facilityStr} ${practicalTail}`;
+    return `${loc.name}${locality} in ${region.name}: ${parts[0].charAt(0).toLowerCase() + parts[0].slice(1)}. ${typeNoun.charAt(0).toUpperCase() + typeNoun.slice(1)} voor peuters en kleuters.${facilityStr}`;
   }
-  return `${loc.name}${locality} in ${region.name} is een ${typeNoun} voor peuters en dreumesen.${facilityStr} ${practicalTail}`;
+  return `${loc.name}${locality} in ${region.name} is een ${typeNoun} voor peuters en dreumesen.${facilityStr}`;
 }
 
 function truncateDesc(text, max = 155) {
@@ -410,7 +409,7 @@ function shareNative() {
   navigator.share({ title: ${JSON.stringify(loc.name + ' — PeuterPlannen')}, url: ${JSON.stringify(fullUrl)} }).catch(function(){});
 }
 </script>`;
-  const detailTitle = `${titleBase} — peuteruitje in ${region.name} | PeuterPlannen`;
+  const detailTitle = `${titleBase} — ${typeLabel.toLowerCase()} voor peuters in ${region.name} | PeuterPlannen`;
 
   return `<!DOCTYPE html>
 <html lang="nl">

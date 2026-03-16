@@ -86,7 +86,7 @@ function buildBlog(data) {
   for (const p of publishedPosts) {
     const postDir = path.join(blogDir, p.slug);
     if (!fs.existsSync(postDir)) fs.mkdirSync(postDir, { recursive: true });
-    const postTitle = `${p.title} | PeuterPlannen Blog`;
+    const postTitle = `${p.title} | PeuterPlannen`;
     const postDescription = p.description || '';
 
     const postHTML = `<!DOCTYPE html>
@@ -142,6 +142,12 @@ ${p.featured_image ? `<div class="blog-hero-img" style="max-width:1100px;margin:
   <div class="blog-content">
     ${p.content}
   </div>
+
+  <div class="blog-share">
+    <a href="https://wa.me/?text=${encodeURIComponent(p.title)}%20${encodeURIComponent('https://peuterplannen.nl/blog/' + p.slug + '/')}" target="_blank" rel="noopener" class="share-btn share-whatsapp">Deel via WhatsApp</a>
+    <button class="share-btn share-native" style="display:none" onclick="navigator.share?.({title:${JSON.stringify(p.title)},url:'https://peuterplannen.nl/blog/${p.slug}/'}).catch(()=>{})">Delen</button>
+  </div>
+  <script>if(navigator.share)document.querySelector('.share-native').style.display='inline-flex'</script>
 
   ${newsletterHTML()}
 

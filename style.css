@@ -608,6 +608,12 @@ footer a:hover { color: rgba(255,255,255,0.85); }
 .blog-content a:hover { text-decoration: underline; }
 .blog-content strong { color: var(--navy); }
 .blog-meta { font-size: 14px; color: var(--text-muted); margin-bottom: 32px; font-family: var(--font-ui); }
+.blog-share { display: flex; gap: 12px; margin: 32px 0; flex-wrap: wrap; }
+.share-btn { padding: 10px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer; border: none; font-family: inherit; }
+.share-whatsapp { background: #25D366; color: white; }
+.share-whatsapp:hover { background: #1da851; }
+.share-native { background: var(--primary); color: white; }
+.share-native:hover { background: var(--primary-dark); }
 
 /* === 404 page === */
 .error-page { text-align: center; padding: 120px 24px 80px; }

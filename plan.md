@@ -392,7 +392,7 @@ Genereer voor elke regio × type combinatie met **minimaal 3 locaties** een pagi
 ---
 
 ## FASE 4: PERFORMANCE OPTIMALISATIES
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** Lanceer 4 `implementer`-agents PARALLEL (4.1-4.4 raken verschillende bestanden) → `verifier`
 **Prioriteit:** HOOG — Core Web Vitals beïnvloeden Google-ranking
 
@@ -461,7 +461,7 @@ Genereer WebP-varianten via `optimize_images.js`.
 ---
 
 ## FASE 5: UX-VERBETERINGEN
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** `implementer` (meerdere parallel voor onafhankelijke 5.x items) → `verifier`
 **Prioriteit:** HOOG
 
@@ -855,8 +855,8 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 | 1 | Typografie & visuele upgrade | `DONE` | HOOG | Claude Code |
 | 2 | SEO-graduatie verfijnen | `DONE` | HOOG | Claude Code |
 | 3 | City+type combinatiepagina's | `DONE` | HOOG | Claude Code |
-| 4 | Performance optimalisaties | `TODO` | HOOG | Claude Code |
-| 5 | UX-verbeteringen | `TODO` | HOOG | Claude Code |
+| 4 | Performance optimalisaties | `DONE` | HOOG | Claude Code |
+| 5 | UX-verbeteringen | `DONE` | HOOG | Claude Code |
 | 6 | E-mail capture & nieuwsbrief | `TODO` | HOOG | Claude Code + 🔴 Bas |
 | 7 | Seizoenscontent (6 posts) | `TODO` | HOOG | Claude Code |
 | 8 | Evergreen content (8 posts) | `TODO` | MEDIUM-HOOG | Claude Code |

@@ -147,16 +147,6 @@ ${navHTML()}
       ${editorialBodyHTML(editorial)}
     </div>` : ''}
     <div class="guide-card">
-      <p class="guide-kicker">Waarom deze pagina bestaat</p>
-      <h2>Van zoekintentie naar een shortlist die wel klopt</h2>
-      <p>${escapeHtml(clusterIntro)}</p>
-      <ul class="guide-list">
-        <li><strong>Niet alles tegelijk:</strong> eerst de situatie, daarna pas de exacte plek.</li>
-        <li><strong>Praktisch geselecteerd:</strong> voorzieningen, leeftijdsfit en dagritme wegen mee.</li>
-        <li><strong>Minder AI-slop:</strong> liever een kleinere, bruikbare shortlist dan een kale directorydump.</li>
-      </ul>
-    </div>
-    <div class="guide-card">
       <p class="guide-kicker">Begin hier</p>
       <h2>${topPicks.length} locaties die meteen richting geven</h2>
       <div class="guide-links">

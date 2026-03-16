@@ -97,10 +97,10 @@
     <link rel="preload" href="/fonts/familjen-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/dm-sans-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/design-system.css?v=202603162040">
+    <link rel="stylesheet" href="/design-system.css?v=202603162047">
     <link rel="stylesheet" href="/app.css">
-    <link rel="stylesheet" href="/nav-floating.css?v=202603162040">
-    <script src="/nav-floating.js?v=202603162040" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603162047">
+    <script src="/nav-floating.js?v=202603162047" defer></script>
 
 </head>
 <body>
@@ -217,6 +217,14 @@
                 </button>
             </div>
             <div id="gps-status" class="gps-status hidden" role="status" aria-live="polite"></div>
+            <div class="popular-cities" id="popular-cities">
+                <span class="popular-label">Populair:</span>
+                <button class="city-chip" onclick="setCity('Amsterdam')">Amsterdam</button>
+                <button class="city-chip" onclick="setCity('Utrecht')">Utrecht</button>
+                <button class="city-chip" onclick="setCity('Rotterdam')">Rotterdam</button>
+                <button class="city-chip" onclick="setCity('Den Haag')">Den Haag</button>
+                <button class="city-chip" onclick="setCity('Haarlem')">Haarlem</button>
+            </div>
         </div>
 
         <section class="decision-stage" aria-label="Kies eerst hoe de dag voelt">
@@ -1125,6 +1133,9 @@
                 const place = autocomplete.getPlace();
                 if (place.geometry) {
                     userLocation = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), name: place.formatted_address || place.name };
+                    try { localStorage.setItem('pp-last-city', userLocation.name); } catch(e) {}
+                    const popularElAc = document.getElementById('popular-cities');
+                    if (popularElAc) popularElAc.classList.add('hidden');
                     document.getElementById('app-container')?.classList.add('has-location');
                     document.getElementById('gps-btn')?.classList.remove('gps-active');
                     updatePlanLocationChip();
@@ -1175,7 +1186,36 @@
                     });
                 });
                 userLocation = { lat: result.geometry.location.lat(), lng: result.geometry.location.lng(), name: input };
+                try { localStorage.setItem('pp-last-city', input); } catch(e) {}
+                const popularEl = document.getElementById('popular-cities');
+                if (popularEl) popularEl.classList.add('hidden');
                 showGpsStatus(`Zoeken bij ${input}...`, 'active');
+                document.getElementById('app-container')?.classList.add('has-location');
+                document.getElementById('gps-btn')?.classList.remove('gps-active');
+                updatePlanLocationChip();
+                loadLocations(); updateUserLocationOnMap();
+            } catch (err) { showGpsStatus('Locatie niet gevonden', 'error'); }
+        }
+
+        async function setCity(cityName) {
+            const input = document.getElementById('location-input');
+            if (input) input.value = cityName;
+            // Hide popular cities section
+            const popularEl = document.getElementById('popular-cities');
+            if (popularEl) popularEl.classList.add('hidden');
+            // Save to localStorage
+            try { localStorage.setItem('pp-last-city', cityName); } catch(e) {}
+            // Geocode and set location (reuse updateLocation logic)
+            try { await loadGoogleMaps(); } catch(e) { showGpsStatus('Google Maps niet beschikbaar', 'error'); return; }
+            const geocoder = new google.maps.Geocoder();
+            try {
+                const result = await new Promise((resolve, reject) => {
+                    geocoder.geocode({ address: cityName + ', Nederland' }, (results, status) => {
+                        if (status === 'OK' && results[0]) resolve(results[0]); else reject(status);
+                    });
+                });
+                userLocation = { lat: result.geometry.location.lat(), lng: result.geometry.location.lng(), name: cityName };
+                showGpsStatus(`Zoeken bij ${cityName}...`, 'active');
                 document.getElementById('app-container')?.classList.add('has-location');
                 document.getElementById('gps-btn')?.classList.remove('gps-active');
                 updatePlanLocationChip();
@@ -2607,6 +2647,18 @@
                 checkWeather();
             }
         } else {
+            // Cold-start: check for saved city in localStorage
+            try {
+                const savedCity = localStorage.getItem('pp-last-city');
+                if (savedCity) {
+                    const input = document.getElementById('location-input');
+                    if (input) input.value = savedCity;
+                    const popularEl = document.getElementById('popular-cities');
+                    if (popularEl) popularEl.classList.add('hidden');
+                    // Geocode saved city async, then load locations
+                    updateLocation();
+                }
+            } catch(e) {}
             updateShortlistBar();
             updateFilterCount();
             syncFilterPanelForViewport();
@@ -3047,6 +3099,7 @@
                                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                                 Delen
                             </button>
+                            <a href="#" class="btn btn-whatsapp" id="share-plan-whatsapp" onclick="sharePlanWhatsApp();return false;">Stuur naar partner</a>
                             <button class="btn btn-detail" onclick="generatePlan()">
                                 <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
                                 Nieuw plan
@@ -3133,6 +3186,33 @@
                     setTimeout(() => { shareBtn.innerHTML = orig; }, 2000);
                 }).catch(() => window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'));
             }
+        }
+
+        function sharePlanWhatsApp() {
+            if (!lastGeneratedPlan) return;
+            const { morning, lunch, afternoon, dayLabel, wDesc, locName, locationEstimated } = lastGeneratedPlan;
+
+            const lines = [];
+            lines.push(`Mijn dag met de peuters — ${dayLabel}`);
+            lines.push(`📍 ${locName}${locationEstimated ? ' (geschatte locatie)' : ''} · ${wDesc}`);
+            lines.push('');
+            lines.push(`🌅 Ochtend: ${morning.name}${morning.region ? ' (' + morning.region + ')' : ''}`);
+            if (lunch) {
+                lines.push(`🍽 Lunch: ${lunch.name}${lunch.region ? ' (' + lunch.region + ')' : ''}`);
+            }
+            if (afternoon) {
+                lines.push(`☀️ Middag: ${afternoon.name}${afternoon.region ? ' (' + afternoon.region + ')' : ''}`);
+            }
+            const aiText = document.getElementById('plan-ai-text')?.textContent ?? '';
+            if (aiText && !aiText.includes('laden') && !aiText.includes('ging iets mis')) {
+                lines.push('');
+                lines.push(aiText);
+            }
+            lines.push('');
+            lines.push('Gemaakt via PeuterPlannen — peuterplannen.nl');
+
+            const text = lines.join('\n');
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
         }
 
         // Init plan view

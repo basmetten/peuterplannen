@@ -87,22 +87,6 @@ function generateTypePage(page, locs, regions, seoContent, total) {
   const pageTitle = editorial?.meta_title || page.metaTitle;
   const pageDescription = editorial?.meta_description || page.metaDesc;
   const typeGuideHTML = `<section class="guide-section type-guide">
-    ${editorial ? `<div class="guide-card">
-      <p class="guide-kicker">${escapeHtml(editorial.editorial_label || 'PeuterPlannen redactie')}</p>
-      <h2>Waarom deze categorie een keuzehulp is, geen export</h2>
-      ${editorialMetaHTML(editorial)}
-      ${editorialBodyHTML(editorial)}
-    </div>` : ''}
-    <div class="guide-card">
-      <p class="guide-kicker">Hoe we selecteren</p>
-      <h2>Niet elke plek met dit label haalt de site</h2>
-      <p>Deze pagina is geen kale categorie-export. We kiezen locaties op bruikbaarheid voor ouders met peuters: tempo, overzicht, praktische voorzieningen en de vraag of een plek ook op een rommelige dag nog werkt.</p>
-      <ul class="guide-list">
-        <li><strong>Praktisch eerst:</strong> werkt het met kinderwagen, korte spanningsboog en wisselend weer?</li>
-        <li><strong>Niet alleen populair:</strong> een drukke hotspot is niet automatisch prettig met jonge kinderen.</li>
-        <li><strong>Doorzoeken per regio:</strong> gebruik deze pagina om eerst op type te kiezen en daarna pas op stad of detailpagina.</li>
-      </ul>
-    </div>
     ${strongestRegions.map((regionName) => {
       const picks = byRegion[regionName].slice(0, 2);
       return `<article class="guide-card">

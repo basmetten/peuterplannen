@@ -88,12 +88,6 @@ function generateCityPage(region, locs, allRegions, seoContent, total) {
     ? coverage.map((name) => `<span class="coverage-chip">${escapeHtml(name)}</span>`).join('')
     : '';
   const cityGuideHTML = `<section class="guide-section city-guide">
-    ${editorial ? `<div class="guide-card">
-      <p class="guide-kicker">${escapeHtml(editorial.editorial_label || 'PeuterPlannen redactie')}</p>
-      <h2>Waarom ${region.name} niet om volume maar om slimme keuzes vraagt</h2>
-      ${editorialMetaHTML(editorial)}
-      ${editorialBodyHTML(editorial)}
-    </div>` : ''}
     <div class="guide-card">
       <p class="guide-kicker">Sneller kiezen in ${region.name}</p>
       <h2>Begin niet met alle kaarten tegelijk</h2>
