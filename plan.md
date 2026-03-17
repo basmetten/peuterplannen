@@ -714,7 +714,7 @@ Minimaal 1.500 woorden per post, met lokaal karakter (niet copy-paste van Amster
 ---
 
 ## FASE 10: INTERNE LINKING MESH
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** `researcher` (analyseer huidige link-structuur) → `implementer` (links toevoegen in generators + content) → `verifier`
 **Prioriteit:** MEDIUM
 
@@ -732,7 +732,7 @@ Minimaal 1.500 woorden per post, met lokaal karakter (niet copy-paste van Amster
 ---
 
 ## FASE 11: DUNNE PAGINA'S FIXEN
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** `researcher` (audit welke cluster-pagina's <10 locaties hebben) → `implementer` (criteria verbreden of noindex) → `verifier`
 **Prioriteit:** MEDIUM
 
@@ -905,8 +905,8 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 | 7 | Seizoenscontent (6 posts) | `DONE` | HOOG | Claude Code |
 | 8 | Evergreen content (8 posts) | `DONE` | MEDIUM-HOOG | Claude Code |
 | 9 | Ontbrekende stadsgidsen (11 posts) | `DONE` | MEDIUM | Claude Code |
-| 10 | Interne linking mesh | `TODO` | MEDIUM | Claude Code |
-| 11 | Dunne pagina's fixen | `TODO` | MEDIUM | Claude Code |
+| 10 | Interne linking mesh | `DONE` | MEDIUM | Claude Code |
+| 11 | Dunne pagina's fixen | `DONE` | MEDIUM | Claude Code |
 | 12 | Affiliate & monetisatie | `TODO` | MEDIUM | Claude Code + 🔴 Bas |
 | 13 | Social media fundament | `TODO` | MEDIUM | Claude Code + 🔴 Bas |
 | 14 | Automatisering | `TODO` | MEDIUM | Claude Code |

@@ -246,8 +246,7 @@ function matchesClusterPage(cluster, loc) {
       return !!loc.coffee && (textSignals.playHint || ['play', 'farm', 'nature'].includes(loc.type));
     case 'dreumes-uitjes':
       return (loc.min_age == null || Number(loc.min_age) <= 2)
-        && (loc.max_age == null || Number(loc.max_age) <= 5)
-        && (loc.diaper || textSignals.calmHint || !!loc.coffee || ['farm', 'museum', 'horeca', 'nature'].includes(loc.type));
+        && (loc.diaper || textSignals.calmHint || !!loc.coffee || ['farm', 'museum', 'horeca', 'nature', 'play', 'swim'].includes(loc.type));
     case 'peuteruitjes-2-5-jaar':
       return (loc.min_age == null || Number(loc.min_age) <= 2) && (loc.max_age == null || Number(loc.max_age) >= 4);
     default:
