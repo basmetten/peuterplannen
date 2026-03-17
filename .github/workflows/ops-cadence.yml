@@ -74,6 +74,19 @@ jobs:
         if: steps.gate.outputs.run_ops == 'true'
         run: npm run ops:export-editorial
 
+      - name: Refresh content freshness
+        if: steps.gate.outputs.run_ops == 'true'
+        run: npm run ops:content-freshness
+
+      - name: SEO health check
+        if: steps.gate.outputs.run_ops == 'true'
+        run: npm run ops:seo-health
+
+      - name: Check editorial calendar
+        if: steps.gate.outputs.run_ops == 'true'
+        continue-on-error: true
+        run: npm run ops:check-calendar
+
       - name: Skip when secrets are missing
         if: steps.gate.outputs.run_ops != 'true'
         run: echo "Ops cadence intentionally skipped."

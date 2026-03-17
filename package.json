@@ -26,7 +26,10 @@
     "ops:quality-tasks": "node .scripts/trust/sync_quality_tasks.js",
     "ops:seed-priority-drafts": "node .scripts/editorial/seed_priority_location_drafts.js",
     "ops:export-editorial": "node .scripts/editorial/export_editorial_pages.js",
-    "ops:briefs": "python3 .scripts/ops/generate_ops_briefs.py"
+    "ops:briefs": "python3 .scripts/ops/generate_ops_briefs.py",
+    "ops:content-freshness": "node .scripts/ops/auto-refresh-content.js",
+    "ops:check-calendar": "node .scripts/ops/check-editorial-calendar.js",
+    "ops:seo-health": "node .scripts/ops/seo-health-check.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

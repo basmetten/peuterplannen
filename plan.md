@@ -922,7 +922,7 @@ Fase 12C (PARALLEL aan 12A):
 ---
 
 ## FASE 14: AUTOMATISERING VOOR DOORLOPENDE GROEI
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** `implementer` (meerdere parallel: 14.1-14.4 zijn onafhankelijke scripts) → `verifier`
 **Prioriteit:** MEDIUM
 **Doel:** Systemen bouwen die groei automatisch aandrijven
@@ -1004,7 +1004,7 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 | 11 | Dunne pagina's fixen | `DONE` | MEDIUM | Claude Code |
 | 12 | Affiliate & monetisatie (herzien) | `DONE` | MEDIUM | Claude Code + 🔴 Bas |
 | 13 | Social media fundament | `DONE` | MEDIUM | Claude Code + 🔴 Bas |
-| 14 | Automatisering | `TODO` | MEDIUM | Claude Code |
+| 14 | Automatisering | `DONE` | MEDIUM | Claude Code |
 | 15 | Direct outreach | `TODO` | MEDIUM-LAAG | 🔴 Bas |
 
 ---
