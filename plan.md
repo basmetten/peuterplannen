@@ -554,16 +554,12 @@ Na het genereren van een dagplan:
 **Gratis tier:** 100 subscribers. Daarna $9/maand voor 1.000 subs.
 **Fallback:** Als 100 subs te snel bereikt wordt zonder budget, switch naar MailerLite (500 gratis subs, EU data-opslag in DE/NL). API-integratie is vergelijkbaar.
 
-### 🔴 ACTIE VOOR BAS: Maak Buttondown account aan
-1. Ga naar https://buttondown.com en maak een account aan
-2. Ga naar Settings → API Keys → kopieer je API key
-3. Sla de API key op als GitHub Secret: `BUTTONDOWN_API_KEY`
-   ```bash
-   gh secret set BUTTONDOWN_API_KEY --repo basmetten/peuterplannen
-   ```
-4. Optioneel: stel je nieuwsbrief naam in op "PeuterPlannen" en voeg een beschrijving toe
+### ✅ Buttondown account + API key
+- Account aangemaakt op buttondown.com
+- API key opgeslagen als GitHub Secret `BUTTONDOWN_API_KEY` (via `gh secret set`)
+- Optioneel: stel in Buttondown dashboard de nieuwsbrief naam in op "PeuterPlannen" en voeg een beschrijving toe
 
-Na aanmelding kan Claude Code de volledige integratie bouwen.
+Claude Code kan nu de volledige integratie bouwen.
 
 ### Stappen (nadat account klaar is)
 
@@ -922,7 +918,7 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 
 | Wanneer | Actie | Geschatte tijd |
 |---------|-------|----------------|
-| **Deze week** | Buttondown account aanmaken + API key als GitHub Secret | 15 min |
+| ✅ **Gedaan** | Buttondown account + API key als GitHub Secret | — |
 | **Deze week** | Bol.com Partner Programma aanmelden | 15 min |
 | **Deze week** | Pinterest Business account aanmaken + website claimen | 30 min |
 | **Wekelijks** | Buttondown dashboard: review draft, klik Send | 5 min/week |
