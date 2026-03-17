@@ -30,6 +30,8 @@ De aandachtsspanne is nog steeds kort. Denk aan blokken van 30-45 minuten per ac
 
 Een dierentuin met een dreumes is leuk maar ook een beetje passief. Met een 3- of 4-jarige verandert dat volledig. Ze herkennen de dieren, weten de namen, hebben al boeken over olifanten gelezen en willen nu de echte zien.
 
+Goede opties per regio: [Artis](/amsterdam/artis/) in Amsterdam (compact en goed te doen in een ochtend), [Diergaarde Blijdorp](/rotterdam/diergaarde-blijdorp/) in Rotterdam en [Dierenpark Amersfoort](/utrecht/dierenpark-amersfoort/) in de Utrechtse regio.
+
 Het gesprek tijdens een dierentuinbezoek op deze leeftijd is goud: "Dat is een giraf, die heeft een lange nek omdat hij hoge bladeren eet", en ze begrijpen het en onthouden het. Een maand later praten ze er nog over.
 
 Tip: ga niet alles af. Kies twee of drie favorieten en geef daar de tijd voor. Een halfuur bij de apen is beter dan vijf minuten bij elk dier.
@@ -40,7 +42,7 @@ Op 3 en 4 jaar begint de zandbak zijn glans te verliezen. Wat ze nu willen: klim
 
 Kijk naar speeltuinen met touwenparcours, hogere klimrekken, schommels met een borstelhoogte, en bij voorkeur ook wat water of zand als bijgerecht. Veel steden hebben een paar speeltuinen die duidelijk meer bieden dan de standaard: zoek op "avontuursspeeltuin" of "klimtuin" in jouw regio.
 
-Speeltuinen als Park Hitland (Nieuwerkerk aan den IJssel), Speeltuin Bosbad Hoeven, of gewoon de grotere stadsparken hebben vaak een speelhoek die voor deze leeftijd goed werkt.
+Speeltuinen als [Hitland Zuid](/rotterdam/hitland-zuid/) (Nieuwerkerk aan den IJssel), [Avontuursspeeltuin Pietje Bell](/rotterdam/avonturenspeeltuin-pietje-bell/) in Rotterdam, [Avontura Speeltuin Utrecht](/utrecht/avontura-speeltuin-utrecht/) of de [Natuurspeeltuin de Vrijbuiter](/den-haag/natuurspeeltuin-de-vrijbuiter/) in Den Haag hebben voor deze leeftijd ruimschoots genoeg te bieden.
 
 ## Fietsen of loopfietsen: zelf rijden is het halve plezier
 
@@ -54,7 +56,7 @@ Kies een route zonder auto's, met een beetje hoogteverschil voor de opwinding, e
 
 Op 3 jaar kunnen kinderen voor het eerst echt iets meemaken in een theater. Niet een lange voorstelling, maar een korte — 30 tot 45 minuten — met visuele humor, muziek, en een verhaal dat simpel maar goed verteld is.
 
-Gezelschappen als **De Krakeling** (Amsterdam), **Theater aan het Spui** (Den Haag), **Purpertheater** en allerlei lokale jeugdtheaters bieden dit soort programmering. Veel voorstellingen zijn specifiek voor 3+ of 4+ jaar.
+Gezelschappen als [De Krakeling](/amsterdam/de-krakeling/) (Amsterdam), [Ludens Theater](/den-haag/ludens-theater/) en [Theater Pepijn](/den-haag/theater-pepijn/) (Den Haag), [Kindertheater De Toverknol](/utrecht/kindertheater-de-toverknol/) (Utrecht) en allerlei lokale jeugdtheaters bieden dit soort programmering. Veel voorstellingen zijn specifiek voor 3+ of 4+ jaar.
 
 Controleer de website van een theatergezelschap bij jou in de buurt op "peuter" of "kleuter" in het programma. Het is een uitje dat anders is dan een dierentuin of speeltuin, en dat verschil waarderen ze.
 
@@ -95,3 +97,5 @@ Zoek op "boulderen kinderen" of "klimhal peuter" in jouw regio. De meeste grote 
 ## Meer inspiratie
 
 Zoek locaties op leeftijd, type en regio in onze [uitjes-app](/app.html) — je kunt filteren op minimale en maximale leeftijd.
+
+Wil je verder lezen? Bekijk ook [dagje uit met kleuter (4-6 jaar)](/blog/dagje-uit-met-kleuter-4-6-jaar/) voor als je kind net wat ouder is, [dagje uit met een 1-jarige](/blog/dagje-uit-met-1-jarige/) als je jongere kinderen in het gezin hebt, en [museum met peuter](/blog/museum-met-peuter/) voor de binnenopties.

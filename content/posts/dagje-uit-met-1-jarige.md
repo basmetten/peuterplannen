@@ -41,11 +41,11 @@ Overal in Nederland vind je [kinderboerderijen](/kinderboerderijen.html) die ges
 
 Een park klinkt niet als een uitje. Het klinkt als "ik had geen beter idee". Maar voor een 1-jarige is een park met gras, bomen en wat eenden een compleet avontuur.
 
-Het [Vondelpark](/amsterdam/vondelpark/) in Amsterdam heeft meerdere speeltuinen, waarvan er een paar laag genoeg zijn voor kinderen die net lopen. Maar eerlijk gezegd heeft je 1-jarige de speeltuin niet eens nodig. Een grasveld waar hij kan rondkruipen, een paar blaadjes om op te rapen en een hond die langsloopt — dat is het programma. En dat is genoeg.
+Het Vondelpark in [Amsterdam](/amsterdam.html) heeft meerdere speeltuinen, waarvan er een paar laag genoeg zijn voor kinderen die net lopen. Maar eerlijk gezegd heeft je 1-jarige de speeltuin niet eens nodig. Een grasveld waar hij kan rondkruipen, een paar blaadjes om op te rapen en een hond die langsloopt — dat is het programma. En dat is genoeg.
 
 Wat een park ook biedt: **flexibiliteit**. Als je kind na twintig minuten genoeg heeft, ga je naar huis. Als het lekker gaat, blijf je nog even. Er is geen entreegeld dat je motiveert om te blijven terwijl je kind huilt. Die vrijheid is met een 1-jarige meer waard dan je denkt.
 
-In heel Nederland vind je [parken](/parken.html) met goede voorzieningen voor jonge kinderen. Zoek er een in je buurt, leer het kennen, en ga er regelmatig naartoe. Herhaling is voor 1-jarigen geen probleem — integendeel, ze vinden het fijn om bekende plekken terug te zien.
+In heel Nederland vind je [parken](/natuur.html) met goede voorzieningen voor jonge kinderen. Zoek er een in je buurt, leer het kennen, en ga er regelmatig naartoe. Herhaling is voor 1-jarigen geen probleem — integendeel, ze vinden het fijn om bekende plekken terug te zien.
 
 ## Babyzwemmen: nat, chaotisch en geweldig
 
@@ -185,7 +185,7 @@ Hier nog een overzicht, zodat je snel kunt kiezen:
 
 **Gratis of bijna gratis:**
 - Kinderboerderij ([overzicht kinderboerderijen](/kinderboerderijen.html))
-- Stadspark met grasveld en eenden ([overzicht parken](/parken.html))
+- Stadspark met grasveld en eenden ([overzicht natuur](/natuur.html))
 - Voorleesuurtje in de bibliotheek
 - Wandeling door het bos
 

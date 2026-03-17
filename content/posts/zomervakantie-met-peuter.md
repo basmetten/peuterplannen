@@ -39,7 +39,7 @@ Dit is een concrete week voor een peuter van 2,5 à 3 jaar met een middagdutje. 
 **11:00** Thuis knutselen of watertafel
 **12:30** Lunch
 **13:00–15:00** Dutje of rusttijd
-**15:30** Wandeling naar de dichtstbijzijnde [kinderboerderijen](/kinderboerderijen.html) — gratis, rustig, en peuters gaan er nooit van af
+**15:30** Wandeling naar de dichtstbijzijnde [kinderboerderijen](/kinderboerderijen.html) — gratis, rustig, en peuters gaan er nooit van af. In Amsterdam is [Kinderboerderij De Pijp](/amsterdam/kinderboerderij-de-pijp/) makkelijk te bereiken; in Rotterdam werkt [Kinderboerderij Vroesenpark](/rotterdam/kinderboerderij-vroesenpark/) goed als je in of bij het Rotterdamse centrum zit.
 **17:30** Thuis, avondeten, bad, bed
 
 Maandag rustig houden geeft je de week een goede start. Jij bent ook net bijgekomen van het weekend.
@@ -103,9 +103,9 @@ Zondag is geen uitje-dag. Zondag is boodschappen, was, luieren en voorbereiden o
 
 Als het 25 graden is en er is zon, zijn er een paar soorten uitjes die echt werken.
 
-**Strand en zee.** De [stranden](/zwemmen.html) langs de Nederlandse kust zijn voor peuters ideaal: zand, water, bakken, graven. Kies een strandopgang met parkeerplaats dicht bij het strand zodat je niet eindeloos sjouwt. Ga vóór 10:00 uur of rond 16:00 uur — dan is het minder druk en koeler. Breng een parasol mee, niet voor jezelf, maar voor je peuter. Die verbrandt in een halfuur.
+**Strand en zee.** De [stranden](/zwemmen.html) langs de Nederlandse kust zijn voor peuters ideaal: zand, water, bakken, graven. In de buurt van Den Haag is [Scheveningen](/den-haag/scheveningen/) een van de meest kindvriendelijke opties met goede voorzieningen. Kies een strandopgang met parkeerplaats dicht bij het strand zodat je niet eindeloos sjouwt. Ga vóór 10:00 uur of rond 16:00 uur — dan is het minder druk en koeler. Breng een parasol mee, niet voor jezelf, maar voor je peuter. Die verbrandt in een halfuur.
 
-**Waterspeelplaatsen.** Steeds meer steden hebben waterparken of waterspeelplekken in [parken](/natuur.html). Vrij toegankelijk, spetterend water, en jij zit in de schaduw. Zoek op "waterspeeltuin" plus jouw stad — ze zijn er bijna overal.
+**Waterspeelplaatsen.** Steeds meer steden hebben waterparken of waterspeelplekken in [parken](/natuur.html). Vrij toegankelijk, spetterend water, en jij zit in de schaduw. In Amsterdam is de [Waterspeeltuin Oosterpark](/amsterdam/waterspeeltuin-oosterpark/) gratis en centraal. Zoek op "waterspeeltuin" plus jouw stad — ze zijn er bijna overal.
 
 **Openlucht [zwemmen](/zwemmen.html).** Een buitenzwembad met een kleuterbad is goud waard. Peuters hoeven niet te kunnen zwemmen — ze gaan het ondiep deel in en zijn klaar. Neem een zwemluier mee voor de allerkleinsten en check altijd de tijden voor het kleuterbad.
 
@@ -119,9 +119,9 @@ Als het 25 graden is en er is zon, zijn er een paar soorten uitjes die echt werk
 
 Regen in de zomervakantie voelt als persoonlijk falen, maar het hoeft geen ramp te zijn.
 
-**Museum.** Kies een [musea](/musea.html)-pagina voor kindvriendelijke musea bij jou in de buurt. Niet elk museum werkt voor peuters — zoek naar musea met een doe-ruimte, interactieve tentoonstellingen, of gewoon veel ruimte om rond te lopen. Het Speelgoedmuseum in Deventer, Artis in Amsterdam (ook bij regen prachtig), TU/e Science Park in Eindhoven — er zijn tientallen opties.
+**Museum.** Kies een [musea](/musea.html)-pagina voor kindvriendelijke musea bij jou in de buurt. Niet elk museum werkt voor peuters — zoek naar musea met een doe-ruimte, interactieve tentoonstellingen, of gewoon veel ruimte om rond te lopen. [Artis](/amsterdam/artis/) in Amsterdam (ook bij regen prachtig), [NEMO Science Museum](/amsterdam/nemo-science-museum/) op de Oosterdokskade, het [Nederlands Openluchtmuseum](/arnhem/nederlands-openluchtmuseum-sonsbeek-zijpendaal/) in Arnhem — er zijn tientallen opties.
 
-**Indoor speeltuin.** De [indoor speeltuinen](/binnenlocaties-peuters.html) zijn gemaakt voor dit soort dagen. Klimmen, glijden, ballen gooien — peuters zijn in een halfuur compleet uitgeput. Voordeel: jij zit in een stoel met koffie. Nadeel: het is luid en soms een beetje overprikkeld. Tip: ga op een dinsdag- of woensdagochtend, dan is het rustiger.
+**Indoor speeltuin.** De [indoor speeltuinen](/binnenlocaties-peuters.html) zijn gemaakt voor dit soort dagen. Klimmen, glijden, ballen gooien — peuters zijn in een halfuur compleet uitgeput. In Utrecht vind je [Ballorig Utrecht](/utrecht/ballorig-utrecht/) met peutervriendelijke zones; in Rotterdam is [Biotopia Binnenspeeltuin](/rotterdam/biotopia-binnenspeeltuin/) een goede keuze. Tip: ga op een dinsdag- of woensdagochtend, dan is het rustiger.
 
 **Bibliotheek.** Gratis, rustig, en peuters zijn dol op nieuwe boeken. Veel bibliotheken hebben ook een peuter-uurtje of voorleeshoek. Een uur boekjes pakken en terugzetten is voor een tweejarige gewoon vermaak.
 
@@ -215,6 +215,8 @@ Als je de hele zes weken wilt structureren, help het om thema's per week te kiez
 Week 6 bewust rustiger plannen is geen verspilling — het helpt je peuter (en jou) om weer te wennen aan structuur. De eerste dag terug op de crèche is makkelijker als de laatste vakantieweek al wat meer op een weekdag-ritme leek.
 
 Voor meer inspiratie over dagtrips met je kind, lees ook [dagje uit met kleuter](/blog/dagje-uit-met-kleuter-4-6-jaar/) — veel van de tips gelden ook voor peuters, en als jij meerdere kinderen hebt is dit een handige aanvulling. En als het budget echt krap is, check dan [goedkoop op stap](/blog/goedkoop-op-stap-peuters/) voor concrete gratis uitjes per regio.
+
+Heb je de meivakantie al voor de boeg? [Meivakantie met peuters](/blog/meivakantie-met-peuters/) geeft een vergelijkbare aanpak maar specifiek voor die twee weken in het voorjaar. Op warme zomerdagen is een kindvriendelijk terras soms precies genoeg — [kindvriendelijke terrassen 2026](/blog/kindvriendelijke-terrassen-2026/) helpt je de juiste plek te vinden. Heb je ook een heel jonge dreumes? [Dagje uit met 1-jarige](/blog/dagje-uit-met-1-jarige/) behandelt de specifieke uitdagingen van die leeftijdscategorie.
 
 ---
 

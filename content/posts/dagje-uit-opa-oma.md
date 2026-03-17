@@ -31,7 +31,7 @@ Een bibliotheekpas is gratis voor kinderen tot 18 jaar. Neem er een paar boekjes
 
 Soms is het simpelste het beste. Een stadspark, een vijver met eenden, een zakje eendenvoer van de dierenwinkel — klaar. Voor een peuter is het kijken naar eenden die naar je toe zwemmen opwindend genoeg. Voor grootouders is het een uitje zonder druk, zonder ingang, zonder openingstijden.
 
-Het [Vondelpark](/amsterdam/vondelpark/) in Amsterdam en de grote stadsparken in Utrecht en Rotterdam hebben allemaal vijvers. Combineer het met een kort wandelingetje en een bankje in de zon. Makkelijker wordt het niet.
+Het Vondelpark in [Amsterdam](/amsterdam.html) en de grote stadsparken in Utrecht en Rotterdam hebben allemaal vijvers. Combineer het met een kort wandelingetje en een bankje in de zon. Makkelijker wordt het niet.
 
 Neem oud brood mee, of beter: speciale voerkorrels. En neem een extra laag kleding mee voor de peuter — parken zijn altijd iets kouder dan je denkt.
 
@@ -55,7 +55,7 @@ Ga op een doordeweekse middag. In het weekend zijn de populaire plekken vol en m
 
 ### 6. Stadspark met speeltuin
 
-Een [park](/parken.html) met een goede speeltuin is voor peuters altijd goed, en voor grootouders werkt het mits er een bankje bij de speeltuin staat. Dat klinkt vanzelfsprekend, maar niet elke speeltuin heeft zitgelegenheid in de buurt. Check dat even van tevoren.
+Een [park](/natuur.html) met een goede speeltuin is voor peuters altijd goed, en voor grootouders werkt het mits er een bankje bij de speeltuin staat. Dat klinkt vanzelfsprekend, maar niet elke speeltuin heeft zitgelegenheid in de buurt. Check dat even van tevoren.
 
 Kies een speeltuin met toestellen voor jonge kinderen: lage glijbaan, zandbak, babyschommel met beugeltje. De grotere stadsparken in Amsterdam, Rotterdam en Utrecht hebben vaak een apart peutergedeelte. Dat is veiliger en overzichtelijker dan een speeltuin waar ook zesjarigen rondrennen.
 
@@ -218,4 +218,4 @@ De beste uitjes voor grootouders en peuters zijn uitjes die bij beiden passen: r
 
 En voor de grootouders die dit lezen: het feit dat je op zoek bent naar een leuk uitje met je kleinkind zegt al genoeg. Die tijd samen is het echte cadeau, niet de bestemming.
 
-Bekijk ook onze gids over [goedkoop op stap met peuters](/blog/goedkoop-op-stap-peuters/) voor meer ideeën die niet veel hoeven te kosten, en de [regiopagina's](/parken.html) voor uitjes bij jou in de buurt.
+Bekijk ook onze gids over [goedkoop op stap met peuters](/blog/goedkoop-op-stap-peuters/) voor meer ideeën die niet veel hoeven te kosten, en de [natuurpagina](/natuur.html) voor uitjes bij jou in de buurt.

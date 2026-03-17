@@ -26,6 +26,8 @@ Door opbouw in energie voorkom je dat je kind al "op" is voordat de middag begin
 
 In Nijmegen zijn [speeltuinen](/speeltuinen.html), [natuur](/natuur.html) en [kinderboerderijen](/kinderboerderijen.html) meestal de veiligste keuze voor de ochtend. Buitenlucht + bewegen geeft vaak de beste basis voor de rest van de dag.
 
+Concrete opties om te overwegen: het [Goffertpark](/nijmegen/goffertpark/) heeft veel ruimte en een aparte speeltuin voor kleintjes, het [Sprokkelbos](/nijmegen/sprokkelbos/) is een fijne natuurspeelplek voor peuters die graag buiten rommelen, en het [Avonturenbos Stekkenberg](/nijmegen/avonturenbos-stekkenberg/) is iets groter en aantrekkelijker voor kleuters. De [Speeltuin De Blije Dries](/nijmegen/speeltuin-de-blije-dries/) is een toegankelijke buurtspeeltuin met goede faciliteiten. Op zomerse dagen zijn de [Waalstrandjes](/nijmegen/waalstrandjes-nijmegen/) een verrassend makkelijke keuze: water, zand en genoeg ruimte om te rennen.
+
 Kleine tip: neem altijd een snackmoment mee tussen blokken. Dat scheelt verrassend veel onrust.
 
 ## Lunch: maak het jezelf makkelijk
@@ -60,7 +62,7 @@ Combinatie van bewegen + kort rustmoment + kleine tweede activiteit.
 
 ### 3-4 jaar
 
-Meer uitdaging mogelijk: grotere speelplekken en interactieve binnenlocaties.
+Meer uitdaging mogelijk: grotere speelplekken en interactieve binnenlocaties. Denk aan [Museumpark Orientalis](/nijmegen/museumpark-orientalis/) voor een combinatie van buiten en cultureel, of [Park Lingezegen](/nijmegen/park-lingezegen/) voor veel ruimte en natuur net buiten de stad.
 
 ## Veelgestelde vragen
 
@@ -81,5 +83,7 @@ Twee hoofdblokken is meestal ideaal. Alles extra is optioneel.
 Nijmegen met peuters hoeft niet ingewikkeld te zijn. Met een heldere dagopbouw, korte reistijden en een backup voor regen heb je veel minder gedoe en meer plezier.
 
 Wil je meer ideeën voor 4-6 jaar? Lees ook [dagje uit met kleuter (4-6 jaar)](/blog/dagje-uit-met-kleuter-4-6-jaar/).
+
+In de buurt zit ook Arnhem, dat veel te bieden heeft voor een vergelijkbare dagtrip: [Arnhem met peuters](/blog/arnhem-met-peuters/). En als je op zoek bent naar een uitje dat ook binnen werkt, bekijk dan [museum met peuter](/blog/museum-met-peuter/).
 
 Bekijk alle actuele opties op [nijmegen.html](/nijmegen.html) of plan direct in [de app](/app.html?regio=Nijmegen).

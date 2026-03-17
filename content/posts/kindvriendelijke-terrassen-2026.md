@@ -10,7 +10,7 @@ Het klinkt simpel: een zonnige middag, een drankje, een peuter die lekker buiten
 
 Een goed terras voor peuters is geen luxe, het is een andere categorie dan een gewoon terras. Het scheelt of je een ontspannen middag hebt of één grote overlevingsmissie. In dit artikel leggen we uit waar je op moet letten, wat de beste soorten terrassen zijn, en welke regio's in Nederland de meeste opties bieden. Want een terras met een peuter kán heel fijn zijn — je moet alleen weten waar je moet zoeken.
 
-Bekijk voor een breder overzicht ook [alle kindvriendelijke horeca](/horeca.html) in onze database, of filter direct op [speeltuinen](/speeltuinen.html) als je eerder buiten wil spelen dan eten.
+Bekijk voor een breder overzicht ook [alle kindvriendelijke horeca](/horeca.html) in onze database, of filter direct op [speeltuinen](/speeltuinen.html) als je eerder buiten wil spelen dan eten. Wil je weten welke horecalocaties ook een speelhoek binnenshuis hebben? Lees [kindvriendelijke horeca met speelhoek](/blog/kindvriendelijke-horeca-met-speelhoek/) voor een gericht overzicht. Of bekijk [pannenkoekenrestaurant met speeltuin](/blog/pannenkoekenrestaurant-met-speeltuin/) als je pannenkoeken combineert met spelen.
 
 ---
 
@@ -46,7 +46,7 @@ Veel grote [speeltuinen](/speeltuinen.html) in Nederland hebben inmiddels een ei
 
 Let bij dit soort plekken op de kwaliteit van het eten — speeltuincafés hebben niet altijd de beste keuken. Maar voor een lunch of een tussendoortje is het prima. En de drempel om te gaan is lager: als het kind zeurt, loop je gewoon terug naar het spelen. Je zit nergens aan vast.
 
-In grote [parken](/natuur.html) vind je dit patroon het meest. Vondelpark in Amsterdam, Kralingse Bos in Rotterdam, Wilhelminapark in Utrecht — ze hebben allemaal horeca in de buurt van speelplekken.
+In grote [parken](/natuur.html) vind je dit patroon het meest. In Amsterdam heeft het [Blauwe Theehuis](/amsterdam/blauwe-theehuis/) in het Vondelpark een ruim terras met speelruimte vlakbij. In Rotterdam is het [Kralingse Bos](/rotterdam/kralingse-bos/) met meerdere horecaopties aan het meer ideaal. In Utrecht biedt het [Parkrestaurant Anafora](/utrecht/parkrestaurant-anafora/) ruimte voor gezinnen dicht bij de natuur.
 
 ---
 
@@ -56,7 +56,7 @@ Waterterrassen hebben iets wat andere terrassen niet hebben: ruimte. Je zit aan 
 
 Bovendien heeft horeca aan het water vaak een wat ruimer publiek — gezinnen, wandelaars, mensen die van de omgeving genieten in plaats van een snelle lunch pakken. Dat betekent in de praktijk iets meer ontspanning van het personeel en minder gehaaste sfeer.
 
-In Nederland zijn waterterrassen overal te vinden. Langs grachten, aan havens, bij meren. In steden als [Amsterdam](/amsterdam.html), [Rotterdam](/rotterdam.html), [Leiden](/leiden.html) en [Haarlem](/haarlem.html) is het bijna onmogelijk om geen terras aan het water te vinden. Het gaat erom welke ook goed ingericht zijn voor kinderen.
+In Nederland zijn waterterrassen overal te vinden. Langs grachten, aan havens, bij meren. In steden als [Amsterdam](/amsterdam.html), [Rotterdam](/rotterdam.html), [Leiden](/leiden.html) en [Haarlem](/haarlem.html) is het bijna onmogelijk om geen terras aan het water te vinden. In Amsterdam werkt [Bistro Bos](/amsterdam/bistro-bos/) in het Amsterdamse Bos goed — aan het water, met ruimte voor buggy's en rustig genoeg voor peuters. Het gaat erom welke ook goed ingericht zijn voor kinderen.
 
 Waar je op let aan het water: is er een railing of een barrière tussen het terras en het water? Dat klinkt vanzelfsprekend, maar bij oudere kades is die soms minimaal of afwezig. Met een rennende peuter is dat een punt om te checken voor je gaat zitten.
 
@@ -68,7 +68,7 @@ Er is weinig zo betrouwbaar als een pannenkoekenrestaurant als je met peuters ui
 
 Veel pannenkoekenrestaurants hebben ook een terras, en dat is de ideale combinatie. Je kind weet van tevoren wat het krijgt (een pannenkoek, altijd goed), het eten is snel klaar, en de sfeer is ontspannen. Niemand kijkt raar op als je kind luidruchtig is.
 
-Specifiek voor Utrecht zijn er mooie opties bij de [pannenkoekenboerderijen op de Utrechtse Heuvelrug](/blog/pannenkoekenboerderijen-utrecht-heuvelrug/) — combinatie van buiten zijn, dieren zien en eten. Die combinatie werkt voor bijna alle leeftijden van nul tot zes jaar.
+Specifiek voor Utrecht zijn er mooie opties bij de [pannenkoekenboerderijen op de Utrechtse Heuvelrug](/blog/pannenkoekenboerderijen-utrecht-heuvelrug/) — combinatie van buiten zijn, dieren zien en eten. In de stad zelf is [Anna Pancakes Binnenstad](/utrecht/anna-pancakes-binnenstad/) een goede keuze met een kindermenuvriendelijke aanpak. Die combinatie werkt voor bijna alle leeftijden van nul tot zes jaar.
 
 Let bij pannenkoekenrestaurants op de wachttijd. Ze zijn populair, en zeker in het weekend en tijdens schoolvakanties kan de wachttijd oplopen tot 45 minuten. Boek vooruit als het kan, of ga vroeg.
 
@@ -80,7 +80,7 @@ Let bij pannenkoekenrestaurants op de wachttijd. Ze zijn populair, en zeker in h
 
 [Amsterdam](/amsterdam.html) heeft honderden terrassen, maar weinig die echt geschikt zijn voor peuters in drukke gebieden. Het centrum is te vol, de tafels staan te dicht op elkaar en de sfeer is te haastig. De beste opties liggen aan de rand van de stad of in grotere parken.
 
-Vondelpark en de omgeving van het Westerpark zijn betrouwbare keuzes. Beide gebieden hebben meerdere horecaopties, speelplekken in de buurt en ruimte voor buggy's. In de Watergraafsmeer en Oost zijn buurtcafés en terrassen te vinden die een stuk rustiger zijn dan het centrum.
+Vondelpark en de omgeving van het Westerpark zijn betrouwbare keuzes. In het Westerpark is [Kinderboerderij Westerpark](/amsterdam/kinderboerderij-westerpark/) vlakbij en is er ook horeca op loopafstand. In de Watergraafsmeer en Oost zijn buurtcafés en terrassen te vinden die een stuk rustiger zijn dan het centrum — [Speeltuin Park Frankendael](/amsterdam/speeltuin-park-frankendael/) heeft een aangrenzende horecagelegenheid.
 
 Wil je een volledige dagplanning? Lees [Amsterdam met peuters en kleuters](/blog/amsterdam-met-peuters-en-kleuters/) voor een complete gids.
 
@@ -102,7 +102,7 @@ Wilhelminapark heeft een goed terras met speeltuin in de buurt. Het Griftpark he
 
 [Den Haag](/den-haag.html) heeft het Zuiderpark en de Scheveningse kust als grote troeven. Scheveningen is een voor de hand liggende keuze — veel terrassen, ruimte, wind, en het strand als speelplaats. Maar het kan ook hectisch zijn. Kies voor terrassen iets verder van de boulevard voor minder drukte.
 
-Binnen de stad is het Zuiderpark een rustiger alternatief. Groot, groen, met horeca die op gezinnen is ingesteld. In het voorjaar en de zomer is het Zuiderpark ook minder toeristische druk dan de kust.
+Binnen de stad is het Zuiderpark een rustiger alternatief. Groot, groen, met horeca die op gezinnen is ingesteld. Aan de Scheveningse kant is [Beachclub Zeezicht](/den-haag/beachclub-zeezicht/) een ruim terras met uitzicht op het water. In het voorjaar en de zomer is het Zuiderpark ook minder toeristische druk dan de kust.
 
 ### Haarlem
 

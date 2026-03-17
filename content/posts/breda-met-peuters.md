@@ -24,7 +24,7 @@ Dat ritme werkt in de praktijk beter dan "we zien wel waar we eindigen".
 
 ## Buitenopties die vrijwel altijd goed gaan
 
-Voor peuters werken [speeltuinen](/speeltuinen.html), [kinderboerderijen](/kinderboerderijen.html) en [natuurplekken](/natuur.html) in Breda heel goed. Het doel is niet "alles gezien", maar genoeg ruimte om te bewegen zonder druk schema.
+Voor peuters werken [speeltuinen](/speeltuinen.html), [kinderboerderijen](/kinderboerderijen.html) en [natuurplekken](/natuur.html) in Breda heel goed. Het doel is niet "alles gezien", maar genoeg ruimte om te bewegen zonder druk schema. Goede keuzes zijn [Kinderboerderij de Leijhoeve](/breda/kinderboerderij-de-leijhoeve/), [Speelpark de Hoogte](/breda/speelpark-de-hoogte/) en het [Mastbos](/breda/mastbos/) voor ruimte en frisse lucht.
 
 Tip: ga vroeg op pad en kies één hoofdplek voor de ochtend. Dat houdt de energie in balans.
 
@@ -60,7 +60,7 @@ Beste combinatie: buiten spelen + lunch + korte tweede activiteit.
 
 ### 3-4 jaar
 
-Meer behoefte aan uitdaging: grotere speelzones en interactieve [musea](/musea.html) doen het beter.
+Meer behoefte aan uitdaging: grotere speelzones en interactieve [musea](/musea.html) doen het beter. Denk aan [Moya Museum of Young Art](/breda/moya-museum-of-young-art/) of [De Uitvindfabriek](/breda/de-uitvindfabriek/) voor iets interactiefs binnen.
 
 ## Veelgestelde vragen
 
@@ -78,8 +78,8 @@ Met peuters werkt meestal één hoofdactiviteit plus een korte tweede beter dan 
 
 ## Samenvatting
 
-Een geslaagde dag Breda met peuters draait om drie dingen: korte afstanden, heldere volgorde en een regenbackup. Daarmee blijft de dag leuk, ook als niet alles volgens plan gaat.
+Een geslaagde dag Breda met peuters draait om drie dingen: korte afstanden, heldere volgorde en een regenbackup. Daarmee blijft de dag leuk, ook als niet alles volgens plan gaat. Voor een binnenspeelplek als backup zijn [Haasje Over (Indoorspeelpaleis)](/breda/haasje-over-indoorspeelpaleis/) en [Monkey Town Breda](/breda/monkey-town-breda/) de bekendste opties.
 
-Heb je een kleuter mee? Bekijk dan ook [dagje uit met kleuter (4-6 jaar)](/blog/dagje-uit-met-kleuter-4-6-jaar/) voor extra opties.
+Heb je een kleuter mee? Bekijk dan ook [dagje uit met kleuter (4-6 jaar)](/blog/dagje-uit-met-kleuter-4-6-jaar/) voor extra opties. Wil je het budget bewaken? Dan helpt [goedkoop op stap met peuters](/blog/goedkoop-op-stap-peuters/) met gratis en betaalbare uitjes. Plannen met kleinere kinderen? [pretparken voor peuters in Nederland](/blog/pretparken-peuter-nederland/) geeft een breder overzicht.
 
 Bekijk alle opties op [breda.html](/breda.html) of stel je dag samen in [de app](/app.html?regio=Breda).

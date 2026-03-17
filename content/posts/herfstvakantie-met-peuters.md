@@ -24,7 +24,7 @@ Kijk voor bossen en groene plekken bij jou in de buurt op de [natuur](/natuur.ht
 
 ### 2. Kinderboerderij in het najaarsseizoen
 
-Veel [kinderboerderijen](/kinderboerderijen.html) zijn in de herfstvakantie extra druk bezocht, maar dat hoeft geen probleem te zijn. Juist in oktober zijn er soms speciale activiteiten: pompoenen snijden, appels persen of een najaarsrondleiding. Bel vooraf even op — kleine kinderboerderijen plannen dit soort dingen soms op vaste momenten in de vakantie.
+Veel [kinderboerderijen](/kinderboerderijen.html) zijn in de herfstvakantie extra druk bezocht, maar dat hoeft geen probleem te zijn. Juist in oktober zijn er soms speciale activiteiten: pompoenen snijden, appels persen of een najaarsrondleiding. In Rotterdam heeft [Belevenisboerderij Schieveen](/rotterdam/belevenisboerderij-schieveen/) najaarsactiviteiten; in Utrecht is [Kinderboerderij Oortjespad](/utrecht/kinderboerderij-oortjespad/) een populaire keuze midden in de stad. Bel vooraf even op — kleine kinderboerderijen plannen dit soort dingen soms op vaste momenten in de vakantie.
 
 Een bijkomend voordeel: kinderboerderijen zijn gratis of spotgoedkoop, en je kunt er makkelijk een ochtend van maken zonder dat het te vermoeiend wordt.
 
@@ -40,13 +40,13 @@ Heeft je peuter eerder gekeken dan gelopen? Neem de buggy mee. De afstanden in e
 
 ### 5. Pannenkoekenrestaurant in of bij het bos
 
-De combinatie van een wandeling en een warme lunch is een klassieker voor een goede reden. [Pannenkoekenrestaurants](/pannenkoeken.html) die in of vlak bij een bos liggen, zijn ideaal: een korte boswandeling met je peuter, dan pannenkoeken met spek of appelstroop, en daarna nog even door het bos terug. Peuters eten graag als ze buiten geweest zijn, en het gevoel van "uiteten" maakt de dag een beetje bijzonder.
+De combinatie van een wandeling en een warme lunch is een klassieker voor een goede reden. [Pannenkoekenrestaurants](/pannenkoeken.html) die in of vlak bij een bos liggen, zijn ideaal: een korte boswandeling met je peuter, dan pannenkoeken met spek of appelstroop, en daarna nog even door het bos terug. In Arnhem is [Pannekoekhuis Schaarsbergen](/arnhem/t-pannekoekhuis-schaarsbergen/) precies zo'n plek — midden in de bossen bij de Veluwe. Peuters eten graag als ze buiten geweest zijn, en het gevoel van "uiteten" maakt de dag een beetje bijzonder.
 
 ### 6. Kasteel of ruïne bezoeken
 
 Nederland heeft meer kastelen en buitenplaatsen dan de meeste mensen doorhebben. Veel ervan zijn omgeven door tuinen of parken die vrij toegankelijk zijn — je hoeft dus geen toegang te betalen voor het kasteel zelf. Voor een peuter is de beleving al genoeg: een grote poort, een slotgracht, hoge torens. Ze zijn op de leeftijd waarop een kasteel nog echt magisch voelt.
 
-[Arnhem](/arnhem.html) en [Apeldoorn](/apeldoorn.html) liggen midden in de Veluwe en hebben meerdere kastelen en landgoederen in de directe omgeving. Het Loo, Rosendael, Doorwerth — stuk voor stuk te combineren met een ochtend buiten.
+[Arnhem](/arnhem.html) en [Apeldoorn](/apeldoorn.html) liggen midden in de Veluwe en hebben meerdere kastelen en landgoederen in de directe omgeving. [Paleis Het Loo](/apeldoorn/paleis-het-loo/), [Kasteel Doorwerth](/arnhem/doorwerth/) — stuk voor stuk te combineren met een ochtend buiten.
 
 ### 7. Eendjes voeren bij het park
 
@@ -72,13 +72,13 @@ Een regendag in de herfstvakantie is geen ramp. Er zijn genoeg goede binnenoptie
 
 ### 11. Interactief museum
 
-Niet elk museum werkt voor peuters, maar [musea](/musea.html) die speciaal zijn ingericht voor jonge kinderen zijn ideaal op een regendag. Denk aan doe-musea, kindermusea of wetenschapsmusea met een peuterhoek. De beste hebben objecten om aan te raken, te bewegen en te verschuiven — geen vitrines om voor te staan.
+Niet elk museum werkt voor peuters, maar [musea](/musea.html) die speciaal zijn ingericht voor jonge kinderen zijn ideaal op een regendag. Denk aan doe-musea, kindermusea of wetenschapsmusea met een peuterhoek — zoals [NEMO Science Museum](/amsterdam/nemo-science-museum/) in Amsterdam of het [CODA Museum](/apeldoorn/coda-museum/) in Apeldoorn dat ook voor jonge kinderen laagdrempelig is. De beste hebben objecten om aan te raken, te bewegen en te verschuiven — geen vitrines om voor te staan.
 
 Kijk vooraf even of er een speciale peuterzone of kleuterruimte is. Dat scheelt een heleboel frustratie.
 
 ### 12. Indoor speeltuin
 
-Een klassieker, en terecht. [Indoor speeltuinen](/binnenlocaties-peuters.html) zijn gebouwd voor dit soort dagen. Let op: in de herfstvakantie kunnen ze flink druk zijn, zeker in het weekend. Ga doordeweeks en boek als dat mogelijk is van tevoren. Neem antislipsokken mee — die zijn bij veel speelparadijzen verplicht.
+Een klassieker, en terecht. [Indoor speeltuinen](/binnenlocaties-peuters.html) zijn gebouwd voor dit soort dagen. In Amsterdam heeft [Ballorig Amsterdam](/amsterdam/ballorig-amsterdam/) een aparte peuterzone; in Den Haag is [Zuiderparadijs](/den-haag/zuiderparadijs-binnenspeeltuin/) een betrouwbare optie. Let op: in de herfstvakantie kunnen ze flink druk zijn, zeker in het weekend. Ga doordeweeks en boek als dat mogelijk is van tevoren. Neem antislipsokken mee — die zijn bij veel speelparadijzen verplicht.
 
 Controleer ook of er een aparte peuterzone is. In grotere speelparadijzen zijn die er bijna altijd, maar lokale speeltuintjes hebben soms alleen een open ruimte voor alle leeftijden.
 
@@ -187,6 +187,8 @@ Als je vaker naar musea of dierentuinen gaat, zijn museumkaart en/of het Dierent
 Horeca in musea, dierentuinen en speelparadijzen is duur. Een lunch van thuis scheelt makkelijk €15-20 voor een gezin met peuter. Controleer wel of je het mee naar binnen mag nemen — de meeste plekken hebben er geen probleem mee.
 
 Meer tips over goedkoop op stap gaan vind je in de blogpost [goedkoop op stap met peuters](/blog/goedkoop-op-stap-peuters/).
+
+Op een regendag is een museum soms de beste keuze: [museum met peuter](/blog/museum-met-peuter/) helpt je het juiste museum kiezen voor jouw leeftijdsgroep. En als de regen echt aanhoudt, staat [uitjes met peuter bij regen](/blog/uitjes-met-peuter-bij-regen/) vol met concrete binnenopties. Is je kind tegen de 4 jaar en zoek je een feestje idee? [Kinderfeestje 3 jaar](/blog/kinderfeestje-3-jaar/) geeft praktische tips die ook voor de herfstvakantie werken.
 
 ---
 

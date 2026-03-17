@@ -22,7 +22,7 @@ Er zijn meerdere speelplekken specifiek voor de allerkleinsten, met lage klimtoe
 
 ## 2. Speeldernis
 
-[Speeldernis](/rotterdam.html) in het Zuiderpark is een unieke natuurspeeltuin en een van de parels van Rotterdam. Hier spelen kinderen met water, zand, hout en planten in een avontuurlijke omgeving.
+[De Speeldernis](/rotterdam/de-speeldernis/) in het [Zuiderpark](/rotterdam/zuiderpark/) is een unieke natuurspeeltuin en een van de parels van Rotterdam. Hier spelen kinderen met water, zand, hout en planten in een avontuurlijke omgeving.
 
 **Voor peuters:** De dreumeshoek is een afgesloten deel met een zandbak, boomstammen om overheen te kruipen en een klein waterloopje. Peuters kunnen hier veilig spelen terwijl oudere kinderen verderop bezig zijn. Het terrein is bewust niet strak aangelegd: kinderen mogen vies worden.
 
@@ -33,7 +33,7 @@ Er zijn meerdere speelplekken specifiek voor de allerkleinsten, met lage klimtoe
 
 ## 3. Vroesenpark speeltuin
 
-Het Vroesenpark in Rotterdam-Noord heeft een grote, goed onderhouden speeltuin die bij buurtbewoners geliefd is. De speeltuin ligt midden in het groene park en biedt een rustige plek om te spelen.
+Het Vroesenpark in Rotterdam-Noord heeft een grote, goed onderhouden speeltuin die bij buurtbewoners geliefd is. De speeltuin ligt midden in het groene park en biedt een rustige plek om te spelen. Het park heeft ook een eigen [Kinderboerderij Vroesenpark](/rotterdam/kinderboerderij-vroesenpark/) die gratis te bezoeken is.
 
 Er is een apart peutergedeelte met babyschommels, lage glijbaantjes en wipkippen. De speeltuin is omheind, waardoor je peuter niet zomaar het park in kan rennen. Rondom staan bankjes waar ouders kunnen zitten.
 
@@ -44,7 +44,7 @@ Er is een apart peutergedeelte met babyschommels, lage glijbaantjes en wipkippen
 
 ## 4. Jimmy's Speelparadijs
 
-[Jimmy's Speelparadijs](/rotterdam.html) is een van de grotere indoor speelparadijzen in Rotterdam. Voor regenachtige dagen is dit een uitkomst: een enorme hal vol klimrekken, glijbanen, trampolines en ballenbaden.
+Jimmy's Speelparadijs is een van de grotere indoor speelparadijzen in Rotterdam. Voor regenachtige dagen is dit een uitkomst: een enorme hal vol klimrekken, glijbanen, trampolines en ballenbaden.
 
 **Voor peuters:** Er is een **afgesloten peuterzone** met zachte speelelementen, een klein ballenbad en een laag klimrek. Peuters kunnen hier spelen zonder in de buurt te komen van de wildere attracties.
 
@@ -55,7 +55,7 @@ Er is een apart peutergedeelte met babyschommels, lage glijbaantjes en wipkippen
 
 ## 5. Kralingse Bos speeltuinen
 
-Het Kralingse Bos is een van de grotere groengebieden in Rotterdam en heeft meerdere speelplekken verspreid door het bos. Het is een fijne plek om een wandeling te combineren met spelen.
+Het [Kralingse Bos](/rotterdam/kralingse-bos/) is een van de grotere groengebieden in Rotterdam en heeft meerdere speelplekken verspreid door het bos. Het is een fijne plek om een wandeling te combineren met spelen.
 
 Bij de Kralingse Plas staat een speeltuin met houten klimtoestellen, een zandbak en babyschommels. De omgeving is bosrijk en rustig. Combineer de speeltuin met een wandeling langs het water.
 
@@ -77,7 +77,7 @@ De speeltuin heeft een **afgesloten peuterhoek** met speeltoestellen op maat. Er
 
 ## 7. Ballorig Rotterdam
 
-[Ballorig](/rotterdam.html) heeft ook een vestiging in Rotterdam en is een betrouwbare keuze voor een indoor speeldag. Het concept is vergelijkbaar met andere Ballorig-vestigingen: een groot klimparadijs met aparte zones per leeftijd.
+Ballorig heeft ook een vestiging in Rotterdam en is een betrouwbare keuze voor een indoor speeldag. Het concept is vergelijkbaar met andere Ballorig-vestigingen: een groot klimparadijs met aparte zones per leeftijd.
 
 **Voor peuters:** De peuterzone is duidelijk afgebakend en heeft zachte speelelementen, een ballenbad en een klein huisje om in te spelen. Wat **overzichtelijker en rustiger** dan sommige andere grote speelparadijzen, fijn als je peuter snel overprikkeld raakt.
 
@@ -88,7 +88,7 @@ De speeltuin heeft een **afgesloten peuterhoek** met speeltoestellen op maat. Er
 
 ## 8. Het Park (bij de Euromast)
 
-Het Park bij de Euromast is een historisch stadspark vlak bij het centrum met uitzicht op de Maas.
+Het Park bij de [Euromast](/rotterdam/euromast/) is een historisch stadspark vlak bij het centrum met uitzicht op de Maas.
 
 De speeltuin heeft klimtoestellen voor verschillende leeftijden, een zandbak en schommels. Het park is compact en overzichtelijk. Na het spelen kun je langs de Maas wandelen of een pannenkoek eten.
 
@@ -106,3 +106,5 @@ De speeltuin heeft klimtoestellen voor verschillende leeftijden, een zandbak en 
 - Bij mooi weer vroeg gaan loont. Plaswijckpark en Speeldernis kunnen op zonnige dagen snel vol raken.
 
 Bekijk onze [Rotterdam-pagina](/rotterdam.html) voor alle peuteruitjes in de stad, of de [speeltuinenpagina](/speeltuinen.html) voor meer speeltuinen door heel Nederland.
+
+Meer lezen? Bekijk ook [Rotterdam met peuters](/blog/rotterdam-met-peuters/) voor een overzicht van alle activiteiten in de stad. Op zoek naar een goedkope dag uit? Lees [goedkoop op stap met peuters](/blog/goedkoop-op-stap-peuters/) voor tips. En voor de allerkleinsten: [dagje uit met een 1-jarige](/blog/dagje-uit-met-1-jarige/).

@@ -210,12 +210,12 @@ Wat helpt:
 
 Niet elk uitje met een peuter hoeft een pretpark te zijn. Eerlijk gezegd zijn er uitjes die voor peuters van 1-3 jaar net zo goed of beter werken:
 
-- **[Dierentuinen](/dierentuinen.html)** — dieren kijken is voor de meeste peuters spannender dan attracties. [Artis](/amsterdam/artis/) en [Dierenpark Amersfoort](/amersfoort/dierenpark-amersfoort/) zijn uitstekend met jonge kinderen.
+- **Dierentuinen** — dieren kijken is voor de meeste peuters spannender dan attracties. [Artis](/amsterdam/artis/) en [Dierenpark Amersfoort](/amersfoort/dierenpark-amersfoort/) zijn uitstekend met jonge kinderen.
 - **Grote speeltuinen** — gratis, geen wachtrijen, en je peuter bepaalt het tempo.
 - **Kinderboerderijen** — gratis of bijna gratis, dieren aaien en voeren, en je kunt vertrekken wanneer je wilt.
 - **Waterspeelplaatsen** — in de zomer minstens zo leuk als een pretpark, en meestal gratis.
 
-Meer ideeën vind je op onze [pretparken-overzichtspagina](/pretparken.html) of in de [app](/app.html).
+Meer ideeën vind je in de [app](/app.html).
 
 ## Veelgestelde vragen
 
@@ -249,4 +249,4 @@ Een pretpark met een peuter kan fantastisch zijn — als je het juiste park kies
 
 Begin met Julianatoren of Sprookjeswonderland als eerste pretparkervaring. Bouw van daaruit op naarmate je kind groter en avontuurlijker wordt. En als je kind 4 of 5 is en klaar voor meer: lees dan verder in [dagje uit met kleuter 4-6 jaar](/blog/dagje-uit-met-kleuter-4-6-jaar/).
 
-Voor wie nu al wil plannen: bekijk alle [pretparken](/pretparken.html) in onze app, of start met een [zomervakantie-planning met peuter](/blog/zomervakantie-met-peuter/) als je vooruit wilt kijken.
+Voor wie nu al wil plannen: bekijk alle pretparken in onze [app](/app.html), of start met een [zomervakantie-planning met peuter](/blog/zomervakantie-met-peuter/) als je vooruit wilt kijken.

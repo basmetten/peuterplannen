@@ -28,33 +28,37 @@ Zonder die peuterzone breng je een uur lang "nee, dat mag jij nog niet" te roepe
 ### Jungla (Amstelveen)
 Een van de grotere speelparadijzen in de regio met een duidelijke peuterzone. De opzet is ruim, de vloeren zijn schoon, en er is een apart café voor ouders met zichtlijn naar de speelzone. Goed bereikbaar vanuit Amsterdam-Zuid.
 
-### Monkey Town (meerdere vestigingen)
+### [Monkey Town Amsterdam](/amsterdam/monkey-town-amsterdam/)
 Een keten met vestigingen in onder andere Amsterdam, Zoetermeer, en elders. De kwaliteit verschilt per vestiging, maar ze hebben over het algemeen een peuterzone. De vestiging in Amsterdam-West is populair; ga liever op een dinsdag dan op een zaterdag.
 
-### Kinderparadijs Elzenhagen (Amsterdam-Noord)
+### [Candy Castle Speelparadijs](/amsterdam/candy-castle-speelparadijs/)
 Kleiner en minder bekend dan Monkey Town, maar juist daarom rustiger. Goed voor peuters omdat het niet overweldigend groot is. Een goede optie als je iets wil doen zonder de drukte van een commercieel grootbedrijf.
+
+Ook [Jimmy's Speelparadijs](/amsterdam/jimmy-s-speelparadijs/) en [Ballorig Amsterdam](/amsterdam/ballorig-amsterdam/) zijn in de regio het overwegen waard.
 
 ## Rotterdam regio
 
 ### Smaasland (Rhoon)
-Net buiten Rotterdam (zo'n 20 minuten rijden) maar de moeite waard. Groot speelparadijs met een aparte peuter-sectie, goed onderhouden, en de omgeving (Rhoon heeft ook een kasteel en kinderboerderij) maakt het makkelijk om er een hele dag van te maken.
+Net buiten Rotterdam (zo'n 20 minuten rijden) maar de moeite waard. Groot speelparadijs met een aparte peuter-sectie, goed onderhouden, en de omgeving (Rhoon heeft ook een kasteel en [Kinderboerderij Vroesenpark](/rotterdam/kinderboerderij-vroesenpark/)) maakt het makkelijk om er een hele dag van te maken.
 
-### Monsterland (Rotterdam)
+### [Speelparadijs Bungelland](/rotterdam/speelparadijs-bungelland/)
 Dichter bij de stad, wat kleiner, maar heeft een peuterzone. Goed bereikbaar met het OV. Op rustige doordeweekse dagen een prima optie voor een halve ochtend.
+
+Ook [Biotopia Binnenspeeltuin](/rotterdam/biotopia-binnenspeeltuin/) is een gewaardeerde optie in de regio voor de allerkleinsten.
 
 ## Utrecht regio
 
 ### De Speelbrouwerij
 Als je één speelparadijs in Nederland moet noemen dat echt begrepen heeft hoe het voor peuters werkt, is het De Speelbrouwerij. De peuterzone is ruim, veilig, goed ingericht — en apart van de grote klauterwereld van de oudere kinderen. Ouders kunnen met zicht op het speelgebied zitten. Droog, warm, goed koffie.
 
-Let op: het is populair en kan vol zijn in vakanties. Reserveer van tevoren of ga op een doordeweekse ochtend.
+Let op: het is populair en kan vol zijn in vakanties. Reserveer van tevoren of ga op een doordeweekse ochtend. In de regio zijn ook [Ballorig Utrecht](/utrecht/ballorig-utrecht/) en [Ballorig Houten](/utrecht/ballorig-houten/) goede alternatieven.
 
 ## Den Haag regio
 
 ### Playland (Rijswijk)
 Een van de bekendere opties in de Haagse regio. Heeft een peuterzone, is goed bereikbaar, en groot genoeg om een paar uur te vullen. Op scholen-vrije dagen merkbaar drukker.
 
-Er zijn ook kleinere binnenspeelplaatsen in Den Haag zelf; sommige kindercafés en speelzalen hebben een peuterruimte. Zoek lokaal naar "kindercafé Den Haag" voor kleinschaligere opties.
+Er zijn ook kleinere binnenspeelplaatsen in Den Haag zelf; [Kindercafé Kikker en de Kraanvogel](/den-haag/kindercafe-kikker-en-de-kraanvogel/) heeft een peuterruimte. In het seizoen is [Legoland Discovery Centre Scheveningen](/den-haag/legoland-discovery-centre-scheveningen/) ook het overwegen waard voor kleuters.
 
 ## Noord-Nederland
 
@@ -85,3 +89,5 @@ Als je geen zin hebt in een speelparadijs (terecht), zijn er alternatieven die o
 ## Meer uitjes zoeken
 
 Zoek in onze [app](/app.html) op type "speelparadijs" of "binnenspeelplaats" en filter op jouw regio. Alle locaties zijn handmatig gecheckt.
+
+Meer lezen over uitjes voor de jongste kinderen? Bekijk ook [dagje uit met kleuter (4-6 jaar)](/blog/dagje-uit-met-kleuter-4-6-jaar/), de [gids voor uitjes bij regen](/blog/uitjes-met-peuter-bij-regen/) en [kinderfeestje voor een 3-jarige](/blog/kinderfeestje-3-jaar/) voor meer inspiratie.

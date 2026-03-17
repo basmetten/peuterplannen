@@ -68,13 +68,13 @@ Op drukke vrijmarkten is een kinderwagen soms een obstakel. Je staat stil, je ku
 
 ### Amsterdam
 
-Amsterdam is op Koningsdag overweldigend — maar ook de stad met de meeste variatie. De Jordaan en het centrum zijn op hoogtepunt echt niet kinderwagenvriendelijk. Betere keuzes: het Vondelpark, dat altijd een eigen sfeer heeft op Koningsdag, of de Pijp in de ochtend.
+Amsterdam is op Koningsdag overweldigend — maar ook de stad met de meeste variatie. De Jordaan en het centrum zijn op hoogtepunt echt niet kinderwagenvriendelijk. Betere keuzes: het [Amsterdamse Bos](/amsterdam/amsterdamse-bos/) of [Speeltuin Park Frankendael](/amsterdam/speeltuin-park-frankendael/) — die zijn op 27 april soms juist rustiger dan normaal, omdat iedereen in het centrum zit. De Pijp in de ochtend heeft ook een eigen buurtsfeer die goed werkt met peuters; vlakbij zit [Kinderboerderij De Pijp](/amsterdam/kinderboerderij-de-pijp/).
 
 Bekijk vooraf welke [speeltuinen](/speeltuinen.html) in Amsterdam op Koningsdag ook gewoon open zijn. Die zijn op 27 april soms juist rustiger dan normaal, omdat iedereen in het centrum zit. Meer over Amsterdam met jonge kinderen lees je in onze gids [Amsterdam met peuters](/blog/amsterdam-met-peuters-en-kleuters/).
 
 ### Rotterdam
 
-Rotterdam viert Koningsdag iets losser dan Amsterdam. Het Kralingse Bos is een uitstekende optie: ruimte, groen, en een sfeer die niet overdonderen. De [parken](/natuur.html) in Rotterdam zijn op 27 april goed te doen, zeker in de ochtend.
+Rotterdam viert Koningsdag iets losser dan Amsterdam. Het [Kralingse Bos](/rotterdam/kralingse-bos/) is een uitstekende optie: ruimte, groen, en een sfeer die niet overdondert. Het [Zuiderpark](/rotterdam/zuiderpark/) is een andere goede keuze — groot, kindvriendelijk en minder toeristisch dan het centrum. De [parken](/natuur.html) in Rotterdam zijn op 27 april goed te doen, zeker in de ochtend.
 
 Bekijk ook ons overzicht voor [Rotterdam](/rotterdam.html) voor plekken die het hele jaar door goed zijn voor peuters.
 
@@ -86,7 +86,7 @@ Meer tips specifiek voor Utrecht vind je in onze post over [Utrecht met peuters]
 
 ### Den Haag
 
-Den Haag heeft een eigen Koningsdagtraditie, met evenementen in het Zuiderpark en het centrum. Het Zuiderpark is zeker met peuters aan te raden: veel ruimte, kinderprogramma, en minder krappe straatjes. Bekijk ons overzicht voor [Den Haag](/den-haag.html) voor meer context.
+Den Haag heeft een eigen Koningsdagtraditie, met evenementen in het Zuiderpark en het centrum. Het Zuiderpark is zeker met peuters aan te raden: veel ruimte, kinderprogramma, en minder krappe straatjes. In het Zuiderpark zit ook [Stoomgroep West Zuiderpark](/den-haag/stoomgroep-west-zuiderpark/) — een extra trekpleister voor kleine kinderen. Bekijk ons overzicht voor [Den Haag](/den-haag.html) voor meer context.
 
 ### Haarlem en Amersfoort
 
@@ -104,11 +104,13 @@ Op Koningsdag zijn er in heel Nederland kleine dorpjes en wijken die een eigen f
 
 ### [Kinderboerderijen](/kinderboerderijen.html) zijn een veilige haven
 
-Veel kinderboerderijen zijn op Koningsdag gewoon open. Ze zijn gratis of goedkoop, bieden ruimte, en een peuter is er direct tevreden met de dieren en de zandbak. Dit is de stille tip die veel ouders pas na hun eerste rampzalige Koningsdag ontdekken.
+Veel kinderboerderijen zijn op Koningsdag gewoon open. Ze zijn gratis of goedkoop, bieden ruimte, en een peuter is er direct tevreden met de dieren en de zandbak. In Utrecht is [Stadsboerderij De Griftsteede](/utrecht/stadsboerderij-de-griftsteede/) een fijne keuze op zo'n dag. Dit is de stille tip die veel ouders pas na hun eerste rampzalige Koningsdag ontdekken.
 
 ### Natuur en bos
 
 Een boswandeling op Koningsdag klinkt misschien saai, maar is dat niet. Je ontwijkt de drukte volledig, je kind beweegt, en het is gratis. Combineer het daarna met een eenvoudige lunch ergens rustig, en je hebt een prima dag gehad. Check onze tips voor [goedkoop op stap](/blog/goedkoop-op-stap-peuters/) als je meer van dit soort combinaties wilt.
+
+Woon je in Amsterdam of plan je er naartoe? Lees ook [Amsterdam met peuters en kleuters](/blog/amsterdam-met-peuters-en-kleuters/) voor een bredere gids over de stad. Woon je in of rond Utrecht? Dan geeft [Utrecht met peuters](/blog/utrecht-met-peuters/) locatietips die ook op Koningsdag van pas komen.
 
 ---
 

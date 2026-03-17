@@ -15,7 +15,7 @@ Hier staan de categorieën die bijna altijd gratis of erg goedkoop zijn, met con
 
 In vrijwel elke stad en wijk van Nederland zijn kinderboerderijen te vinden, en ze zijn bijna altijd gratis. Ze worden beheerd door gemeenten of vrijwilligers. Dieren aaien, voeren en simpelweg rondkijken kost niets.
 
-In [Amsterdam](/amsterdam.html) zijn er meer dan tien. In [Utrecht](/utrecht.html) zijn Griftsteede, Eilandsteede en Koppeldijk allemaal gratis. In [Rotterdam](/rotterdam.html) heeft de Kinderboerderij Vroesenpark een goed peutergedeelte, ook zonder kosten.
+In [Amsterdam](/amsterdam.html) zijn er meer dan tien — waaronder [Kinderboerderij de Pijp](/amsterdam/kinderboerderij-de-pijp/) en [Kinderboerderij Westerpark](/amsterdam/kinderboerderij-westerpark/). In [Utrecht](/utrecht.html) zijn [Stadsboerderij de Griftsteede](/utrecht/stadsboerderij-de-griftsteede/), [Stadsboerderij Eilandsteede](/utrecht/stadsboerderij-eilandsteede/) en [Kinderboerderij Oortjespad](/utrecht/kinderboerderij-oortjespad/) allemaal gratis. In [Rotterdam](/rotterdam.html) heeft [Kinderboerderij Vroesenpark](/rotterdam/kinderboerderij-vroesenpark/) een goed peutergedeelte, ook zonder kosten.
 
 Het enige wat soms geld kost: diervoer kopen bij de ingang (50 cent tot €1). Dat is zeker de moeite.
 
@@ -23,7 +23,7 @@ Het enige wat soms geld kost: diervoer kopen bij de ingang (50 cent tot €1). D
 
 Stadsparken met een speeltuin zijn in heel Nederland gratis. Je hoeft er niets voor te betalen, ook niet als er toestellen bij staan. De kwaliteit verschilt, maar de meeste grote stadsparken hebben prima peuterspecties.
 
-Goede voorbeelden: het Vondelpark in Amsterdam (meerdere speeltuinen), Maximapark in Utrecht (grote speeltuin aan het water), Vroesenpark in Rotterdam (omheinde speeltuin, goed voor dreumesen), Westduinpark in Den Haag.
+Goede voorbeelden: het Vondelpark in Amsterdam (meerdere speeltuinen, ook de [Waterspeeltuin Oosterpark](/amsterdam/waterspeeltuin-oosterpark/) is gratis in de zomer), [Griftpark](/utrecht/griftpark/) in Utrecht (groot en groen, direct bij de stad), [Kralingse Bos](/rotterdam/kralingse-bos/) in Rotterdam (omheinde speeltuin, goed voor dreumesen), [Haagse Bos](/den-haag/haagse-bos/) in Den Haag.
 
 Het voordeel van een stadspark boven een pretpark: je kunt gewoon weggaan als je peuter genoeg heeft gezien. Geen gevoel dat je geld verspilt als je na een uur naar huis wil.
 
@@ -54,7 +54,7 @@ Neem laarzen en een jas. Het kan koud zijn. Maar een stranddag in februari is ve
 
 ## Wandelroutes in natuur
 
-Veel natuur in Nederland is gratis te betreden. Het Amsterdamse Bos, de Utrechtse Heuvelrug, het Mastbos bij Breda, de Veluwse bossen: je rijdt er naartoe, parkeert en loopt het bos in.
+Veel natuur in Nederland is gratis te betreden. Het [Amsterdamse Bos](/amsterdam/amsterdamse-bos/), de Utrechtse Heuvelrug (goed te bereiken via [Boswachterij Lage Vuursche](/utrecht/boswachterij-lage-vuursche/)), het Mastbos bij Breda, de Veluwse bossen: je rijdt er naartoe, parkeert en loopt het bos in.
 
 Tips voor wandelen met peuters:
 - Kies routes van maximaal 2-3 kilometer
@@ -71,3 +71,5 @@ Als je echt heel weinig wil uitschijven: neem een thermoskan mee. Kinderen eten 
 ---
 
 Bekijk de regiopagina's voor uitjes bij jou in de buurt: [Amsterdam](/amsterdam.html), [Rotterdam](/rotterdam.html), [Utrecht](/utrecht.html) en [Den Haag](/den-haag.html).
+
+Meer budget-inspiratie? Lees ook [gratis peuteruitjes in Amsterdam](/blog/gratis-peuteruitjes-amsterdam/), de [gids voor uitjes met peuters bij regen](/blog/uitjes-met-peuter-bij-regen/) of [dagje uit met opa en oma](/blog/dagje-uit-opa-oma/) voor uitjes die iedereen aanstaan.

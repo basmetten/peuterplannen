@@ -22,6 +22,8 @@ De kinderboerderij is het meest onderschatte uitje voor peuters. Geen entreeprij
 
 Peuters van 1,5 tot 3 jaar reageren op dieren op een manier die je zelden ziet bij andere uitjes. Een konijn dat rustig laat aaien, een geit die je hand schoonlikt, een kip die kwakelend wegloopt — het houdt ze volledig bezig. En als het genoeg is, loop je gewoon weg.
 
+In Amsterdam is [Kinderboerderij Westerpark](/amsterdam/kinderboerderij-westerpark/) een goede keuze midden in de stad, of [Boerderij Meerzicht](/amsterdam/boerderij-meerzicht/) in het Amsterdamse Bos. In Utrecht zit [Kinderboerderij Oortjespad](/utrecht/kinderboerderij-oortjespad/) in een park, ideaal te combineren met spelen.
+
 Bekijk [kinderboerderijen](/kinderboerderijen.html) in jouw buurt. De meeste grote steden hebben er meerdere, verspreid over wijken. In de meivakantie zijn ze vaker druk in het weekend; doordeweeks is het rustiger.
 
 **Tip:** combineer de kinderboerderij met een speeltuin in hetzelfde park. Dan heb je een ochtend goed gevuld zonder extra reistijd.
@@ -34,7 +36,7 @@ Niet elke speeltuin is hetzelfde. Een gewone buurtsspeeltuin met een paar klimre
 
 Natuurspeeltuinen zijn de categorie daartussenin: geen plastic klimtoestellen, maar grote boomstammen, zandbakken met water, schommelbanden en heuvels om op te rennen. Ze voelen avontuurlijker aan zonder dat ze gevaarlijk zijn. Peuters kunnen er uren in kwijt.
 
-Kijk op [speeltuinen](/speeltuinen.html) voor grotere opties per regio. Veel hebben ook een eigen café of picknicktafels, zodat je niet ver hoeft te rijden voor de lunch.
+Kijk op [speeltuinen](/speeltuinen.html) voor grotere opties per regio. In Amsterdam is [Natuurspeeltuin Plan West](/amsterdam/natuurspeeltuin-plan-west/) een fijne optie; in Rotterdam werkt [Avonturenspeeltuin Pietje Bell](/rotterdam/avonturenspeeltuin-pietje-bell/) goed voor peuters met energie. Veel hebben ook een eigen café of picknicktafels, zodat je niet ver hoeft te rijden voor de lunch.
 
 ---
 
@@ -52,9 +54,9 @@ Als het echt te koud is voor het strand, zijn [stranden](/zwemmen.html) in mei o
 
 Een dierentuin is een grote investering qua tijd en energie. Reken voor een peuter op maximaal twee tot drie uur voor je het beste al gezien hebt. Ga je langer, dan is het risico op een uitgeputte peuter groot.
 
-De truc: ga 's ochtends vroeg, plan twee of drie "highlights" die het kind leuk vindt en wees bereid om halverwege te stoppen. Grote [dierentuinen](/natuur.html) zoals Burgers' Zoo in [Arnhem](/arnhem.html) of Apenheul in [Apeldoorn](/apeldoorn.html) zijn een dagje op zichzelf — maar plan dat dagje dan ook als rust voor het kind, niet als doorstart na een drukke ochtend.
+De truc: ga 's ochtends vroeg, plan twee of drie "highlights" die het kind leuk vindt en wees bereid om halverwege te stoppen. Grote dierentuinen zoals [Burgers' Zoo](/arnhem/burgers-zoo/) in [Arnhem](/arnhem.html) of [Apenheul](/apeldoorn/apenheul/) in [Apeldoorn](/apeldoorn.html) zijn een dagje op zichzelf — maar plan dat dagje dan ook als rust voor het kind, niet als doorstart na een drukke ochtend.
 
-**Apenheul** is voor peuters bijzonder: de apen lopen vrij rond. Dat maakt indruk op peuters van 2 jaar en ouder op een manier die moeilijk te omschrijven is.
+**[Apenheul](/apeldoorn/apenheul/)** is voor peuters bijzonder: de apen lopen vrij rond. Dat maakt indruk op peuters van 2 jaar en ouder op een manier die moeilijk te omschrijven is.
 
 ---
 
@@ -74,7 +76,7 @@ Kijk voor ideeën op de [natuur](/natuur.html) pagina — veel wandel- en fietsr
 
 Niet elk museum werkt voor peuters — een schilderijenhal houdt een 2-jarige maximaal vier minuten bezig. Maar interactieve musea, waar kinderen aan knoppen mogen draaien, dingen aanraken en zelf proberen, zijn een heel andere categorie.
 
-Kijk specifiek naar [musea](/musea.html) die een aparte peutervleugel of kleuterzone hebben. In de meivakantie lopen deze musea wel voller, dus ga vroeg of boek online vooraf. Een voordeel: bij slecht weer is een goed museum een dagvullende activiteit.
+Kijk specifiek naar [musea](/musea.html) die een aparte peutervleugel of kleuterzone hebben — in Amsterdam is [NEMO Science Museum](/amsterdam/nemo-science-museum/) een betrouwbare keuze met interactieve zones voor jonge kinderen. In de meivakantie lopen deze musea wel voller, dus ga vroeg of boek online vooraf. Een voordeel: bij slecht weer is een goed museum een dagvullende activiteit.
 
 **Bewaar dit voor een regendag.** Op mooie meimiddagen is het zonde van het weer.
 
@@ -96,7 +98,7 @@ Warm water, glijbanen, een kleuterzone — voor peuters is een subtropisch zwemb
 
 Praktisch: neem een tweede badpak of zwemluier mee, een handdoek die snel droogt en een snack voor na het zwemmen. Parkeren kost bij grote zwemparadijzen vaak apart geld. Boek tickets online vooraf — in de meivakantie zijn drukke zaterdag middagen snel volgeboekt.
 
-Dit is een uitje dat de avond erna goed slapen garandeert.
+In Utrecht is [Ballorig Utrecht](/utrecht/ballorig-utrecht/) een bekende keuze met een aparte peuterzone. Dit is een uitje dat de avond erna goed slapen garandeert.
 
 ---
 
@@ -222,6 +224,8 @@ Met een dreumes (1 tot 2 jaar) gelden andere regels: [dagje uit met dreumes](/bl
 
 Op zoek naar uitjes zonder groot budget? [Goedkoop op stap](/blog/goedkoop-op-stap-peuters/) heeft een overzicht van gratis en bijna-gratis opties door heel Nederland.
 
+De meivakantie loopt over in de zomer: lees [zomervakantie met peuter](/blog/zomervakantie-met-peuter/) voor een weekplanning die ook voor de langere vakantie werkt. En als je overweegt een pretpark te bezoeken, helpt [pretparken met peuter in Nederland](/blog/pretparken-peuter-nederland/) je de juiste keuze maken.
+
 Voor specifieke locaties kijk je op [pretparken](/natuur.html) (voor grotere kinderen of bijzondere dagjes), of blader door de regiopagina's voor tips in jouw buurt.
 
 ---
@@ -238,4 +242,4 @@ Regen is in mei geen uitzondering. Goede regenopties: een binnenspeeltuin met pe
 
 **Is de Veluwe (Arnhem/Apeldoorn) de moeite waard voor een dagje uit in de meivakantie?**
 
-Ja, zeker. De combinatie van Burgers' Zoo in [Arnhem](/arnhem.html) of Apenheul in [Apeldoorn](/apeldoorn.html) met een bosrit of wandeling op de Veluwe maakt een complete vakantiedag. Reken wel op drukte in de meivakantie — boek kaartjes ver van tevoren en ga doordeweeks. Het weekend voor Hemelvaartsdag is de drukste periode van het hele meivakantieseizoen.
+Ja, zeker. De combinatie van [Burgers' Zoo](/arnhem/burgers-zoo/) in [Arnhem](/arnhem.html) of [Apenheul](/apeldoorn/apenheul/) in [Apeldoorn](/apeldoorn.html) met een bosrit of wandeling op de Veluwe maakt een complete vakantiedag. Reken wel op drukte in de meivakantie — boek kaartjes ver van tevoren en ga doordeweeks. Het weekend voor Hemelvaartsdag is de drukste periode van het hele meivakantieseizoen.

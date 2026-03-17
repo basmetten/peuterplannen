@@ -24,7 +24,7 @@ Zo voorkom je overplanning en houd je ruimte voor dutjes, snacks en onverwachte 
 
 ## Ochtend: energie kwijt raken
 
-Voor de ochtend zijn [speeltuinen](/speeltuinen.html), [kinderboerderijen](/kinderboerderijen.html) en [natuurplekken](/natuur.html) in en rond Groningen het meest dankbaar. Buiten starten geeft vaak de beste stemming voor de rest van de dag.
+Voor de ochtend zijn [speeltuinen](/speeltuinen.html), [kinderboerderijen](/kinderboerderijen.html) en [natuurplekken](/natuur.html) in en rond Groningen het meest dankbaar. Buiten starten geeft vaak de beste stemming voor de rest van de dag. [Kinderboerderij Stadspark Zuid](/groningen/kinderboerderij-stadspark-zuid/) ligt centraal en is makkelijk te combineren met een wandeling. [DoeZoo](/groningen/doezoo/) is een andere populaire ochtendbestemming voor jonge kinderen.
 
 Tip: neem droge sokken en een extra broek mee, ook buiten de winter. In Nederland is "droog" vaak tijdelijk.
 
@@ -60,7 +60,7 @@ Combinaties werken goed: buiten spelen + eenvoudige lunch + klein tweede uitje.
 
 ### Oudere peuter (3-4 jaar)
 
-Meer behoefte aan "iets doen": interactieve [musea](/musea.html), grotere speelplekken en duidelijke keuzes.
+Meer behoefte aan "iets doen": interactieve [musea](/musea.html), grotere speelplekken en duidelijke keuzes. Het [Groninger Museum](/groningen/groninger-museum/) heeft een kinderafdeling, en [StoryWorld (Forum Groningen)](/groningen/storyworld-forum-groningen/) trekt ook jonge bezoekers.
 
 ## Fouten die je makkelijk voorkomt
 
@@ -84,8 +84,8 @@ Meestal twee hoofdactiviteiten. Alles daarboven is bonus, geen planning.
 
 ## Conclusie
 
-Groningen met peuters hoeft niet ingewikkeld te zijn. Met een eenvoudige dagstructuur en een goede regenbackup heb je snel een fijne dag zonder gedoe.
+Groningen met peuters hoeft niet ingewikkeld te zijn. Met een eenvoudige dagstructuur en een goede regenbackup heb je snel een fijne dag zonder gedoe. [Monkey Town Groningen](/groningen/monkey-town-groningen/) en [Ballorig Groningen](/groningen/ballorig-groningen/) zijn goede indoor backups bij regen. Voor een halve dag buiten is [Hortus Haren](/groningen/hortus-haren/) een rustiger alternatief.
 
-Ga je met een kleuter op pad? Pak dan ook de extra ideeën uit [dagje uit met kleuter (4-6 jaar)](/blog/dagje-uit-met-kleuter-4-6-jaar/).
+Ga je met een kleuter op pad? Pak dan ook de extra ideeën uit [dagje uit met kleuter (4-6 jaar)](/blog/dagje-uit-met-kleuter-4-6-jaar/). Met een dreumes is [dagje uit met dreumes](/blog/dagje-uit-met-dreumes/) een beter startpunt. En voor een eerste bezoek aan een kinderboerderij lees je alles over [de eerste keer kinderboerderij](/blog/eerste-keer-kinderboerderij/).
 
 Bekijk alle actuele locaties op [groningen.html](/groningen.html) of plan direct via [de app](/app.html?regio=Groningen).

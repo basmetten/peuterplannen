@@ -24,7 +24,7 @@ Met peuters is ritme belangrijker dan "alles meepakken".
 
 ## Ochtend: beweegmoment eerst
 
-Voor de ochtend zijn [speeltuinen](/speeltuinen.html), [kinderboerderijen](/kinderboerderijen.html) en [natuur](/natuur.html) in en rond Amersfoort vaak de beste keuze. Kinderen kunnen hun energie kwijt, en daarna kun je veel makkelijker lunchen.
+Voor de ochtend zijn [speeltuinen](/speeltuinen.html), [kinderboerderijen](/kinderboerderijen.html) en [natuur](/natuur.html) in en rond Amersfoort vaak de beste keuze. Kinderen kunnen hun energie kwijt, en daarna kun je veel makkelijker lunchen. Denk bijvoorbeeld aan [Kinderboerderij Java](/amersfoort/kinderboerderij-java/), [Speelboerderij De Vosheuvel](/amersfoort/speelboerderij-de-vosheuvel/) of [Natuurspeelplaats 't Beestenbos](/amersfoort/natuurspeelplaats-t-beestenbos/).
 
 Tip: kies één hoofdplek en blijf daar wat langer in plaats van te hoppen tussen locaties.
 
@@ -58,7 +58,7 @@ Buiten + lunch + korte tweede activiteit werkt meestal perfect.
 
 ### 3-4 jaar
 
-Meer behoefte aan uitdaging: denk aan grotere speelplekken of interactieve [musea](/musea.html).
+Meer behoefte aan uitdaging: denk aan grotere speelplekken of interactieve [musea](/musea.html) zoals het [Mondriaanhuis](/amersfoort/mondriaanhuis/) of [Museum Flehite](/amersfoort/museum-flehite/).
 
 ## Veelgestelde vragen
 
@@ -76,8 +76,8 @@ Voor peuters werkt één hoofdactiviteit en één lichte tweede activiteit meest
 
 ## Samengevat
 
-Amersfoort met peuters is vooral sterk als je de dag simpel houdt: één goed buitenmoment, een werkbare lunchplek en een korte middagactiviteit. Dat levert de meeste rust en het meeste plezier op.
+Amersfoort met peuters is vooral sterk als je de dag simpel houdt: één goed buitenmoment, een werkbare lunchplek en een korte middagactiviteit. Dat levert de meeste rust en het meeste plezier op. Populaire keuzes zijn [DierenPark Amersfoort](/amersfoort/dierenpark-amersfoort/), [Landgoed Schothorst](/amersfoort/landgoed-schothorst/) en [Waterpark Nieuwland](/amersfoort/waterpark-nieuwland/) voor warme dagen.
 
-Voor gezinnen met iets oudere kinderen kun je verder met [dagje uit met kleuter (4-6 jaar)](/blog/dagje-uit-met-kleuter-4-6-jaar/).
+Voor gezinnen met iets oudere kinderen kun je verder met [dagje uit met kleuter (4-6 jaar)](/blog/dagje-uit-met-kleuter-4-6-jaar/). Heb je een dreumes mee? Lees dan ook [dagje uit met 1-jarige](/blog/dagje-uit-met-1-jarige/) voor kortere activiteiten die beter passen. Bij slecht weer is [uitjes met peuter bij regen](/blog/uitjes-met-peuter-bij-regen/) een handig startpunt.
 
 Bekijk alle opties op [amersfoort.html](/amersfoort.html) of plan je dag direct via [de app](/app.html?regio=Amersfoort).

@@ -26,7 +26,7 @@ Deze volgorde voorkomt overprikkeling en voorkomt dat je peuter in de auto in sl
 
 ### Buitenlucht en ruimte
 
-Voor een rustige start zijn [natuurplekken](/natuur.html) en [speeltuinen](/speeltuinen.html) in de regio ideaal. In en rond Eindhoven vind je meerdere plekken waar peuters veilig kunnen rondlopen zonder dat je continu hoeft te corrigeren.
+Voor een rustige start zijn [natuurplekken](/natuur.html) en [speeltuinen](/speeltuinen.html) in de regio ideaal. In en rond Eindhoven vind je meerdere plekken waar peuters veilig kunnen rondlopen zonder dat je continu hoeft te corrigeren. [Kabouterdorp](/eindhoven/kabouterdorp/) en [Dwaaltuin 't Oerse Zand](/eindhoven/dwaaltuin-t-oerse-zand/) zijn geliefde ochtendbestemmingen, net als [Kinderboerderij De Hazewinkel](/eindhoven/kinderboerderij-de-hazewinkel/).
 
 Tip: begin vroeg. Tussen 09:30 en 11:30 is het vaak rustiger en heb je meer overzicht bij speeltoestellen.
 
@@ -48,9 +48,9 @@ Gebruik in de app vooral de filters voor [horeca](/horeca.html), koffie en voorz
 
 De middag is vaak het lastigste moment. Kies daarom iets kleins:
 
-- Een korte [musea-optie](/musea.html) met veel interactie
-- Een peuterproof binnenspeelplek
-- Of nog 45 minuten buiten op een rustige speelplek
+- Een korte [musea-optie](/musea.html) met veel interactie — de [Ontdekfabriek](/eindhoven/ontdekfabriek/) is speciaal voor jonge kinderen
+- Een peuterproof binnenspeelplek zoals [Monkey Town Eindhoven](/eindhoven/monkey-town-eindhoven/)
+- Of nog 45 minuten buiten op een rustige speelplek zoals het [Prehistorisch Dorp](/eindhoven/prehistorisch-dorp/)
 
 Ga niet voor "nog even één grote activiteit" als je al een volle ochtend had. Kort en leuk wint bijna altijd.
 
@@ -74,7 +74,7 @@ Zet vooraf één binnenoptie klaar. Dan hoef je niet te improviseren als het wee
 - **2-3 jaar:** speeltuin + kinderboerderij/natuur + eenvoudige lunch
 - **3-4 jaar:** combinatie van actief buiten en korte interactieve binnenactiviteit
 
-Voor oudere peuters werkt een mix van [musea](/musea.html) en [speeltuinen](/speeltuinen.html) meestal beter dan alleen horeca.
+Voor oudere peuters werkt een mix van [musea](/musea.html) en [speeltuinen](/speeltuinen.html) meestal beter dan alleen horeca. Het [Philips Museum](/eindhoven/philips-museum/) trekt ook jonge bezoekers, en [Zoo Veldhoven](/eindhoven/zoo-veldhoven/) is goed te combineren als daguitje.
 
 ## Veelgestelde vragen
 
@@ -94,6 +94,6 @@ Buiten in de ochtend, lunchen met korte reistijd, en een korte middagactiviteit.
 
 Eindhoven met peuters werkt het best als je simpel plant: 1 buitenmoment, 1 lunchplek, 1 korte middagactiviteit. Daarmee houd je de dag leuk voor je kind en voor jezelf.
 
-Voor extra inspiratie met iets oudere kinderen, lees ook [dagje uit met kleuter (4-6 jaar)](/blog/dagje-uit-met-kleuter-4-6-jaar/).
+Voor extra inspiratie met iets oudere kinderen, lees ook [dagje uit met kleuter (4-6 jaar)](/blog/dagje-uit-met-kleuter-4-6-jaar/). Ga je met opa en oma? Dan geeft [dagje uit met opa en oma](/blog/dagje-uit-opa-oma/) nuttige tips over tempo en rustmomenten. En voor kindvriendelijke lunchplekken helpt [kindvriendelijke horeca met speelhoek](/blog/kindvriendelijke-horeca-met-speelhoek/) je snel kiezen.
 
 Bekijk alle actuele opties op de [Eindhoven pagina](/eindhoven.html) of plan direct via [de app](/app.html?regio=Eindhoven).

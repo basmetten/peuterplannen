@@ -11,7 +11,7 @@ Haarlem ligt op 20 minuten trein van Amsterdam en wordt voor peuteruitjes te wei
 
 ## De Kennemerduinen: het beste wat Haarlem te bieden heeft
 
-De Kennemerduinen (Nationaal Park Zuid-Kennemerland) liggen op 10-15 minuten fietsen of 20 minuten lopen vanaf het Haarlemse centrum. Voor peuters zijn ze bijna altijd de moeite waard.
+[De Kennemerduinen](/haarlem/de-kennemerduinen/) ([Nationaal Park Zuid-Kennemerland](/haarlem/nationaal-park-zuid-kennemerland/)) liggen op 10-15 minuten fietsen of 20 minuten lopen vanaf het Haarlemse centrum. Voor peuters zijn ze bijna altijd de moeite waard.
 
 Wat werkt goed: de hogere duinen zijn een avontuurlijk speelterrein voor kinderen van 2 jaar en ouder. Klimmen, rollen, in het zand graven — het heeft iets oers dat een speeltuin niet heeft. Het is ook gratis, afgezien van eventuele parkeerkosten.
 
@@ -21,7 +21,7 @@ Praktisch: de parkeerplaats bij de ingang Koevlak (richting Bloemendaal) is goed
 
 ## Reinaldapark
 
-Het Reinaldapark ligt midden in Haarlem en heeft een goed onderhouden speeltuin met toestellen voor verschillende leeftijden. Er is een apart peuter-gedeelte. Het park heeft een vijver en is compact genoeg om met een klein kind te overzien.
+Het Reinaldapark ligt midden in Haarlem en heeft een goed onderhouden speeltuin met toestellen voor verschillende leeftijden. Er is een apart peuter-gedeelte. Het park heeft een vijver en is compact genoeg om met een klein kind te overzien. De [Haarlem Centrum Speeltuinen](/haarlem/haarlem-centrum-speeltuinen/) en de [Peuter & Kleuterspeeltuin](/haarlem/peuter-kleuterspeeltuin/) zijn andere opties in het centrum.
 
 Het is niet spectaculair, maar het is de soort gratis ochtendbestemming die je nodig hebt als je na een ochtend in de duinen nog twee uur over hebt.
 
@@ -39,16 +39,18 @@ Kinderwagens passen in de daluren makkelijk. In de spits (ochtend en late middag
 
 ## Teylers Museum
 
-Teylers Museum — het oudste museum van Nederland — heeft een kinderafdeling. Voor peuters is het beperkt geschikt: de achttiende-eeuwse vitrines met fossielen en mineralen zijn interessant, maar het museum is in de kern een plek voor wat oudere kinderen en volwassenen.
+[Teylers Museum Haarlem](/haarlem/teylers-museum-haarlem/) — het oudste museum van Nederland — heeft een kinderafdeling. Voor peuters is het beperkt geschikt: de achttiende-eeuwse vitrines met fossielen en mineralen zijn interessant, maar het museum is in de kern een plek voor wat oudere kinderen en volwassenen.
 
-De fossiele vissen en de grote zoogdierscaleretten in de zaal van Teylers zijn wel indrukwekkend genoeg voor een peuter om naar te gapen. Een half uur is voldoende.
+De fossiele vissen en de grote zoogdierscaleretten in de zaal van Teylers zijn wel indrukwekkend genoeg voor een peuter om naar te gapen. Een half uur is voldoende. Het [Frans Hals Museum](/haarlem/frans-hals-museum/) is een alternatief als Teylers te druk is.
 
 ## Geen binnenspeeltuin
 
 Een eerlijke kanttekening: Haarlem heeft zelf geen grote binnenspeeltuin. Als het regent en de duinen geen optie zijn, zijn de opties beperkt. Dan is de bibliotheek (gratis) een betere keuze dan rondrijden op zoek naar iets anders.
 
-Voor een grote binnenspeeltuin moet je naar Amsterdam of naar de regio (Beverwijk, Hoofddorp). Haarlem is op zijn best bij droog weer.
+Voor een grote binnenspeeltuin moet je naar Amsterdam of naar de regio (Beverwijk, Hoofddorp). Haarlem is op zijn best bij droog weer. Je kunt ook uitwijken naar het [Natuurspeeleiland Veerplas](/haarlem/natuurspeeleiland-veerplas/) of [Kinderboerderij Haarlem](/haarlem/kinderboerderij-haarlem/) vlakbij.
 
 ---
 
 Bekijk de [Haarlem-pagina](/haarlem.html) voor alle uitjes in de regio, inclusief Heemstede, Bloemendaal en Zandvoort.
+
+Haarlem is een mooie dagtrip vanuit de hoofdstad — lees ook [Amsterdam met peuters en kleuters](/blog/amsterdam-met-peuters-en-kleuters/) als je meerdere opties wilt vergelijken. Voor gratis uitjes in de regio is [gratis peuteruitjes Amsterdam](/blog/gratis-peuteruitjes-amsterdam/) een handig overzicht. Ga je met een 1-jarige? Dan geeft [dagje uit met 1-jarige](/blog/dagje-uit-met-1-jarige/) kortere activiteiten die beter passen.

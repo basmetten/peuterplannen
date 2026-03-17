@@ -53,6 +53,13 @@ Als je twee of meer van deze signalen ziet in reviews of foto's, kies liever een
 
 Voor veel gezinnen werkt deze volgorde goed: buiten spelen, lunchen met speelhoek, dan nog een korte activiteit.
 
+Concrete locaties die goed scoren op al deze punten:
+
+- Amsterdam: [Bliss Kidscafé](/amsterdam/bliss-kidscafe/) (speelhoek met zichtlijn, rustige sfeer), [Coffee & Kids Oost](/amsterdam/coffee-and-kids-oost/) en [Bistro Bos](/amsterdam/bistro-bos/) in het Amsterdamse Bos
+- Rotterdam: [Tasman Kinderrestaurant](/rotterdam/tasman-kinderrestaurant/) en [Tuincafé De Vreemde Vogel](/rotterdam/tuincafe-de-vreemde-vogel/)
+- Utrecht: [Achter het Behang](/utrecht/achter-het-behang/) en [Parkcafé Bredius](/utrecht/parkcafe-bredius/)
+- Den Haag: [Kindercafé Kikker en de Kraanvogel](/den-haag/kindercafe-kikker-en-de-kraanvogel/) en [Brasserie Bijna Thuis](/den-haag/brasserie-bijna-thuis/)
+
 ## Combi-tips per type dag
 
 ### Snelle ochtend
@@ -92,3 +99,5 @@ Ja. Kleuters hebben vaak behoefte aan meer actieve speelelementen, maar dezelfde
 Kindvriendelijke horeca met speelhoek kies je het best met een vaste checklist: zicht, leeftijdsfit, rust, voorzieningen. Zo voorkom je teleurstellingen en bouw je een dag die werkt voor peuters, kleuters en ouders.
 
 Bekijk direct alle mogelijkheden via [de app](/app.html) of start op [horeca](/horeca.html) en je regiopagina.
+
+Meer lezen? Bekijk ook [pannenkoekenrestaurants met speeltuin](/blog/pannenkoekenrestaurant-met-speeltuin/), [kindvriendelijke terrassen in 2026](/blog/kindvriendelijke-terrassen-2026/) en [Amsterdam met peuters en kleuters](/blog/amsterdam-met-peuters-en-kleuters/) voor uitjes waarbij horeca een sleutelrol speelt.

@@ -23,11 +23,11 @@ Praktische tips:
 - Begrens het zoekgebied duidelijk. Zeg: "Zoek in het bloemperk en op het grasveld." Anders heb je een peuter die het halve park afstruint.
 - Neem een kleine mand of emmer mee. Die rol hoort erbij.
 
-Voor grotere [parken](/natuur.html) in je stad: check van tevoren of er een georganiseerde paaseierenjacht is. Veel gemeenteparken en kinderboerderijen organiseren iets rond Pasen.
+Voor grotere [parken](/natuur.html) in je stad: check van tevoren of er een georganiseerde paaseierenjacht is. In Utrecht zijn [Griftpark](/utrecht/griftpark/) en [Julianapark](/utrecht/julianapark/) fijne locaties voor een buitenpaasactiviteit. Veel gemeenteparken en kinderboerderijen organiseren iets rond Pasen.
 
 ### 2. Kinderboerderij met paasthema
 
-[Kinderboerderijen](/kinderboerderijen.html) zijn sowieso een goed idee met peuters, maar met Pasen zijn ze extra leuk. Lammeren en kuikens die net uit het ei zijn, paaseierenjachten op het terrein, paasdecoraties — veel boerderijen doen er rond Pasen wat extra moeite bij.
+[Kinderboerderijen](/kinderboerderijen.html) zijn sowieso een goed idee met peuters, maar met Pasen zijn ze extra leuk. Lammeren en kuikens die net uit het ei zijn, paaseierenjachten op het terrein, paasdecoraties — veel boerderijen doen er rond Pasen wat extra moeite bij. In Amsterdam is [Geitenboerderij Ridammerhoeve](/amsterdam/geitenboerderij-ridammerhoeve/) in het Amsterdamse Bos een bijzondere keuze; in Den Haag heeft [Boerderij Meyendel](/den-haag/boerderij-meyendel/) ruimte en natuur in de duinen.
 
 Bel of check de website van de boerderij bij jou in de buurt een week van tevoren. Veel van deze activiteiten zijn gratis of kosten maximaal een paar euro. Het grote voordeel: je bent buiten, je peuter beweegt, en er valt genoeg te zien zodat jij even op adem kunt komen.
 
@@ -39,7 +39,7 @@ Niet alles hoeft over eieren te gaan. Pasen valt in de lente, en dat betekent: k
 
 "Zie jij een geel bloemetje? En een paars?" Peuters van 2,5 jaar en ouder zijn verrassend goed in kleur zoeken en worden enthousiast van het vinden. Je kunt een klein kijkboekje meenemen met afbeeldingen van lentebloemen — dan is het een echt speurtocht.
 
-Rondom steden als [Utrecht](/utrecht.html) en [Amsterdam](/amsterdam.html) liggen genoeg bosgebieden en parken waar je dit kunt doen zonder ver te rijden. Houd het wandeling kort: een kwartier actief zoeken is voor een peuter van 2 jaar al een heel programma.
+Rondom steden als [Utrecht](/utrecht.html) en [Amsterdam](/amsterdam.html) liggen genoeg bosgebieden en parken waar je dit kunt doen zonder ver te rijden — denk aan [Amsterdamse Bos](/amsterdam/amsterdamse-bos/) of [Amelisweerd](/utrecht/amelisweerd-utrecht/) net buiten Utrecht. Houd het wandeling kort: een kwartier actief zoeken is voor een peuter van 2 jaar al een heel programma.
 
 ### 4. Speeltuin + paaspicknick
 
@@ -62,7 +62,7 @@ Dit soort opdrachten houden kleine kinderen in beweging zonder dat je ze hoeft t
 
 ### 6. Pannenkoekenrestaurant als paasuitje
 
-Pasen is ook een excuus voor een uitgebreid ontbijt of lunch buiten de deur. Een pannenkoekenrestaurant of andere [horeca](/horeca.html) die kindvriendelijk is, werkt goed als afsluiting van een ochtend buiten. Het voordeel van pannenkoekenrestaurants: het eten duurt even, er is genoeg keuze voor kieskeurige eters en de meeste zijn ingericht op rondrennende kinderen.
+Pasen is ook een excuus voor een uitgebreid ontbijt of lunch buiten de deur. Een pannenkoekenrestaurant of andere [horeca](/horeca.html) die kindvriendelijk is, werkt goed als afsluiting van een ochtend buiten. In Utrecht is [Anna Pancakes Binnenstad](/utrecht/anna-pancakes-binnenstad/) een betrouwbare keuze; in Den Haag is [Pannenkoekenhuis Malieveld](/den-haag/pannenkoekenhuis-malieveld/) geliefd bij gezinnen. Het voordeel van pannenkoekenrestaurants: het eten duurt even, er is genoeg keuze voor kieskeurige eters en de meeste zijn ingericht op rondrennende kinderen.
 
 Kijk in jouw stad naar restaurants met een speelhoek of een terras met ruimte. Zo houd je de sfeer ontspannen.
 
@@ -147,7 +147,7 @@ Het weerbericht met Pasen is onvoorspelbaar. Plan altijd een binnensoptie achter
 - Heb thuis wat knutselmateriaal liggen voor een spontaan binnenmiddag
 - Een bibliotheek is gratis, warm en altijd beschikbaar als noodoplossing
 
-Lees ook: [gratis peuteruitjes Amsterdam](/blog/gratis-peuteruitjes-amsterdam/) voor inspiratie als je budget bewust wil uitstappen — veel van de Paasactiviteiten zijn gratis of heel goedkoop te doen.
+Voor meer eerste-keer ervaringen met jonge kinderen en dieren, lees ook [eerste keer kinderboerderij](/blog/eerste-keer-kinderboerderij/) — handig als je peuter nog niet eerder op een boerderij is geweest. Heb je ook een heel jonge dreumes? [Dagje uit met dreumes](/blog/dagje-uit-met-dreumes/) geeft specifieke tips voor kinderen onder de twee. En als het met Pasen regent, staat [uitjes met peuter bij regen](/blog/uitjes-met-peuter-bij-regen/) vol met binnenalternatieven die ook in de paasvakantie werken.
 
 ---
 

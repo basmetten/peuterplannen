@@ -3,7 +3,7 @@ const path = require('path');
 const { ROOT, TYPE_MAP, WEATHER_LABELS, SEO_DESCRIPTION_MIN_LENGTH, CF_ANALYTICS_TOKEN, analyticsHTML } = require('../config');
 const { escapeHtml, slugify, fullSiteUrl, normalizeExternalUrl, displayExternalUrl, isoDateInTimeZone, todayISOAmsterdam, parseDateSafe } = require('../helpers');
 const { navHTML, footerHTML, headCommon, supportHTML, badgeHTML, svgSpriteDefs, revealScript, newsletterHTML, formatEditorialDate, editorialMetaHTML, editorialBodyHTML, relatedBlogLinksHTML } = require('../html-shared');
-const { isFillerDescription, sortLocationsForSeo, getClusterPagesForLocation, matchesClusterPage } = require('../seo-policy');
+const { isFillerDescription, sortLocationsForSeo, getClusterPagesForLocation, matchesClusterPage, selectHubLocations } = require('../seo-policy');
 const { loadBlogMetadata, getBlogEntriesBySlug, renderMarkdownDoc } = require('../seo-content');
 const { FALLBACK_REGIONS } = require('../supabase');
 
@@ -232,9 +232,19 @@ function buildLocationDecisionHTML(loc, region) {
   return `${bestForSentence}${practicalHTML}${trustHTML}`;
 }
 
-function locationPageHTML(loc, region, similarLocs, total) {
+function locationPageHTML(loc, region, similarLocs, total, cityTypeCombos) {
   const fullUrl = `https://peuterplannen.nl${loc.pageUrl}`;
   const typeLabel = TYPE_MAP[loc.type]?.label || loc.type;
+
+  // Determine if a city+type page exists for this location's type + region.
+  // City+type pages exist when there are MIN_LOCATIONS (3) hub locations of that type in the city.
+  const typeSlug = TYPE_MAP[loc.type]?.slug || null;
+  const regionSlug = (region.slug || '').toLowerCase();
+  const hasCityTypePage = !!(
+    typeSlug &&
+    cityTypeCombos &&
+    cityTypeCombos.has(`${regionSlug}:${typeSlug}`)
+  );
   const regionDisplayName = region.subtitleLabel || region.name;
   const rawDesc = isFillerDescription(loc.description) ? '' : (loc.description || '');
   const metaDesc = (loc.seo_description_override || '').trim()
@@ -302,7 +312,6 @@ function locationPageHTML(loc, region, similarLocs, total) {
   if (loc.opening_hours) infoItems.push(`<div class="info-item"><div><div class="info-label">Openingstijden</div><div class="info-value">${escapeHtml(loc.opening_hours)}</div></div></div>`);
   if (normalizedWebsite) infoItems.push(`<div class="info-item"><div><div class="info-label">Website</div><div class="info-value"><a href="${escapeHtml(normalizedWebsite)}" target="_blank" rel="noopener" aria-label="Website van ${escapeHtml(loc.name)}">${escapeHtml(displayExternalUrl(normalizedWebsite))}</a></div></div></div>`);
 
-  const regionSlug = (region.slug || '').toLowerCase();
   const publishedBlogSlugs = getPublishedBlogSlugSet();
   const editorialBlogEntries = getBlogEntriesBySlug(loc.seo_related_blog_slugs || []);
   const relatedBlogs = [
@@ -358,14 +367,22 @@ function locationPageHTML(loc, region, similarLocs, total) {
     ...(loc.type === 'horeca'  && { "servesCuisine": "Kindvriendelijk" })
   }, null, 2);
 
+  const breadcrumbItems = hasCityTypePage
+    ? [
+        { "@type": "ListItem", "position": 1, "name": "PeuterPlannen", "item": "https://peuterplannen.nl/" },
+        { "@type": "ListItem", "position": 2, "name": region.name, "item": `https://peuterplannen.nl/${region.slug}.html` },
+        { "@type": "ListItem", "position": 3, "name": typeLabel, "item": `https://peuterplannen.nl/${regionSlug}/${typeSlug}/` },
+        { "@type": "ListItem", "position": 4, "name": loc.name, "item": fullUrl },
+      ]
+    : [
+        { "@type": "ListItem", "position": 1, "name": "PeuterPlannen", "item": "https://peuterplannen.nl/" },
+        { "@type": "ListItem", "position": 2, "name": region.name, "item": `https://peuterplannen.nl/${region.slug}.html` },
+        { "@type": "ListItem", "position": 3, "name": loc.name, "item": fullUrl },
+      ];
   const breadcrumbLd = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "PeuterPlannen", "item": "https://peuterplannen.nl/" },
-      { "@type": "ListItem", "position": 2, "name": region.name, "item": `https://peuterplannen.nl/${region.slug}.html` },
-      { "@type": "ListItem", "position": 3, "name": loc.name, "item": fullUrl }
-    ]
+    "itemListElement": breadcrumbItems
   }, null, 2);
 
   // Map script (lazy loaded)
@@ -461,7 +478,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 </div>
 
 <nav aria-label="Kruimelpad" class="breadcrumb">
-  <a href="/">PeuterPlannen</a> &rsaquo; <a href="/${region.slug}.html">${region.name}</a> &rsaquo; ${escapeHtml(loc.name)}
+  <a href="/">PeuterPlannen</a> &rsaquo; <a href="/${region.slug}.html">${region.name}</a>${hasCityTypePage ? ` &rsaquo; <a href="/${regionSlug}/${typeSlug}/">${escapeHtml(typeLabel)}</a>` : ''} &rsaquo; ${escapeHtml(loc.name)}
 </nav>
 
 <main id="main-content">
@@ -576,6 +593,21 @@ function generateLocationPages(data, onlyLocationIds) {
   regions.forEach(r => { regionMap[r.slug] = r; });
   locations.forEach((loc) => byId.set(Number(loc.id), loc));
 
+  // Pre-compute the set of city+type combinations that have a generated page.
+  // A city+type page exists when selectHubLocations yields >= 3 locations (MIN_LOCATIONS from city-type-pages.js).
+  const CITY_TYPE_MIN_LOCATIONS = 3;
+  const cityTypeCombos = new Set();
+  for (const region of regions) {
+    for (const [typeKey, typeInfo] of Object.entries(TYPE_MAP)) {
+      if (!typeInfo.slug) continue;
+      const regionLocs = locations.filter(l => l.region === region.name && l.type === typeKey);
+      const hubLocs = selectHubLocations(regionLocs);
+      if (hubLocs.length >= CITY_TYPE_MIN_LOCATIONS) {
+        cityTypeCombos.add(`${region.slug}:${typeInfo.slug}`);
+      }
+    }
+  }
+
   let staticCount = 0;
   let redirectCount = 0;
   const runtimeLocationMap = {};
@@ -617,7 +649,7 @@ function generateLocationPages(data, onlyLocationIds) {
       if (loc.seoTierResolved === 'alias') {
         // Alias: redirect to canonical location page
         const canonicalTarget = byId.get(Number(loc.seo_canonical_target));
-        html = canonicalTarget ? aliasLocationPageHTML(loc, canonicalTarget) : locationPageHTML(loc, region, [], total);
+        html = canonicalTarget ? aliasLocationPageHTML(loc, canonicalTarget) : locationPageHTML(loc, region, [], total, cityTypeCombos);
         staticCount++;
       } else if (loc.seoTierResolved === 'index') {
         // Index: full static page
@@ -625,7 +657,7 @@ function generateLocationPages(data, onlyLocationIds) {
         const sameType = rankedPool.filter(l => l.type === loc.type).slice(0, 3);
         const otherType = rankedPool.filter(l => l.type !== loc.type).slice(0, 6 - sameType.length);
         const similar = [...sameType, ...otherType].slice(0, 6);
-        html = locationPageHTML(loc, region, similar, total);
+        html = locationPageHTML(loc, region, similar, total, cityTypeCombos);
         staticCount++;
       } else {
         // Support (or any other tier): mini-redirect to app.html

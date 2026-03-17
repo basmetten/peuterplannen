@@ -15,7 +15,7 @@ Hier zijn tien locaties en ideeën die echt werken voor een kinderfeestje als je
 
 Een binnenspeeltuin of speelparadijs is waarschijnlijk de meest gekozen optie voor kinderfeestjes op deze leeftijd, en dat is niet voor niets. De kinderen hoeven niet vermaakt te worden — ze vermaken zichzelf. Er is een afgesloten ruimte, er zijn zachte ondergronden, en jij hoeft alleen maar te zorgen dat de taart op tafel staat.
 
-De meeste [indoor speeltuinen](/indoor-speeltuinen.html) bieden feestpakketten aan. Die bestaan typisch uit: 1,5 tot 2 uur speeltijd, een afgesloten tafel of feesthoek, drinken, en soms een klein cadeautje voor de gasten. Prijzen liggen meestal tussen de €10 en €17 per kind, afhankelijk van de locatie en wat erbij zit.
+De meeste [indoor speeltuinen](/binnenlocaties-peuters.html) bieden feestpakketten aan. Die bestaan typisch uit: 1,5 tot 2 uur speeltijd, een afgesloten tafel of feesthoek, drinken, en soms een klein cadeautje voor de gasten. Prijzen liggen meestal tussen de €10 en €17 per kind, afhankelijk van de locatie en wat erbij zit.
 
 [Monkey Town Amsterdam](/amsterdam/monkey-town-amsterdam/) is een bekende keten die dit goed doet. Ze hebben een aparte peuterzone, dus de 3-jarigen hoeven niet tussen de 8-jarigen door te klauteren. De feestpakketten zijn gestandaardiseerd: je boekt, je komt, de tafel staat klaar, klaar.
 
