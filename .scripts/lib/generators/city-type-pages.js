@@ -29,7 +29,7 @@ function locationHTML_cityType(loc) {
       </article>`;
 }
 
-function generateCityTypePage(region, typeKey, locs, allRegions, total) {
+function generateCityTypePage(region, typeKey, locs, allRegions, total, validCombos) {
   const typeInfo = TYPE_MAP[typeKey];
   const typeLabel = TYPE_LABELS_CITY[typeKey] || typeInfo?.label || typeKey;
   const typeLabelShort = typeInfo?.label || typeKey;
@@ -64,9 +64,9 @@ function generateCityTypePage(region, typeKey, locs, allRegions, total) {
 
   const relatedClusters = relatedClustersForLocations(locs);
 
-  // Related city+type links: other types in this city
+  // Related city+type links: other types in this city (only if page exists)
   const otherTypesInCity = TYPE_ORDER
-    .filter(t => t !== typeKey && TYPE_MAP[t])
+    .filter(t => t !== typeKey && TYPE_MAP[t] && validCombos.has(`${citySlug}:${TYPE_MAP[t].slug}`))
     .slice(0, 4)
     .map(t => {
       const ti = TYPE_MAP[t];
@@ -74,9 +74,9 @@ function generateCityTypePage(region, typeKey, locs, allRegions, total) {
     })
     .join(' &middot; ');
 
-  // Related regions with same type
+  // Related regions with same type (only if page exists)
   const otherRegionsLinks = allRegions
-    .filter(r => r.slug !== citySlug)
+    .filter(r => r.slug !== citySlug && validCombos.has(`${r.slug}:${typeSlug}`))
     .slice(0, 5)
     .map(r => `<a href="/${r.slug}/${typeSlug}/">${typeLabelShort} in ${r.name}</a>`)
     .join(' &middot; ');
@@ -252,6 +252,9 @@ function generateCityTypePages(data) {
   const { regions, locations } = data;
   const generatedCombos = [];
 
+  // Pass 1: determine which region+type combos qualify
+  const validCombos = new Set();
+  const comboData = [];
   for (const region of regions) {
     for (const typeKey of TYPE_ORDER) {
       const typeInfo = TYPE_MAP[typeKey];
@@ -262,24 +265,29 @@ function generateCityTypePages(data) {
 
       if (hubLocs.length < MIN_LOCATIONS) continue;
 
-      const typeSlug = typeInfo.slug;
-      const dirPath = path.join(ROOT, region.slug, typeSlug);
-      fs.mkdirSync(dirPath, { recursive: true });
-
-      const html = generateCityTypePage(region, typeKey, hubLocs, regions, data.total);
-      const outPath = path.join(dirPath, 'index.html');
-      fs.writeFileSync(outPath, html);
-
-      const pagePath = `/${region.slug}/${typeSlug}/`;
-      generatedCombos.push({
-        regionSlug: region.slug,
-        typeSlug,
-        path: pagePath,
-        filePath: outPath,
-      });
-
-      console.log(`  ${region.slug}/${typeSlug}/ — ${hubLocs.length} locaties`);
+      validCombos.add(`${region.slug}:${typeInfo.slug}`);
+      comboData.push({ region, typeKey, hubLocs, typeSlug: typeInfo.slug });
     }
+  }
+
+  // Pass 2: generate pages with knowledge of all valid combos
+  for (const { region, typeKey, hubLocs, typeSlug } of comboData) {
+    const dirPath = path.join(ROOT, region.slug, typeSlug);
+    fs.mkdirSync(dirPath, { recursive: true });
+
+    const html = generateCityTypePage(region, typeKey, hubLocs, regions, data.total, validCombos);
+    const outPath = path.join(dirPath, 'index.html');
+    fs.writeFileSync(outPath, html);
+
+    const pagePath = `/${region.slug}/${typeSlug}/`;
+    generatedCombos.push({
+      regionSlug: region.slug,
+      typeSlug,
+      path: pagePath,
+      filePath: outPath,
+    });
+
+    console.log(`  ${region.slug}/${typeSlug}/ — ${hubLocs.length} locaties`);
   }
 
   console.log(`  Total city+type pages: ${generatedCombos.length}`);
