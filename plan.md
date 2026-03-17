@@ -535,45 +535,93 @@ Na het genereren van een dagplan:
 
 ## FASE 6: E-MAIL CAPTURE & NIEUWSBRIEF
 **Status:** `TODO`
-**Agents:** `implementer` (technische integratie) → `verifier` + **🔴 ACTIE VOOR BAS** (account aanmaken)
+**Agents:** `implementer` (technische integratie: signup forms + API script) → `verifier` + **🔴 ACTIE VOOR BAS** (account aanmaken)
 **Prioriteit:** HOOG — dit is het enige retentiemechanisme dat werkt bij lage traffic
+**Provider:** Buttondown (buttondown.com)
 
-### 🔴 ACTIE VOOR BAS: Kies en maak een newsletter-account aan
-**Opties:**
-1. **Buttondown** (buttondown.com) — gratis tot 100 subscribers, simpel, privacy-vriendelijk, past bij de brand
-2. **Mailerlite** (mailerlite.com) — gratis tot 1.000 subscribers, meer features, drag-and-drop editor
-3. **Brevo** (brevo.com) — gratis 300 mails/dag, goed voor transactionele mails later
+### Beslissing: Buttondown
 
-**Aanbeveling:** Start met Buttondown (simplest) of Mailerlite (meest ruimte om te groeien).
+**Gekozen na vergelijking van 7 diensten** (Buttondown, MailerLite, Brevo, Resend, Kit, Loops, Beehiiv).
 
-Na aanmelding: geef de **embed code** of **API endpoint** door aan Claude Code.
+**Waarom Buttondown:**
+- **API perfect voor onze workflow:** `POST /v1/emails` met `status: "draft"` → Bas reviewt in UI → send. Claude Code kan volledige newsletters genereren en als draft pushen.
+- **Markdown-native:** Claude Code genereert Markdown, POST naar API, klaar. Geen HTML templating nodig.
+- **Privacy-first:** Geen tracking bloat, geen data verkoop. Past bij een Nederlands ouder-publiek.
+- **Simpel:** Doet newsletters, doet ze goed, geen feature bloat.
+- **GDPR-compliant:** Subscribers kunnen data export/deletion aanvragen.
+- **Indie favoriet:** Vertrouwd door indie hackers en kleine scale-ups.
+
+**Gratis tier:** 100 subscribers. Daarna $9/maand voor 1.000 subs.
+**Fallback:** Als 100 subs te snel bereikt wordt zonder budget, switch naar MailerLite (500 gratis subs, EU data-opslag in DE/NL). API-integratie is vergelijkbaar.
+
+### 🔴 ACTIE VOOR BAS: Maak Buttondown account aan
+1. Ga naar https://buttondown.com en maak een account aan
+2. Ga naar Settings → API Keys → kopieer je API key
+3. Sla de API key op als GitHub Secret: `BUTTONDOWN_API_KEY`
+   ```bash
+   gh secret set BUTTONDOWN_API_KEY --repo basmetten/peuterplannen
+   ```
+4. Optioneel: stel je nieuwsbrief naam in op "PeuterPlannen" en voeg een beschrijving toe
+
+Na aanmelding kan Claude Code de volledige integratie bouwen.
 
 ### Stappen (nadat account klaar is)
 
-#### 6.1 Voeg signup-formulier toe op 4 plekken
+#### 6.1 Voeg Buttondown signup-formulier toe op 4 plekken
 - `index.html` — boven de footer
 - `.scripts/lib/generators/blog.js` — onderaan elke blogpost
 - `.scripts/lib/generators/city-pages.js` — onderaan elke stadspagina
 - `app.html` — na "Plan mijn dag" resultaat
 
-**Copy:**
+**Implementatie:** Gebruik Buttondown's standaard embed form:
+```html
+<form action="https://buttondown.com/api/emails/embed-subscribe/peuterplannen"
+      method="post" target="popupwindow" class="newsletter-form">
+  <p class="newsletter-heading">Elke vrijdag: 3 uitjes die passen bij het weer</p>
+  <div class="newsletter-fields">
+    <input type="email" name="email" placeholder="jouw@email.nl" required aria-label="E-mailadres">
+    <button type="submit">Aanmelden</button>
+  </div>
+  <p class="newsletter-disclaimer">Geen spam. Uitschrijven wanneer je wilt.</p>
+</form>
 ```
-Elke vrijdag: 3 uitjes die passen bij het weer in jouw regio
-[email] [Aanmelden]
-Geen spam. Uitschrijven wanneer je wilt.
-```
 
-#### 6.2 Privacy-pagina updaten
-- Vermeld de gekozen provider
-- Leg uit: alleen e-mailadres + optioneel regio wordt opgeslagen
+De `newsletterHTML()` functie in `html-shared.js` retourneert nu `''` — vul deze met het formulier.
 
-#### 6.3 Automatisering: wekelijkse nieuwsbrief content
-Maak een script `.scripts/ops/generate-newsletter.js` dat elke vrijdag:
-1. Het weerbericht ophaalt voor het weekend (Open-Meteo API, al in CSP whitelist)
-2. 3-5 locaties selecteert die passen bij het weer per top-regio
-3. Een markdown nieuwsbrief genereert die Bas kan kopiëren naar de newsletter-provider
+#### 6.2 CSP-header updaten
+**Bestand:** `_headers`
+- Voeg `https://buttondown.com` toe aan `form-action` in de Content-Security-Policy
+- Voeg `https://buttondown.com` toe aan `connect-src` (voor eventuele JS-integratie)
 
-**🔴 ACTIE VOOR BAS (wekelijks):** Review de gegenereerde nieuwsbrief en verstuur via de provider. Dit kost ~10 minuten per week.
+#### 6.3 Privacy-pagina updaten
+**Bestand:** `privacy/index.html` (of generator)
+- Vermeld Buttondown als nieuwsbrief-provider
+- Leg uit: alleen e-mailadres wordt opgeslagen
+- Link naar Buttondown's privacy policy
+- Vermeld recht op uitschrijving en data-verwijdering
+
+#### 6.4 Automatisering: wekelijkse nieuwsbrief via Buttondown API
+**Nieuw script:** `.scripts/ops/generate-newsletter.js`
+
+Draait elke donderdag via ops-cadence workflow:
+1. Haalt weerbericht op voor het weekend (Open-Meteo API, al in CSP whitelist)
+2. Selecteert 3-5 locaties per top-regio die passen bij het weer
+3. Genereert Markdown nieuwsbrief
+4. POST naar Buttondown API als draft:
+   ```bash
+   curl -X POST https://api.buttondown.com/v1/emails \
+     -H "Authorization: Token $BUTTONDOWN_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"subject": "Weekend-uitjes: ...", "body": "...", "status": "draft"}'
+   ```
+5. Draft verschijnt in Buttondown dashboard
+
+**🔴 ACTIE VOOR BAS (wekelijks):** Open Buttondown dashboard, review de draft, klik "Send". ~5 minuten per week.
+
+#### 6.5 Toekomstige automatisering (optioneel, na eerste 50 subscribers)
+- **Welkomstmail:** Automatische drip via Buttondown Automations
+- **Segmentatie op regio:** Tag subscribers op stad/regio voor gerichte content
+- **RSS-to-email:** Automatisch blogposts naar subscribers (Buttondown ondersteunt dit)
 
 ---
 
@@ -874,10 +922,10 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 
 | Wanneer | Actie | Geschatte tijd |
 |---------|-------|----------------|
-| **Deze week** | Newsletter-provider kiezen + account aanmaken | 30 min |
+| **Deze week** | Buttondown account aanmaken + API key als GitHub Secret | 15 min |
 | **Deze week** | Bol.com Partner Programma aanmelden | 15 min |
 | **Deze week** | Pinterest Business account aanmaken + website claimen | 30 min |
-| **Wekelijks** | Nieuwsbrief reviewen en versturen | 10 min/week |
+| **Wekelijks** | Buttondown dashboard: review draft, klik Send | 5 min/week |
 | **Wekelijks** | 1-2 pins maken op Pinterest | 30 min/week |
 | **Wekelijks** | 1-2 posts in ouder-Facebook-groepen | 30 min/week |
 | **Eenmalig** | 5-10 founding partner emails sturen | 2 uur |
