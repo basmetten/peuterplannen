@@ -191,7 +191,8 @@ function headCommon(extra = '') {
   <style>${CRITICAL_EDITORIAL_GUIDE_CSS}</style>
   <link rel="stylesheet" href="${navCssHref}">
   <script src="${navJsHref}" defer></script>
-  <script src="/error-reporter.js" defer></script>${extra}`;
+  <script src="/error-reporter.js" defer></script>
+  <meta name="pinterest-rich-pin" content="true">${extra}`;
 }
 
 function rewriteAssetVersions(filePath) {

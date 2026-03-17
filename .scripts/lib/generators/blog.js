@@ -89,6 +89,12 @@ function buildBlog(data) {
     const postTitle = `${p.title} | PeuterPlannen`;
     const postDescription = p.description || '';
 
+    // Use generated OG image if available; otherwise fall back to featured_image or site default.
+    const generatedOgPath = path.join(ROOT, 'images', 'og', `blog-${p.slug}.jpg`);
+    const ogImageUrl = fs.existsSync(generatedOgPath)
+      ? `https://peuterplannen.nl/images/og/blog-${p.slug}.jpg`
+      : `https://peuterplannen.nl/${p.featured_image ? p.featured_image.replace(/^\//, '') : 'homepage_hero_ai.jpeg'}`;
+
     const postHTML = `<!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -101,14 +107,14 @@ ${headCommon()}
   <meta property="og:url" content="https://peuterplannen.nl/blog/${p.slug}/">
   <meta property="og:type" content="article">
   <meta property="og:locale" content="nl_NL">
-  <meta property="og:image" content="https://peuterplannen.nl/${p.featured_image ? p.featured_image.replace(/^\//, '') : 'homepage_hero_ai.jpeg'}">
+  <meta property="og:image" content="${ogImageUrl}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="${escapeHtml(p.title)} | PeuterPlannen">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${escapeHtml(postTitle)}">
   <meta name="twitter:description" content="${escapeHtml(postDescription)}">
-  <meta name="twitter:image" content="https://peuterplannen.nl/${p.featured_image ? p.featured_image.replace(/^\//, '') : 'homepage_hero_ai.jpeg'}">
+  <meta name="twitter:image" content="${ogImageUrl}">
   <script type="application/ld+json">
 ${JSON.stringify({
   "@context": "https://schema.org",
