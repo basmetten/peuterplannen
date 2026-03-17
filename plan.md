@@ -622,7 +622,7 @@ Draait elke donderdag via ops-cadence workflow:
 ---
 
 ## FASE 7: SEIZOENSCONTENT — GEAUTOMATISEERD PUBLICATIESCHEMA
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** Meerdere `content-writer` agents PARALLEL (1 per post) → `verifier`
 **Prioriteit:** HOOG — seizoenspieken zijn de grootste traffic-kans
 
@@ -902,7 +902,7 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 | 4 | Performance optimalisaties | `DONE` | HOOG | Claude Code |
 | 5 | UX-verbeteringen | `DONE` | HOOG | Claude Code |
 | 6 | E-mail capture & nieuwsbrief | `DONE` | HOOG | Claude Code + 🔴 Bas |
-| 7 | Seizoenscontent (6 posts) | `TODO` | HOOG | Claude Code |
+| 7 | Seizoenscontent (6 posts) | `DONE` | HOOG | Claude Code |
 | 8 | Evergreen content (8 posts) | `TODO` | MEDIUM-HOOG | Claude Code |
 | 9 | Ontbrekende stadsgidsen (11 posts) | `TODO` | MEDIUM | Claude Code |
 | 10 | Interne linking mesh | `TODO` | MEDIUM | Claude Code |
