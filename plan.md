@@ -749,43 +749,138 @@ Minimaal 1.500 woorden per post, met lokaal karakter (niet copy-paste van Amster
 
 ## FASE 12: AFFILIATE & MONETISATIE-BASIS
 **Status:** `TODO`
-**Agents:** `implementer` (affiliate blokken in generators) + `content-writer` (3 affiliate blogposts) → `verifier` + **🔴 ACTIE VOOR BAS**
+**Agents:** `implementer` (affiliate blokken in generators, meerdere parallel: 12.3-12.6 raken verschillende bestanden) + `content-writer` (3 affiliate blogposts) → `verifier` + **🔴 ACTIE VOOR BAS**
 **Prioriteit:** MEDIUM
-**Doel:** €50-200/maand binnen 60 dagen
+**Doel:** €60-210/maand binnen 60 dagen
 
-### 🔴 ACTIE VOOR BAS: Meld je aan bij Bol.com Partner Programma
-- Ga naar partnerplatform.bol.com
-- Aanmelden met zakelijk of persoonlijk account
-- Na goedkeuring: ontvang affiliate tag
+### Achtergrond: herziene strategie na deep research (2026-03-17)
 
-### 🔴 ACTIE VOOR BAS: Meld je aan bij TheFork affiliate programma
-- Voor reserveringsknoppen op restaurantpagina's
-- €1.50-4.00 per voltooide reservering
+Het oorspronkelijke plan focuste op Bol.com (productlinks) en TheFork (restaurantreserveringen). Na uitgebreid onderzoek naar alle beschikbare affiliate-programma's in Nederland bleek dat **ticket-affiliates** (Tiqets, GetYourGuide) de hoogste opbrengst per conversie hebben — en de meest natuurlijke match zijn voor een site met 2.100+ locatiepagina's waarvan ~35% betaalde attracties zijn.
 
-### Stappen (nadat affiliate tags beschikbaar zijn)
+**Opbrengst per conversie vergeleken:**
 
-#### 12.1 Voeg "Wat meenemen?" blok toe aan locatiepagina's
+| Programma | Commissie | Gem. orderwaarde | Per conversie |
+|-----------|-----------|------------------|---------------|
+| Booking.com | 5% | €150/nacht | **€7,50** |
+| Tiqets | 8% | €60 ticket | **€4,80** |
+| GetYourGuide | 8% | €50 tour | **€4,00** |
+| Bol.com | 4% | €35 product | €1,40 |
+| TheFork | vast | n.v.t. | €1,50-4,00 |
+
+**Concurrenten (Kidsproof, DagjeWeg) bevestigen dit:** zij monetiseren primair via betaalde listings + ticket-affiliates, niet via productlinks.
+
+### 🔴 ACTIE VOOR BAS: KvK-inschrijving (week van 23 maart 2026)
+
+**Entiteit: Eenmanszaak** — simpelst, geen notaris, geen startkapitaal nodig.
+- Kosten: eenmalig ~€50-85, daarna €0/jaar
+- SBI-code: `6312` (Webportalen) of `7311` (Reclamebureaus)
+- BTW: automatisch btw-nummer. Bij <€20K/jaar omzet → KOR aanvragen (geen btw afdragen)
+- Procedure: online voorbereiden op kvk.nl → afspraak KvK-kantoor → klaar
+
+**Wanneer BV overwegen:** pas bij structureel >€80-100K/jaar omzet.
+
+### 🔴 ACTIE VOOR BAS: Affiliate programma aanmeldingen
+
+**NB: Aanmelden kan al ZONDER KvK. KvK is pas wettelijk nodig bij structurele inkomsten (>~€1.800/jaar).**
+
+| # | Programma | URL | KvK vereist? | Geschatte tijd |
+|---|-----------|-----|--------------|----------------|
+| 1 | **Tiqets** | tiqets.com/affiliate/ | Nee | 10 min |
+| 2 | **Bol.com Affiliate** | affiliate.bol.com | Nee (affiliate ≠ verkoper) | 10 min |
+| 3 | **GetYourGuide** (via CJ Affiliate) | partner.getyourguide.com | Nee | 15 min |
+| 4 | **TheFork** (via Affi.io of MyLead) | affi.io/m/thefork | Nee | 10 min |
+| 5 | **Booking.com** | booking.com/affiliate-program/ | Nee | 10 min |
+
+**Totaal:** ~55 minuten, 1x doen.
+
+### Stappen (Claude Code implementatie)
+
+#### 12.1 Affiliate-configuratie in config.js
+**Bestand:** `.scripts/lib/config.js`
+
+Nieuw config-object met affiliate tags (placeholders tot Bas de tags invult):
+```javascript
+const AFFILIATE = {
+  tiqets: { tag: '', baseUrl: 'https://www.tiqets.com/en/' },
+  bol: { tag: '', baseUrl: 'https://partner.bol.com/click/click?p=1&t=url&s={tag}&url=' },
+  getYourGuide: { tag: '', baseUrl: 'https://www.getyourguide.com/' },
+  theFork: { tag: '', baseUrl: 'https://www.thefork.nl/' },
+  booking: { tag: '', baseUrl: 'https://www.booking.com/' },
+};
+```
+
+#### 12.2 Database-veld `ticket_url` toevoegen (optioneel, handmatig verrijken)
+**Bestand:** Supabase migration of direct in dashboard
+- Nieuw veld `ticket_url` op `locations` tabel (nullable text)
+- Voor musea, dierentuinen, indoor play: vul Tiqets deeplink in
+- Dit maakt het mogelijk om per locatie de juiste affiliate link te tonen
+
+#### 12.3 "Koop tickets" knop op betaalde attractiepagina's (Tiqets)
 **Bestand:** `.scripts/lib/generators/location-pages.js`
 
-Per type:
+Voor locaties met type `museum`, `culture`, `swim` en eventueel `play` (indoor):
+- Toon een "Tickets kopen" knop met Tiqets deeplink
+- Fallback: als geen `ticket_url` beschikbaar, link naar locatie-website
+- Styling: opvallende CTA-knop, consistent met design-system
+
+#### 12.4 "Wat meenemen?" blok met Bol.com links
+**Bestand:** `.scripts/lib/generators/location-pages.js`
+
+Per type contextuele productaanbevelingen:
 - Speeltuinen: zonnebrand, waterflesje, picknickkleed
 - Kinderboerderijen: laarzen, handgel, schone kleren
 - Zwemmen: zwemluier, badpakje, handdoek
+- Natuur: draagrugzak, regenkleding, verrekijker
 
-Links worden affiliate-ready (met Bol.com tag als placeholder tot tag beschikbaar is).
+Links worden affiliate-ready met Bol.com tag uit config.
 
-#### 12.2 Schrijf 3 affiliate-gerichte blogposts
-1. "De beste buggy voor uitjes met je peuter"
-2. "Wat meenemen naar de speeltuin — een checklist"
-3. "Regenkleding voor peuters: wat werkt echt"
+#### 12.5 TheFork reserveringsknoppen op horeca-pagina's
+**Bestand:** `.scripts/lib/generators/location-pages.js`
 
-#### 12.3 TheFork reserveringsknoppen op restaurantpagina's
-Na aanmelding bij TheFork: voeg reserveerknop toe aan horeca- en pannenkoekenpagina's.
+Voor locaties met type `horeca` en `pancake`:
+- Toon "Reserveren" knop met TheFork deeplink
+- Alleen als locatie een TheFork-profiel heeft (via `ticket_url` of handmatige mapping)
+
+#### 12.6 Booking.com upsell op attractiepagina's
+**Bestand:** `.scripts/lib/generators/location-pages.js`
+
+Subtiel blok "Weekendje weg in {stad}?" met Booking.com link:
+- Alleen op locatiepagina's van grotere attracties (dierentuinen, pretparken, musea)
+- Deeplink naar Booking.com met stad + "gezinsvriendelijk" filter
+
+#### 12.7 Schrijf 3 affiliate-gerichte blogposts
+1. "De beste buggy voor uitjes met je peuter" (Bol.com links)
+2. "Wat meenemen naar de speeltuin — een checklist" (Bol.com links)
+3. "Regenkleding voor peuters: wat werkt echt" (Bol.com links)
+
+#### 12.8 CSP-headers updaten
+**Bestand:** `_headers`
+- Voeg affiliate-domeinen toe aan relevante CSP-regels (alleen als widgets/iframes gebruikt worden)
+- Simpele `<a>`-links (Bol.com, Tiqets, Booking) vereisen geen CSP-wijziging
+
+### Implementatievolgorde
+
+```
+Fase 12A (ZONDER affiliate tags — structuur bouwen):
+  12.1 Config placeholder → 12.3-12.6 PARALLEL (verschillende bestanden) → 12.8 CSP → verifier
+
+Fase 12B (NADAT Bas tags invult):
+  Tags in config.js invullen → rebuild → live
+
+Fase 12C (PARALLEL aan 12A):
+  12.7 Blogposts schrijven (content-writer agents)
+```
 
 ### Realistische verwachting
-- Bol.com affiliate: €20-50/maand na 60 dagen
-- TheFork affiliate: €10-30/maand
-- Totaal: €30-80/maand (groeit mee met traffic)
+
+| Programma | Bij 2.000 bz/mnd | Bij 10.000 bz/mnd |
+|-----------|-------------------|---------------------|
+| Tiqets (8%, gem. €60) | €5-15/mnd | €25-75/mnd |
+| Bol.com (4%, gem. €35) | €3-10/mnd | €15-50/mnd |
+| GetYourGuide (8%) | €2-8/mnd | €10-40/mnd |
+| Booking.com (5%) | €1-5/mnd | €5-25/mnd |
+| TheFork (~€2/res) | €1-5/mnd | €5-20/mnd |
+| **Totaal** | **€12-43/mnd** | **€60-210/mnd** |
 
 ---
 
@@ -907,7 +1002,7 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 | 9 | Ontbrekende stadsgidsen (11 posts) | `DONE` | MEDIUM | Claude Code |
 | 10 | Interne linking mesh | `DONE` | MEDIUM | Claude Code |
 | 11 | Dunne pagina's fixen | `DONE` | MEDIUM | Claude Code |
-| 12 | Affiliate & monetisatie | `TODO` | MEDIUM | Claude Code + 🔴 Bas |
+| 12 | Affiliate & monetisatie (herzien) | `TODO` | MEDIUM | Claude Code + 🔴 Bas |
 | 13 | Social media fundament | `TODO` | MEDIUM | Claude Code + 🔴 Bas |
 | 14 | Automatisering | `TODO` | MEDIUM | Claude Code |
 | 15 | Direct outreach | `TODO` | MEDIUM-LAAG | 🔴 Bas |
@@ -919,8 +1014,10 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 | Wanneer | Actie | Geschatte tijd |
 |---------|-------|----------------|
 | ✅ **Gedaan** | Buttondown account + API key als GitHub Secret | — |
-| **Deze week** | Bol.com Partner Programma aanmelden | 15 min |
-| **Deze week** | Pinterest Business account aanmaken + website claimen | 30 min |
+| **Week 23 maart** | KvK-inschrijving eenmanszaak (online + afspraak) | 1 uur |
+| **Week 23 maart** | Aanmelden bij 5 affiliate programma's (Tiqets, Bol, GYG, TheFork, Booking) | 55 min |
+| **Week 23 maart** | Affiliate tags doorgeven → Claude Code vult config.js in → rebuild | 10 min |
+| **Later** | Pinterest Business account aanmaken + website claimen | 30 min |
 | **Wekelijks** | Buttondown dashboard: review draft, klik Send | 5 min/week |
 | **Wekelijks** | 1-2 pins maken op Pinterest | 30 min/week |
 | **Wekelijks** | 1-2 posts in ouder-Facebook-groepen | 30 min/week |
@@ -929,7 +1026,7 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 | **Optioneel** | Instagram account + 3x/week posten | 2 uur/week |
 
 **Totaal wekelijkse investering (minimaal):** ~1.5 uur/week
-**Totaal eenmalig:** ~5 uur
+**Totaal eenmalig:** ~7 uur (incl. KvK + affiliate aanmeldingen)
 
 ---
 

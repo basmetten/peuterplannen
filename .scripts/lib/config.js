@@ -474,6 +474,15 @@ const PARTNER_TIERS = [
   },
 ];
 
+// Affiliate programma configuratie — vul tags in na aanmelding
+const AFFILIATE = {
+  tiqets: { tag: '', baseUrl: 'https://www.tiqets.com/en/' },
+  bol: { tag: '', baseUrl: 'https://partner.bol.com/click/click?p=1&t=url&s={tag}&url=' },
+  getYourGuide: { tag: '', baseUrl: 'https://www.getyourguide.com/' },
+  theFork: { tag: '', baseUrl: 'https://www.thefork.nl/' },
+  booking: { tag: '', baseUrl: 'https://www.booking.com/' },
+};
+
 module.exports = {
   SB_PROJECT,
   SB_URL,
@@ -501,4 +510,5 @@ module.exports = {
   TIKKIE_URL,
   WEATHER_LABELS,
   PARTNER_TIERS,
+  AFFILIATE,
 };

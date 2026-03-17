@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-const { ROOT, TYPE_MAP, WEATHER_LABELS, SEO_DESCRIPTION_MIN_LENGTH, CF_ANALYTICS_TOKEN, analyticsHTML } = require('../config');
+const { ROOT, TYPE_MAP, WEATHER_LABELS, SEO_DESCRIPTION_MIN_LENGTH, CF_ANALYTICS_TOKEN, analyticsHTML, AFFILIATE } = require('../config');
 const { escapeHtml, slugify, fullSiteUrl, normalizeExternalUrl, displayExternalUrl, isoDateInTimeZone, todayISOAmsterdam, parseDateSafe } = require('../helpers');
-const { navHTML, footerHTML, headCommon, supportHTML, badgeHTML, svgSpriteDefs, revealScript, newsletterHTML, formatEditorialDate, editorialMetaHTML, editorialBodyHTML, relatedBlogLinksHTML } = require('../html-shared');
+const { navHTML, footerHTML, headCommon, supportHTML, badgeHTML, svgSpriteDefs, revealScript, newsletterHTML, formatEditorialDate, editorialMetaHTML, editorialBodyHTML, relatedBlogLinksHTML, affiliateTicketHTML, affiliateProductsHTML, affiliateReservationHTML, affiliateBookingHTML } = require('../html-shared');
 const { isFillerDescription, sortLocationsForSeo, getClusterPagesForLocation, matchesClusterPage, selectHubLocations } = require('../seo-policy');
 const { loadBlogMetadata, getBlogEntriesBySlug, renderMarkdownDoc } = require('../seo-content');
 const { FALLBACK_REGIONS } = require('../supabase');
@@ -502,10 +502,16 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
     ${routeUrl ? `<a href="${routeUrl}" target="_blank" rel="noopener" class="btn-route">Route plannen</a>` : ''}
   </div>
 
+  ${affiliateTicketHTML(loc, AFFILIATE)}
+  ${affiliateReservationHTML(loc, AFFILIATE)}
+
   <div class="share-buttons">
     <a href="https://wa.me/?text=${shareText}%20${shareUrl}" target="_blank" rel="noopener" class="share-wa">Deel via WhatsApp</a>
     <button class="share-native" onclick="shareNative()">Delen</button>
   </div>
+
+  ${affiliateProductsHTML(loc.type, AFFILIATE)}
+  ${['museum', 'swim', 'play'].includes(loc.type) ? affiliateBookingHTML(region.name, AFFILIATE) : ''}
 
   ${(loc.lat && loc.lng) ? `<div class="location-map" id="map-container"><div id="map"></div></div>
   <p class="map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>` : ''}

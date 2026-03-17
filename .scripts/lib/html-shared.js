@@ -218,6 +218,67 @@ function rewriteAssetVersions(filePath) {
   if (changed) fs.writeFileSync(filePath, html);
 }
 
+// --- Affiliate helpers ---
+
+const AFFILIATE_DISCLAIMER = '<p style="font-size: 11px; color: #999; margin-top: 4px;">* Affiliatelink — wij ontvangen een kleine commissie</p>';
+
+function affiliateTicketHTML(loc, affiliate) {
+  if (!affiliate.tiqets.tag) return '';
+  if (!['museum', 'swim', 'play'].includes(loc.type)) return '';
+  const url = loc.ticket_url || affiliate.tiqets.baseUrl;
+  return `<div style="margin: 16px 0;">
+  <a href="${url}" target="_blank" rel="noopener sponsored" style="border: 2px solid var(--primary); color: var(--primary); background: white; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">🎟️ Tickets kopen</a>
+  ${AFFILIATE_DISCLAIMER}
+</div>`;
+}
+
+const BOL_PRODUCTS = {
+  play:    [{ name: 'Zonnebrand kind', q: 'zonnebrand+kind' }, { name: 'Drinkfles peuter', q: 'drinkfles+peuter' }, { name: 'Picknickkleed', q: 'picknickkleed' }],
+  nature:  [{ name: 'Zonnebrand kind', q: 'zonnebrand+kind' }, { name: 'Drinkfles peuter', q: 'drinkfles+peuter' }, { name: 'Picknickkleed', q: 'picknickkleed' }],
+  farm:    [{ name: 'Regenlaarsjes peuter', q: 'regenlaarsjes+peuter' }, { name: 'Handgel kinderen', q: 'handgel+kinderen' }, { name: 'Reservekleding peuter', q: 'reservekleding+peuter' }],
+  swim:    [{ name: 'Zwemluier', q: 'zwemluier+baby' }, { name: 'Badpakje peuter', q: 'badpakje+peuter' }, { name: 'Handdoek kinderen', q: 'handdoek+kinderen' }],
+  museum:  [{ name: 'Buggy compact', q: 'buggy+compact' }, { name: 'Snackdoosje peuter', q: 'snackdoosje+peuter' }, { name: 'Oordopjes kinderen', q: 'oordopjes+kinderen' }],
+};
+
+function affiliateProductsHTML(type, affiliate) {
+  if (!affiliate.bol.tag) return '';
+  const products = BOL_PRODUCTS[type];
+  if (!products) return '';
+  const baseUrl = affiliate.bol.baseUrl.replace('{tag}', affiliate.bol.tag);
+  const items = products.map(p => {
+    const url = `${baseUrl}${encodeURIComponent('https://www.bol.com/nl/nl/s/?searchtext=' + p.q)}`;
+    return `<li><a href="${url}" target="_blank" rel="noopener sponsored">${p.name}</a></li>`;
+  }).join('\n      ');
+  return `<div style="background: #f8f7f5; border-radius: 12px; padding: 20px 24px; margin: 24px 0;">
+    <strong>Wat meenemen?</strong>
+    <ul style="margin: 8px 0 4px; padding-left: 20px; list-style: disc;">
+      ${items}
+    </ul>
+    ${AFFILIATE_DISCLAIMER}
+  </div>`;
+}
+
+function affiliateReservationHTML(loc, affiliate) {
+  if (!affiliate.theFork.tag) return '';
+  if (!['horeca', 'pancake'].includes(loc.type)) return '';
+  const url = loc.ticket_url || affiliate.theFork.baseUrl;
+  return `<div style="margin: 16px 0;">
+  <a href="${url}" target="_blank" rel="noopener sponsored" style="border: 2px solid var(--primary); color: var(--primary); background: white; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">🍽️ Reserveer een tafel</a>
+  ${AFFILIATE_DISCLAIMER}
+</div>`;
+}
+
+function affiliateBookingHTML(regionName, affiliate) {
+  if (!affiliate.booking.tag) return '';
+  const url = `${affiliate.booking.baseUrl}searchresults.html?aid=${affiliate.booking.tag}&ss=${encodeURIComponent(regionName)}&nflt=hotelfacility%3D28`;
+  return `<div style="background: #f0f7f6; border-radius: 12px; padding: 16px 24px; margin: 24px 0;">
+  <strong>Weekendje weg in ${regionName}?</strong>
+  <p style="margin: 4px 0 12px; font-size: 14px; color: #555;">Bekijk gezinsvriendelijke hotels in de buurt.</p>
+  <a href="${url}" target="_blank" rel="noopener sponsored" style="color: var(--primary); font-weight: 600; text-decoration: none;">Hotels bekijken →</a>
+  ${AFFILIATE_DISCLAIMER}
+</div>`;
+}
+
 module.exports = {
   formatEditorialDate,
   editorialMetaHTML,
@@ -233,4 +294,8 @@ module.exports = {
   supportHTML,
   headCommon,
   rewriteAssetVersions,
+  affiliateTicketHTML,
+  affiliateProductsHTML,
+  affiliateReservationHTML,
+  affiliateBookingHTML,
 };
