@@ -9,6 +9,9 @@ concurrency:
   group: ops-cadence
   cancel-in-progress: false
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   ops:
     runs-on: ubuntu-latest
@@ -37,7 +40,7 @@ jobs:
       - uses: actions/setup-node@v4
         if: steps.gate.outputs.run_ops == 'true'
         with:
-          node-version: '20'
+          node-version: '22'
 
       - uses: actions/setup-python@v5
         if: steps.gate.outputs.run_ops == 'true'
