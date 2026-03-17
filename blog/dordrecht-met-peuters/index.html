@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <!-- Google tag (gtag.js) — Consent Mode v2 -->
+  <script src="/ga-init.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+  <script src="/consent.js" defer></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
+  <meta name="theme-color" content="#D4775A">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="preload" href="/design-system.css" as="style">
+  <link rel="preload" href="/style.min.css" as="style">
+  <link rel="preload" href="/fonts/familjen-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="/design-system.css?v=202603171014">
+  <link rel="stylesheet" href="/style.min.css?v=202603171014">
+  <style>
+  .guide-section{display:grid;gap:18px;margin:36px 0}
+  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .guide-card-compact{padding:20px 18px}
+  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
+  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
+  .guide-card h2{font-size:clamp(28px,5vw,40px)}
+  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
+  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
+  .guide-card-intro{max-width:58ch}
+  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .guide-links{display:grid;gap:12px;margin-top:16px}
+  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  .guide-link:visited{color:var(--pp-text)}
+  .guide-link strong{font-size:15px;line-height:1.3}
+  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
+  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
+  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
+  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
+  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
+  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
+  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
+  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
+  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
+  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
+  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
+  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
+  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
+  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
+  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
+  .editorial-support-links a:visited{color:var(--pp-text)}
+  .editorial-support-links a strong{font-size:14px}
+  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
+  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
+</style>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603171014">
+  <script src="/nav-floating.js?v=202603171014" defer></script>
+  <script src="/error-reporter.js" defer></script>
+  <title>Dordrecht met peuters: oudste stad, jongste bezoekers | PeuterPlannen</title>
+  <meta name="description" content="Dordrecht is de oudste stad van Holland en verrassend geschikt voor peuters. Water overal, de Biesbosch om de hoek en een centrum zonder massa's toeristen.">
+  <link rel="canonical" href="https://peuterplannen.nl/blog/dordrecht-met-peuters/">
+  <meta property="og:title" content="Dordrecht met peuters: oudste stad, jongste bezoekers | PeuterPlannen">
+  <meta property="og:description" content="Dordrecht is de oudste stad van Holland en verrassend geschikt voor peuters. Water overal, de Biesbosch om de hoek en een centrum zonder massa's toeristen.">
+  <meta property="og:url" content="https://peuterplannen.nl/blog/dordrecht-met-peuters/">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="nl_NL">
+  <meta property="og:image" content="https://peuterplannen.nl/images/blog/dordrecht-met-peuters.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Dordrecht met peuters: oudste stad, jongste bezoekers | PeuterPlannen">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Dordrecht met peuters: oudste stad, jongste bezoekers | PeuterPlannen">
+  <meta name="twitter:description" content="Dordrecht is de oudste stad van Holland en verrassend geschikt voor peuters. Water overal, de Biesbosch om de hoek en een centrum zonder massa's toeristen.">
+  <meta name="twitter:image" content="https://peuterplannen.nl/images/blog/dordrecht-met-peuters.jpg">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Dordrecht met peuters: oudste stad, jongste bezoekers",
+  "description": "Dordrecht is de oudste stad van Holland en verrassend geschikt voor peuters. Water overal, de Biesbosch om de hoek en een centrum zonder massa's toeristen.",
+  "datePublished": "2026-03-17",
+  "author": {
+    "@type": "Person",
+    "name": "Bas Metten"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PeuterPlannen"
+  },
+  "url": "https://peuterplannen.nl/blog/dordrecht-met-peuters/",
+  "mainEntityOfPage": "https://peuterplannen.nl/blog/dordrecht-met-peuters/"
+}
+  </script>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
+<nav aria-label="Hoofdnavigatie" class="floating-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" class="nav-logo-svg" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>
+      <span class="logo-text"><span class="logo-top">Peuter</span><span class="logo-bottom">Plannen</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/ontdekken/" class="nav-link">Ontdekken</a>
+      <a href="/about.html" class="nav-link">Over</a>
+      <a href="/blog/" class="nav-link">Inspiratie</a>
+      <a href="/contact.html" class="nav-link">Contact</a>
+      <a href="/app.html" class="nav-cta">Open App</a>
+    </div>
+    <button class="nav-burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-mobile-menu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
+    <a href="/" class="nav-mobile-link">Home</a>
+    <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
+    <a href="/about.html" class="nav-mobile-link">Over</a>
+    <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
+    <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Open App</a>
+  </div>
+</nav>
+
+<div class="blog-hero-img" style="max-width:1100px;margin:80px auto 0;padding:0 24px;"><picture><source type="image/webp" srcset="/images/blog/dordrecht-met-peuters.webp"><img src="/images/blog/dordrecht-met-peuters.jpg" alt="Dordrecht met peuters: oudste stad, jongste bezoekers" style="width:100%;height:auto;border-radius:16px;max-height:400px;object-fit:cover;" loading="eager"></picture></div>
+<div class="hero" style="padding: 24px 24px 40px;">
+  <h1>Dordrecht met peuters: oudste stad, jongste bezoekers</h1>
+</div>
+
+<nav aria-label="Kruimelpad" class="breadcrumb">
+  <a href="/">PeuterPlannen</a> &rsaquo; <a href="/blog/">Inspiratie</a> &rsaquo; Dordrecht met peuters: oudste stad, jongste bezoekers
+</nav>
+
+<main id="main-content">
+  <p class="blog-meta">17 maart 2026 &middot; dordrecht, tips, natuur, museum</p>
+
+  <div class="blog-content">
+    <p>Dordrecht is de oudste stad van Holland, en bijna niemand denkt eraan voor een dagje uit met een peuter. Dat is jammer, want Dordrecht heeft precies wat je met jonge kinderen nodig hebt: water om naar te staren, parken om doorheen te rennen, een Biesbosch die begint waar de stad ophoudt, en — misschien het belangrijkste — geen hordes toeristen die je buggy in de weg lopen.</p>
+<p>De stad ligt op een eiland. Dat merk je als je er bent: overal water, bruggen, kades. Voor peuters is dat op zich al een halve dag entertainment. Maar er is meer dan dat. Dit is wat echt werkt als je er met een kind van 1 tot 5 jaar naartoe gaat.</p>
+<h2>Wantijpark en Dierenweide: begin hier</h2>
+<p>Het <a href="/dordrecht/dierenweide-wantijpark/">Wantijpark</a> is de plek waar Dordrechtse ouders naartoe gaan als ze niet te ver willen lopen en hun kind gewoon buiten willen laten spelen. Het park ligt aan de rand van het centrum, heeft veel groen, water, en een dierenweide waar geiten, schapen, kippen en konijnen wonen.</p>
+<p>De dierenweide is gratis en precies het soort plek waar een tweejarige een uur lang gelukkig is. Er valt niet veel meer te doen dan dieren kijken en door het gras lopen — en dat is genoeg. Het park zelf heeft paden die goed begaanbaar zijn met een buggy, en er zijn bankjes genoeg om even te zitten terwijl je kind rondstruint.</p>
+<p>Wat het Wantijpark bijzonder maakt: het grenst aan het Wantij, een getijdenrivier. Bij laag water zie je de slikken, bij hoog water stroomt het vol. Peuters die van water houden (en welke peuter doet dat niet) kunnen hier lang naar kijken.</p>
+<p><strong>Praktisch:</strong></p>
+<ul>
+<li>Gratis toegankelijk, altijd open.</li>
+<li>Parkeren kan langs de Wantijweg. Op doordeweekse dagen geen probleem.</li>
+<li>Combineer het met een wandeling langs het Wantij richting de Biesbosch.</li>
+</ul>
+<h2>Biesboschcentrum: natuur die je bijna kunt aanraken</h2>
+<p>Het <a href="/dordrecht/biesboschcentrum-dordrecht/">Biesboschcentrum Dordrecht</a> is de toegangspoort tot Nationaal Park De Biesbosch en een van de beste peuterbestemmingen in de hele regio. Het centrum zelf is een modern gebouw met een expositie over het zoetwatergetijdengebied — voor volwassenen interessant, voor peuters vooral visueel: er zijn aquaria met vissen, een bever die je door een ruit kunt bekijken, en interactieve elementen waar ook jonge kinderen iets mee kunnen.</p>
+<p>Maar het echte programma zit buiten. Rondom het Biesboschcentrum lopen korte wandelpaden door riet en wilgenbos. Het kortste rondje is ongeveer een kilometer en goed te doen met een peuter die zelf loopt. Met een buggy wordt het lastiger — sommige paden zijn onverhard en bij nat weer modderig. Een draagzak is dan handiger.</p>
+<p>Wat je peuter hier meekrijgt: echte natuur, dicht op het water, met kans op een reiger, eenden, en als je geluk hebt een bever. Het is stil, het ruikt naar buiten, en er is geen enkel scherm in de buurt. Na de drukte van de stad is dit een verademing.</p>
+<p><strong>Praktisch:</strong></p>
+<ul>
+<li>Het centrum heeft een klein entreekosten. Kinderen t/m 3 jaar gratis. Check de actuele prijzen op de website.</li>
+<li>Er is een café met terras dat uitkijkt over het water. Goed genoeg voor koffie en een tosti.</li>
+<li>Neem laarzen mee als het geregend heeft. De paden worden nat.</li>
+<li>Bereikbaar met de auto (15 minuten vanaf het centrum) of met de waterbus — daarover later meer.</li>
+</ul>
+<h2>Stadsboerderij Weizigt: de beste kinderboerderij van Dordrecht</h2>
+<p><a href="/dordrecht/stadsboerderij-weizigt/">Stadsboerderij Weizigt</a> ligt in het Weizigtpark, aan de zuidkant van de stad. Het is een volwaardige stadsboerderij met koeien, varkens, geiten, kippen, en een moestuin. Voor peuters is het een vertrouwde formule die altijd werkt: dieren kijken, dieren aaien, hooi ruiken, rondlopen.</p>
+<p>Wat Weizigt onderscheidt van een gemiddelde kinderboerderij: het is ruim opgezet, er is een grote speeltuin ernaast, en het Weizigtpark zelf is een fijne plek om daarna nog even te wandelen. Het geheel voelt niet als een attractie maar als een plek in de buurt — ook al kom je van buiten Dordrecht.</p>
+<p>Er is ook een <a href="/dordrecht/kinderboerderij-papenhoeve/">Kinderboerderij Papenhoeve</a> in Dordrecht-West. Kleiner, maar dichterbij het centrum en prima voor een kort bezoek.</p>
+<p><strong>Praktisch:</strong></p>
+<ul>
+<li>Gratis toegang. Openingstijden variëren per seizoen.</li>
+<li>Het Weizigtpark heeft een grote vijver waar je eenden kunt voeren. Neem oud brood mee.</li>
+<li>Parkeren kan bij het park. Goed bereikbaar met de fiets vanuit het centrum.</li>
+</ul>
+<h2>Het Dordrechts Museum: verrassing voor de wat oudere peuters</h2>
+<p>Musea en peuters — het is zelden een perfecte combinatie. Maar het <a href="/dordrecht/dordrechts-museum/">Dordrechts Museum</a> verdient een eerlijke kans. Het museum heeft een sterke collectie schilderijen (veel water en schepen, waar Dordrecht historisch om bekendstaat) en organiseert regelmatig kinderprogramma&#39;s.</p>
+<p>Voor peuters vanaf 3 jaar zijn de grote schilderijen met schepen, water en wolkenluchten verrassend boeiend. Kinderen van die leeftijd kijken anders naar kunst dan volwassenen — ze zoeken dingen die ze herkennen. Een boot, een hond, een vis. En in dit museum vinden ze die.</p>
+<p>Eerlijk: als je peuter jonger is dan 2,5 of het type dat alles wil aanraken en nergens stil wil staan, sla dit dan over. Maar voor rustige driejarigen die al gewend zijn aan een bibliotheekbezoek, is een half uur in het Dordrechts Museum prima te doen.</p>
+<p>Het <a href="/dordrecht/huis-van-gijn/">Huis van Gijn</a> — een historisch woonhuis uit de 19e eeuw — is ook in Dordrecht. Mooi voor volwassenen, maar voor peuters te fragiel en te stil. Bewaar dat voor later.</p>
+<p><strong>Praktisch:</strong></p>
+<ul>
+<li>Check de website voor kinderprogramma&#39;s en familiedagen.</li>
+<li>Het museum ligt in het centrum, op loopafstand van de Grote Kerk.</li>
+<li>Na het museum kun je het plein op voor een ijsje — een beproefd recept.</li>
+</ul>
+<h2>Speeltuinen: meer dan genoeg keuze</h2>
+<p>Dordrecht heeft opvallend veel goed onderhouden speeltuinen. Dat is prettig, want soms heb je gewoon een plek nodig waar je kind een uur kan klimmen, schommelen en in het zand kan graven terwijl jij op een bankje zit.</p>
+<p>De <a href="/dordrecht/speeltuin-oosterkwartier/">Speeltuin Oosterkwartier</a> is een van de betere: ruim opgezet, met toestellen voor verschillende leeftijden, en een apart peutergedeelte. Het <a href="/dordrecht/jeugdspeelpark/">Jeugdspeelpark</a> is groter en heeft meer te bieden voor kinderen die al wat ouder zijn. En <a href="/dordrecht/speeltuin-stadspolders/">Speeltuin Stadspolders</a> is een prima optie als je in die wijk bent.</p>
+<p>Geen van deze speeltuinen is spectaculair of bijzonder — het zijn gewone, goede buurtspeceltuinen. En dat is precies wat je soms nodig hebt: een veilige plek waar je peuter even kan uitrazen voordat je naar de volgende bestemming gaat.</p>
+<h2>De Merwelanden: het strandje van Dordrecht</h2>
+<p>Niet veel mensen weten dat Dordrecht een strandje heeft. <a href="/dordrecht/de-merwelanden/">De Merwelanden</a> is een recreatiegebied aan de Merwede, met een grasstrand, ondiepe zwemplaatsen, en veel ruimte om te rennen.</p>
+<p>In de zomer is dit een uitstekende peuterbestemming. Het water is ondiep aan de rand, er is zand om in te graven, en het is minder druk dan de stranden aan de kust. Op warme doordeweekse dagen heb je het bijna voor jezelf.</p>
+<p>Voor peuters is de combinatie van water en zand onverslaanbaar. Neem een emmer en schep mee, zonnebrand, en reservekleren. Meer heb je niet nodig.</p>
+<p><strong>Praktisch:</strong></p>
+<ul>
+<li>Gratis toegankelijk. Parkeren kan ter plaatse.</li>
+<li>Er is een eenvoudige horecagelegenheid in het seizoen.</li>
+<li>Alleen geschikt bij warm weer — bij kou of wind is er weinig beschutting.</li>
+<li>Houd je kind altijd in de gaten bij het water, ook in de ondiepe delen.</li>
+</ul>
+<h2>Pannenkoeken: de Dordtse optie</h2>
+<p>Met een peuter op pad is een pannenkoekenhuis altijd een veilige keuze. <a href="/dordrecht/pannenkoekenhuis-frittella/">Pannenkoekenhuis Frittella</a> is de bekendste in Dordrecht en doet wat het moet doen: grote pannenkoeken, kindvriendelijke sfeer, en genoeg ruimte voor een buggy.</p>
+<p>Voor iets meer sfeer is <a href="/dordrecht/villa-augustus/">Villa Augustus</a> een aanrader. Dit voormalige watertorencomplex heeft een restaurant, een tuin met moestuinbakken, en een kas. Het is geen kinderspeelparadijs, maar de tuin is groot genoeg voor een peuter om rond te lopen terwijl jij koffie drinkt. Het eten is goed, de sfeer is volwassen maar niet kindonvriendelijk. Het is het soort plek waar je als ouder ook zelf iets aan hebt.</p>
+<h2>Praktisch: hoe kom je in Dordrecht</h2>
+<p><strong>De waterbus — serieus, neem de waterbus.</strong> Als je vanuit Rotterdam komt, is de Waterbus (lijn 20) de beste manier om in Dordrecht te komen. De boot vaart van Rotterdam Erasmusbrug naar Dordrecht Merwekade in ongeveer 40 minuten. Voor peuters is de boottocht zelf al een uitje: water, wind, schepen die passeren, meeuwen. Je arriveert direct aan het water in Dordrecht, op loopafstand van het centrum.</p>
+<p>De waterbus stopt ook bij het Biesboschcentrum — je kunt dus een dag plannen waarbij je heen met de boot gaat, de Biesbosch bezoekt, en terug via het centrum van Dordrecht wandelt. Of andersom.</p>
+<p><strong>Trein:</strong> Dordrecht heeft een NS-station op 10 minuten lopen van het centrum. Treinen rijden frequent vanuit Rotterdam (25 minuten), Den Haag en Breda. Het station heeft een lift voor buggy&#39;s.</p>
+<p><strong>Auto:</strong> Dordrecht is goed bereikbaar via de A16. Parkeren in het centrum is betaald maar niet duur vergeleken met de Randstad. Er zijn meerdere parkeergarages. Op doordeweekse dagen vind je makkelijk een plek.</p>
+<p><strong>Wanneer gaan:</strong> Dordrecht is het hele jaar een goede bestemming, maar de Biesbosch en De Merwelanden zijn op hun best van april tot oktober. In de winter is het centrum met zijn havens en bruggen nog steeds de moeite waard, maar plan dan een binnenactiviteit (museum, zwembad, kinderboerderij) als hoofddoel.</p>
+<h2>Regenplan: wat doe je als het regent</h2>
+<p>Regen en Dordrecht — het ligt aan het water, dus ja, het regent er. Als de buitenplannen in het water vallen, zijn dit je opties:</p>
+<p><strong>Zwembad:</strong> Dordrecht heeft meerdere zwembaden met peuterbaden. Het <a href="/dordrecht/wantijbad/">Wantijbad</a> is het grootst en heeft een apart peuterbad met warm water en glijbaantjes. <a href="/dordrecht/bronbad-de-lockhorst/">Bronbad De Lockhorst</a> is kleiner maar behaaglijker — het is een bronbad, dus het water is van nature warm. Voor peuters is dat ideaal.</p>
+<p><strong>Familieparadijs:</strong> Het <a href="/dordrecht/familieparadijs/">Familieparadijs</a> is een binnenspeeltuin in Dordrecht. De naam is groot, de verwachtingen moeten realistisch zijn: het is een binnenspeeltuin met klimtoestellen, ballen, en een peuterhoek. Het is niet bijzonder, maar het doet waarvoor het bedoeld is — je kind twee uur laten spelen terwijl het buiten regent.</p>
+<p><strong>Museum:</strong> Het Dordrechts Museum en het <a href="/dordrecht/nationaal-onderwijsmuseum/">Nationaal Onderwijsmuseum</a> zijn beide geschikt als regenuitje. Het Onderwijsmuseum is klein en gericht op de geschiedenis van het onderwijs in Nederland — voor peuters beperkt interessant, maar de oude schoolbanken en griffels hebben iets tastbaars dat ook jonge kinderen aanspreekt.</p>
+<p>Meer ideeën voor regenachtige dagen? Bekijk onze <a href="/blog/uitjes-met-peuter-bij-regen/">gids voor uitjes met peuters bij regen</a>.</p>
+<h2>Voorbeeldprogramma: een dag Dordrecht met je peuter</h2>
+<p>Nog nooit geweest? Dit is een programma dat werkt voor de meeste gezinnen met kinderen van 2-4 jaar:</p>
+<p><strong>Ochtend (09:30-12:00):</strong> Start bij het Wantijpark en de dierenweide. Wandel langs het Wantij, kijk naar de dieren, en laat je kind even vrij rondlopen. Als je vroeg bent, is het er rustig.</p>
+<p><strong>Lunch (12:00-13:00):</strong> Loop naar het centrum voor een lunch. Villa Augustus als je iets bijzonders wilt, Pannenkoekenhuis Frittella als je kind pannenkoeken wil (en wanneer willen ze dat niet).</p>
+<p><strong>Middagslaapje (13:00-14:30):</strong> In de buggy, in de auto, of op een rustig plekje in het park. Plan dit in — een peuter zonder middagslaapje is een peuter die om 15:00 instort.</p>
+<p><strong>Middag (14:30-16:30):</strong> Biesboschcentrum. Bekijk de expositie, loop een kort rondje buiten, drink koffie op het terras terwijl je kind naar het water kijkt.</p>
+<p><strong>Einde van de dag:</strong> Terug via de kade in het centrum. Even langs het water lopen, boten kijken, en rustig afsluiten. Niet nog één ding erbij.</p>
+<h2>Wat maakt Dordrecht anders</h2>
+<p>Dordrecht is geen Rotterdam. Het is kleiner, stiller, en minder hip. Dat is voor een dagje met een peuter juist een voordeel. Je hoeft niet te vechten om ruimte, je hoeft niet te plannen rond de drukte, en je hoeft niet bang te zijn dat je kind verdwaalt in de massa.</p>
+<p>Wat Dordrecht wel heeft: een eigen karakter. Het is een stad die op een eiland ligt, omringd door rivieren en de Biesbosch. Het water is overal — aan het eind van elke straat, achter elk gebouw. Voor peuters die gefascineerd zijn door water (en dat zijn de meeste) is dat een eindeloze bron van vermaak.</p>
+<p>En de Biesbosch — dat is iets wat geen andere stad in de Randstad kan bieden. Een echt natuurgebied, met bevers en reigers en riet dat ruist in de wind, op een kwartiertje van het centrum. Dat maakt Dordrecht uniek.</p>
+<h2>Veelgestelde vragen</h2>
+<p><strong>Is Dordrecht de moeite waard voor een dagje uit met een peuter?</strong>
+Ja, zeker als je kind van water en natuur houdt. Het is geen stad met grote attracties of themaparken, maar de combinatie van Biesbosch, water, kinderboerderijen en een rustig centrum maakt het tot een ontspannen dagje uit. Je komt niet uitgeput thuis — en dat is met een peuter soms het belangrijkste.</p>
+<p><strong>Hoe kom ik het best in Dordrecht vanuit Rotterdam?</strong>
+Met de waterbus. De vaartijd is 40 minuten, en de boottocht zelf is voor je peuter al een uitje. Retour is betaalbaar en je hoeft niet te parkeren. De waterbus stopt ook bij het Biesboschcentrum — ideaal als dat je hoofdbestemming is. Meer over Rotterdam? Bekijk onze <a href="/blog/rotterdam-met-peuters/">Rotterdam stadsgids</a>.</p>
+<p><strong>Zijn er genoeg gratis activiteiten in Dordrecht met peuters?</strong>
+Absoluut. Het Wantijpark met dierenweide, de speeltuinen, Stadsboerderij Weizigt, wandelen langs de kades, en De Merwelanden in de zomer — allemaal gratis. Je kunt een volle dag vullen zonder entreegeld te betalen. Meer tips om goedkoop op pad te gaan? Lees onze gids over <a href="/blog/goedkoop-op-stap-peuters/">goedkoop op stap met peuters</a>.</p>
+<p><strong>Is Dordrecht goed te doen met een buggy?</strong>
+Het centrum is grotendeels goed begaanbaar. De kades en winkelstraten zijn breed genoeg. Waar het lastiger wordt: de Biesbosch. De wandelpaden rondom het Biesboschcentrum zijn deels onverhard, en na regen modderig. Neem voor de Biesbosch een draagzak mee als je kind nog klein genoeg is.</p>
+<p><strong>Kan ik Dordrecht combineren met Kinderdijk?</strong>
+Ja, Kinderdijk ligt vlakbij. De waterbus stopt er zelfs. Maar wees realistisch: met een peuter is Kinderdijk vooral &quot;molens kijken&quot; en dat is na tien minuten bekeken. De <a href="/dordrecht/speeltuin-kinderdijk/">Speeltuin Kinderdijk</a> in het dorp is leuk als tussenstop, maar het is niet genoeg voor een hele dag. Combineer het eventueel met een ochtend Dordrecht.</p>
+<h2>Meer uitjes in Dordrecht</h2>
+<p>Bekijk alle kindvriendelijke locaties in Dordrecht en omgeving op onze <a href="/dordrecht.html">Dordrecht-pagina</a> — gefilterd op leeftijd, weer en type uitje.</p>
+
+  </div>
+
+  <div class="blog-share">
+    <a href="https://wa.me/?text=Dordrecht%20met%20peuters%3A%20oudste%20stad%2C%20jongste%20bezoekers%20https%3A%2F%2Fpeuterplannen.nl%2Fblog%2Fdordrecht-met-peuters%2F" target="_blank" rel="noopener" class="share-btn share-whatsapp">Deel via WhatsApp</a>
+    <button class="share-btn share-native" style="display:none" onclick="navigator.share?.({title:"Dordrecht met peuters: oudste stad, jongste bezoekers",url:'https://peuterplannen.nl/blog/dordrecht-met-peuters/'}).catch(()=>{})">Delen</button>
+  </div>
+  <script>if(navigator.share)document.querySelector('.share-native').style.display='inline-flex'</script>
+
+  <div class="newsletter-signup">
+  <h3>Elke vrijdag: 3 uitjes die passen bij het weer</h3>
+  <form action="https://buttondown.com/api/emails/embed-subscribe/peuterplannen"
+        method="post" target="popupwindow"
+        onsubmit="window.open('https://buttondown.com/peuterplannen','popupwindow')">
+    <input type="email" name="email" placeholder="jouw@email.nl" required
+      aria-label="E-mailadres voor nieuwsbrief">
+    <button type="submit">Aanmelden</button>
+  </form>
+  <p style="font-size:13px;opacity:0.85;margin-top:12px;">Geen spam. Uitschrijven wanneer je wilt.</p>
+</div>
+
+  <div class="cta-block">
+    <h3>Op zoek naar meer uitjes?</h3>
+    <p>Ontdek 2138+ uitjes op PeuterPlannen.</p>
+    <a href="/app.html">Open de app</a>
+  </div>
+
+  <section class="support-section">
+  <div class="support-inner">
+    <h3>Iets nuttigs gevonden?</h3>
+    <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>
+    <p class="support-count">2138+ locaties beschikbaar in heel Nederland.</p>
+    <div class="support-amounts">
+      <span class="support-pill">€2</span>
+      <span class="support-pill support-pill-mid">€5</span>
+      <span class="support-pill">€10</span>
+    </div>
+    <p class="support-impact">De server kost ~€10 per maand. Elk beetje telt.</p>
+    <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener" class="btn-support">
+      Stuur een bijdrage
+    </a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <nav aria-label="Footernavigatie">
+  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  </nav>
+</footer>
+
+<script>
+(function(){
+  var bar=document.createElement('div');
+  bar.style.cssText='position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--primary),var(--accent));z-index:9999;transition:width 0.1s linear;border-radius:0 2px 2px 0;pointer-events:none;';
+  document.body.prepend(bar);
+  window.addEventListener('scroll',function(){var h=document.documentElement;var pct=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;bar.style.width=Math.min(pct,100)+'%';},{passive:true});
+})();
+</script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
+</body>
+</html>

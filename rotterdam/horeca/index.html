@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <!-- Google tag (gtag.js) — Consent Mode v2 -->
+  <script src="/ga-init.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+  <script src="/consent.js" defer></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
+  <meta name="theme-color" content="#D4775A">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="preload" href="/design-system.css" as="style">
+  <link rel="preload" href="/style.min.css" as="style">
+  <link rel="preload" href="/fonts/familjen-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="/design-system.css?v=202603171014">
+  <link rel="stylesheet" href="/style.min.css?v=202603171014">
+  <style>
+  .guide-section{display:grid;gap:18px;margin:36px 0}
+  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .guide-card-compact{padding:20px 18px}
+  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
+  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
+  .guide-card h2{font-size:clamp(28px,5vw,40px)}
+  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
+  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
+  .guide-card-intro{max-width:58ch}
+  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .guide-links{display:grid;gap:12px;margin-top:16px}
+  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  .guide-link:visited{color:var(--pp-text)}
+  .guide-link strong{font-size:15px;line-height:1.3}
+  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
+  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
+  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
+  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
+  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
+  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
+  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
+  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
+  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
+  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
+  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
+  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
+  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
+  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
+  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
+  .editorial-support-links a:visited{color:var(--pp-text)}
+  .editorial-support-links a strong{font-size:14px}
+  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
+  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
+</style>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603171014">
+  <script src="/nav-floating.js?v=202603171014" defer></script>
+  <script src="/error-reporter.js" defer></script>
+  <title>Kindvriendelijke Horeca in Rotterdam voor peuters | PeuterPlannen</title>
+  <meta name="description" content="De 25 beste horeca in Rotterdam voor peuters en kleuters. Geverifieerd op kindvriendelijkheid, koffie, verschonen en praktisch gebruik.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://peuterplannen.nl/rotterdam/horeca/">
+  <meta property="og:title" content="Kindvriendelijke Horeca in Rotterdam voor peuters | PeuterPlannen">
+  <meta property="og:description" content="De 25 beste horeca in Rotterdam voor peuters en kleuters. Geverifieerd op kindvriendelijkheid, koffie, verschonen en praktisch gebruik.">
+  <meta property="og:url" content="https://peuterplannen.nl/rotterdam/horeca/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="nl_NL">
+  <meta property="og:image" content="https://peuterplannen.nl/images/og/default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Kindvriendelijke Horeca in Rotterdam — PeuterPlannen">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Kindvriendelijke Horeca in Rotterdam voor peuters",
+  "description": "De 25 beste horeca in Rotterdam voor peuters en kleuters. Geverifieerd op kindvriendelijkheid, koffie, verschonen en praktisch gebruik.",
+  "numberOfItems": 20,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "De Beren De Hoefslag",
+      "description": "Kindvriendelijk grillrestaurant in Bleiswijk met speelhoek, kindermenu en hoge stoelen. Bekende ketenkwaliteit.",
+      "url": "https://peuterplannen.nl/rotterdam/de-beren-de-hoefslag/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Beren De Hoefslag",
+        "description": "Kindvriendelijk grillrestaurant in Bleiswijk met speelhoek, kindermenu en hoge stoelen. Bekende ketenkwaliteit.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.019071,
+          "longitude": 4.534427
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "De Beren Capelle aan den IJssel",
+      "description": "Bekend kindvriendelijk restaurantmerk. In Capelle bevestigd met kindermenu, kinderstoelen en gezinsaanbod.",
+      "url": "https://peuterplannen.nl/rotterdam/de-beren-capelle-aan-den-ijssel/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Beren Capelle aan den IJssel",
+        "description": "Bekend kindvriendelijk restaurantmerk. In Capelle bevestigd met kindermenu, kinderstoelen en gezinsaanbod.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.931685,
+          "longitude": 4.614478
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "De Beren IJsselmonde",
+      "description": "Bekende Nederlandse restaurantketen met kindermenu, kindstoelen en speelhoek. Groot terras. Rotterdam Zuid vestiging.",
+      "url": "https://peuterplannen.nl/rotterdam/de-beren-ijsselmonde/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Beren IJsselmonde",
+        "description": "Bekende Nederlandse restaurantketen met kindermenu, kindstoelen en speelhoek. Groot terras. Rotterdam Zuid vestiging.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.896269,
+          "longitude": 4.524511
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "De Beren Schiedam",
+      "description": "De Beren in Schiedam Schieveste: kindvriendelijk restaurant met speelhoek. Bekend gezinsconcept met uitgebreid menu en aandacht voor kinderen.",
+      "url": "https://peuterplannen.nl/rotterdam/de-beren-schiedam/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Beren Schiedam",
+        "description": "De Beren in Schiedam Schieveste: kindvriendelijk restaurant met speelhoek. Bekend gezinsconcept met uitgebreid menu en aandacht voor kinderen.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.923913,
+          "longitude": 4.406759
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "Happy Italy Schiedam",
+      "description": "Happy Italy in Schiedam Schieveste: kindvriendelijk Italiaans restaurant met speeltuin, ballenbak en kinderstoelen. Perfecte combinatie voor ouders met peuters.",
+      "url": "https://peuterplannen.nl/rotterdam/happy-italy-schiedam/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Happy Italy Schiedam",
+        "description": "Happy Italy in Schiedam Schieveste: kindvriendelijk Italiaans restaurant met speeltuin, ballenbak en kinderstoelen. Perfecte combinatie voor ouders met peuters.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.923999,
+          "longitude": 4.40656
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "name": "Happy Italy Spijkenisse",
+      "description": "Happy Italy in Spijkenisse met speelhoek, ballenbak en speelparadijs voor kinderen. Kindvriendelijke Italiaanse keten op de Markt.",
+      "url": "https://peuterplannen.nl/rotterdam/happy-italy-spijkenisse/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Happy Italy Spijkenisse",
+        "description": "Happy Italy in Spijkenisse met speelhoek, ballenbak en speelparadijs voor kinderen. Kindvriendelijke Italiaanse keten op de Markt.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.849749,
+          "longitude": 4.324934
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "name": "Paviljoen Struis",
+      "description": "Paviljoen Struis in Ridderkerk: restaurant met speelhoek en baby­vriendelijke faciliteiten. Gezellig voor het hele gezin.",
+      "url": "https://peuterplannen.nl/rotterdam/paviljoen-struis/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Paviljoen Struis",
+        "description": "Paviljoen Struis in Ridderkerk: restaurant met speelhoek en baby­vriendelijke faciliteiten. Gezellig voor het hele gezin.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.886476,
+          "longitude": 4.619243
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "name": "Polderzicht",
+      "description": "Restaurant Polderzicht in Barendrecht met speeltuin, kindvriendelijke faciliteiten en babyopties. Prachtig polder­uitzicht.",
+      "url": "https://peuterplannen.nl/rotterdam/polderzicht/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Polderzicht",
+        "description": "Restaurant Polderzicht in Barendrecht met speeltuin, kindvriendelijke faciliteiten en babyopties. Prachtig polder­uitzicht.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.838119,
+          "longitude": 4.538934
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
+      "name": "Happy Italy De Kuip",
+      "description": "Italiaans pizzarestaurant bij De Kuip stadion in Rotterdam met ballenbak en indoor speeltuin. Kinderspecialmenu en hoge stoelen beschikbaar; perfecte combinatie voor een gezinsmaaltijd.",
+      "url": "https://peuterplannen.nl/rotterdam/happy-italy-de-kuip/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Happy Italy De Kuip",
+        "description": "Italiaans pizzarestaurant bij De Kuip stadion in Rotterdam met ballenbak en indoor speeltuin. Kinderspecialmenu en hoge stoelen beschikbaar; perfecte combinatie voor een gezinsmaaltijd.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.8937,
+          "longitude": 4.523
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "name": "'t Zeeltje",
+      "description": "Kindvriendelijk restaurant 't Zeeltje in Bleiswijk, di t/m zo open, terras aanwezig. Meerdere gezinsgerichte vermeldingen.",
+      "url": "https://peuterplannen.nl/rotterdam/t-zeeltje/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "'t Zeeltje",
+        "description": "Kindvriendelijk restaurant 't Zeeltje in Bleiswijk, di t/m zo open, terras aanwezig. Meerdere gezinsgerichte vermeldingen.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.002742,
+          "longitude": 4.547451
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 11,
+      "name": "Blend",
+      "description": "Ontbijtcafé Blend in Berkel en Rodenrijs, vr t/m zo open. Kindvriendelijk, terras, toilet, rookvrij en rolstoeltoegankelijk.",
+      "url": "https://peuterplannen.nl/rotterdam/blend/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Blend",
+        "description": "Ontbijtcafé Blend in Berkel en Rodenrijs, vr t/m zo open. Kindvriendelijk, terras, toilet, rookvrij en rolstoeltoegankelijk.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.990977,
+          "longitude": 4.454784
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 12,
+      "name": "Café Vader Kleinjan",
+      "description": "Bruin cafe/restaurant met kindermenu en terras aan de Oude Haven. Centraal gelegen, gezinssfeer met aandacht voor kinderen.",
+      "url": "https://peuterplannen.nl/rotterdam/cafe-vader-kleinjan/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Café Vader Kleinjan",
+        "description": "Bruin cafe/restaurant met kindermenu en terras aan de Oude Haven. Centraal gelegen, gezinssfeer met aandacht voor kinderen.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.919679,
+          "longitude": 4.492317
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 13,
+      "name": "De Beren Centrum",
+      "description": "Bekende Nederlandse restaurantketen met uitgebreid kindermenu, hoge kinderstoelen en gezinsvriendelijke sfeer. Dagelijks open vanaf 11u, terras aanwezig.",
+      "url": "https://peuterplannen.nl/rotterdam/de-beren-centrum/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Beren Centrum",
+        "description": "Bekende Nederlandse restaurantketen met uitgebreid kindermenu, hoge kinderstoelen en gezinsvriendelijke sfeer. Dagelijks open vanaf 11u, terras aanwezig.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.9207,
+          "longitude": 4.474864
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 14,
+      "name": "De Hoek Easy Foodcorner",
+      "description": "Kindvriendelijk restaurant op de Badweg in Hoek van Holland, open v/a 8:30u. Expliciet gezinsvriendelijk met speelgoed, kinderen en gezin prominent op website.",
+      "url": "https://peuterplannen.nl/rotterdam/de-hoek-easy-foodcorner/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Hoek Easy Foodcorner",
+        "description": "Kindvriendelijk restaurant op de Badweg in Hoek van Holland, open v/a 8:30u. Expliciet gezinsvriendelijk met speelgoed, kinderen en gezin prominent op website.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.983386,
+          "longitude": 4.113145
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 15,
+      "name": "Juffrouw van Zanten Rotterdam West",
+      "description": "Kindvriendelijk ontbijt- en lunchcafé in Rotterdam-West. Speelgoed aanwezig, babyspullen beschikbaar, speciaal op gezinnen gericht.",
+      "url": "https://peuterplannen.nl/rotterdam/juffrouw-van-zanten-rotterdam-west/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Juffrouw van Zanten Rotterdam West",
+        "description": "Kindvriendelijk ontbijt- en lunchcafé in Rotterdam-West. Speelgoed aanwezig, babyspullen beschikbaar, speciaal op gezinnen gericht.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.9177,
+          "longitude": 4.456115
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 16,
+      "name": "Loetje Centrum",
+      "description": "Populaire steakhouse aan de Binnenrotte, overdag open, kindermenu en expliciet kindvriendelijk. Terras aanwezig.",
+      "url": "https://peuterplannen.nl/rotterdam/loetje-centrum/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Loetje Centrum",
+        "description": "Populaire steakhouse aan de Binnenrotte, overdag open, kindermenu en expliciet kindvriendelijk. Terras aanwezig.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.921636,
+          "longitude": 4.487436
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 17,
+      "name": "Markthal",
+      "description": "Iconisch overdekt marktgebouw in Rotterdam centrum met tientallen eetstandjes en winkels. Rolstoeltoegankelijk.",
+      "url": "https://peuterplannen.nl/rotterdam/markthal/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Markthal",
+        "description": "Iconisch overdekt marktgebouw in Rotterdam centrum met tientallen eetstandjes en winkels. Rolstoeltoegankelijk.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.919771,
+          "longitude": 4.486259
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 18,
+      "name": "Tuincafé De Vreemde Vogel",
+      "description": "Tuincafé in Vlaardingen met speeltuin en kinderaanbod. Open in het weekend. Fijn voor koffie terwijl kinderen spelen.",
+      "url": "https://peuterplannen.nl/rotterdam/tuincafe-de-vreemde-vogel/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Tuincafé De Vreemde Vogel",
+        "description": "Tuincafé in Vlaardingen met speeltuin en kinderaanbod. Open in het weekend. Fijn voor koffie terwijl kinderen spelen.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.910019,
+          "longitude": 4.309882
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 19,
+      "name": "De Tuin",
+      "description": "Restaurant aan de Kralingse Plas en Kralingse Bos. Groot terras met speelgelegenheid voor kinderen. Lunch, diner en borrel. Ideaal voor gezinnen.",
+      "url": "https://peuterplannen.nl/rotterdam/de-tuin/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Tuin",
+        "description": "Restaurant aan de Kralingse Plas en Kralingse Bos. Groot terras met speelgelegenheid voor kinderen. Lunch, diner en borrel. Ideaal voor gezinnen.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.932211,
+          "longitude": 4.521637
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 20,
+      "name": "Juffrouw van Zanten Kralingen",
+      "description": "Kindvriendelijk lunchcafé in Kralingen met speelgoed op tafel, kindermenu, homemade gebak en goede koffie voor ouders.",
+      "url": "https://peuterplannen.nl/rotterdam/juffrouw-van-zanten-kralingen/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Juffrouw van Zanten Kralingen",
+        "description": "Kindvriendelijk lunchcafé in Kralingen met speelgoed op tafel, kindermenu, homemade gebak en goede koffie voor ouders.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.923639,
+          "longitude": 4.511869
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rotterdam",
+          "addressCountry": "NL"
+        }
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Hoeveel horeca voor peuters zijn er in Rotterdam?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Op PeuterPlannen staan 25 horeca in Rotterdam die zijn geverifieerd op peutervriendelijkheid. We checken onder andere op kindvriendelijkheid, toegankelijkheid en praktische voorzieningen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Welke horeca in Rotterdam hebben koffie voor ouders?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "25 van de 25 horeca in Rotterdam hebben koffie voor ouders beschikbaar. Handig als je een ochtend of middag wil doorbrengen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hoe kies ik de beste horeca in Rotterdam voor mijn peuter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Kijk naar de badges op de locatiekaarten: koffie, luierruimte en kindvriendelijkheid zijn goede indicatoren. 23 van de 25 locaties in Rotterdam hebben een luierruimte. Via de PeuterPlannen app kun je ook filteren op afstand en faciliteiten."
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "PeuterPlannen",
+      "item": "https://peuterplannen.nl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Rotterdam met peuters",
+      "item": "https://peuterplannen.nl/rotterdam.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Kindvriendelijke Horeca",
+      "item": "https://peuterplannen.nl/rotterdam/horeca/"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:none;position:absolute">
+  <symbol id="icon-coffee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17 8h1a4 4 0 1 1 0 8h-1"/>
+    <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/>
+    <line x1="6" y1="2" x2="6" y2="4"/>
+    <line x1="10" y1="2" x2="10" y2="4"/>
+    <line x1="14" y1="2" x2="14" y2="4"/>
+  </symbol>
+  <symbol id="icon-alcohol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 22h8"/>
+    <path d="M12 11v11"/>
+    <path d="m19 3-7 8-7-8Z"/>
+  </symbol>
+  <symbol id="icon-diaper" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 12h.01"/>
+    <path d="M15 12h.01"/>
+    <path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/>
+    <path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/>
+    <path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/>
+  </symbol>
+</svg>
+
+<a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
+<nav aria-label="Hoofdnavigatie" class="floating-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" class="nav-logo-svg" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>
+      <span class="logo-text"><span class="logo-top">Peuter</span><span class="logo-bottom">Plannen</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/ontdekken/" class="nav-link">Ontdekken</a>
+      <a href="/about.html" class="nav-link">Over</a>
+      <a href="/blog/" class="nav-link">Inspiratie</a>
+      <a href="/contact.html" class="nav-link">Contact</a>
+      <a href="/app.html?regio=Rotterdam" class="nav-cta">Zoek in Rotterdam</a>
+    </div>
+    <button class="nav-burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-mobile-menu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
+    <a href="/" class="nav-mobile-link">Home</a>
+    <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
+    <a href="/about.html" class="nav-mobile-link">Over</a>
+    <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
+    <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    <a href="/app.html?regio=Rotterdam" class="nav-mobile-link nav-mobile-cta nav-cta">Zoek in Rotterdam</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1><span class="accent">Kindvriendelijke Horeca</span> in Rotterdam</h1>
+  <p>25 peutervriendelijke locaties in Rotterdam, gecheckt op kindvriendelijkheid en praktische voorzieningen.</p>
+</div>
+
+<nav aria-label="Kruimelpad" class="breadcrumb">
+  <a href="/">PeuterPlannen</a> &rsaquo; <a href="/rotterdam.html">Rotterdam</a> &rsaquo; Kindvriendelijke Horeca
+</nav>
+
+<main id="main-content">
+  <div class="intro-box">
+    <p>Op deze pagina vind je <strong>25 horeca</strong> in Rotterdam die zijn geverifieerd op peutervriendelijkheid. We beoordelen elke locatie op toegankelijkheid voor kinderen van 1 tot 5 jaar, aanwezigheid van koffie voor ouders, luierruimte en hoe prettig het er in de praktijk is op een gewone dag met een peuter. Van de 25 locaties hebben er 25 koffie voor ouders.</p>
+    <p>Gebruik de <a href="/app.html?regio=Rotterdam">PeuterPlannen app</a> om te filteren op afstand, type en faciliteiten. Lees ook <a href="/methode/">hoe we selecteren</a> voor meer achtergrond over onze werkwijze.</p>
+  </div>
+
+  <section class="guide-section city-type-guide">
+    <div class="guide-card">
+      <p class="guide-kicker">Overzicht</p>
+      <h2>Kindvriendelijke Horeca in Rotterdam</h2>
+      <p>We hebben 25 horeca in Rotterdam beoordeeld op bruikbaarheid voor gezinnen met peuters. Niet elke plek die populair is, werkt goed met een kind van twee. We kijken naar tempo, overzicht, praktische voorzieningen en de vraag of een plek ook op een rommelige dag nog prettig is.</p>
+      <ul class="guide-list">
+        <li><strong>Koffie:</strong> 25 van de 25 locaties hebben koffie voor ouders beschikbaar.</li>
+        <li><strong>Luierruimte:</strong> 23 van de 25 locaties hebben een verschoonplek.</li>
+        <li><strong>Leeftijd:</strong> alle locaties zijn geschikt voor kinderen van 1 tot 5 jaar, tenzij anders vermeld.</li>
+      </ul>
+      <a href="/methode/" class="guide-inline-link">Lees hoe we selecteren</a>
+    </div>
+    <div class="guide-card">
+      <p class="guide-kicker">Gerelateerde situaties</p>
+      <h2>Zoek je iets specifieks?</h2>
+      <p>Naast dit overzicht zijn er ook situatiepagina's die beter passen bij een specifieke dag of wens.</p>
+      <div class="guide-links">
+        <a href="/regenachtige-dag-met-peuter.html" class="guide-link"><strong>Regenachtige dag met peuter</strong><span>Binnenopties voor regenachtige dagen met peuters: musea, speelplekken, horeca met speelhoek en andere locaties die ook bij slecht weer werken.</span></a><a href="/binnenlocaties-peuters.html" class="guide-link"><strong>Binnenlocaties voor peuters</strong><span>Overdekte locaties voor peuters en dreumesen in Nederland. Handig voor regen, kou of een snelle indoor-back-up dicht bij huis.</span></a><a href="/peuteruitjes-2-5-jaar.html" class="guide-link"><strong>Peuteruitjes voor 2-5 jaar</strong><span>Uitjes voor kinderen van ongeveer 2 tot 5 jaar: meer actie, meer ontdekken en nog steeds praktisch voor ouders. Van natuur en speeltuinen tot horeca en musea.</span></a><a href="/horeca-met-speelhoek.html" class="guide-link"><strong>Horeca met speelhoek</strong><span>Restaurants, cafés en pannenkoekenplekken waar jonge kinderen kunnen spelen terwijl ouders iets drinken of eten. Gericht geselecteerd voor gezinnen met peuters.</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="type-section">
+    <h2>Kindvriendelijke Horeca in Rotterdam</h2>
+    <div class="loc-list">
+      
+      <article class="loc-item">
+        <h3><a href="/rotterdam/de-beren-de-hoefslag/">De Beren De Hoefslag</a></h3>
+        <p>Kindvriendelijk grillrestaurant in Bleiswijk met speelhoek, kindermenu en hoge stoelen. Bekende ketenkwaliteit.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/de-beren-de-hoefslag/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.beren.nl/vestigingen/bleiswijk" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Beren De Hoefslag">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/de-beren-capelle-aan-den-ijssel/">De Beren Capelle aan den IJssel</a></h3>
+        <p>Bekend kindvriendelijk restaurantmerk. In Capelle bevestigd met kindermenu, kinderstoelen en gezinsaanbod.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/de-beren-capelle-aan-den-ijssel/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.beren.nl/vestigingen/capelle-aan-den-ijssel" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Beren Capelle aan den IJssel">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/de-beren-ijsselmonde/">De Beren IJsselmonde</a></h3>
+        <p>Bekende Nederlandse restaurantketen met kindermenu, kindstoelen en speelhoek. Groot terras. Rotterdam Zuid vestiging.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/de-beren-ijsselmonde/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.beren.nl/vestigingen/rotterdam-zuid" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Beren IJsselmonde">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/de-beren-schiedam/">De Beren Schiedam</a></h3>
+        <p>De Beren in Schiedam Schieveste: kindvriendelijk restaurant met speelhoek. Bekend gezinsconcept met uitgebreid menu en aandacht voor kinderen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/de-beren-schiedam/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.beren.nl/vestigingen/schiedam-schieveste" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Beren Schiedam">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/happy-italy-schiedam/">Happy Italy Schiedam</a></h3>
+        <p>Happy Italy in Schiedam Schieveste: kindvriendelijk Italiaans restaurant met speeltuin, ballenbak en kinderstoelen. Perfecte combinatie voor ouders met peuters.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/happy-italy-schiedam/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.happyitaly.nl/geopende-locaties/schiedam" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Happy Italy Schiedam">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/happy-italy-spijkenisse/">Happy Italy Spijkenisse</a></h3>
+        <p>Happy Italy in Spijkenisse met speelhoek, ballenbak en speelparadijs voor kinderen. Kindvriendelijke Italiaanse keten op de Markt.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/happy-italy-spijkenisse/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.happyitaly.nl/nl/locaties/spijkenisse/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Happy Italy Spijkenisse">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/paviljoen-struis/">Paviljoen Struis</a></h3>
+        <p>Paviljoen Struis in Ridderkerk: restaurant met speelhoek en baby­vriendelijke faciliteiten. Gezellig voor het hele gezin.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/paviljoen-struis/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.paviljoenstruis.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Paviljoen Struis">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/polderzicht/">Polderzicht</a></h3>
+        <p>Restaurant Polderzicht in Barendrecht met speeltuin, kindvriendelijke faciliteiten en babyopties. Prachtig polder­uitzicht.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/polderzicht/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.polderzicht.com/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Polderzicht">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/happy-italy-de-kuip/">Happy Italy De Kuip</a></h3>
+        <p>Italiaans pizzarestaurant bij De Kuip stadion in Rotterdam met ballenbak en indoor speeltuin. Kinderspecialmenu en hoge stoelen beschikbaar; perfecte combinatie voor een gezinsmaaltijd.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/happy-italy-de-kuip/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.happyitaly.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Happy Italy De Kuip">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/t-zeeltje/">'t Zeeltje</a></h3>
+        <p>Kindvriendelijk restaurant 't Zeeltje in Bleiswijk, di t/m zo open, terras aanwezig. Meerdere gezinsgerichte vermeldingen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/t-zeeltje/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://hetzeeltje.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van 't Zeeltje">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/blend/">Blend</a></h3>
+        <p>Ontbijtcafé Blend in Berkel en Rodenrijs, vr t/m zo open. Kindvriendelijk, terras, toilet, rookvrij en rolstoeltoegankelijk.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/blend/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://blendontbijt.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Blend">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/cafe-vader-kleinjan/">Café Vader Kleinjan</a></h3>
+        <p>Bruin cafe/restaurant met kindermenu en terras aan de Oude Haven. Centraal gelegen, gezinssfeer met aandacht voor kinderen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/cafe-vader-kleinjan/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://vaderkleinjan.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Café Vader Kleinjan">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/de-beren-centrum/">De Beren Centrum</a></h3>
+        <p>Bekende Nederlandse restaurantketen met uitgebreid kindermenu, hoge kinderstoelen en gezinsvriendelijke sfeer. Dagelijks open vanaf 11u, terras aanwezig.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/de-beren-centrum/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.beren.nl/vestigingen/rotterdam-centrum" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Beren Centrum">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/de-hoek-easy-foodcorner/">De Hoek Easy Foodcorner</a></h3>
+        <p>Kindvriendelijk restaurant op de Badweg in Hoek van Holland, open v/a 8:30u. Expliciet gezinsvriendelijk met speelgoed, kinderen en gezin prominent op website.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/de-hoek-easy-foodcorner/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://dehoek-easyfoodcorner.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Hoek Easy Foodcorner">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/juffrouw-van-zanten-rotterdam-west/">Juffrouw van Zanten Rotterdam West</a></h3>
+        <p>Kindvriendelijk ontbijt- en lunchcafé in Rotterdam-West. Speelgoed aanwezig, babyspullen beschikbaar, speciaal op gezinnen gericht.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/juffrouw-van-zanten-rotterdam-west/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://juffrouwvanzanten.com/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Juffrouw van Zanten Rotterdam West">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/loetje-centrum/">Loetje Centrum</a></h3>
+        <p>Populaire steakhouse aan de Binnenrotte, overdag open, kindermenu en expliciet kindvriendelijk. Terras aanwezig.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/loetje-centrum/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.loetje.nl/locaties/rotterdam-centrum/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Loetje Centrum">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/markthal/">Markthal</a></h3>
+        <p>Iconisch overdekt marktgebouw in Rotterdam centrum met tientallen eetstandjes en winkels. Rolstoeltoegankelijk.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/markthal/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://markthal.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Markthal">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/tuincafe-de-vreemde-vogel/">Tuincafé De Vreemde Vogel</a></h3>
+        <p>Tuincafé in Vlaardingen met speeltuin en kinderaanbod. Open in het weekend. Fijn voor koffie terwijl kinderen spelen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/tuincafe-de-vreemde-vogel/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.devreemdevogel.nl/tuincafe/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Tuincafé De Vreemde Vogel">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/de-tuin/">De Tuin</a></h3>
+        <p>Restaurant aan de Kralingse Plas en Kralingse Bos. Groot terras met speelgelegenheid voor kinderen. Lunch, diner en borrel. Ideaal voor gezinnen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/de-tuin/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.restaurantdetuin.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Tuin">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/juffrouw-van-zanten-kralingen/">Juffrouw van Zanten Kralingen</a></h3>
+        <p>Kindvriendelijk lunchcafé in Kralingen met speelgoed op tafel, kindermenu, homemade gebak en goede koffie voor ouders.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/juffrouw-van-zanten-kralingen/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://juffrouwvanzanten.com/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Juffrouw van Zanten Kralingen">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/parqiet/">Parqiet</a></h3>
+        <p>Parkcafé in Het Park bij de Euromast, in een villa uit de jaren 20. Ontbijt, lunch en borrel met lokale producten en een groen terras.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/parqiet/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://parqiet.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Parqiet">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/mamamo-nesselande/">Mamamo Nesselande</a></h3>
+        <p>Kindvriendelijke koffiebar met speelhoek en speelkeuken. Ontbijt, lunch en cadeaus. Ideaal voor werken met kinderen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/mamamo-nesselande/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.mamamo.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Mamamo Nesselande">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/spazio-rotterdam/">Spazio Rotterdam</a></h3>
+        <p>Amerikaans-Italiaans restaurant naast Rotterdam Airport met speeltuin en zicht op landingsbaan. Grote pizza's en pasta.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/spazio-rotterdam/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://spaziorestaurant.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Spazio Rotterdam">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/tasman-kinderrestaurant/">Tasman Kinderrestaurant</a></h3>
+        <p>Gezellig restaurant in Poortugaal met speelhoek ondergronds en kabouterpad buiten. Pannenkoeken en halve kip.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/tasman-kinderrestaurant/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://tasman.nu/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Tasman Kinderrestaurant">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/rotterdam/bergsche-plas-familierestaurant/">Bergsche Plas Familierestaurant</a></h3>
+        <p>Familie restaurant in Lage Bergse Bos met zand speelplaats en waterfiets verhuur. Pannenkoeken, eieren en broodjes.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/rotterdam/bergsche-plas-familierestaurant/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.bergscheplas.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Bergsche Plas Familierestaurant">Website</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div class="faq-section">
+    <h2>Veelgestelde vragen over horeca in Rotterdam</h2>
+    
+    <details class="faq-item">
+      <summary>Hoeveel horeca voor peuters zijn er in Rotterdam?</summary>
+      <div class="faq-answer"><p>Op PeuterPlannen staan 25 horeca in Rotterdam die zijn geverifieerd op peutervriendelijkheid. We checken onder andere op kindvriendelijkheid, toegankelijkheid en praktische voorzieningen.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>Welke horeca in Rotterdam hebben koffie voor ouders?</summary>
+      <div class="faq-answer"><p>25 van de 25 horeca in Rotterdam hebben koffie voor ouders beschikbaar. Handig als je een ochtend of middag wil doorbrengen.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>Hoe kies ik de beste horeca in Rotterdam voor mijn peuter?</summary>
+      <div class="faq-answer"><p>Kijk naar de badges op de locatiekaarten: koffie, luierruimte en kindvriendelijkheid zijn goede indicatoren. 23 van de 25 locaties in Rotterdam hebben een luierruimte. Via de PeuterPlannen app kun je ook filteren op afstand en faciliteiten.</p></div>
+    </details>
+  </div>
+
+  <div class="newsletter-signup">
+  <h3>Elke vrijdag: 3 uitjes die passen bij het weer</h3>
+  <form action="https://buttondown.com/api/emails/embed-subscribe/peuterplannen"
+        method="post" target="popupwindow"
+        onsubmit="window.open('https://buttondown.com/peuterplannen','popupwindow')">
+    <input type="email" name="email" placeholder="jouw@email.nl" required
+      aria-label="E-mailadres voor nieuwsbrief">
+    <button type="submit">Aanmelden</button>
+  </form>
+  <p style="font-size:13px;opacity:0.85;margin-top:12px;">Geen spam. Uitschrijven wanneer je wilt.</p>
+</div>
+
+  <div class="cta-block">
+    <h3>Zoek op jouw locatie in Rotterdam</h3>
+    <p>De app toont horeca en andere uitjes gesorteerd op afstand van jouw positie.</p>
+    <a href="/app.html?regio=Rotterdam">Open de app voor Rotterdam</a>
+  </div>
+
+  <section class="support-section">
+  <div class="support-inner">
+    <h3>Iets nuttigs gevonden?</h3>
+    <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>
+    <p class="support-count">2138+ locaties beschikbaar in heel Nederland.</p>
+    <div class="support-amounts">
+      <span class="support-pill">€2</span>
+      <span class="support-pill support-pill-mid">€5</span>
+      <span class="support-pill">€10</span>
+    </div>
+    <p class="support-impact">De server kost ~€10 per maand. Elk beetje telt.</p>
+    <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener" class="btn-support">
+      Stuur een bijdrage
+    </a>
+  </div>
+</section>
+
+  <div class="nav-links-box">
+    <h3>Andere uitjes in Rotterdam</h3>
+    <p><a href="/rotterdam.html">Alle uitjes in Rotterdam</a></p>
+    <p><a href="/rotterdam/speeltuinen/">Speeltuinen & Speelparadijzen in Rotterdam</a> &middot; <a href="/rotterdam/kinderboerderijen/">Kinderboerderijen & Dieren in Rotterdam</a> &middot; <a href="/rotterdam/natuur/">Natuur & Buiten in Rotterdam</a> &middot; <a href="/rotterdam/musea/">Musea & Ontdekken in Rotterdam</a></p>
+    <div class="divider">
+      <h3 style="margin-bottom:10px;">Horeca in andere steden</h3>
+      <p><a href="/horeca.html">Alle horeca in Nederland</a></p>
+      <p><a href="/amsterdam/horeca/">Horeca in Amsterdam</a> &middot; <a href="/den-haag/horeca/">Horeca in Den Haag</a> &middot; <a href="/utrecht/horeca/">Horeca in Utrecht</a> &middot; <a href="/haarlem/horeca/">Horeca in Haarlem</a> &middot; <a href="/amersfoort/horeca/">Horeca in Amersfoort</a></p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <nav aria-label="Footernavigatie">
+  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  </nav>
+</footer>
+
+<script src="/reveal.js"></script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <!-- Google tag (gtag.js) — Consent Mode v2 -->
+  <script src="/ga-init.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+  <script src="/consent.js" defer></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
+  <meta name="theme-color" content="#D4775A">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="preload" href="/design-system.css" as="style">
+  <link rel="preload" href="/style.min.css" as="style">
+  <link rel="preload" href="/fonts/familjen-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="/design-system.css?v=202603171014">
+  <link rel="stylesheet" href="/style.min.css?v=202603171014">
+  <style>
+  .guide-section{display:grid;gap:18px;margin:36px 0}
+  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .guide-card-compact{padding:20px 18px}
+  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
+  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
+  .guide-card h2{font-size:clamp(28px,5vw,40px)}
+  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
+  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
+  .guide-card-intro{max-width:58ch}
+  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .guide-links{display:grid;gap:12px;margin-top:16px}
+  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  .guide-link:visited{color:var(--pp-text)}
+  .guide-link strong{font-size:15px;line-height:1.3}
+  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
+  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
+  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
+  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
+  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
+  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
+  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
+  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
+  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
+  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
+  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
+  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
+  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
+  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
+  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
+  .editorial-support-links a:visited{color:var(--pp-text)}
+  .editorial-support-links a strong{font-size:14px}
+  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
+  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
+</style>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603171014">
+  <script src="/nav-floating.js?v=202603171014" defer></script>
+  <script src="/error-reporter.js" defer></script>
+  <title>Pasen met peuters: 12 activiteiten buiten en binnen | PeuterPlannen</title>
+  <meta name="description" content="Pasen met peuters vieren? 12 praktische activiteiten voor binnen en buiten met je peuter of kleuter. Van eieren zoeken tot paasbakken.">
+  <link rel="canonical" href="https://peuterplannen.nl/blog/pasen-met-peuters/">
+  <meta property="og:title" content="Pasen met peuters: 12 activiteiten buiten en binnen | PeuterPlannen">
+  <meta property="og:description" content="Pasen met peuters vieren? 12 praktische activiteiten voor binnen en buiten met je peuter of kleuter. Van eieren zoeken tot paasbakken.">
+  <meta property="og:url" content="https://peuterplannen.nl/blog/pasen-met-peuters/">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="nl_NL">
+  <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Pasen met peuters: 12 activiteiten buiten en binnen | PeuterPlannen">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pasen met peuters: 12 activiteiten buiten en binnen | PeuterPlannen">
+  <meta name="twitter:description" content="Pasen met peuters vieren? 12 praktische activiteiten voor binnen en buiten met je peuter of kleuter. Van eieren zoeken tot paasbakken.">
+  <meta name="twitter:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Pasen met peuters: 12 activiteiten buiten en binnen",
+  "description": "Pasen met peuters vieren? 12 praktische activiteiten voor binnen en buiten met je peuter of kleuter. Van eieren zoeken tot paasbakken.",
+  "datePublished": "2026-03-17",
+  "author": {
+    "@type": "Person",
+    "name": "Bas Metten"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PeuterPlannen"
+  },
+  "url": "https://peuterplannen.nl/blog/pasen-met-peuters/",
+  "mainEntityOfPage": "https://peuterplannen.nl/blog/pasen-met-peuters/"
+}
+  </script>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
+<nav aria-label="Hoofdnavigatie" class="floating-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" class="nav-logo-svg" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>
+      <span class="logo-text"><span class="logo-top">Peuter</span><span class="logo-bottom">Plannen</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/ontdekken/" class="nav-link">Ontdekken</a>
+      <a href="/about.html" class="nav-link">Over</a>
+      <a href="/blog/" class="nav-link">Inspiratie</a>
+      <a href="/contact.html" class="nav-link">Contact</a>
+      <a href="/app.html" class="nav-cta">Open App</a>
+    </div>
+    <button class="nav-burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-mobile-menu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
+    <a href="/" class="nav-mobile-link">Home</a>
+    <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
+    <a href="/about.html" class="nav-mobile-link">Over</a>
+    <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
+    <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Open App</a>
+  </div>
+</nav>
+
+
+<div class="hero" style="padding: 100px 24px 40px;">
+  <h1>Pasen met peuters: 12 activiteiten buiten en binnen</h1>
+</div>
+
+<nav aria-label="Kruimelpad" class="breadcrumb">
+  <a href="/">PeuterPlannen</a> &rsaquo; <a href="/blog/">Inspiratie</a> &rsaquo; Pasen met peuters: 12 activiteiten buiten en binnen
+</nav>
+
+<main id="main-content">
+  <p class="blog-meta">17 maart 2026 &middot; pasen, peuter, activiteiten, binnen, buiten, lente</p>
+
+  <div class="blog-content">
+    <p>Pasen is op papier een perfect feestje voor peuters: eitjes zoeken, lente, konijntjes. In de praktijk is het ook gewoon een lange dag met een kind dat om 6 uur wakker is en na het eerste ei al chocola heeft gegeten. Beide dingen zijn waar.</p>
+<p>Wat Pasen voor peuters wél bijzonder maakt: de activiteiten zijn laagdrempelig, goedkoop en overal te doen. Je hebt geen uitgebreid plan nodig. Je tuin, het park om de hoek, een kinderboerderij — het werkt allemaal. Hieronder staan 12 activiteiten, zes voor buiten en zes voor binnen, zodat je voor elk weer iets hebt.</p>
+<hr>
+<h2>Buiten: 6 activiteiten voor de lente</h2>
+<h3>1. Eieren zoeken in de tuin of het park</h3>
+<p>Het klinkt simpel, want dat is het ook. Verstop een stuk of tien plastic eitjes in de tuin of neem ze mee naar een <a href="/natuur.html">park</a> bij jou in de buurt. Doe ze niet te goed verstopt voor peuters van 2-3 jaar — een ei dat half achter een struik uitsteekt geeft net zoveel voldoening als eentje dat echt goed verscholen zit.</p>
+<p>Praktische tips:</p>
+<ul>
+<li>Gebruik plastic eitjes met kleine cadeautjes erin (stickertjes, een chocolaatje) in plaats van echte gekookte eieren. Die raken snel kwijt of zijn onvindbaar na een week zon.</li>
+<li>Begrens het zoekgebied duidelijk. Zeg: &quot;Zoek in het bloemperk en op het grasveld.&quot; Anders heb je een peuter die het halve park afstruint.</li>
+<li>Neem een kleine mand of emmer mee. Die rol hoort erbij.</li>
+</ul>
+<p>Voor grotere <a href="/natuur.html">parken</a> in je stad: check van tevoren of er een georganiseerde paaseierenjacht is. In Utrecht zijn <a href="/utrecht/griftpark/">Griftpark</a> en <a href="/utrecht/julianapark/">Julianapark</a> fijne locaties voor een buitenpaasactiviteit. Veel gemeenteparken en kinderboerderijen organiseren iets rond Pasen.</p>
+<h3>2. Kinderboerderij met paasthema</h3>
+<p><a href="/kinderboerderijen.html">Kinderboerderijen</a> zijn sowieso een goed idee met peuters, maar met Pasen zijn ze extra leuk. Lammeren en kuikens die net uit het ei zijn, paaseierenjachten op het terrein, paasdecoraties — veel boerderijen doen er rond Pasen wat extra moeite bij. In Amsterdam is <a href="/amsterdam/geitenboerderij-ridammerhoeve/">Geitenboerderij Ridammerhoeve</a> in het Amsterdamse Bos een bijzondere keuze; in Den Haag heeft <a href="/den-haag/boerderij-meyendel/">Boerderij Meyendel</a> ruimte en natuur in de duinen.</p>
+<p>Bel of check de website van de boerderij bij jou in de buurt een week van tevoren. Veel van deze activiteiten zijn gratis of kosten maximaal een paar euro. Het grote voordeel: je bent buiten, je peuter beweegt, en er valt genoeg te zien zodat jij even op adem kunt komen.</p>
+<p>Bedenk ook: jonge dieren zijn in het voorjaar overal aanwezig. Zelfs zonder paasthema is een kinderboerderij in maart of april een toptip.</p>
+<h3>3. Bloembollen zoeken in het bos of de natuur</h3>
+<p>Niet alles hoeft over eieren te gaan. Pasen valt in de lente, en dat betekent: krokussen, narcissen, wilde hyacinten. Ga een ochtend de <a href="/natuur.html">natuur</a> in en maak er een zoektocht van.</p>
+<p>&quot;Zie jij een geel bloemetje? En een paars?&quot; Peuters van 2,5 jaar en ouder zijn verrassend goed in kleur zoeken en worden enthousiast van het vinden. Je kunt een klein kijkboekje meenemen met afbeeldingen van lentebloemen — dan is het een echt speurtocht.</p>
+<p>Rondom steden als <a href="/utrecht.html">Utrecht</a> en <a href="/amsterdam.html">Amsterdam</a> liggen genoeg bosgebieden en parken waar je dit kunt doen zonder ver te rijden — denk aan <a href="/amsterdam/amsterdamse-bos/">Amsterdamse Bos</a> of <a href="/utrecht/amelisweerd-utrecht/">Amelisweerd</a> net buiten Utrecht. Houd het wandeling kort: een kwartier actief zoeken is voor een peuter van 2 jaar al een heel programma.</p>
+<h3>4. Speeltuin + paaspicknick</h3>
+<p>Combineer een bezoek aan een van de <a href="/speeltuinen.html">speeltuinen</a> in jouw buurt met een kleine picknick. Neem paasbroodjes, een gekookt eitje en wat fruit mee in een rugzak. Geen groot gedoe — het gaat erom dat je kind het idee heeft dat het een bijzonder dagje is.</p>
+<p>Dit werkt het beste voor peuters van 2,5 jaar en ouder die lang genoeg gefocust zijn op de picknick zelf. Voor jongere peuters is het &quot;eten op een deken&quot; minder heilig en meer &quot;kruipen door het gras en alles aanraken&quot;.</p>
+<p>Kies een speeltuin met een rustig, open stuk gras ernaast. Dan kun je de picknick meteen opbouwen terwijl je kind speelt.</p>
+<h3>5. Boswandeling met paasopdrachten</h3>
+<p>Peuters lopen gemiddeld 20 minuten voordat ze gedragen willen worden of in de kinderwagen willen. Plan je wandeling daar omheen.</p>
+<p>Maak van een gewone wandeling een paasopdracht. Schrijf op een kaartje:</p>
+<ul>
+<li>Zoek een tak die op een ei lijkt (rond en glad)</li>
+<li>Zoek iets geel</li>
+<li>Zoek een steen die je een paasei wil schilderen</li>
+</ul>
+<p>Dit soort opdrachten houden kleine kinderen in beweging zonder dat je ze hoeft te overtuigen. En het hoeft niet ingewikkeld: peuters zijn gemakkelijk te enthousiasmeren voor een simpele zoektocht.</p>
+<h3>6. Pannenkoekenrestaurant als paasuitje</h3>
+<p>Pasen is ook een excuus voor een uitgebreid ontbijt of lunch buiten de deur. Een pannenkoekenrestaurant of andere <a href="/horeca.html">horeca</a> die kindvriendelijk is, werkt goed als afsluiting van een ochtend buiten. In Utrecht is <a href="/utrecht/anna-pancakes-binnenstad/">Anna Pancakes Binnenstad</a> een betrouwbare keuze; in Den Haag is <a href="/den-haag/pannenkoekenhuis-malieveld/">Pannenkoekenhuis Malieveld</a> geliefd bij gezinnen. Het voordeel van pannenkoekenrestaurants: het eten duurt even, er is genoeg keuze voor kieskeurige eters en de meeste zijn ingericht op rondrennende kinderen.</p>
+<p>Kijk in jouw stad naar restaurants met een speelhoek of een terras met ruimte. Zo houd je de sfeer ontspannen.</p>
+<hr>
+<h2>Binnen: 6 activiteiten voor thuis of een regenachtige dag</h2>
+<h3>7. Paaseieren verven</h3>
+<p>Dit is de klassieker en die status heeft het niet voor niets. Peuters van 2 jaar en ouder kunnen prima meedoen met eiverven, al betekent &quot;meedoen&quot; voor hun leeftijd: één ei in één kleur dopen en dat meerdere keren herhalen.</p>
+<p>Wat je nodig hebt:</p>
+<ul>
+<li>Hardgekookte eieren (of uitgeblazen eieren als je iets wil bewaren)</li>
+<li>Eierverf of gewone ecologische voedingskleurstof</li>
+<li>Ochtendjas of oud shirt voor je kind</li>
+<li>Lekker grote onderlegger op tafel</li>
+</ul>
+<p>Verwacht niet dat je kind een kunstwerkje maakt. Het gaat om de beleving: iets in kleur zien veranderen, het ei vasthouden, de kleur op je vingers.</p>
+<h3>8. Paasbakken</h3>
+<p>Paasbrood of paaskuikentjes bakken. Voor peuters is bakken eigenlijk altijd goed: deeg kneden, iets in een vorm duwen, en daarna eten wat je gemaakt hebt.</p>
+<p>Kies een simpel recept. Suikerkoekjes in eivorm zijn makkelijker dan echt paasbrood. Rol het deeg uit, laat je peuter een uitsteekvorm gebruiken, versier met wat hagelslag of eetbaar glitter. Klaar.</p>
+<p><strong>Tip:</strong> het deeg kneden is voor veel peuters het leukste deel. Plan genoeg tijd in voor dat deel van het proces en haast niet.</p>
+<h3>9. Paasknutselen</h3>
+<p>Knutselen hoeft niet groot en complex te zijn. Drie ideeën die werken voor peuters:</p>
+<ol>
+<li><strong>Papieren eieren inkleuren.</strong> Knip eivormen uit stevig papier en laat je peuter die inkleuren of beplakken met gekleurd papier.</li>
+<li><strong>Papieren konijntje vouwen.</strong> Er zijn simpele vouwmodellen die ook voor 3-jarigen met hulp van een ouder te doen zijn.</li>
+<li><strong>Ei bedrukken.</strong> Doop een vinger in verf en maak stippen op een papieren ei. Werkt ook voor de allerkleinsten van 1,5 jaar.</li>
+</ol>
+<p>Zet alles klaar voordat je begint. Zolang je alles binnen handbereik hebt, is knutselen met een peuter prima te doen.</p>
+<h3>10. Indoor speeltuin als plan B</h3>
+<p>Als het buiten echt niet lukt of je hebt een dag nodig waarop je kind goed vermoeid wordt: een <a href="/binnenlocaties-peuters.html">indoor speeltuin</a> is de beste keuze. Veel binnenspeeltuinen doen rond Pasen iets extra&#39;s, van kleine versiering tot een mini-paaseierenjacht op het terrein.</p>
+<p>Check vooraf of er tijdsloten zijn en of het druk is — in de paasvakantie zijn veel speelparadijzen voller dan normaal. Doordeweeks is rustiger dan in het weekend.</p>
+<p>Lees ook: <a href="/blog/dagje-uit-met-dreumes/">dagje uit met dreumes</a> als je een baby of jonge dreumes hebt die nog niet zelf kan klimmen — niet alle binnenspeeltuinen zijn even geschikt voor de allerkleinsten.</p>
+<h3>11. Museum met paasactiviteiten</h3>
+<p>Verschillende <a href="/musea.html">musea</a> organiseren rond Pasen speciale programma&#39;s voor jonge kinderen. Denk aan:</p>
+<ul>
+<li><a href="/amsterdam/artis/">Artis</a> in Amsterdam, waar je met Pasen soms themadagen voor kinderen hebt rondom lente en dieren</li>
+<li>Streekmusea en kindermusea die paaswerkjes aanbieden</li>
+<li>Het Natuurhistorisch Museum in <a href="/rotterdam.html">Rotterdam</a> of <a href="/den-haag.html">Den Haag</a> voor kinderen die gek zijn op dieren en natuur</li>
+</ul>
+<p>Niet elk museum heeft een speciaal paasprogramma. Check de website of bel even. Het is teleurstellend als je met een enthousiaste peuter aankomt en er niets bijzonders blijkt te zijn.</p>
+<h3>12. Thuis paasbrunch</h3>
+<p>Soms is het gewoon fijn om thuis te blijven. Maak er een kleine gebeurtenis van: dek de tafel met wat paasversiering, maak een brunch met zachte eieren, paasbroodjes, fruit en beleg. Betrek je peuter bij het dekken van de tafel en het neerzetten van de decoratie.</p>
+<p>Voor peuters is het bijzondere niet de locatie maar de sfeer. Een tafel die anders gedekt is dan normaal, een kaarsje, wat gekleurde eitjes erbij — dat is genoeg.</p>
+<hr>
+<h2>Praktische tips voor Pasen met een peuter</h2>
+<h3>Timing is alles</h3>
+<p>Peuters werken op schema. Plan activiteiten in de ochtend, voor de middag- of namiddagslaap. Na 15:00 uur en na een gemiste slaap is de kans op tranen en tegenwerkende energie groot, ook al is de activiteit op zichzelf leuk.</p>
+<p>Houd de dag niet te vol. Één grote activiteit per dag is genoeg. &quot;Eieren zoeken en daarna de kinderboerderij en daarna nog even de speeltuin&quot; klinkt leuk maar eindigt vaak in een overtired kind dat nergens meer van geniet.</p>
+<h3>Eten meenemen</h3>
+<p>Neem altijd snacks mee. Peuters worden chagrijnig van honger vóórdat ze zelf merken dat ze honger hebben. Rijstwafel, stukjes fruit, een boterham — dat soort dingen. Als je naar een restaurant of kinderboerderij gaat, weet je nooit of het eten er snel genoeg klaar is voor een ongeduldig kind.</p>
+<p>Pasen valt regelmatig samen met lange reistijden en drukkere wegen. Reken extra reistijd in.</p>
+<h3>Plan B voor regen</h3>
+<p>Het weerbericht met Pasen is onvoorspelbaar. Plan altijd een binnensoptie achter de hand:</p>
+<ul>
+<li>Weet waar de dichtstbijzijnde <a href="/binnenlocaties-peuters.html">indoor speeltuinen</a> in jouw buurt zijn</li>
+<li>Heb thuis wat knutselmateriaal liggen voor een spontaan binnenmiddag</li>
+<li>Een bibliotheek is gratis, warm en altijd beschikbaar als noodoplossing</li>
+</ul>
+<p>Voor meer eerste-keer ervaringen met jonge kinderen en dieren, lees ook <a href="/blog/eerste-keer-kinderboerderij/">eerste keer kinderboerderij</a> — handig als je peuter nog niet eerder op een boerderij is geweest. Heb je ook een heel jonge dreumes? <a href="/blog/dagje-uit-met-dreumes/">Dagje uit met dreumes</a> geeft specifieke tips voor kinderen onder de twee. En als het met Pasen regent, staat <a href="/blog/uitjes-met-peuter-bij-regen/">uitjes met peuter bij regen</a> vol met binnenalternatieven die ook in de paasvakantie werken.</p>
+<hr>
+<h2>Veelgestelde vragen</h2>
+<p><strong>Vanaf welke leeftijd is een paaseierenjacht leuk?</strong></p>
+<p>Peuters van 2 jaar en ouder begrijpen het concept van zoeken en vinden, en halen er duidelijk plezier uit. Met 1,5 jaar is het ook te doen, maar verwacht dan meer dat je ze begeleidt naar een ei dat je aanwijst dan dat ze zelf actief zoeken. Jonger dan 1,5 jaar is het meer een uitstapje voor jouzelf dan voor het kind.</p>
+<p><strong>Mag een peuter paaseieren met chocola eten?</strong></p>
+<p>Dat is een persoonlijke keuze, maar houd de hoeveelheid klein. Peuters zijn gevoeliger voor suiker dan grotere kinderen, en een oversuikerded peuter midden op een drukke paasdag is geen pretje. Overweeg plastic eitjes met kleine niet-chocola verrassingen erin (stickertjes, rozijntjes, een klein speeltje).</p>
+<p><strong>Wat doe je als het regent met Pasen?</strong></p>
+<p>Regen hoeft geen activiteiten te verpesten. Goed regenpak aan en toch buiten eieren zoeken kan prima, ook in de regen. Maar als het echt onweer of aanhoudende regen is: schakel naar de binnenactiviteiten in dit artikel. Eiverven, bakken en een bezoek aan een <a href="/binnenlocaties-peuters.html">indoor speeltuin</a> zijn even leuk als de buitenopties, en soms leuker — omdat je er niet vanuit gaat dat het perfect gaat zijn.</p>
+
+  </div>
+
+  <div class="blog-share">
+    <a href="https://wa.me/?text=Pasen%20met%20peuters%3A%2012%20activiteiten%20buiten%20en%20binnen%20https%3A%2F%2Fpeuterplannen.nl%2Fblog%2Fpasen-met-peuters%2F" target="_blank" rel="noopener" class="share-btn share-whatsapp">Deel via WhatsApp</a>
+    <button class="share-btn share-native" style="display:none" onclick="navigator.share?.({title:"Pasen met peuters: 12 activiteiten buiten en binnen",url:'https://peuterplannen.nl/blog/pasen-met-peuters/'}).catch(()=>{})">Delen</button>
+  </div>
+  <script>if(navigator.share)document.querySelector('.share-native').style.display='inline-flex'</script>
+
+  <div class="newsletter-signup">
+  <h3>Elke vrijdag: 3 uitjes die passen bij het weer</h3>
+  <form action="https://buttondown.com/api/emails/embed-subscribe/peuterplannen"
+        method="post" target="popupwindow"
+        onsubmit="window.open('https://buttondown.com/peuterplannen','popupwindow')">
+    <input type="email" name="email" placeholder="jouw@email.nl" required
+      aria-label="E-mailadres voor nieuwsbrief">
+    <button type="submit">Aanmelden</button>
+  </form>
+  <p style="font-size:13px;opacity:0.85;margin-top:12px;">Geen spam. Uitschrijven wanneer je wilt.</p>
+</div>
+
+  <div class="cta-block">
+    <h3>Op zoek naar meer uitjes?</h3>
+    <p>Ontdek 2138+ uitjes op PeuterPlannen.</p>
+    <a href="/app.html">Open de app</a>
+  </div>
+
+  <section class="support-section">
+  <div class="support-inner">
+    <h3>Iets nuttigs gevonden?</h3>
+    <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>
+    <p class="support-count">2138+ locaties beschikbaar in heel Nederland.</p>
+    <div class="support-amounts">
+      <span class="support-pill">€2</span>
+      <span class="support-pill support-pill-mid">€5</span>
+      <span class="support-pill">€10</span>
+    </div>
+    <p class="support-impact">De server kost ~€10 per maand. Elk beetje telt.</p>
+    <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener" class="btn-support">
+      Stuur een bijdrage
+    </a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <nav aria-label="Footernavigatie">
+  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  </nav>
+</footer>
+
+<script>
+(function(){
+  var bar=document.createElement('div');
+  bar.style.cssText='position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--primary),var(--accent));z-index:9999;transition:width 0.1s linear;border-radius:0 2px 2px 0;pointer-events:none;';
+  document.body.prepend(bar);
+  window.addEventListener('scroll',function(){var h=document.documentElement;var pct=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;bar.style.width=Math.min(pct,100)+'%';},{passive:true});
+})();
+</script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
+</body>
+</html>

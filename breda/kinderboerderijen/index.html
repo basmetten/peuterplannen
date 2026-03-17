@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <!-- Google tag (gtag.js) — Consent Mode v2 -->
+  <script src="/ga-init.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+  <script src="/consent.js" defer></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
+  <meta name="theme-color" content="#D4775A">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="preload" href="/design-system.css" as="style">
+  <link rel="preload" href="/style.min.css" as="style">
+  <link rel="preload" href="/fonts/familjen-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="/design-system.css?v=202603171014">
+  <link rel="stylesheet" href="/style.min.css?v=202603171014">
+  <style>
+  .guide-section{display:grid;gap:18px;margin:36px 0}
+  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .guide-card-compact{padding:20px 18px}
+  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
+  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
+  .guide-card h2{font-size:clamp(28px,5vw,40px)}
+  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
+  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
+  .guide-card-intro{max-width:58ch}
+  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .guide-links{display:grid;gap:12px;margin-top:16px}
+  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  .guide-link:visited{color:var(--pp-text)}
+  .guide-link strong{font-size:15px;line-height:1.3}
+  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
+  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
+  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
+  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
+  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
+  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
+  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
+  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
+  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
+  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
+  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
+  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
+  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
+  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
+  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
+  .editorial-support-links a:visited{color:var(--pp-text)}
+  .editorial-support-links a strong{font-size:14px}
+  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
+  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
+</style>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603171014">
+  <script src="/nav-floating.js?v=202603171014" defer></script>
+  <script src="/error-reporter.js" defer></script>
+  <title>Kinderboerderijen &amp; Dieren in Breda voor peuters | PeuterPlannen</title>
+  <meta name="description" content="De 8 beste kinderboerderijen in Breda voor peuters en kleuters. Geverifieerd op kindvriendelijkheid, koffie, verschonen en praktisch gebruik.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://peuterplannen.nl/breda/kinderboerderijen/">
+  <meta property="og:title" content="Kinderboerderijen &amp; Dieren in Breda voor peuters | PeuterPlannen">
+  <meta property="og:description" content="De 8 beste kinderboerderijen in Breda voor peuters en kleuters. Geverifieerd op kindvriendelijkheid, koffie, verschonen en praktisch gebruik.">
+  <meta property="og:url" content="https://peuterplannen.nl/breda/kinderboerderijen/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="nl_NL">
+  <meta property="og:image" content="https://peuterplannen.nl/images/og/default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Kinderboerderijen &amp; Dieren in Breda — PeuterPlannen">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Kinderboerderijen & Dieren in Breda voor peuters",
+  "description": "De 8 beste kinderboerderijen in Breda voor peuters en kleuters. Geverifieerd op kindvriendelijkheid, koffie, verschonen en praktisch gebruik.",
+  "numberOfItems": 8,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Milieu Educatie en Kinderboerderij (MEK)",
+      "description": "Kinderboerderij en milieu-educatiecentrum in Oosterhout. Di–zo open, rolstoeltoegankelijk, speeltuin aanwezig.",
+      "url": "https://peuterplannen.nl/breda/milieu-educatie-en-kinderboerderij-mek/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Milieu Educatie en Kinderboerderij (MEK)",
+        "description": "Kinderboerderij en milieu-educatiecentrum in Oosterhout. Di–zo open, rolstoeltoegankelijk, speeltuin aanwezig.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.647766,
+          "longitude": 4.878565
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Breda",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Alpaca Country",
+      "description": "Alpacaboerderij in Oosterhout waar je de dieren kunt aaien en voeren. Mooie buitenomgeving, geschikt voor kinderwagen.",
+      "url": "https://peuterplannen.nl/breda/alpaca-country/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Alpaca Country",
+        "description": "Alpacaboerderij in Oosterhout waar je de dieren kunt aaien en voeren. Mooie buitenomgeving, geschikt voor kinderwagen.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.61219,
+          "longitude": 4.867474
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Breda",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "De Sik",
+      "description": "Kinderboerderij / petting zoo in Breda. Peuters en kleuters kunnen dieren aaien, voeren en beleven in een boerderijsfeer.",
+      "url": "https://peuterplannen.nl/breda/de-sik/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Sik",
+        "description": "Kinderboerderij / petting zoo in Breda. Peuters en kleuters kunnen dieren aaien, voeren en beleven in een boerderijsfeer.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.6085,
+          "longitude": 4.7621
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Breda",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "Kinderboerderij Parkhoeve Geeren-Noord",
+      "description": "Kinderboerderij in Breda-Noord met dieren, speeltuin en horeca. Meerdere dagen per week open.",
+      "url": "https://peuterplannen.nl/breda/kinderboerderij-parkhoeve-geeren-noord/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Kinderboerderij Parkhoeve Geeren-Noord",
+        "description": "Kinderboerderij in Breda-Noord met dieren, speeltuin en horeca. Meerdere dagen per week open.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.613912,
+          "longitude": 4.791912
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Breda",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "Reptielenhuis De Aarde",
+      "description": "Reptielenhuis in Breda met slangen, hagedissen, schildpadden en andere bijzondere dieren. Fascinerend voor kinderen.",
+      "url": "https://peuterplannen.nl/breda/reptielenhuis-de-aarde/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Reptielenhuis De Aarde",
+        "description": "Reptielenhuis in Breda met slangen, hagedissen, schildpadden en andere bijzondere dieren. Fascinerend voor kinderen.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.5994,
+          "longitude": 4.8062
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Breda",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "name": "Bij Snoek (Melkveehouderij, IJsboerderij en Landwinkel)",
+      "description": "IJsboerderij en melkveehouderij in Teteringen. Vers boerenijs, dieren zien en een authentieke boerderijbeleving voor peuters.",
+      "url": "https://peuterplannen.nl/breda/bij-snoek-melkveehouderij-ijsboerderij-en-landwinkel/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Bij Snoek (Melkveehouderij, IJsboerderij en Landwinkel)",
+        "description": "IJsboerderij en melkveehouderij in Teteringen. Vers boerenijs, dieren zien en een authentieke boerderijbeleving voor peuters.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.6104,
+          "longitude": 4.8261
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Breda",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "name": "IJsboerderij Heidehoeve",
+      "description": "IJsboerderij in Etten-Leur met eigen ijsproductie. Seizoensgebonden geopend, authentieke boerderijbeleving.",
+      "url": "https://peuterplannen.nl/breda/ijsboerderij-heidehoeve/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "IJsboerderij Heidehoeve",
+        "description": "IJsboerderij in Etten-Leur met eigen ijsproductie. Seizoensgebonden geopend, authentieke boerderijbeleving.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.556755,
+          "longitude": 4.686141
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Breda",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "name": "Kinderboerderij MEK (Oosterhout)",
+      "description": "Milieu educatie en kinderboerderij in Oosterhout met dierencontact, kruidentuin, natuurtuin, labyrint en kaboutoerbos.",
+      "url": "https://peuterplannen.nl/breda/kinderboerderij-mek-oosterhout/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Kinderboerderij MEK (Oosterhout)",
+        "description": "Milieu educatie en kinderboerderij in Oosterhout met dierencontact, kruidentuin, natuurtuin, labyrint en kaboutoerbos.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 51.549,
+          "longitude": 4.8845
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Breda",
+          "addressCountry": "NL"
+        }
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Hoeveel kinderboerderijen voor peuters zijn er in Breda?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Op PeuterPlannen staan 8 kinderboerderijen in Breda die zijn geverifieerd op peutervriendelijkheid. We checken onder andere op kindvriendelijkheid, toegankelijkheid en praktische voorzieningen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Welke kinderboerderijen in Breda hebben koffie voor ouders?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "8 van de 8 kinderboerderijen in Breda hebben koffie voor ouders beschikbaar. Handig als je een ochtend of middag wil doorbrengen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hoe kies ik de beste kinderboerderijen in Breda voor mijn peuter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Kijk naar de badges op de locatiekaarten: koffie, luierruimte en kindvriendelijkheid zijn goede indicatoren. 4 van de 8 locaties in Breda hebben een luierruimte. Via de PeuterPlannen app kun je ook filteren op afstand en faciliteiten."
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "PeuterPlannen",
+      "item": "https://peuterplannen.nl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Breda met peuters",
+      "item": "https://peuterplannen.nl/breda.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Kinderboerderijen & Dieren",
+      "item": "https://peuterplannen.nl/breda/kinderboerderijen/"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:none;position:absolute">
+  <symbol id="icon-coffee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17 8h1a4 4 0 1 1 0 8h-1"/>
+    <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/>
+    <line x1="6" y1="2" x2="6" y2="4"/>
+    <line x1="10" y1="2" x2="10" y2="4"/>
+    <line x1="14" y1="2" x2="14" y2="4"/>
+  </symbol>
+  <symbol id="icon-alcohol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 22h8"/>
+    <path d="M12 11v11"/>
+    <path d="m19 3-7 8-7-8Z"/>
+  </symbol>
+  <symbol id="icon-diaper" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 12h.01"/>
+    <path d="M15 12h.01"/>
+    <path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/>
+    <path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/>
+    <path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/>
+  </symbol>
+</svg>
+
+<a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
+<nav aria-label="Hoofdnavigatie" class="floating-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" class="nav-logo-svg" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>
+      <span class="logo-text"><span class="logo-top">Peuter</span><span class="logo-bottom">Plannen</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/ontdekken/" class="nav-link">Ontdekken</a>
+      <a href="/about.html" class="nav-link">Over</a>
+      <a href="/blog/" class="nav-link">Inspiratie</a>
+      <a href="/contact.html" class="nav-link">Contact</a>
+      <a href="/app.html?regio=Breda" class="nav-cta">Zoek in Breda</a>
+    </div>
+    <button class="nav-burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-mobile-menu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
+    <a href="/" class="nav-mobile-link">Home</a>
+    <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
+    <a href="/about.html" class="nav-mobile-link">Over</a>
+    <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
+    <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    <a href="/app.html?regio=Breda" class="nav-mobile-link nav-mobile-cta nav-cta">Zoek in Breda</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1><span class="accent">Kinderboerderijen &amp; Dieren</span> in Breda</h1>
+  <p>8 peutervriendelijke locaties in Breda, gecheckt op kindvriendelijkheid en praktische voorzieningen.</p>
+</div>
+
+<nav aria-label="Kruimelpad" class="breadcrumb">
+  <a href="/">PeuterPlannen</a> &rsaquo; <a href="/breda.html">Breda</a> &rsaquo; Kinderboerderijen &amp; Dieren
+</nav>
+
+<main id="main-content">
+  <div class="intro-box">
+    <p>Op deze pagina vind je <strong>8 kinderboerderijen</strong> in Breda die zijn geverifieerd op peutervriendelijkheid. We beoordelen elke locatie op toegankelijkheid voor kinderen van 1 tot 5 jaar, aanwezigheid van koffie voor ouders, luierruimte en hoe prettig het er in de praktijk is op een gewone dag met een peuter. Van de 8 locaties hebben er 8 koffie voor ouders.</p>
+    <p>Gebruik de <a href="/app.html?regio=Breda">PeuterPlannen app</a> om te filteren op afstand, type en faciliteiten. Lees ook <a href="/methode/">hoe we selecteren</a> voor meer achtergrond over onze werkwijze.</p>
+  </div>
+
+  <section class="guide-section city-type-guide">
+    <div class="guide-card">
+      <p class="guide-kicker">Overzicht</p>
+      <h2>Kinderboerderijen &amp; Dieren in Breda</h2>
+      <p>We hebben 8 kinderboerderijen in Breda beoordeeld op bruikbaarheid voor gezinnen met peuters. Niet elke plek die populair is, werkt goed met een kind van twee. We kijken naar tempo, overzicht, praktische voorzieningen en de vraag of een plek ook op een rommelige dag nog prettig is.</p>
+      <ul class="guide-list">
+        <li><strong>Koffie:</strong> 8 van de 8 locaties hebben koffie voor ouders beschikbaar.</li>
+        <li><strong>Luierruimte:</strong> 4 van de 8 locaties hebben een verschoonplek.</li>
+        <li><strong>Leeftijd:</strong> alle locaties zijn geschikt voor kinderen van 1 tot 5 jaar, tenzij anders vermeld.</li>
+      </ul>
+      <a href="/methode/" class="guide-inline-link">Lees hoe we selecteren</a>
+    </div>
+    <div class="guide-card">
+      <p class="guide-kicker">Gerelateerde situaties</p>
+      <h2>Zoek je iets specifieks?</h2>
+      <p>Naast dit overzicht zijn er ook situatiepagina's die beter passen bij een specifieke dag of wens.</p>
+      <div class="guide-links">
+        <a href="/koffie-en-spelen.html" class="guide-link"><strong>Koffie en spelen</strong><span>Uitjes waar jonge kinderen kunnen spelen en ouders even kunnen landen. Met koffie, ruimte, verschonen en vaak een logische combinatie van buiten, horeca of dieren.</span></a><a href="/peuteruitjes-2-5-jaar.html" class="guide-link"><strong>Peuteruitjes voor 2-5 jaar</strong><span>Uitjes voor kinderen van ongeveer 2 tot 5 jaar: meer actie, meer ontdekken en nog steeds praktisch voor ouders. Van natuur en speeltuinen tot horeca en musea.</span></a><a href="/regenachtige-dag-met-peuter.html" class="guide-link"><strong>Regenachtige dag met peuter</strong><span>Binnenopties voor regenachtige dagen met peuters: musea, speelplekken, horeca met speelhoek en andere locaties die ook bij slecht weer werken.</span></a><a href="/binnenlocaties-peuters.html" class="guide-link"><strong>Binnenlocaties voor peuters</strong><span>Overdekte locaties voor peuters en dreumesen in Nederland. Handig voor regen, kou of een snelle indoor-back-up dicht bij huis.</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="type-section">
+    <h2>Kinderboerderijen &amp; Dieren in Breda</h2>
+    <div class="loc-list">
+      
+      <article class="loc-item">
+        <h3><a href="/breda/milieu-educatie-en-kinderboerderij-mek/">Milieu Educatie en Kinderboerderij (MEK)</a></h3>
+        <p>Kinderboerderij en milieu-educatiecentrum in Oosterhout. Di–zo open, rolstoeltoegankelijk, speeltuin aanwezig.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/breda/milieu-educatie-en-kinderboerderij-mek/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.mek-oosterhout.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Milieu Educatie en Kinderboerderij (MEK)">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/breda/alpaca-country/">Alpaca Country</a></h3>
+        <p>Alpacaboerderij in Oosterhout waar je de dieren kunt aaien en voeren. Mooie buitenomgeving, geschikt voor kinderwagen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/breda/alpaca-country/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.alpacacountry.nl/#" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Alpaca Country">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/breda/de-sik/">De Sik</a></h3>
+        <p>Kinderboerderij / petting zoo in Breda. Peuters en kleuters kunnen dieren aaien, voeren en beleven in een boerderijsfeer.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/breda/de-sik/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.de-sik.nl" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Sik">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/breda/kinderboerderij-parkhoeve-geeren-noord/">Kinderboerderij Parkhoeve Geeren-Noord</a></h3>
+        <p>Kinderboerderij in Breda-Noord met dieren, speeltuin en horeca. Meerdere dagen per week open.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/breda/kinderboerderij-parkhoeve-geeren-noord/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://parkhoevebredanoord.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Kinderboerderij Parkhoeve Geeren-Noord">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/breda/reptielenhuis-de-aarde/">Reptielenhuis De Aarde</a></h3>
+        <p>Reptielenhuis in Breda met slangen, hagedissen, schildpadden en andere bijzondere dieren. Fascinerend voor kinderen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span></span>
+        <div class="loc-actions">
+          <a href="/breda/reptielenhuis-de-aarde/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.deaardebreda.nl/nl/home" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Reptielenhuis De Aarde">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/breda/bij-snoek-melkveehouderij-ijsboerderij-en-landwinkel/">Bij Snoek (Melkveehouderij, IJsboerderij en Landwinkel)</a></h3>
+        <p>IJsboerderij en melkveehouderij in Teteringen. Vers boerenijs, dieren zien en een authentieke boerderijbeleving voor peuters.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span></span>
+        <div class="loc-actions">
+          <a href="/breda/bij-snoek-melkveehouderij-ijsboerderij-en-landwinkel/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.bijsnoek.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Bij Snoek (Melkveehouderij, IJsboerderij en Landwinkel)">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/breda/ijsboerderij-heidehoeve/">IJsboerderij Heidehoeve</a></h3>
+        <p>IJsboerderij in Etten-Leur met eigen ijsproductie. Seizoensgebonden geopend, authentieke boerderijbeleving.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span></span>
+        <div class="loc-actions">
+          <a href="/breda/ijsboerderij-heidehoeve/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.ijsboerderijheidehoeve.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van IJsboerderij Heidehoeve">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/breda/kinderboerderij-mek-oosterhout/">Kinderboerderij MEK (Oosterhout)</a></h3>
+        <p>Milieu educatie en kinderboerderij in Oosterhout met dierencontact, kruidentuin, natuurtuin, labyrint en kaboutoerbos.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span></span>
+        <div class="loc-actions">
+          <a href="/breda/kinderboerderij-mek-oosterhout/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://mek-oosterhout.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Kinderboerderij MEK (Oosterhout)">Website</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div class="faq-section">
+    <h2>Veelgestelde vragen over kinderboerderijen in Breda</h2>
+    
+    <details class="faq-item">
+      <summary>Hoeveel kinderboerderijen voor peuters zijn er in Breda?</summary>
+      <div class="faq-answer"><p>Op PeuterPlannen staan 8 kinderboerderijen in Breda die zijn geverifieerd op peutervriendelijkheid. We checken onder andere op kindvriendelijkheid, toegankelijkheid en praktische voorzieningen.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>Welke kinderboerderijen in Breda hebben koffie voor ouders?</summary>
+      <div class="faq-answer"><p>8 van de 8 kinderboerderijen in Breda hebben koffie voor ouders beschikbaar. Handig als je een ochtend of middag wil doorbrengen.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>Hoe kies ik de beste kinderboerderijen in Breda voor mijn peuter?</summary>
+      <div class="faq-answer"><p>Kijk naar de badges op de locatiekaarten: koffie, luierruimte en kindvriendelijkheid zijn goede indicatoren. 4 van de 8 locaties in Breda hebben een luierruimte. Via de PeuterPlannen app kun je ook filteren op afstand en faciliteiten.</p></div>
+    </details>
+  </div>
+
+  <div class="newsletter-signup">
+  <h3>Elke vrijdag: 3 uitjes die passen bij het weer</h3>
+  <form action="https://buttondown.com/api/emails/embed-subscribe/peuterplannen"
+        method="post" target="popupwindow"
+        onsubmit="window.open('https://buttondown.com/peuterplannen','popupwindow')">
+    <input type="email" name="email" placeholder="jouw@email.nl" required
+      aria-label="E-mailadres voor nieuwsbrief">
+    <button type="submit">Aanmelden</button>
+  </form>
+  <p style="font-size:13px;opacity:0.85;margin-top:12px;">Geen spam. Uitschrijven wanneer je wilt.</p>
+</div>
+
+  <div class="cta-block">
+    <h3>Zoek op jouw locatie in Breda</h3>
+    <p>De app toont kinderboerderijen en andere uitjes gesorteerd op afstand van jouw positie.</p>
+    <a href="/app.html?regio=Breda">Open de app voor Breda</a>
+  </div>
+
+  <section class="support-section">
+  <div class="support-inner">
+    <h3>Iets nuttigs gevonden?</h3>
+    <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>
+    <p class="support-count">2138+ locaties beschikbaar in heel Nederland.</p>
+    <div class="support-amounts">
+      <span class="support-pill">€2</span>
+      <span class="support-pill support-pill-mid">€5</span>
+      <span class="support-pill">€10</span>
+    </div>
+    <p class="support-impact">De server kost ~€10 per maand. Elk beetje telt.</p>
+    <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener" class="btn-support">
+      Stuur een bijdrage
+    </a>
+  </div>
+</section>
+
+  <div class="nav-links-box">
+    <h3>Andere uitjes in Breda</h3>
+    <p><a href="/breda.html">Alle uitjes in Breda</a></p>
+    <p><a href="/breda/speeltuinen/">Speeltuinen & Speelparadijzen in Breda</a> &middot; <a href="/breda/natuur/">Natuur & Buiten in Breda</a> &middot; <a href="/breda/musea/">Musea & Ontdekken in Breda</a> &middot; <a href="/breda/cultuur/">Cultuur & Theater in Breda</a></p>
+    <div class="divider">
+      <h3 style="margin-bottom:10px;">Kinderboerderijen in andere steden</h3>
+      <p><a href="/kinderboerderijen.html">Alle kinderboerderijen in Nederland</a></p>
+      <p><a href="/amsterdam/kinderboerderijen/">Kinderboerderijen in Amsterdam</a> &middot; <a href="/rotterdam/kinderboerderijen/">Kinderboerderijen in Rotterdam</a> &middot; <a href="/den-haag/kinderboerderijen/">Kinderboerderijen in Den Haag</a> &middot; <a href="/utrecht/kinderboerderijen/">Kinderboerderijen in Utrecht</a> &middot; <a href="/haarlem/kinderboerderijen/">Kinderboerderijen in Haarlem</a></p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <nav aria-label="Footernavigatie">
+  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  </nav>
+</footer>
+
+<script src="/reveal.js"></script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
+</body>
+</html>

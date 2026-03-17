@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <!-- Google tag (gtag.js) — Consent Mode v2 -->
+  <script src="/ga-init.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+  <script src="/consent.js" defer></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4964283748507156" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
+  <meta name="theme-color" content="#D4775A">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="preload" href="/design-system.css" as="style">
+  <link rel="preload" href="/style.min.css" as="style">
+  <link rel="preload" href="/fonts/familjen-grotesk-500.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="/design-system.css?v=202603171014">
+  <link rel="stylesheet" href="/style.min.css?v=202603171014">
+  <style>
+  .guide-section{display:grid;gap:18px;margin:36px 0}
+  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .guide-card-compact{padding:20px 18px}
+  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
+  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
+  .guide-card h2{font-size:clamp(28px,5vw,40px)}
+  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
+  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
+  .guide-card-intro{max-width:58ch}
+  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .guide-links{display:grid;gap:12px;margin-top:16px}
+  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+  .guide-link:visited{color:var(--pp-text)}
+  .guide-link strong{font-size:15px;line-height:1.3}
+  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
+  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
+  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
+  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
+  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
+  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
+  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
+  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
+  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
+  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
+  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
+  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
+  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
+  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
+  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
+  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
+  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
+  .editorial-support-links a:visited{color:var(--pp-text)}
+  .editorial-support-links a strong{font-size:14px}
+  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
+  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
+</style>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603171014">
+  <script src="/nav-floating.js?v=202603171014" defer></script>
+  <script src="/error-reporter.js" defer></script>
+  <title>Zwembaden &amp; Waterplezier in Haarlem voor peuters | PeuterPlannen</title>
+  <meta name="description" content="De 6 beste zwemmen in Haarlem voor peuters en kleuters. Geverifieerd op kindvriendelijkheid, koffie, verschonen en praktisch gebruik.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://peuterplannen.nl/haarlem/zwemmen/">
+  <meta property="og:title" content="Zwembaden &amp; Waterplezier in Haarlem voor peuters | PeuterPlannen">
+  <meta property="og:description" content="De 6 beste zwemmen in Haarlem voor peuters en kleuters. Geverifieerd op kindvriendelijkheid, koffie, verschonen en praktisch gebruik.">
+  <meta property="og:url" content="https://peuterplannen.nl/haarlem/zwemmen/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="nl_NL">
+  <meta property="og:image" content="https://peuterplannen.nl/images/og/default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Zwembaden &amp; Waterplezier in Haarlem — PeuterPlannen">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Zwembaden & Waterplezier in Haarlem voor peuters",
+  "description": "De 6 beste zwemmen in Haarlem voor peuters en kleuters. Geverifieerd op kindvriendelijkheid, koffie, verschonen en praktisch gebruik.",
+  "numberOfItems": 6,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Aqua Mundo",
+      "description": "Aqua Mundo subtropisch zwemparadijs bij Center Parcs Zandvoort. Groot waterpark met glijbanen, peuterbad en subtropische temperatuur. Dagje uit.",
+      "url": "https://peuterplannen.nl/haarlem/aqua-mundo/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Aqua Mundo",
+        "description": "Aqua Mundo subtropisch zwemparadijs bij Center Parcs Zandvoort. Groot waterpark met glijbanen, peuterbad en subtropische temperatuur. Dagje uit.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.379663,
+          "longitude": 4.536235
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Haarlem",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "De Oase",
+      "description": "Waterpark De Oase in Vogelenzang met zwemfaciliteiten. Als waterpark is er doorgaans een peuterbad of ondiep gedeelte aanwezig.",
+      "url": "https://peuterplannen.nl/haarlem/de-oase/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Oase",
+        "description": "Waterpark De Oase in Vogelenzang met zwemfaciliteiten. Als waterpark is er doorgaans een peuterbad of ondiep gedeelte aanwezig.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.325842,
+          "longitude": 4.596657
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Haarlem",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Boerhaavebad",
+      "description": "Binnenzwembad in Haarlem met kindvriendelijke voorzieningen. Geschikt voor peuters en kleuters. Check website voor peuterzwemmen en openingstijden.",
+      "url": "https://peuterplannen.nl/haarlem/boerhaavebad/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Boerhaavebad",
+        "description": "Binnenzwembad in Haarlem met kindvriendelijke voorzieningen. Geschikt voor peuters en kleuters. Check website voor peuterzwemmen en openingstijden.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.368818,
+          "longitude": 4.648979
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Haarlem",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "De Houtvaart",
+      "description": "Verwarmd buitenzwembad De Houtvaart in Haarlem. Water_park met zwemfaciliteiten, groot terrein en horeca. Zomers populair met gezinnen.",
+      "url": "https://peuterplannen.nl/haarlem/de-houtvaart/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Houtvaart",
+        "description": "Verwarmd buitenzwembad De Houtvaart in Haarlem. Water_park met zwemfaciliteiten, groot terrein en horeca. Zomers populair met gezinnen.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.380666,
+          "longitude": 4.616882
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Haarlem",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "Zwembad De Heerenduinen",
+      "description": "Openlucht waterpark/zwembad De Heerenduinen bij IJmuiden. Water_park-tag wijst op meerdere waterelementen, waarschijnlijk inclusief peuterbad.",
+      "url": "https://peuterplannen.nl/haarlem/zwembad-de-heerenduinen/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Zwembad De Heerenduinen",
+        "description": "Openlucht waterpark/zwembad De Heerenduinen bij IJmuiden. Water_park-tag wijst op meerdere waterelementen, waarschijnlijk inclusief peuterbad.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.453632,
+          "longitude": 4.620608
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Haarlem",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "name": "Pierenbadje",
+      "description": "Buiten peuterbadje in Santpoort, speciaal voor kleine kinderen. OSM bevestigt children's_pool. Gratis of goedkoop, perfect voor zomer.",
+      "url": "https://peuterplannen.nl/haarlem/pierenbadje/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "Pierenbadje",
+        "description": "Buiten peuterbadje in Santpoort, speciaal voor kleine kinderen. OSM bevestigt children's_pool. Gratis of goedkoop, perfect voor zomer.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.428209,
+          "longitude": 4.635632
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Haarlem",
+          "addressCountry": "NL"
+        }
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Hoeveel zwemmen voor peuters zijn er in Haarlem?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Op PeuterPlannen staan 6 zwemmen in Haarlem die zijn geverifieerd op peutervriendelijkheid. We checken onder andere op kindvriendelijkheid, toegankelijkheid en praktische voorzieningen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Welke zwemmen in Haarlem hebben koffie voor ouders?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "5 van de 6 zwemmen in Haarlem hebben koffie voor ouders beschikbaar. Handig als je een ochtend of middag wil doorbrengen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Hoe kies ik de beste zwemmen in Haarlem voor mijn peuter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Kijk naar de badges op de locatiekaarten: koffie, luierruimte en kindvriendelijkheid zijn goede indicatoren. 6 van de 6 locaties in Haarlem hebben een luierruimte. Via de PeuterPlannen app kun je ook filteren op afstand en faciliteiten."
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "PeuterPlannen",
+      "item": "https://peuterplannen.nl/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Haarlem met peuters",
+      "item": "https://peuterplannen.nl/haarlem.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Zwembaden & Waterplezier",
+      "item": "https://peuterplannen.nl/haarlem/zwemmen/"
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:none;position:absolute">
+  <symbol id="icon-coffee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17 8h1a4 4 0 1 1 0 8h-1"/>
+    <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/>
+    <line x1="6" y1="2" x2="6" y2="4"/>
+    <line x1="10" y1="2" x2="10" y2="4"/>
+    <line x1="14" y1="2" x2="14" y2="4"/>
+  </symbol>
+  <symbol id="icon-alcohol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M8 22h8"/>
+    <path d="M12 11v11"/>
+    <path d="m19 3-7 8-7-8Z"/>
+  </symbol>
+  <symbol id="icon-diaper" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 12h.01"/>
+    <path d="M15 12h.01"/>
+    <path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/>
+    <path d="M19.5 10c.3 0 .5.1.7.3.2.2.3.4.3.7 0 2.8-2 8-7.5 8S5.5 13.8 5.5 11c0-.3.1-.5.3-.7.2-.2.4-.3.7-.3"/>
+    <path d="M6 10V6c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2v4"/>
+  </symbol>
+</svg>
+
+<a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
+<nav aria-label="Hoofdnavigatie" class="floating-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" class="nav-logo-svg" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>
+      <span class="logo-text"><span class="logo-top">Peuter</span><span class="logo-bottom">Plannen</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Home</a>
+      <a href="/ontdekken/" class="nav-link">Ontdekken</a>
+      <a href="/about.html" class="nav-link">Over</a>
+      <a href="/blog/" class="nav-link">Inspiratie</a>
+      <a href="/contact.html" class="nav-link">Contact</a>
+      <a href="/app.html?regio=Haarlem" class="nav-cta">Zoek in Haarlem</a>
+    </div>
+    <button class="nav-burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-mobile-menu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
+    <a href="/" class="nav-mobile-link">Home</a>
+    <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
+    <a href="/about.html" class="nav-mobile-link">Over</a>
+    <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
+    <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    <a href="/app.html?regio=Haarlem" class="nav-mobile-link nav-mobile-cta nav-cta">Zoek in Haarlem</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1><span class="accent">Zwembaden &amp; Waterplezier</span> in Haarlem</h1>
+  <p>6 peutervriendelijke locaties in Haarlem, gecheckt op kindvriendelijkheid en praktische voorzieningen.</p>
+</div>
+
+<nav aria-label="Kruimelpad" class="breadcrumb">
+  <a href="/">PeuterPlannen</a> &rsaquo; <a href="/haarlem.html">Haarlem</a> &rsaquo; Zwembaden &amp; Waterplezier
+</nav>
+
+<main id="main-content">
+  <div class="intro-box">
+    <p>Op deze pagina vind je <strong>6 zwemmen</strong> in Haarlem die zijn geverifieerd op peutervriendelijkheid. We beoordelen elke locatie op toegankelijkheid voor kinderen van 1 tot 5 jaar, aanwezigheid van koffie voor ouders, luierruimte en hoe prettig het er in de praktijk is op een gewone dag met een peuter. Van de 6 locaties hebben er 5 koffie voor ouders.</p>
+    <p>Gebruik de <a href="/app.html?regio=Haarlem">PeuterPlannen app</a> om te filteren op afstand, type en faciliteiten. Lees ook <a href="/methode/">hoe we selecteren</a> voor meer achtergrond over onze werkwijze.</p>
+  </div>
+
+  <section class="guide-section city-type-guide">
+    <div class="guide-card">
+      <p class="guide-kicker">Overzicht</p>
+      <h2>Zwembaden &amp; Waterplezier in Haarlem</h2>
+      <p>We hebben 6 zwemmen in Haarlem beoordeeld op bruikbaarheid voor gezinnen met peuters. Niet elke plek die populair is, werkt goed met een kind van twee. We kijken naar tempo, overzicht, praktische voorzieningen en de vraag of een plek ook op een rommelige dag nog prettig is.</p>
+      <ul class="guide-list">
+        <li><strong>Koffie:</strong> 5 van de 6 locaties hebben koffie voor ouders beschikbaar.</li>
+        <li><strong>Luierruimte:</strong> 6 van de 6 locaties hebben een verschoonplek.</li>
+        <li><strong>Leeftijd:</strong> alle locaties zijn geschikt voor kinderen van 1 tot 5 jaar, tenzij anders vermeld.</li>
+      </ul>
+      <a href="/methode/" class="guide-inline-link">Lees hoe we selecteren</a>
+    </div>
+    <div class="guide-card">
+      <p class="guide-kicker">Gerelateerde situaties</p>
+      <h2>Zoek je iets specifieks?</h2>
+      <p>Naast dit overzicht zijn er ook situatiepagina's die beter passen bij een specifieke dag of wens.</p>
+      <div class="guide-links">
+        <a href="/binnenlocaties-peuters.html" class="guide-link"><strong>Binnenlocaties voor peuters</strong><span>Overdekte locaties voor peuters en dreumesen in Nederland. Handig voor regen, kou of een snelle indoor-back-up dicht bij huis.</span></a><a href="/peuteruitjes-2-5-jaar.html" class="guide-link"><strong>Peuteruitjes voor 2-5 jaar</strong><span>Uitjes voor kinderen van ongeveer 2 tot 5 jaar: meer actie, meer ontdekken en nog steeds praktisch voor ouders. Van natuur en speeltuinen tot horeca en musea.</span></a><a href="/regenachtige-dag-met-peuter.html" class="guide-link"><strong>Regenachtige dag met peuter</strong><span>Binnenopties voor regenachtige dagen met peuters: musea, speelplekken, horeca met speelhoek en andere locaties die ook bij slecht weer werken.</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="type-section">
+    <h2>Zwembaden &amp; Waterplezier in Haarlem</h2>
+    <div class="loc-list">
+      
+      <article class="loc-item">
+        <h3><a href="/haarlem/aqua-mundo/">Aqua Mundo</a></h3>
+        <p>Aqua Mundo subtropisch zwemparadijs bij Center Parcs Zandvoort. Groot waterpark met glijbanen, peuterbad en subtropische temperatuur. Dagje uit.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/haarlem/aqua-mundo/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.centerparcs.eu/aqua-mundo" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Aqua Mundo">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/haarlem/de-oase/">De Oase</a></h3>
+        <p>Waterpark De Oase in Vogelenzang met zwemfaciliteiten. Als waterpark is er doorgaans een peuterbad of ondiep gedeelte aanwezig.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/haarlem/de-oase/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://www.kleineoase.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Oase">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/haarlem/boerhaavebad/">Boerhaavebad</a></h3>
+        <p>Binnenzwembad in Haarlem met kindvriendelijke voorzieningen. Geschikt voor peuters en kleuters. Check website voor peuterzwemmen en openingstijden.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/haarlem/boerhaavebad/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://sro.nl/zwembad-boerhaavebad/?categorie=Alle&amp;plaats=Alle&amp;location=Haarlem&amp;pagina=3" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Boerhaavebad">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/haarlem/de-houtvaart/">De Houtvaart</a></h3>
+        <p>Verwarmd buitenzwembad De Houtvaart in Haarlem. Water_park met zwemfaciliteiten, groot terrein en horeca. Zomers populair met gezinnen.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/haarlem/de-houtvaart/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://houtvaart.nl/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Houtvaart">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/haarlem/zwembad-de-heerenduinen/">Zwembad De Heerenduinen</a></h3>
+        <p>Openlucht waterpark/zwembad De Heerenduinen bij IJmuiden. Water_park-tag wijst op meerdere waterelementen, waarschijnlijk inclusief peuterbad.</p>
+        <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/haarlem/zwembad-de-heerenduinen/" class="loc-detail-btn">Bekijk details</a>
+          <a href="https://sro.nl/velsen/zwembad-de-heerenduinen/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van Zwembad De Heerenduinen">Website</a>
+        </div>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/haarlem/pierenbadje/">Pierenbadje</a></h3>
+        <p>Buiten peuterbadje in Santpoort, speciaal voor kleine kinderen. OSM bevestigt children's_pool. Gratis of goedkoop, perfect voor zomer.</p>
+        <span class="badges"><span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span></span>
+        <div class="loc-actions">
+          <a href="/haarlem/pierenbadje/" class="loc-detail-btn">Bekijk details</a>
+          
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div class="faq-section">
+    <h2>Veelgestelde vragen over zwemmen in Haarlem</h2>
+    
+    <details class="faq-item">
+      <summary>Hoeveel zwemmen voor peuters zijn er in Haarlem?</summary>
+      <div class="faq-answer"><p>Op PeuterPlannen staan 6 zwemmen in Haarlem die zijn geverifieerd op peutervriendelijkheid. We checken onder andere op kindvriendelijkheid, toegankelijkheid en praktische voorzieningen.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>Welke zwemmen in Haarlem hebben koffie voor ouders?</summary>
+      <div class="faq-answer"><p>5 van de 6 zwemmen in Haarlem hebben koffie voor ouders beschikbaar. Handig als je een ochtend of middag wil doorbrengen.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>Hoe kies ik de beste zwemmen in Haarlem voor mijn peuter?</summary>
+      <div class="faq-answer"><p>Kijk naar de badges op de locatiekaarten: koffie, luierruimte en kindvriendelijkheid zijn goede indicatoren. 6 van de 6 locaties in Haarlem hebben een luierruimte. Via de PeuterPlannen app kun je ook filteren op afstand en faciliteiten.</p></div>
+    </details>
+  </div>
+
+  <div class="newsletter-signup">
+  <h3>Elke vrijdag: 3 uitjes die passen bij het weer</h3>
+  <form action="https://buttondown.com/api/emails/embed-subscribe/peuterplannen"
+        method="post" target="popupwindow"
+        onsubmit="window.open('https://buttondown.com/peuterplannen','popupwindow')">
+    <input type="email" name="email" placeholder="jouw@email.nl" required
+      aria-label="E-mailadres voor nieuwsbrief">
+    <button type="submit">Aanmelden</button>
+  </form>
+  <p style="font-size:13px;opacity:0.85;margin-top:12px;">Geen spam. Uitschrijven wanneer je wilt.</p>
+</div>
+
+  <div class="cta-block">
+    <h3>Zoek op jouw locatie in Haarlem</h3>
+    <p>De app toont zwemmen en andere uitjes gesorteerd op afstand van jouw positie.</p>
+    <a href="/app.html?regio=Haarlem">Open de app voor Haarlem</a>
+  </div>
+
+  <section class="support-section">
+  <div class="support-inner">
+    <h3>Iets nuttigs gevonden?</h3>
+    <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>
+    <p class="support-count">2138+ locaties beschikbaar in heel Nederland.</p>
+    <div class="support-amounts">
+      <span class="support-pill">€2</span>
+      <span class="support-pill support-pill-mid">€5</span>
+      <span class="support-pill">€10</span>
+    </div>
+    <p class="support-impact">De server kost ~€10 per maand. Elk beetje telt.</p>
+    <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener" class="btn-support">
+      Stuur een bijdrage
+    </a>
+  </div>
+</section>
+
+  <div class="nav-links-box">
+    <h3>Andere uitjes in Haarlem</h3>
+    <p><a href="/haarlem.html">Alle uitjes in Haarlem</a></p>
+    <p><a href="/haarlem/speeltuinen/">Speeltuinen & Speelparadijzen in Haarlem</a> &middot; <a href="/haarlem/kinderboerderijen/">Kinderboerderijen & Dieren in Haarlem</a> &middot; <a href="/haarlem/natuur/">Natuur & Buiten in Haarlem</a> &middot; <a href="/haarlem/musea/">Musea & Ontdekken in Haarlem</a></p>
+    <div class="divider">
+      <h3 style="margin-bottom:10px;">Zwemmen in andere steden</h3>
+      <p><a href="/zwemmen.html">Alle zwemmen in Nederland</a></p>
+      <p><a href="/amsterdam/zwemmen/">Zwemmen in Amsterdam</a> &middot; <a href="/rotterdam/zwemmen/">Zwemmen in Rotterdam</a> &middot; <a href="/den-haag/zwemmen/">Zwemmen in Den Haag</a> &middot; <a href="/utrecht/zwemmen/">Zwemmen in Utrecht</a> &middot; <a href="/amersfoort/zwemmen/">Zwemmen in Amersfoort</a></p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <nav aria-label="Footernavigatie">
+  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
+  </nav>
+</footer>
+
+<script src="/reveal.js"></script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
+</body>
+</html>
