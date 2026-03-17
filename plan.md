@@ -691,7 +691,7 @@ Voeg per uitgebreide post 8-10 inline links naar locatiepagina's toe.
 ---
 
 ## FASE 9: ONTBREKENDE STADSGIDSEN
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** Meerdere `content-writer` agents PARALLEL (2-3 per batch) → `verifier`
 **Prioriteit:** MEDIUM
 **Doel:** Blogposts voor alle 22 steden (nu 11 van 22)
@@ -904,7 +904,7 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 | 6 | E-mail capture & nieuwsbrief | `DONE` | HOOG | Claude Code + 🔴 Bas |
 | 7 | Seizoenscontent (6 posts) | `DONE` | HOOG | Claude Code |
 | 8 | Evergreen content (8 posts) | `DONE` | MEDIUM-HOOG | Claude Code |
-| 9 | Ontbrekende stadsgidsen (11 posts) | `TODO` | MEDIUM | Claude Code |
+| 9 | Ontbrekende stadsgidsen (11 posts) | `DONE` | MEDIUM | Claude Code |
 | 10 | Interne linking mesh | `TODO` | MEDIUM | Claude Code |
 | 11 | Dunne pagina's fixen | `TODO` | MEDIUM | Claude Code |
 | 12 | Affiliate & monetisatie | `TODO` | MEDIUM | Claude Code + 🔴 Bas |
