@@ -885,7 +885,7 @@ Fase 12C (PARALLEL aan 12A):
 ---
 
 ## FASE 13: SOCIAL MEDIA FUNDAMENT
-**Status:** `TODO`
+**Status:** `DONE` (technische taken — 🔴 Bas: Pinterest/Instagram accounts nog aanmaken)
 **Agent:** N/A — **🔴 VOLLEDIG ACTIE VOOR BAS**
 **Prioriteit:** MEDIUM
 
@@ -1003,7 +1003,7 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 | 10 | Interne linking mesh | `DONE` | MEDIUM | Claude Code |
 | 11 | Dunne pagina's fixen | `DONE` | MEDIUM | Claude Code |
 | 12 | Affiliate & monetisatie (herzien) | `DONE` | MEDIUM | Claude Code + 🔴 Bas |
-| 13 | Social media fundament | `TODO` | MEDIUM | Claude Code + 🔴 Bas |
+| 13 | Social media fundament | `DONE` | MEDIUM | Claude Code + 🔴 Bas |
 | 14 | Automatisering | `TODO` | MEDIUM | Claude Code |
 | 15 | Direct outreach | `TODO` | MEDIUM-LAAG | 🔴 Bas |
 
