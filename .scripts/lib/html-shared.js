@@ -192,7 +192,8 @@ function headCommon(extra = '') {
   <link rel="stylesheet" href="${navCssHref}">
   <script src="${navJsHref}" defer></script>
   <script src="/error-reporter.js" defer></script>
-  <meta name="pinterest-rich-pin" content="true">${extra}`;
+  <meta name="pinterest-rich-pin" content="true">
+  <meta name="p:domain_verify" content="f99a54c30c1801d1bef6ab0dd15f83cf">${extra}`;
 }
 
 function rewriteAssetVersions(filePath) {
