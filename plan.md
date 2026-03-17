@@ -534,7 +534,7 @@ Na het genereren van een dagplan:
 ---
 
 ## FASE 6: E-MAIL CAPTURE & NIEUWSBRIEF
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** `implementer` (technische integratie: signup forms + API script) → `verifier` + **🔴 ACTIE VOOR BAS** (account aanmaken)
 **Prioriteit:** HOOG — dit is het enige retentiemechanisme dat werkt bij lage traffic
 **Provider:** Buttondown (buttondown.com)
@@ -901,7 +901,7 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 | 3 | City+type combinatiepagina's | `DONE` | HOOG | Claude Code |
 | 4 | Performance optimalisaties | `DONE` | HOOG | Claude Code |
 | 5 | UX-verbeteringen | `DONE` | HOOG | Claude Code |
-| 6 | E-mail capture & nieuwsbrief | `TODO` | HOOG | Claude Code + 🔴 Bas |
+| 6 | E-mail capture & nieuwsbrief | `DONE` | HOOG | Claude Code + 🔴 Bas |
 | 7 | Seizoenscontent (6 posts) | `TODO` | HOOG | Claude Code |
 | 8 | Evergreen content (8 posts) | `TODO` | MEDIUM-HOOG | Claude Code |
 | 9 | Ontbrekende stadsgidsen (11 posts) | `TODO` | MEDIUM | Claude Code |
