@@ -748,7 +748,7 @@ Minimaal 1.500 woorden per post, met lokaal karakter (niet copy-paste van Amster
 ---
 
 ## FASE 12: AFFILIATE & MONETISATIE-BASIS
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** `implementer` (affiliate blokken in generators, meerdere parallel: 12.3-12.6 raken verschillende bestanden) + `content-writer` (3 affiliate blogposts) → `verifier` + **🔴 ACTIE VOOR BAS**
 **Prioriteit:** MEDIUM
 **Doel:** €60-210/maand binnen 60 dagen
@@ -1002,7 +1002,7 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 | 9 | Ontbrekende stadsgidsen (11 posts) | `DONE` | MEDIUM | Claude Code |
 | 10 | Interne linking mesh | `DONE` | MEDIUM | Claude Code |
 | 11 | Dunne pagina's fixen | `DONE` | MEDIUM | Claude Code |
-| 12 | Affiliate & monetisatie (herzien) | `TODO` | MEDIUM | Claude Code + 🔴 Bas |
+| 12 | Affiliate & monetisatie (herzien) | `DONE` | MEDIUM | Claude Code + 🔴 Bas |
 | 13 | Social media fundament | `TODO` | MEDIUM | Claude Code + 🔴 Bas |
 | 14 | Automatisering | `TODO` | MEDIUM | Claude Code |
 | 15 | Direct outreach | `TODO` | MEDIUM-LAAG | 🔴 Bas |
