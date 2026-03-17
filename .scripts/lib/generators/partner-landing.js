@@ -105,6 +105,20 @@ ${headCommon(`
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
   <meta property="og:image" content="https://peuterplannen.nl/images/og/default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Voor bedrijven — PeuterPlannen">
+  <script type="application/ld+json">
+${JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(([q, a]) => ({
+    "@type": "Question",
+    "name": q,
+    "acceptedAnswer": { "@type": "Answer", "text": a }
+  }))
+}, null, 2)}
+  </script>
 </head>
 <body>
 ${navHTML('Partnerportaal', '/partner/')}

@@ -101,6 +101,7 @@ function buildBlog(data) {
 ${headCommon()}
   <title>${escapeHtml(postTitle)}</title>
   <meta name="description" content="${escapeHtml(postDescription)}">
+  <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://peuterplannen.nl/blog/${p.slug}/">
   <meta property="og:title" content="${escapeHtml(postTitle)}">
   <meta property="og:description" content="${escapeHtml(postDescription)}">

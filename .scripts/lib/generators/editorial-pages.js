@@ -32,6 +32,19 @@ ${headCommon()}
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
   <meta property="og:image" content="${DEFAULT_OG}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="${escapeHtml(title)} — PeuterPlannen">
+  <script type="application/ld+json">
+${JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": title,
+  "description": description,
+  "url": `https://peuterplannen.nl/${slug}/`,
+  "publisher": { "@type": "Organization", "name": "PeuterPlannen", "url": "https://peuterplannen.nl/" }
+}, null, 2)}
+  </script>
 </head>
 <body>
 ${navHTML()}

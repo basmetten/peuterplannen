@@ -7,11 +7,12 @@ CREATE TABLE IF NOT EXISTS public.analytics_events (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX idx_analytics_events_type_created
+CREATE INDEX IF NOT EXISTS idx_analytics_events_type_created
   ON public.analytics_events(event_type, created_at DESC);
 
 ALTER TABLE public.analytics_events ENABLE ROW LEVEL SECURITY;
 
 -- Anon can insert events, only service role can read
+DROP POLICY IF EXISTS "Anon can insert events" ON public.analytics_events;
 CREATE POLICY "Anon can insert events"
   ON public.analytics_events FOR INSERT WITH CHECK (true);
