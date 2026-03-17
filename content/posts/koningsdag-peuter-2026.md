@@ -40,7 +40,7 @@ Kleine tip: zet een naamkaartje in de jas of sticker met je telefoonnummer op de
 
 ### Plan B is verplicht
 
-Elke Koningsdag met een peuter heeft een plan B nodig. Wat doe je als het regent? Wat als je kind na een uur al klaar is? Zoek thuis al op: welke [indoor speeltuinen](/indoor-speeltuinen.html) zijn er in de buurt? Welke [musea](/musea.html) hebben een kindvriendelijke zaal? Die zijn op Koningsdag soms minder druk dan de straten, omdat iedereen buiten is.
+Elke Koningsdag met een peuter heeft een plan B nodig. Wat doe je als het regent? Wat als je kind na een uur al klaar is? Zoek thuis al op: welke [indoor speeltuinen](/binnenlocaties-peuters.html) zijn er in de buurt? Welke [musea](/musea.html) hebben een kindvriendelijke zaal? Die zijn op Koningsdag soms minder druk dan de straten, omdat iedereen buiten is.
 
 ---
 
@@ -74,9 +74,9 @@ Bekijk vooraf welke [speeltuinen](/speeltuinen.html) in Amsterdam op Koningsdag 
 
 ### Rotterdam
 
-Rotterdam viert Koningsdag iets losser dan Amsterdam. Het Kralingse Bos is een uitstekende optie: ruimte, groen, en een sfeer die niet overdonderen. De [parken](/parken.html) in Rotterdam zijn op 27 april goed te doen, zeker in de ochtend.
+Rotterdam viert Koningsdag iets losser dan Amsterdam. Het Kralingse Bos is een uitstekende optie: ruimte, groen, en een sfeer die niet overdonderen. De [parken](/natuur.html) in Rotterdam zijn op 27 april goed te doen, zeker in de ochtend.
 
-Bekijk ook ons overzicht voor [Rotterdam](/rotterdam/) voor plekken die het hele jaar door goed zijn voor peuters.
+Bekijk ook ons overzicht voor [Rotterdam](/rotterdam.html) voor plekken die het hele jaar door goed zijn voor peuters.
 
 ### Utrecht
 
@@ -86,7 +86,7 @@ Meer tips specifiek voor Utrecht vind je in onze post over [Utrecht met peuters]
 
 ### Den Haag
 
-Den Haag heeft een eigen Koningsdagtraditie, met evenementen in het Zuiderpark en het centrum. Het Zuiderpark is zeker met peuters aan te raden: veel ruimte, kinderprogramma, en minder krappe straatjes. Bekijk ons overzicht voor [Den Haag](/den-haag/) voor meer context.
+Den Haag heeft een eigen Koningsdagtraditie, met evenementen in het Zuiderpark en het centrum. Het Zuiderpark is zeker met peuters aan te raden: veel ruimte, kinderprogramma, en minder krappe straatjes. Bekijk ons overzicht voor [Den Haag](/den-haag.html) voor meer context.
 
 ### Haarlem en Amersfoort
 
@@ -138,7 +138,7 @@ April 2026 biedt geen garanties. Koningsdag in de regen bestaat. Dat hoeft de da
 
 ### Binnenopties die werken
 
-- **[Indoor speeltuinen](/indoor-speeltuinen.html)**: vaak open, soms druk, maar een peuter is er lang zoet
+- **[Indoor speeltuinen](/binnenlocaties-peuters.html)**: vaak open, soms druk, maar een peuter is er lang zoet
 - **[Musea](/musea.html) met kinderprogramma**: op Koningsdag hebben sommige musea gratis of goedkope toegang. Kijk dit thuis na voor je stad.
 - **Een thuis-vrijmarkt in de buurt**: veel buurten organiseren de vrijmarkt onder luifels of in een hal als het regent. Vraag het na of zoek het op in je gemeente.
 

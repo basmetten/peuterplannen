@@ -34,23 +34,23 @@ Een [speeltuin](/speeltuinen.html) in een park of bos is anders dan een gewone s
 
 ### 4. Dierentuin op een doordeweekse dag
 
-Ga op dinsdag of woensdag: rustiger, makkelijker parkeren, kortere rijen. [Dierentuinen](/dierentuinen.html) zijn in de herfstvakantie prachtig bezocht — denk aan dieren die actiever worden bij koelere temperaturen, en minder overvolle paden dan in de zomervakantie. De meeste dierentuinen hebben ook een indoor gedeelte voor als het halverwege toch gaat regenen.
+Ga op dinsdag of woensdag: rustiger, makkelijker parkeren, kortere rijen. [Dierentuinen](/natuur.html) zijn in de herfstvakantie prachtig bezocht — denk aan dieren die actiever worden bij koelere temperaturen, en minder overvolle paden dan in de zomervakantie. De meeste dierentuinen hebben ook een indoor gedeelte voor als het halverwege toch gaat regenen.
 
 Heeft je peuter eerder gekeken dan gelopen? Neem de buggy mee. De afstanden in een dierentuin zijn groter dan je denkt.
 
 ### 5. Pannenkoekenrestaurant in of bij het bos
 
-De combinatie van een wandeling en een warme lunch is een klassieker voor een goede reden. [Pannenkoekenrestaurants](/pannenkoekenrestaurants.html) die in of vlak bij een bos liggen, zijn ideaal: een korte boswandeling met je peuter, dan pannenkoeken met spek of appelstroop, en daarna nog even door het bos terug. Peuters eten graag als ze buiten geweest zijn, en het gevoel van "uiteten" maakt de dag een beetje bijzonder.
+De combinatie van een wandeling en een warme lunch is een klassieker voor een goede reden. [Pannenkoekenrestaurants](/pannenkoeken.html) die in of vlak bij een bos liggen, zijn ideaal: een korte boswandeling met je peuter, dan pannenkoeken met spek of appelstroop, en daarna nog even door het bos terug. Peuters eten graag als ze buiten geweest zijn, en het gevoel van "uiteten" maakt de dag een beetje bijzonder.
 
 ### 6. Kasteel of ruïne bezoeken
 
 Nederland heeft meer kastelen en buitenplaatsen dan de meeste mensen doorhebben. Veel ervan zijn omgeven door tuinen of parken die vrij toegankelijk zijn — je hoeft dus geen toegang te betalen voor het kasteel zelf. Voor een peuter is de beleving al genoeg: een grote poort, een slotgracht, hoge torens. Ze zijn op de leeftijd waarop een kasteel nog echt magisch voelt.
 
-[Arnhem](/arnhem/) en [Apeldoorn](/apeldoorn/) liggen midden in de Veluwe en hebben meerdere kastelen en landgoederen in de directe omgeving. Het Loo, Rosendael, Doorwerth — stuk voor stuk te combineren met een ochtend buiten.
+[Arnhem](/arnhem.html) en [Apeldoorn](/apeldoorn.html) liggen midden in de Veluwe en hebben meerdere kastelen en landgoederen in de directe omgeving. Het Loo, Rosendael, Doorwerth — stuk voor stuk te combineren met een ochtend buiten.
 
 ### 7. Eendjes voeren bij het park
 
-Ja, echt. Stadsparken zijn in de herfst mooi: gele en rode bomen, stilstaand water, weinig mensen. Peuters zijn op een leeftijd waarop "eendjes voeren" nog een echte activiteit is die tien, vijftien minuten duurt. Neem oud brood mee (of beter: ongezouten crackers of graan — dat is beter voor de dieren) en combineer het met een korte wandeling door het [park](/parken.html).
+Ja, echt. Stadsparken zijn in de herfst mooi: gele en rode bomen, stilstaand water, weinig mensen. Peuters zijn op een leeftijd waarop "eendjes voeren" nog een echte activiteit is die tien, vijftien minuten duurt. Neem oud brood mee (of beter: ongezouten crackers of graan — dat is beter voor de dieren) en combineer het met een korte wandeling door het [park](/natuur.html).
 
 ### 8. Appels plukken op een fruitboerderij of landgoed
 
@@ -78,7 +78,7 @@ Kijk vooraf even of er een speciale peuterzone of kleuterruimte is. Dat scheelt 
 
 ### 12. Indoor speeltuin
 
-Een klassieker, en terecht. [Indoor speeltuinen](/indoor-speeltuinen.html) zijn gebouwd voor dit soort dagen. Let op: in de herfstvakantie kunnen ze flink druk zijn, zeker in het weekend. Ga doordeweeks en boek als dat mogelijk is van tevoren. Neem antislipsokken mee — die zijn bij veel speelparadijzen verplicht.
+Een klassieker, en terecht. [Indoor speeltuinen](/binnenlocaties-peuters.html) zijn gebouwd voor dit soort dagen. Let op: in de herfstvakantie kunnen ze flink druk zijn, zeker in het weekend. Ga doordeweeks en boek als dat mogelijk is van tevoren. Neem antislipsokken mee — die zijn bij veel speelparadijzen verplicht.
 
 Controleer ook of er een aparte peuterzone is. In grotere speelparadijzen zijn die er bijna altijd, maar lokale speeltuintjes hebben soms alleen een open ruimte voor alle leeftijden.
 

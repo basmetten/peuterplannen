@@ -16,14 +16,14 @@ Wat Pasen voor peuters wél bijzonder maakt: de activiteiten zijn laagdrempelig,
 
 ### 1. Eieren zoeken in de tuin of het park
 
-Het klinkt simpel, want dat is het ook. Verstop een stuk of tien plastic eitjes in de tuin of neem ze mee naar een [park](/parken.html) bij jou in de buurt. Doe ze niet te goed verstopt voor peuters van 2-3 jaar — een ei dat half achter een struik uitsteekt geeft net zoveel voldoening als eentje dat echt goed verscholen zit.
+Het klinkt simpel, want dat is het ook. Verstop een stuk of tien plastic eitjes in de tuin of neem ze mee naar een [park](/natuur.html) bij jou in de buurt. Doe ze niet te goed verstopt voor peuters van 2-3 jaar — een ei dat half achter een struik uitsteekt geeft net zoveel voldoening als eentje dat echt goed verscholen zit.
 
 Praktische tips:
 - Gebruik plastic eitjes met kleine cadeautjes erin (stickertjes, een chocolaatje) in plaats van echte gekookte eieren. Die raken snel kwijt of zijn onvindbaar na een week zon.
 - Begrens het zoekgebied duidelijk. Zeg: "Zoek in het bloemperk en op het grasveld." Anders heb je een peuter die het halve park afstruint.
 - Neem een kleine mand of emmer mee. Die rol hoort erbij.
 
-Voor grotere [parken](/parken.html) in je stad: check van tevoren of er een georganiseerde paaseierenjacht is. Veel gemeenteparken en kinderboerderijen organiseren iets rond Pasen.
+Voor grotere [parken](/natuur.html) in je stad: check van tevoren of er een georganiseerde paaseierenjacht is. Veel gemeenteparken en kinderboerderijen organiseren iets rond Pasen.
 
 ### 2. Kinderboerderij met paasthema
 
@@ -39,7 +39,7 @@ Niet alles hoeft over eieren te gaan. Pasen valt in de lente, en dat betekent: k
 
 "Zie jij een geel bloemetje? En een paars?" Peuters van 2,5 jaar en ouder zijn verrassend goed in kleur zoeken en worden enthousiast van het vinden. Je kunt een klein kijkboekje meenemen met afbeeldingen van lentebloemen — dan is het een echt speurtocht.
 
-Rondom steden als [Utrecht](/utrecht/) en [Amsterdam](/amsterdam/) liggen genoeg bosgebieden en parken waar je dit kunt doen zonder ver te rijden. Houd het wandeling kort: een kwartier actief zoeken is voor een peuter van 2 jaar al een heel programma.
+Rondom steden als [Utrecht](/utrecht.html) en [Amsterdam](/amsterdam.html) liggen genoeg bosgebieden en parken waar je dit kunt doen zonder ver te rijden. Houd het wandeling kort: een kwartier actief zoeken is voor een peuter van 2 jaar al een heel programma.
 
 ### 4. Speeltuin + paaspicknick
 
@@ -102,7 +102,7 @@ Zet alles klaar voordat je begint. Zolang je alles binnen handbereik hebt, is kn
 
 ### 10. Indoor speeltuin als plan B
 
-Als het buiten echt niet lukt of je hebt een dag nodig waarop je kind goed vermoeid wordt: een [indoor speeltuin](/indoor-speeltuinen.html) is de beste keuze. Veel binnenspeeltuinen doen rond Pasen iets extra's, van kleine versiering tot een mini-paaseierenjacht op het terrein.
+Als het buiten echt niet lukt of je hebt een dag nodig waarop je kind goed vermoeid wordt: een [indoor speeltuin](/binnenlocaties-peuters.html) is de beste keuze. Veel binnenspeeltuinen doen rond Pasen iets extra's, van kleine versiering tot een mini-paaseierenjacht op het terrein.
 
 Check vooraf of er tijdsloten zijn en of het druk is — in de paasvakantie zijn veel speelparadijzen voller dan normaal. Doordeweeks is rustiger dan in het weekend.
 
@@ -113,7 +113,7 @@ Lees ook: [dagje uit met dreumes](/blog/dagje-uit-met-dreumes/) als je een baby 
 Verschillende [musea](/musea.html) organiseren rond Pasen speciale programma's voor jonge kinderen. Denk aan:
 - [Artis](/amsterdam/artis/) in Amsterdam, waar je met Pasen soms themadagen voor kinderen hebt rondom lente en dieren
 - Streekmusea en kindermusea die paaswerkjes aanbieden
-- Het Natuurhistorisch Museum in [Rotterdam](/rotterdam/) of [Den Haag](/den-haag/) voor kinderen die gek zijn op dieren en natuur
+- Het Natuurhistorisch Museum in [Rotterdam](/rotterdam.html) of [Den Haag](/den-haag.html) voor kinderen die gek zijn op dieren en natuur
 
 Niet elk museum heeft een speciaal paasprogramma. Check de website of bel even. Het is teleurstellend als je met een enthousiaste peuter aankomt en er niets bijzonders blijkt te zijn.
 
@@ -143,7 +143,7 @@ Pasen valt regelmatig samen met lange reistijden en drukkere wegen. Reken extra 
 
 Het weerbericht met Pasen is onvoorspelbaar. Plan altijd een binnensoptie achter de hand:
 
-- Weet waar de dichtstbijzijnde [indoor speeltuinen](/indoor-speeltuinen.html) in jouw buurt zijn
+- Weet waar de dichtstbijzijnde [indoor speeltuinen](/binnenlocaties-peuters.html) in jouw buurt zijn
 - Heb thuis wat knutselmateriaal liggen voor een spontaan binnenmiddag
 - Een bibliotheek is gratis, warm en altijd beschikbaar als noodoplossing
 
@@ -163,4 +163,4 @@ Dat is een persoonlijke keuze, maar houd de hoeveelheid klein. Peuters zijn gevo
 
 **Wat doe je als het regent met Pasen?**
 
-Regen hoeft geen activiteiten te verpesten. Goed regenpak aan en toch buiten eieren zoeken kan prima, ook in de regen. Maar als het echt onweer of aanhoudende regen is: schakel naar de binnenactiviteiten in dit artikel. Eiverven, bakken en een bezoek aan een [indoor speeltuin](/indoor-speeltuinen.html) zijn even leuk als de buitenopties, en soms leuker — omdat je er niet vanuit gaat dat het perfect gaat zijn.
+Regen hoeft geen activiteiten te verpesten. Goed regenpak aan en toch buiten eieren zoeken kan prima, ook in de regen. Maar als het echt onweer of aanhoudende regen is: schakel naar de binnenactiviteiten in dit artikel. Eiverven, bakken en een bezoek aan een [indoor speeltuin](/binnenlocaties-peuters.html) zijn even leuk als de buitenopties, en soms leuker — omdat je er niet vanuit gaat dat het perfect gaat zijn.

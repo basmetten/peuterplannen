@@ -44,7 +44,7 @@ Mei is niet de warmste maand, maar een strandbezoek in de meivakantie werkt verr
 
 Peuters zijn van nature gefascineerd door water en zand. Je hoeft niets te organiseren — gooi een schep en emmer in de tas en laat ze gaan. Het enige wat je nodig hebt: extra kleren, want water is aantrekkelijker dan ouders altijd inschatten.
 
-Als het echt te koud is voor het strand, zijn [stranden](/stranden.html) in mei ook fijn voor een wandeling langs het water. De zilte lucht, de ruimte, het geluid van de golven — dat is ook voor kleine kinderen een heel ander gevoel dan de stad.
+Als het echt te koud is voor het strand, zijn [stranden](/zwemmen.html) in mei ook fijn voor een wandeling langs het water. De zilte lucht, de ruimte, het geluid van de golven — dat is ook voor kleine kinderen een heel ander gevoel dan de stad.
 
 ---
 
@@ -52,7 +52,7 @@ Als het echt te koud is voor het strand, zijn [stranden](/stranden.html) in mei 
 
 Een dierentuin is een grote investering qua tijd en energie. Reken voor een peuter op maximaal twee tot drie uur voor je het beste al gezien hebt. Ga je langer, dan is het risico op een uitgeputte peuter groot.
 
-De truc: ga 's ochtends vroeg, plan twee of drie "highlights" die het kind leuk vindt en wees bereid om halverwege te stoppen. Grote [dierentuinen](/dierentuinen.html) zoals Burgers' Zoo in [Arnhem](/arnhem/) of Apenheul in [Apeldoorn](/apeldoorn/) zijn een dagje op zichzelf — maar plan dat dagje dan ook als rust voor het kind, niet als doorstart na een drukke ochtend.
+De truc: ga 's ochtends vroeg, plan twee of drie "highlights" die het kind leuk vindt en wees bereid om halverwege te stoppen. Grote [dierentuinen](/natuur.html) zoals Burgers' Zoo in [Arnhem](/arnhem.html) of Apenheul in [Apeldoorn](/apeldoorn.html) zijn een dagje op zichzelf — maar plan dat dagje dan ook als rust voor het kind, niet als doorstart na een drukke ochtend.
 
 **Apenheul** is voor peuters bijzonder: de apen lopen vrij rond. Dat maakt indruk op peuters van 2 jaar en ouder op een manier die moeilijk te omschrijven is.
 
@@ -84,7 +84,7 @@ Kijk specifiek naar [musea](/musea.html) die een aparte peutervleugel of kleuter
 
 De binnenspeeltuin heeft een slechte reputatie bij sommige ouders — en die reputatie is niet altijd onterecht. Te warm, te luid, te chaotisch. Maar een goede binnenspeeltuin, met een aparte zone voor peuters onder de 3 jaar, is een ander verhaal.
 
-Zoek op [indoor speeltuinen](/indoor-speeltuinen.html) naar locaties met een peuterdeel. De meeste hebben een rustigere zone met zachte klimmatten, kleine glijbanen en ballenbakken die specifiek voor de allerkleinsten zijn. De combinatie van bewegen en een kopje koffie voor de ouders werkt goed op regenachtige middagen.
+Zoek op [indoor speeltuinen](/binnenlocaties-peuters.html) naar locaties met een peuterdeel. De meeste hebben een rustigere zone met zachte klimmatten, kleine glijbanen en ballenbakken die specifiek voor de allerkleinsten zijn. De combinatie van bewegen en een kopje koffie voor de ouders werkt goed op regenachtige middagen.
 
 **Tip:** ga niet in het weekend naar binnenspeeltuinen. Doordeweeks in de vakantieweek is aanmerkelijk rustiger.
 
@@ -222,7 +222,7 @@ Met een dreumes (1 tot 2 jaar) gelden andere regels: [dagje uit met dreumes](/bl
 
 Op zoek naar uitjes zonder groot budget? [Goedkoop op stap](/blog/goedkoop-op-stap-peuters/) heeft een overzicht van gratis en bijna-gratis opties door heel Nederland.
 
-Voor specifieke locaties kijk je op [pretparken](/pretparken.html) (voor grotere kinderen of bijzondere dagjes), of blader door de regiopagina's voor tips in jouw buurt.
+Voor specifieke locaties kijk je op [pretparken](/natuur.html) (voor grotere kinderen of bijzondere dagjes), of blader door de regiopagina's voor tips in jouw buurt.
 
 ---
 
@@ -238,4 +238,4 @@ Regen is in mei geen uitzondering. Goede regenopties: een binnenspeeltuin met pe
 
 **Is de Veluwe (Arnhem/Apeldoorn) de moeite waard voor een dagje uit in de meivakantie?**
 
-Ja, zeker. De combinatie van Burgers' Zoo in [Arnhem](/arnhem/) of Apenheul in [Apeldoorn](/apeldoorn/) met een bosrit of wandeling op de Veluwe maakt een complete vakantiedag. Reken wel op drukte in de meivakantie — boek kaartjes ver van tevoren en ga doordeweeks. Het weekend voor Hemelvaartsdag is de drukste periode van het hele meivakantieseizoen.
+Ja, zeker. De combinatie van Burgers' Zoo in [Arnhem](/arnhem.html) of Apenheul in [Apeldoorn](/apeldoorn.html) met een bosrit of wandeling op de Veluwe maakt een complete vakantiedag. Reken wel op drukte in de meivakantie — boek kaartjes ver van tevoren en ga doordeweeks. Het weekend voor Hemelvaartsdag is de drukste periode van het hele meivakantieseizoen.

@@ -79,7 +79,7 @@ Natuur is gratis, peuters vinden het geweldig, en jij hoeft nergens op te letten
 ### Vrijdag — Luchtig en dicht bij huis
 
 **09:30** Watertafel of zandbak in de tuin
-**10:30** Loop naar de buurt[parken](/parken.html) — geen auto, geen planning
+**10:30** Loop naar de buurt[parken](/natuur.html) — geen auto, geen planning
 **12:00** Lunch
 **13:00** Dutje
 **15:00** Film of serie op de bank (ja, echt. Vrijdagmiddag mag.)
@@ -103,9 +103,9 @@ Zondag is geen uitje-dag. Zondag is boodschappen, was, luieren en voorbereiden o
 
 Als het 25 graden is en er is zon, zijn er een paar soorten uitjes die echt werken.
 
-**Strand en zee.** De [stranden](/stranden.html) langs de Nederlandse kust zijn voor peuters ideaal: zand, water, bakken, graven. Kies een strandopgang met parkeerplaats dicht bij het strand zodat je niet eindeloos sjouwt. Ga vóór 10:00 uur of rond 16:00 uur — dan is het minder druk en koeler. Breng een parasol mee, niet voor jezelf, maar voor je peuter. Die verbrandt in een halfuur.
+**Strand en zee.** De [stranden](/zwemmen.html) langs de Nederlandse kust zijn voor peuters ideaal: zand, water, bakken, graven. Kies een strandopgang met parkeerplaats dicht bij het strand zodat je niet eindeloos sjouwt. Ga vóór 10:00 uur of rond 16:00 uur — dan is het minder druk en koeler. Breng een parasol mee, niet voor jezelf, maar voor je peuter. Die verbrandt in een halfuur.
 
-**Waterspeelplaatsen.** Steeds meer steden hebben waterparken of waterspeelplekken in [parken](/parken.html). Vrij toegankelijk, spetterend water, en jij zit in de schaduw. Zoek op "waterspeeltuin" plus jouw stad — ze zijn er bijna overal.
+**Waterspeelplaatsen.** Steeds meer steden hebben waterparken of waterspeelplekken in [parken](/natuur.html). Vrij toegankelijk, spetterend water, en jij zit in de schaduw. Zoek op "waterspeeltuin" plus jouw stad — ze zijn er bijna overal.
 
 **Openlucht [zwemmen](/zwemmen.html).** Een buitenzwembad met een kleuterbad is goud waard. Peuters hoeven niet te kunnen zwemmen — ze gaan het ondiep deel in en zijn klaar. Neem een zwemluier mee voor de allerkleinsten en check altijd de tijden voor het kleuterbad.
 
@@ -121,7 +121,7 @@ Regen in de zomervakantie voelt als persoonlijk falen, maar het hoeft geen ramp 
 
 **Museum.** Kies een [musea](/musea.html)-pagina voor kindvriendelijke musea bij jou in de buurt. Niet elk museum werkt voor peuters — zoek naar musea met een doe-ruimte, interactieve tentoonstellingen, of gewoon veel ruimte om rond te lopen. Het Speelgoedmuseum in Deventer, Artis in Amsterdam (ook bij regen prachtig), TU/e Science Park in Eindhoven — er zijn tientallen opties.
 
-**Indoor speeltuin.** De [indoor speeltuinen](/indoor-speeltuinen.html) zijn gemaakt voor dit soort dagen. Klimmen, glijden, ballen gooien — peuters zijn in een halfuur compleet uitgeput. Voordeel: jij zit in een stoel met koffie. Nadeel: het is luid en soms een beetje overprikkeld. Tip: ga op een dinsdag- of woensdagochtend, dan is het rustiger.
+**Indoor speeltuin.** De [indoor speeltuinen](/binnenlocaties-peuters.html) zijn gemaakt voor dit soort dagen. Klimmen, glijden, ballen gooien — peuters zijn in een halfuur compleet uitgeput. Voordeel: jij zit in een stoel met koffie. Nadeel: het is luid en soms een beetje overprikkeld. Tip: ga op een dinsdag- of woensdagochtend, dan is het rustiger.
 
 **Bibliotheek.** Gratis, rustig, en peuters zijn dol op nieuwe boeken. Veel bibliotheken hebben ook een peuter-uurtje of voorleeshoek. Een uur boekjes pakken en terugzetten is voor een tweejarige gewoon vermaak.
 
@@ -139,7 +139,7 @@ Zes weken vakantie kan makkelijk oplopen tot honderden euro's als je elke dag er
 
 **Gratis opties zijn de beste opties voor peuters.** Kinderboerderijen, parken, stranden, natuur, bibliotheken, de watertafel in je eigen tuin — peuters hebben geen toegangsprijs nodig voor pret. Ze weten niet eens wat duur is.
 
-**Combineer uitjes slim.** Een dagje [dierentuinen](/dierentuinen.html) is niet goedkoop, maar als je er met twee gezinnen naartoe gaat en de kosten deelt voor parkeren en lunchen, valt het mee. Bovendien: gezelschap voor je peuter én jij hebt iemand om mee te praten.
+**Combineer uitjes slim.** Een dagje [dierentuinen](/natuur.html) is niet goedkoop, maar als je er met twee gezinnen naartoe gaat en de kosten deelt voor parkeren en lunchen, valt het mee. Bovendien: gezelschap voor je peuter én jij hebt iemand om mee te praten.
 
 **Gebruik de bibliotheek voor zomerboeken.** In plaats van nieuwe boeken kopen, leen je ze. De meeste bibliotheken hebben ook zomerprogramma's voor peuters.
 
@@ -234,4 +234,4 @@ Eerst: dit is normaal. Peuters zijn gevoelig voor overprikkeling, honger, vermoe
 
 ---
 
-*Heb je een favoriete zomeractiviteit met je peuter die hier niet bij staat? PeuterPlannen heeft voor jouw regio een overzicht van alle uitjes, van [speeltuinen](/speeltuinen.html) tot [dierentuinen](/dierentuinen.html) en alles daartussenin.*
+*Heb je een favoriete zomeractiviteit met je peuter die hier niet bij staat? PeuterPlannen heeft voor jouw regio een overzicht van alle uitjes, van [speeltuinen](/speeltuinen.html) tot [dierentuinen](/natuur.html) en alles daartussenin.*

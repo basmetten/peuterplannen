@@ -662,7 +662,7 @@ De ops-cadence workflow kan checken of posts op tijd gepubliceerd worden en waar
 ---
 
 ## FASE 8: EVERGREEN CONTENT — TOP 8 GAP-VULLERS
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** Meerdere `content-writer` agents PARALLEL (1 per post) + `implementer` (bestaande posts uitbreiden) → `verifier`
 **Prioriteit:** MEDIUM-HOOG
 
@@ -903,7 +903,7 @@ Checkt `content/editorial-calendar.json` en waarschuwt als:
 | 5 | UX-verbeteringen | `DONE` | HOOG | Claude Code |
 | 6 | E-mail capture & nieuwsbrief | `DONE` | HOOG | Claude Code + 🔴 Bas |
 | 7 | Seizoenscontent (6 posts) | `DONE` | HOOG | Claude Code |
-| 8 | Evergreen content (8 posts) | `TODO` | MEDIUM-HOOG | Claude Code |
+| 8 | Evergreen content (8 posts) | `DONE` | MEDIUM-HOOG | Claude Code |
 | 9 | Ontbrekende stadsgidsen (11 posts) | `TODO` | MEDIUM | Claude Code |
 | 10 | Interne linking mesh | `TODO` | MEDIUM | Claude Code |
 | 11 | Dunne pagina's fixen | `TODO` | MEDIUM | Claude Code |
