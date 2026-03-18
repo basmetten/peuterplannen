@@ -14,24 +14,9 @@ function updateIndex(data) {
     .sort((a, b) => `${b.date}`.localeCompare(`${a.date}`))
     .slice(0, 6);
 
-  // STATS
-  const statsHTML = `    <section class="stats">
-        <div class="stats-container">
-            <div>
-                <div class="stat-number" data-target="${total}" data-suffix="">${total}</div>
-                <div class="stat-label">Locaties</div>
-            </div>
-            <div>
-                <div class="stat-number" data-target="${regions.length}" data-suffix="">${regions.length}</div>
-                <div class="stat-label">Regio's</div>
-            </div>
-            <div>
-                <div class="stat-number" data-target="100" data-suffix="%">100%</div>
-                <div class="stat-label"><span class="accent">Gecheckt</span></div>
-            </div>
-        </div>
-    </section>`;
-  content = replaceMarker(content, 'STATS', statsHTML);
+  // HERO_KICKER
+  const kickerHTML = `            <p class="hero-kicker">${total} locaties · ${regions.length} regio's · 100% geverifieerd</p>`;
+  content = replaceMarker(content, 'HERO_KICKER', kickerHTML);
 
   // TYPE_GRID
   const typeCards = Object.entries(TYPE_MAP).map(([type, info]) => {
@@ -219,12 +204,6 @@ ${areaServed}
   content = content.replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${escapeHtml(homeDescription)}">`);
   content = content.replace(/<meta name="twitter:title" content="[^"]*">/, `<meta name="twitter:title" content="${escapeHtml(homeTitle)}">`);
   content = content.replace(/<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${escapeHtml(homeDescription)}">`);
-  // Hero badge — scoped to the exact span to avoid false positives
-  content = content.replace(
-    /(style="color:var\(--pp-text-muted\);"[^>]*>)\d+\+ locaties/,
-    `$1${total}+ locaties`
-  );
-
   fs.writeFileSync(path.join(ROOT, 'index.html'), content);
   console.log(`Updated index.html (${total} locaties, ${regions.length} regio's)`);
 }

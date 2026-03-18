@@ -169,8 +169,8 @@
     <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/design-system.css?v=202603181744">
-    <link rel="stylesheet" href="/style.min.css?v=202603181744">
+    <link rel="stylesheet" href="/design-system.css?v=202603181751">
+    <link rel="stylesheet" href="/style.min.css?v=202603181751">
     <style>
         /* Homepage-specific styles */
         .hero-home {
@@ -206,32 +206,26 @@
             font-style: normal;
         }
         .hero-content p { font-size: 20px; color: var(--pp-text-secondary); margin-bottom: 24px; max-width: 500px; opacity: 1; text-align: left; }
-        .hero-proof { font-size: 14px; color: var(--pp-text-muted); margin-bottom: 26px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-        .hero-proof-badge {
-            background: var(--pp-primary-light); color: var(--pp-primary-dark);
-            border: 1px solid rgba(212,119,90,0.25); border-radius: var(--pp-radius-pill);
-            padding: 5px 12px; font-size: 12px; font-weight: 600; white-space: nowrap;
-        }
-        .hero-cta { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
-        .hero-cta-primary {
-            background: var(--pp-primary); color: white; padding: 16px 32px; border-radius: var(--pp-radius-sm);
-            text-decoration: none; font-weight: 600; font-size: 16px;
-            box-shadow: 0 4px 20px rgba(45,41,38,0.25); transition: all 0.25s cubic-bezier(0.22,1,0.36,1);
-        }
-        .hero-cta-primary:hover { background: var(--pp-primary-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(45,41,38,0.3); }
-        .hero-cta-tertiary {
-            color: var(--pp-text); text-decoration: none; font-weight: 500; font-size: 14px;
-            padding: 4px 0; opacity: 0.7; transition: opacity 0.2s;
-        }
-        .hero-cta-tertiary:hover { opacity: 1; }
-        .quick-filter-chip {
-            display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px;
-            border-radius: var(--pp-radius-pill); background: var(--pp-surface);
+        .hero-popular { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .hero-popular span { font-size: 13px; color: var(--pp-text-muted); font-weight: 600; }
+        .hero-popular a { font-size: 13px; color: var(--pp-primary-dark); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        .hero-popular a:hover { color: var(--pp-primary); text-decoration: underline; }
+        .hero-presets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 400px; }
+        .hero-preset-chip {
+            display: flex; align-items: center; justify-content: center;
+            padding: 14px 16px; min-height: 48px;
+            border-radius: var(--pp-radius-sm); background: var(--pp-surface);
             color: var(--pp-text); text-decoration: none; font-weight: 600; font-size: 14px;
             border: 1px solid var(--pp-border); transition: all 0.2s;
-            font-family: var(--pp-font-body);
+            font-family: var(--pp-font-body); text-align: center;
         }
-        .quick-filter-chip:hover { border-color: var(--pp-primary); color: var(--pp-primary); background: var(--pp-primary-light); }
+        .hero-preset-chip:hover { border-color: var(--pp-primary); color: var(--pp-primary); background: var(--pp-primary-light); transform: translateY(-1px); }
+        .hero-preset-extra { display: none; }
+        .hero-gps-btn {
+            background: var(--pp-primary-light); border: 2px solid rgba(212,119,90,0.2); border-radius: 12px;
+            padding: 0 14px; cursor: pointer; display: flex; align-items: center; color: var(--pp-primary-dark); transition: all 0.2s;
+        }
+        .hero-gps-btn:hover { border-color: var(--pp-primary); background: rgba(255,245,235,1); }
 
         .hero-visual { position: relative; width: 100%; height: 500px; display: flex; align-items: center; justify-content: center; }
         .hero-image-wrapper {
@@ -254,56 +248,6 @@
         @media (prefers-reduced-motion: reduce) { .hero-visual { animation: none; } .hero-home::before, .hero-home::after { animation: none; } }
         .hero-visual::before { content: ''; position: absolute; width: 80%; height: 80%; background: linear-gradient(135deg, var(--pp-primary), var(--pp-accent)); filter: blur(100px); opacity: 0.15; z-index: -1; }
 
-        .stats { padding: 60px 24px; }
-        .stats-container { max-width: 800px; margin: 0 auto; display: flex; justify-content: space-around; text-align: center; }
-        .stat-number { font-size: 48px; font-weight: 700; color: var(--pp-text); font-family: var(--pp-font-heading); }
-        .stat-label { color: var(--pp-text-muted); font-size: 15px; margin-top: 4px; }
-
-        .features { padding: 80px 24px; background: linear-gradient(180deg, rgba(255,245,235,0.76) 0%, var(--pp-bg-cream) 100%); }
-        .features-container { max-width: 1200px; margin: 0 auto; }
-        .features-header { text-align: center; margin-bottom: 60px; }
-        .features-header h2 { font-size: clamp(30px, 4vw, 48px); font-weight: 700; margin-bottom: 12px; letter-spacing: -0.02em; line-height: 0.96; text-wrap: balance; }
-        .features-header p { font-size: 18px; color: var(--pp-text-secondary); }
-        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-        .feature-card {
-            background: var(--pp-surface); border: 1px solid var(--pp-border); border-radius: var(--pp-radius-md);
-            padding: 30px; box-shadow: var(--pp-shadow-card); position: relative; overflow: hidden;
-            transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
-        }
-        .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--pp-primary), var(--pp-accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; border-radius: 20px 20px 0 0; }
-        .feature-card:hover { transform: translateY(-6px) scale(1.01); box-shadow: var(--pp-shadow-card-hover); }
-        .feature-card:hover::before { transform: scaleX(1); }
-        .feature-icon { width: 48px; height: 48px; background: var(--pp-primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(45,41,38,0.2); }
-        .feature-icon svg { width: 24px; height: 24px; stroke: white; fill: none; stroke-width: 2; }
-        .feature-card h3 { font-size: 24px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.045em; line-height: 1; text-wrap: balance; }
-        .feature-card p { color: var(--pp-text-secondary); font-size: 15px; }
-        .feature-live-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-        .feature-live-label { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--pp-text-muted); }
-        .feature-output {
-            min-height: 44px; padding: 10px 12px; border-radius: var(--pp-radius-sm);
-            border: 1px solid rgba(212,119,90,0.2); background: var(--pp-primary-light);
-            color: var(--pp-primary-dark); font-weight: 600; font-size: 14px; margin-bottom: 10px;
-        }
-        .feature-btn {
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 10px 14px; border-radius: var(--pp-radius-pill);
-            border: 1px solid rgba(212,119,90,0.25); background: var(--pp-surface);
-            color: var(--pp-text); font-size: 13px; font-weight: 600; cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-        }
-        .feature-btn:hover { border-color: rgba(212,119,90,0.45); box-shadow: 0 6px 14px rgba(45,41,38,0.08); transform: translateY(-1px); }
-        .feature-btn:active { transform: translateY(0); }
-        .scheduler-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 10px; }
-        .scheduler-day {
-            border: 1px solid rgba(212,119,90,0.2); background: var(--pp-surface); color: var(--pp-text-secondary);
-            border-radius: var(--pp-radius-sm); font-size: 12px; font-weight: 600; padding: 8px 6px;
-            text-align: center; cursor: pointer;
-        }
-        .scheduler-day.active { border-color: var(--pp-primary); background: var(--pp-primary); color: #fff; }
-        .typewriter-text { min-height: 24px; color: var(--pp-primary-dark); font-weight: 700; letter-spacing: 0.01em; }
-        .typewriter-cursor { display: inline-block; width: 1ch; color: var(--pp-primary); animation: blink 1s steps(2, jump-none) infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
-
         .cities-section { padding: 80px 24px; background: var(--pp-bg-cream); }
         .section-title { font-size: clamp(30px, 4vw, 46px); font-weight: 700; color: var(--pp-text); text-align: center; margin-bottom: 12px; letter-spacing: -0.02em; line-height: 0.96; text-wrap: balance; }
         .section-sub { color: var(--pp-text-secondary); text-align: center; font-size: 17px; margin-bottom: 40px; }
@@ -320,13 +264,6 @@
         .city-card:hover::before { transform: scaleX(1); }
         .city-card strong { font-size: 19px; font-weight: 700; color: var(--pp-text); letter-spacing: -0.03em; }
         .city-card span { font-size: 13px; color: var(--pp-text-muted); }
-
-        .hero-icons { display: flex; gap: 32px; justify-content: center; align-items: center; }
-        .hero-icon-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .hero-icon-item svg { width: 64px; height: 64px; color: var(--pp-primary); padding: 16px; background: var(--pp-primary-light); border-radius: 16px; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); }
-        .hero-icon-item:hover svg { transform: scale(1.08) translateY(-4px); }
-        .hero-icon-item.hero-icon-accent svg { color: var(--pp-accent); background: var(--pp-accent-light); }
-        .hero-icon-item span { font-size: 13px; font-weight: 600; color: var(--pp-text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
 
         footer { background: var(--pp-text); color: white; padding: 60px 24px 40px; margin-top: 60px; }
         .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
@@ -355,27 +292,26 @@
         }
         .hero-search button:hover { background: var(--pp-primary-dark); }
 
+        @media (min-width: 769px) {
+            .hero-preset-extra { display: flex; }
+            .hero-presets { grid-template-columns: repeat(3, 1fr); max-width: 520px; }
+        }
         @media (max-width: 768px) {
-            .hero-home { grid-template-columns: 1fr; padding-top: 122px; padding-bottom: 56px; gap: 28px; text-align: left; }
+            .hero-home { grid-template-columns: 1fr; padding-top: 100px; padding-bottom: 44px; gap: 0; text-align: left; }
             .hero-content h1 { font-size: 36px; max-width: none; }
-            .hero-visual { height: 280px; order: -1; }
-            .hero-image-wrapper { border-radius: 24px; }
-            .features-grid { grid-template-columns: 1fr; }
+            .hero-visual { display: none; }
             .footer-container { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 480px) {
-            .hero-home { padding: 118px 20px 44px; }
+            .hero-home { padding: 90px 20px 36px; }
             .hero-content h1 { font-size: 30px; }
-            .hero-visual { height: 220px; }
-            .hero-image-wrapper { border-radius: 20px; }
-            .hero-cta { flex-direction: column; }
-            .hero-proof { align-items: flex-start; }
+            .hero-presets { max-width: 100%; }
             .footer-container { grid-template-columns: 1fr; }
             .footer-bottom { margin-top: 24px; }
         }
     </style>
-    <link rel="stylesheet" href="/nav-floating.css?v=202603181744">
-    <script src="/nav-floating.js?v=202603181744" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603181751">
+    <script src="/nav-floating.js?v=202603181751" defer></script>
     <script src="/pp-interactions.js" defer></script>
 </head>
 <body>
@@ -410,19 +346,33 @@
 
     <section class="hero-home" id="main-content">
         <div class="hero-content">
+            <!-- BEGIN:HERO_KICKER -->
+            <p class="hero-kicker">2138 locaties · 22 regio's · 100% geverifieerd</p>
+<!-- END:HERO_KICKER -->
             <h1>De beste <span class="accent">peuteruitjes</span> voor jouw kleintje</h1>
-            <p>Ontdek de leukste speeltuinen, restaurants, musea en natuur voor jonge kinderen. Allemaal gecheckt op kindvriendelijkheid.</p>
-            <p class="hero-proof">
-                <span class="hero-proof-badge">&#10003; Menselijk geverifieerd · AI-slim gesorteerd</span>
-                <span style="color:var(--pp-text-muted);">2138+ locaties</span>
-            </p>
+            <p>Ontdek kindvriendelijke locaties in heel Nederland, allemaal persoonlijk gecheckt.</p>
             <form action="/app.html" method="get" class="hero-search">
-              <input type="text" name="q" placeholder="Zoek een stad, type of locatie..." aria-label="Zoek uitjes" autocomplete="off">
+              <input type="text" name="q" placeholder="Waar woon je?" aria-label="Zoek uitjes" autocomplete="off">
+              <button type="button" class="hero-gps-btn" aria-label="Gebruik mijn locatie" onclick="navigator.geolocation&&navigator.geolocation.getCurrentPosition(function(p){localStorage.setItem('gpsLat',p.coords.latitude);localStorage.setItem('gpsLng',p.coords.longitude);window.location.href='/app.html?gps=1'},null,{timeout:8000})">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              </button>
               <button type="submit">Zoeken</button>
             </form>
-            <div class="hero-cta">
-                <a href="app.html" class="hero-cta-primary">Start met zoeken</a>
-                <a href="about.html" class="hero-cta-tertiary">Lees meer over PeuterPlannen &rarr;</a>
+            <div class="hero-popular">
+                <span>Populair:</span>
+                <a href="app.html?q=Amsterdam">Amsterdam</a>
+                <a href="app.html?q=Rotterdam">Rotterdam</a>
+                <a href="app.html?q=Den Haag">Den Haag</a>
+                <a href="app.html?q=Utrecht">Utrecht</a>
+                <a href="app.html?q=Haarlem">Haarlem</a>
+            </div>
+            <div class="hero-presets">
+                <a href="app.html?preset=rain" class="hero-preset-chip">Regenproof</a>
+                <a href="app.html?preset=outdoor-coffee" class="hero-preset-chip">Buiten + koffie</a>
+                <a href="app.html?preset=dreumesproof" class="hero-preset-chip">Dreumesproof</a>
+                <a href="app.html?preset=short-drive" class="hero-preset-chip">Korte rit</a>
+                <a href="app.html?preset=peuterproof" class="hero-preset-chip hero-preset-extra">Peuterproof</a>
+                <a href="app.html?preset=lunch-play" class="hero-preset-chip hero-preset-extra">Lunch + spelen</a>
             </div>
         </div>
         <div class="hero-visual">
@@ -434,99 +384,11 @@
                 <div class="hero-grain"></div>
                 <div class="hero-image-mask"></div>
             </div>
-            <!-- Organic Icons Overlay (Elegant) -->
-            <div style="position: absolute; bottom: 40px; right: -20px; z-index: 10;">
-                <div class="hero-icon-item hero-icon-accent" style="background: white; padding: 16px; border-radius: 24px; box-shadow: var(--pp-shadow-md); transform: rotate(5deg);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px;"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66L7 18h4l-1 6 2-2 2 2-1-6h4l1.25 4 1.89-.66C18.1 16.17 15.9 10 17 8z"/><path d="M12 2a3 3 0 0 0 0 6 3 3 0 0 0 0-6z"/></svg>
-                </div>
-            </div>
-            <div style="position: absolute; top: 20px; left: -20px; z-index: 10;">
-                <div class="hero-icon-item" style="background: white; padding: 16px; border-radius: 24px; box-shadow: var(--pp-shadow-md); transform: rotate(-8deg);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width: 32px; height: 32px;"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3l-4 4-4-4"/><path d="M12 7v7"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/></svg>
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- BEGIN:STATS -->
-    <section class="stats">
-        <div class="stats-container">
-            <div>
-                <div class="stat-number" data-target="2138" data-suffix="">2138</div>
-                <div class="stat-label">Locaties</div>
-            </div>
-            <div>
-                <div class="stat-number" data-target="22" data-suffix="">22</div>
-                <div class="stat-label">Regio's</div>
-            </div>
-            <div>
-                <div class="stat-number" data-target="100" data-suffix="%">100%</div>
-                <div class="stat-label"><span class="accent">Gecheckt</span></div>
-            </div>
-        </div>
-    </section>
-<!-- END:STATS -->
 
-    <section style="padding: 0 24px 40px; text-align: center;">
-        <div style="max-width: 600px; margin: 0 auto;">
-            <h2 style="font-family: var(--pp-font-heading); font-size: 22px; font-weight: 700; color: var(--pp-text); margin-bottom: 16px;">Wat zoek je?</h2>
-            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                <a href="app.html?weather=indoor" class="quick-filter-chip">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    Binnen
-                </a>
-                <a href="app.html?weather=outdoor" class="quick-filter-chip">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                    Buiten
-                </a>
-            </div>
-        </div>
-    </section>
 
-    <section class="features pp-reveal">
-        <div class="features-container">
-            <div class="features-header">
-                <h2>Waarom PeuterPlannen?</h2>
-                <p>Gemaakt door ouders, voor ouders, zodat je snel iets vindt dat echt werkt met peuters en kleuters.</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h8"/><circle cx="18" cy="12" r="3"/></svg>
-                    </div>
-                    <h3>Snel nieuw idee</h3>
-                    <p>Twijfel je? Met 1 tik krijg je direct een nieuw peuterproof plan, zonder opnieuw te beginnen.</p>
-                    <div class="feature-output" id="shuffler-output">Nu: "Natuurwandeling + koffiestop met speelhoek"</div>
-                    <button class="feature-btn" id="shuffle-btn" type="button">Geef me een nieuw idee</button>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24"><path d="M4 19h16M6 16V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8"/><path d="M8 10h8"/></svg>
-                    </div>
-                    <h3>Zeg wat je zoekt</h3>
-                    <p>Typ zoals je praat; wij maken er meteen een passende selectie van voor jouw gezin.</p>
-                    <div class="feature-live-row">
-                        <span class="feature-live-label">Jouw wens</span>
-                        <div class="typewriter-text" id="typewriter-text"></div>
-                    </div>
-                    <button class="feature-btn" id="typewriter-btn" type="button">Volgende wens</button>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M7 11h10M7 15h7"/></svg>
-                    </div>
-                    <h3>Dagje-uit voorbeeld</h3>
-                    <p>Kies moment en weer en zie meteen een rustige volgorde die werkt met kleine kinderen.</p>
-                    <div class="scheduler-grid" id="scheduler-grid">
-                        <button type="button" class="scheduler-day active" data-scheduler="zaterdagochtend">Za ochtend</button>
-                        <button type="button" class="scheduler-day" data-scheduler="zaterdagmiddag">Za middag</button>
-                        <button type="button" class="scheduler-day" data-scheduler="zondagochtend">Zo ochtend</button>
-                    </div>
-                    <div class="feature-output" id="scheduler-output">Rustig opstarten binnen, daarna lunch en uitrazen in de speeltuin.</div>
-                </div>
-            </div>
-        </div>
-    </section>
 
 
     
@@ -800,97 +662,6 @@
         </div>
     </footer>
 
-<script>
-(function () {
-  // Count-up animation for stats
-  function countUp(el) {
-    var target = parseInt(el.dataset.target, 10);
-    var suffix = el.dataset.suffix || '';
-    var duration = 1400;
-    var start = null;
-    function step(ts) {
-      if (!start) start = ts;
-      var p = Math.min((ts - start) / duration, 1);
-      var ease = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(ease * target) + suffix;
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-  var statObs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { countUp(e.target); statObs.unobserve(e.target); }
-    });
-  }, { threshold: 0.5 });
-  document.querySelectorAll('.stat-number[data-target]').forEach(function (el) { statObs.observe(el); });
-
-  // Feature playground interactions
-  var shufflerOutput = document.getElementById('shuffler-output');
-  var shuffleBtn = document.getElementById('shuffle-btn');
-  var shuffleStates = [
-    'Nu: "Natuurwandeling + koffiestop met speelhoek"',
-    'Of: "Binnen spelen + verschoonplek dichtbij"',
-    'Of: "Kinderboerderij + pannenkoek toe"',
-    'Of: "Speeltuin + rustige lunch in de buurt"'
-  ];
-  var shuffleIdx = 0;
-  if (shuffleBtn && shufflerOutput) {
-    shuffleBtn.addEventListener('click', function () {
-      shuffleIdx = (shuffleIdx + 1) % shuffleStates.length;
-      shufflerOutput.textContent = shuffleStates[shuffleIdx];
-    });
-  }
-
-  var prompts = [
-    'Het regent, we willen dichtbij iets leuks met koffie.',
-    'Zonnig! Liefst buiten met dieren en veel ruimte.',
-    'Korte ochtendactiviteit met peuterproof lunchplek.',
-    'Binnen spelen, liefst met verschoonruimte en kinderstoel.'
-  ];
-  var typewriterText = document.getElementById('typewriter-text');
-  var typewriterBtn = document.getElementById('typewriter-btn');
-  var promptIdx = 0;
-  var typingTimer = null;
-
-  function runTypewriter(text) {
-    if (!typewriterText) return;
-    if (typingTimer) window.clearTimeout(typingTimer);
-    var i = 0;
-    typewriterText.innerHTML = '';
-    function tick() {
-      var safe = text.slice(0, i).replace(/&/g, '&amp;').replace(/</g, '&lt;');
-      typewriterText.innerHTML = safe + '<span class="typewriter-cursor">|</span>';
-      i++;
-      if (i <= text.length) {
-        typingTimer = window.setTimeout(tick, 26);
-      }
-    }
-    tick();
-  }
-  runTypewriter(prompts[promptIdx]);
-  if (typewriterBtn) {
-    typewriterBtn.addEventListener('click', function () {
-      promptIdx = (promptIdx + 1) % prompts.length;
-      runTypewriter(prompts[promptIdx]);
-    });
-  }
-
-  var schedulerOutput = document.getElementById('scheduler-output');
-  var schedulePlanMap = {
-    zaterdagochtend: 'Rustig opstarten binnen, daarna lunch en uitrazen in de speeltuin.',
-    zaterdagmiddag: 'Eerst buitenlucht, daarna pannenkoekpauze met ruimte voor de kids.',
-    zondagochtend: 'Korte reistijd, dierentijd op de boerderij en koffie voor ouders.'
-  };
-  document.querySelectorAll('.scheduler-day').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      document.querySelectorAll('.scheduler-day').forEach(function (x) { x.classList.remove('active'); });
-      btn.classList.add('active');
-      var key = btn.getAttribute('data-scheduler');
-      if (schedulerOutput && key && schedulePlanMap[key]) schedulerOutput.textContent = schedulePlanMap[key];
-    });
-  });
-})();
-</script>
 <script src="/reveal.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
