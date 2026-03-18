@@ -169,8 +169,8 @@
     <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/design-system.css?v=202603181751">
-    <link rel="stylesheet" href="/style.min.css?v=202603181751">
+    <link rel="stylesheet" href="/design-system.css?v=202603181759">
+    <link rel="stylesheet" href="/style.min.css?v=202603181759">
     <style>
         /* Homepage-specific styles */
         .hero-home {
@@ -274,11 +274,17 @@
         .footer-links a:hover { color: white; padding-left: 4px; }
         .footer-bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: rgba(255,255,255,0.5); font-size: 14px; }
 
-        .support-section { background: linear-gradient(135deg, var(--pp-primary), var(--pp-primary-dark)); color: white; border-radius: 16px; padding: 36px 32px; text-align: center; }
-        .support-section h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; font-family: var(--pp-font-heading); }
-        .support-section p { opacity: 0.9; margin-bottom: 20px; font-size: 15px; max-width: 480px; margin-left: auto; margin-right: auto; }
-        .btn-support { background: white; color: var(--pp-primary-dark); padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; transition: background 0.2s; }
-        .btn-support:hover { background: var(--pp-surface-hover); }
+        .blog-preview-section { max-width: 1200px; margin: 48px auto; padding: 0 24px; }
+        .blog-preview-scroll { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 8px; }
+        .blog-preview-scroll::-webkit-scrollbar { display: none; }
+        .blog-preview-card { flex: 0 0 280px; scroll-snap-align: start; background: white; border: 1px solid var(--pp-border); border-radius: 12px; padding: 20px; text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; gap: 8px; }
+        .blog-preview-card:hover { transform: translateY(-2px); box-shadow: var(--pp-shadow-card-hover); }
+        .blog-preview-card strong { font-size: 16px; font-weight: 700; color: var(--pp-text); line-height: 1.35; }
+        .blog-preview-card span { font-size: 14px; color: var(--pp-text-muted); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .blog-preview-more { display: inline-block; margin-top: 16px; font-size: 15px; font-weight: 600; color: var(--pp-primary); text-decoration: none; }
+        .blog-preview-more:hover { text-decoration: underline; }
+        .guide-section-compact { background: var(--pp-bg-warm); border-radius: 12px; padding: 20px 24px; }
+        .guide-section-compact .guide-kicker { font-size: 13px; font-weight: 600; color: var(--pp-text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
 
         .hero-search { display: flex; gap: 8px; max-width: 480px; margin: 16px 0; }
         .hero-search input {
@@ -310,8 +316,8 @@
             .footer-bottom { margin-top: 24px; }
         }
     </style>
-    <link rel="stylesheet" href="/nav-floating.css?v=202603181751">
-    <script src="/nav-floating.js?v=202603181751" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603181759">
+    <script src="/nav-floating.js?v=202603181759" defer></script>
     <script src="/pp-interactions.js" defer></script>
 </head>
 <body>
@@ -439,19 +445,9 @@
                     <span>23 locaties</span>
                 </a>
             </div>
-            <div class="guide-section guide-section-featured" style="margin-top:32px;">
-                <div class="guide-card guide-card-lead">
-                    <p class="guide-kicker">Start bij situatie</p>
-                    <h3>Niet zoeken op locatie, maar op de dag die je hebt</h3>
-                    <p class="guide-card-intro">Deze routes helpen ouders sneller naar de juiste keuze en geven de site een heldere structuur: regen, dreumes, horeca met speelhoek of een plek waar koffie en spelen logisch samengaan.</p>
-                    <div class="guide-pills">
-                      <span class="guide-pill">Regenproof</span>
-                      <span class="guide-pill">Dreumes</span>
-                      <span class="guide-pill">Koffie + spelen</span>
-                    </div>
-                </div>
-                <div class="guide-card guide-card-compact">
-                    <div class="guide-links">
+            <div class="guide-section-compact" style="margin-top:24px;">
+                <p class="guide-kicker" style="margin-bottom:12px;">Of kies op situatie</p>
+                <div class="guide-links">
               <a href="regenachtige-dag-met-peuter.html" class="guide-link">
                 <strong>Regenachtige dag met peuter</strong>
                 <span>Binnenopties voor regenachtige dagen met peuters: musea, speelplekken, horeca met speelhoek en andere locaties die ook bij slecht weer werken.</span>
@@ -476,7 +472,6 @@
                 <strong>Peuteruitjes voor 2-5 jaar</strong>
                 <span>Uitjes voor kinderen van ongeveer 2 tot 5 jaar: meer actie, meer ontdekken en nog steeds praktisch voor ouders. Van natuur en speeltuinen tot horeca en musea.</span>
               </a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -577,40 +572,46 @@
                     <span>46 locaties</span>
                 </a>
             </div>
-          <div class="guide-section guide-section-hub" style="margin-top:32px;">
-                <div class="guide-card guide-card-lead">
-                    <p class="guide-kicker">Zoek niet te breed</p>
-                    <h3>Ontdekken met peuters en kleuters</h3>
-                    <p class="guide-card-intro">Kies eerst hoe de dag voelt: regio, type uitje of situatie. Daarna pas de exacte plek.</p>
-                    <div class="editorial-meta"><span>PeuterPlannen redactie</span><span>Laatst bijgewerkt 12 maart 2026</span><a href="/methode/">Hoe we selecteren</a></div>
-                    <div class="guide-pills">
-                      <span class="guide-pill">Regio</span>
-                      <span class="guide-pill">Type uitje</span>
-                      <span class="guide-pill">Situatie</span>
-                    </div>
-                    <div class="guide-links">
-                      <a href="/ontdekken/" class="guide-link"><strong>Alles geordend bekijken</strong><span>Regio’s, typen, situaties en blogroutes op één crawlbare pagina.</span></a>
-                      <a href="/methode/" class="guide-link"><strong>Hoe PeuterPlannen selecteert</strong><span>Waarom sommige pagina’s zwaarder wegen dan andere, en hoe we kindpraktijk meewegen.</span></a>
-                    </div>
-                </div>
-                <div class="guide-card guide-card-compact">
-                    <p class="guide-kicker">Belangrijkste ingangen</p>
-                    <h3>Snelle routes door de site</h3>
-                    <div class="guide-links">
-                      <a href="/amsterdam.html" class="guide-link"><strong>Amsterdam</strong><span>301 locaties in deze regio</span></a><a href="/rotterdam.html" class="guide-link"><strong>Rotterdam</strong><span>145 locaties in deze regio</span></a><a href="/den-haag.html" class="guide-link"><strong>Den Haag</strong><span>175 locaties in deze regio</span></a><a href="/utrecht.html" class="guide-link"><strong>Utrecht</strong><span>185 locaties in deze regio</span></a><a href="/haarlem.html" class="guide-link"><strong>Haarlem</strong><span>106 locaties in deze regio</span></a><a href="/amersfoort.html" class="guide-link"><strong>Amersfoort</strong><span>81 locaties in deze regio</span></a><a href="/leiden.html" class="guide-link"><strong>Leiden</strong><span>68 locaties in deze regio</span></a><a href="/utrechtse-heuvelrug.html" class="guide-link"><strong>Utrechtse Heuvelrug</strong><span>108 locaties in deze regio</span></a><a href="/eindhoven.html" class="guide-link"><strong>Eindhoven</strong><span>72 locaties in deze regio</span></a>
-                    </div>
-                </div>
-                <div class="guide-card guide-card-compact">
-                    <p class="guide-kicker">Verder lezen</p>
-                    <h3>Gebruik blog en clusterpagina’s als keuzehulp</h3>
-                    <div class="guide-links">
-                      <a href="/blog/almere-met-peuters/" class="guide-link"><strong>Almere met peuters: meer te doen dan je denkt</strong><span>Almere heeft de ruimte die andere steden missen. Stranden, natuur, speeltuinen en verrassende musea — en alles zonder parkeergedoe.</span></a><a href="/blog/apeldoorn-met-peuters/" class="guide-link"><strong>Apeldoorn met peuters: Apenheul, natuur en relaxte uitjes op de Veluwe</strong><span>Apeldoorn is dé peuterstad van de Veluwe. Apenheul, bossen, speeltuinen en pannenkoekenhuizen — zo plan je een ontspannen dagje uit.</span></a><a href="/blog/arnhem-met-peuters/" class="guide-link"><strong>Arnhem met peuters: natuur, dieren en verrassend veel te doen</strong><span>Arnhem is een van de beste dagje-uit-steden voor peuters. Burgers' Zoo, het Openluchtmuseum en de mooiste parken van Nederland — dit is wat werkt.</span></a><a href="/blog/beste-buggy-voor-uitjes/" class="guide-link"><strong>De beste buggy voor uitjes met je peuter</strong><span>Welke buggy werkt echt bij speeltuinen, bos, stad en dierentuin? Praktische gids over types, wat je moet checken, en een keuzechecklist.</span></a><a href="/blog/beste-speeltuinen-amsterdam-peuters/" class="guide-link"><strong>Beste speeltuinen Amsterdam voor peuters (2026)</strong><span>De 12 beste speeltuinen in Amsterdam voor peuters en kleuters. Met koffie-score, verschooninfo en buurt-tips.</span></a><a href="/blog/dagje-uit-met-1-jarige/" class="guide-link"><strong>Dagje uit met een 1-jarige: wat kan er eigenlijk al?</strong><span>Wat kun je doen met een 1-jarige? Meer dan je denkt. Eerlijke tips voor uitjes die werken rond het eerste jaar.</span></a>
-                    </div>
+          <div class="guide-section-compact" style="margin-top:24px;">
+                <div class="guide-links">
+                  <a href="/ontdekken/" class="guide-link"><strong>Alles geordend bekijken</strong><span>Regio’s, typen, situaties en blogroutes op één pagina.</span></a>
+                  <a href="/methode/" class="guide-link"><strong>Hoe we selecteren</strong><span>Waarom sommige locaties hoger scoren dan andere.</span></a>
                 </div>
             </div>
         </div>
     </section>
 <!-- END:CITY_GRID -->
+
+    <!-- BEGIN:BLOG_PREVIEW -->
+    <section class="blog-preview-section pp-reveal">
+        <div class="container">
+            <h2 class="section-title">Uit de blog</h2>
+            <div class="blog-preview-scroll">
+            <a href="/blog/almere-met-peuters/" class="blog-preview-card">
+                <strong>Almere met peuters: meer te doen dan je denkt</strong>
+                <span>Almere heeft de ruimte die andere steden missen. Stranden, natuur, speeltuinen en verrassende musea — en alles zonder parkeergedoe.</span>
+            </a>
+            <a href="/blog/apeldoorn-met-peuters/" class="blog-preview-card">
+                <strong>Apeldoorn met peuters: Apenheul, natuur en relaxte uitjes op de Veluwe</strong>
+                <span>Apeldoorn is dé peuterstad van de Veluwe. Apenheul, bossen, speeltuinen en pannenkoekenhuizen — zo plan je een ontspannen dagje uit.</span>
+            </a>
+            <a href="/blog/arnhem-met-peuters/" class="blog-preview-card">
+                <strong>Arnhem met peuters: natuur, dieren en verrassend veel te doen</strong>
+                <span>Arnhem is een van de beste dagje-uit-steden voor peuters. Burgers' Zoo, het Openluchtmuseum en de mooiste parken van Nederland — dit is wat werkt.</span>
+            </a>
+            <a href="/blog/beste-buggy-voor-uitjes/" class="blog-preview-card">
+                <strong>De beste buggy voor uitjes met je peuter</strong>
+                <span>Welke buggy werkt echt bij speeltuinen, bos, stad en dierentuin? Praktische gids over types, wat je moet checken, en een keuzechecklist.</span>
+            </a>
+            <a href="/blog/beste-speeltuinen-amsterdam-peuters/" class="blog-preview-card">
+                <strong>Beste speeltuinen Amsterdam voor peuters (2026)</strong>
+                <span>De 12 beste speeltuinen in Amsterdam voor peuters en kleuters. Met koffie-score, verschooninfo en buurt-tips.</span>
+            </a>
+            </div>
+            <a href="/blog/" class="blog-preview-more">Alle artikelen bekijken</a>
+        </div>
+    </section>
+<!-- END:BLOG_PREVIEW -->
 
     <div class="newsletter-signup pp-reveal" style="max-width:700px;margin:48px auto;">
       <h3>Elke vrijdag: 3 uitjes die passen bij het weer</h3>
@@ -623,15 +624,6 @@
       </form>
       <p style="font-size:13px;opacity:0.85;margin-top:12px;">Geen spam. Uitschrijven wanneer je wilt.</p>
     </div>
-
-    <section class="support-section pp-reveal" style="max-width: 700px; margin: 48px auto;">
-      <h3>Vond je dit handig?</h3>
-      <p>PeuterPlannen is gratis en wordt met liefde onderhouden.
-         Trakteer de maker op een koffie (of biertje) om de site draaiende te houden!</p>
-      <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener" class="btn-support">
-        Trakteer via Tikkie
-      </a>
-    </section>
 
     <footer class="pp-reveal">
         <div class="footer-container">
