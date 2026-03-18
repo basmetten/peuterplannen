@@ -1431,7 +1431,7 @@ Update de bestaande guard:
 
 ## FASE 11: GENERATOR INTEGRATION & DESIGN SYSTEM ROLLOUT
 
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** `researcher` (inventariseer alle hardcoded waarden in generators) → meerdere `implementer` agents PARALLEL (1 per generator) → `verifier` (full build + audits)
 **Prioriteit:** KRITIEK — dit is waar alles samenkomt
 **Afhankelijk van:** Alle voorgaande fasen

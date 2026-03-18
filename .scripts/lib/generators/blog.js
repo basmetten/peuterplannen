@@ -134,7 +134,7 @@ ${JSON.stringify({
 
 ${navHTML()}
 
-${p.featured_image ? `<div class="blog-hero-img" style="max-width:1100px;margin:80px auto 0;padding:0 24px;"><picture><source type="image/webp" srcset="${p.featured_image.replace(/\.jpe?g$/, '.webp')}"><img src="${p.featured_image}" alt="${escapeHtml(p.title)}" style="width:100%;height:auto;border-radius:16px;max-height:400px;object-fit:cover;" loading="eager"></picture></div>` : ''}
+${p.featured_image ? `<div class="blog-hero-img"><picture><source type="image/webp" srcset="${p.featured_image.replace(/\.jpe?g$/, '.webp')}"><img src="${p.featured_image}" alt="${escapeHtml(p.title)}" loading="eager"></picture></div>` : ''}
 <div class="hero" style="padding: ${p.featured_image ? '24px' : '100px'} 24px 40px;">
   <h1>${escapeHtml(p.title)}</h1>
 </div>

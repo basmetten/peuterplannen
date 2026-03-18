@@ -616,6 +616,10 @@ footer a:hover { color: rgba(var(--pp-surface-rgb),0.85); }
 .blog-card .blog-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .blog-card .blog-tag { background: var(--pp-primary-light); color: var(--pp-primary-dark); font-size: var(--pp-text-xs); padding: 3px 10px; border-radius: var(--pp-radius-lg); font-weight: 500; }
 
+/* Blog hero image */
+.blog-hero-img { max-width: 1100px; margin: 80px auto 0; padding: 0 24px; }
+.blog-hero-img img { width: 100%; height: auto; border-radius: var(--pp-radius-md); max-height: 400px; object-fit: cover; }
+
 /* Blog post content */
 .blog-content { max-width: 720px; }
 .blog-content h2 { font-size: var(--pp-text-2xl); color: var(--pp-text); margin: 36px 0 16px; font-weight: 700; letter-spacing: -0.05em; line-height: 1.02; }

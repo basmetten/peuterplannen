@@ -233,14 +233,14 @@ function rewriteAssetVersions(filePath) {
 
 // --- Affiliate helpers ---
 
-const AFFILIATE_DISCLAIMER = '<p style="font-size: 11px; color: #999; margin-top: 4px;">* Affiliatelink — wij ontvangen een kleine commissie</p>';
+const AFFILIATE_DISCLAIMER = '<p style="font-size: 11px; color: var(--pp-text-muted); margin-top: 4px;">* Affiliatelink — wij ontvangen een kleine commissie</p>';
 
 function affiliateTicketHTML(loc, affiliate) {
   if (!affiliate.tiqets.tag) return '';
   if (!['museum', 'swim', 'play'].includes(loc.type)) return '';
   const url = loc.ticket_url || affiliate.tiqets.baseUrl;
   return `<div style="margin: 16px 0;">
-  <a href="${url}" target="_blank" rel="noopener sponsored" style="border: 2px solid var(--pp-primary); color: var(--pp-primary); background: white; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">🎟️ Tickets kopen</a>
+  <a href="${url}" target="_blank" rel="noopener sponsored" style="border: 2px solid var(--pp-primary); color: var(--pp-primary); background: white; padding: 12px 24px; border-radius: var(--pp-radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">🎟️ Tickets kopen</a>
   ${AFFILIATE_DISCLAIMER}
 </div>`;
 }
@@ -262,7 +262,7 @@ function affiliateProductsHTML(type, affiliate) {
     const url = `${baseUrl}${encodeURIComponent('https://www.bol.com/nl/nl/s/?searchtext=' + p.q)}`;
     return `<li><a href="${url}" target="_blank" rel="noopener sponsored">${p.name}</a></li>`;
   }).join('\n      ');
-  return `<div style="background: #f8f7f5; border-radius: 12px; padding: 20px 24px; margin: 24px 0;">
+  return `<div style="background: var(--pp-bg); border-radius: var(--pp-radius-sm); padding: 20px 24px; margin: 24px 0;">
     <strong>Wat meenemen?</strong>
     <ul style="margin: 8px 0 4px; padding-left: 20px; list-style: disc;">
       ${items}
@@ -276,7 +276,7 @@ function affiliateReservationHTML(loc, affiliate) {
   if (!['horeca', 'pancake'].includes(loc.type)) return '';
   const url = loc.ticket_url || affiliate.theFork.baseUrl;
   return `<div style="margin: 16px 0;">
-  <a href="${url}" target="_blank" rel="noopener sponsored" style="border: 2px solid var(--pp-primary); color: var(--pp-primary); background: white; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">🍽️ Reserveer een tafel</a>
+  <a href="${url}" target="_blank" rel="noopener sponsored" style="border: 2px solid var(--pp-primary); color: var(--pp-primary); background: white; padding: 12px 24px; border-radius: var(--pp-radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">🍽️ Reserveer een tafel</a>
   ${AFFILIATE_DISCLAIMER}
 </div>`;
 }
@@ -284,9 +284,9 @@ function affiliateReservationHTML(loc, affiliate) {
 function affiliateBookingHTML(regionName, affiliate) {
   if (!affiliate.booking.tag) return '';
   const url = `${affiliate.booking.baseUrl}searchresults.html?aid=${affiliate.booking.tag}&ss=${encodeURIComponent(regionName)}&nflt=hotelfacility%3D28`;
-  return `<div style="background: #f0f7f6; border-radius: 12px; padding: 16px 24px; margin: 24px 0;">
+  return `<div style="background: var(--pp-secondary-50); border-radius: var(--pp-radius-sm); padding: 16px 24px; margin: 24px 0;">
   <strong>Weekendje weg in ${regionName}?</strong>
-  <p style="margin: 4px 0 12px; font-size: 14px; color: #555;">Bekijk gezinsvriendelijke hotels in de buurt.</p>
+  <p style="margin: 4px 0 12px; font-size: 14px; color: var(--pp-text-secondary);">Bekijk gezinsvriendelijke hotels in de buurt.</p>
   <a href="${url}" target="_blank" rel="noopener sponsored" style="color: var(--pp-primary); font-weight: 600; text-decoration: none;">Hotels bekijken →</a>
   ${AFFILIATE_DISCLAIMER}
 </div>`;
