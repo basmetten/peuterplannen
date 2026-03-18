@@ -7,18 +7,9 @@
   var container = document.getElementById('quick-results');
   if (!container) return;
 
-  var gpsLat = localStorage.getItem('gpsLat');
-  var gpsLng = localStorage.getItem('gpsLng');
-
-  // Build query — prefer nearby if GPS available, else top-rated
-  var select = 'id,name,slug,region,type,peuterscore';
-  var query;
-  if (gpsLat && gpsLng) {
-    // RPC call for nearest locations
-    query = SB_URL + '?select=' + select + '&peuterscore=gte.7&order=peuterscore.desc&limit=3';
-  } else {
-    query = SB_URL + '?select=' + select + '&peuterscore=gte.8&order=peuterscore.desc&limit=3';
-  }
+  // Query featured locations
+  var select = 'id,name,slug,region,type';
+  var query = SB_URL + '?select=' + select + '&homepage_featured=eq.true&limit=3';
 
   fetch(query, {
     headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
