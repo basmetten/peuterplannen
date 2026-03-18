@@ -3,6 +3,7 @@ title: "Wat meenemen naar de speeltuin — een checklist"
 description: "Praktische checklist voor een dag naar de speeltuin met je peuter. Wat neem je mee, wat laat je thuis, en hoe ziet de perfecte speeltuintas eruit — per seizoen."
 date: "2026-03-17"
 tags: ["speeltuin", "checklist", "uitrusting", "tips"]
+featured_image: /images/blog/wat-meenemen-speeltuin-checklist.jpg
 ---
 
 De speeltuin. Het is voor veel gezinnen met een peuter de meest bezochte plek van de week. Laagdrempelig, gratis, buiten. En toch sta je er regelmatig: je staat bij de zandbak en je hebt geen schepje meegenomen. Of je kind valt en je hebt niks om een schram mee te reinigen. Of het wordt om twee uur ineens warm en je hebt de zonnebrand thuisgelaten.

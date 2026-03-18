@@ -3,6 +3,7 @@ title: "Eerste keer naar de kinderboerderij: wat je moet weten"
 description: "Wanneer kan je baby naar de kinderboerderij? Wat neem je mee? De eerlijke gids voor je eerste bezoek — per leeftijd."
 date: "2026-03-17"
 tags: ["kinderboerderij", "baby", "peuter", "eerste keer"]
+featured_image: /images/blog/eerste-keer-kinderboerderij.jpg
 ---
 
 De kinderboerderij is voor veel gezinnen het eerste echte uitje met een jong kind. En terecht: het is laagdrempelig, meestal gratis en er is genoeg te zien voor zelfs de kleinste bezoeker. Maar wanneer ga je eigenlijk voor het eerst? Wat kun je verwachten van een baby van zes maanden tussen de geiten? En hoe voorkom je dat je kind met een handvol konijnenkeutels in de mond thuiskomt?

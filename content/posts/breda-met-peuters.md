@@ -4,6 +4,7 @@ description: "Wat te doen in Breda met peuters en kleuters? Simpele dagplanning 
 date: 2026-03-05
 tags: ["breda", "peuters", "kleuters", "dagje uit", "tips"]
 related_regions: ["breda"]
+featured_image: /images/blog/breda-met-peuters.jpg
 ---
 
 Breda is ideaal voor een peuterdag: niet te groot, veel groen en genoeg plekken waar ouders en kinderen allebei iets aan hebben. De truc is vooral slim plannen, niet veel plannen.

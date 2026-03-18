@@ -4,6 +4,7 @@ description: "Zoek je een dagje uit met kleuter van 4-6 jaar? 25 praktische idee
 date: 2026-03-05
 tags: ["kleuter", "dagje uit", "4-6 jaar", "uitjes", "nederland"]
 related_regions: ["amsterdam", "rotterdam", "utrecht", "den-haag", "eindhoven"]
+featured_image: /images/blog/dagje-uit-met-kleuter-4-6-jaar.jpg
 ---
 
 Een dagje uit met kleuter vraagt om een andere aanpak dan met een dreumes of jonge peuter. Kleuters willen zelf kiezen, iets doen met hun handen en begrijpen al veel meer van "waarom". Tegelijk kunnen ze snel moe worden als je te veel plant. De beste dag is dus actief, maar overzichtelijk.

@@ -3,6 +3,7 @@ title: "Pannenkoekenrestaurant met speeltuin: de beste per provincie"
 description: "De leukste pannenkoekenrestaurants met speeltuin in Nederland. Per provincie, met speeltuin-type en peuter-geschiktheid."
 date: "2026-03-17"
 tags: ["pannenkoekenrestaurant", "speeltuin", "peuter", "horeca"]
+featured_image: /images/blog/pannenkoekenrestaurant-met-speeltuin.jpg
 ---
 
 Een pannenkoekenrestaurant met speeltuin is voor veel gezinnen met jonge kinderen de meest ontspannen manier om uit eten te gaan. Het eten levert geen strijd op (welk kind houdt niet van pannenkoeken?), de speeltuin houdt ze bezig voor en na het eten, en de drempel om weg te gaan als het niet meer gaat is laag. Geen duur entreekaartje, geen gevoel van gemiste investering.

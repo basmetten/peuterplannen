@@ -4,6 +4,7 @@ description: "Dagje Groningen met peuters en kleuters? Praktische gids met rusti
 date: 2026-03-05
 tags: ["groningen", "peuters", "kleuters", "dagje uit", "tips"]
 related_regions: ["groningen"]
+featured_image: /images/blog/groningen-met-peuters.jpg
 ---
 
 Groningen is een van de prettigste steden voor jonge gezinnen: compact centrum, veel groen en verrassend veel kindvriendelijke adressen. Met een peuter draait het vooral om ritme en korte afstanden. Deze gids helpt je kiezen zonder keuzestress.

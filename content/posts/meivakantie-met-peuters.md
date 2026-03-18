@@ -4,6 +4,7 @@ description: "Meivakantie met peuters of kleuters? 15 praktische uitjes in Neder
 date: 2026-03-17
 tags: ["meivakantie", "peuter", "uitjes", "nederland", "vakantie"]
 related_regions: ["amsterdam", "rotterdam", "utrecht", "den-haag", "arnhem", "apeldoorn"]
+featured_image: /images/blog/meivakantie-met-peuters.jpg
 ---
 
 De meivakantie duurt twee weken. Twee weken zonder structuur van de crèche of peuterspeelzaal, twee weken waarbij jij de agenda bepaalt. Klinkt heerlijk — en dat is het ook, als je het goed aanpakt. Maar het kan ook snel verzanden in dagelijkse discussies over wat we vandaag doen, uitjes die te lang duren en een peuter die om half drie volledig instort terwijl jullie nog in de file staan.

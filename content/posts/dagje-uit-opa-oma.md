@@ -3,6 +3,7 @@ title: "Dagje uit met opa en oma: 15 uitjes die écht werken"
 description: "Opa en oma op stap met de kleinkinderen? 15 uitjes die werken voor grootouders én peuters — van rustig tot avontuurlijk."
 date: "2026-03-17"
 tags: ["opa en oma", "grootouders", "dagje uit", "peuter"]
+featured_image: /images/blog/dagje-uit-opa-oma.jpg
 ---
 
 Er is een verschil tussen een dagje uit met papa en mama, en een dagje uit met opa en oma. Niet beter of slechter — anders. Grootouders hebben vaak meer geduld en meer aandacht voor het kleine. Ze hoeven niet te multitasken tussen boodschappen, werk en opvoeding. Maar ze hebben soms minder energie voor rondrennen, tillen en drie uur op een harde bank in een speeltuin zitten.

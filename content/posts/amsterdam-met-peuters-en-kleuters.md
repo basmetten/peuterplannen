@@ -4,6 +4,7 @@ description: "Dagje Amsterdam met peuters of kleuters? Praktische dagplanning me
 date: 2026-03-05
 tags: ["amsterdam", "peuters", "kleuters", "dagje uit", "kindvriendelijk"]
 related_regions: ["amsterdam"]
+featured_image: /images/blog/amsterdam-met-peuters-en-kleuters.jpg
 ---
 
 Amsterdam met peuters en kleuters kan heel ontspannen zijn, als je niet te veel tegelijk wilt doen. De stad is groot, maar veel kindvriendelijke plekken liggen dichter bij elkaar dan je denkt. Met de juiste volgorde kun je een complete dag draaien zonder haast, files of overprikkeling.

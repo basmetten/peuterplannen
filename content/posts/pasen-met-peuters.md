@@ -4,6 +4,7 @@ description: "Pasen met peuters vieren? 12 praktische activiteiten voor binnen e
 date: 2026-03-17
 tags: ["pasen", "peuter", "activiteiten", "binnen", "buiten", "lente"]
 related_regions: ["amsterdam", "rotterdam", "utrecht", "den-haag", "haarlem"]
+featured_image: /images/blog/pasen-met-peuters.jpg
 ---
 
 Pasen is op papier een perfect feestje voor peuters: eitjes zoeken, lente, konijntjes. In de praktijk is het ook gewoon een lange dag met een kind dat om 6 uur wakker is en na het eerste ei al chocola heeft gegeten. Beide dingen zijn waar.

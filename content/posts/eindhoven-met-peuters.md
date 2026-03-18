@@ -4,6 +4,7 @@ description: "Eindhoven met peuters en kleuters? Praktische gids met indoor en o
 date: 2026-03-05
 tags: ["eindhoven", "peuters", "kleuters", "dagje uit", "tips"]
 related_regions: ["eindhoven"]
+featured_image: /images/blog/eindhoven-met-peuters.jpg
 ---
 
 Eindhoven is verrassend fijn met jonge kinderen. Je hebt er genoeg groen, goede binnenopties voor regendagen en veel kindvriendelijke horeca met ruimte voor kinderwagens. Deze gids is gemaakt voor ouders die niet drie uur willen googelen, maar gewoon een goede dag willen draaien.

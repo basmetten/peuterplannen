@@ -3,6 +3,7 @@ title: "Dagje uit met een 1-jarige: wat kan er eigenlijk al?"
 description: "Wat kun je doen met een 1-jarige? Meer dan je denkt. Eerlijke tips voor uitjes die werken rond het eerste jaar."
 date: "2026-03-17"
 tags: ["1 jaar", "baby", "dagje uit", "dreumes"]
+featured_image: /images/blog/dagje-uit-met-1-jarige.jpg
 ---
 
 Laten we eerlijk zijn: een dagje uit met een 1-jarige is voor een groot deel een dagje uit voor jezelf, met je kind erbij. En dat is prima. Er is niets mis mee om te willen ontsnappen aan de vier muren van je woonkamer, even andere volwassenen te zien en ondertussen je kind iets nieuws te laten ervaren. Maar de verwachting dat je 1-jarige na afloop zegt "wat was dat leuk, mama" — die kun je laten varen.

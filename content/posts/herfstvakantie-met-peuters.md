@@ -4,6 +4,7 @@ description: "Herfstvakantie met peuters? 20 praktische uitjes voor de herfstvak
 date: 2026-03-17
 tags: ["herfstvakantie", "peuter", "uitjes", "herfst", "nederland"]
 related_regions: ["amsterdam", "rotterdam", "utrecht", "den-haag", "arnhem", "apeldoorn"]
+featured_image: /images/blog/herfstvakantie-met-peuters.jpg
 ---
 
 De herfstvakantie duurt een week en het weer doet in oktober precies wat het wil. Woensdag straalt de zon, donderdag regent het de hele dag. Met een peuter van 2 of 3 kun je niet drie dagen binnenblijven en hopen dat het beter wordt. Je hebt een plan B nodig — en eigenlijk ook een plan C.

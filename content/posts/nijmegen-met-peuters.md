@@ -4,6 +4,7 @@ description: "Praktische gids voor Nijmegen met peuters en kleuters: buitenplekk
 date: 2026-03-05
 tags: ["nijmegen", "peuters", "kleuters", "dagje uit", "tips"]
 related_regions: ["nijmegen"]
+featured_image: /images/blog/nijmegen-met-peuters.jpg
 ---
 
 Nijmegen heeft alles voor een goede peuterdag: veel groen, fijne speelopties en genoeg kindvriendelijke adressen voor lunch. Het belangrijkste is dat je de dag simpel houdt.

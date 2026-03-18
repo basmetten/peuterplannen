@@ -4,6 +4,7 @@ description: "Op zoek naar een kindvriendelijk terras? De beste terrassen in Ned
 date: 2026-03-17
 tags: ["terras", "kindvriendelijk", "horeca", "peuter", "zomer"]
 related_regions: ["amsterdam", "rotterdam", "utrecht", "den-haag", "haarlem", "leiden"]
+featured_image: /images/blog/kindvriendelijke-terrassen-2026.jpg
 ---
 
 Het klinkt simpel: een zonnige middag, een drankje, een peuter die lekker buiten kan spelen. Maar iedereen die weleens met een anderhalf- of driejarige op een terras heeft gezeten weet hoe dat in de praktijk uitpakt. De kinderstoel past niet aan de tafel. Het kindermenu is een droge boterham met kaas. De ober kijkt drie keer op zijn horloge terwijl jij nog bezig bent de buggy weg te manoeuvreren. En het ergste: er is niks te doen voor je kind, zodat je om de drie minuten iets moet bedenken om de boel bij elkaar te houden.

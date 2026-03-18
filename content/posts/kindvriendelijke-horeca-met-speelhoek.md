@@ -4,6 +4,7 @@ description: "Zo vind je kindvriendelijke horeca met speelhoek voor peuters en k
 date: 2026-03-05
 tags: ["horeca", "kindvriendelijk", "speelhoek", "peuters", "kleuters"]
 related_regions: ["amsterdam", "utrecht", "rotterdam", "den-haag", "groningen"]
+featured_image: /images/blog/kindvriendelijke-horeca-met-speelhoek.jpg
 ---
 
 Kindvriendelijke horeca met speelhoek klinkt eenvoudig, maar in de praktijk zit er veel verschil tussen "er staat wat speelgoed" en "hier kun je echt ontspannen met kinderen". Voor ouders met peuters en kleuters is dat verschil groot: je wilt dat je kind veilig kan spelen, terwijl jij ook normaal kunt zitten, eten of koffie drinken.

@@ -3,6 +3,7 @@ title: "Kinderfeestje voor 3 jaar: 10 locaties en ideeën"
 description: "Op zoek naar een kinderfeestje voor een 3-jarige? Tien locaties en ideeën die echt werken — van speelparadijs tot kinderboerderij."
 date: "2026-03-17"
 tags: ["kinderfeestje", "3 jaar", "verjaardag", "peuter"]
+featured_image: /images/blog/kinderfeestje-3-jaar.jpg
 ---
 
 Een kinderfeestje voor een 3-jarige is een apart beest. Het kind is oud genoeg om te begrijpen dat het jarig is, maar te jong voor georganiseerde spelletjes, een estafette of een speurtocht met instructies. De gasten zijn nog niet gewend aan "bij iemand anders thuis zijn" zonder hun eigen ouder. En de concentratieboog is — laten we eerlijk zijn — ongeveer twintig minuten.

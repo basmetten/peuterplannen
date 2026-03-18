@@ -4,6 +4,7 @@ description: "Dagje Amersfoort met peuters en kleuters? Eenvoudige dagplanning m
 date: 2026-03-05
 tags: ["amersfoort", "peuters", "kleuters", "dagje uit", "tips"]
 related_regions: ["amersfoort"]
+featured_image: /images/blog/amersfoort-met-peuters.jpg
 ---
 
 Amersfoort is compact, groen en goed te doen met jonge kinderen. Juist daarom is het een sterke keuze voor ouders die een leuke dag willen zonder lange reistijden en zonder overvolle planning.

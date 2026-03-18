@@ -4,6 +4,7 @@ description: "Zomervakantie met je peuter? Een realistische weekplanning met uit
 date: 2026-03-17
 tags: ["zomervakantie", "peuter", "weekplanning", "uitjes", "nederland", "zomer"]
 related_regions: ["amsterdam", "rotterdam", "utrecht", "den-haag", "arnhem", "leiden"]
+featured_image: /images/blog/zomervakantie-met-peuter.jpg
 ---
 
 # Zomervakantie met peuter: een weekplanning die werkt

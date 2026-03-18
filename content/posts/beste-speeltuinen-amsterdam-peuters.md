@@ -3,6 +3,7 @@ title: "Beste speeltuinen Amsterdam voor peuters (2026)"
 description: "De 12 beste speeltuinen in Amsterdam voor peuters en kleuters. Met koffie-score, verschooninfo en buurt-tips."
 date: "2026-03-17"
 tags: ["speeltuinen", "amsterdam", "peuter", "2026"]
+featured_image: /images/blog/beste-speeltuinen-amsterdam-peuters.jpg
 ---
 
 Amsterdam heeft meer speeltuinen dan je in een jaar kunt bezoeken. Dat klinkt fijn, maar het maakt het kiezen er niet makkelijker op. Niet elke speeltuin is even geschikt voor peuters: sommige zijn ontworpen voor oudere kinderen, andere missen basisvoorzieningen als een wc of een bankje in de schaduw. En dan heb je nog de speeltuinen die op papier geweldig lijken maar in de praktijk verwaarloosd zijn.

@@ -4,6 +4,7 @@ description: "Koningsdag vieren met je peuter? Praktische tips voor een ontspann
 date: 2026-03-17
 tags: ["koningsdag", "peuter", "27 april", "vrijmarkt", "nederland"]
 related_regions: ["amsterdam", "rotterdam", "utrecht", "den-haag", "haarlem", "amersfoort"]
+featured_image: /images/blog/koningsdag-peuter-2026.jpg
 ---
 
 Koningsdag met een peuter is een ander feest dan Koningsdag als twintiger. Dat is niet erg — het kan zelfs leuker zijn — maar je moet er niet blindelings inlopen. De drukte, het lawaai, de afwijkende dagindeling: voor een kind van twee of drie is dat méér dan normaal. Een peuter heeft nog niet de woorden om te zeggen dat het te druk wordt, maar het lichaam zegt het wel. En dan sta je met een krijsend kind midden in een zee van oranje.

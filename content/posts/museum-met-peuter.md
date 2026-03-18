@@ -3,6 +3,7 @@ title: "Museum met peuter: zo overleef je het"
 description: "Musea met een peuter: welke zijn de moeite waard en hoe overleef je het? Eerlijke tips, de beste musea en een meltdown-protocol."
 date: "2026-03-17"
 tags: ["museum", "peuter", "binnenactiviteit", "tips"]
+featured_image: /images/blog/museum-met-peuter.jpg
 ---
 
 Een museum met een peuter. Klinkt als een slecht idee, toch? Die stilte, die "niet aankomen"-bordjes, die lange gangen vol abstracte kunst waar je kind niks mee kan. In veel gevallen is het dat ook. Maar er zijn musea in Nederland die precies begrijpen wat een jong kind nodig heeft. Die hebben interactieve elementen op peuterhoogte, korte routes, en spullen waar je wél aan mag zitten. En dan wordt een museumbezoek opeens iets dat werkt — voor je peuter en voor jou.

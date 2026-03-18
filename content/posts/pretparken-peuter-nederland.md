@@ -3,6 +3,7 @@ title: "Pretparken voor peuters: de beste keuzes in Nederland"
 description: "Welk pretpark is echt leuk met een peuter? Een eerlijk overzicht van de beste pretparken in Nederland voor 1- tot 4-jarigen."
 date: "2026-03-17"
 tags: ["pretparken", "peuter", "dagje uit", "nederland"]
+featured_image: /images/blog/pretparken-peuter-nederland.jpg
 ---
 
 Een pretpark met een peuter — dat klinkt als een goed plan tot je er bent en ontdekt dat alles net te hoog, te snel of te eng is. Veel pretparken in Nederland zijn ontworpen voor kinderen vanaf 6 jaar. Een peuter van 2 of 3 kijkt dan een dag lang naar attracties waar hij of zij niet in mag. Dat is geen dagje uit, dat is een frustratietraining.
