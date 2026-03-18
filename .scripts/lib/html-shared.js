@@ -190,6 +190,7 @@ function headCommon(extra = '') {
   <style>${CRITICAL_EDITORIAL_GUIDE_CSS}</style>
   <link rel="stylesheet" href="${navCssHref}">
   <script src="${navJsHref}" defer></script>
+  <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
   <meta name="p:domain_verify" content="f99a54c30c1801d1bef6ab0dd15f83cf">${extra}`;
