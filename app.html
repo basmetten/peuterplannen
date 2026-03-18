@@ -78,10 +78,10 @@
     <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/design-system.css?v=202603181512">
+    <link rel="stylesheet" href="/design-system.css?v=202603181516">
     <link rel="stylesheet" href="/app.min.css">
     <link rel="stylesheet" href="/nav-floating.min.css?v=202603181034">
-    <script src="/nav-floating.js?v=202603181512" defer></script>
+    <script src="/nav-floating.js?v=202603181516" defer></script>
 
 </head>
 <body>
@@ -1367,8 +1367,8 @@
             throw lastError || new Error('Unknown fetch failure');
         }
 
-        const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_source';
-        const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_source';
+        const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url';
+        const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url';
 
         async function fetchAllPages(baseUrl, signal) {
             const BATCH = 1000;
@@ -2062,7 +2062,7 @@
                 const quickFacts = getCardQuickFacts(item, travelInfo);
                 const supportingIsDuplicate = supportingCopy && decisionSentence && isNearDuplicateCopy(supportingCopy, decisionSentence);
 
-                const photoSrc = item.owner_photo_url || item.photo_url;
+                const photoSrc = item.owner_photo_url;
                 const cardImgHTML = photoSrc
                     ? `<div class="loc-img">
                         <img src="${escapeHtml(photoSrc)}"
