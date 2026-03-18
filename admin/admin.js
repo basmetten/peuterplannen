@@ -970,7 +970,18 @@ function fillEditorialForm(page) {
   $('editorial-hero-kicker').value = page?.hero_kicker || '';
   $('editorial-hero-body').value = page?.hero_body_md || '';
   $('editorial-body').value = page?.body_md || '';
-  $('editorial-faq-json').value = page?.faq_json ? JSON.stringify(page.faq_json, null, 2) : '[]';
+  // FAQ visual editor
+  const faqData = page?.faq_json || [];
+  renderFaqEditor(Array.isArray(faqData) ? faqData : []);
+  $('editorial-faq-json').value = JSON.stringify(faqData, null, 2);
+  // Image preview
+  updateImagePreview(page?.slug || '');
+  // Location chips
+  selectedLocations.length = 0;
+  if (Array.isArray(page?.curated_location_ids)) {
+    page.curated_location_ids.forEach(id => selectedLocations.push({ id, name: `Locatie ${id}` }));
+  }
+  renderLocationChips();
   $('editorial-curated-location-ids').value = Array.isArray(page?.curated_location_ids) ? page.curated_location_ids.join(', ') : '';
   $('editorial-related-blog-slugs').value = Array.isArray(page?.related_blog_slugs) ? page.related_blog_slugs.join(', ') : '';
   $('editorial-label').value = page?.editorial_label || 'PeuterPlannen redactie';
@@ -992,18 +1003,149 @@ function resetEditorialForm() {
   fillEditorialForm(null);
 }
 
+// --- FAQ Visual Editor ---
+function renderFaqEditor(faqArray) {
+  const editor = $('editorial-faq-editor');
+  editor.innerHTML = '';
+  (faqArray || []).forEach((item, i) => addFaqPair(item.question || '', item.answer || ''));
+}
+
+function addFaqPair(question, answer) {
+  const editor = $('editorial-faq-editor');
+  const pair = document.createElement('div');
+  pair.className = 'faq-pair';
+  pair.innerHTML = `<div class="faq-pair-fields">
+    <input class="portal-input faq-q" type="text" placeholder="Vraag" value="${escapeAttr(question)}">
+    <textarea class="portal-textarea faq-a" rows="2" placeholder="Antwoord">${escapeHtml(answer)}</textarea>
+  </div>
+  <button type="button" class="faq-remove-btn" title="Verwijder">&times;</button>`;
+  pair.querySelector('.faq-remove-btn').addEventListener('click', () => pair.remove());
+  editor.appendChild(pair);
+}
+
+function collectFaqJson() {
+  const pairs = $('editorial-faq-editor').querySelectorAll('.faq-pair');
+  const arr = [];
+  pairs.forEach(pair => {
+    const q = pair.querySelector('.faq-q').value.trim();
+    const a = pair.querySelector('.faq-a').value.trim();
+    if (q || a) arr.push({ question: q, answer: a });
+  });
+  return arr;
+}
+
+// --- Slug Auto-generation ---
+function slugify(text) {
+  return text.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+// --- Image Preview ---
+function updateImagePreview(slug) {
+  const wrap = $('editorial-image-preview');
+  if (!slug) {
+    wrap.innerHTML = '<span class="image-preview-empty">Geen afbeelding — wordt automatisch gegenereerd bij publicatie.</span>';
+    return;
+  }
+  const webp = `/images/blog/${slug}.webp`;
+  const jpg = `/images/blog/${slug}.jpg`;
+  wrap.innerHTML = `<img class="image-preview-thumb" src="${webp}" onerror="this.onerror=null;this.src='${jpg}'" alt="Hero afbeelding" loading="lazy">`;
+}
+
+// --- Location Autocomplete ---
+let locationSearchTimer = null;
+const selectedLocations = [];
+
+function renderLocationChips() {
+  const container = $('editorial-location-chips');
+  container.innerHTML = selectedLocations.map(loc =>
+    `<span class="chip" data-loc-id="${loc.id}">${escapeHtml(loc.name)} <small class="portal-muted">#${loc.id}</small><button type="button" class="chip-remove" data-remove-id="${loc.id}">&times;</button></span>`
+  ).join('');
+  $('editorial-curated-location-ids').value = selectedLocations.map(l => l.id).join(', ');
+}
+
+function addLocationChip(id, name) {
+  if (selectedLocations.find(l => l.id === id)) return;
+  selectedLocations.push({ id, name });
+  renderLocationChips();
+  $('editorial-location-search').value = '';
+  $('editorial-location-results').classList.remove('visible');
+}
+
+function removeLocationChip(id) {
+  const idx = selectedLocations.findIndex(l => l.id === id);
+  if (idx >= 0) selectedLocations.splice(idx, 1);
+  renderLocationChips();
+}
+
+async function searchLocations(query) {
+  const results = $('editorial-location-results');
+  if (query.length < 2) { results.classList.remove('visible'); return; }
+  try {
+    const { data } = await supabase
+      .from('locations')
+      .select('id, name, seo_primary_locality')
+      .or(`name.ilike.%${query}%,seo_primary_locality.ilike.%${query}%`)
+      .limit(8);
+    if (!data?.length) { results.innerHTML = '<div class="autocomplete-item" style="color:var(--pp-text-muted)">Geen resultaten</div>'; results.classList.add('visible'); return; }
+    results.innerHTML = data.map(loc =>
+      `<div class="autocomplete-item" data-loc-id="${loc.id}" data-loc-name="${escapeAttr(loc.name)}">${escapeHtml(loc.name)}${loc.seo_primary_locality ? ` <span class="autocomplete-meta">· ${escapeHtml(loc.seo_primary_locality)}</span>` : ''} <span class="autocomplete-meta">#${loc.id}</span></div>`
+    ).join('');
+    results.classList.add('visible');
+  } catch { results.classList.remove('visible'); }
+}
+
+// --- Live Preview ---
+function showEditorialPreview() {
+  const overlay = $('preview-modal-overlay');
+  const content = $('preview-modal-content');
+  const title = $('editorial-title').value || 'Zonder titel';
+  const kicker = $('editorial-hero-kicker').value;
+  const heroBody = $('editorial-hero-body').value;
+  const bodyMd = $('editorial-body').value;
+  const faqs = collectFaqJson();
+
+  // Simple markdown-to-HTML (basic)
+  let bodyHtml = escapeHtml(bodyMd)
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^\* (.+)$/gm, '<li>$1</li>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/\n{2,}/g, '</p><p>')
+    .replace(/\n/g, '<br>');
+  bodyHtml = '<p>' + bodyHtml + '</p>';
+  bodyHtml = bodyHtml.replace(/<p>(<h[23]>)/g, '$1').replace(/(<\/h[23]>)<\/p>/g, '$1');
+  bodyHtml = bodyHtml.replace(/<p>(<li>)/g, '<ul>$1').replace(/(<\/li>)<\/p>/g, '$1</ul>');
+
+  let faqHtml = '';
+  if (faqs.length) {
+    faqHtml = '<div class="preview-faq"><h3>Veelgestelde vragen</h3><dl>' +
+      faqs.map(f => `<dt>${escapeHtml(f.question)}</dt><dd>${escapeHtml(f.answer)}</dd>`).join('') +
+      '</dl></div>';
+  }
+
+  content.innerHTML = `
+    ${kicker ? `<div class="preview-kicker">${escapeHtml(kicker)}</div>` : ''}
+    <h1>${escapeHtml(title)}</h1>
+    ${heroBody ? `<div class="preview-hero-body">${escapeHtml(heroBody)}</div>` : ''}
+    <div class="preview-body">${bodyHtml}</div>
+    ${faqHtml}
+  `;
+  overlay.classList.add('visible');
+}
+
 async function saveEditorialPage() {
   const btn = $('save-editorial-page-btn');
   PortalShell.setButtonBusy(btn, true, 'Opslaan...', 'Opslaan');
   PortalShell.setAlert('editorial-alert', '', 'info');
   try {
-    const faqRaw = $('editorial-faq-json').value.trim() || '[]';
-    let faqJson;
-    try {
-      faqJson = JSON.parse(faqRaw);
-    } catch {
-      throw new Error('FAQ JSON is ongeldig. Gebruik een JSON-array.');
-    }
+    const faqJson = collectFaqJson();
     const result = await api('save_editorial_page', {
       page_id: $('editorial-page-id').value || null,
       page_type: $('editorial-page-type').value,
@@ -1422,6 +1564,39 @@ function bindUI() {
   $('save-location-seo-btn').addEventListener('click', saveLocationSeo);
   $('save-editorial-page-btn').addEventListener('click', saveEditorialPage);
   $('new-editorial-page-btn').addEventListener('click', resetEditorialForm);
+
+  // Slug auto-generation
+  $('editorial-slug-auto-btn').addEventListener('click', () => {
+    const title = $('editorial-title').value;
+    if (title) $('editorial-slug').value = slugify(title);
+  });
+
+  // FAQ add button
+  $('editorial-faq-add-btn').addEventListener('click', () => addFaqPair('', ''));
+
+  // Preview button
+  $('preview-editorial-btn').addEventListener('click', showEditorialPreview);
+  $('preview-close-btn').addEventListener('click', () => $('preview-modal-overlay').classList.remove('visible'));
+  $('preview-modal-overlay').addEventListener('click', (e) => {
+    if (e.target === $('preview-modal-overlay')) $('preview-modal-overlay').classList.remove('visible');
+  });
+
+  // Location autocomplete
+  $('editorial-location-search').addEventListener('input', (e) => {
+    clearTimeout(locationSearchTimer);
+    locationSearchTimer = setTimeout(() => searchLocations(e.target.value.trim()), 300);
+  });
+  $('editorial-location-results').addEventListener('click', (e) => {
+    const item = e.target.closest('.autocomplete-item[data-loc-id]');
+    if (item) addLocationChip(Number(item.dataset.locId), item.dataset.locName);
+  });
+  $('editorial-location-chips').addEventListener('click', (e) => {
+    const btn = e.target.closest('.chip-remove[data-remove-id]');
+    if (btn) removeLocationChip(Number(btn.dataset.removeId));
+  });
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.autocomplete-wrap')) $('editorial-location-results').classList.remove('visible');
+  });
   $('publish-trigger-btn').addEventListener('click', triggerPublish);
   $('next-priority-location-btn').addEventListener('click', openNextPriorityLocation);
   $('seed-priority-drafts-btn').addEventListener('click', seedPriorityDrafts);

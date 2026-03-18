@@ -4,7 +4,7 @@
   "private": true,
   "description": "PeuterPlannen — Leuke uitjes voor kinderen",
   "scripts": {
-    "build": "node .scripts/optimize_images.js && node .scripts/generate-og-images.js && node .scripts/sync_portal_assets.js && node .scripts/sync_all.js",
+    "build": "node .scripts/generate-blog-images.js && node .scripts/optimize_images.js && node .scripts/generate-og-images.js && node .scripts/sync_portal_assets.js && node .scripts/sync_all.js",
     "build:local": "PP_FIXTURES=1 node .scripts/sync_all.js",
     "dev": "npx serve -l 3000 --no-clipboard .",
     "test": "node --test .scripts/__tests__/*.test.js",

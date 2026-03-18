@@ -361,6 +361,55 @@
         width: auto;
       }
     }
+
+    /* FAQ Visual Editor */
+    .faq-editor { display: flex; flex-direction: column; gap: 10px; }
+    .faq-pair { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; padding: 12px; border: 1px solid rgba(35,31,26,0.10); border-radius: 10px; background: rgba(255,255,255,0.7); }
+    .faq-pair-fields { display: flex; flex-direction: column; gap: 6px; }
+    .faq-pair input, .faq-pair textarea { font-size: 14px; }
+    .faq-remove-btn { background: none; border: none; color: var(--pp-text-muted); cursor: pointer; font-size: 18px; padding: 4px 8px; border-radius: 6px; }
+    .faq-remove-btn:hover { background: rgba(212,119,90,0.12); color: var(--pp-terracotta); }
+    .faq-add-btn { align-self: flex-start; font-size: 13px; padding: 6px 14px; border-radius: 8px; border: 1px dashed rgba(35,31,26,0.18); background: none; cursor: pointer; color: var(--pp-sage); font-weight: 600; }
+    .faq-add-btn:hover { background: rgba(107,142,107,0.08); }
+
+    /* Slug auto-generation */
+    .slug-row { display: flex; gap: 8px; align-items: center; }
+    .slug-row input { flex: 1; }
+    .slug-auto-btn { font-size: 12px; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(35,31,26,0.14); background: rgba(255,255,255,0.8); cursor: pointer; white-space: nowrap; color: var(--pp-sage); font-weight: 600; }
+    .slug-auto-btn:hover { background: rgba(107,142,107,0.08); }
+
+    /* Image preview */
+    .image-preview-wrap { margin-top: 8px; }
+    .image-preview-thumb { max-width: 280px; border-radius: 10px; border: 1px solid rgba(35,31,26,0.10); }
+    .image-preview-empty { font-size: 13px; color: var(--pp-text-muted); font-style: italic; }
+
+    /* Location autocomplete chips */
+    .chip-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; background: var(--pp-cream); border: 1px solid rgba(35,31,26,0.12); font-size: 13px; }
+    .chip-remove { background: none; border: none; cursor: pointer; font-size: 14px; color: var(--pp-text-muted); padding: 0 2px; line-height: 1; }
+    .chip-remove:hover { color: var(--pp-terracotta); }
+    .autocomplete-wrap { position: relative; }
+    .autocomplete-results { position: absolute; z-index: 50; top: 100%; left: 0; right: 0; max-height: 200px; overflow-y: auto; background: #fff; border: 1px solid rgba(35,31,26,0.14); border-radius: 10px; box-shadow: var(--pp-shadow-sm); display: none; }
+    .autocomplete-results.visible { display: block; }
+    .autocomplete-item { padding: 8px 12px; cursor: pointer; font-size: 13px; }
+    .autocomplete-item:hover { background: rgba(107,142,107,0.08); }
+    .autocomplete-item .autocomplete-meta { color: var(--pp-text-muted); font-size: 12px; }
+
+    /* Live Preview Modal */
+    .preview-modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; padding: 24px; }
+    .preview-modal-overlay.visible { display: flex; }
+    .preview-modal { background: #fff; border-radius: 18px; width: 100%; max-width: 720px; max-height: 85vh; overflow-y: auto; padding: 28px; box-shadow: 0 8px 30px rgba(0,0,0,0.18); }
+    .preview-modal h1 { font-size: 24px; margin-bottom: 6px; }
+    .preview-modal .preview-kicker { font-size: 13px; color: var(--pp-terracotta); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+    .preview-modal .preview-hero-body { font-size: 15px; color: var(--pp-text-muted); margin-bottom: 16px; line-height: 1.6; }
+    .preview-modal .preview-body { font-size: 15px; line-height: 1.7; }
+    .preview-modal .preview-body h2 { font-size: 20px; margin-top: 20px; margin-bottom: 8px; }
+    .preview-modal .preview-body h3 { font-size: 17px; margin-top: 16px; margin-bottom: 6px; }
+    .preview-modal .preview-body ul, .preview-modal .preview-body ol { padding-left: 20px; }
+    .preview-modal .preview-faq { margin-top: 20px; }
+    .preview-modal .preview-faq dt { font-weight: 700; margin-top: 12px; }
+    .preview-modal .preview-faq dd { margin: 4px 0 0 0; color: var(--pp-text-muted); }
+    .preview-close-btn { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--pp-text-muted); }
   </style>
 </head>
 <body class="portal-admin">
@@ -767,13 +816,14 @@
             <div class="admin-form-grid">
               <div class="portal-form-group"><label class="portal-label" for="editorial-page-type">Paginasoort</label><select id="editorial-page-type" class="portal-select"></select></div>
               <div class="portal-form-group"><label class="portal-label" for="editorial-status">Status</label><select id="editorial-status" class="portal-select"></select></div>
-              <div class="portal-form-group"><label class="portal-label" for="editorial-slug">Slug</label><input id="editorial-slug" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-slug">Slug</label><div class="slug-row"><input id="editorial-slug" class="portal-input" type="text"><button type="button" id="editorial-slug-auto-btn" class="slug-auto-btn" title="Genereer slug uit titel">Auto</button></div></div>
               <div class="portal-form-group"><label class="portal-label" for="editorial-title">Publieke titel</label><input id="editorial-title" class="portal-input" type="text"></div>
               <div class="portal-form-group"><label class="portal-label" for="editorial-label">Redactioneel label</label><input id="editorial-label" class="portal-input" type="text" placeholder="Bijv. PeuterPlannen redactie"></div>
               <div class="portal-form-group"><label class="portal-label" for="editorial-hero-kicker">Korte bovenregel</label><input id="editorial-hero-kicker" class="portal-input" type="text" placeholder="Bijv. Voor regenachtige dagen"></div>
               <div class="portal-form-group full"><label class="portal-label" for="editorial-hero-body">Korte intro bovenaan</label><textarea id="editorial-hero-body" class="portal-textarea" rows="4" placeholder="Schrijf hier in 2–4 zinnen wat deze pagina oplost voor ouders."></textarea></div>
+              <div class="portal-form-group full"><label class="portal-label">Afbeelding</label><div class="image-preview-wrap" id="editorial-image-preview"><span class="image-preview-empty">Geen afbeelding — wordt automatisch gegenereerd bij publicatie.</span></div></div>
               <div class="portal-form-group full"><label class="portal-label" for="editorial-body">Hoofdtekst</label><textarea id="editorial-body" class="portal-textarea" rows="10" placeholder="Schrijf hier de hoofdtekst. Gebruik concrete voorbeelden, lokale context en duidelijke keuzes."></textarea></div>
-              <div class="portal-form-group full"><label class="portal-label" for="editorial-curated-location-ids">Belangrijkste locaties (ID’s, met komma’s)</label><textarea id="editorial-curated-location-ids" class="portal-textarea" rows="3" placeholder="Bijv. 123, 456, 789"></textarea></div>
+              <div class="portal-form-group full"><label class="portal-label">Belangrijkste locaties</label><div class="chip-container" id="editorial-location-chips"></div><div class="autocomplete-wrap"><input id="editorial-location-search" class="portal-input" type="text" placeholder="Zoek op locatienaam…" autocomplete="off"><div class="autocomplete-results" id="editorial-location-results"></div></div><input id="editorial-curated-location-ids" type="hidden"></div>
               <div class="portal-form-group full"><label class="portal-label" for="editorial-related-blog-slugs">Gerelateerde blogpagina’s (slugs, met komma’s)</label><textarea id="editorial-related-blog-slugs" class="portal-textarea" rows="3" placeholder="Bijv. utrecht-met-peuters, gratis-peuteruitjes"></textarea></div>
             </div>
             <details class="admin-disclosure">
@@ -786,10 +836,10 @@
                 <div class="portal-form-group"><label class="portal-label" for="editorial-location-id">Locatie-ID</label><input id="editorial-location-id" class="portal-input" type="number" min="1"></div>
                 <div class="portal-form-group"><label class="portal-label" for="editorial-meta-title">Titel voor Google</label><input id="editorial-meta-title" class="portal-input" type="text"></div>
                 <div class="portal-form-group"><label class="portal-label" for="editorial-meta-description">Samenvatting voor Google</label><textarea id="editorial-meta-description" class="portal-textarea" rows="3"></textarea></div>
-                <div class="portal-form-group full"><label class="portal-label" for="editorial-faq-json">FAQ-inhoud (JSON)</label><textarea id="editorial-faq-json" class="portal-textarea" rows="6">[]</textarea></div>
+                <div class="portal-form-group full"><label class="portal-label">FAQ-inhoud</label><div class="faq-editor" id="editorial-faq-editor"></div><button type="button" id="editorial-faq-add-btn" class="faq-add-btn">+ Vraag toevoegen</button><textarea id="editorial-faq-json" class="portal-textarea" rows="3" style="display:none">[]</textarea></div>
               </div>
             </details>
-            <div class="portal-btn-row"><button id="save-editorial-page-btn" class="portal-btn portal-btn-primary" type="button">Opslaan</button></div>
+            <div class="portal-btn-row"><button id="preview-editorial-btn" class="portal-btn portal-btn-secondary" type="button">Preview</button><button id="save-editorial-page-btn" class="portal-btn portal-btn-primary" type="button">Opslaan</button></div>
           </div>
         </div>
       </section>
@@ -930,6 +980,12 @@
     </div>
   </div>
 
+  <div class="preview-modal-overlay" id="preview-modal-overlay">
+    <div class="preview-modal" style="position:relative;">
+      <button class="preview-close-btn" id="preview-close-btn" type="button" aria-label="Sluiten">&times;</button>
+      <div id="preview-modal-content"></div>
+    </div>
+  </div>
   <script src="/pp-interactions.js" defer></script>
   <script src="/admin/portal-shell.js"></script>
   <script type="module" src="/admin/admin.js?v=202603181539"></script>

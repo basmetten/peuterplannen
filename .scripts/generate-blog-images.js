@@ -11,8 +11,10 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
+let sharp;
+try { sharp = require('sharp'); } catch { sharp = null; }
+
 const API_KEY = process.env.GEMINI_API_KEY;
-if (!API_KEY) { console.error('GEMINI_API_KEY not set'); process.exit(1); }
 
 const MODEL = 'gemini-2.5-flash-image';
 const IMAGES_DIR = path.join(__dirname, '..', 'images', 'blog');
@@ -51,8 +53,8 @@ const SCENE_MAP = {
   'zomervakantie-met-peuter': 'A toddler building a sandcastle at a Dutch beach. Beach grass, wooden beach pavilion, seagulls, gentle waves, bucket and spade.'
 };
 
-async function generateImage(slug, title) {
-  const scene = SCENE_MAP[slug] || `A Dutch scene related to: ${title}. Parents with toddlers.`;
+async function generateImage(slug, title, description) {
+  const scene = SCENE_MAP[slug] || `A Dutch scene related to: ${title}. ${description ? description + '. ' : ''}Parents with toddlers in a warm, playful setting.`;
   const prompt = `${STYLE_PREFIX}\n\nScene: ${scene}`;
 
   const body = JSON.stringify({
@@ -86,34 +88,44 @@ async function generateImage(slug, title) {
   });
 }
 
+async function getAllPostSlugs() {
+  if (!fs.existsSync(POSTS_DIR)) return [];
+  return fs.readdirSync(POSTS_DIR)
+    .filter(f => f.endsWith('.md'))
+    .map(f => f.replace('.md', ''));
+}
+
 async function main() {
   const specificSlug = process.argv.find(a => a === '--slug') ? process.argv[process.argv.indexOf('--slug') + 1] : null;
-  const slugs = specificSlug ? [specificSlug] : Object.keys(SCENE_MAP);
+  const allSlugs = specificSlug ? [specificSlug] : await getAllPostSlugs();
 
   // Filter to only missing images
-  const missing = slugs.filter(slug => !fs.existsSync(path.join(IMAGES_DIR, `${slug}.jpg`)));
-  console.log(`${missing.length} images to generate (${slugs.length - missing.length} already exist)`);
+  const missing = allSlugs.filter(slug => !fs.existsSync(path.join(IMAGES_DIR, `${slug}.jpg`)));
+  console.log(`${missing.length} images to generate (${allSlugs.length - missing.length} already exist)`);
+
+  if (missing.length === 0) return;
+  if (!API_KEY) { console.error('GEMINI_API_KEY not set — skipping image generation'); return; }
+  if (!fs.existsSync(IMAGES_DIR)) fs.mkdirSync(IMAGES_DIR, { recursive: true });
 
   for (const slug of missing) {
     const mdPath = path.join(POSTS_DIR, `${slug}.md`);
     const mdContent = fs.existsSync(mdPath) ? fs.readFileSync(mdPath, 'utf8') : '';
     const titleMatch = mdContent.match(/^title:\s*"?(.+?)"?\s*$/m);
     const title = titleMatch ? titleMatch[1] : slug.replace(/-/g, ' ');
+    const descMatch = mdContent.match(/^description:\s*"?(.+?)"?\s*$/m);
+    const description = descMatch ? descMatch[1] : '';
 
     console.log(`Generating: ${slug} — "${title}"`);
     try {
-      const buffer = await generateImage(slug, title);
+      const buffer = await generateImage(slug, title, description);
       const outPath = path.join(IMAGES_DIR, `${slug}.jpg`);
-      // Gemini returns PNG, save as-is first then we'll convert
       const isPng = buffer[0] === 0x89 && buffer[1] === 0x50;
-      if (isPng) {
-        // Save as PNG temporarily, sharp will convert
-        const tmpPath = path.join(IMAGES_DIR, `${slug}.png`);
-        fs.writeFileSync(tmpPath, buffer);
-        // Convert PNG to JPG using sips (macOS)
-        const { execSync } = require('child_process');
-        execSync(`sips -s format jpeg "${tmpPath}" --out "${outPath}" -s formatOptions 90 2>/dev/null`);
-        fs.unlinkSync(tmpPath);
+      if (isPng && sharp) {
+        await sharp(buffer).jpeg({ quality: 90 }).toFile(outPath);
+      } else if (isPng) {
+        // Fallback: save as PNG, optimize_images.js will handle conversion
+        fs.writeFileSync(path.join(IMAGES_DIR, `${slug}.png`), buffer);
+        console.log(`  ⚠ sharp not available, saved as PNG`);
       } else {
         fs.writeFileSync(outPath, buffer);
       }
