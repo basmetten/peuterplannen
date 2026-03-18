@@ -49,7 +49,7 @@ function generateCityPage(region, locs, allRegions, seoContent, total) {
       let section = `
     <section class="type-section">
       <h2>${typeImg}${TYPE_LABELS_CITY[t]}${cityTypeLink}</h2>
-      <div class="loc-list">
+      <div class="loc-list pp-reveal-stagger">
         ${byType[t].map(locationHTML_city).join('')}
       </div>
     </section>`;
@@ -87,7 +87,7 @@ function generateCityPage(region, locs, allRegions, seoContent, total) {
   const municipalityChips = coverage?.length
     ? coverage.map((name) => `<span class="coverage-chip">${escapeHtml(name)}</span>`).join('')
     : '';
-  const cityGuideHTML = `<section class="guide-section city-guide">
+  const cityGuideHTML = `<section class="guide-section city-guide pp-reveal">
     <div class="guide-card">
       <p class="guide-kicker">Sneller kiezen in ${region.name}</p>
       <h2>Begin niet met alle kaarten tegelijk</h2>

@@ -147,6 +147,10 @@ jobs:
           set -euo pipefail
           node .scripts/audit_seo_quality.js --strict
 
+      - name: Design system audit
+        if: steps.gate.outputs.run_build == 'true'
+        run: node .scripts/audit_design_system.js --strict
+
       - name: Deploy to Cloudflare Worker (production)
         if: steps.gate.outputs.run_build == 'true'
         env:

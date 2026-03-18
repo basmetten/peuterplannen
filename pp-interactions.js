@@ -38,3 +38,31 @@ document.addEventListener('click', function (e) {
     }, 2000);
   }).catch(function () { /* graceful fallback */ });
 });
+
+// Scroll reveal — IntersectionObserver, fires once per element
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  var revealObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.pp-reveal, .pp-reveal-stagger').forEach(function (el) {
+    revealObs.observe(el);
+  });
+}
+
+// Navbar scroll shrink (IntersectionObserver, no scroll listener)
+(function () {
+  var nav = document.querySelector('nav');
+  if (!nav) return;
+  var sentinel = document.createElement('div');
+  sentinel.style.cssText = 'position:absolute;top:0;height:1px;width:1px;pointer-events:none';
+  document.body.prepend(sentinel);
+  new IntersectionObserver(function (entries) {
+    nav.classList.toggle('scrolled', !entries[0].isIntersecting);
+  }).observe(sentinel);
+})();

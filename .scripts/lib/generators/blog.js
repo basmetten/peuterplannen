@@ -150,7 +150,7 @@ ${p.featured_image ? `<div class="blog-hero-img" style="max-width:1100px;margin:
     ${p.content}
   </div>
 
-  <div class="blog-share">
+  <div class="blog-share pp-reveal">
     <a href="https://wa.me/?text=${encodeURIComponent(p.title)}%20${encodeURIComponent('https://peuterplannen.nl/blog/' + p.slug + '/')}" target="_blank" rel="noopener" class="share-btn share-whatsapp">Deel via WhatsApp</a>
     <button class="share-btn share-native" style="display:none" onclick="navigator.share?.({title:${JSON.stringify(p.title)},url:'https://peuterplannen.nl/blog/${p.slug}/'}).catch(()=>{})">Delen</button>
   </div>
@@ -158,7 +158,7 @@ ${p.featured_image ? `<div class="blog-hero-img" style="max-width:1100px;margin:
 
   ${newsletterHTML()}
 
-  <div class="cta-block">
+  <div class="cta-block pp-reveal">
     <h3>Op zoek naar meer uitjes?</h3>
     <p>Ontdek ${data.total}+ uitjes op PeuterPlannen.</p>
     <a href="/app.html">Open de app</a>
@@ -259,7 +259,7 @@ ${navHTML()}
 </nav>
 
 <main id="main-content">
-  <section class="guide-section blog-guide">
+  <section class="guide-section blog-guide pp-reveal">
     <div class="guide-card">
       <p class="guide-kicker">Wat je hier krijgt</p>
       <h2>Geen generieke lijstjes, wel gidsen waar je direct iets aan hebt</h2>
@@ -284,7 +284,7 @@ ${navHTML()}
     </div>
   </section>
 
-  <div class="blog-grid">
+  <div class="blog-grid pp-reveal-stagger">
     ${postCards}
   </div>
 

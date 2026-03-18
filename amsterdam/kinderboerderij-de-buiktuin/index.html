@@ -18,8 +18,8 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603180635">
-  <link rel="stylesheet" href="/style.min.css?v=202603180635">
+  <link rel="stylesheet" href="/design-system.css?v=202603180640">
+  <link rel="stylesheet" href="/style.min.css?v=202603180640">
   <style>
   .guide-section{display:grid;gap:18px;margin:36px 0}
   .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
@@ -58,8 +58,8 @@
   .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
   @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
 </style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603180635">
-  <script src="/nav-floating.js?v=202603180635" defer></script>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603180640">
+  <script src="/nav-floating.js?v=202603180640" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -241,7 +241,7 @@
       <p style="margin-top:12px;"><a href="/methode/">Lees hoe PeuterPlannen locaties selecteert en controleert</a>.</p>
     </div>
 
-  <div class="location-info">
+  <div class="location-info pp-reveal">
     <div class="info-item"><div><div class="info-label">Weer</div><div class="info-value">Buiten (outdoor)</div></div></div>
     <div class="info-item"><div><div class="info-label">Leeftijd</div><div class="info-value">0–10 jaar</div></div></div>
     <div class="info-item"><div><div class="info-label">Faciliteit</div><div class="info-value">Koffie voor ouders</div></div></div>
@@ -249,21 +249,21 @@
     <div class="info-item"><div><div class="info-label">Website</div><div class="info-value"><a href="https://www.kinderboerderijdebuiktuin.com/" target="_blank" rel="noopener" aria-label="Website van Kinderboerderij De Buiktuin">kinderboerderijdebuiktuin.com</a></div></div></div>
   </div>
 
-  
+  <div class="pp-reveal">
 <div class="explore-cta">
   <a href="/app.html?type=farm&regio=Amsterdam" class="btn-explore">
     Bekijk alle Kinderboerderijen in Amsterdam →
   </a>
-</div>
+</div></div>
 
-  <div class="location-actions">
+  <div class="location-actions pp-reveal">
     <a href="https://www.google.com/maps/dir/?api=1&destination=52.3907,4.9041" target="_blank" rel="noopener" class="btn-route">Route plannen</a>
   </div>
 
   
   
 
-  <div class="share-buttons">
+  <div class="share-buttons pp-reveal">
     <a href="https://wa.me/?text=Kinderboerderij%20De%20Buiktuin%20%E2%80%94%20Peuteruitje%20in%20Amsterdam%20https%3A%2F%2Fpeuterplannen.nl%2Famsterdam%2Fkinderboerderij-de-buiktuin%2F" target="_blank" rel="noopener" class="share-wa">Deel via WhatsApp</a>
     <button class="share-native" onclick="shareNative()">Delen</button>
   </div>
@@ -271,12 +271,12 @@
   
   
 
-  <div class="location-map" id="map-container"><div id="map"></div></div>
+  <div class="location-map pp-reveal" id="map-container"><div id="map"></div></div>
   <p class="map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>
 
-  <div class="similar-locations">
+  <div class="similar-locations pp-reveal">
     <h2>Vergelijkbare locaties in Amsterdam</h2>
-    <div class="loc-list">
+    <div class="loc-list pp-reveal-stagger">
       
       <article class="loc-item">
         <h3><a href="/amsterdam/clara-maria-kaasboerderij/">Clara Maria Kaasboerderij</a></h3>
@@ -305,15 +305,15 @@
     </div>
   </div>
 
-  <div class="related-blogs">
+  <div class="pp-reveal"><div class="related-blogs">
       <h3>Meer inspiratie</h3>
       <ul><li><a href="/blog/amsterdam-met-peuters-en-kleuters/">Amsterdam met peuters en kleuters: complete gids</a></li><li><a href="/blog/gratis-peuteruitjes-amsterdam/">10 Gratis peuteruitjes in Amsterdam</a></li><li><a href="/blog/kindvriendelijke-horeca-met-speelhoek/">Kindvriendelijke horeca met speelhoek</a></li><li><a href="/blog/dagje-uit-met-dreumes/">Dagje uit met een dreumes: 20 activiteiten</a></li></ul>
-    </div>
-  <div class="related-blogs">
+    </div></div>
+  <div class="pp-reveal"><div class="related-blogs">
       <h3>Past ook binnen deze routes</h3>
       <ul><li><a href="/koffie-en-spelen.html">Koffie en spelen</a></li><li><a href="/dreumes-uitjes.html">Dreumes-uitjes</a></li><li><a href="/peuteruitjes-2-5-jaar.html">Peuteruitjes voor 2-5 jaar</a></li></ul>
-    </div>
-  <div class="related-blogs">
+    </div></div>
+  <div class="related-blogs pp-reveal">
     <h3>Praktische context</h3>
     <ul>
       <li><a href="/methode/">Lees hoe PeuterPlannen locaties selecteert</a></li>
@@ -322,7 +322,7 @@
     </ul>
   </div>
 
-  <section class="support-section">
+  <section class="support-section pp-reveal">
   <div class="support-inner">
     <h3>Iets nuttigs gevonden?</h3>
     <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>
@@ -339,17 +339,17 @@
   </div>
 </section>
 
-  <div class="other-cities" style="margin-top: 32px;">
+  <div class="other-cities pp-reveal" style="margin-top: 32px;">
     <h3>Meer peuteruitjes in Amsterdam</h3>
     <a href="/amsterdam.html">Bekijk alle Amsterdam locaties &rarr;</a>
   </div>
 
-  <div class="other-cities" style="margin-top: 16px;">
+  <div class="other-cities pp-reveal" style="margin-top: 16px;">
     <h3>Alle Kinderboerderijen in Nederland</h3>
     <a href="/kinderboerderijen.html">Bekijk overzicht Kinderboerderijen &rarr;</a>
   </div>
 
-  <div class="newsletter-signup">
+  <div class="newsletter-signup pp-reveal">
   <h3>Elke vrijdag: 3 uitjes die passen bij het weer</h3>
   <form action="https://buttondown.com/api/emails/embed-subscribe/peuterplannen"
         method="post" target="popupwindow"
@@ -362,7 +362,7 @@
 </div>
 </main>
 
-<footer>
+<footer class="pp-reveal">
   <nav aria-label="Footernavigatie">
   <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
   </nav>

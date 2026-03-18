@@ -70,7 +70,7 @@ function navHTML(ctaText = 'Open App', ctaHref = '/app.html') {
 }
 
 function footerHTML() {
-  return `<footer>
+  return `<footer class="pp-reveal">
   <nav aria-label="Footernavigatie">
   <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="${TIKKIE_URL}" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
   </nav>
@@ -78,7 +78,7 @@ function footerHTML() {
 }
 
 function newsletterHTML() {
-  return `<div class="newsletter-signup">
+  return `<div class="newsletter-signup pp-reveal">
   <h3>Elke vrijdag: 3 uitjes die passen bij het weer</h3>
   <form action="https://buttondown.com/api/emails/embed-subscribe/peuterplannen"
         method="post" target="popupwindow"
@@ -130,7 +130,7 @@ function revealScript() {
 function supportHTML(variant = 'default', count = 0) {
   const displayCount = count > 0 ? count : 660;
   if (variant === 'category') {
-    return `<section class="support-section">
+    return `<section class="support-section pp-reveal">
   <div class="support-inner">
     <h3>Gratis voor jou, niet voor mij</h3>
     <p>Dit is een hobbyproject uit Utrecht — geen team, geen advertenties, wel ${displayCount}+ uitjes in Nederland. Als jij dit handig vindt, is een bijdrage welkom.</p>
@@ -145,7 +145,7 @@ function supportHTML(variant = 'default', count = 0) {
   </div>
 </section>`;
   }
-  return `<section class="support-section">
+  return `<section class="support-section pp-reveal">
   <div class="support-inner">
     <h3>Iets nuttigs gevonden?</h3>
     <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>

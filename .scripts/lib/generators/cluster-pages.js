@@ -38,7 +38,7 @@ function generateClusterPage(cluster, data, locs) {
   const regionSections = topRegions.map((region) => `
     <section class="region-section">
       <h2>${cluster.h1} in <span class="accent">${region.name}</span></h2>
-      <div class="loc-list">
+      <div class="loc-list pp-reveal-stagger">
         ${byRegion[region.name].slice(0, 8).map(locationHTML_type).join('')}
       </div>
     </section>`).join('');
@@ -142,7 +142,7 @@ ${navHTML()}
 </nav>
 
 <main id="main-content">
-  <section class="guide-section">
+  <section class="guide-section pp-reveal">
     ${editorial ? `<div class="guide-card">
       <p class="guide-kicker">${escapeHtml(editorial.editorial_label || 'PeuterPlannen redactie')}</p>
       <h2>Waarom deze route menselijker werkt dan eindeloos scrollen</h2>

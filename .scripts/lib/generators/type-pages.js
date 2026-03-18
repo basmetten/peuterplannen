@@ -63,7 +63,7 @@ function generateTypePage(page, locs, regions, seoContent, total) {
       return `
     <section class="region-section">
       <h2>${page.sectionLabel} in ${r}${cityTypeLink}</h2>
-      <div class="loc-list">
+      <div class="loc-list pp-reveal-stagger">
         ${byRegion[r].map(locationHTML_type).join('')}
       </div>
     </section>`;
@@ -86,7 +86,7 @@ function generateTypePage(page, locs, regions, seoContent, total) {
   const relatedEditorialBlogs = Array.isArray(editorial?.related_blog_slugs) ? getBlogEntriesBySlug(editorial.related_blog_slugs) : [];
   const pageTitle = editorial?.meta_title || page.metaTitle;
   const pageDescription = editorial?.meta_description || page.metaDesc;
-  const typeGuideHTML = `<section class="guide-section type-guide">
+  const typeGuideHTML = `<section class="guide-section type-guide pp-reveal">
     ${strongestRegions.map((regionName) => {
       const picks = byRegion[regionName].slice(0, 2);
       return `<article class="guide-card">

@@ -735,6 +735,48 @@ p, li {
 .pp-skeleton-img   { aspect-ratio: 16/9; width: 100%; }
 .pp-skeleton-pill  { height: 32px; width: 80px; border-radius: var(--pp-radius-pill); }
 
+/* === Scroll reveal system === */
+.pp-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pp-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.pp-reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.pp-reveal-stagger.is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+.pp-reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0s; }
+.pp-reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.07s; }
+.pp-reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.14s; }
+.pp-reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.21s; }
+.pp-reveal-stagger.is-visible > *:nth-child(n+5) { transition-delay: 0.28s; }
+
+/* Named view transitions for hero images */
+.location-hero-img { view-transition-name: hero-img; }
+::view-transition-old(hero-img) { animation: vt-fade-out 120ms ease-in both; }
+::view-transition-new(hero-img) { animation: pp-fade-up 250ms cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: 60ms; }
+
+/* CSS modernization: selection colors */
+::selection { background: var(--pp-primary-200); color: var(--pp-primary-900); }
+
+/* Smooth scroll (with motion guard) */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* Focus-visible global */
+:focus-visible { outline: 2.5px solid var(--pp-primary); outline-offset: 3px; }
+:focus:not(:focus-visible) { outline: none; }
+
 /* === Icon system === */
 .pp-icon-text {
   display: inline-flex;
@@ -753,20 +795,14 @@ p, li {
 
 /* Accessibility: disable all motion for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .pp-stagger > *,
-  .pp-location-card,
-  .pp-card-interactive,
-  .pp-chip,
-  .pp-btn,
-  .pp-toast,
-  .pp-copy-btn__label,
-  .pp-copy-btn__done,
-  .pp-checkmark,
-  .pp-heart-btn.is-active svg,
-  .pp-skeleton,
-  .pp-card-img img {
-    animation: none !important;
-    transition: none !important;
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .pp-reveal, .pp-reveal-stagger > *,
+  .pp-stagger > * {
     opacity: 1 !important;
     transform: none !important;
   }

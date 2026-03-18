@@ -179,7 +179,7 @@ ${navHTML(`Zoek in ${cityName}`, `/app.html?regio=${encodeURIComponent(cityName)
     <p>Gebruik de <a href="/app.html?regio=${encodeURIComponent(cityName)}">PeuterPlannen app</a> om te filteren op afstand, type en faciliteiten. Lees ook <a href="/methode/">hoe we selecteren</a> voor meer achtergrond over onze werkwijze.</p>
   </div>
 
-  <section class="guide-section city-type-guide">
+  <section class="guide-section city-type-guide pp-reveal">
     <div class="guide-card">
       <p class="guide-kicker">Overzicht</p>
       <h2>${escapeHtml(typeLabel)} in ${escapeHtml(cityName)}</h2>
@@ -203,7 +203,7 @@ ${navHTML(`Zoek in ${cityName}`, `/app.html?regio=${encodeURIComponent(cityName)
 
   <section class="type-section">
     <h2>${escapeHtml(typeLabel)} in ${escapeHtml(cityName)}</h2>
-    <div class="loc-list">
+    <div class="loc-list pp-reveal-stagger">
       ${locs.map(locationHTML_cityType).join('')}
     </div>
   </section>

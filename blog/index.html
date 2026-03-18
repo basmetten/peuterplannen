@@ -18,8 +18,8 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603180635">
-  <link rel="stylesheet" href="/style.min.css?v=202603180635">
+  <link rel="stylesheet" href="/design-system.css?v=202603180640">
+  <link rel="stylesheet" href="/style.min.css?v=202603180640">
   <style>
   .guide-section{display:grid;gap:18px;margin:36px 0}
   .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
@@ -58,8 +58,8 @@
   .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
   @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
 </style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603180635">
-  <script src="/nav-floating.js?v=202603180635" defer></script>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603180640">
+  <script src="/nav-floating.js?v=202603180640" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -145,7 +145,7 @@
 </nav>
 
 <main id="main-content">
-  <section class="guide-section blog-guide">
+  <section class="guide-section blog-guide pp-reveal">
     <div class="guide-card">
       <p class="guide-kicker">Wat je hier krijgt</p>
       <h2>Geen generieke lijstjes, wel gidsen waar je direct iets aan hebt</h2>
@@ -170,7 +170,7 @@
     </div>
   </section>
 
-  <div class="blog-grid">
+  <div class="blog-grid pp-reveal-stagger">
     
     <article class="blog-card">
       <a href="/blog/almere-met-peuters/"><picture><source type="image/webp" srcset="/images/blog/almere-met-peuters-400w.webp 400w, /images/blog/almere-met-peuters.webp" sizes="(max-width: 768px) 100vw, 400px"><img src="/images/blog/almere-met-peuters.jpg" alt="Almere met peuters: meer te doen dan je denkt" class="blog-card-thumb" loading="lazy"></picture></a>
@@ -614,7 +614,7 @@
     </article>
   </div>
 
-  <div class="newsletter-signup">
+  <div class="newsletter-signup pp-reveal">
   <h3>Elke vrijdag: 3 uitjes die passen bij het weer</h3>
   <form action="https://buttondown.com/api/emails/embed-subscribe/peuterplannen"
         method="post" target="popupwindow"
@@ -627,7 +627,7 @@
 </div>
 </main>
 
-<footer>
+<footer class="pp-reveal">
   <nav aria-label="Footernavigatie">
   <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
   </nav>

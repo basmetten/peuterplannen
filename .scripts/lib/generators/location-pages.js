@@ -284,9 +284,9 @@ function locationPageHTML(loc, region, similarLocs, total, cityTypeCombos) {
 
   // Similar locations
   const similarHTML = similarLocs.length > 0
-    ? `<div class="similar-locations">
+    ? `<div class="similar-locations pp-reveal">
     <h2>Vergelijkbare locaties in ${region.name}</h2>
-    <div class="loc-list">
+    <div class="loc-list pp-reveal-stagger">
       ${similarLocs.map(s => {
         const sDesc = isFillerDescription(s.description) ? '' : (s.description || '');
         return `
@@ -494,18 +494,18 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
   ${loc.toddler_highlight ? `<div class="location-highlight"><strong>Peutertip:</strong> ${escapeHtml(cleanToddlerHighlight(loc.toddler_highlight))}</div>` : ''}
   ${decisionContextHTML}
 
-  ${infoItems.length > 0 ? `<div class="location-info">\n    ${infoItems.join('\n    ')}\n  </div>` : ''}
+  ${infoItems.length > 0 ? `<div class="location-info pp-reveal">\n    ${infoItems.join('\n    ')}\n  </div>` : ''}
 
-  ${exploreCTAHTML}
+  <div class="pp-reveal">${exploreCTAHTML}</div>
 
-  <div class="location-actions">
+  <div class="location-actions pp-reveal">
     ${routeUrl ? `<a href="${routeUrl}" target="_blank" rel="noopener" class="btn-route">Route plannen</a>` : ''}
   </div>
 
   ${affiliateTicketHTML(loc, AFFILIATE)}
   ${affiliateReservationHTML(loc, AFFILIATE)}
 
-  <div class="share-buttons">
+  <div class="share-buttons pp-reveal">
     <a href="https://wa.me/?text=${shareText}%20${shareUrl}" target="_blank" rel="noopener" class="share-wa">Deel via WhatsApp</a>
     <button class="share-native" onclick="shareNative()">Delen</button>
   </div>
@@ -513,14 +513,14 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
   ${affiliateProductsHTML(loc.type, AFFILIATE)}
   ${['museum', 'swim', 'play'].includes(loc.type) ? affiliateBookingHTML(region.name, AFFILIATE) : ''}
 
-  ${(loc.lat && loc.lng) ? `<div class="location-map" id="map-container"><div id="map"></div></div>
+  ${(loc.lat && loc.lng) ? `<div class="location-map pp-reveal" id="map-container"><div id="map"></div></div>
   <p class="map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>` : ''}
 
   ${similarHTML}
 
-  ${blogLinksHTML}
-  ${clusterLinksHTML}
-  <div class="related-blogs">
+  <div class="pp-reveal">${blogLinksHTML}</div>
+  <div class="pp-reveal">${clusterLinksHTML}</div>
+  <div class="related-blogs pp-reveal">
     <h3>Praktische context</h3>
     <ul>
       <li><a href="/methode/">Lees hoe PeuterPlannen locaties selecteert</a></li>
@@ -531,12 +531,12 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 
   ${supportHTML('default', total)}
 
-  <div class="other-cities" style="margin-top: 32px;">
+  <div class="other-cities pp-reveal" style="margin-top: 32px;">
     <h3>Meer peuteruitjes in ${region.name}</h3>
     <a href="/${region.slug}.html">Bekijk alle ${region.name} locaties &rarr;</a>
   </div>
 
-  ${TYPE_MAP[loc.type]?.slug ? `<div class="other-cities" style="margin-top: 16px;">
+  ${TYPE_MAP[loc.type]?.slug ? `<div class="other-cities pp-reveal" style="margin-top: 16px;">
     <h3>Alle ${TYPE_MAP[loc.type].label} in Nederland</h3>
     <a href="/${TYPE_MAP[loc.type].slug}.html">Bekijk overzicht ${TYPE_MAP[loc.type].label} &rarr;</a>
   </div>` : ''}
