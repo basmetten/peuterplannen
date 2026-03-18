@@ -1348,7 +1348,7 @@ Voeg `pp-reveal` en `pp-reveal-stagger` classes toe aan:
 
 ## FASE 10: CSS MODERNIZATION
 
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** `implementer` (design-system.css + style.css)
 **Prioriteit:** MEDIUM
 **Parallel met:** Fase 9
