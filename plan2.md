@@ -1568,7 +1568,7 @@ find . -name "index.html" -not -path "./node_modules/*" | wc -l  # moet ~2200 zi
 
 ## FASE 12: DESIGN AUDIT TOOLING
 
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** `implementer` (nieuw audit script)
 **Prioriteit:** MEDIUM — future-proofing
 **Afhankelijk van:** Fase 11

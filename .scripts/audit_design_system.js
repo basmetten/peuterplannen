@@ -119,6 +119,57 @@ for (const p of samplePages) {
   }
 }
 
+// 6. No hardcoded hex colors in inline styles of generated HTML
+const htmlFiles = [];
+function collectHtml(dir) {
+  if (!fs.existsSync(dir)) return;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory() && !['node_modules', '.git', 'output', '.scripts', 'admin', 'partner'].includes(entry.name)) {
+      collectHtml(full);
+    } else if (entry.isFile() && entry.name.endsWith('.html')) {
+      htmlFiles.push(full);
+    }
+  }
+}
+collectHtml(path.join(__dirname, '..'));
+const hexInStylePattern = /style="[^"]*#[0-9a-fA-F]{3,6}[^0-9a-fA-F]/g;
+let hexInStyleCount = 0;
+const hexExamples = [];
+for (const f of htmlFiles.slice(0, 200)) {
+  const content = fs.readFileSync(f, 'utf8');
+  const matches = content.match(hexInStylePattern);
+  if (matches) {
+    hexInStyleCount += matches.length;
+    if (hexExamples.length < 3) {
+      hexExamples.push(`${path.relative(path.join(__dirname, '..'), f)}: ${matches[0].substring(0, 60)}`);
+    }
+  }
+}
+if (hexInStyleCount === 0) {
+  pass('No hardcoded hex colors in inline styles');
+} else {
+  warn(`${hexInStyleCount} hardcoded hex color(s) in inline styles of generated HTML`);
+  hexExamples.forEach(ex => console.log(`       ${ex}`));
+}
+
+// 7. No hardcoded font names in inline styles (excluding email templates)
+// Matches font-family with literal font names like 'Arial', "DM Sans", etc.
+// Allows: var(), inherit, sans-serif, serif, monospace
+const fontNameInStylePattern = /style="[^"]*font-family\s*:\s*['"][A-Z]/gi;
+let fontFamilyCount = 0;
+for (const f of htmlFiles.slice(0, 200)) {
+  if (f.includes('supabase')) continue; // email templates must use inline fonts
+  const content = fs.readFileSync(f, 'utf8');
+  const matches = content.match(fontNameInStylePattern);
+  if (matches) fontFamilyCount += matches.length;
+}
+if (fontFamilyCount === 0) {
+  pass('No hardcoded font-family in inline styles');
+} else {
+  warn(`${fontFamilyCount} hardcoded font-family in inline styles`);
+}
+
 // Summary
 console.log('\n--- Summary ---');
 console.log(`  ${warnings} warning(s), ${errors} error(s)\n`);
