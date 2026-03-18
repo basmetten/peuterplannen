@@ -98,10 +98,10 @@
     <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/design-system.css?v=202603181804">
+    <link rel="stylesheet" href="/design-system.css?v=202603181809">
     <link rel="stylesheet" href="/app.min.css">
     <link rel="stylesheet" href="/nav-floating.min.css?v=202603181034">
-    <script src="/nav-floating.js?v=202603181804" defer></script>
+    <script src="/nav-floating.js?v=202603181809" defer></script>
 
 </head>
 <body>
@@ -226,6 +226,18 @@
                 <button class="city-chip" onclick="setCity('Rotterdam')">Rotterdam</button>
                 <button class="city-chip" onclick="setCity('Den Haag')">Den Haag</button>
                 <button class="city-chip" onclick="setCity('Haarlem')">Haarlem</button>
+            </div>
+        </div>
+
+        <div id="gps-onboarding" class="gps-onboarding hidden" role="complementary">
+            <div class="gps-onboarding-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="width:32px;height:32px;color:var(--pp-primary);"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <strong>Waar ben je?</strong>
+            <p>Deel je locatie zodat we uitjes bij jou in de buurt kunnen tonen.</p>
+            <div class="gps-onboarding-actions">
+                <button class="gps-onboarding-btn primary" onclick="getCurrentLocation();document.getElementById('gps-onboarding').hidden=true;">Gebruik mijn locatie</button>
+                <button class="gps-onboarding-btn" onclick="document.getElementById('location-input').focus();document.getElementById('gps-onboarding').hidden=true;">Typ je stad</button>
             </div>
         </div>
 
@@ -754,6 +766,13 @@
                 setTimeout(() => {
                     const header = document.querySelector('.decision-stage-header');
                     if (header) header.hidden = true;
+                }, 0);
+            }
+            // Show GPS onboarding prompt if no location known and no deep-link
+            if (!presetParam && !queryParam && !gpsParam && !localStorage.getItem('gpsLat') && !localStorage.getItem('lastCity')) {
+                setTimeout(() => {
+                    const onboarding = document.getElementById('gps-onboarding');
+                    if (onboarding) onboarding.hidden = false;
                 }, 0);
             }
         })();
@@ -1763,7 +1782,13 @@
                     if (activeTag === 'favorites') {
                         container.innerHTML = '<div class="favorites-empty"><svg viewBox="0 0 24 24" style="width:48px;height:48px;stroke:#D4775A;fill:none;stroke-width:1.5;margin-bottom:16px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><strong>Nog geen favorieten</strong><p>Tik op het hartje bij een locatie om deze hier te bewaren.</p></div>';
                     } else {
-                        container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong><br>Probeer een andere categorie of filter</div>';
+                        const suggestions = [];
+                        if (activePreset) suggestions.push('Probeer een andere situatie');
+                        if (activeWeather) suggestions.push('Verwijder het weer-filter');
+                        if (activeTag && activeTag !== 'all') suggestions.push('Kies een ander type');
+                        if (!userLocation) suggestions.push('Vul een stad in voor resultaten bij jou in de buurt');
+                        const suggestHTML = suggestions.length ? '<ul style="text-align:left;margin:12px auto;max-width:280px;padding-left:20px;">' + suggestions.map(s => '<li>' + s + '</li>').join('') + '</ul>' : '';
+                        container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>' + suggestHTML + '<button class="gps-onboarding-btn" onclick="activePreset=null;activeWeather=null;activeTag=\'all\';syncPresetAria();loadLocations();" style="margin-top:12px;">Alle filters wissen</button></div>';
                     }
                     updateMapMarkers([]); updateResultsCount(0); return;
                 }

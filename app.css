@@ -261,6 +261,13 @@
         .gps-status { font-size: var(--pp-text-sm); color: var(--pp-text-secondary); margin-top: 10px; display: flex; align-items: center; gap: 8px; }
         .gps-status.loading::before { content: ''; width: var(--pp-icon-xs); height: var(--pp-icon-xs); border: 2px solid rgba(var(--pp-primary-rgb), 0.2); border-top-color: var(--pp-primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
         .gps-status.error { color: var(--pp-accent); }
+        .gps-onboarding { background: linear-gradient(135deg, rgba(var(--pp-primary-rgb), 0.08), rgba(var(--pp-accent-rgb), 0.06)); border: 1px solid rgba(var(--pp-primary-rgb), 0.15); border-radius: var(--pp-radius-lg); padding: 24px; text-align: center; margin-bottom: 16px; }
+        .gps-onboarding strong { display: block; font-size: var(--pp-text-lg); margin: 8px 0 4px; color: var(--pp-text); }
+        .gps-onboarding p { font-size: var(--pp-text-sm); color: var(--pp-text-muted); margin-bottom: 16px; }
+        .gps-onboarding-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+        .gps-onboarding-btn { padding: 12px 20px; border-radius: var(--pp-radius-pill); border: 1px solid rgba(var(--pp-text-rgb), 0.12); background: var(--pp-surface); font-family: inherit; font-size: var(--pp-text-sm); font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.2s; min-height: 44px; }
+        .gps-onboarding-btn:hover { transform: translateY(-1px); }
+        .gps-onboarding-btn.primary { background: var(--pp-primary); color: white; border-color: var(--pp-primary); }
 
         .popular-cities { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding: 8px 0; }
         .popular-label { font-size: var(--pp-text-sm); color: var(--pp-text-muted); font-weight: 500; }
