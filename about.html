@@ -31,76 +31,15 @@
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/design-system.css?v=202603180734">
+    <link rel="stylesheet" href="/style.min.css?v=202603180734">
     <style>
-        :root {
-            --primary: #D4775A;
-            --primary-light: #FDF1ED;
-            --primary-dark: #B35D42;
-            --accent: #E8B870;
-            --accent-light: #FEF6E8;
-            --secondary: #6B9590;
-            --navy: #2D2926;
-            --bg: #FAF7F2;
-            --bg-cream: #FFF5EB;
-            --ink: #2D2926;
-            --ink-light: #7A5E60;
-            --ink-muted: #A39490;
-            --card-bg: #FFFFFF;
-            --card-border: rgba(212, 119, 90, 0.15);
-            --card-shadow: 0 4px 12px rgba(45, 41, 38, 0.10);
-            --shadow-lg: 0 16px 44px rgba(45, 41, 38, 0.16);
-            --radius-sm: 12px;
-            --radius-md: 20px;
-            --radius-lg: 28px;
-            --radius-pill: 999px;
-            --font-heading: 'Fraunces', 'Fraunces Fallback', Georgia, serif;
-        }
-        @media (prefers-reduced-motion: no-preference) { @view-transition { navigation: auto; } }
-        @keyframes vt-fade-out { from { opacity: 1; } to { opacity: 0; } }
-        @keyframes vt-fade-up  { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @media (prefers-reduced-motion: no-preference) {
-            ::view-transition-old(root) { animation: vt-fade-out 160ms ease-in both; }
-            ::view-transition-new(root) { animation: vt-fade-up 280ms cubic-bezier(0.22,1,0.36,1) both; animation-delay: 80ms; }
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.7; }
-        h1, h2, h3, h4 { font-family: var(--font-heading); }
-
-        nav[aria-label="Hoofdnavigatie"] {
-            position: fixed;
-            top: 14px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: min(1100px, calc(100% - 28px));
-            background: rgba(255, 251, 246, 0.86);
-            backdrop-filter: blur(16px) saturate(160%);
-            -webkit-backdrop-filter: blur(16px) saturate(160%);
-            z-index: 100;
-            border: 1px solid rgba(212, 119, 90, 0.18);
-            border-radius: var(--radius-lg);
-            box-shadow: 0 10px 32px rgba(45, 41, 38, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-            transition: top 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-        }
-        nav[aria-label="Hoofdnavigatie"].scrolled {
-            top: 10px;
-            background: rgba(255, 251, 246, 0.96);
-            box-shadow: 0 8px 30px rgba(45,41,38,0.16), inset 0 1px 0 rgba(255,255,255,0.9);
-        }
-        .nav-inner { max-width: 1100px; margin: 0 auto; padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; }
-        .nav-logo { font-weight: 700; font-size: 18px; color: var(--navy); text-decoration: none; display: flex; align-items: center; gap: 8px; }
-        .nav-logo-svg { width: 40px; height: 40px; display: block; flex-shrink: 0; }
-        .logo-text { display: flex; flex-direction: column; line-height: 1.15; font-size: 15px; }
-        .logo-top { font-weight: 700; }
-        .logo-bottom { font-weight: 800; color: var(--primary); }
-        .nav-links { display: flex; gap: 28px; }
-        .nav-links a { color: var(--ink-light); text-decoration: none; font-weight: 500; font-size: 15px; }
-        .nav-links a:hover { color: var(--primary); }
-        .nav-cta { background: var(--primary); color: white; padding: 10px 20px; border-radius: var(--radius-sm); text-decoration: none; font-weight: 600; font-size: 14px; }
-        .nav-cta:hover { background: var(--primary-dark); }
-
+        /* Page-specific styles for about.html */
         .content { max-width: 760px; margin: 0 auto; padding: 154px 24px 80px; }
-        h1 {
+        .content h1 {
             font-size: clamp(40px, 6vw, 66px);
             font-weight: 800;
             letter-spacing: -0.04em;
@@ -109,95 +48,63 @@
             max-width: 12ch;
             text-wrap: balance;
         }
-        h2 {
+        .content h2 {
             font-size: clamp(30px, 3.2vw, 42px);
             font-weight: 800;
             letter-spacing: -0.03em;
             margin: 56px 0 18px;
-            color: var(--navy);
+            color: var(--pp-text);
             line-height: 1.04;
             text-wrap: balance;
         }
-        p { margin-bottom: 20px; font-size: 17px; color: var(--ink-light); line-height: 1.8; }
-        .highlight { color: var(--primary); font-weight: 600; }
+        .content p { margin-bottom: 20px; font-size: 17px; color: var(--pp-text-secondary); line-height: 1.8; }
+        .highlight { color: var(--pp-primary); font-weight: 600; }
 
-        .check-list { margin: 24px 0 32px; padding: 24px 28px; background: var(--primary-light); border-radius: var(--radius-sm); border-left: 4px solid var(--primary); }
-        .check-list p { margin-bottom: 8px; font-size: 16px; color: var(--ink); }
+        .check-list { margin: 24px 0 32px; padding: 24px 28px; background: var(--pp-primary-light); border-radius: var(--pp-radius-sm); border-left: 4px solid var(--pp-primary); }
+        .check-list p { margin-bottom: 8px; font-size: 16px; color: var(--pp-text); }
 
         .stats-row { display: flex; gap: 16px; margin: 32px 0; flex-wrap: wrap; }
-        .stat-card { flex: 1; min-width: 140px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-sm); padding: 20px; text-align: center; box-shadow: var(--card-shadow); }
-        .stat-card strong { display: block; font-size: 28px; font-weight: 800; color: var(--primary); font-family: var(--font-heading); }
-        .stat-card span { font-size: 14px; color: var(--ink-muted); }
+        .stat-card {
+            flex: 1; min-width: 140px; background: var(--pp-surface); border: 1px solid var(--pp-border);
+            border-radius: var(--pp-radius-sm); padding: 20px; text-align: center;
+            box-shadow: var(--pp-shadow-card); position: relative; overflow: hidden;
+            transition: all 0.25s ease;
+        }
+        .stat-card strong { display: block; font-size: 28px; font-weight: 800; color: var(--pp-primary); font-family: var(--pp-font-heading); }
+        .stat-card span { font-size: 14px; color: var(--pp-text-muted); }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--pp-primary), var(--pp-accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; }
+        .stat-card:hover::before { transform: scaleX(1); }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: var(--pp-shadow-card-hover); }
 
-        .cta-box { background: var(--primary); border-radius: var(--radius-md); padding: 36px 32px; text-align: center; margin-top: 48px; color: white; }
+        .cta-box { background: var(--pp-primary); border-radius: var(--pp-radius-md); padding: 36px 32px; text-align: center; margin-top: 48px; color: white; }
         .cta-box h3 { font-size: clamp(28px, 3vw, 38px); line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 12px; }
         .cta-box p { color: rgba(255,255,255,0.85); margin-bottom: 20px; }
-        .cta-box a { background: white; color: var(--primary); padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; }
-        .cta-box a:hover { background: #f0f0f0; }
+        .cta-box a { background: white; color: var(--pp-primary); padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; transition: background 0.2s; }
+        .cta-box a:hover { background: var(--pp-surface-hover); }
 
-        footer { background: var(--navy); color: rgba(255,255,255,0.6); padding: 32px 24px; text-align: center; font-size: 14px; }
-        footer a { color: var(--primary); text-decoration: none; }
-
-        @media (max-width: 768px) {
-            nav[aria-label="Hoofdnavigatie"] { top: 10px; width: calc(100% - 16px); border-radius: 20px; }
-            .nav-inner { padding: 12px 14px; }
-            .nav-links { display: none; }
-            .content { padding-top: 124px; }
-            h1 { font-size: clamp(34px, 10vw, 46px); line-height: 0.98; }
-            h2 { font-size: clamp(28px, 7vw, 34px); }
-            .stats-row { gap: 12px; }
-            .stat-card { min-width: 100px; padding: 16px; }
-        }
-
-        /* Premium touches */
-        html { scroll-behavior: smooth; }
-        ::selection { background: rgba(212, 119, 90, 0.2); }
-        body { -webkit-font-smoothing: antialiased; }
-        .nav-links a { position: relative; }
-        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--primary); border-radius: 1px; transition: width 0.3s ease; }
-        .nav-links a:hover::after { width: 100%; }
-        .stat-card { position: relative; overflow: hidden; }
-        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; }
-        .stat-card:hover::before { transform: scaleX(1); }
-        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,41,38,0.12); }
-        .stat-card { transition: all 0.25s ease; }
-        :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
-
-        .support-about-section { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border-radius: var(--radius-md); padding: 36px 32px; text-align: center; margin: 48px 0; box-shadow: var(--shadow-lg); }
+        .support-about-section { background: linear-gradient(135deg, var(--pp-primary), var(--pp-primary-dark)); color: white; border-radius: var(--pp-radius-md); padding: 36px 32px; text-align: center; margin: 48px 0; box-shadow: var(--pp-shadow-lg); }
         .support-about-inner { max-width: 480px; margin: 0 auto; }
         .support-about-section h2 { font-size: clamp(30px, 3.2vw, 40px); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; color: white; margin-top: 0; line-height: 1.04; }
         .support-about-section p { color: rgba(255,255,255,0.9); margin-bottom: 16px; font-size: 16px; }
         .support-about-amounts { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
-        .support-about-pill { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: var(--radius-pill); padding: 6px 16px; font-size: 14px; font-weight: 600; }
-        .support-about-pill-mid { background: white; color: var(--primary-dark); border-color: white; }
-        .support-about-cta { background: white; color: var(--primary-dark); padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; transition: transform 0.15s ease, background 0.15s ease; }
-        .support-about-cta:hover { background: #f0f0f0; transform: translateY(-1px); }
+        .support-about-pill { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: var(--pp-radius-pill); padding: 6px 16px; font-size: 14px; font-weight: 600; }
+        .support-about-pill-mid { background: white; color: var(--pp-primary-dark); border-color: white; }
+        .support-about-cta { background: white; color: var(--pp-primary-dark); padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; transition: transform 0.15s ease, background 0.15s ease; }
+        .support-about-cta:hover { background: var(--pp-surface-hover); transform: translateY(-1px); }
         .support-about-subline { font-size: 14px; opacity: 0.75; margin-top: 16px; margin-bottom: 0; }
         @media (max-width: 600px) { .support-about-section { padding: 28px 20px; } }
 
-        /* Hamburger menu */
-        .nav-burger { display: none; flex-direction: column; justify-content: center; gap: 5px; cursor: pointer; background: none; border: none; padding: 8px; border-radius: 8px; transition: background 0.2s; }
-        .nav-burger:hover { background: var(--primary-light); }
-        .nav-burger span { display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform 0.28s cubic-bezier(0.4,0,0.2,1), opacity 0.2s ease; transform-origin: center; }
-        .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-        .nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-        .nav-mobile { display: none; position: absolute; top: calc(100% + 10px); left: 8px; right: 8px; background: rgba(255,251,246,0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(212,119,90,0.15); border-radius: 16px; padding: 10px 12px 12px; flex-direction: column; gap: 2px; opacity: 0; transform: translateY(-6px); transition: opacity 0.25s cubic-bezier(0.4,0,0.2,1), transform 0.25s cubic-bezier(0.4,0,0.2,1); pointer-events: none; box-shadow: 0 12px 28px rgba(45,41,38,0.12); }
-        .nav-mobile.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
-        .nav-mobile-link { display: block; padding: 13px 16px; color: var(--ink); text-decoration: none; font-size: 16px; font-weight: 500; border-radius: 10px; transition: background 0.15s, color 0.15s; }
-        .nav-mobile-link:hover, .nav-mobile-link.active { background: var(--primary-light); color: var(--primary); font-weight: 600; }
-        .nav-mobile-cta { display: block; margin-top: 10px; text-align: center; }
-        @media (max-width: 768px) { .nav-burger { display: flex; } .nav-mobile { display: flex; } }
-
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-        .reveal { opacity: 0; }
-        .reveal.visible { animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-        @media (prefers-reduced-motion: reduce) {
-            .reveal, .reveal.visible { animation: none; opacity: 1; }
+        @media (max-width: 768px) {
+            .content { padding-top: 124px; }
+            .content h1 { font-size: clamp(34px, 10vw, 46px); line-height: 0.98; }
+            .content h2 { font-size: clamp(28px, 7vw, 34px); }
+            .stats-row { gap: 12px; }
+            .stat-card { min-width: 100px; padding: 16px; }
         }
     </style>
-    <link rel="stylesheet" href="/nav-floating.css?v=202603180652">
-    <script src="/nav-floating.js?v=202603180652" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603180734">
+    <script src="/nav-floating.js?v=202603180734" defer></script>
+    <script src="/pp-interactions.js" defer></script>
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
@@ -319,23 +226,23 @@
             <p>&#10003; Locatiedata (als je die deelt) wordt alleen lokaal gebruikt om afstand te berekenen — nooit opgeslagen of doorgestuurd</p>
         </div>
 
-        <p>Heb je vragen over privacy? Mail ons gerust op <a href="mailto:privacy@peuterplannen.nl" style="color: var(--primary); font-weight: 600;">privacy@peuterplannen.nl</a>.</p>
+        <p>Heb je vragen over privacy? Mail ons gerust op <a href="mailto:privacy@peuterplannen.nl" style="color: var(--pp-primary); font-weight: 600;">privacy@peuterplannen.nl</a>.</p>
 
         <h2 id="contact">Contact</h2>
         <p>We horen graag van je! Of het nu een vraag, suggestie, of gewoon een compliment is (die zijn ook welkom, hoor).</p>
 
         <div class="check-list">
-            <p>&#9993; Bereikbaar via het <a href="contact.html" style="color: var(--primary); font-weight: 600;">contactformulier</a></p>
+            <p>&#9993; Bereikbaar via het <a href="contact.html" style="color: var(--pp-primary); font-weight: 600;">contactformulier</a></p>
         </div>
 
-        <h3 style="font-size: 20px; margin: 32px 0 12px; color: var(--navy);">Locatie suggereren of fout melden</h3>
+        <h3 style="font-size: 20px; margin: 32px 0 12px; color: var(--pp-text);">Locatie suggereren of fout melden</h3>
         <p>Ken je een leuke plek die we missen? Of klopt er iets niet? Laat het ons weten!</p>
 
         <form id="suggestion-form" style="margin: 20px 0 32px;">
-            <textarea id="suggestion-input" placeholder="Bijv. 'Speeltuin De Bikkels in Haarlem is super voor peuters!' of 'De openingstijden van X kloppen niet'" style="width: 100%; min-height: 100px; padding: 14px 16px; border: 2px solid var(--card-border); border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--ink); background: var(--card-bg); resize: vertical; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='var(--card-border)'"></textarea>
+            <textarea id="suggestion-input" placeholder="Bijv. 'Speeltuin De Bikkels in Haarlem is super voor peuters!' of 'De openingstijden van X kloppen niet'" style="width: 100%; min-height: 100px; padding: 14px 16px; border: 2px solid var(--pp-border); border-radius: 12px; font-family: var(--pp-font-body); font-size: 15px; color: var(--pp-text); background: var(--pp-surface); resize: vertical; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--pp-primary)'" onblur="this.style.borderColor='var(--pp-border)'"></textarea>
             <div style="display: flex; align-items: center; gap: 12px; margin-top: 12px;">
-                <button type="submit" style="background: var(--primary); color: white; border: none; padding: 12px 28px; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s;" onmouseover="this.style.background='var(--primary-dark)'" onmouseout="this.style.background='var(--primary)'">Versturen</button>
-                <span id="suggestion-status" style="font-size: 14px; color: var(--ink-muted);"></span>
+                <button type="submit" style="background: var(--pp-primary); color: white; border: none; padding: 12px 28px; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; font-family: var(--pp-font-body); transition: background 0.2s;" onmouseover="this.style.background='var(--pp-primary-dark)'" onmouseout="this.style.background='var(--pp-primary)'">Versturen</button>
+                <span id="suggestion-status" style="font-size: 14px; color: var(--pp-text-muted);"></span>
             </div>
         </form>
 
@@ -347,9 +254,9 @@
             const input = document.getElementById('suggestion-input');
             const status = document.getElementById('suggestion-status');
             const text = input.value.trim();
-            if (!text) { status.textContent = 'Typ eerst je suggestie of melding.'; status.style.color = 'var(--accent)'; return; }
-            if (text.length < 5) { status.textContent = 'Iets meer detail graag!'; status.style.color = 'var(--accent)'; return; }
-            status.textContent = 'Versturen...'; status.style.color = 'var(--ink-muted)';
+            if (!text) { status.textContent = 'Typ eerst je suggestie of melding.'; status.style.color = 'var(--pp-semantic-warning)'; return; }
+            if (text.length < 5) { status.textContent = 'Iets meer detail graag!'; status.style.color = 'var(--pp-semantic-warning)'; return; }
+            status.textContent = 'Versturen...'; status.style.color = 'var(--pp-text-muted)';
             try {
                 const res = await fetch(PUBLIC_FEEDBACK_ENDPOINT, {
                     method: 'POST',
@@ -363,46 +270,23 @@
                 });
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 status.textContent = 'Bedankt! We nemen je suggestie mee.';
-                status.style.color = '#2D8B5E';
+                status.style.color = 'var(--pp-semantic-success)';
                 input.value = '';
             } catch(err) {
                 status.textContent = 'Oeps, er ging iets mis. Probeer het later opnieuw.';
-                status.style.color = 'var(--accent)';
+                status.style.color = 'var(--pp-semantic-warning)';
             }
         });
-
-        (function() {
-            var targets = Array.from(document.querySelectorAll(
-                '.content h1, .content h2, .content h3, .content .check-list, .content .stat-card, .support-about-section, .cta-box'
-            ));
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                targets.forEach(function(el){ el.classList.add('visible'); });
-                return;
-            }
-            var observer = new IntersectionObserver(function(entries){
-                entries.forEach(function(entry){
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.12, rootMargin: '0px 0px -20px 0px' });
-            targets.forEach(function(el, i){
-                el.classList.add('reveal');
-                el.style.animationDelay = (Math.min(i, 8) * 0.07) + 's';
-                observer.observe(el);
-            });
-        })();
         </script>
 
-        <div class="cta-box">
+        <div class="cta-box pp-reveal">
             <h3>Probeer het zelf</h3>
             <p>Ontdek de leukste uitjes bij jou in de buurt.</p>
             <a href="app.html">Open de app</a>
         </div>
     </div>
 
-    <footer>
+    <footer class="pp-reveal">
       <div class="footer-inner">
         <span class="footer-brand">PeuterPlannen</span>
         <nav class="footer-links-row" aria-label="Footernavigatie">
@@ -418,6 +302,7 @@
       </div>
       <p class="footer-copy">&copy; 2026 PeuterPlannen &mdash; Kindvriendelijke uitjes in Nederland</p>
     </footer>
+<script src="/reveal.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
 </html>

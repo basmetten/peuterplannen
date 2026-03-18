@@ -22,9 +22,13 @@
   <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/style.min.css?v=202603180652">
-  <link rel="stylesheet" href="/nav-floating.css?v=202603180652">
-  <script src="/nav-floating.js?v=202603180652" defer></script>
+  <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/design-system.css?v=202603180734">
+  <link rel="stylesheet" href="/style.min.css?v=202603180734">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603180734">
+  <script src="/nav-floating.js?v=202603180734" defer></script>
+  <script src="/pp-interactions.js" defer></script>
 </head>
 <body>
 
@@ -119,7 +123,7 @@
   </div>
 </main>
 
-<footer>
+<footer class="pp-reveal">
   <div class="footer-inner">
     <span class="footer-brand">PeuterPlannen</span>
     <nav class="footer-links-row" aria-label="Footernavigatie">
@@ -161,7 +165,7 @@ document.getElementById('contact-form').addEventListener('submit', async functio
     });
     if (res.ok) {
       status.textContent = 'Bedankt! We reageren zo snel mogelijk.';
-      status.style.color = '#2D8B5E';
+      status.style.color = 'var(--pp-semantic-success)';
       document.getElementById('cf-message').value = '';
       btn.textContent = 'Verstuurd';
     } else { throw new Error(); }
@@ -173,6 +177,7 @@ document.getElementById('contact-form').addEventListener('submit', async functio
 });
 </script>
 
+<script src="/reveal.js"></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
 </html>
