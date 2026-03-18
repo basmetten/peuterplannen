@@ -22,7 +22,7 @@
         .view-enter { animation: viewFadeIn 0.15s ease forwards; }
 
         .app-wrapper { margin-top: 92px; }
-        .app-container { max-width: 540px; margin: 0 auto; padding: 0 16px calc(100px + var(--pp-safe-bottom)); position: relative; }
+        .app-container { max-width: 540px; margin: 0 auto; padding: 0 16px calc(100px + env(safe-area-inset-bottom, 80px)); position: relative; }
 
         .app-context-strip {
             background: rgba(var(--pp-bg-rgb), 0.84);

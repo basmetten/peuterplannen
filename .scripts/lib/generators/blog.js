@@ -152,9 +152,21 @@ ${p.featured_image ? `<div class="blog-hero-img"><picture><source type="image/we
 
   <div class="blog-share pp-reveal">
     <a href="https://wa.me/?text=${encodeURIComponent(p.title)}%20${encodeURIComponent('https://peuterplannen.nl/blog/' + p.slug + '/')}" target="_blank" rel="noopener" class="share-btn share-whatsapp">Deel via WhatsApp</a>
-    <button class="share-btn share-native" style="display:none" onclick="navigator.share?.({title:${JSON.stringify(p.title)},url:'https://peuterplannen.nl/blog/${p.slug}/'}).catch(()=>{})">Delen</button>
+    <button class="share-btn share-native" style="display:none" data-title="${escapeHtml(p.title)}" data-url="https://peuterplannen.nl/blog/${p.slug}/">Delen</button>
   </div>
-  <script>if(navigator.share)document.querySelector('.share-native').style.display='inline-flex'</script>
+  <script>
+  (function(){
+    document.querySelectorAll('.share-btn[data-url]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var title = this.dataset.title;
+        var url = this.dataset.url;
+        if(navigator.share){navigator.share({title:title,url:url}).catch(function(){});}
+        else{navigator.clipboard.writeText(url);}
+      });
+    });
+    if(navigator.share){var el=document.querySelector('.share-native');if(el)el.style.display='inline-flex';}
+  })();
+  </script>
 
   ${newsletterHTML()}
 
@@ -164,7 +176,7 @@ ${p.featured_image ? `<div class="blog-hero-img"><picture><source type="image/we
     <a href="/app.html">Open de app</a>
   </div>
 
-  ${supportHTML('default', data.total)}
+  ${supportHTML('default', data.total, 'blog-article')}
 </main>
 
 ${footerHTML()}
@@ -186,9 +198,10 @@ ${analyticsHTML()}
   }
 
   // Generate blog index
-  const postCards = publishedPosts.map(p => `
+  const postCards = publishedPosts.map((p, idx) => `
     <article class="blog-card">
-      ${p.featured_image ? `<a href="/blog/${p.slug}/"><picture><source type="image/webp" srcset="${p.featured_image.replace(/\.jpe?g$/, '-400w.webp')} 400w, ${p.featured_image.replace(/\.jpe?g$/, '.webp')}" sizes="(max-width: 768px) 100vw, 400px"><img src="${p.featured_image}" alt="${escapeHtml(p.title)}" class="blog-card-thumb" loading="lazy"></picture></a>` : ''}
+      ${p.featured_image ? `<a href="/blog/${p.slug}/"><div class="blog-card-thumb-container" style="background: linear-gradient(135deg, var(--pp-primary-50), var(--pp-primary-100));"><picture><source type="image/webp" srcset="${p.featured_image.replace(/\.jpe?g$/, '-400w.webp')} 400w, ${p.featured_image.replace(/\.jpe?g$/, '.webp')}" sizes="(max-width: 768px) 100vw, 400px"><img src="${p.featured_image}" alt="${escapeHtml(p.title)}" class="blog-card-thumb" loading="lazy" onerror="this.style.display='none'"></picture></div></a>` : `<a href="/blog/${p.slug}/"><div class="blog-card-thumb-container blog-card-thumb--fallback" style="background: linear-gradient(135deg, var(--pp-primary-50), var(--pp-primary-100));"></div></a>`}
+      ${idx < 3 ? '<span class="blog-featured-badge">Uitgelicht</span>' : ''}
       <p class="blog-card-kicker">${escapeHtml((p.tags[0] || 'Gezinsgids')).toUpperCase()}</p>
       <h2><a href="/blog/${p.slug}/">${escapeHtml(p.title)}</a></h2>
       <p class="blog-date">${p.dateDisplay}</p>

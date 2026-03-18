@@ -18,8 +18,8 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603181117">
-  <link rel="stylesheet" href="/style.min.css?v=202603181117">
+  <link rel="stylesheet" href="/design-system.css?v=202603182039">
+  <link rel="stylesheet" href="/style.min.css?v=202603182039">
   <style>
   .guide-section{display:grid;gap:18px;margin:36px 0}
   .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
@@ -58,8 +58,8 @@
   .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
   @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
 </style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603181117">
-  <script src="/nav-floating.js?v=202603181117" defer></script>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
+  <script src="/nav-floating.js?v=202603182039" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -199,7 +199,9 @@
   </div>
 </nav>
 
-
+<div class="loc-hero-placeholder" style="background: var(--pp-primary-50); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 24px; max-width: 800px; margin-left: auto; margin-right: auto;">
+  <span style="font-size: 4rem; opacity: 0.3;">🐄</span>
+</div>
 <div class="hero hero-location">
   <span class="hero-location-badge">Kinderboerderijen</span>
   <p class="hero-location-title">Kinderboerderij De Heeg</p>
@@ -249,6 +251,9 @@
     <a href="https://www.google.com/maps/dir/?api=1&destination=50.8546,5.689" target="_blank" rel="noopener" class="btn-route">Route plannen</a>
   </div>
 
+  <div class="location-map pp-reveal" id="map-container"><div id="map"></div></div>
+  <p class="map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>
+
   
   
 
@@ -259,9 +264,6 @@
 
   
   
-
-  <div class="location-map pp-reveal" id="map-container"><div id="map"></div></div>
-  <p class="map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>
 
   <div class="similar-locations pp-reveal">
     <h2>Vergelijkbare locaties in Maastricht</h2>
@@ -308,22 +310,7 @@
     </ul>
   </div>
 
-  <section class="support-section pp-reveal">
-  <div class="support-inner">
-    <h3>Iets nuttigs gevonden?</h3>
-    <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>
-    <p class="support-count">2138+ locaties beschikbaar in heel Nederland.</p>
-    <div class="support-amounts">
-      <span class="support-pill">€2</span>
-      <span class="support-pill support-pill-mid">€5</span>
-      <span class="support-pill">€10</span>
-    </div>
-    <p class="support-impact">De server kost ~€10 per maand. Elk beetje telt.</p>
-    <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener" class="btn-support">
-      Stuur een bijdrage
-    </a>
-  </div>
-</section>
+  
 
   <div class="other-cities pp-reveal" style="margin-top: 32px;">
     <h3>Meer peuteruitjes in Maastricht</h3>
@@ -360,9 +347,27 @@
 </main>
 
 <footer class="pp-reveal">
-  <nav aria-label="Footernavigatie">
-  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
-  </nav>
+  <div class="footer-container">
+    <div class="footer-brand">
+      <strong style="font-size: 20px;">PeuterPlannen</strong>
+      <p>Kindvriendelijke uitjes in heel Nederland. Gecheckt en actueel.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Product</h4>
+      <a href="/app.html">App</a>
+      <a href="/blog/">Inspiratie</a>
+      <a href="/about.html">Over</a>
+    </div>
+    <div class="footer-links">
+      <h4>Legal</h4>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/disclaimer/">Disclaimer</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2026 PeuterPlannen. Gemaakt in Utrecht.
+  </div>
 </footer>
 
 <script>

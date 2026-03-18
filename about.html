@@ -24,7 +24,7 @@
     <meta property="og:image:height" content="768">
     <meta name="twitter:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
     <!-- BEGIN:META_ABOUT -->
-    <meta name="description" content="PeuterPlannen helpt ouders met peuters de leukste uitjes te vinden in heel Nederland. 30+ geverifieerde locaties in 3 regio's.">
+    <meta name="description" content="PeuterPlannen helpt ouders met peuters de leukste uitjes te vinden in heel Nederland. 2138+ geverifieerde locaties in 22 regio's.">
 <!-- END:META_ABOUT -->
     <link rel="canonical" href="https://peuterplannen.nl/about.html">
     <meta name="theme-color" content="#D4775A">
@@ -34,8 +34,8 @@
     <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/design-system.css?v=202603181539">
-    <link rel="stylesheet" href="/style.min.css?v=202603181539">
+    <link rel="stylesheet" href="/design-system.css?v=202603182039">
+    <link rel="stylesheet" href="/style.min.css?v=202603182039">
     <style>
         /* Page-specific styles for about.html */
         .content { max-width: 760px; margin: 0 auto; padding: 154px 24px 80px; }
@@ -102,8 +102,8 @@
             .stat-card { min-width: 100px; padding: 16px; }
         }
     </style>
-    <link rel="stylesheet" href="/nav-floating.css?v=202603181539">
-    <script src="/nav-floating.js?v=202603181539" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
+    <script src="/nav-floating.js?v=202603182039" defer></script>
     <script src="/pp-interactions.js" defer></script>
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
@@ -150,11 +150,11 @@
         <!-- BEGIN:STATS_ABOUT -->
         <div class="stats-row">
             <div class="stat-card">
-                <strong>30+</strong>
+                <strong>2138+</strong>
                 <span>Locaties</span>
             </div>
             <div class="stat-card">
-                <strong>3</strong>
+                <strong>22</strong>
                 <span>Regio's</span>
             </div>
             <div class="stat-card">
@@ -186,7 +186,7 @@
 
         <p>PeuterPlannen werkt anders. We gebruiken AI om nieuwe locaties te ontdekken en informatie te verzamelen — maar elke locatie wordt daarna handmatig geverifieerd. Is de website nog actief? Kloppen de openingstijden? Zijn er echte faciliteiten? Pas dan komt een locatie in de database.</p>
 
-        <p>Het resultaat: 30 locaties waarover je kunt vertrouwen op de informatie. Gefilterd op leeftijd, weer, faciliteiten en afstand. Gesorteerd door een algoritme dat begrijpt wat een uitje goed maakt voor de allerkleinsten.</p>
+        <p>Het resultaat: 2138 locaties waarover je kunt vertrouwen op de informatie. Gefilterd op leeftijd, weer, faciliteiten en afstand. Gesorteerd door een algoritme dat begrijpt wat een uitje goed maakt voor de allerkleinsten.</p>
 
         <div class="check-list">
             <p>&#10003; AI voor efficiënte ontdekking en slimme aanbevelingen</p>
@@ -202,7 +202,7 @@
         <div class="support-about-section">
             <div class="support-about-inner">
                 <h2>Steun PeuterPlannen</h2>
-                <p>Dit bouw ik in mijn vrije tijd, vanuit Utrecht. Geen team, geen investors, geen advertenties. Wat er binnenkomt gaat naar serverkosten (~€10/maand) en nieuwe functies. De rest doe ik erbij. 30+ locaties beschikbaar, voor iedereen gratis.</p>
+                <p>Dit bouw ik in mijn vrije tijd, vanuit Utrecht. Geen team, geen investors, geen advertenties. Wat er binnenkomt gaat naar serverkosten (~€10/maand) en nieuwe functies. De rest doe ik erbij. 2138+ locaties beschikbaar, voor iedereen gratis.</p>
                 <div class="support-about-amounts">
                     <span class="support-about-pill">€2</span>
                     <span class="support-about-pill support-about-pill-mid">€5</span>
@@ -236,48 +236,7 @@
         </div>
 
         <h3 style="font-size: 20px; margin: 32px 0 12px; color: var(--pp-text);">Locatie suggereren of fout melden</h3>
-        <p>Ken je een leuke plek die we missen? Of klopt er iets niet? Laat het ons weten!</p>
-
-        <form id="suggestion-form" style="margin: 20px 0 32px;">
-            <textarea id="suggestion-input" placeholder="Bijv. 'Speeltuin De Bikkels in Haarlem is super voor peuters!' of 'De openingstijden van X kloppen niet'" style="width: 100%; min-height: 100px; padding: 14px 16px; border: 2px solid var(--pp-border); border-radius: 12px; font-family: var(--pp-font-body); font-size: 15px; color: var(--pp-text); background: var(--pp-surface); resize: vertical; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--pp-primary)'" onblur="this.style.borderColor='var(--pp-border)'"></textarea>
-            <div style="display: flex; align-items: center; gap: 12px; margin-top: 12px;">
-                <button type="submit" style="background: var(--pp-primary); color: white; border: none; padding: 12px 28px; border-radius: 10px; font-weight: 700; font-size: 15px; cursor: pointer; font-family: var(--pp-font-body); transition: background 0.2s;" onmouseover="this.style.background='var(--pp-primary-dark)'" onmouseout="this.style.background='var(--pp-primary)'">Versturen</button>
-                <span id="suggestion-status" style="font-size: 14px; color: var(--pp-text-muted);"></span>
-            </div>
-        </form>
-
-        <script>
-        const PUBLIC_FEEDBACK_ENDPOINT = 'https://piujsvgbfflrrvauzsxe.supabase.co/functions/v1/public-feedback';
-
-        document.getElementById('suggestion-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const input = document.getElementById('suggestion-input');
-            const status = document.getElementById('suggestion-status');
-            const text = input.value.trim();
-            if (!text) { status.textContent = 'Typ eerst je suggestie of melding.'; status.style.color = 'var(--pp-semantic-warning)'; return; }
-            if (text.length < 5) { status.textContent = 'Iets meer detail graag!'; status.style.color = 'var(--pp-semantic-warning)'; return; }
-            status.textContent = 'Versturen...'; status.style.color = 'var(--pp-text-muted)';
-            try {
-                const res = await fetch(PUBLIC_FEEDBACK_ENDPOINT, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        subject: 'Locatie suggestie / foutmelding',
-                        message: text,
-                        source: 'about-form',
-                        page: '/about.html'
-                    })
-                });
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                status.textContent = 'Bedankt! We nemen je suggestie mee.';
-                status.style.color = 'var(--pp-semantic-success)';
-                input.value = '';
-            } catch(err) {
-                status.textContent = 'Oeps, er ging iets mis. Probeer het later opnieuw.';
-                status.style.color = 'var(--pp-semantic-warning)';
-            }
-        });
-        </script>
+        <p>Heb je een suggestie of opmerking? <a href="/contact.html" style="color: var(--pp-primary); font-weight: 600;">Neem contact op</a>.</p>
 
         <div class="cta-box pp-reveal">
             <h3>Probeer het zelf</h3>

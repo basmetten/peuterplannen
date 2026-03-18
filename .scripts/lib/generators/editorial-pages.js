@@ -10,6 +10,7 @@ const DEFAULT_OG = 'https://peuterplannen.nl/images/og/default.jpg';
 function generateSharedSeoPage(slug, entry, options = {}) {
   if (!entry) return null;
   const total = options.total || 0;
+  const pageType = options.pageType || slug;
   const title = entry.meta_title || entry.title || options.title || 'PeuterPlannen';
   const description = entry.meta_description || options.description || '';
   const heroTitle = entry.hero_title || entry.title || options.heroTitle || title;
@@ -89,7 +90,7 @@ ${navHTML()}
       </div>
     </div>
   </section>` : ''}
-  ${supportHTML('default', total)}
+  ${supportHTML('default', total, pageType)}
 </main>
 ${footerHTML()}
 ${revealScript()}
@@ -107,7 +108,10 @@ ${analyticsHTML()}
 function generateDiscoverPage(data) {
   const entry = data.seoContent?.shared?.ontdekken;
   if (!entry) return null;
-  const regionLinks = data.regions.map((region) => `<a href="/${region.slug}.html" class="guide-link"><strong>${region.name}</strong><span>${data.regionCounts[region.name] || 0} locaties in deze regio</span></a>`).join('');
+  const regionLinks = data.regions.map((region) => {
+    const count = data.regionCounts[region.name] || 0;
+    return `<a href="/${region.slug}.html" class="guide-link"><strong>${region.name}</strong><span>${count > 0 ? count + ' locaties' : 'Locaties'} in deze regio</span></a>`;
+  }).join('');
   const typeLinks = TYPE_PAGES.map((page) => `<a href="/${page.slug}.html" class="guide-link"><strong>${page.sectionLabel}</strong><span>${page.metaDesc}</span></a>`).join('');
   const clusterLinks = CLUSTER_PAGES.map((cluster) => `<a href="/${cluster.slug}.html" class="guide-link"><strong>${cluster.h1}</strong><span>${cluster.metaDesc}</span></a>`).join('');
   const extraSections = `

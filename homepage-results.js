@@ -27,6 +27,7 @@
     }).join('');
     container.querySelector('.quick-results-grid').innerHTML = html;
     container.querySelector('.pp-skeleton-row')?.remove();
+    container.classList.add('has-data');
   })
   .catch(function() {
     // Graceful degradation — hide section on error

@@ -71,9 +71,27 @@ function navHTML(ctaText = 'Uitjes zoeken', ctaHref = '/app.html') {
 
 function footerHTML() {
   return `<footer class="pp-reveal">
-  <nav aria-label="Footernavigatie">
-  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="${TIKKIE_URL}" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
-  </nav>
+  <div class="footer-container">
+    <div class="footer-brand">
+      <strong style="font-size: 20px;">PeuterPlannen</strong>
+      <p>Kindvriendelijke uitjes in heel Nederland. Gecheckt en actueel.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Product</h4>
+      <a href="/app.html">App</a>
+      <a href="/blog/">Inspiratie</a>
+      <a href="/about.html">Over</a>
+    </div>
+    <div class="footer-links">
+      <h4>Legal</h4>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/disclaimer/">Disclaimer</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2026 PeuterPlannen. Gemaakt in Utrecht.
+  </div>
 </footer>`;
 }
 
@@ -129,7 +147,7 @@ function svgSpriteDefs() {
 function badgeHTML(loc) {
   const badges = [];
   if (loc.coffee) badges.push(`<span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span>`);
-  if (loc.alcohol) badges.push(`<span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Alcohol</span>`);
+  if (loc.alcohol) badges.push(`<span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Terras</span>`);
   if (loc.diaper) badges.push(`<span class="badge-pill badge-diaper"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-diaper"/></svg>Luierruimte</span>`);
   return badges.length ? `<span class="badges">${badges.join('')}</span>` : '';
 }
@@ -138,7 +156,10 @@ function revealScript() {
   return `<script src="/reveal.js"></script>`;
 }
 
-function supportHTML(variant = 'default', count = 0) {
+function supportHTML(variant = 'default', count = 0, pageType = '') {
+  // Only show donation block on specific page types
+  const allowedPages = ['about', 'methode', 'blog-article'];
+  if (pageType && !allowedPages.includes(pageType)) return '';
   const displayCount = count > 0 ? count : 660;
   if (variant === 'category') {
     return `<section class="support-section pp-reveal">

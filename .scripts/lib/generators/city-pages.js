@@ -226,7 +226,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
   <h1>Uitjes met peuters in <span class="accent">${region.name}${omgevingLabel}</span></h1>
   <p>${escapeHtml(region.blurb)}</p>
   <div class="hero-stats">
-    <div class="hero-stat"><strong>${locs.length}</strong><span>locaties</span></div>
+    <div class="hero-stat"><strong>${locs.length}</strong><span>toplocaties</span></div>
     <div class="hero-stat"><strong>${byType.play?.length || 0}</strong><span>speeltuinen</span></div>
     <div class="hero-stat"><strong>${byType.museum?.length || 0}</strong><span>musea</span></div>
     <div class="hero-stat"><strong>${(byType.pancake?.length || 0) + (byType.horeca?.length || 0)}</strong><span>eten & drinken</span></div>
@@ -239,7 +239,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
 
 <main id="main-content">
   <div class="intro-box">
-    <p>${region.blurb} ${weatherNote}Op deze pagina vind je <strong>${locs.length} locaties</strong> in de regio ${region.name}.${coverageNote} Gecheckt op kindvriendelijkheid en of het echt werkt met een peuter.</p>
+    <p>${region.blurb} ${weatherNote}Op deze pagina vind je <strong>${locs.length} toplocaties</strong> in de regio ${region.name}.${coverageNote} Gecheckt op kindvriendelijkheid en of het echt werkt met een peuter.</p>
   </div>
 
   ${cityGuideHTML}
@@ -268,7 +268,7 @@ ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region
     <a href="/app.html?regio=${encodeURIComponent(region.name)}">Open de app voor ${region.name}</a>
   </div>
 
-  ${supportHTML('default', total)}
+  ${supportHTML('default', total, 'city')}
 
   <div class="other-cities">
     <h3>Peuteruitjes in de buurt</h3>

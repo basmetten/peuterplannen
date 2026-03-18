@@ -92,7 +92,7 @@ function generateTypePage(page, locs, regions, seoContent, total) {
       return `<article class="guide-card">
         <p class="guide-kicker">${escapeHtml(regionName)}</p>
         <h3>${page.sectionLabel} in ${escapeHtml(regionName)}</h3>
-        <p>${byRegion[regionName].length} locaties in deze regio. Handig als je meteen vanuit het type wilt inzoomen naar een concrete stadsgids.</p>
+        <p>Toplocaties in deze regio. Handig als je meteen vanuit het type wilt inzoomen naar een concrete stadsgids.</p>
         <div class="guide-links">
           ${picks.map((loc) => `<a href="${loc.pageUrl}" class="guide-link"><strong>${escapeHtml(loc.name)}</strong><span>${loc.toddler_highlight ? escapeHtml(cleanToddlerHighlight(loc.toddler_highlight).split(/[.!?]/)[0]) : `Bekijk de detailpagina van ${escapeHtml(loc.name)}`}</span></a>`).join('')}
         </div>
@@ -187,7 +187,7 @@ ${navHTML()}
 
 <div class="hero">
   <h1>${page.h1.replace('Nederland', '<span class="accent">Nederland</span>')}</h1>
-  <p>${locs.length} locaties in ${regionNamesStr}</p>
+  <p>Toplocaties in ${regionNamesStr}</p>
 </div>
 
 <nav aria-label="Kruimelpad" class="breadcrumb">
@@ -216,7 +216,7 @@ ${navHTML()}
     <a href="/app.html">Open PeuterPlannen</a>
   </div>
 
-  ${supportHTML('category', total)}
+  ${supportHTML('category', total, 'type')}
 
   <div class="nav-links-box">
     <h3>Andere typen uitjes</h3>

@@ -221,7 +221,7 @@ ${navHTML(`Zoek in ${cityName}`, `/app.html?regio=${encodeURIComponent(cityName)
     <a href="/app.html?regio=${encodeURIComponent(cityName)}">Open de app voor ${escapeHtml(cityName)}</a>
   </div>
 
-  ${supportHTML('default', total)}
+  ${supportHTML('default', total, 'city-type')}
 
   <div class="nav-links-box">
     <h3>Andere uitjes in ${escapeHtml(cityName)}</h3>

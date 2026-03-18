@@ -18,8 +18,8 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603181539">
-  <link rel="stylesheet" href="/style.min.css?v=202603181539">
+  <link rel="stylesheet" href="/design-system.css?v=202603182039">
+  <link rel="stylesheet" href="/style.min.css?v=202603182039">
   <style>
   .guide-section{display:grid;gap:18px;margin:36px 0}
   .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
@@ -58,8 +58,8 @@
   .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
   @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
 </style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603181539">
-  <script src="/nav-floating.js?v=202603181539" defer></script>
+  <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
+  <script src="/nav-floating.js?v=202603182039" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -137,6 +137,12 @@
     {
       "@type": "ListItem",
       "position": 3,
+      "name": "Horeca",
+      "item": "https://peuterplannen.nl/utrecht/horeca/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
       "name": "30ML Coffee & Food",
       "item": "https://peuterplannen.nl/utrecht/30ml-coffee-food/"
     }
@@ -197,7 +203,9 @@
   </div>
 </nav>
 
-
+<div class="loc-hero-placeholder" style="background: var(--pp-primary-50); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 24px; max-width: 800px; margin-left: auto; margin-right: auto;">
+  <span style="font-size: 4rem; opacity: 0.3;">☕</span>
+</div>
 <div class="hero hero-location">
   <span class="hero-location-badge">Horeca</span>
   <p class="hero-location-title">30ML Coffee &amp; Food</p>
@@ -205,7 +213,7 @@
 </div>
 
 <nav aria-label="Kruimelpad" class="breadcrumb">
-  <a href="/">PeuterPlannen</a> &rsaquo; <a href="/utrecht.html">Utrecht</a> &rsaquo; 30ML Coffee &amp; Food
+  <a href="/">PeuterPlannen</a> &rsaquo; <a href="/utrecht.html">Utrecht</a> &rsaquo; <a href="/utrecht/horeca/">Horeca</a> &rsaquo; 30ML Coffee &amp; Food
 </nav>
 
 <main id="main-content">
@@ -247,6 +255,9 @@
     <a href="https://www.google.com/maps/dir/?api=1&destination=52.091467,5.131609" target="_blank" rel="noopener" class="btn-route">Route plannen</a>
   </div>
 
+  <div class="location-map pp-reveal" id="map-container"><div id="map"></div></div>
+  <p class="map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>
+
   
   
 
@@ -258,9 +269,6 @@
   
   
 
-  <div class="location-map pp-reveal" id="map-container"><div id="map"></div></div>
-  <p class="map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>
-
   <div class="similar-locations pp-reveal">
     <h2>Vergelijkbare locaties in Utrecht</h2>
     <div class="loc-list pp-reveal-stagger">
@@ -270,24 +278,24 @@
         <p>Kindvriendelijk kidscafé met creatieve binnenspeeltuin voor kinderen tot 8 jaar. Silent Disco, verkleedruimte, mini-supe...</p>
       </article>
       <article class="loc-item">
-        <h3><a href="/utrecht/dierenpark-amersfoort/">Dierenpark Amersfoort</a></h3>
-        <p>Dierentuin die zichzelf omschrijft als dé dierentuin voor kinderen. Kinderen kunnen klimmen, glijden en varen tussen de ...</p>
+        <h3><a href="/utrecht/brownies-downies-woerden/">Brownies&amp;downieS Woerden</a></h3>
+        <p>Brownies&amp;downieS in Woerden: gezellig restaurant met terras, rolstoeltoegankelijk en babyvriendelijk.</p>
       </article>
       <article class="loc-item">
-        <h3><a href="/utrecht/anna-pancakes-leidsche-rijn/">Anna Pancakes Leidsche Rijn</a></h3>
-        <p>Pannenkoekenrestaurant in Leidsche Rijn met babyvoorzieningen. Klassiek pannenkoekenrestaurant, geschikt voor gezinnen m...</p>
+        <h3><a href="/utrecht/buurten-in-de-gaard/">Buurten in de Gaard</a></h3>
+        <p>Buurtrestaurant in De Gaard (Utrecht Oost) met speelhoek. Dagelijks open, ook ontbijt. Vegetarisch aanbod, gezinsvriende...</p>
       </article>
       <article class="loc-item">
-        <h3><a href="/utrecht/annexcinema/">AnnexCinema</a></h3>
-        <p>Bioscoop in Woerden met speciale kleuter- en babyprogramma's. Rolstoeltoegankelijk.</p>
+        <h3><a href="/utrecht/papa-s-pannekoeken/">Papa's Pannekoeken</a></h3>
+        <p>Pannenkoekenrestaurant met binnenspeelplaats in Leidsche Rijn. Combinatie van pannenkoeken eten en indoor spelen, bijna ...</p>
       </article>
       <article class="loc-item">
-        <h3><a href="/utrecht/anna-pancakes-binnenstad/">Anna Pancakes Binnenstad</a></h3>
-        <p>Modern pannenkoekenrestaurant met meerdere vestigingen in Utrecht centrum en Leidsche Rijn. Fluffy pannenkoeken van biol...</p>
+        <h3><a href="/utrecht/pretfabriek/">Pretfabriek</a></h3>
+        <p>Binnenspeeltuin in Woerden, ideaal voor regendagen. Entree betaald. Speciaal voor kinderen ingericht.</p>
       </article>
       <article class="loc-item">
-        <h3><a href="/utrecht/centraal-museum/">Centraal Museum</a></h3>
-        <p>Het oudste stedelijke museum van Nederland met Dick Bruna's atelier en een oud poppenhuis. Museumcafe gedeeld met Nijntj...</p>
+        <h3><a href="/utrecht/universiteitsmuseum/">Universiteitsmuseum</a></h3>
+        <p>Wetenschapsmuseum van de UU met een grote kindvriendelijke tuin en interactieve zalen. Museumkaart geldig. Di–zo 10–17u.</p>
       </article>
     </div>
   </div>
@@ -309,22 +317,7 @@
     </ul>
   </div>
 
-  <section class="support-section pp-reveal">
-  <div class="support-inner">
-    <h3>Iets nuttigs gevonden?</h3>
-    <p>PeuterPlannen is gratis — de serverkosten zijn dat niet. Als je hier iets aan gehad hebt, helpt een kleine bijdrage om het zo te houden voor anderen.</p>
-    <p class="support-count">30+ locaties beschikbaar in heel Nederland.</p>
-    <div class="support-amounts">
-      <span class="support-pill">€2</span>
-      <span class="support-pill support-pill-mid">€5</span>
-      <span class="support-pill">€10</span>
-    </div>
-    <p class="support-impact">De server kost ~€10 per maand. Elk beetje telt.</p>
-    <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener" class="btn-support">
-      Stuur een bijdrage
-    </a>
-  </div>
-</section>
+  
 
   <div class="other-cities pp-reveal" style="margin-top: 32px;">
     <h3>Meer peuteruitjes in Utrecht</h3>
@@ -361,9 +354,27 @@
 </main>
 
 <footer class="pp-reveal">
-  <nav aria-label="Footernavigatie">
-  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
-  </nav>
+  <div class="footer-container">
+    <div class="footer-brand">
+      <strong style="font-size: 20px;">PeuterPlannen</strong>
+      <p>Kindvriendelijke uitjes in heel Nederland. Gecheckt en actueel.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Product</h4>
+      <a href="/app.html">App</a>
+      <a href="/blog/">Inspiratie</a>
+      <a href="/about.html">Over</a>
+    </div>
+    <div class="footer-links">
+      <h4>Legal</h4>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/disclaimer/">Disclaimer</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    &copy; 2026 PeuterPlannen. Gemaakt in Utrecht.
+  </div>
 </footer>
 
 <script>

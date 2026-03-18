@@ -271,12 +271,19 @@ function locationPageHTML(loc, region, similarLocs, total, cityTypeCombos) {
   const facilities = [];
   if (loc.coffee) facilities.push('Koffie voor ouders');
   if (loc.diaper) facilities.push('Luierruimte');
-  if (loc.alcohol) facilities.push('Alcohol beschikbaar');
+  if (loc.alcohol) facilities.push('Terras');
 
   // Route URL
   const routeUrl = (loc.lat && loc.lng)
     ? `https://www.google.com/maps/dir/?api=1&destination=${loc.lat},${loc.lng}`
     : null;
+
+  // Category placeholder emoji
+  const TYPE_EMOJI = {
+    play: '🎪', farm: '🐄', nature: '🌳', museum: '🏛️',
+    swim: '🏊', pancake: '🥞', horeca: '☕', culture: '🎭'
+  };
+  const placeholderEmoji = TYPE_EMOJI[loc.type] || '🏠';
 
   // Share
   const shareText = encodeURIComponent(`${loc.name} — Peuteruitje in ${loc.region}`);
@@ -468,7 +475,9 @@ ${(loc.owner_photo_url || loc.photo_url) ? `<div class="hero-location-img">
          fetchpriority="high">
   </picture>
   <div class="hero-location-overlay"></div>
-</div>` : ''}
+</div>` : `<div class="loc-hero-placeholder" style="background: var(--pp-primary-50); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 24px; max-width: 800px; margin-left: auto; margin-right: auto;">
+  <span style="font-size: 4rem; opacity: 0.3;">${placeholderEmoji}</span>
+</div>`}
 <div class="hero hero-location">
   <span class="hero-location-badge">${typeLabel}</span>
   <p class="hero-location-title">${escapeHtml(loc.name)}</p>
@@ -500,6 +509,9 @@ ${(loc.owner_photo_url || loc.photo_url) ? `<div class="hero-location-img">
     ${routeUrl ? `<a href="${routeUrl}" target="_blank" rel="noopener" class="btn-route">Route plannen</a>` : ''}
   </div>
 
+  ${(loc.lat && loc.lng) ? `<div class="location-map pp-reveal" id="map-container"><div id="map"></div></div>
+  <p class="map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>` : ''}
+
   ${affiliateTicketHTML(loc, AFFILIATE)}
   ${affiliateReservationHTML(loc, AFFILIATE)}
 
@@ -510,9 +522,6 @@ ${(loc.owner_photo_url || loc.photo_url) ? `<div class="hero-location-img">
 
   ${affiliateProductsHTML(loc.type, AFFILIATE)}
   ${['museum', 'swim', 'play'].includes(loc.type) ? affiliateBookingHTML(region.name, AFFILIATE) : ''}
-
-  ${(loc.lat && loc.lng) ? `<div class="location-map pp-reveal" id="map-container"><div id="map"></div></div>
-  <p class="map-attribution">Kaart: &copy; <a href="https://openfreemap.org/">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>` : ''}
 
   ${similarHTML}
 
@@ -527,7 +536,7 @@ ${(loc.owner_photo_url || loc.photo_url) ? `<div class="hero-location-img">
     </ul>
   </div>
 
-  ${supportHTML('default', total)}
+  ${supportHTML('default', total, 'location')}
 
   <div class="other-cities pp-reveal" style="margin-top: 32px;">
     <h3>Meer peuteruitjes in ${region.name}</h3>

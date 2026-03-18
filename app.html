@@ -98,10 +98,10 @@
     <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/design-system.css?v=202603181810">
+    <link rel="stylesheet" href="/design-system.css?v=202603182039">
     <link rel="stylesheet" href="/app.min.css">
     <link rel="stylesheet" href="/nav-floating.min.css?v=202603181034">
-    <script src="/nav-floating.js?v=202603181810" defer></script>
+    <script src="/nav-floating.js?v=202603182039" defer></script>
 
 </head>
 <body>
@@ -485,7 +485,8 @@
       <p style="font-size:var(--pp-text-sm);opacity:0.85;margin-top:12px;">Geen spam. Uitschrijven wanneer je wilt.</p>
     </div>
 
-    <section class="app-seo-content" aria-labelledby="app-seo-heading">
+    <details class="seo-content app-seo-content" aria-labelledby="app-seo-heading">
+      <summary>Meer over PeuterPlannen</summary>
         <div class="app-seo-grid">
             <article class="app-seo-card">
                 <p class="app-seo-kicker">Waarom deze pagina bestaat</p>
@@ -532,7 +533,7 @@
                 </div>
             </article>
         </div>
-    </section>
+    </details>
 
     <!-- Info panel (slide-up bottom sheet) -->
     <div class="info-overlay" id="info-overlay" onclick="closeInfoPanel()" aria-hidden="true"></div>

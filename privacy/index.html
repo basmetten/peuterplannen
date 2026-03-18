@@ -12,10 +12,14 @@
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/style.min.css?v=202603181539">
-  <link rel="stylesheet" href="/nav-floating.css?v=202603181539">
-  <script src="/nav-floating.js?v=202603181539" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603182039">
+  <link rel="stylesheet" href="/style.min.css?v=202603182039">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
+  <script src="/nav-floating.js?v=202603182039" defer></script>
+  <script src="/pp-interactions.js" defer></script>
 </head>
 <body>
 
@@ -28,6 +32,7 @@
     </a>
     <div class="nav-links">
       <a href="/" class="nav-link">Home</a>
+      <a href="/ontdekken/" class="nav-link">Ontdekken</a>
       <a href="/about.html" class="nav-link">Over</a>
       <a href="/blog/" class="nav-link">Inspiratie</a>
       <a href="/contact.html" class="nav-link">Contact</a>
@@ -39,6 +44,7 @@
   </div>
   <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
     <a href="/" class="nav-mobile-link">Home</a>
+    <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
     <a href="/about.html" class="nav-mobile-link">Over</a>
     <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
     <a href="/contact.html" class="nav-mobile-link">Contact</a>
@@ -46,13 +52,12 @@
   </div>
 </nav>
 
-<div class="hero" style="padding: 100px 24px 40px;">
-  <h1>Privacybeleid</h1>
-  <p>Laatst bijgewerkt: 28 februari 2026</p>
-</div>
-
-<div class="breadcrumb">
-  <a href="/">PeuterPlannen</a> &rsaquo; Privacy
+<div class="hero hero-sub">
+  <div class="hero-content">
+    <nav class="breadcrumb"><a href="/">Home</a> / <span>Privacy</span></nav>
+    <h1>Privacyverklaring</h1>
+    <p>Laatst bijgewerkt: 28 februari 2026</p>
+  </div>
 </div>
 
 <main id="main-content">
@@ -108,11 +113,23 @@
   </div>
 </main>
 
-<footer>
-  <nav aria-label="Footernavigatie">
-  <p>&copy; 2026 PeuterPlannen &middot; <a href="/">Home</a> &middot; <a href="/ontdekken/">Ontdekken</a> &middot; <a href="/app.html">App</a> &middot; <a href="/blog/">Inspiratie</a> &middot; <a href="/methode/">Methode</a> &middot; <a href="/contact.html">Contact</a> &middot; <a href="/about.html">Over</a> &middot; <a href="/voor-bedrijven/">Voor bedrijven</a> &middot; <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener">Steun ons</a> &middot; <a href="/privacy/">Privacy</a> &middot; <a href="/disclaimer/">Disclaimer</a></p>
-  </nav>
+<footer class="pp-reveal">
+  <div class="footer-inner">
+    <span class="footer-brand">PeuterPlannen</span>
+    <nav class="footer-links-row" aria-label="Footernavigatie">
+      <a href="/">Home</a>
+      <a href="/app.html">App</a>
+      <a href="/blog/">Inspiratie</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/about.html">Over</a>
+      <a href="/voor-bedrijven/">Voor bedrijven</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/disclaimer/">Disclaimer</a>
+    </nav>
+  </div>
+  <p class="footer-copy">&copy; 2026 PeuterPlannen &mdash; Kindvriendelijke uitjes in Nederland</p>
 </footer>
+<script src="/reveal.js"></script>
 
 </body>
 </html>

@@ -24,10 +24,10 @@
   <link rel="stylesheet" href="/fonts.css">
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/design-system.css?v=202603181539">
-  <link rel="stylesheet" href="/style.min.css?v=202603181539">
-  <link rel="stylesheet" href="/nav-floating.css?v=202603181539">
-  <script src="/nav-floating.js?v=202603181539" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603182039">
+  <link rel="stylesheet" href="/style.min.css?v=202603182039">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
+  <script src="/nav-floating.js?v=202603182039" defer></script>
   <script src="/pp-interactions.js" defer></script>
 </head>
 <body>
@@ -75,7 +75,7 @@
     <p>Je kunt een bericht sturen via het formulier hieronder. We lezen alles en reageren zo snel mogelijk — doorgaans binnen een paar dagen.</p>
   </div>
 
-  <div style="max-width: 680px; margin: 0 auto; padding: 0 24px 80px;">
+  <div style="max-width: 680px; margin: 0 auto; padding: 0 24px 40px;">
 
     <div class="loc-item" style="margin-bottom: 20px; padding: 24px;">
       <h3 style="margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
@@ -112,9 +112,10 @@
           <option value="Samenwerken">Samenwerken</option>
           <option value="Anders">Iets anders</option>
         </select>
+        <input type="email" id="cf-email" placeholder="Je e-mailadres (optioneel)" style="width:100%; padding: 12px 14px; border: 2px solid var(--pp-border); border-radius: 10px; font-family: var(--pp-font-body); font-size: 15px; color: var(--pp-text); background: var(--pp-surface); margin-bottom: 12px; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--pp-primary)'" onblur="this.style.borderColor='var(--pp-border)'">
         <textarea id="cf-message" placeholder="Je bericht..." style="width: 100%; min-height: 110px; padding: 14px 16px; border: 2px solid var(--pp-border); border-radius: 10px; font-family: var(--pp-font-body); font-size: 15px; color: var(--pp-text); background: var(--pp-surface); resize: vertical; outline: none; transition: border-color 0.2s; margin-bottom: 12px;" onfocus="this.style.borderColor='var(--pp-primary)'" onblur="this.style.borderColor='var(--pp-border)'"></textarea>
         <div style="display: flex; align-items: center; gap: 12px;">
-          <button type="submit" id="cf-btn" class="btn-support" style="border: none; cursor: pointer; font-family: var(--pp-font-body); font-size: 15px; padding: 12px 28px;">Versturen</button>
+          <button type="submit" id="cf-btn" style="background: var(--pp-primary); color: white; border: none; cursor: pointer; font-family: var(--pp-font-body); font-size: 15px; font-weight: 700; padding: 12px 28px; border-radius: 10px; transition: background 0.2s;" onmouseover="this.style.background='var(--pp-primary-dark)'" onmouseout="this.style.background='var(--pp-primary)'">Versturen</button>
           <span id="cf-status" style="font-size: 14px; color: var(--pp-text-muted);"></span>
         </div>
       </form>
@@ -146,6 +147,7 @@ const PUBLIC_FEEDBACK_ENDPOINT = 'https://piujsvgbfflrrvauzsxe.supabase.co/funct
 document.getElementById('contact-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const subject = document.getElementById('cf-subject').value;
+  const email = document.getElementById('cf-email').value.trim();
   const msg = document.getElementById('cf-message').value.trim();
   const status = document.getElementById('cf-status');
   const btn = document.getElementById('cf-btn');
@@ -153,15 +155,17 @@ document.getElementById('contact-form').addEventListener('submit', async functio
   btn.disabled = true; btn.textContent = 'Versturen...';
   status.textContent = ''; status.style.color = 'var(--pp-text-muted)';
   try {
-    const res = await fetch(PUBLIC_FEEDBACK_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    const payload = {
         subject: subject,
         message: msg,
         source: 'contact-form',
         page: '/contact.html'
-      })
+    };
+    if (email) payload.email = email;
+    const res = await fetch(PUBLIC_FEEDBACK_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
     if (res.ok) {
       status.textContent = 'Bedankt! We reageren zo snel mogelijk.';

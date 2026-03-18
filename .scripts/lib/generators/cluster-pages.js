@@ -194,7 +194,7 @@ ${navHTML()}
   </div>
 
   ${newsletterHTML()}
-  ${supportHTML('category', total)}
+  ${supportHTML('category', total, 'cluster')}
 </main>
 
 ${footerHTML()}
