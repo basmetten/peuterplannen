@@ -1,457 +1,587 @@
-# PeuterPlannen — Mobile UX Fix & Polish Plan
+# PeuterPlannen Redesign Plan — Homepage & App UX
 
-> **Doel:** Alle visuele bugs, data-inconsistenties en UX-problemen oplossen die zichtbaar zijn op de live mobiele site (iPhone screenshots, 18 maart 2026), gevolgd door design-system polish.
-> **Methode:** Gefaseerd, resumable plan — ontworpen voor Claude Code met context-window resets.
-> **Repo:** `/Users/basmetten/peuterplannen` → `github.com/basmetten/peuterplannen`
+> **Doel:** Homepage en app samenvoegen tot één directe, mobile-first ervaring die ouders in maximaal 3 taps naar relevante locaties brengt.
+> **Repo (lokaal):** `/Users/basmetten/peuterplannen`
+> **Repo (GitHub):** `github.com/basmetten/peuterplannen` (private)
 > **Datum:** 2026-03-18
-> **Eigenaar:** Bas Metten
-> **Vorig plan:** Dit vervangt het eerdere plan2.md (UI/UX Design System Upgrade, 2026-03-17)
+> **Eigenaar:** Bas Metten (basmetten@gmail.com)
+> **Basis:** Synthetische focusgroep-analyse met 5 groepen (ouders, opa/oma, ondernemers, UX designers)
 
 ---
 
-## HOE DIT PLAN TE GEBRUIKEN
+## DIAGNOSE: WAAROM DEZE REDESIGN NODIG IS
 
-### Voor Claude Code (na elke `/clear`)
+### De drie fundamentele problemen
 
+| # | Probleem | Impact | Bewijs |
+|---|----------|--------|--------|
+| 1 | **Homepage is een pitch, niet de tool** | Elke sectie tussen landing en resultaat = afhaakmomenten. Gemiddeld 4-5 taps nodig om een locatie te bereiken. | Homepage heeft 9+ secties, hero + stats + features + type grid + city grid + newsletter + support + footer. Pas op de app-pagina begint het echte werk. |
+| 2 | **Vier fragmentaire startpunten** | Keuzestress → geen pad is geoptimaliseerd | Zoekbalk (→ app), "Start met zoeken" (→ app), Quick filters Binnen/Buiten (→ app), Type grid (→ statische pagina). Geen duidelijke primaire actie. |
+| 3 | **Generieke `.hero` class veroorzaakt cascade-conflicten** | De gedeelde `.hero` in `style.css`/`style.min.css` (terracotta gradient, `color: #fff`, `text-align: center`) lekt door naar de homepage hero en moest handmatig worden overschreven. Elk van de 7 generators + index.html gebruikt `class="hero"`. | Hero was visueel gebroken op mobile (screenshot 18 maart). Fix was ad-hoc — structurele oplossing nodig. |
+
+### Wat WEL goed is (niet aanraken)
+
+- **Situatie-presets** (Regenproof, Buiten+koffie, Dreumesproof, etc.) — uniek in NL
+- **Design system** — kleurpalet, typografie, tokens, alles consistent en warm
+- **Data-rijkheid** — 40+ velden per locatie, facility badges, peuterscore
+- **Plan mijn dag** — unieke feature, goed gebouwd
+- **Statische pagina's** — SEO-fundament met 2200+ pagina's, blog, structured data
+- **Build-systeem** — modulair, incrementeel, geaudit, CI/CD elke 10 min
+- **Editorial voice** — warm, direct, authentiek ouderperspectief
+- **Generators** — alle 16 generators in `.scripts/lib/generators/` blijven qua structuur intact
+
+---
+
+## ARCHITECTUUR-CONTEXT
+
+### Kritieke detail: app.js is INLINE in app.html
+De JavaScript van de app-pagina staat **inline in `app.html`** (~3327 regels totaal). Er is GEEN apart `app.js` bestand. Alle wijzigingen aan app-logica zijn bewerkingen van `app.html`. De `app-page.js` generator past alleen markers en meta tags aan — niet de inline JS.
+
+### Bestaande URL-parameter parsing in app.html
+App.html heeft AL URL-param support (rond regel 663):
 ```
-Lees /Users/basmetten/peuterplannen/plan2.md en ga verder waar je gebleven was.
-Zoek de eerstvolgende [ ] taak onder de huidige fase en voer die uit.
-Update het checkbox naar [x] als je klaar bent. Commit niet tenzij ik dat vraag.
+?type=play&weather=indoor&regio=amsterdam&age=peuter&ids=1,2,3
+```
+Fase 3 (deep-linking) BREIDT dit uit met `?preset=` en `?q=` — geen nieuw systeem.
+
+### Bestaande preset-logica in app.html
+- `togglePreset(presetName, event)` — activeer/deactiveer een preset
+- `matchesPreset(item, preset)` (regel ~1931) — filter-logica per preset
+- `matchesPresetDistance(item, preset)` (regel ~1953) — afstandsfilter per preset
+- `getCurrentLocation()` (regel ~1150) — GPS met reverse geocoding
+- Stad wordt opgeslagen in `localStorage` als `lastCity`
+
+### Desktop breakpoint
+De app gebruikt `680px` als desktop-breakpoint (`DESKTOP_WIDTH`), NIET 768px of 1024px. Homepage breakpoints in index.html zijn 768px en 480px. Dit verschil is bewust — de app heeft een compacter mobile-first design.
+
+### Generators die `.hero` gebruiken
+
+| Generator | Huidige class | Output |
+|-----------|---------------|--------|
+| `index-page.js` | n.v.t. (hero is handgeschreven in `index.html`) | `index.html` — stats, type grid, city grid markers |
+| `app-page.js` | n.v.t. (geen hero) | `app.html` — noscript, JSON-LD, info-stats, meta |
+| `city-pages.js` | `class="hero"` | ~22 stadspagina's (1 per actieve regio) |
+| `type-pages.js` | `class="hero"` | 8 type-pagina's |
+| `city-type-pages.js` | `class="hero"` | ~176 combinatiepagina's (22 regio's × 8 types) |
+| `cluster-pages.js` | `class="hero"` | 6 clusterpagina's (situatie-routes) |
+| `location-pages.js` | `class="hero hero-location"` | ~2138 locatiepagina's |
+| `editorial-pages.js` | `class="hero hero-blog"` | redactionele pagina's (ontdekken, methode) |
+| `blog.js` | `class="hero"` + `class="hero hero-blog"` | 49 blogposts + blog index |
+
+### Build-pipeline volgorde
+```
+generate-blog-images.js → optimize_images.js → generate-og-images.js → sync_portal_assets.js → sync_all.js
+                                                                                                    ↓
+                                                                            updateIndex() ← index-page.js
+                                                                            updateApp()   ← app-page.js
+                                                                            updateAbout()  ← about-page.js
+                                                                            generateCityPages() ← city-pages.js
+                                                                            generateTypePages() ← type-pages.js
+                                                                            ... etc voor alle generators
+                                                                                    ↓
+                                                                            rewriteAssetVersions() op hand-geschreven pagina's
+                                                                            minifyCSS() → style.min.css, app.min.css, nav-floating.min.css
 ```
 
-### Regels
+### Marker-systeem
+`index.html` en `app.html` gebruiken `<!-- BEGIN:X -->...<!-- END:X -->` markers die door generators worden vervangen. Bij wijzigingen aan deze pagina's: **bewaar bestaande markers** of pas de corresponderende generator aan.
 
-1. **Lees dit bestand EERST.** Oriënteer op de huidige fase en het `>> RESUME HERE` marker.
-2. **Werk één fase tegelijk af.** Ga pas naar de volgende fase als alle checkboxen [x] zijn.
-3. **Update checkboxen in dit bestand** na elke voltooide taak (`[ ]` → `[x]`).
-4. **Verplaats het `>> RESUME HERE` marker** naar de volgende onvoltooide taak.
-5. **Verifieer elke fix** met het verificatiecommando in de taak (indien aanwezig).
-6. **Breek niets.** Run `npm run build:local` na elke fase om te checken dat de build slaagt.
-7. **Lees altijd het doelbestand** voordat je het wijzigt. Geen blinde edits.
-8. **Raadpleeg de architectuur** als je twijfelt:
-   - `ARCHITECTURE.md` — tech stack, build systeem, database schema
-   - `BRAND.md` — kleuren, fonts, tone of voice
-   - `OPERATIONS.md` — deploy flow, hoe regio's/locaties werken
-   - `design-system.css` — alle CSS tokens (`--pp-*` namespace)
-   - `.scripts/sync_all.js` — build orchestrator
-   - `.scripts/lib/config.js` — TYPE_MAP, REGIONS, SEO constanten
+**index.html markers:** `STATS`, `TYPE_GRID`, `CITY_GRID`, `JSONLD_INDEX`
+**app.html markers:** `NOSCRIPT`, `JSONLD_APP`, `INFO_STATS`
 
-### Architectuur-beperkingen (niet breken!)
+### Regex-replaces in generators (OPPASSEN)
+`app-page.js` en `index-page.js` gebruiken agressieve regex-replaces op getallen:
+```javascript
+content.replace(/\d+ kindvriendelijke locaties/g, `${total} kindvriendelijke locaties`);
+content.replace(/\d+\+ locaties/g, `${total}+ locaties`);
+```
+Nieuwe copy die "locaties" bevat met een getal ervoor wordt door deze regexen geraakt. **Vermijd patronen die matchen** in nieuwe handgeschreven HTML, of pas de regex aan.
 
-- **Marker-based templates:** `<!-- BEGIN:X -->...<!-- END:X -->` wordt door generators overschreven. Wijzigingen binnen markers moeten in de generator, niet in het HTML-bestand.
-- **CSS single source of truth:** `design-system.css` voor tokens, `app.css` voor app-specifieke layout, `nav-floating.css` voor navigatie. Geen inline styles toevoegen.
-- **Build pipeline:** `npm run build` → `sync_all.js` → genereert ~2200 pagina's. Na CSS/HTML wijzigingen altijd `npm run build:local` testen.
-- **Incremental builds:** Wijzigingen aan `app.html`, `index.html`, `about.html` worden door `sync_all.js` gekopieerd met asset-version updates. Wijzig het bronbestand, niet de output.
-- **Audit gates:** CI draait `audit:strict` na build. Wijzigingen moeten deze audits passeren.
-- **`app.html` is ~3300 regels.** Gebruik grep/zoek om de juiste sectie te vinden. Lees context rondom de target-regel.
-- **`app.css` is ~76KB.** Idem — zoek op selector, niet blind lezen.
-- **Info-stats en homepage-stats zitten in `<!-- BEGIN:INFO_STATS -->` markers** — deze worden door `app-page.js` en `index-page.js` gegenereerd. Hardcoded waarden in die generators wijzigen, niet in de HTML.
+### Homepage interactive features
+De Shufl, Typewriter en Scheduler features op de homepage worden aangestuurd door inline `<script>` blokken in `index.html` (regels ~708-797). Ze gebruiken ook `pp-interactions.js`. Bij verwijdering (fase 2): verwijder zowel de HTML, de inline JS, als eventuele referenties in `pp-interactions.js`.
 
 ---
 
-## FASEVOLGORDE
+## PIJLERS
 
-| Fase | Naam | Prioriteit | Status |
-|------|------|-----------|--------|
-| 0 | Pre-flight checks | — | DONE |
-| 1 | Kritieke bugs (P0) | Blocker | IN PROGRESS |
-| 2 | Vertrouwen & data-integriteit (P1) | Hoog | DONE |
-| 3 | Visuele bugs (P1) | Hoog | DONE |
-| 4 | Layout & overflow bugs (P2) | Middel | DONE |
-| 5 | Favorieten-experience (P2) | Middel | DONE |
-| 6 | Error-handling UX (P2) | Middel | DONE |
-| 7 | Homepage CTA-vereenvoudiging (P3) | Laag | DONE |
-| 8 | Design-system polish | Laag | DONE |
-| 9 | Post-flight validatie | — | IN PROGRESS |
+Elke fase wordt getoetst aan:
+
+1. **Consistentie** — Dezelfde design tokens, componenten en voice overal. Geen ad-hoc overrides.
+2. **Schaalbaarheid** — Werkt bij 2.138 locaties, bij 10.000, bij 50.000. Geen hardcoded getallen.
+3. **Automatisering** — Geen handmatige stappen; build-systeem doet het werk. Generators vullen dynamische data.
+4. **Mobile-first** — iPhone-gebruiker met peuter op schoot = primaire persona.
+5. **Minimaal pad** — Minder stappen = meer conversie. Doel: 3 taps naar locatie.
+6. **Generator-compatibiliteit** — Elke HTML-wijziging wordt getoetst tegen de generator die die pagina verwerkt.
 
 ---
 
-## FASE 0: PRE-FLIGHT CHECKS
+## LEESWIJZER VOOR CLAUDE CODE
 
-> Doel: Bevestig dat de ontwikkelomgeving werkt en de huidige build slaagt.
+Dit plan is ontworpen voor fase-voor-fase uitvoering door Claude Code. Working directory MOET `/Users/basmetten/peuterplannen` zijn.
 
-- [x] **0.1** Build slaagt ✓
-- [x] **0.2** Tests slagen (57/57, snapshot ge-updated) ✓
-- [x] **0.3** Working tree heeft wijzigingen van build — normaal na `npm run build:local`.
-- [x] **0.4** 1810 HTML-bestanden geteld.
+Bij context-verlies: lees `plan2.md`, check de status tracker onderaan, hervat bij eerste fase met `TODO` of `IN_PROGRESS`.
 
-**Verificatie:** Build slaagt, tests groen, working tree is clean of gestashed.
+### Agent-strategie
 
----
+| Agent | Model | Isolatie | Wanneer |
+|-------|-------|----------|---------|
+| `researcher` | Haiku | Nee | Codebase verkennen, patronen vinden, generators lezen |
+| `implementer` | Sonnet | Worktree | Code-wijzigingen in isolatie. Build draait in de worktree. |
+| `verifier` | Haiku | Nee | Build + alle 5 audits na elke fase |
 
-## FASE 1: KRITIEKE BUGS (P0)
+### Verificatie na elke fase
+```bash
+npm run build
+node .scripts/audit_internal_consistency.js --strict
+node .scripts/audit_portals.js --strict
+node .scripts/audit_seo_quality.js --strict
+node .scripts/audit_design_system.js --strict
+node .scripts/audit_design_tokens.js --strict
+git diff --stat
+```
 
-> Doel: De twee bugs fixen die de core-functionaliteit breken.
-
-### 1.1 Supabase data-laden: retry-logica en timeout
-
-**Probleem:** "Live data laden lukte niet. Je ziet een recente beperkte versie." verschijnt op de Ontdek-tab. Er is geen timeout op de fetch en geen automatische retry.
-
-**Bestanden:**
-- `app.html` — zoek op `fetchLocationsLive` (~regel 1615-1639) en `fetchAllPages` (~regel 1321-1384)
-
-**Taken:**
-- [x] **1.1.1** AbortController timeout van 10s toegevoegd in `loadLocations()`.
-- [x] **1.1.2** Retry-logica toegevoegd: als fetch faalt, wacht 2s en probeer 1x opnieuw voordat cache-fallback wordt getoond.
-- [x] **1.1.3** Error-message toont nu cache-timestamp ("Gegevens van [datum]") via `cached.savedAt`.
-
-**Verificatie:** Open `app.html` in een browser, schakel netwerk uit in DevTools → bevestig dat error na ~12s verschijnt (10s timeout + 2s retry) met timestamp.
-
-### 1.2 Favorieten-tab: dedicated empty state
-
-**Probleem:** De Favorieten-tab toont dezelfde content als Ontdek wanneer er geen favorieten zijn opgeslagen. Gebruikers denken dat de feature kapot is.
-
-**Bestanden:**
-- `app.html` — zoek op `activeTag === 'favorites'` in de `loadLocations` functie (~regel 1666-1669) en de `renderCards` functie
-
-**Taken:**
-- [x] **1.2.1** Dedicated empty state met hartje-SVG toegevoegd voor favorieten in `loadLocations()`.
-- [x] **1.2.2** CSS `.favorites-empty` toegevoegd in `app.css`.
-- [ ] **1.2.3** Test: open app.html → klik Favorieten-tab → bevestig dat de empty state verschijnt. *(handmatig testen)*
-
-**Verificatie:** Favorieten-tab toont hartje + "Nog geen favorieten" tekst bij 0 favorieten, en werkende kaarten bij 1+ favorieten.
+### Commit-strategie
+- Elke fase = 1-3 commits met descriptieve messages
+- Bij twijfel: commit NIET, vraag de user
 
 ---
 
-## FASE 2: VERTROUWEN & DATA-INTEGRITEIT (P1)
+## FASE 1: HERO SIMPLIFICATIE — ACTIE BOVEN DE VOUW
+**Status:** `DONE`
+**Prioriteit:** KRITIEK — dit is de eerste indruk op mobile
+**Agents:** `researcher` (huidige hero + `index-page.js` analyseren) → `implementer` (worktree) → `verifier`
+**Bestanden:** `index.html`, `.scripts/lib/generators/index-page.js`
 
-> Doel: Alle hardcoded getallen synchroniseren zodat de site intern consistent is.
+### Probleem
+Op iPhone neemt de hero (illustratie + titel + description + proof badge + zoekbalk + CTA + tertiary link) meer dan 2 volle schermen in beslag. De zoekbalk is onder de vouw. De hero-afbeelding is decoratief, niet informatief.
 
-### 2.1 Info-panel: "18 regio's" → "22 regio's"
+### Wat we doen
 
-**Probleem:** `app.html` info-panel tekst (regel ~530) zegt "18 regio's" maar de stat-counter (regel ~540) toont "22". De homepage toont ook "22".
+**1.1** Hero herschrijven naar mobile-first actie-layout:
+```
+[Nav — 80px]
+[Kicker: "2138 locaties · 100% geverifieerd" — dynamisch via updateIndex()]
+[H1: "De beste peuteruitjes voor jouw kleintje"]
+[Subtitle: 1 zin max]
+[Zoekbalk met GPS-knop — full width, 48px hoogte]
+[Preset-chips: Regenproof | Buiten+koffie | Dreumesproof | Korte rit — 2×2 grid, 48px]
+```
 
-**Bestanden:**
-- `app.html` — zoek op `18 regio` (verwacht ~regel 530)
-- Controleer ook `.scripts/lib/generators/app-page.js` — als de info-panel tekst door een generator wordt geschreven (check op `BEGIN:INFO` markers)
+- **Verwijder:** hero-afbeelding op mobile (toon alleen op desktop ≥768px als aside, consistent met bestaande homepage breakpoint)
+- **Verwijder:** "Start met zoeken" knop (zoekbalk IS de actie)
+- **Verwijder:** "Lees meer over PeuterPlannen" link (verplaats naar footer)
+- **Verwijder:** floating icon overlays op hero-visual (kindfiguurtje, camerafiguurtje)
+- **Behoud:** hero-afbeelding op desktop (≥768px) als visuele aside in 2-kolom layout
+- **Verplaats:** proof badge naar kicker-positie boven H1, compact als tekstregel
+- **Noot:** `updateIndex()` in `index-page.js` update al de hero badge text via regex (regel ~223). De nieuwe kicker-marker vervangt dit.
 
-**Taken:**
-- [x] **2.1.1** "18 regio's" → dynamisch via generator (`${regions.length} regio's`). Regex-replacement toegevoegd in `app-page.js`.
-- [x] **2.1.2** Geen andere "18"-regio voorkomens gevonden.
+**1.2** Kicker dynamisch maken via `index-page.js`:
+- Voeg een nieuw `<!-- BEGIN:HERO_KICKER -->...<!-- END:HERO_KICKER -->` marker toe
+- `updateIndex()` genereert: `"${total} locaties · ${regions.length} regio's · 100% geverifieerd"`
+- Verwijder de bestaande `STATS` marker/sectie (grote getallen verdwijnen)
 
-**Verificatie:** `grep -n "18 regio" app.html` retourneert 0 resultaten.
+**1.3** Preset-chips toevoegen aan homepage:
+- Statische HTML-chips die linken naar `app.html?preset=X`
+- Dezelfde preset-namen als in de inline JS van app.html: `rain`, `outdoor-coffee`, `dreumesproof`, `peuterproof`, `short-drive`, `lunch-play`
+- Toon top 4 op mobile (2×2 grid), alle 6 op desktop
+- Chips zijn groot genoeg voor touch: min 48px hoogte, duidelijke labels
 
-### 2.2 Info-panel: "5 Categorieën" → "8 Categorieën"
+**1.4** Zoekbalk functionaliteit:
+- `<form action="/app.html" method="get">` met `<input name="q">`
+- Submit navigeert naar `app.html?q={query}`
+- GPS-knop slaat positie op in localStorage en navigeert naar `app.html?gps=1`
+- Placeholder: "Waar woon je?" (simpeler dan "Zoek een stad, type of locatie...")
+- "Populair:" chips onder de zoekbalk met top-5 regio's (dynamisch via generator)
 
-**Probleem:** De stat-counter toont "5" categorieën maar er zijn er 8 (speeltuinen, kinderboerderijen, natuur, musea, zwemmen, pannenkoeken, horeca, cultuur).
+### Verwacht resultaat mobile
+```
+[Nav — ~70px incl. margin]
+[Kicker — 20px]
+[H1 — ~70px (2 regels)]
+[Subtitle — ~25px]
+[Zoekbalk — 48px]
+[4 preset-chips — 2×2 grid, ~108px]
+= ~341px, past boven de vouw op iPhone 14 (844px viewport)
+```
 
-**Bestanden:**
-- `app.html` — zoek op `Categorieën` in de `<!-- BEGIN:INFO_STATS -->` sectie (~regel 543-544)
-- Controleer `.scripts/lib/generators/app-page.js`
-
-**Taken:**
-- [x] **2.2.1** "5" → `${Object.keys(TYPE_MAP).length}` in `app-page.js` generator. Nu dynamisch (toont 8).
-
-**Verificatie:** `grep -n "Categorieën" app.html` toont "8" in de stat.
-
-### 2.3 Info-panel tekst: "Alle 2138 locaties"
-
-**Probleem:** Het exacte getal "2138" is hardcoded op meerdere plekken. Als locaties worden toegevoegd, raakt dit verouderd.
-
-**Bestanden:**
-- `app.html` — zoek op `2138` (verwacht meerdere hits: meta tags, JSON-LD, info-panel, noscript)
-- `.scripts/lib/generators/app-page.js` — de generator die app.html bijwerkt
-- `.scripts/lib/generators/index-page.js` — de homepage generator
-
-**Taken:**
-- [x] **2.3.1** "2138" kwam niet voor in `app.html` (al dynamisch). In `index.html` stond het in hero badge.
-- [x] **2.3.2** Generators gebruikten al `${total}` dynamisch. Bug gefixed: `index-page.js` regex matchte `--ink-muted` i.p.v. `--pp-text-muted`.
-- [x] **2.3.3** Hero badge in `index.html` nu dynamisch via gefixte regex.
-
-**Verificatie:** `npm run build:local` slaagt. Getallen in de output-HTML matchen het aantal locaties in de dataset.
-
-### 2.4 Cross-check: homepage vs. app vs. Over-pagina
-
-**Taken:**
-- [x] **2.4.1** Cross-check gedaan. Alle drie pagina's tonen nu consistente dynamische stats. About-page "7" → "8" gefixed (zelfde `TYPE_MAP.length` aanpak in `about-page.js`).
-
-**Verificatie:** Alle drie pagina's tonen identieke stats na `npm run build:local`.
-
----
-
-## FASE 3: VISUELE BUGS (P1)
-
-> Doel: De visuele glitches fixen die de eerste indruk ondermijnen.
-
-### 3.1 Hero-afbeelding: zwart blok verwijderen
-
-**Probleem:** Er is een zwart rechthoekig artefact zichtbaar links in de hero-illustratie op de homepage. Mogelijke oorzaken: (a) de bronafbeelding bevat het artefact, (b) CSS gradient overlay `rgba(45,41,38,0.18)` in `.hero-image-wrapper::after` is te donker in de hoek, (c) de combinatie van `.hero-image-mask` radial-gradient + de overlay creëert een donkere zone.
-
-**Bestanden:**
-- `index.html` — zoek op `hero-image-wrapper` en de `::after` pseudo-element styles (~regel 230-234)
-- `/images/homepage_hero_ai.jpeg` en de responsive varianten in `/images/` (400w, 800w, 1200w WebP)
-
-**Taken:**
-- [x] **3.1.1** Bronafbeelding geïnspecteerd — geen zwart artefact in het beeld zelf.
-- [x] **3.1.2** N.v.t. — artefact zit niet in het bronbeeld.
-- [x] **3.1.3** CSS gradient aangepast: `rgba(45,41,38,0.18)` → `rgba(45,41,38,0.06)` en warm overlay `0.2` → `0.15`.
-- [ ] **3.1.4** Check of de `.hero-image-mask` radial gradient niet te agressief is op kleine schermen. *(handmatig testen)*
-
-**Verificatie:** Open `index.html` in browser met mobile viewport (375×812) → geen zwart blok zichtbaar.
-
-### 3.2 Menu-overlay: volledig opaque maken + backdrop scrim
-
-**Probleem:** Wanneer het hamburger-menu open is, is de onderliggende pagina-content zichtbaar door het menu heen. Het menu is 96% opaque en er is geen achtergrond-overlay.
-
-**Bestanden:**
-- `nav-floating.css` — zoek op `--pp-nav-mobile-bg` (~regel 14) en `.nav-mobile` (~regel 178-203)
-- `nav-floating.js` — menu toggle logica (~regel 19-55)
-
-**Taken:**
-- [x] **3.2.1** `--pp-nav-mobile-bg` gewijzigd naar `rgba(var(--pp-bg-rgb), 1.0)`.
-- [x] **3.2.2** Backdrop scrim toegevoegd via CSS `::before` pseudo-element op `.nav-mobile.open`.
-- [ ] **3.2.3** Test: open het menu op mobile → achtergrond is gedimd, geen content zichtbaar door het menu heen. *(handmatig testen)*
-
-**Verificatie:** Menu is volledig opaque. Achtergrond is subtiel gedimd. Sluiten (X, escape, click buiten menu) werkt nog.
-
-### 3.3 Cultuur-categorie: ontbrekend icoon toevoegen
-
-**Probleem:** In de "Uitjes per type" grid op de Ontdekken-pagina mist de Cultuur-kaart zijn emoji/icoon. Alle andere 7 categorieën hebben er wel een.
-
-**Bestanden:**
-- `/images/categories/` — bevat PNG+WebP voor alle categorieën behalve `cultuur`
-- `index.html` — zoek op `cultuur` in de categories grid
-- `.scripts/lib/generators/index-page.js` of `.scripts/lib/generators/type-pages.js` — de generator die de category grid bouwt
-
-**Taken:**
-- [x] **3.3.1** Geïnventariseerd: 7 categorieën hebben .png + .webp, cultuur mist.
-- [x] **3.3.2** Cultuur-icoon gegenereerd via Gemini 2.5 Flash Image API (poppentheater met gordijnen, 1024x1024 PNG).
-- [x] **3.3.3** WebP variant gegenereerd via `optimize_images.js`.
-- [x] **3.3.4** Generator aangepast met `fs.existsSync` check zodat ontbrekende afbeelding geen broken image oplevert.
-
-**Verificatie:** Alle 8 categoriekaarten hebben een icoon. `ls /images/categories/cultuur*` toont bestanden.
+### Niet aanraken
+- Desktop hero-layout (2-kolom met afbeelding) blijft beschikbaar ≥768px
+- SEO structured data (JSON-LD) — wordt al correct gegenereerd via `JSONLD_INDEX` marker
+- Meta tags — worden al correct geüpdatet door `updateIndex()`
+- Admin portal (`/admin/`) — gebruikt eigen `.admin-hero-grid` class, niet `.hero`
+- Partner portal (`/partner/`) — gebruikt eigen `.portal-hero` class, niet `.hero`
+- Partner landing page (`/voor-bedrijven/`) — gebruikt `.vb-hero` namespace, niet `.hero`
 
 ---
 
-## FASE 4: LAYOUT & OVERFLOW BUGS (P2)
+## FASE 2: HOMEPAGE SECTIES STROOMLIJNEN
+**Status:** `DONE`
+**Prioriteit:** HOOG
+**Agents:** `implementer` (worktree) → `verifier`
+**Bestanden:** `index.html`, `.scripts/lib/generators/index-page.js`
 
-> Doel: Elementen die overlappen, afgeknipt worden of achter de navigatie verdwijnen fixen.
+### Probleem
+Na de hero zijn er 7+ secties die allemaal "inspiratie" bieden maar geen directe actie. De interactive playground (Shufl, Typewriter, Scheduler) is een demo die niet klikbaar is — verwarrend.
 
-### 4.1 Bottom tab bar: content overlapt met "Toon of verberg"
+### Nieuwe sectie-volgorde (mobile)
 
-**Probleem:** De tekst "Toon of verberg de uitgebreide filters" is zichtbaar achter de bottom tab bar. Content scrollt niet ver genoeg om boven de vaste navigatie te eindigen.
+| # | Sectie | Marker | Generator | Status |
+|---|--------|--------|-----------|--------|
+| 1 | Hero + presets (fase 1) | `HERO_KICKER` | `index-page.js` | Nieuw |
+| 2 | Type Grid (compact) | `TYPE_GRID` | `index-page.js` | Bestaand, vereenvoudigd |
+| 3 | City/Regio Grid | `CITY_GRID` | `index-page.js` | Bestaand, vereenvoudigd |
+| 4 | Blog Preview (3 posts) | `BLOG_PREVIEW` | `index-page.js` (nieuw) | Nieuw marker |
+| 5 | Newsletter | Handgeschreven | n.v.t. | Bestaand |
+| 6 | Footer | Handgeschreven | n.v.t. | Bestaand |
 
-**Bestanden:**
-- `app.css` — zoek op `.app-container` padding (~regel 24-52) en `.bottom-nav` (~regel 538-549)
-- `app.html` — zoek op `newsletter-signup` (~regel 458-468) en `app-seo-content`
+### Wat we verwijderen
+- **Stats-sectie** (`STATS` marker) → getallen verhuisd naar hero kicker. Verwijder ook de `STATS` marker uit `index.html` EN de `statsHTML` generatie in `index-page.js`
+- **Quick Filter "Wat zoek je?"** (Binnen/Buiten) → overbodig, presets in hero zijn beter
+- **Interactive Playground** (Shufl, Typewriter, Scheduler):
+  - Verwijder de HTML (features-sectie in `index.html`)
+  - Verwijder de inline `<script>` blok (regels ~708-797 in `index.html`) dat shuffle/typewriter/scheduler state beheert
+  - Check `pp-interactions.js` of daar referenties naar staan — zo ja, verwijder die ook
+- **Support/Tikkie sectie** → verplaats naar about-pagina (staat daar al via `about-page.js`)
+- **Guide sections** in type/city grids → vereenvoudigen (verwijder guide-card-lead uitleg-tekst, maar **BEHOUD alle interne links** naar cluster-, blog- en ontdekken-pagina's — die zijn essentieel voor de interne linking mesh uit plan.md fase 10)
 
-**Taken:**
-- [x] **4.1.1** Padding was `calc(80px + var(--pp-safe-bottom))` — te krap.
-- [x] **4.1.2** Newsletter en SEO-content zitten buiten `.app-container`. Eigen margin-bottom toegevoegd.
-- [x] **4.1.3** Padding-bottom verhoogd naar `calc(100px + var(--pp-safe-bottom))`.
-- [ ] **4.1.4** Test op mobile viewport *(handmatig testen)*.
+### Nieuwe `BLOG_PREVIEW` marker
+- `index-page.js` genereert 3 recente blogposts als compacte kaarten
+- De logica voor `loadBlogMetadata()` bestaat al in `index-page.js` (nu gebruikt voor featured blog entries in city grid)
+- Verplaats deze naar een eigen sectie met horizontaal scrollbare kaarten op mobile
 
-**Verificatie:** Geen tekst of interactieve elementen overlappen met de bottom nav bij scrollen.
-
-### 4.2 Newsletter-signup: overlap op Kaart-pagina
-
-**Probleem:** Op de Kaart-tab overlapt het email-veld met de navigatie.
-
-**Bestanden:**
-- `app.html` — zoek op `newsletter-signup` (~regel 458)
-- `app.css` — zoek op `.newsletter-signup` of de inline styles
-
-**Taken:**
-- [x] **4.2.1** Newsletter en SEO-content verborgen in map-view via `body.map-view-active` class + CSS `display: none`.
-- [x] **4.2.2** Newsletter `margin-bottom: calc(100px + env(safe-area-inset-bottom, 20px))` toegevoegd.
-
-**Verificatie:** Newsletter niet zichtbaar in kaart-view. Wel zichtbaar in Ontdek-view met voldoende afstand tot bottom nav.
-
-### 4.3 Filter-chip tekst: "Buiten + k..." afgekapt
-
-**Probleem:** De preset-chip "Buiten + koffie" wordt afgeknipt in de horizontale scroll-strip.
-
-**Bestanden:**
-- `app.css` — zoek op `.preset-chip` (~regel 350-373) en `.preset-strip`
-- `app.html` — de preset chips (~regel 236-260)
-
-**Taken:**
-- [x] **4.3.1** `white-space: nowrap` toegevoegd aan `.preset-chip strong`.
-- [x] **4.3.2** Scroll-hint gradient `::after` toegevoegd aan `.preset-strip`.
-- [ ] **4.3.3** Test op mobile viewport *(handmatig testen)*.
-
-**Verificatie:** Geen enkele preset-chip tekst is afgeknipt. Scroll-hint is subtiel zichtbaar.
+### Generator-wijzigingen in `index-page.js`
+- **Nieuw:** `HERO_KICKER` marker generatie
+- **Nieuw:** `BLOG_PREVIEW` marker generatie
+- **Verwijderd:** `STATS` marker generatie (het hele statsHTML blok)
+- **Gewijzigd:** `TYPE_GRID` — verwijder guide-section-featured, hou alleen de kaarten
+- **Gewijzigd:** `CITY_GRID` — verwijder crawl hub guides, hou kaarten + 1 "Ontdek meer" link
 
 ---
 
-## FASE 5: FAVORIETEN-EXPERIENCE (P2)
+## FASE 3: APP.HTML PRESET DEEP-LINKING
+**Status:** `DONE`
+**Prioriteit:** HOOG
+**Agents:** `implementer` → `verifier`
+**Bestanden:** `app.html` (bevat inline JS — er is GEEN apart app.js bestand)
 
-> Doel: De Favorieten-tab een volwaardige, betrouwbare feature maken.
+### Probleem
+Homepage presets moeten naadloos doorlinken naar app.html met het juiste filter actief. Nu vereist app.html handmatige stappen (stad invullen → preset kiezen → wachten).
 
-### 5.1 Visuele feedback bij favoriet toggle
+### Bestaande code om op voort te bouwen
+App.html heeft AL URL-param parsing (rond regel 663) voor `?type=`, `?weather=`, `?regio=`, `?age=`, `?ids=`. Er is ook al een `togglePreset()` functie en `getCurrentLocation()` met GPS + reverse geocoding.
 
-**Bestanden:**
-- `app.html` — zoek op `toggleFavorite` functie (~regel 889-908)
-- `app.css` — zoek op `heart-pop` animatie
+### Wat we bouwen
 
-**Taken:**
-- [x] **5.1.1** `heart-pop` animatie is correct: keyframes in `app.css:18`, class toggle in `toggleFavorite`. Werkt op mobile.
-- [x] **5.1.2** Toast-notificatie "Opgeslagen in favorieten" toegevoegd via inline `ppToast()` functie (hergebruikt CSS uit `design-system.css`).
-- [x] **5.1.3** Toast "Verwijderd uit favorieten" toegevoegd in dezelfde `toggleFavorite` aanroep.
+**3.1** Breid bestaande URL-param parsing uit met `?preset=` en `?q=`:
+```javascript
+// TOEVOEGEN aan bestaande init-flow (rond regel 663 in app.html)
+const preset = params.get('preset');
+const query = params.get('q');
+const useGps = params.get('gps') === '1';
 
-**Verificatie:** Hartje-animatie speelt af bij klik. Toast verschijnt en verdwijnt na 2s.
+if (query) {
+  document.getElementById('location-input').value = query;
+  updateLocation(); // bestaande functie (regel ~1180)
+}
+if (useGps) getCurrentLocation(); // bestaande functie (regel ~1150)
+if (preset) togglePreset(preset); // bestaande functie
+```
+**Belangrijk:** Dit is een toevoeging van ~10 regels aan bestaande code, GEEN nieuwe functie.
 
-### 5.2 Favorieten-counter op tab-icoon
+**3.2** Auto-GPS op eerste bezoek (uitgewerkt in fase 8):
+- Fase 8 beschrijft de volledige GPS-onboarding flow
+- Hier alleen de URL-param `?gps=1` afhandeling: `if (useGps) getCurrentLocation();`
+- `getCurrentLocation()` bestaat al (regel ~1150) en slaat resultaat op in `lastCity`
 
-**Taken:**
-- [x] **5.2.1** Badge-counter toegevoegd: `.fav-badge` span in bottom nav met primary-kleur achtergrond. Verborgen bij 0.
-- [x] **5.2.2** `updateFavBadge()` wordt aangeroepen in `toggleFavorite` en bij beide init-paden (normal + fallback).
+**3.3** Decision-stage header simplificeren:
+- **Verwijder:** "Kies eerst hoe de dag voelt" kicker + uitleg-paragraaf
+- **Vervang door:** "Wat voor dag wordt het?" als label boven presets
+- Dit is handgeschreven HTML in app.html (rond regel 193-197) — geen generator-conflict
+- `app-page.js` raakt alleen noscript, JSON-LD en meta — niet de decision-stage
 
-**Verificatie:** Badge toont correct aantal. Verdwijnt bij 0.
+**3.4** Presets responsive touch-targets:
+- Min 48px hoogte per preset-chip (WCAG/Apple HIG)
+- Op mobile (<680px, de bestaande `DESKTOP_WIDTH`): 2-koloms grid i.p.v. horizontale scroll
+- CSS wijziging in de inline `<style>` van app.html of in `app.css` (bron van `app.min.css`)
 
 ---
 
-## FASE 6: ERROR-HANDLING UX (P2)
+## FASE 4: `.hero` CLASS SCOPING — CASCADE-CONFLICT STRUCTUREEL OPLOSSEN
+**Status:** `DONE`
+**Prioriteit:** HOOG — voorkomt herhaling van de hero-bug op alle pagina's
+**Agents:** `researcher` (volledige hero-class inventaris) → `implementer` (worktree) → `verifier`
+**Bestanden:** alleen `index.html` (rename `class="hero"` → `class="hero-home"` + CSS verplaatsen). `style.css` en generators worden NIET gewijzigd.
 
-> Doel: De error-ervaring transformeren van "kapot" naar "graceful degradation".
+### Probleem
+`style.css` (bron van `style.min.css`) bevat een generieke `.hero` class met terracotta gradient, witte tekst en centered text-align. Deze stijlen worden door ALLE pagina-typen overerfd. De homepage, die een compleet ander hero-design nodig heeft, moest dit handmatig overschrijven — fragiel en niet schaalbaar.
 
-### 6.1 Verbeterde error-state design
+### Inventaris: wie gebruikt `.hero`?
 
-**Bestanden:**
-- `app.html` — zoek op `error-msg` (~regel 339) en de error-toewijzing (~regel 1660-1662)
-- `app.css` — zoek op `.error-msg`
+| Pagina-type | Generator | Hero class | Gewenste stijl |
+|-------------|-----------|------------|----------------|
+| Stadspagina's | `city-pages.js:225` | `class="hero"` | Terracotta gradient + witte tekst ✓ |
+| Type-pagina's | `type-pages.js:188` | `class="hero"` | Terracotta gradient + witte tekst ✓ |
+| City-type combo's | `city-type-pages.js:167` | `class="hero"` | Terracotta gradient + witte tekst ✓ |
+| Clusterpagina's | `cluster-pages.js:129` | `class="hero"` | Terracotta gradient + witte tekst ✓ |
+| Locatiepagina's | `location-pages.js:472` | `class="hero hero-location"` | Foto of gradient ✓ |
+| Editorial/blog | `editorial-pages.js:51`, `blog.js:246` | `class="hero hero-blog"` | Donkerder gradient ✓ |
+| Blog index | `blog.js:138` | `class="hero"` | Terracotta gradient ✓ |
+| Blog detail (met image) | `blog.js:138` | `class="hero"` + inline style | Padding override ✓ |
+| **Homepage** | Handgeschreven | `class="hero"` | **ANDERS: geen gradient, donkere tekst, 2-kolom** |
 
-**Taken:**
-- [x] **6.1.1** Herontwerp de error-message. Vervang de huidige inline HTML-string door een betere versie:
-  ```html
-  <div class="error-state">
-    <svg>...</svg> <!-- wifi-off icoon -->
-    <strong>Even geen verbinding</strong>
-    <p>Je ziet nu opgeslagen gegevens van [timestamp]. Zodra de verbinding terug is, laden we de nieuwste locaties.</p>
-    <button onclick="loadLocations()">Opnieuw proberen</button>
-  </div>
+### Oplossing
+De generieke `.hero` in `style.css` is correct voor stad/type/cluster/blog-pagina's. Het probleem is alleen de **homepage**. In plaats van alle generators te refactoren:
+
+**4.1** Geef de homepage hero een eigen class:
+- `index.html`: verander `<section class="hero">` naar `<section class="hero-home">`
+- Verplaats alle homepage-specifieke hero-stijlen van inline `<style>` naar `.hero-home` in de inline stylesheet
+- Voeg expliciete resets toe: `background: none; color: var(--pp-text); text-align: left;`
+
+**4.2** Verwijder de ad-hoc overrides uit fase 0:
+- De `background: none; color: var(--pp-text); text-align: left;` die nu in `.hero` inline staan → verplaats naar `.hero-home`
+- `.hero` in de inline styles van index.html krijgt GEEN stijlen meer — de generieke `.hero` uit style.css is niet meer actief
+
+**4.3** Verifieer dat alle andere pagina's NIET geraakt worden:
+- Alle generators blijven `class="hero"` gebruiken → geen wijzigingen
+- `style.css` `.hero` regels blijven identiek → geen wijzigingen
+- Alleen `index.html` verandert
+
+### Verificatie
+- `npm run build` slaagt
+- Alle 5 audits slagen
+- Steekproef: open amsterdam.html, speeltuinen.html, een blogpost, een locatiepagina → hero ziet er normaal uit
+- Open index.html → hero gebruikt `.hero-home`, geen cascade-conflict
+
+---
+
+## FASE 5: MOBILE TOUCH TARGETS & SPACING
+**Status:** `DONE`
+**Prioriteit:** MIDDEL
+**Agents:** `implementer` → `verifier`
+**Bestanden:** `app.css` (bron van `app.min.css`), `index.html` inline styles
+
+### Probleem
+Touch targets in app presets te klein voor gebruik met peuter op schoot. Floating nav + hero padding = ~40% scherm weg voor content op kleine iPhones.
+
+### Breakpoints om rekening mee te houden
+- App.html gebruikt `DESKTOP_WIDTH = 680px` als breakpoint
+- Homepage gebruikt `768px` en `480px` breakpoints in inline `<style>`
+- Nav gebruikt `768px` breakpoint in `nav-floating.css`
+
+### Wat we doen
+
+**5.1** Touch targets (in `app.css`):
+- Preset chips (`.preset-chip`): verhoog naar min 48px hoogte
+- Filter chips (`.chip`): verhoog naar min 40px hoogte
+- Search input: bevestig 48px hoogte
+- Alle klikbare elementen: min 44px (Apple HIG)
+
+**5.2** Hero padding optimaliseren (in `index.html` inline styles):
+- Mobile `padding-top`: 118px → 100px (bespaart 18px boven de vouw)
+- `gap` in hero grid: 42px → 24px op mobile
+- Deze stijlen staan op `.hero-home` na fase 4
+
+**5.3** Geen wijzigingen aan nav (werkt goed, compact genoeg)
+
+### Generator-impact
+- Geen — touch targets zijn CSS-only wijzigingen
+- `app.css` wordt door `minifyCSS()` in sync_all.js geminified naar `app.min.css`
+
+---
+
+## FASE 6: HOMEPAGE → APP SEAMLESS TRANSITION
+**Status:** `DONE`
+**Prioriteit:** MIDDEL
+**Agents:** `implementer` → `verifier`
+**Bestanden:** `index.html`, `app.html`
+
+### Probleem
+De overgang homepage → app voelt als een nieuw bezoek. De context-strip ("Waar gaan we vandaag naartoe?") is redundant als je al via een preset of zoekopdracht binnenkomt.
+
+### Wat we bouwen (minimaal — bouw voort op fase 3)
+
+**6.1** Geen apart localStorage-systeem nodig:
+Fase 3 voegt `?preset=` en `?q=` URL-params toe. De homepage presets linken al naar `app.html?preset=rain`. App.html leest deze params bij page load en activeert het juiste filter. **Dit IS de seamless transition** — geen extra state-management nodig.
+
+**6.2** Context-strip conditioneel verbergen:
+- Als URL een `?preset=` of `?q=` param bevat: verberg de "Waar gaan we vandaag naartoe?" header
+- Scroll direct naar de resultaten
+- Simpele check: `if (location.search) document.querySelector('.app-context-strip').hidden = true;`
+
+**6.3** View Transition API (CSS-only enhancement):
+- Beide pagina's hebben al `<meta name="view-transition" content="same-origin">`
+- Voeg `view-transition-name: hero-title` toe aan homepage H1 en app-context-title
+- Browsers die het ondersteunen krijgen een smooth crossfade; rest ziet een gewone navigatie
+- Geen JS nodig
+
+### Generator-impact
+- `app-page.js` verandert NIET
+- `index-page.js` verandert NIET
+
+---
+
+## FASE 7: QUICK RESULTS HOMEPAGE COMPONENT
+**Status:** `DONE`
+**Prioriteit:** MIDDEL
+**Agents:** `implementer` → `verifier`
+**Bestanden:** `index.html`, nieuw: `homepage-results.js`
+
+### Wat we bouwen
+Een lichtgewicht script dat op de homepage 3 locatiekaarten toont als "teaser".
+
+**7.1** Logica:
+```
+1. Check localStorage voor GPS-positie
+2. Als GPS: haal 3 dichtstbijzijnde locaties op via Supabase (anon key, read-only)
+3. Als geen GPS: haal 3 locaties met homepage_featured = true
+4. Render als compacte kaarten
+5. "Bekijk alle locaties →" link naar app.html
+```
+
+**7.2** Performance & Supabase access:
+- Script is `defer`
+- Supabase anon key + URL staan al in `app.html` — hergebruik dezelfde credentials
+  - `SB_URL = 'https://piujsvgbfflrrvauzsxe.supabase.co'`
+  - `SB_ANON = 'eyJ...'` (read-only, publieke key)
+- Direct REST API call (geen Supabase JS client nodig op homepage): `fetch(SB_URL + '/rest/v1/locations?select=id,name,slug,region,type&homepage_featured=eq.true&limit=3', { headers: { apikey: SB_ANON } })`
+- Skeleton loader terwijl data laadt (hergebruik bestaand `.pp-skeleton` patroon uit design-system)
+- Als Supabase onbereikbaar: sectie wordt niet getoond (graceful degradation)
+
+**7.3** Supabase credentials in homepage-results.js:
+- Hardcode `SB_URL` en `SB_ANON` in het script (dezelfde publieke waarden als in app.html)
+- Dit is safe: de anon key is read-only en al publiek in app.html
+- Alternief: definieer als `<script>` constants in index.html boven de `defer` script-tag
+
+**7.4** Database-aanpassing:
+- Voeg `homepage_featured` boolean kolom toe aan `locations` tabel via Supabase SQL Editor:
+  ```sql
+  ALTER TABLE locations ADD COLUMN homepage_featured boolean DEFAULT false;
   ```
-- [x] **6.1.2** Style de `.error-state` in `app.css`: centered, warm kleuren (geen agressief rood), consistent met het design-system.
-- [x] **6.1.3** Voeg een automatische retry toe: als de error wordt getoond, probeer elke 30 seconden automatisch opnieuw (max 3x). Als het dan lukt, verberg de error en laad de data. Gebruik `setInterval` met een counter die stopt na 3 pogingen.
+- Zet 6-9 locaties op `true` via admin portal
+- Admin portal (`admin/admin.js`): voeg toggle toe aan locatie-detail tab — het `saveLocationDetail` endpoint ondersteunt al willekeurige kolom-updates
 
-**Verificatie:** Error-state toont timestamp, retry-knop werkt, automatische retry herlaadt na verbindingsherstel.
-
-### 6.2 Offline-detectie banner
-
-**Taken:**
-- [x] **6.2.1** Voeg een globale offline-banner toe die verschijnt wanneer `navigator.onLine === false`. Verberg hem wanneer de verbinding terugkomt (`online`/`offline` events). Positie: bovenaan de app, onder de floating nav. Tekst: "Je bent offline — getoonde gegevens kunnen verouderd zijn."
-- [x] **6.2.2** Style de banner in `app.css`: subtiel, warm geel (geen agressief), `position: sticky; top: 92px; z-index: 50;`.
-
-**Verificatie:** Schakel vliegtuigmodus in → banner verschijnt. Schakel uit → banner verdwijnt.
+### Generator-impact
+- Voeg `<!-- BEGIN:QUICK_RESULTS -->...<!-- END:QUICK_RESULTS -->` marker toe aan `index.html`
+- `index-page.js`: genereer statische placeholder HTML (skeleton) als de marker-content
+- Client-side JS (`homepage-results.js`) vervangt skeletons met echte data
 
 ---
 
-## FASE 7: HOMEPAGE CTA-VEREENVOUDIGING (P3)
+## FASE 8: APP.HTML ONBOARDING FLOW
+**Status:** `DONE`
+**Prioriteit:** MIDDEL-LAAG
+**Agents:** `implementer` → `verifier`
+**Bestanden:** `app.html` (inline JS + HTML), `app.css`
 
-> Doel: De homepage focussen op één duidelijke actie i.p.v. 6 competerende opties.
+### Probleem
+App-pagina opent met lege staat. Oudere gebruikers krijgen soms "niet gevonden" voor steden die in een grotere regio zitten.
 
-### 7.1 Analyse en vereenvoudiging van CTA-structuur
+### Wat we bouwen
 
-**Bestanden:**
-- `index.html` — de hero-sectie en alles daaronder
-- `.scripts/lib/html-shared.js` — nav generator (default CTA tekst)
+**8.1** Inline GPS-prompt als eerste stap (als geen locatie bekend):
+- Prominente kaart boven presets: "Waar ben je? [Gebruik mijn locatie] of [Typ je stad]"
+- Na keuze: kaart verdwijnt, presets en resultaten laden
 
-**Taken:**
-- [x] **7.1.1** Inventarisatie: 7 CTA's boven de fold — zoekbalk, "Start met zoeken", "Lees meer", "Open App" (nav), "Binnen", "Buiten", "Alles bekijken". Drie gaan naar dezelfde bestemming (app.html).
-- [x] **7.1.2** Primaire user-intent bepaald via synthetische focusgroepen (ouders, growth, UX): ouders willen browsen, niet zoeken op naam. "Start met zoeken" is de juiste primaire CTA.
-- [x] **7.1.3** CTA-hiërarchie geïmplementeerd:
-  - **Primair:** "Start met zoeken" (ongewijzigd, groot, primary kleur)
-  - **Secundair:** Zoekbalk (ongewijzigd)
-  - **Tertiair:** "Lees meer" → tekst-link met pijl (was: volwaardige secondary button)
-  - **Quick filters:** Binnen/Buiten → compacte pill-chips (was: grote knoppen met borders)
-  - **Verwijderd:** "Alles bekijken" (duplicaat van "Start met zoeken")
-  - **Hernoemd:** "Open App" → "Uitjes zoeken" in alle nav's (alle pagina's + generator default)
-- [x] **7.1.4** Wijzigingen doorgevoerd in `index.html` (CSS + HTML), `html-shared.js` (generator default), en alle 6 handmatige pagina's. Build slaagt.
+**8.2** Stad-autocomplete verbeteren:
+- Huidige "Populair:" chips hardcoded → maak dynamisch vanuit regio's
+- Fuzzy matching: "Hilversum" → match op "Het Gooi" regio
+- Autocomplete dropdown met suggesties tijdens typen
 
-**Verificatie:** Homepage heeft één duidelijke primaire actie boven de fold. Geen twee knoppen die op hetzelfde niveau om aandacht strijden.
+**8.3** Empty state verbeteren:
+- Bij 0 resultaten: toon suggesties (verbreed filters, andere regio)
 
----
-
-## FASE 8: DESIGN-SYSTEM POLISH
-
-> Doel: De resterende UI/UX verbeteringen uit het vorige plan2.md doorvoeren die nog relevant zijn. Dit is een LAGE prioriteit — alleen uitvoeren als fasen 1-7 volledig af zijn.
-
-### 8.1 Button states verbeteren
-
-**Bestanden:**
-- `design-system.css` — zoek op button-gerelateerde tokens en states
-
-**Taken:**
-- [x] **8.1.1** Audit: `design-system.css` heeft al generieke `:active` (scale 0.98), `:focus-visible` (brand ring), en `:disabled` (opacity 0.5) states voor alle interactieve elementen. Hover states zijn per component gedefinieerd — correct patroon.
-- [x] **8.1.2** Disabled styling bestaat al: `:where(button, [role="button"], .btn, a.btn):disabled` → opacity 0.5, pointer-events none.
-- [x] **8.1.3** Al aanwezig: `:where(a, button, [role="button"]):active:not(:disabled) { transform: scale(0.98); }` — 0.98 is subtieler dan 0.97, bewust gekozen.
-
-### 8.2 Loading-states
-
-**Taken:**
-- [x] **8.2.1** Skeleton-loading toegevoegd: 3 skeleton-kaarten met `.pp-skeleton` shimmer in de loader HTML van `app.html`.
-- [x] **8.2.2** Spinner/tekst-loader vervangen door skeleton-kaarten. CSS in `app.css` aangepast: `.loader::before` verborgen, `.skeleton-cards` layout toegevoegd.
-
-### 8.3 Typography fine-tuning
-
-**Bestanden:**
-- `design-system.css` — heading styles (~regel 212-242)
-
-**Taken:**
-- [x] **8.3.1** Al aanwezig: h1 `-0.035em`, h2 `-0.025em`, h3 `-0.02em` — strakker dan gevraagd.
-- [x] **8.3.2** Al correct: h1 `1.08`, h2 `1.12`, h3 `1.18` — allemaal binnen 108-118% range.
-- [x] **8.3.3** N.v.t. — geen wijzigingen nodig, al correct geconfigureerd.
-
-### 8.4 Shadow differentiatie
-
-**Taken:**
-- [x] **8.4.1** Al volledig gedifferentieerd: `--pp-shadow-card`, `-card-hover`, `-popover`, `-modal`, `-nav`, `-inset` bestaan en worden correct gebruikt (cards op `.pp-location-card`, popovers op tooltips, nav op `.floating-nav`).
-
-### 8.5 Scroll-reveal animaties
-
-**Taken:**
-- [x] **8.5.1** Al actief: `.pp-reveal` wordt gebruikt op 6 secties in `index.html` (features, cities, type-grid, newsletter, support, footer). `IntersectionObserver` in `pp-interactions.js` voegt `is-visible` toe bij scrollen.
-- [x] **8.5.2** Al correct: `prefers-reduced-motion` media query in `design-system.css` zet opacity en transform op `!important` defaults.
+### Generator-impact
+- `app-page.js` verandert niet — de populaire steden en GPS-prompt zijn client-side JS
+- Noscript fallback blijft intact
 
 ---
 
-## FASE 9: POST-FLIGHT VALIDATIE
+## FASE 9: CONTENT & COPY REFRESH
+**Status:** `DONE`
+**Prioriteit:** LAAG
+**Agents:** implementer → verifier
+**Bestanden:** `index.html`, `app.html`
 
-> Doel: Bevestig dat alles werkt en niets gebroken is.
+### Wat we herschrijven
 
-- [x] **9.1** `npm run build:local` slaagt ✓
-- [x] **9.2** `npm test` — 57/57 tests groen (snapshot ge-updated na wijzigingen) ✓
-- [x] **9.3** `npm run audit:tokens:strict` — 5 pre-bestaande violations, geen nieuwe door onze wijzigingen ✓
-- [ ] **9.4** *(handmatig testen)* Open `index.html` in browser met mobile viewport (375×812):
-  - Hero-afbeelding: geen zwart blok
-  - Stats: correcte getallen (matchen met app en about)
-  - CTA-hiërarchie: één duidelijke primaire actie, "Lees meer" als tekst-link, Binnen/Buiten als chips
-- [ ] **9.5** *(handmatig testen)* Open `app.html` in browser met mobile viewport:
-  - Ontdek-tab: skeleton-loading → locaties laden (of graceful error met timestamp)
-  - Favorieten-tab: empty state toont bij 0 favorieten
-  - Kaart-tab: geen newsletter-overlap
-  - Plan-tab: formulier is bruikbaar
-  - Info-tab: getallen kloppen (22 regio's, 8 categorieën, correct locatie-aantal)
-  - Bottom nav: geen content overlap
-  - Menu: volledig opaque, achtergrond gedimd
-  - Preset chips: geen afgeknipte tekst
-- [x] **9.6** NEEDS MANUAL FIX items:
-  - Hero-afbeelding artefact: CSS overlay aangepast, handmatig checken of zwart blok weg is
-  - Cultuur-icoon: gegenereerd via AI, handmatig checken of stijl consistent is met andere 7 iconen
-  - Alle "handmatig testen" taken in fasen 1-4 (marked with *(handmatig testen)*)
-- [ ] **9.7** Bas: wil je committen en deployen?
+| Huidige copy | Nieuwe copy | Waarom |
+|---|---|---|
+| "Zoek een stad, type of locatie..." | "Waar woon je?" | Eén concept i.p.v. drie |
+| "Kies eerst hoe de dag voelt" + paragraaf | "Wat voor dag wordt het?" | Korter, directer |
+| "Minder filters, sneller naar een shortlist" | Verwijderen | Uitleg voor de bouwer, niet de gebruiker |
+| "Menselijk geverifieerd · AI-slim gesorteerd" | "Elke locatie persoonlijk gecheckt" | "AI-slim" is jargon |
+| "Plan mijn dag" header uitleg | "Vertel hoe je dag eruitziet. Wij bouwen een route." | Korter |
 
----
+### Copy-principes
+- Max 1 zin per element
+- Geen jargon (shortlist, preset, AI, filteren)
+- Spreek aan als "je", niet "u" of "ouders"
+- Schrijf alsof je een vriend vertelt over de site
 
-## KNOWN LIMITATIONS & HANDMATIGE ACTIES
-
-Items die Claude Code niet zelf kan oplossen:
-
-| Item | Reden | Actie voor Bas |
-|------|-------|----------------|
-| Hero-afbeelding artefact (als in bronbeeld) | Vereist nieuwe AI-gegenereerde illustratie | Genereer nieuw beeld of laat het huidige herstellen |
-| Cultuur-categorie icoon | Vereist custom artwork in dezelfde stijl als de andere 7 iconen | Ontwerp of laat ontwerpen, sla op als `/images/categories/cultuur.png` |
-| Supabase CORS/rate-limit issues | Vereist Supabase dashboard toegang | Check CORS settings en rate limits in het Supabase project |
-| Google Autocomplete API issues | API key configuratie | Controleer API key quotas en restrictions |
+### Generator-impact
+- Geen — alle copy-wijzigingen zijn in handgeschreven HTML
+- `app-page.js` regex-replaces werken op getallen, niet op copy
 
 ---
 
-## REFERENTIES
+## STATUS TRACKER
 
-- `ARCHITECTURE.md` — Volledige technische architectuur
-- `BRAND.md` — Kleurenpalet, typografie, tone of voice
-- `OPERATIONS.md` — Operationeel runbook (deploy, regio toevoegen, etc.)
-- `plan.md` — 15-fasen groeiplan (business/SEO/content strategie)
-- `design-system.css` — Alle CSS design tokens
-- `.scripts/sync_all.js` — Build orchestrator
-- `.scripts/lib/config.js` — TYPE_MAP (8 types), REGIONS (22 regio's)
+| Fase | Titel | Status | Prioriteit | Afhankelijk van | Generator-impact |
+|------|-------|--------|------------|-----------------|------------------|
+| 4 | `.hero` class scoping | `DONE` | HOOG | — | Geen generator-impact (alleen `index.html` rename) |
+| 1 | Hero simplificatie | `DONE` | KRITIEK | Fase 4 | `index-page.js`: nieuw `HERO_KICKER` marker, verwijder `STATS` |
+| 2 | Homepage secties stroomlijnen | `DONE` | HOOG | Fase 1 | `index-page.js`: nieuw `BLOG_PREVIEW`, wijzig `TYPE_GRID` + `CITY_GRID` |
+| 3 | App.html preset deep-linking | `DONE` | HOOG | Fase 1 | Geen generator-impact (inline JS in `app.html`) |
+| 5 | Mobile touch targets | `DONE` | MIDDEL | Fase 1, 4 | Geen generator-impact (CSS-only) |
+| 6 | Seamless transition | `DONE` | MIDDEL | Fase 3 | Geen generator-impact |
+| 7 | Quick Results component | `DONE` | MIDDEL | Fase 2 | `index-page.js`: nieuw `QUICK_RESULTS` marker |
+| 8 | App onboarding flow | `DONE` | MIDDEL-LAAG | Fase 3 | Geen generator-impact (inline JS in `app.html`) |
+| 9 | Content & copy refresh | `DONE` | LAAG | Fase 1, 2 | Geen generator-impact |
+
+### Aanbevolen uitvoeringsvolgorde
+
+```
+Batch 1 (sequentieel): Fase 4 (cascade fix) → Fase 1 (hero)
+   ↳ Fase 4 eerst omdat het een rename is die index.html raakt.
+     Fase 1 bouwt daarna voort op de schone .hero-home class.
+     NIET parallel — beide raken index.html → merge-conflict.
+         ↓
+Parallel batch 2:  Fase 3 (deep-linking) + Fase 5 (touch) → dan Fase 2 (secties)
+   ↳ Fase 3 raakt app.html inline JS, fase 5 raakt app.css → parallel OK.
+     Fase 2 raakt index.html + index-page.js → sequentieel NA 3+5 (vermijd overlap met fase 5 op index.html inline styles).
+         ↓
+Parallel batch 3:  Fase 6 (transition) + Fase 7 (quick results)
+   ↳ Fase 6 is klein (paar regels in app.html + CSS). Fase 7 is een nieuw script + marker.
+         ↓
+Sequentieel:       Fase 8 (onboarding) → Fase 9 (copy)
+```
+
+### Geschatte doorlooptijd
+- Batch 1: 1 sessie (fase 4 is klein, fase 1 is de meeste werk)
+- Batch 2: 1 sessie
+- Batch 3: 1 sessie
+- Fase 8+9: 1 sessie
+- **Totaal: 4 Claude Code sessies**
+
+---
+
+## VERWACHTE IMPACT
+
+### UX metrics (verwacht)
+- **Taps naar eerste locatie:** 4-5 → 2-3
+- **Content boven de vouw (mobile):** H1 + zoekbalk + 4 presets (vs. alleen hero image)
+- **Paginasecties homepage:** 9+ → 5 (hero, type grid, city grid, blog preview, newsletter + footer)
+- **Bounce rate homepage → app:** verwacht -30% door seamless transition
+
+### Wat NIET verandert
+- **SEO:** alle statische pagina's, structured data, sitemaps blijven identiek
+- **Build-systeem:** markers, generators, audits — structuur intact
+- **Design tokens:** geen nieuwe kleuren, fonts of spacing-waarden (`design-system.css` ongewijzigd)
+- **App.html core:** filtering, kaart, detail-view, plan-wizard — ongewijzigd
+- **URL-structuur:** geen redirects nodig
+- **Generators:** stad, type, locatie, cluster, editorial, blog generators — ongewijzigd
+- **`app-page.js`:** noscript, JSON-LD, meta updates — ongewijzigd
+- **Admin portal:** eigen CSS namespace (`.admin-*`, `portal-shell.css`), geen gedeelde hero-classes
+- **Partner portal:** eigen CSS namespace (`.portal-*`), geen gedeelde hero-classes
+- **Partner landing (`/voor-bedrijven/`):** eigen `.vb-*` namespace, gegenereerd door `partner-landing.js`
+- **Interne linking mesh:** alle links naar cluster-, blog- en ontdekken-pagina's blijven behouden
