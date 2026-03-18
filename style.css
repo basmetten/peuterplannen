@@ -25,7 +25,7 @@
 /* Tokens are defined in design-system.css — loaded before this file */
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
 h1, h2, h3, h4, h5 { font-family: var(--font-heading); text-wrap: balance; }
 p, li, .blog-excerpt, .location-description, .intro-box p { text-wrap: pretty; }
 html { scroll-behavior: smooth; scroll-padding-top: 70px; }

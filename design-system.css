@@ -5,29 +5,79 @@
    ============================================================ */
 
 :root {
-  /* === Colors — Primary === */
-  --pp-primary: #D4775A;
-  --pp-primary-light: #FDF1ED;
-  --pp-primary-dark: #B35D42;
-  --pp-primary-hover: #C46A4F;
+  /* === Colors — Primary Ramp (coral/terra) === */
+  --pp-primary-50:  #FDF1ED;
+  --pp-primary-100: #FBDDD2;
+  --pp-primary-200: #F5B8A4;
+  --pp-primary-300: #E8957A;
+  --pp-primary-400: #D4775A;
+  --pp-primary-500: #C46A4F;
+  --pp-primary-600: #B35D42;
+  --pp-primary-700: #8F4A35;
+  --pp-primary-800: #6B3828;
+  --pp-primary-900: #472518;
 
-  /* === Colors — Accent (gold) === */
-  --pp-accent: #E8B870;
-  --pp-accent-light: #FEF6E8;
-  --pp-accent-dark: #C49A52;
+  --pp-primary: var(--pp-primary-400);
+  --pp-primary-light: var(--pp-primary-50);
+  --pp-primary-dark: var(--pp-primary-600);
+  --pp-primary-hover: var(--pp-primary-500);
 
-  /* === Colors — Secondary (teal) === */
-  --pp-secondary: #6B9590;
-  --pp-secondary-light: #E8F2F0;
-  --pp-secondary-dark: #4A7A76;
+  /* === Colors — Secondary Ramp (teal) === */
+  --pp-secondary-50:  #E8F2F0;
+  --pp-secondary-100: #C5DDD9;
+  --pp-secondary-200: #9CC5BF;
+  --pp-secondary-300: #7EB0A9;
+  --pp-secondary-400: #6B9590;
+  --pp-secondary-500: #5A8580;
+  --pp-secondary-600: #4A7A76;
+  --pp-secondary-700: #3A615D;
+  --pp-secondary-800: #2A4844;
+  --pp-secondary-900: #1A302C;
 
-  /* === Colors — Feedback === */
-  --pp-success: #2D8B5E;
-  --pp-success-bg: #E8F5EF;
-  --pp-error: #C0392B;
-  --pp-error-bg: #FDEDED;
-  --pp-info: #2F586F;
-  --pp-info-bg: #EAF2F7;
+  --pp-secondary: var(--pp-secondary-400);
+  --pp-secondary-light: var(--pp-secondary-50);
+  --pp-secondary-dark: var(--pp-secondary-600);
+
+  /* === Colors — Accent Ramp (gold) === */
+  --pp-accent-50:  #FEF6E8;
+  --pp-accent-100: #FCEACC;
+  --pp-accent-200: #F5D89D;
+  --pp-accent-300: #F0C87A;
+  --pp-accent-400: #E8B870;
+  --pp-accent-500: #D9A85E;
+  --pp-accent-600: #C49A52;
+  --pp-accent-700: #A07E3F;
+  --pp-accent-800: #7A5F2E;
+  --pp-accent-900: #53401F;
+
+  --pp-accent: var(--pp-accent-400);
+  --pp-accent-light: var(--pp-accent-50);
+  --pp-accent-dark: var(--pp-accent-600);
+
+  /* === Colors — Semantic (purpose-driven) === */
+  --pp-semantic-success: #2D8B5E;
+  --pp-semantic-success-bg: #E8F5EF;
+  --pp-semantic-success-border: rgba(45, 139, 94, 0.25);
+
+  --pp-semantic-error: #C0392B;
+  --pp-semantic-error-bg: #FDEDED;
+  --pp-semantic-error-border: rgba(192, 57, 43, 0.25);
+
+  --pp-semantic-warning: #D4A017;
+  --pp-semantic-warning-bg: #FFF8E1;
+  --pp-semantic-warning-border: rgba(212, 160, 23, 0.25);
+
+  --pp-semantic-info: #2F586F;
+  --pp-semantic-info-bg: #EAF2F7;
+  --pp-semantic-info-border: rgba(47, 88, 111, 0.25);
+
+  /* Backward-compatible feedback aliases */
+  --pp-success: var(--pp-semantic-success);
+  --pp-success-bg: var(--pp-semantic-success-bg);
+  --pp-error: var(--pp-semantic-error);
+  --pp-error-bg: var(--pp-semantic-error-bg);
+  --pp-info: var(--pp-semantic-info);
+  --pp-info-bg: var(--pp-semantic-info-bg);
 
   /* === Surfaces === */
   --pp-bg: #FAF7F2;
@@ -44,27 +94,32 @@
   --pp-text-muted: #A39490;
   --pp-text-inverse: #FFFFFF;
 
-  /* === Typography === */
-  --pp-font-heading: 'Familjen Grotesk', 'Plus Jakarta Sans', sans-serif;
-  --pp-font-ui: 'Plus Jakarta Sans', sans-serif;
-  --pp-font-body: 'DM Sans', -apple-system, sans-serif;
+  /* === Typography — Fonts === */
+  --pp-font-heading: 'Fraunces', 'Fraunces Fallback', Georgia, serif;
+  --pp-font-ui: 'DM Sans', 'DM Sans Fallback', -apple-system, sans-serif;
+  --pp-font-body: 'DM Sans', 'DM Sans Fallback', -apple-system, sans-serif;
   --pp-font-accent: 'Instrument Serif', Georgia, 'Times New Roman', serif;
 
-  --pp-text-xs: 0.75rem;       /* 12px */
-  --pp-text-sm: 0.8125rem;     /* 13px */
-  --pp-text-base: 0.9375rem;   /* 15px */
-  --pp-text-lg: 1.125rem;      /* 18px */
-  --pp-text-xl: 1.375rem;      /* 22px */
-  --pp-text-2xl: 1.75rem;      /* 28px */
-  --pp-text-3xl: 2.25rem;      /* 36px */
+  /* === Typography — Fluid Scale (Minor Third 1.2, base 16px) === */
+  --pp-text-xs:  clamp(0.75rem, 0.7rem + 0.2vw, 0.8125rem);
+  --pp-text-sm:  clamp(0.8125rem, 0.76rem + 0.25vw, 0.875rem);
+  --pp-text-base: clamp(0.9375rem, 0.88rem + 0.35vw, 1.0625rem);
+  --pp-text-lg:  clamp(1.0625rem, 0.95rem + 0.6vw, 1.25rem);
+  --pp-text-xl:  clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+  --pp-text-2xl: clamp(1.5rem, 1.1rem + 2vw, 2.5rem);
+  --pp-text-3xl: clamp(2rem, 1.2rem + 3.5vw, 3.5rem);
+  --pp-text-4xl: clamp(2.5rem, 1.2rem + 5vw, 4.5rem);
 
-  /* === Spacing === */
+  /* === Spacing (4-point grid) === */
   --pp-space-xs: 4px;
   --pp-space-sm: 8px;
   --pp-space-md: 16px;
   --pp-space-lg: 24px;
   --pp-space-xl: 32px;
   --pp-space-2xl: 48px;
+  --pp-space-3xl: 64px;
+  --pp-space-4xl: 96px;
+  --pp-space-5xl: 128px;
 
   /* === Shadows === */
   --pp-shadow-sm: 0 1px 3px rgba(45, 41, 38, 0.08);
@@ -90,15 +145,15 @@
   --pp-app-width: 540px;
   --pp-safe-bottom: env(safe-area-inset-bottom, 20px);
 
-  /* === Map type colors === */
-  --pp-type-play: #52B788;
-  --pp-type-farm: #8B6F47;
-  --pp-type-nature: #2D6A4F;
-  --pp-type-museum: #7B2D8B;
-  --pp-type-culture: #5B3F8B;
-  --pp-type-swim: #2196F3;
-  --pp-type-pancake: #E9C46A;
-  --pp-type-horeca: #E76F51;
+  /* === Map type colors (with bg variants) === */
+  --pp-type-play:      #52B788;  --pp-type-play-bg:      rgba(82, 183, 136, 0.10);
+  --pp-type-farm:      #8B6F47;  --pp-type-farm-bg:      rgba(139, 111, 71, 0.10);
+  --pp-type-nature:    #2D6A4F;  --pp-type-nature-bg:    rgba(45, 106, 79, 0.10);
+  --pp-type-museum:    #7B2D8B;  --pp-type-museum-bg:    rgba(123, 45, 139, 0.10);
+  --pp-type-culture:   #5B3F8B;  --pp-type-culture-bg:   rgba(91, 63, 139, 0.10);
+  --pp-type-swim:      #2196F3;  --pp-type-swim-bg:      rgba(33, 150, 243, 0.10);
+  --pp-type-pancake:   #E9C46A;  --pp-type-pancake-bg:   rgba(233, 196, 106, 0.12);
+  --pp-type-horeca:    #E76F51;  --pp-type-horeca-bg:    rgba(231, 111, 81, 0.10);
 
   /* === Backward-compatible aliases ===
      These map unprefixed vars (used in style.css, app.css, nav-floating.css)
@@ -125,7 +180,7 @@
   --success: var(--pp-secondary);
   --card-shadow: var(--pp-shadow-md);
   --font-heading: var(--pp-font-heading);
-  --font-ui: var(--pp-font-ui);
+  --font-ui: var(--pp-font-body);
   --font-body: var(--pp-font-body);
   --font-accent: var(--pp-font-accent);
   --shadow-sm: var(--pp-shadow-sm);
@@ -143,13 +198,96 @@
   --ink-light: var(--pp-text-secondary);
 }
 
+/* === Typography — Heading defaults === */
+h1, h2, h3, h4, h5, h6,
+.pp-heading {
+  font-family: var(--pp-font-heading);
+  font-optical-sizing: auto;
+  text-wrap: balance;
+}
+
+h1, .pp-h1 {
+  font-size: var(--pp-text-4xl);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  font-variation-settings: 'SOFT' 50, 'WONK' 1;
+}
+
+h2, .pp-h2 {
+  font-size: var(--pp-text-3xl);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  font-variation-settings: 'SOFT' 40, 'WONK' 1;
+}
+
+h3, .pp-h3 {
+  font-size: var(--pp-text-2xl);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
+  font-variation-settings: 'SOFT' 30, 'WONK' 1;
+}
+
+h4, .pp-h4 {
+  font-size: var(--pp-text-xl);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.22;
+}
+
+h5, .pp-h5 {
+  font-size: var(--pp-text-lg);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+/* === Typography — Body text === */
+body {
+  font-family: var(--pp-font-body);
+  font-size: var(--pp-text-base);
+  line-height: 1.65;
+  font-optical-sizing: auto;
+}
+
+p, li {
+  text-wrap: pretty;
+  max-width: 65ch;
+}
+
+/* === Typography — Accent (editorial italic) === */
+.accent, .pp-accent {
+  font-family: var(--pp-font-accent);
+  font-style: italic;
+}
+
+/* === Section spacing — consistent vertical rhythm === */
+.pp-section {
+  padding-block: var(--pp-space-3xl);
+}
+.pp-section-lg {
+  padding-block: var(--pp-space-4xl);
+}
+.pp-section-sm {
+  padding-block: var(--pp-space-xl);
+}
+
+/* === Content container === */
+.pp-container {
+  max-width: var(--pp-max-width);
+  margin-inline: auto;
+  padding-inline: var(--pp-space-md);
+}
+
 /* === Buttons === */
 .pp-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 12px 20px;
   border: none;
   border-radius: var(--pp-radius-xs);
   font-family: var(--pp-font-ui);
@@ -204,7 +342,7 @@
   border: 1px solid var(--pp-border);
   border-radius: var(--pp-radius-md);
   box-shadow: var(--pp-shadow-sm);
-  padding: 22px;
+  padding: 24px;
 }
 
 .pp-card-interactive {
@@ -220,7 +358,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: var(--pp-radius-pill);
   font-size: 12px;
   font-weight: 600;
@@ -230,7 +368,7 @@
 .pp-chip {
   display: inline-flex;
   align-items: center;
-  padding: 7px 12px;
+  padding: 8px 12px;
   border-radius: var(--pp-radius-pill);
   font-size: 12px;
   font-weight: 700;
@@ -262,7 +400,7 @@
   color: var(--pp-text);
   font-family: var(--pp-font-body);
   font-size: 14px;
-  padding: 11px 12px;
+  padding: 12px 12px;
   outline: none;
   transition: border-color var(--pp-transition), box-shadow var(--pp-transition);
 }
@@ -278,7 +416,7 @@
 .pp-location-card {
   background: var(--pp-surface);
   border-radius: 14px;
-  padding: 20px 22px;
+  padding: 20px 24px;
   box-shadow: var(--pp-shadow-sm), var(--pp-shadow-md);
   border: 1px solid var(--pp-border);
   transition: transform var(--pp-transition), box-shadow var(--pp-transition);
