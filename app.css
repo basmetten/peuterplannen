@@ -283,6 +283,7 @@
             margin-bottom: 14px;
         }
         .decision-stage-kicker {
+            view-transition-name: hero-title;
             font-size: var(--pp-text-xs);
             font-weight: 700;
             letter-spacing: 0.08em;
