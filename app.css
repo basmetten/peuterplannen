@@ -341,23 +341,20 @@
         .chip-divider { flex-shrink: 0; width: 1px; height: 24px; background: rgba(var(--pp-primary-rgb), 0.15); align-self: center; }
         .chip-label { flex-shrink: 0; font-size: var(--pp-text-xs); font-weight: 700; color: var(--pp-text-muted); text-transform: uppercase; letter-spacing: 0.08em; align-self: center; padding: 0 2px 0 8px; }
         .preset-strip {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 8px;
-            overflow-x: auto;
-            scrollbar-width: none;
             padding: 2px 0 8px;
-            margin: 0 -4px;
-            padding-left: 4px;
-            padding-right: 4px;
         }
         .preset-strip::-webkit-scrollbar { display: none; }
-        .preset-strip::after { content: ''; position: sticky; right: 0; min-width: 32px; flex-shrink: 0; background: linear-gradient(to right, transparent, var(--pp-bg)); pointer-events: none; }
+        .preset-strip::after { display: none; }
         .preset-chip {
             flex: 0 0 auto;
             display: inline-flex;
             align-items: center;
             gap: 8px;
             padding: var(--pp-space-sm) var(--pp-space-md);
+            min-height: 48px;
             border-radius: var(--pp-radius-pill);
             border: 1px solid rgba(var(--pp-text-rgb), 0.08);
             background: linear-gradient(180deg, rgba(var(--pp-surface-rgb), 0.98), rgba(255,248,243,0.96));
