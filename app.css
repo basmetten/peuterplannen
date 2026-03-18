@@ -7,7 +7,7 @@
         .skip-link { position: absolute; left: -9999px; top: 0; padding: 8px; background: var(--pp-primary); color: var(--pp-text-inverse); z-index: 300; font-size: var(--pp-text-sm); }
 
         /* Skeleton loader */
-        .skeleton { background: linear-gradient(90deg, var(--pp-bg-warm) 25%, #f0ebe3 50%, var(--pp-bg-warm) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: var(--pp-radius-sm); }
+        .skeleton { background: linear-gradient(90deg, var(--pp-bg-warm) 25%, var(--pp-bg) 50%, var(--pp-bg-warm) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: var(--pp-radius-sm); }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
         /* Animations */
@@ -546,9 +546,9 @@
         .error-state strong { display: block; font-family: var(--pp-font-heading); font-size: var(--pp-text-lg); color: var(--pp-text); margin-bottom: 8px; }
         .error-state p { color: var(--pp-text-muted); font-size: var(--pp-text-sm); line-height: 1.5; margin: 0 0 20px; max-width: 320px; margin-left: auto; margin-right: auto; }
         .error-state button { padding: 10px 24px; border-radius: var(--pp-radius-sm); border: 1px solid var(--pp-primary); color: var(--pp-primary); background: var(--pp-surface); cursor: pointer; font-family: var(--pp-font-body); font-size: var(--pp-text-sm); font-weight: 500; transition: background 0.2s, color 0.2s; }
-        .error-state button:hover { background: var(--pp-primary); color: #fff; }
+        .error-state button:hover { background: var(--pp-primary); color: var(--pp-surface); }
         .error-state .error-retry-info { font-size: var(--pp-text-xs); color: var(--pp-text-muted); margin-top: 12px; opacity: 0.7; }
-        .offline-banner { position: sticky; top: 92px; z-index: 50; text-align: center; padding: 10px 16px; background: #FEF3CD; color: #856404; font-size: var(--pp-text-sm); font-family: var(--pp-font-body); border-bottom: 1px solid #F0DCA0; }
+        .offline-banner { position: sticky; top: 92px; z-index: 50; text-align: center; padding: 10px 16px; background: var(--pp-accent-light); color: var(--pp-accent); font-size: var(--pp-text-sm); font-family: var(--pp-font-body); border-bottom: 1px solid rgba(var(--pp-accent-rgb, 212,119,90), 0.25); }
         .no-results { text-align: center; padding: 60px 20px; color: var(--pp-text-muted); }
         .no-results strong { display: block; color: var(--pp-text); margin-bottom: 8px; font-size: var(--pp-text-lg); font-family: var(--pp-font-heading); }
 
@@ -567,7 +567,7 @@
         .bnav-item svg { width: var(--pp-icon-sm); height: var(--pp-icon-sm); stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .bnav-item.active svg { transform: scale(1.1); }
         .bnav-icon-wrap { position: relative; display: inline-flex; }
-        .fav-badge { position: absolute; top: -4px; right: -8px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: var(--pp-primary); color: #fff; font-size: 10px; font-weight: 700; line-height: 16px; text-align: center; pointer-events: none; }
+        .fav-badge { position: absolute; top: -4px; right: -8px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: var(--pp-primary); color: var(--pp-surface); font-size: 10px; font-weight: 700; line-height: 16px; text-align: center; pointer-events: none; }
         @media (min-width: 680px) { .bottom-nav { display: none; } body { padding-bottom: 0; } }
 
         /* Skeleton cards */
@@ -818,7 +818,7 @@
         .plan-result-slot.hidden { display: none !important; }
 
         .plan-wizard { display: flex; flex-direction: column; gap: 10px; }
-        .plan-step { background: linear-gradient(170deg, #ffffff, rgba(var(--pp-bg-rgb), 0.92)); border: 1px solid rgba(var(--pp-text-rgb), 0.08); border-radius: var(--pp-radius-sm); padding: 16px 18px; box-shadow: var(--pp-shadow-sm); }
+        .plan-step { background: linear-gradient(170deg, var(--pp-surface), rgba(var(--pp-bg-rgb), 0.92)); border: 1px solid rgba(var(--pp-text-rgb), 0.08); border-radius: var(--pp-radius-sm); padding: 16px 18px; box-shadow: var(--pp-shadow-sm); }
         .plan-step-label { font-size: var(--pp-text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--pp-text-muted); margin-bottom: 10px; }
 
         /* Chip grid */
