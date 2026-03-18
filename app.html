@@ -362,6 +362,33 @@
             <button class="map-recenter" onclick="fitMapToMarkers()" data-tooltip="Alle locaties in beeld" data-tooltip-pos="left" aria-label="Alle locaties in beeld">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
             </button>
+            <!-- Floating search pill (mobile map view) -->
+            <div class="map-search-pill" id="map-search-pill" onclick="openMapFilters()">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <span class="pill-label">Zoek &amp; filter...</span>
+                <span class="pill-badge" id="map-pill-badge" style="display:none;"></span>
+            </div>
+            <!-- Filter overlay (mobile map view) -->
+            <div class="map-filters-overlay" id="map-filters-overlay">
+                <div class="map-filter-header">
+                    <span class="map-filter-title">Zoek &amp; filter</span>
+                    <button class="map-filter-close" onclick="closeMapFilters()" aria-label="Sluiten">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <div class="search-input-wrapper">
+                    <input type="text" id="map-location-input" class="search-input" placeholder="Waar woon je?" autocomplete="off" aria-label="Zoek locatie">
+                    <button class="icon-btn" onclick="getCurrentLocation()" aria-label="Gebruik mijn locatie">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg>
+                    </button>
+                    <button class="icon-btn primary" onclick="updateLocationFromMap()" aria-label="Zoeken">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    </button>
+                </div>
+                <div class="filter-chips" id="map-filter-chips" role="toolbar" aria-label="Kaart filters">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
             <div id="map-no-results" class="map-no-results hidden">
                 <strong>Geen locaties gevonden</strong>
                 Probeer een andere categorie of filter
@@ -1076,6 +1103,7 @@
             }
             updateFilterPanelSummary(labels, count);
             syncFilterPanelForViewport();
+            updateMapPillBadge();
         }
 
         function updateFilterPanelSummary(labels = [], count = 0) {
@@ -2329,6 +2357,9 @@
                     setDisplayMode('map');
                     document.body.classList.add('map-view-active');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
+                    // Resize map after fullscreen transition
+                    if (mapInstance) setTimeout(() => mapInstance.resize(), 50);
+                    updateMapPillBadge();
                     break;
 
                 case 'favorites':
@@ -2631,6 +2662,72 @@
                 closeLocSheet();
             }
         }
+
+        // --- Map search pill & filter overlay ---
+        function openMapFilters() {
+            const overlay = document.getElementById('map-filters-overlay');
+            if (!overlay) return;
+            // Sync chips from main filter panel
+            syncMapFilterChips();
+            // Sync location input
+            const mainInput = document.getElementById('location-input');
+            const mapInput = document.getElementById('map-location-input');
+            if (mainInput && mapInput) mapInput.value = mainInput.value;
+            overlay.classList.add('open');
+        }
+
+        function closeMapFilters() {
+            const overlay = document.getElementById('map-filters-overlay');
+            if (overlay) overlay.classList.remove('open');
+        }
+
+        function updateLocationFromMap() {
+            const mapInput = document.getElementById('map-location-input');
+            const mainInput = document.getElementById('location-input');
+            if (mapInput && mainInput) {
+                mainInput.value = mapInput.value;
+            }
+            updateLocation();
+            closeMapFilters();
+        }
+
+        function syncMapFilterChips() {
+            const container = document.getElementById('map-filter-chips');
+            if (!container) return;
+            const mainChips = document.getElementById('filter-chip-toolbar');
+            if (!mainChips) return;
+            container.innerHTML = mainChips.innerHTML;
+        }
+
+        function updateMapPillBadge() {
+            const badge = document.getElementById('map-pill-badge');
+            const pill = document.getElementById('map-search-pill');
+            if (!badge || !pill) return;
+            let count = 0;
+            if (activeTag !== 'all') count++;
+            if (activeWeather) count++;
+            if (activeFacilities.coffee) count++;
+            if (activeFacilities.diaper) count++;
+            if (activeFacilities.alcohol) count++;
+            if (activeAgeGroup) count++;
+            if (activeRadius) count++;
+            if (activePreset) count++;
+            if (count > 0) {
+                badge.textContent = count + ' filter' + (count !== 1 ? 's' : '');
+                badge.style.display = '';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        // Close map filters when clicking on the map canvas
+        document.addEventListener('click', function(e) {
+            const overlay = document.getElementById('map-filters-overlay');
+            if (!overlay || !overlay.classList.contains('open')) return;
+            if (!overlay.contains(e.target) && e.target.id !== 'map-search-pill' && !e.target.closest('.map-search-pill')) {
+                closeMapFilters();
+            }
+        });
 
         function openLocSheet(locationId) {
             const loc = allLocations.find(l => l.id === locationId);
