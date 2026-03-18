@@ -97,15 +97,34 @@ nav.floating-nav .nav-link {
   border-radius: 8px;
   transition: color 0.15s ease, background 0.15s ease;
 }
+nav.floating-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 10px;
+  right: 10px;
+  height: 2px;
+  background: var(--primary, #d4775a);
+  border-radius: 1px;
+  transform: scaleX(0);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center;
+}
 
 nav.floating-nav .nav-link:hover {
   color: var(--primary, #d4775a);
   background: rgba(212, 119, 90, 0.08);
 }
+nav.floating-nav .nav-link:hover::after {
+  transform: scaleX(1);
+}
 
 nav.floating-nav .nav-link.active {
   color: var(--primary, #d4775a);
   font-weight: 600;
+}
+nav.floating-nav .nav-link.active::after {
+  transform: scaleX(1);
 }
 
 nav.floating-nav .nav-cta {

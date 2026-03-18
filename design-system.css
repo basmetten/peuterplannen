@@ -121,11 +121,19 @@
   --pp-space-4xl: 96px;
   --pp-space-5xl: 128px;
 
-  /* === Shadows === */
+  /* === Shadows (generic) === */
   --pp-shadow-sm: 0 1px 3px rgba(45, 41, 38, 0.08);
   --pp-shadow-md: 0 4px 12px rgba(45, 41, 38, 0.10);
   --pp-shadow-lg: 0 8px 30px rgba(45, 41, 38, 0.12);
   --pp-shadow-hover: 0 12px 40px rgba(45, 41, 38, 0.15);
+
+  /* === Shadows (context-differentiated) === */
+  --pp-shadow-card:      0 2px 8px rgba(45, 41, 38, 0.06), 0 1px 3px rgba(45, 41, 38, 0.04);
+  --pp-shadow-card-hover: 0 12px 32px rgba(45, 41, 38, 0.10), 0 4px 12px rgba(45, 41, 38, 0.05);
+  --pp-shadow-popover:   0 16px 48px rgba(45, 41, 38, 0.16), 0 4px 16px rgba(45, 41, 38, 0.08);
+  --pp-shadow-modal:     0 24px 64px rgba(45, 41, 38, 0.20), 0 8px 24px rgba(45, 41, 38, 0.10);
+  --pp-shadow-nav:       0 1px 4px rgba(45, 41, 38, 0.06);
+  --pp-shadow-inset:     inset 0 2px 4px rgba(45, 41, 38, 0.08);
 
   /* === Borders === */
   --pp-radius-xs: 8px;
@@ -330,10 +338,70 @@ p, li {
 .pp-btn-ghost {
   background: transparent;
   color: var(--pp-text-secondary);
+  padding: 8px 12px;
 }
 .pp-btn-ghost:hover:not([disabled]) {
-  background: rgba(45, 41, 38, 0.05);
+  background: rgba(212, 119, 90, 0.06);
   color: var(--pp-text);
+}
+.pp-btn-ghost:active:not([disabled]) {
+  background: rgba(212, 119, 90, 0.12);
+}
+
+/* Button sizes (1:2 padding ratio) */
+.pp-btn-sm {
+  padding: 8px 16px;
+  font-size: var(--pp-text-xs);
+}
+.pp-btn-lg {
+  padding: 16px 28px;
+  font-size: var(--pp-text-base);
+}
+
+/* Button focus-visible (keyboard accessibility) */
+.pp-btn:focus-visible {
+  outline: 2.5px solid var(--pp-primary);
+  outline-offset: 3px;
+}
+
+/* Button loading state */
+.pp-btn[aria-busy="true"] {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+  cursor: wait;
+}
+.pp-btn[aria-busy="true"]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: pp-spin 0.6s linear infinite;
+}
+.pp-btn-secondary[aria-busy="true"]::after,
+.pp-btn-ghost[aria-busy="true"]::after {
+  border-color: rgba(45, 41, 38, 0.15);
+  border-top-color: var(--pp-text);
+}
+
+/* Tactile button variant (raised look with depth) */
+.pp-btn-tactile {
+  box-shadow: 0 4px 0 var(--pp-primary-600), 0 6px 12px rgba(45, 41, 38, 0.15);
+  transform: translateY(0);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.pp-btn-tactile:hover:not([disabled]) {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 var(--pp-primary-600), 0 8px 16px rgba(45, 41, 38, 0.18);
+}
+.pp-btn-tactile:active:not([disabled]) {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--pp-primary-600), 0 2px 4px rgba(45, 41, 38, 0.10);
 }
 
 /* === Cards === */
@@ -341,16 +409,39 @@ p, li {
   background: var(--pp-surface);
   border: 1px solid var(--pp-border);
   border-radius: var(--pp-radius-md);
-  box-shadow: var(--pp-shadow-sm);
+  box-shadow: var(--pp-shadow-card);
   padding: 24px;
 }
 
 .pp-card-interactive {
-  transition: transform var(--pp-transition), box-shadow var(--pp-transition);
+  position: relative;
+  transition: transform var(--pp-transition), box-shadow var(--pp-transition), border-color var(--pp-transition);
 }
 .pp-card-interactive:hover {
   transform: translateY(-3px);
-  box-shadow: var(--pp-shadow-hover);
+  box-shadow: var(--pp-shadow-card-hover);
+  border-color: var(--pp-primary-200);
+}
+.pp-card-interactive:hover .pp-card-title,
+.pp-location-card:hover h3 {
+  color: var(--pp-primary);
+  transition: color var(--pp-transition);
+}
+/* Full-card click area (no JS needed) */
+.pp-card-interactive a.pp-card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+/* Image zoom on card hover */
+.pp-card-img {
+  overflow: hidden;
+  border-radius: var(--pp-radius-sm);
+}
+.pp-card-interactive:hover .pp-card-img img {
+  transform: scale(1.04);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* === Badges === */
@@ -412,20 +503,56 @@ p, li {
 }
 .pp-textarea { min-height: 88px; resize: vertical; }
 
+/* Input validation states */
+.pp-input[aria-invalid="true"],
+.pp-input.is-error {
+  border-color: var(--pp-semantic-error);
+  box-shadow: 0 0 0 3px var(--pp-semantic-error-border);
+}
+.pp-input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.22);
+}
+.pp-input.is-valid {
+  border-color: var(--pp-semantic-success);
+  box-shadow: 0 0 0 3px var(--pp-semantic-success-border);
+}
+.pp-input.is-warning {
+  border-color: var(--pp-semantic-warning);
+  box-shadow: 0 0 0 3px var(--pp-semantic-warning-border);
+}
+
+/* Field error message (slide-down reveal) */
+.pp-field-error {
+  color: var(--pp-semantic-error);
+  font-size: var(--pp-text-xs);
+  font-weight: 500;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.25s ease, opacity 0.2s ease, margin 0.25s ease;
+  margin-top: 0;
+}
+.pp-field-error.is-visible {
+  max-height: 3em;
+  opacity: 1;
+  margin-top: var(--pp-space-xs);
+}
+
 /* === Location card (reusable across city, type, and cluster pages) === */
 .pp-location-card {
   background: var(--pp-surface);
   border-radius: 14px;
   padding: 20px 24px;
-  box-shadow: var(--pp-shadow-sm), var(--pp-shadow-md);
+  box-shadow: var(--pp-shadow-card);
   border: 1px solid var(--pp-border);
-  transition: transform var(--pp-transition), box-shadow var(--pp-transition);
+  transition: transform var(--pp-transition), box-shadow var(--pp-transition), border-color var(--pp-transition);
   position: relative;
   overflow: hidden;
 }
 .pp-location-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(45, 41, 38, 0.06), var(--pp-shadow-hover);
+  box-shadow: var(--pp-shadow-card-hover);
+  border-color: var(--pp-primary-200);
 }
 .pp-location-card::before {
   content: '';
@@ -442,6 +569,33 @@ p, li {
 }
 .pp-location-card:hover::before { transform: scaleX(1); }
 
+/* === Image overlays (for text over images) === */
+.pp-img-overlay {
+  position: relative;
+}
+.pp-img-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(45, 41, 38, 0.75) 0%, rgba(45, 41, 38, 0.25) 40%, transparent 70%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Progressive blur variant (modern hero sections) */
+.pp-img-overlay-blur::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(250, 247, 242, 0.95) 0%, rgba(250, 247, 242, 0.5) 40%, transparent 70%);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  mask-image: linear-gradient(to top, black 0%, black 30%, transparent 70%);
+  -webkit-mask-image: linear-gradient(to top, black 0%, black 30%, transparent 70%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
 /* === Motion — shared keyframes === */
 @keyframes pp-fade-up {
   from { opacity: 0; transform: translateY(20px); }
@@ -454,6 +608,9 @@ p, li {
 @keyframes pp-slide-down {
   from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pp-spin {
+  to { transform: rotate(360deg); }
 }
 
 /* Staggered fade-up for lists and grids */
