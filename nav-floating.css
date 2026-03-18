@@ -11,7 +11,7 @@
   --pp-nav-border: rgba(var(--pp-primary-rgb), 0.18);
   --pp-nav-shadow: 0 10px 32px rgba(var(--pp-text-rgb), 0.12), inset 0 1px 0 rgba(var(--pp-surface-rgb), 0.8);
   --pp-nav-shadow-scrolled: 0 8px 30px rgba(var(--pp-text-rgb), 0.16), inset 0 1px 0 rgba(var(--pp-surface-rgb), 0.9);
-  --pp-nav-mobile-bg: rgba(var(--pp-bg-rgb), 0.96);
+  --pp-nav-mobile-bg: rgba(var(--pp-bg-rgb), 1.0);
   --pp-nav-mobile-shadow: 0 12px 28px rgba(var(--pp-text-rgb), 0.12);
 }
 
@@ -200,6 +200,15 @@ nav.floating-nav .nav-mobile.open {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
+}
+
+nav.floating-nav .nav-mobile.open::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: -1;
+  pointer-events: none;
 }
 
 nav.floating-nav .nav-mobile-link {

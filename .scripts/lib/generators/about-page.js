@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { ROOT, TIKKIE_URL, LOCATION_COUNT } = require('../config');
+const { ROOT, TIKKIE_URL, LOCATION_COUNT, TYPE_MAP } = require('../config');
 const { replaceMarker } = require('../helpers');
 
 function updateAbout(data) {
@@ -22,7 +22,7 @@ function updateAbout(data) {
                 <span>Regio's</span>
             </div>
             <div class="stat-card">
-                <strong>7</strong>
+                <strong>${Object.keys(TYPE_MAP).length}</strong>
                 <span>Categorieën</span>
             </div>
         </div>`;

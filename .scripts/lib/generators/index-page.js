@@ -37,7 +37,8 @@ function updateIndex(data) {
   const typeCards = Object.entries(TYPE_MAP).map(([type, info]) => {
     const count = typeCounts[type] || 0;
     const imgSrc = TYPE_IMAGES[type];
-    const img = imgSrc ? `\n                    <picture><source type="image/webp" srcset="${imgSrc.replace('.png', '.webp')}"><img src="${imgSrc}" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>` : '';
+    const imgFileExists = imgSrc && fs.existsSync(path.join(ROOT, imgSrc));
+    const img = imgFileExists ? `\n                    <picture><source type="image/webp" srcset="${imgSrc.replace('.png', '.webp')}"><img src="${imgSrc}" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>` : '';
     return `                <a href="${info.slug}.html" class="city-card">${img}
                     <strong>${info.label}</strong>
                     <span>${count} locaties</span>
@@ -220,7 +221,7 @@ ${areaServed}
   content = content.replace(/<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${escapeHtml(homeDescription)}">`);
   // Hero badge — scoped to the exact span to avoid false positives
   content = content.replace(
-    /(style="color:var\(--ink-muted\);"[^>]*>)\d+\+ locaties/,
+    /(style="color:var\(--pp-text-muted\);"[^>]*>)\d+\+ locaties/,
     `$1${total}+ locaties`
   );
 

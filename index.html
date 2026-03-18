@@ -19,7 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="view-transition" content="same-origin">
     <title>PeuterPlannen | Uitjes voor peuters in heel Nederland</title>
-    <meta name="description" content="2138 kindvriendelijke locaties in Nederland, handmatig geverifieerd. Vind het perfecte uitje voor je peuter op type, leeftijd, weer en afstand.">
+    <meta name="description" content="30 kindvriendelijke locaties in Nederland, handmatig geverifieerd. Vind het perfecte uitje voor je peuter op type, leeftijd, weer en afstand.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://peuterplannen.nl/">
     <meta name="theme-color" content="#D4775A">
@@ -33,7 +33,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://peuterplannen.nl/">
     <meta property="og:title" content="PeuterPlannen | Uitjes voor peuters in heel Nederland">
-    <meta property="og:description" content="2138 kindvriendelijke locaties in Nederland, handmatig geverifieerd. Vind het perfecte uitje voor je peuter op type, leeftijd, weer en afstand.">
+    <meta property="og:description" content="30 kindvriendelijke locaties in Nederland, handmatig geverifieerd. Vind het perfecte uitje voor je peuter op type, leeftijd, weer en afstand.">
     <meta property="og:locale" content="nl_NL">
     <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
     <meta property="og:image:width" content="1408">
@@ -43,7 +43,7 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="PeuterPlannen | Uitjes voor peuters in heel Nederland">
-    <meta name="twitter:description" content="2138 kindvriendelijke locaties in Nederland, handmatig geverifieerd. Vind het perfecte uitje voor je peuter op type, leeftijd, weer en afstand.">
+    <meta name="twitter:description" content="30 kindvriendelijke locaties in Nederland, handmatig geverifieerd. Vind het perfecte uitje voor je peuter op type, leeftijd, weer en afstand.">
 
     <!-- BEGIN:JSONLD_INDEX -->
     <!-- JSON-LD Structured Data -->
@@ -53,7 +53,7 @@
       "@type": "WebApplication",
       "name": "PeuterPlannen",
       "url": "https://peuterplannen.nl/",
-      "description": "Vind kindvriendelijke uitjes voor kinderen van 0-7 jaar in heel Nederland. 2138 locaties in 22 regio's.",
+      "description": "Vind kindvriendelijke uitjes voor kinderen van 0-7 jaar in heel Nederland. 30 locaties in 3 regio's.",
       "applicationCategory": "LifestyleApplication",
       "operatingSystem": "Any",
       "offers": {
@@ -63,27 +63,8 @@
       },
       "areaServed": [
         {"@type": "City", "name": "Amsterdam"},
-        {"@type": "City", "name": "Rotterdam"},
-        {"@type": "City", "name": "Den Haag"},
         {"@type": "City", "name": "Utrecht"},
-        {"@type": "City", "name": "Haarlem"},
-        {"@type": "City", "name": "Amersfoort"},
-        {"@type": "City", "name": "Leiden"},
-        {"@type": "AdministrativeArea", "name": "Utrechtse Heuvelrug"},
-        {"@type": "City", "name": "Eindhoven"},
-        {"@type": "City", "name": "Groningen"},
-        {"@type": "City", "name": "Almere"},
-        {"@type": "City", "name": "Tilburg"},
-        {"@type": "City", "name": "Breda"},
-        {"@type": "City", "name": "Nijmegen"},
-        {"@type": "City", "name": "Arnhem"},
-        {"@type": "City", "name": "Apeldoorn"},
-        {"@type": "City", "name": "'s-Hertogenbosch"},
-        {"@type": "City", "name": "Gooi en Vechtstreek"},
-        {"@type": "City", "name": "Enschede"},
-        {"@type": "City", "name": "Zwolle"},
-        {"@type": "City", "name": "Maastricht"},
-        {"@type": "City", "name": "Dordrecht"}
+        {"@type": "City", "name": "Haarlem"}
       ],
       "audience": {
         "@type": "Audience",
@@ -97,7 +78,7 @@
     "@type": "WebSite",
     "name": "PeuterPlannen",
     "url": "https://peuterplannen.nl/",
-    "description": "De beste uitjes voor peuters in heel Nederland. 2138 geverifieerde locaties in 22 regio's.",
+    "description": "De beste uitjes voor peuters in heel Nederland. 30 geverifieerde locaties in 3 regio's.",
     "inLanguage": "nl-NL",
     "potentialAction": {
       "@type": "SearchAction",
@@ -169,8 +150,8 @@
     <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/design-system.css?v=202603181117">
-    <link rel="stylesheet" href="/style.min.css?v=202603181117">
+    <link rel="stylesheet" href="/design-system.css?v=202603181451">
+    <link rel="stylesheet" href="/style.min.css?v=202603181451">
     <style>
         /* Homepage-specific styles */
         .hero {
@@ -215,11 +196,19 @@
             box-shadow: 0 4px 20px rgba(45,41,38,0.25); transition: all 0.25s cubic-bezier(0.22,1,0.36,1);
         }
         .hero-cta-primary:hover { background: var(--pp-primary-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(45,41,38,0.3); }
-        .hero-cta-secondary {
-            background: var(--pp-surface); color: var(--pp-text); padding: 16px 32px;
-            border-radius: var(--pp-radius-sm); text-decoration: none; font-weight: 600; font-size: 16px;
-            border: 1px solid var(--pp-border);
+        .hero-cta-tertiary {
+            color: var(--pp-text-muted); text-decoration: none; font-weight: 500; font-size: 14px;
+            padding: 8px 0; transition: color 0.2s;
         }
+        .hero-cta-tertiary:hover { color: var(--pp-primary); }
+        .quick-filter-chip {
+            display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px;
+            border-radius: var(--pp-radius-pill); background: var(--pp-surface);
+            color: var(--pp-text); text-decoration: none; font-weight: 600; font-size: 14px;
+            border: 1px solid var(--pp-border); transition: all 0.2s;
+            font-family: var(--pp-font-body);
+        }
+        .quick-filter-chip:hover { border-color: var(--pp-primary); color: var(--pp-primary); background: var(--pp-primary-light); }
 
         .hero-visual { position: relative; width: 100%; height: 500px; display: flex; align-items: center; justify-content: center; }
         .hero-image-wrapper {
@@ -229,7 +218,7 @@
         .hero-image { width: 100%; height: 100%; object-fit: cover; filter: saturate(1.1) brightness(1.02); }
         .hero-image-wrapper::after {
             content: ''; position: absolute; inset: 0; pointer-events: none;
-            background: linear-gradient(140deg, rgba(45,41,38,0.18), transparent 34%), linear-gradient(10deg, rgba(212,119,90,0.2), transparent 46%);
+            background: linear-gradient(140deg, rgba(45,41,38,0.06), transparent 34%), linear-gradient(10deg, rgba(212,119,90,0.15), transparent 46%);
         }
         .hero-image-mask { position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 30%, var(--pp-bg) 85%); pointer-events: none; }
         .hero-grain {
@@ -360,8 +349,8 @@
             .footer-bottom { margin-top: 24px; }
         }
     </style>
-    <link rel="stylesheet" href="/nav-floating.css?v=202603181117">
-    <script src="/nav-floating.js?v=202603181117" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603181451">
+    <script src="/nav-floating.js?v=202603181451" defer></script>
     <script src="/pp-interactions.js" defer></script>
 </head>
 <body>
@@ -378,7 +367,7 @@
                 <a href="/about.html" class="nav-link">Over</a>
                 <a href="/blog/" class="nav-link">Inspiratie</a>
                 <a href="/contact.html" class="nav-link">Contact</a>
-                <a href="/app.html" class="nav-cta">Open App</a>
+                <a href="/app.html" class="nav-cta">Uitjes zoeken</a>
             </div>
             <button class="nav-burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-mobile-menu">
                 <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
@@ -390,7 +379,7 @@
             <a href="/about.html" class="nav-mobile-link">Over</a>
             <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
             <a href="/contact.html" class="nav-mobile-link">Contact</a>
-            <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Open App</a>
+            <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
         </div>
     </nav>
 
@@ -400,7 +389,7 @@
             <p>Ontdek de leukste speeltuinen, restaurants, musea en natuur voor jonge kinderen. Allemaal gecheckt op kindvriendelijkheid.</p>
             <p class="hero-proof">
                 <span class="hero-proof-badge">&#10003; Menselijk geverifieerd · AI-slim gesorteerd</span>
-                <span style="color:var(--pp-text-muted);">2138+ locaties</span>
+                <span style="color:var(--pp-text-muted);">30+ locaties</span>
             </p>
             <form action="/app.html" method="get" class="hero-search">
               <input type="text" name="q" placeholder="Zoek een stad, type of locatie..." aria-label="Zoek uitjes" autocomplete="off">
@@ -408,7 +397,7 @@
             </form>
             <div class="hero-cta">
                 <a href="app.html" class="hero-cta-primary">Start met zoeken</a>
-                <a href="about.html" class="hero-cta-secondary">Lees meer</a>
+                <a href="about.html" class="hero-cta-tertiary">Lees meer over PeuterPlannen &rarr;</a>
             </div>
         </div>
         <div class="hero-visual">
@@ -438,11 +427,11 @@
     <section class="stats">
         <div class="stats-container">
             <div>
-                <div class="stat-number" data-target="2138" data-suffix="">2138</div>
+                <div class="stat-number" data-target="30" data-suffix="">30</div>
                 <div class="stat-label">Locaties</div>
             </div>
             <div>
-                <div class="stat-number" data-target="22" data-suffix="">22</div>
+                <div class="stat-number" data-target="3" data-suffix="">3</div>
                 <div class="stat-label">Regio's</div>
             </div>
             <div>
@@ -456,18 +445,14 @@
     <section style="padding: 0 24px 40px; text-align: center;">
         <div style="max-width: 600px; margin: 0 auto;">
             <h2 style="font-family: var(--pp-font-heading); font-size: 22px; font-weight: 700; color: var(--pp-text); margin-bottom: 16px;">Wat zoek je?</h2>
-            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                <a href="app.html?weather=indoor" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 12px; background: var(--pp-primary-light); color: var(--pp-primary-dark); text-decoration: none; font-weight: 700; font-size: 15px; border: 2px solid var(--pp-primary); transition: all 0.2s; font-family: var(--pp-font-body);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <a href="app.html?weather=indoor" class="quick-filter-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                     Binnen
                 </a>
-                <a href="app.html?weather=outdoor" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 12px; background: var(--pp-accent-light); color: var(--pp-accent); text-decoration: none; font-weight: 700; font-size: 15px; border: 2px solid var(--pp-accent); transition: all 0.2s; font-family: var(--pp-font-body);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <a href="app.html?weather=outdoor" class="quick-filter-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
                     Buiten
-                </a>
-                <a href="app.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 12px; background: var(--pp-bg-warm); color: var(--pp-text); text-decoration: none; font-weight: 700; font-size: 15px; border: 2px solid var(--pp-border); transition: all 0.2s; font-family: var(--pp-font-body);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    Alles bekijken
                 </a>
             </div>
         </div>
@@ -529,42 +514,42 @@
                 <a href="speeltuinen.html" class="city-card">
                     <picture><source type="image/webp" srcset="/images/categories/speeltuinen.webp"><img src="/images/categories/speeltuinen.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>
                     <strong>Speeltuinen</strong>
-                    <span>443 locaties</span>
+                    <span>3 locaties</span>
                 </a>
                 <a href="kinderboerderijen.html" class="city-card">
                     <picture><source type="image/webp" srcset="/images/categories/kinderboerderijen.webp"><img src="/images/categories/kinderboerderijen.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>
                     <strong>Kinderboerderijen</strong>
-                    <span>316 locaties</span>
+                    <span>3 locaties</span>
                 </a>
                 <a href="natuur.html" class="city-card">
                     <picture><source type="image/webp" srcset="/images/categories/natuur.webp"><img src="/images/categories/natuur.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>
                     <strong>Natuur</strong>
-                    <span>253 locaties</span>
+                    <span>5 locaties</span>
                 </a>
                 <a href="musea.html" class="city-card">
                     <picture><source type="image/webp" srcset="/images/categories/musea.webp"><img src="/images/categories/musea.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>
                     <strong>Musea</strong>
-                    <span>159 locaties</span>
+                    <span>3 locaties</span>
                 </a>
                 <a href="zwemmen.html" class="city-card">
                     <picture><source type="image/webp" srcset="/images/categories/zwemmen.webp"><img src="/images/categories/zwemmen.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>
                     <strong>Zwemmen</strong>
-                    <span>117 locaties</span>
+                    <span>3 locaties</span>
                 </a>
                 <a href="pannenkoeken.html" class="city-card">
                     <picture><source type="image/webp" srcset="/images/categories/pannenkoeken.webp"><img src="/images/categories/pannenkoeken.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>
                     <strong>Pannenkoeken</strong>
-                    <span>239 locaties</span>
+                    <span>4 locaties</span>
                 </a>
                 <a href="horeca.html" class="city-card">
                     <picture><source type="image/webp" srcset="/images/categories/horeca.webp"><img src="/images/categories/horeca.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>
                     <strong>Horeca</strong>
-                    <span>588 locaties</span>
+                    <span>6 locaties</span>
                 </a>
                 <a href="cultuur.html" class="city-card">
                     <picture><source type="image/webp" srcset="/images/categories/cultuur.webp"><img src="/images/categories/cultuur.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>
                     <strong>Cultuur</strong>
-                    <span>23 locaties</span>
+                    <span>3 locaties</span>
                 </a>
             </div>
             <div class="guide-section guide-section-featured" style="margin-top:32px;">
@@ -618,91 +603,15 @@
             <div class="cities-grid">
                 <a href="amsterdam.html" class="city-card">
                     <strong>Amsterdam</strong>
-                    <span>301 locaties</span>
-                </a>
-                <a href="rotterdam.html" class="city-card">
-                    <strong>Rotterdam</strong>
-                    <span>145 locaties</span>
-                </a>
-                <a href="den-haag.html" class="city-card">
-                    <strong>Den Haag</strong>
-                    <span>175 locaties</span>
+                    <span>10 locaties</span>
                 </a>
                 <a href="utrecht.html" class="city-card">
                     <strong>Utrecht</strong>
-                    <span>185 locaties</span>
+                    <span>10 locaties</span>
                 </a>
                 <a href="haarlem.html" class="city-card">
                     <strong>Haarlem</strong>
-                    <span>106 locaties</span>
-                </a>
-                <a href="amersfoort.html" class="city-card">
-                    <strong>Amersfoort</strong>
-                    <span>81 locaties</span>
-                </a>
-                <a href="leiden.html" class="city-card">
-                    <strong>Leiden</strong>
-                    <span>68 locaties</span>
-                </a>
-                <a href="utrechtse-heuvelrug.html" class="city-card">
-                    <strong>Utrechtse Heuvelrug</strong>
-                    <span>108 locaties</span>
-                </a>
-                <a href="eindhoven.html" class="city-card">
-                    <strong>Eindhoven</strong>
-                    <span>72 locaties</span>
-                </a>
-                <a href="groningen.html" class="city-card">
-                    <strong>Groningen</strong>
-                    <span>120 locaties</span>
-                </a>
-                <a href="almere.html" class="city-card">
-                    <strong>Almere</strong>
-                    <span>73 locaties</span>
-                </a>
-                <a href="tilburg.html" class="city-card">
-                    <strong>Tilburg</strong>
-                    <span>89 locaties</span>
-                </a>
-                <a href="breda.html" class="city-card">
-                    <strong>Breda</strong>
-                    <span>72 locaties</span>
-                </a>
-                <a href="nijmegen.html" class="city-card">
-                    <strong>Nijmegen</strong>
-                    <span>56 locaties</span>
-                </a>
-                <a href="arnhem.html" class="city-card">
-                    <strong>Arnhem</strong>
-                    <span>74 locaties</span>
-                </a>
-                <a href="apeldoorn.html" class="city-card">
-                    <strong>Apeldoorn</strong>
-                    <span>72 locaties</span>
-                </a>
-                <a href="s-hertogenbosch.html" class="city-card">
-                    <strong>'s-Hertogenbosch</strong>
-                    <span>107 locaties</span>
-                </a>
-                <a href="gooi-en-vechtstreek.html" class="city-card">
-                    <strong>Gooi en Vechtstreek</strong>
-                    <span>54 locaties</span>
-                </a>
-                <a href="enschede.html" class="city-card">
-                    <strong>Enschede</strong>
-                    <span>49 locaties</span>
-                </a>
-                <a href="zwolle.html" class="city-card">
-                    <strong>Zwolle</strong>
-                    <span>48 locaties</span>
-                </a>
-                <a href="maastricht.html" class="city-card">
-                    <strong>Maastricht</strong>
-                    <span>37 locaties</span>
-                </a>
-                <a href="dordrecht.html" class="city-card">
-                    <strong>Dordrecht</strong>
-                    <span>46 locaties</span>
+                    <span>10 locaties</span>
                 </a>
             </div>
           <div class="guide-section guide-section-hub" style="margin-top:32px;">
@@ -710,7 +619,7 @@
                     <p class="guide-kicker">Zoek niet te breed</p>
                     <h3>Ontdekken met peuters en kleuters</h3>
                     <p class="guide-card-intro">Kies eerst hoe de dag voelt: regio, type uitje of situatie. Daarna pas de exacte plek.</p>
-                    <div class="editorial-meta"><span>PeuterPlannen redactie</span><span>Laatst bijgewerkt 12 maart 2026</span><a href="/methode/">Hoe we selecteren</a></div>
+                    <div class="editorial-meta"><span>PeuterPlannen redactie</span><span>Laatst bijgewerkt 10 maart 2026</span><a href="/methode/">Hoe we selecteren</a></div>
                     <div class="guide-pills">
                       <span class="guide-pill">Regio</span>
                       <span class="guide-pill">Type uitje</span>
@@ -725,7 +634,7 @@
                     <p class="guide-kicker">Belangrijkste ingangen</p>
                     <h3>Snelle routes door de site</h3>
                     <div class="guide-links">
-                      <a href="/amsterdam.html" class="guide-link"><strong>Amsterdam</strong><span>301 locaties in deze regio</span></a><a href="/rotterdam.html" class="guide-link"><strong>Rotterdam</strong><span>145 locaties in deze regio</span></a><a href="/den-haag.html" class="guide-link"><strong>Den Haag</strong><span>175 locaties in deze regio</span></a><a href="/utrecht.html" class="guide-link"><strong>Utrecht</strong><span>185 locaties in deze regio</span></a><a href="/haarlem.html" class="guide-link"><strong>Haarlem</strong><span>106 locaties in deze regio</span></a><a href="/amersfoort.html" class="guide-link"><strong>Amersfoort</strong><span>81 locaties in deze regio</span></a><a href="/leiden.html" class="guide-link"><strong>Leiden</strong><span>68 locaties in deze regio</span></a><a href="/utrechtse-heuvelrug.html" class="guide-link"><strong>Utrechtse Heuvelrug</strong><span>108 locaties in deze regio</span></a><a href="/eindhoven.html" class="guide-link"><strong>Eindhoven</strong><span>72 locaties in deze regio</span></a>
+                      <a href="/amsterdam.html" class="guide-link"><strong>Amsterdam</strong><span>10 locaties in deze regio</span></a><a href="/utrecht.html" class="guide-link"><strong>Utrecht</strong><span>10 locaties in deze regio</span></a><a href="/haarlem.html" class="guide-link"><strong>Haarlem</strong><span>10 locaties in deze regio</span></a>
                     </div>
                 </div>
                 <div class="guide-card guide-card-compact">

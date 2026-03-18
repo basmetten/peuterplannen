@@ -22,7 +22,7 @@
         .view-enter { animation: viewFadeIn 0.15s ease forwards; }
 
         .app-wrapper { margin-top: 92px; }
-        .app-container { max-width: 540px; margin: 0 auto; padding: 0 16px calc(80px + var(--pp-safe-bottom)); position: relative; }
+        .app-container { max-width: 540px; margin: 0 auto; padding: 0 16px calc(100px + var(--pp-safe-bottom)); position: relative; }
 
         .app-context-strip {
             background: rgba(var(--pp-bg-rgb), 0.84);
@@ -101,9 +101,13 @@
             transform: translateY(-1px);
         }
         .plan-mode-toolbar { margin-bottom: 18px; }
+        .newsletter-signup { margin-bottom: calc(100px + env(safe-area-inset-bottom, 20px)); }
+        body.map-view-active .newsletter-signup,
+        body.map-view-active .app-seo-content { display: none; }
+
         .app-seo-content {
             max-width: 1280px;
-            margin: 28px auto 84px;
+            margin: 28px auto calc(100px + env(safe-area-inset-bottom, 20px));
             padding: 0 16px;
         }
         .app-seo-grid {
@@ -347,6 +351,7 @@
             padding-right: 4px;
         }
         .preset-strip::-webkit-scrollbar { display: none; }
+        .preset-strip::after { content: ''; position: sticky; right: 0; min-width: 32px; flex-shrink: 0; background: linear-gradient(to right, transparent, var(--pp-bg)); pointer-events: none; }
         .preset-chip {
             flex: 0 0 auto;
             display: inline-flex;
@@ -368,7 +373,7 @@
             border-color: rgba(var(--pp-primary-rgb), 0.35);
             box-shadow: var(--pp-shadow-md);
         }
-        .preset-chip strong { display: block; font-size: var(--pp-text-xs); line-height: 1.1; }
+        .preset-chip strong { display: block; font-size: var(--pp-text-xs); line-height: 1.1; white-space: nowrap; }
         .preset-chip span { display: block; font-size: var(--pp-text-xs); line-height: 1.3; color: var(--pp-text-muted); }
         .preset-chip.active span { color: var(--pp-text-secondary); }
         .preset-chip svg { width: var(--pp-icon-xs); height: var(--pp-icon-xs); stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; color: var(--pp-primary-dark); }
@@ -530,11 +535,26 @@
         .btn-share { padding: 12px; flex: 0; min-width: 44px; }
 
         .hidden { display: none !important; }
-        .loader { text-align: center; padding: 60px 20px; font-weight: 500; color: var(--pp-text-muted); font-family: var(--pp-font-heading); font-size: var(--pp-text-base); }
-        .loader::before { content: ''; display: block; width: 40px; height: 40px; margin: 0 auto 16px; border: 3px solid rgba(var(--pp-primary-rgb), 0.15); border-top-color: var(--pp-primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        .loader { padding: 12px 0; }
+        .loader::before { display: none; }
+        .skeleton-cards { display: flex; flex-direction: column; gap: 16px; }
+        .skeleton-card { pointer-events: none; }
+        .skeleton-card .card-body { padding: 16px; }
         .error-msg { text-align: center; padding: 40px; color: var(--pp-accent); font-size: var(--pp-text-sm); background: var(--pp-accent-light); border-radius: var(--pp-radius-md); margin: 20px 0; }
+        .error-state { text-align: center; padding: 48px 24px; margin: 20px 0; background: var(--pp-surface); border: 1px solid var(--pp-border); border-radius: var(--pp-radius-lg); }
+        .error-state svg { width: 48px; height: 48px; stroke: var(--pp-text-muted); fill: none; stroke-width: 1.5; margin-bottom: 16px; }
+        .error-state strong { display: block; font-family: var(--pp-font-heading); font-size: var(--pp-text-lg); color: var(--pp-text); margin-bottom: 8px; }
+        .error-state p { color: var(--pp-text-muted); font-size: var(--pp-text-sm); line-height: 1.5; margin: 0 0 20px; max-width: 320px; margin-left: auto; margin-right: auto; }
+        .error-state button { padding: 10px 24px; border-radius: var(--pp-radius-sm); border: 1px solid var(--pp-primary); color: var(--pp-primary); background: var(--pp-surface); cursor: pointer; font-family: var(--pp-font-body); font-size: var(--pp-text-sm); font-weight: 500; transition: background 0.2s, color 0.2s; }
+        .error-state button:hover { background: var(--pp-primary); color: #fff; }
+        .error-state .error-retry-info { font-size: var(--pp-text-xs); color: var(--pp-text-muted); margin-top: 12px; opacity: 0.7; }
+        .offline-banner { position: sticky; top: 92px; z-index: 50; text-align: center; padding: 10px 16px; background: #FEF3CD; color: #856404; font-size: var(--pp-text-sm); font-family: var(--pp-font-body); border-bottom: 1px solid #F0DCA0; }
         .no-results { text-align: center; padding: 60px 20px; color: var(--pp-text-muted); }
         .no-results strong { display: block; color: var(--pp-text); margin-bottom: 8px; font-size: var(--pp-text-lg); font-family: var(--pp-font-heading); }
+
+        .favorites-empty { text-align: center; padding: 64px 24px; color: var(--pp-text-muted); }
+        .favorites-empty strong { display: block; color: var(--pp-text); font-size: var(--pp-text-lg); font-family: var(--pp-font-heading); margin-bottom: 8px; }
+        .favorites-empty p { margin: 0; }
 
         /* Bottom nav (mobile) */
         /* Floating pill bottom nav */
@@ -546,6 +566,8 @@
         .bnav-item.active { color: var(--pp-text-inverse); }
         .bnav-item svg { width: var(--pp-icon-sm); height: var(--pp-icon-sm); stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .bnav-item.active svg { transform: scale(1.1); }
+        .bnav-icon-wrap { position: relative; display: inline-flex; }
+        .fav-badge { position: absolute; top: -4px; right: -8px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: var(--pp-primary); color: #fff; font-size: 10px; font-weight: 700; line-height: 16px; text-align: center; pointer-events: none; }
         @media (min-width: 680px) { .bottom-nav { display: none; } body { padding-bottom: 0; } }
 
         /* Skeleton cards */

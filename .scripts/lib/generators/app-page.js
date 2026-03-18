@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { ROOT, CLUSTER_PAGES } = require('../config');
+const { ROOT, CLUSTER_PAGES, TYPE_MAP } = require('../config');
 const { replaceMarker, escapeHtml } = require('../helpers');
 
 function updateApp(data) {
@@ -75,7 +75,7 @@ ${areaServed}
                     <span>Regio's</span>
                 </div>
                 <div class="info-stat">
-                    <strong>5</strong>
+                    <strong>${Object.keys(TYPE_MAP).length}</strong>
                     <span>Categorieën</span>
                 </div>
             </div>`;
@@ -91,6 +91,7 @@ ${areaServed}
   content = content.replace(/\d+\+ locaties, gratis/g, `${total}+ locaties, gratis`);
   // Info panel
   content = content.replace(/Alle \d+ locaties zijn handmatig geverifieerd/g, `Alle ${total} locaties zijn handmatig geverifieerd`);
+  content = content.replace(/\d+ regio's/g, `${regions.length} regio's`);
   const appTitle = 'PeuterPlannen app — vind peuteruitjes op afstand, type en weer';
   const appDescription = `Gebruik de PeuterPlannen app om ${total} kindvriendelijke uitjes te vinden op afstand, type, leeftijd en weer. Met regiogidsen, planning en gecheckte locaties in Nederland.`;
   content = content.replace(/<title>.*?<\/title>/, `<title>${appTitle}</title>`);
