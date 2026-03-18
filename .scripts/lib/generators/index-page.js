@@ -99,6 +99,19 @@ ${blogPreviewCards}
     </section>`;
   content = replaceMarker(content, 'BLOG_PREVIEW', blogPreviewHTML);
 
+  // QUICK_RESULTS — static skeleton placeholder; JS fills in live data
+  const quickResultsHTML = `    <section id="quick-results" class="quick-results-section pp-reveal" style="max-width:1200px;margin:0 auto;padding:32px 24px 0;">
+        <h2 class="section-title">Locaties bij jou in de buurt</h2>
+        <div class="pp-skeleton-row" style="display:flex;gap:16px;">
+            <div class="pp-skeleton" style="flex:1;height:80px;border-radius:12px;"></div>
+            <div class="pp-skeleton" style="flex:1;height:80px;border-radius:12px;"></div>
+            <div class="pp-skeleton" style="flex:1;height:80px;border-radius:12px;"></div>
+        </div>
+        <div class="quick-results-grid"></div>
+        <a href="/app.html" class="blog-preview-more">Bekijk alle locaties</a>
+    </section>`;
+  content = replaceMarker(content, 'QUICK_RESULTS', quickResultsHTML);
+
   // JSONLD_INDEX — areaServed from DB
   const areaServed = regions.map(r => {
     return `        {"@type": "${r.schema_type || 'City'}", "name": "${r.name}"}`;

@@ -169,8 +169,8 @@
     <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/design-system.css?v=202603181804">
-    <link rel="stylesheet" href="/style.min.css?v=202603181804">
+    <link rel="stylesheet" href="/design-system.css?v=202603181807">
+    <link rel="stylesheet" href="/style.min.css?v=202603181807">
     <style>
         /* Homepage-specific styles */
         .hero-home {
@@ -285,6 +285,12 @@
         .blog-preview-more:hover { text-decoration: underline; }
         .guide-section-compact { background: var(--pp-bg-warm); border-radius: 12px; padding: 20px 24px; }
         .guide-section-compact .guide-kicker { font-size: 13px; font-weight: 600; color: var(--pp-text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+        .quick-results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .quick-result-card { background: white; border: 1px solid var(--pp-border); border-radius: 12px; padding: 20px; text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; gap: 6px; }
+        .quick-result-card:hover { transform: translateY(-2px); box-shadow: var(--pp-shadow-card-hover); }
+        .quick-result-card strong { font-size: 16px; font-weight: 700; color: var(--pp-text); }
+        .quick-result-card span { font-size: 14px; color: var(--pp-text-muted); }
+        @media (max-width: 768px) { .quick-results-grid { grid-template-columns: 1fr; } }
 
         .hero-search { display: flex; gap: 8px; max-width: 480px; margin: 16px 0; }
         .hero-search input {
@@ -316,8 +322,8 @@
             .footer-bottom { margin-top: 24px; }
         }
     </style>
-    <link rel="stylesheet" href="/nav-floating.css?v=202603181804">
-    <script src="/nav-floating.js?v=202603181804" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603181807">
+    <script src="/nav-floating.js?v=202603181807" defer></script>
     <script src="/pp-interactions.js" defer></script>
 </head>
 <body>
@@ -393,8 +399,18 @@
         </div>
     </section>
 
-
-
+    <!-- BEGIN:QUICK_RESULTS -->
+    <section id="quick-results" class="quick-results-section pp-reveal" style="max-width:1200px;margin:0 auto;padding:32px 24px 0;">
+        <h2 class="section-title">Locaties bij jou in de buurt</h2>
+        <div class="pp-skeleton-row" style="display:flex;gap:16px;">
+            <div class="pp-skeleton" style="flex:1;height:80px;border-radius:12px;"></div>
+            <div class="pp-skeleton" style="flex:1;height:80px;border-radius:12px;"></div>
+            <div class="pp-skeleton" style="flex:1;height:80px;border-radius:12px;"></div>
+        </div>
+        <div class="quick-results-grid"></div>
+        <a href="/app.html" class="blog-preview-more">Bekijk alle locaties</a>
+    </section>
+<!-- END:QUICK_RESULTS -->
 
 
     
@@ -655,6 +671,7 @@
     </footer>
 
 <script src="/reveal.js"></script>
+<script src="/homepage-results.js" defer></script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
 </html>
