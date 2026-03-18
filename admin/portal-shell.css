@@ -84,7 +84,7 @@ a {
 :focus-visible {
   outline: 2px solid var(--pp-primary);
   outline-offset: 3px;
-  border-radius: 8px;
+  border-radius: var(--pp-radius-xs);
 }
 
 .skip-link {
@@ -92,10 +92,10 @@ a {
   left: -9999px;
   top: 8px;
   z-index: 9999;
-  background: #ffffff;
-  color: #141210;
+  background: var(--pp-surface);
+  color: var(--pp-text);
   border: 2px solid var(--pp-primary);
-  border-radius: 10px;
+  border-radius: var(--pp-radius-xs);
   padding: 8px 12px;
   text-decoration: none;
   font-size: 13px;
@@ -122,7 +122,7 @@ a {
   background: rgba(255, 255, 255, 0.88);
   border: 1px solid rgba(35, 31, 26, 0.08);
   box-shadow: var(--pp-shadow-sm);
-  border-radius: 999px;
+  border-radius: var(--pp-radius-pill);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -143,10 +143,10 @@ a {
   font-size: 11px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  border-radius: 999px;
+  border-radius: var(--pp-radius-pill);
   padding: 4px 10px;
   background: var(--pp-primary);
-  color: #ffffff;
+  color: var(--pp-text-inverse);
 }
 
 .portal-nav-right {
@@ -188,7 +188,7 @@ a {
   background:
     radial-gradient(circle at 85% 20%, rgba(223, 162, 108, 0.16), transparent 22%),
     linear-gradient(120deg, #1c1714 0%, #31261f 45%, #46382e 100%);
-  color: #ffffff;
+  color: var(--pp-text-inverse);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--pp-radius-lg);
   box-shadow: var(--pp-shadow-md);
@@ -273,14 +273,14 @@ a {
   padding: 6px;
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(35, 31, 26, 0.08);
-  border-radius: 999px;
+  border-radius: var(--pp-radius-pill);
   width: max-content;
   max-width: 100%;
 }
 
 .portal-tab {
   border: none;
-  border-radius: 999px;
+  border-radius: var(--pp-radius-pill);
   padding: 9px 14px;
   background: transparent;
   color: var(--pp-text-muted);
@@ -291,7 +291,7 @@ a {
 }
 
 .portal-tab.active {
-  background: #ffffff;
+  background: var(--pp-surface);
   color: var(--pp-text);
   box-shadow: 0 5px 16px rgba(35, 31, 26, 0.12);
 }
@@ -310,7 +310,7 @@ a {
   border: 1px solid var(--pp-border);
   background: transparent;
   color: var(--pp-text-muted);
-  border-radius: 999px;
+  border-radius: var(--pp-radius-pill);
   padding: 7px 12px;
   font-weight: 600;
   cursor: pointer;
@@ -318,7 +318,7 @@ a {
 
 .portal-pill.active {
   background: var(--pp-text);
-  color: #ffffff;
+  color: var(--pp-text-inverse);
   border-color: var(--pp-text);
 }
 
@@ -341,7 +341,7 @@ a {
 .portal-textarea {
   width: 100%;
   border: 1px solid var(--pp-border);
-  background: #ffffff;
+  background: var(--pp-surface);
   border-radius: 10px;
   color: var(--pp-text);
   font-size: 14px;
@@ -408,7 +408,7 @@ a {
 
 .portal-btn-primary {
   background: var(--pp-text);
-  color: #ffffff;
+  color: var(--pp-text-inverse);
 }
 
 .portal-btn-primary:hover:not([disabled]) {
@@ -417,7 +417,7 @@ a {
 
 .portal-btn-accent {
   background: var(--pp-primary);
-  color: #ffffff;
+  color: var(--pp-text-inverse);
 }
 
 .portal-btn-accent:hover:not([disabled]) {
@@ -431,19 +431,19 @@ a {
 }
 
 .portal-btn-secondary:hover:not([disabled]) {
-  background: #ffffff;
+  background: var(--pp-surface);
 }
 
 .portal-btn-danger {
-  background: var(--pp-error-bg);
-  color: var(--pp-error);
-  border: 1px solid rgba(166, 35, 35, 0.2);
+  background: var(--pp-semantic-error-bg);
+  color: var(--pp-semantic-error);
+  border: 1px solid var(--pp-semantic-error-border);
 }
 
 .portal-btn-success {
-  background: var(--pp-success-bg);
-  color: var(--pp-success);
-  border: 1px solid rgba(23, 97, 62, 0.2);
+  background: var(--pp-semantic-success-bg);
+  color: var(--pp-semantic-success);
+  border: 1px solid var(--pp-semantic-success-border);
 }
 
 .portal-btn-sm {
@@ -476,27 +476,27 @@ a {
 }
 
 .portal-alert-error {
-  background: var(--pp-error-bg);
-  color: var(--pp-error);
-  border-color: rgba(166, 35, 35, 0.18);
+  background: var(--pp-semantic-error-bg);
+  color: var(--pp-semantic-error);
+  border-color: var(--pp-semantic-error-border);
 }
 
 .portal-alert-success {
-  background: var(--pp-success-bg);
-  color: var(--pp-success);
-  border-color: rgba(23, 97, 62, 0.2);
+  background: var(--pp-semantic-success-bg);
+  color: var(--pp-semantic-success);
+  border-color: var(--pp-semantic-success-border);
 }
 
 .portal-alert-info {
-  background: var(--pp-info-bg);
-  color: var(--pp-info);
-  border-color: rgba(47, 88, 111, 0.2);
+  background: var(--pp-semantic-info-bg);
+  color: var(--pp-semantic-info);
+  border-color: var(--pp-semantic-info-border);
 }
 
 .portal-alert-warn {
-  background: #fff6df;
-  color: #866123;
-  border-color: rgba(134, 97, 35, 0.2);
+  background: var(--pp-semantic-warning-bg);
+  color: var(--pp-semantic-warning);
+  border-color: var(--pp-semantic-warning-border);
 }
 
 .portal-table-wrap {
@@ -532,7 +532,7 @@ a {
 .portal-table code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
   font-size: 12px;
-  background: #f5f2ee;
+  background: var(--pp-bg);
   border: 1px solid rgba(35, 31, 26, 0.08);
   border-radius: 6px;
   padding: 2px 6px;
@@ -587,7 +587,7 @@ a {
 .portal-badge {
   display: inline-flex;
   align-items: center;
-  border-radius: 999px;
+  border-radius: var(--pp-radius-pill);
   padding: 3px 9px;
   font-size: 11px;
   font-weight: 800;
@@ -596,8 +596,8 @@ a {
 }
 
 .portal-badge-pending {
-  background: #fff6db;
-  color: #8a631e;
+  background: var(--pp-semantic-warning-bg);
+  color: var(--pp-accent-700);
 }
 
 .portal-badge-approved,
@@ -616,8 +616,8 @@ a {
 
 .portal-badge-none,
 .portal-badge-canceled {
-  background: #f0ece7;
-  color: #776a65;
+  background: var(--pp-bg-soft);
+  color: var(--pp-text-muted);
 }
 
 .portal-toggle {
@@ -637,8 +637,8 @@ a {
 .portal-toggle-track {
   position: absolute;
   inset: 0;
-  border-radius: 999px;
-  background: #d4ccc4;
+  border-radius: var(--pp-radius-pill);
+  background: var(--pp-primary-200);
   transition: background-color 0.2s;
 }
 
@@ -650,13 +650,13 @@ a {
   left: 3px;
   top: 3px;
   border-radius: 50%;
-  background: #ffffff;
+  background: var(--pp-surface);
   box-shadow: 0 1px 4px rgba(35, 31, 26, 0.22);
   transition: transform 0.2s;
 }
 
 .portal-toggle input:checked + .portal-toggle-track {
-  background: var(--pp-success);
+  background: var(--pp-semantic-success);
 }
 
 .portal-toggle input:checked + .portal-toggle-track::before {
@@ -702,7 +702,7 @@ a {
   gap: 10px;
   align-items: center;
   margin-bottom: 8px;
-  background: #ffffff;
+  background: var(--pp-surface);
 }
 
 .portal-result-name {
@@ -739,12 +739,16 @@ a {
 .portal-modal-dialog {
   position: relative;
   width: min(520px, 100%);
-  background: #ffffff;
+  background: var(--pp-surface);
   border-radius: 18px;
-  border: 1px solid rgba(35, 31, 26, 0.1);
-  box-shadow: var(--pp-shadow-md);
+  border: 1px solid var(--pp-border);
+  box-shadow: var(--pp-shadow-modal);
   padding: 20px;
   z-index: 1;
+}
+
+.portal-modal.open .portal-modal-dialog {
+  animation: pp-scale-in 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .portal-modal-title {
@@ -785,14 +789,14 @@ a {
   content: '';
   width: 8px;
   height: 8px;
-  border-radius: 999px;
+  border-radius: var(--pp-radius-pill);
   background: var(--pp-primary);
   margin-top: 8px;
   flex-shrink: 0;
 }
 
 .portal-chip {
-  border-radius: 999px;
+  border-radius: var(--pp-radius-pill);
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;

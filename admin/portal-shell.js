@@ -47,6 +47,13 @@
     }
 
     el.appendChild(box);
+
+    // Fire a toast for immediate feedback (if pp-interactions.js is loaded)
+    if (typeof window.ppToast === 'function' && !opts.silent) {
+      var toastType = { error: 'error', success: 'success', warn: 'warning' }[type] || 'default';
+      var toastMsg = html ? box.textContent : String(message);
+      window.ppToast(toastMsg, toastType);
+    }
   }
 
   function getFocusable(root) {
