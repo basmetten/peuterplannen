@@ -80,7 +80,7 @@ ${navHTML()}
     </div>
   </section>
   ${extraSections}
-  ${relatedBlogs.length ? `<section class="guide-section">
+  ${relatedBlogs.length ? `<section class="guide-section pp-reveal">
     <div class="guide-card">
       <p class="guide-kicker">Verder lezen</p>
       <h2>Relevante gidsen</h2>
@@ -111,7 +111,7 @@ function generateDiscoverPage(data) {
   const typeLinks = TYPE_PAGES.map((page) => `<a href="/${page.slug}.html" class="guide-link"><strong>${page.sectionLabel}</strong><span>${page.metaDesc}</span></a>`).join('');
   const clusterLinks = CLUSTER_PAGES.map((cluster) => `<a href="/${cluster.slug}.html" class="guide-link"><strong>${cluster.h1}</strong><span>${cluster.metaDesc}</span></a>`).join('');
   const extraSections = `
-  <section class="guide-section">
+  <section class="guide-section pp-reveal">
     <div class="guide-card">
       <p class="guide-kicker">Regio’s</p>
       <h2>Kies eerst waar je ongeveer wilt zijn</h2>

@@ -7,6 +7,7 @@
 :root {
   /* === Colors — Primary Ramp (coral/terra) === */
   --pp-primary-50:  #FDF1ED;
+  --pp-primary-75:  #f5e0da;
   --pp-primary-100: #FBDDD2;
   --pp-primary-200: #F5B8A4;
   --pp-primary-300: #E8957A;
@@ -54,6 +55,14 @@
   --pp-accent-light: var(--pp-accent-50);
   --pp-accent-dark: var(--pp-accent-600);
 
+  /* === RGB Channels (for rgba() patterns) === */
+  --pp-primary-rgb: 212, 119, 90;
+  --pp-secondary-rgb: 107, 149, 144;
+  --pp-accent-rgb: 232, 184, 112;
+  --pp-bg-rgb: 250, 247, 242;
+  --pp-surface-rgb: 255, 255, 255;
+  --pp-hero-blog-glow-rgb: 250, 212, 160;
+
   /* === Colors — Semantic (purpose-driven) === */
   --pp-semantic-success: #2D8B5E;
   --pp-semantic-success-bg: #E8F5EF;
@@ -83,15 +92,36 @@
   --pp-bg: #FAF7F2;
   --pp-bg-warm: #FFF5EB;
   --pp-bg-cream: #FFF5EB;
+  --pp-bg-muted: #f0e8dc;
   --pp-surface: #FFFFFF;
   --pp-surface-hover: #FEFCF9;
+  --pp-surface-neutral: #f0f0f0;
   --pp-border: rgba(212, 119, 90, 0.15);
   --pp-border-strong: rgba(212, 119, 90, 0.3);
 
+  /* === Extended Surfaces === */
+  --pp-surface-dark: #1e1c1a;
+  --pp-surface-dark-rgb: 30, 28, 26;
+
+  /* === Brand colors (external) === */
+  --pp-brand-whatsapp: #25D366;
+  --pp-brand-whatsapp-hover: #1ebe57;
+
+  /* === Facility badge colors (mapped to type colors where possible) === */
+  --pp-badge-coffee-bg: var(--pp-primary-50);
+  --pp-badge-coffee-text: var(--pp-primary-600);
+  --pp-badge-alcohol-bg: var(--pp-accent-50);
+  --pp-badge-alcohol-text: var(--pp-accent-800);
+  --pp-badge-diaper-bg: var(--pp-secondary-50);
+  --pp-badge-diaper-text: var(--pp-secondary-700);
+
   /* === Text === */
   --pp-text: #2D2926;
+  --pp-text-rgb: 45, 41, 38;
   --pp-text-secondary: #5C4A48;
   --pp-text-muted: #A39490;
+  --pp-text-tertiary: #756762;
+  --pp-text-pressed: #1a1714;
   --pp-text-inverse: #FFFFFF;
 
   /* === Typography — Fonts === */
@@ -160,8 +190,15 @@
   --pp-icon-lg: 32px;
   --pp-icon-xl: 48px;
 
+  /* === Image & Card Image === */
+  --pp-img-aspect: 3 / 2;
+  --pp-img-radius: var(--pp-radius-sm) var(--pp-radius-sm) 0 0;
+  --pp-img-overlay-from: transparent;
+  --pp-img-overlay-to: rgba(var(--pp-text-rgb), 0.55);
+
   /* === Map type colors (with bg variants) === */
   --pp-type-play:      #52B788;  --pp-type-play-bg:      rgba(82, 183, 136, 0.10);
+  --pp-type-play-rgb:  82, 183, 136;
   --pp-type-farm:      #8B6F47;  --pp-type-farm-bg:      rgba(139, 111, 71, 0.10);
   --pp-type-nature:    #2D6A4F;  --pp-type-nature-bg:    rgba(45, 106, 79, 0.10);
   --pp-type-museum:    #7B2D8B;  --pp-type-museum-bg:    rgba(123, 45, 139, 0.10);
@@ -170,47 +207,6 @@
   --pp-type-pancake:   #E9C46A;  --pp-type-pancake-bg:   rgba(233, 196, 106, 0.12);
   --pp-type-horeca:    #E76F51;  --pp-type-horeca-bg:    rgba(231, 111, 81, 0.10);
 
-  /* === Backward-compatible aliases ===
-     These map unprefixed vars (used in style.css, app.css, nav-floating.css)
-     to the canonical --pp-* tokens. This allows existing CSS to keep working
-     while we centralize the token definitions here. */
-  --primary: var(--pp-primary);
-  --primary-light: var(--pp-primary-light);
-  --primary-dark: var(--pp-primary-dark);
-  --accent: var(--pp-accent);
-  --accent-light: var(--pp-accent-light);
-  --secondary: var(--pp-secondary);
-  --secondary-light: var(--pp-secondary-light);
-  --navy: var(--pp-text);
-  --navy-light: var(--pp-text-secondary);
-  --gold: var(--pp-accent);
-  --gold-text: #7A5028;
-  --bg: var(--pp-bg);
-  --bg-cream: var(--pp-bg-cream);
-  --bg-warm: var(--pp-bg-warm);
-  --surface: var(--pp-surface);
-  --text: var(--pp-text);
-  --text-secondary: var(--pp-text-secondary);
-  --text-muted: var(--pp-text-muted);
-  --success: var(--pp-secondary);
-  --card-shadow: var(--pp-shadow-md);
-  --font-heading: var(--pp-font-heading);
-  --font-ui: var(--pp-font-body);
-  --font-body: var(--pp-font-body);
-  --font-accent: var(--pp-font-accent);
-  --shadow-sm: var(--pp-shadow-sm);
-  --shadow-md: var(--pp-shadow-md);
-  --shadow-lg: var(--pp-shadow-lg);
-  --shadow-hover: var(--pp-shadow-hover);
-  --radius-xs: 10px;
-  --radius-sm: 14px;
-  --radius-md: 18px;
-  --radius-lg: 24px;
-  --radius-pill: 999px;
-  --radius: var(--pp-radius-md);
-  --safe-bottom: var(--pp-safe-bottom);
-  --ink: var(--pp-text);
-  --ink-light: var(--pp-text-secondary);
 }
 
 /* === Typography — Heading defaults === */
@@ -278,17 +274,6 @@ p, li {
   font-style: italic;
 }
 
-/* === Section spacing — consistent vertical rhythm === */
-.pp-section {
-  padding-block: var(--pp-space-3xl);
-}
-.pp-section-lg {
-  padding-block: var(--pp-space-4xl);
-}
-.pp-section-sm {
-  padding-block: var(--pp-space-xl);
-}
-
 /* === Content container === */
 .pp-container {
   max-width: var(--pp-max-width);
@@ -296,260 +281,84 @@ p, li {
   padding-inline: var(--pp-space-md);
 }
 
-/* === Buttons === */
-.pp-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 20px;
-  border: none;
+/* === Location Card Image === */
+.loc-img {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--pp-img-aspect);
+  border-radius: var(--pp-img-radius);
+  background: var(--pp-bg);
+}
+.loc-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--pp-transition-slow);
+}
+.loc-item:hover .loc-img img {
+  transform: scale(1.05);
+}
+.loc-img .loc-type-badge {
+  position: absolute;
+  bottom: var(--pp-space-sm);
+  left: var(--pp-space-sm);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: var(--pp-space-xs) var(--pp-space-sm);
   border-radius: var(--pp-radius-xs);
   font-family: var(--pp-font-ui);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background var(--pp-transition), box-shadow var(--pp-transition), transform var(--pp-transition);
-}
-.pp-btn:active { transform: translateY(1px); }
-.pp-btn[disabled] { opacity: 0.55; cursor: not-allowed; transform: none; }
-
-.pp-btn-primary {
-  background: var(--pp-text);
-  color: var(--pp-text-inverse);
-}
-.pp-btn-primary:hover:not([disabled]) {
-  box-shadow: 0 8px 20px rgba(45, 41, 38, 0.22);
-}
-
-.pp-btn-accent {
-  background: var(--pp-primary);
-  color: var(--pp-text-inverse);
-}
-.pp-btn-accent:hover:not([disabled]) {
-  background: var(--pp-primary-dark);
-  box-shadow: 0 4px 16px rgba(212, 119, 90, 0.35);
-}
-
-.pp-btn-secondary {
-  background: transparent;
-  border: 1px solid var(--pp-border);
-  color: var(--pp-text);
-}
-.pp-btn-secondary:hover:not([disabled]) {
-  background: var(--pp-surface);
-  border-color: var(--pp-border-strong);
-}
-
-.pp-btn-ghost {
-  background: transparent;
-  color: var(--pp-text-secondary);
-  padding: 8px 12px;
-}
-.pp-btn-ghost:hover:not([disabled]) {
-  background: rgba(212, 119, 90, 0.06);
-  color: var(--pp-text);
-}
-.pp-btn-ghost:active:not([disabled]) {
-  background: rgba(212, 119, 90, 0.12);
-}
-
-/* Button sizes (1:2 padding ratio) */
-.pp-btn-sm {
-  padding: 8px 16px;
   font-size: var(--pp-text-xs);
-}
-.pp-btn-lg {
-  padding: 16px 28px;
-  font-size: var(--pp-text-base);
-}
-
-/* Button focus-visible (keyboard accessibility) */
-.pp-btn:focus-visible {
-  outline: 2.5px solid var(--pp-primary);
-  outline-offset: 3px;
-}
-
-/* Button loading state */
-.pp-btn[aria-busy="true"] {
-  position: relative;
-  color: transparent;
-  pointer-events: none;
-  cursor: wait;
-}
-.pp-btn[aria-busy="true"]::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 18px;
-  height: 18px;
-  border: 2.5px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: pp-spin 0.6s linear infinite;
-}
-.pp-btn-secondary[aria-busy="true"]::after,
-.pp-btn-ghost[aria-busy="true"]::after {
-  border-color: rgba(45, 41, 38, 0.15);
-  border-top-color: var(--pp-text);
-}
-
-/* Tactile button variant (raised look with depth) */
-.pp-btn-tactile {
-  box-shadow: 0 4px 0 var(--pp-primary-600), 0 6px 12px rgba(45, 41, 38, 0.15);
-  transform: translateY(0);
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
-}
-.pp-btn-tactile:hover:not([disabled]) {
-  transform: translateY(-1px);
-  box-shadow: 0 5px 0 var(--pp-primary-600), 0 8px 16px rgba(45, 41, 38, 0.18);
-}
-.pp-btn-tactile:active:not([disabled]) {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 var(--pp-primary-600), 0 2px 4px rgba(45, 41, 38, 0.10);
-}
-
-/* === Cards === */
-.pp-card {
-  background: var(--pp-surface);
-  border: 1px solid var(--pp-border);
-  border-radius: var(--pp-radius-md);
-  box-shadow: var(--pp-shadow-card);
-  padding: 24px;
-}
-
-.pp-card-interactive {
-  position: relative;
-  transition: transform var(--pp-transition), box-shadow var(--pp-transition), border-color var(--pp-transition);
-}
-.pp-card-interactive:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--pp-shadow-card-hover);
-  border-color: var(--pp-primary-200);
-}
-.pp-card-interactive:hover .pp-card-title,
-.pp-location-card:hover h3 {
-  color: var(--pp-primary);
-  transition: color var(--pp-transition);
-}
-/* Full-card click area (no JS needed) */
-.pp-card-interactive a.pp-card-link::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-/* Image zoom on card hover */
-.pp-card-img {
-  overflow: hidden;
-  border-radius: var(--pp-radius-sm);
-}
-.pp-card-interactive:hover .pp-card-img img {
-  transform: scale(1.04);
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* === Badges === */
-.pp-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 12px;
-  border-radius: var(--pp-radius-pill);
-  font-size: 12px;
   font-weight: 600;
-}
-
-/* === Chips / Tags === */
-.pp-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 12px;
-  border-radius: var(--pp-radius-pill);
-  font-size: 12px;
-  font-weight: 700;
-  border: 1px solid var(--pp-border);
-  background: transparent;
-  color: var(--pp-text-muted);
-  cursor: pointer;
-  transition: background var(--pp-transition), color var(--pp-transition), border-color var(--pp-transition);
-}
-.pp-chip:hover {
-  border-color: var(--pp-border-strong);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   color: var(--pp-text);
 }
-.pp-chip-active,
-.pp-chip.active {
-  background: var(--pp-text);
-  color: var(--pp-text-inverse);
-  border-color: var(--pp-text);
+.loc-img.pp-skeleton {
+  background: linear-gradient(110deg, var(--pp-bg) 30%, var(--pp-bg-warm) 50%, var(--pp-bg) 70%);
+  background-size: 200% 100%;
+  animation: pp-shimmer 1.5s ease-in-out infinite;
+}
+.loc-img--fallback {
+  background: linear-gradient(135deg, var(--pp-bg-warm) 0%, var(--pp-primary-50) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loc-img--fallback img { display: none; }
+.loc-img--fallback::after {
+  content: '';
+  width: var(--pp-icon-xl);
+  height: var(--pp-icon-xl);
+  opacity: 0.4;
 }
 
-/* === Form elements === */
-.pp-input,
-.pp-select,
-.pp-textarea {
+/* === Location Hero Image === */
+.hero-location-img {
+  position: relative;
   width: 100%;
-  border: 1px solid var(--pp-border);
-  background: var(--pp-surface);
-  border-radius: 10px;
-  color: var(--pp-text);
-  font-family: var(--pp-font-body);
-  font-size: 14px;
-  padding: 12px 12px;
-  outline: none;
-  transition: border-color var(--pp-transition), box-shadow var(--pp-transition);
-}
-.pp-input:focus,
-.pp-select:focus,
-.pp-textarea:focus {
-  border-color: var(--pp-primary);
-  box-shadow: 0 0 0 3px rgba(212, 119, 90, 0.16);
-}
-.pp-textarea { min-height: 88px; resize: vertical; }
-
-/* Input validation states */
-.pp-input[aria-invalid="true"],
-.pp-input.is-error {
-  border-color: var(--pp-semantic-error);
-  box-shadow: 0 0 0 3px var(--pp-semantic-error-border);
-}
-.pp-input[aria-invalid="true"]:focus {
-  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.22);
-}
-.pp-input.is-valid {
-  border-color: var(--pp-semantic-success);
-  box-shadow: 0 0 0 3px var(--pp-semantic-success-border);
-}
-.pp-input.is-warning {
-  border-color: var(--pp-semantic-warning);
-  box-shadow: 0 0 0 3px var(--pp-semantic-warning-border);
-}
-
-/* Field error message (slide-down reveal) */
-.pp-field-error {
-  color: var(--pp-semantic-error);
-  font-size: var(--pp-text-xs);
-  font-weight: 500;
-  max-height: 0;
+  max-height: 400px;
   overflow: hidden;
-  opacity: 0;
-  transition: max-height 0.25s ease, opacity 0.2s ease, margin 0.25s ease;
-  margin-top: 0;
 }
-.pp-field-error.is-visible {
-  max-height: 3em;
-  opacity: 1;
-  margin-top: var(--pp-space-xs);
+.hero-location-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-location-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to bottom, transparent, rgba(var(--pp-text-rgb), 0.55));
 }
 
 /* === Location card (reusable across city, type, and cluster pages) === */
 .pp-location-card {
   background: var(--pp-surface);
-  border-radius: 14px;
-  padding: 20px 24px;
+  border-radius: var(--pp-radius-sm);
+  padding: var(--pp-space-lg);
   box-shadow: var(--pp-shadow-card);
   border: 1px solid var(--pp-border);
   transition: transform var(--pp-transition), box-shadow var(--pp-transition), border-color var(--pp-transition);
@@ -572,36 +381,9 @@ p, li {
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
-  border-radius: 14px 14px 0 0;
+  border-radius: var(--pp-radius-sm) var(--pp-radius-sm) 0 0;
 }
 .pp-location-card:hover::before { transform: scaleX(1); }
-
-/* === Image overlays (for text over images) === */
-.pp-img-overlay {
-  position: relative;
-}
-.pp-img-overlay::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(45, 41, 38, 0.75) 0%, rgba(45, 41, 38, 0.25) 40%, transparent 70%);
-  border-radius: inherit;
-  pointer-events: none;
-}
-
-/* Progressive blur variant (modern hero sections) */
-.pp-img-overlay-blur::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(250, 247, 242, 0.95) 0%, rgba(250, 247, 242, 0.5) 40%, transparent 70%);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  mask-image: linear-gradient(to top, black 0%, black 30%, transparent 70%);
-  -webkit-mask-image: linear-gradient(to top, black 0%, black 30%, transparent 70%);
-  border-radius: inherit;
-  pointer-events: none;
-}
 
 /* === Motion — shared keyframes === */
 @keyframes pp-fade-up {
@@ -636,7 +418,7 @@ p, li {
 /* === Toast notifications === */
 .pp-toast-zone {
   position: fixed;
-  bottom: calc(var(--pp-safe-bottom) + 16px);
+  bottom: calc(var(--pp-safe-bottom) + var(--pp-space-md));
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
@@ -648,7 +430,7 @@ p, li {
 .pp-toast {
   background: var(--pp-text);
   color: var(--pp-text-inverse);
-  padding: 12px 20px;
+  padding: var(--pp-space-sm) var(--pp-space-md);
   border-radius: var(--pp-radius-xs);
   font-family: var(--pp-font-body);
   font-size: var(--pp-text-sm);
@@ -690,34 +472,6 @@ p, li {
 .pp-copy-btn.is-copied .pp-copy-btn__label { opacity: 0; transform: translateY(-100%); }
 .pp-copy-btn.is-copied .pp-copy-btn__done  { opacity: 1; transform: translateY(0); }
 
-/* === Animated checkmark (SVG draw) === */
-.pp-checkmark {
-  width: 20px;
-  height: 20px;
-  stroke: var(--pp-semantic-success);
-  stroke-width: 2.5;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 24;
-  stroke-dashoffset: 24;
-  animation: pp-draw-check 0.4s 0.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-@keyframes pp-draw-check { to { stroke-dashoffset: 0; } }
-
-/* === Heart favorite animation === */
-.pp-heart-btn.is-active svg {
-  animation: pp-heart-pop 0.35s cubic-bezier(0.17, 0.89, 0.32, 1.49);
-  fill: var(--pp-primary);
-  stroke: var(--pp-primary);
-}
-@keyframes pp-heart-pop {
-  0%   { transform: scale(1); }
-  30%  { transform: scale(1.3); }
-  60%  { transform: scale(0.9); }
-  100% { transform: scale(1); }
-}
-
 /* === Skeleton loader (warm brand tint) === */
 .pp-skeleton {
   background: linear-gradient(90deg, var(--pp-primary-50) 0%, rgba(212, 119, 90, 0.06) 40%, var(--pp-primary-50) 80%);
@@ -729,11 +483,11 @@ p, li {
   0%   { background-position: 100% 0; }
   100% { background-position: -100% 0; }
 }
-.pp-skeleton-text  { height: 14px; margin-bottom: 8px; }
+.pp-skeleton-text  { height: 14px; margin-bottom: var(--pp-space-sm); }
 .pp-skeleton-text:last-child { width: 65%; }
-.pp-skeleton-title { height: 24px; width: 60%; margin-bottom: 16px; }
+.pp-skeleton-title { height: var(--pp-space-lg); width: 60%; margin-bottom: var(--pp-space-md); }
 .pp-skeleton-img   { aspect-ratio: 16/9; width: 100%; }
-.pp-skeleton-pill  { height: 32px; width: 80px; border-radius: var(--pp-radius-pill); }
+.pp-skeleton-pill  { height: var(--pp-space-xl); width: 80px; border-radius: var(--pp-radius-pill); }
 
 /* === Scroll reveal system === */
 .pp-reveal {
@@ -761,7 +515,7 @@ p, li {
 .pp-reveal-stagger.is-visible > *:nth-child(n+5) { transition-delay: 0.28s; }
 
 /* Named view transitions for hero images */
-.location-hero-img { view-transition-name: hero-img; }
+.hero-location-img { view-transition-name: hero-img; }
 ::view-transition-old(hero-img) { animation: vt-fade-out 120ms ease-in both; }
 ::view-transition-new(hero-img) { animation: pp-fade-up 250ms cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: 60ms; }
 
@@ -777,23 +531,77 @@ p, li {
 :focus-visible { outline: 2.5px solid var(--pp-primary); outline-offset: 3px; }
 :focus:not(:focus-visible) { outline: none; }
 
-/* === Icon system === */
-.pp-icon-text {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--pp-space-xs);
+/* === Interactive State Defaults ===
+   Applied to any element with a transition.
+   Individual selectors can override these patterns. */
+
+/* Active = slight scale down for tactile feel.
+   Excludes summary (FAQ accordion) — scale op summary voelt storend
+   bij open/close animatie. Excludes elements met eigen :active in app.css. */
+:where(a, button, [role="button"]):active:not(:disabled) {
+  transform: scale(0.98);
 }
-.pp-icon-text svg {
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
+
+/* Focus-visible = brand-colored ring */
+:where(a, button, [role="button"], input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--pp-primary);
+  outline-offset: 2px;
+  border-radius: var(--pp-radius-xs);
 }
-.pp-icon-text-sm svg {
-  width: 20px;
-  height: 20px;
+
+/* Disabled = reduced opacity, no pointer events */
+:where(button, [role="button"], .btn, a.btn):disabled,
+:where(button, [role="button"], .btn, a.btn)[aria-disabled="true"] {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 /* Accessibility: disable all motion for users who prefer reduced motion */
+/* === Tooltip === */
+[data-tooltip] { position: relative; }
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + var(--pp-space-sm));
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: var(--pp-space-xs) var(--pp-space-sm);
+  background: var(--pp-surface-dark);
+  color: var(--pp-text-inverse);
+  font-family: var(--pp-font-ui);
+  font-size: var(--pp-text-xs);
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  border-radius: var(--pp-radius-xs);
+  box-shadow: var(--pp-shadow-popover);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--pp-transition), transform var(--pp-transition);
+  z-index: 1000;
+}
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+[data-tooltip-pos="bottom"]::after {
+  bottom: auto;
+  top: calc(100% + var(--pp-space-sm));
+}
+[data-tooltip-pos="left"]::after {
+  bottom: auto;
+  left: auto;
+  right: calc(100% + var(--pp-space-sm));
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
+}
+[data-tooltip-pos="left"]:hover::after,
+[data-tooltip-pos="left"]:focus-visible::after {
+  transform: translateY(-50%) translateX(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -806,6 +614,5 @@ p, li {
     opacity: 1 !important;
     transform: none !important;
   }
-  .pp-checkmark { stroke-dashoffset: 0 !important; }
   .pp-skeleton { background-size: 100% 100% !important; }
 }

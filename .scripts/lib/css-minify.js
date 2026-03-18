@@ -3,16 +3,25 @@ const path = require('path');
 
 function minifyCSS(rootDir) {
   console.log('\nMinifying CSS...');
+  const filesToMinify = [
+    { src: 'style.css', dest: 'style.min.css' },
+    { src: 'app.css', dest: 'app.min.css' },
+    { src: 'nav-floating.css', dest: 'nav-floating.min.css' },
+  ];
   try {
     const CleanCSS = require('clean-css');
-    const cssSource = fs.readFileSync(path.join(rootDir, 'style.css'), 'utf8');
-    const minified = new CleanCSS({ level: 2 }).minify(cssSource);
-    if (minified.errors.length > 0) {
-      console.error('  CSS minification errors:', minified.errors);
-    } else {
-      fs.writeFileSync(path.join(rootDir, 'style.min.css'), minified.styles);
-      const savings = ((1 - minified.styles.length / cssSource.length) * 100).toFixed(1);
-      console.log(`  style.css (${cssSource.length}B) → style.min.css (${minified.styles.length}B) — ${savings}% smaller`);
+    for (const { src, dest } of filesToMinify) {
+      const srcPath = path.join(rootDir, src);
+      if (!fs.existsSync(srcPath)) continue;
+      const cssSource = fs.readFileSync(srcPath, 'utf8');
+      const minified = new CleanCSS({ level: 2 }).minify(cssSource);
+      if (minified.errors.length > 0) {
+        console.error(`  ${src} minification errors:`, minified.errors);
+      } else {
+        fs.writeFileSync(path.join(rootDir, dest), minified.styles);
+        const savings = ((1 - minified.styles.length / cssSource.length) * 100).toFixed(1);
+        console.log(`  ${src} (${cssSource.length}B) → ${dest} (${minified.styles.length}B) — ${savings}% smaller`);
+      }
     }
   } catch (e) {
     console.log('  Skipped CSS minification (install clean-css first). Copying style.css as fallback.');

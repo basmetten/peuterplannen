@@ -454,23 +454,21 @@ ${jsonLd}
   <script type="application/ld+json">
 ${breadcrumbLd}
   </script>
-  <style>
-    .explore-cta { margin: 28px 0; text-align: center; }
-    .btn-explore { display: inline-block; padding: 12px 24px; background: var(--primary-light); color: var(--primary-dark); border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 15px; transition: background 0.2s; }
-    .btn-explore:hover { background: var(--primary); color: white; }
-    .related-blogs { margin: 24px 0; padding: 20px 24px; background: var(--bg-warm, #FAF7F2); border-radius: 12px; border-left: 4px solid var(--primary, #D4775A); }
-    .related-blogs h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--primary-dark, #B35D42); }
-    .related-blogs ul { list-style: none; padding: 0; margin: 0; }
-    .related-blogs li { margin-bottom: 8px; }
-    .related-blogs a { color: var(--primary-dark, #B35D42); text-decoration: none; font-weight: 500; }
-    .related-blogs a:hover { text-decoration: underline; }
-    .verified-badge .info-value { color: #2D8B5E; font-weight: 600; }
-  </style>
 </head>
 <body>
 ${svgSpriteDefs()}
 ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region.name)}`)}
 
+${(loc.owner_photo_url || loc.photo_url) ? `<div class="hero-location-img">
+  <picture>
+    <source srcset="/images/locations/${region.slug}/${loc.locSlug}/hero.webp" type="image/webp">
+    <img src="/images/locations/${region.slug}/${loc.locSlug}/hero.jpg"
+         alt="${escapeHtml(loc.name)}"
+         width="800" height="533"
+         fetchpriority="high">
+  </picture>
+  <div class="hero-location-overlay"></div>
+</div>` : ''}
 <div class="hero hero-location">
   <span class="hero-location-badge">${typeLabel}</span>
   <p class="hero-location-title">${escapeHtml(loc.name)}</p>

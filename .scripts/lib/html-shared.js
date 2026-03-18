@@ -80,12 +80,23 @@ function footerHTML() {
 function newsletterHTML() {
   return `<div class="newsletter-signup pp-reveal">
   <h3>Elke vrijdag: 3 uitjes die passen bij het weer</h3>
-  <form action="https://buttondown.com/api/emails/embed-subscribe/peuterplannen"
+  <form class="newsletter-form" action="https://buttondown.com/api/emails/embed-subscribe/peuterplannen"
         method="post" target="popupwindow"
         onsubmit="window.open('https://buttondown.com/peuterplannen','popupwindow')">
-    <input type="email" name="email" placeholder="jouw@email.nl" required
-      aria-label="E-mailadres voor nieuwsbrief">
-    <button type="submit">Aanmelden</button>
+    <div class="newsletter-field">
+      <input type="email" name="email" placeholder="jouw@email.nl" required
+        aria-label="E-mailadres voor nieuwsbrief" aria-describedby="newsletter-msg">
+      <button type="submit">
+        <span class="newsletter-btn-label">Aanmelden</span>
+        <span class="newsletter-btn-loading" hidden>
+          <svg class="pp-spinner" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-dasharray="50" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+    <p id="newsletter-msg" class="newsletter-msg" aria-live="polite" hidden></p>
   </form>
   <p style="font-size:13px;opacity:0.85;margin-top:12px;">Geen spam. Uitschrijven wanneer je wilt.</p>
 </div>`;
@@ -229,7 +240,7 @@ function affiliateTicketHTML(loc, affiliate) {
   if (!['museum', 'swim', 'play'].includes(loc.type)) return '';
   const url = loc.ticket_url || affiliate.tiqets.baseUrl;
   return `<div style="margin: 16px 0;">
-  <a href="${url}" target="_blank" rel="noopener sponsored" style="border: 2px solid var(--primary); color: var(--primary); background: white; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">🎟️ Tickets kopen</a>
+  <a href="${url}" target="_blank" rel="noopener sponsored" style="border: 2px solid var(--pp-primary); color: var(--pp-primary); background: white; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">🎟️ Tickets kopen</a>
   ${AFFILIATE_DISCLAIMER}
 </div>`;
 }
@@ -265,7 +276,7 @@ function affiliateReservationHTML(loc, affiliate) {
   if (!['horeca', 'pancake'].includes(loc.type)) return '';
   const url = loc.ticket_url || affiliate.theFork.baseUrl;
   return `<div style="margin: 16px 0;">
-  <a href="${url}" target="_blank" rel="noopener sponsored" style="border: 2px solid var(--primary); color: var(--primary); background: white; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">🍽️ Reserveer een tafel</a>
+  <a href="${url}" target="_blank" rel="noopener sponsored" style="border: 2px solid var(--pp-primary); color: var(--pp-primary); background: white; padding: 12px 24px; border-radius: 10px; font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">🍽️ Reserveer een tafel</a>
   ${AFFILIATE_DISCLAIMER}
 </div>`;
 }
@@ -276,7 +287,7 @@ function affiliateBookingHTML(regionName, affiliate) {
   return `<div style="background: #f0f7f6; border-radius: 12px; padding: 16px 24px; margin: 24px 0;">
   <strong>Weekendje weg in ${regionName}?</strong>
   <p style="margin: 4px 0 12px; font-size: 14px; color: #555;">Bekijk gezinsvriendelijke hotels in de buurt.</p>
-  <a href="${url}" target="_blank" rel="noopener sponsored" style="color: var(--primary); font-weight: 600; text-decoration: none;">Hotels bekijken →</a>
+  <a href="${url}" target="_blank" rel="noopener sponsored" style="color: var(--pp-primary); font-weight: 600; text-decoration: none;">Hotels bekijken →</a>
   ${AFFILIATE_DISCLAIMER}
 </div>`;
 }

@@ -98,6 +98,39 @@ async function optimizeBlog() {
   }
 }
 
+async function optimizeLocationPhotos() {
+  const dir = path.join(ROOT, 'images', 'locations');
+  if (!fs.existsSync(dir)) {
+    console.log('  Location photos dir not found, skipping');
+    return;
+  }
+
+  let count = 0;
+  const regionDirs = fs.readdirSync(dir, { withFileTypes: true }).filter(d => d.isDirectory());
+  for (const regionDir of regionDirs) {
+    const regionPath = path.join(dir, regionDir.name);
+    const locDirs = fs.readdirSync(regionPath, { withFileTypes: true }).filter(d => d.isDirectory());
+    for (const locDir of locDirs) {
+      const locPath = path.join(regionPath, locDir.name);
+
+      // Check for source images that need optimization
+      for (const src of ['thumb', 'hero']) {
+        const jpgFile = path.join(locPath, `${src}.jpg`);
+        const webpFile = path.join(locPath, `${src}.webp`);
+        if (!fs.existsSync(jpgFile) && !fs.existsSync(webpFile)) continue;
+
+        // Ensure WebP exists (if only JPG source)
+        if (fs.existsSync(jpgFile) && !fs.existsSync(webpFile)) {
+          const width = src === 'thumb' ? 400 : 800;
+          await sharp(jpgFile).resize(width).webp({ quality: 80 }).toFile(webpFile);
+          count++;
+        }
+      }
+    }
+  }
+  if (count > 0) console.log(`  Optimized ${count} location images`);
+}
+
 async function main() {
   console.log('=== Image optimization ===\n');
 
@@ -109,6 +142,9 @@ async function main() {
 
   console.log('Blog images...');
   await optimizeBlog();
+
+  console.log('Location photos...');
+  await optimizeLocationPhotos();
 
   console.log('\nImage optimization complete.');
 }

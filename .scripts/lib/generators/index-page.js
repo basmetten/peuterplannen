@@ -49,7 +49,7 @@ function updateIndex(data) {
                 <span>${page.metaDesc}</span>
               </a>`).join('\n');
 
-  const typeGridHTML = `    <section class="cities-section" style="background: var(--bg-warm);">
+  const typeGridHTML = `    <section class="cities-section" style="background: var(--pp-bg-warm);">
         <div class="container">
             <h2 class="section-title">Uitjes per type</h2>
             <p class="section-sub">Weet je al wat voor dag het wordt? Zoek direct op type uitje.</p>

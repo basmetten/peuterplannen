@@ -29,7 +29,9 @@
     "ops:briefs": "python3 .scripts/ops/generate_ops_briefs.py",
     "ops:content-freshness": "node .scripts/ops/auto-refresh-content.js",
     "ops:check-calendar": "node .scripts/ops/check-editorial-calendar.js",
-    "ops:seo-health": "node .scripts/ops/seo-health-check.js"
+    "ops:seo-health": "node .scripts/ops/seo-health-check.js",
+    "audit:tokens": "node .scripts/audit_design_tokens.js",
+    "audit:tokens:strict": "node .scripts/audit_design_tokens.js --strict"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

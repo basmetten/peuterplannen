@@ -5,6 +5,7 @@ on:
     branches: [main]
   schedule:
     - cron: '*/10 * * * *'
+    - cron: '0 3 * * 1'
   workflow_dispatch:
     inputs:
       force:
@@ -108,6 +109,14 @@ jobs:
         if: steps.gate.outputs.run_build == 'true'
         run: npm test
 
+      - name: Fetch new location photos
+        if: github.event.schedule == '0 3 * * 1'
+        run: node .scripts/pipeline/fetch-photos.js
+        env:
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
       - name: Build static site
         if: steps.gate.outputs.run_build == 'true'
         run: npm run build
@@ -150,6 +159,12 @@ jobs:
       - name: Design system audit
         if: steps.gate.outputs.run_build == 'true'
         run: node .scripts/audit_design_system.js --strict
+
+      - name: Design token compliance audit
+        if: steps.gate.outputs.run_build == 'true'
+        run: |
+          set -euo pipefail
+          node .scripts/audit_design_tokens.js --strict
 
       - name: Deploy to Cloudflare Worker (production)
         if: steps.gate.outputs.run_build == 'true'

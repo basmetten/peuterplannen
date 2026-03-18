@@ -37,64 +37,11 @@ function generatePartnerLanding(data) {
     ['Kan ik mijn openingstijden en beschrijving aanpassen?', 'Ja, zodra je je locatie hebt geclaimd kun je je beschrijving, highlights, openingstijden, foto en faciliteiten aanpassen via het partnerportaal.'],
   ];
 
-  const css = `
-    .vb-hero{padding:100px 24px 72px;text-align:center;background:linear-gradient(180deg,var(--pp-bg-warm) 0%,var(--pp-bg) 100%)}
-    .vb-hero h1{font-family:var(--pp-font-heading);font-size:clamp(28px,5.5vw,48px);color:var(--pp-text);line-height:1.08;letter-spacing:-.03em;margin:0 auto 18px;max-width:720px}
-    .vb-hero p{font-size:clamp(16px,2.5vw,20px);color:var(--pp-text-secondary);max-width:560px;margin:0 auto 32px;line-height:1.6}
-    .vb-hero-cta{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--pp-primary);color:#fff;border-radius:var(--pp-radius-xs);font-family:var(--pp-font-ui);font-size:16px;font-weight:600;text-decoration:none;transition:background var(--pp-transition),box-shadow var(--pp-transition)}
-    .vb-hero-cta:hover{background:var(--pp-primary-dark);box-shadow:0 8px 24px rgba(212,119,90,.3)}
-    .vb-hero-stat{display:inline-block;margin-top:24px;font-size:14px;color:var(--pp-text-muted);font-weight:500}
-    .vb-hero-stat strong{color:var(--pp-primary);font-weight:700}
-
-    .vb-section{max-width:var(--pp-max-width);margin:0 auto;padding:64px 24px}
-    .vb-section-title{font-family:var(--pp-font-heading);font-size:clamp(24px,4vw,36px);color:var(--pp-text);text-align:center;margin:0 0 12px;letter-spacing:-.02em}
-    .vb-section-sub{font-size:16px;color:var(--pp-text-secondary);text-align:center;max-width:520px;margin:0 auto 48px;line-height:1.6}
-
-    .vb-values{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;max-width:var(--pp-max-width);margin:0 auto;padding:0 24px 64px}
-    .vb-value{background:var(--pp-surface);border:1px solid var(--pp-border);border-radius:var(--pp-radius-md);padding:28px 24px;text-align:center;transition:transform var(--pp-transition),box-shadow var(--pp-transition)}
-    .vb-value:hover{transform:translateY(-3px);box-shadow:var(--pp-shadow-hover)}
-    .vb-value-icon{width:48px;height:48px;margin:0 auto 16px;background:var(--pp-primary-light);border-radius:var(--pp-radius-sm);display:flex;align-items:center;justify-content:center;color:var(--pp-primary)}
-    .vb-value h3{font-family:var(--pp-font-heading);font-size:20px;color:var(--pp-text);margin:0 0 8px}
-    .vb-value p{font-size:15px;color:var(--pp-text-secondary);line-height:1.6;margin:0}
-
-    .vb-tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;max-width:900px;margin:0 auto}
-    .vb-tier{background:var(--pp-surface);border:1px solid var(--pp-border);border-radius:var(--pp-radius-lg);padding:36px 28px;position:relative;text-align:center;transition:transform var(--pp-transition),box-shadow var(--pp-transition)}
-    .vb-tier:hover{transform:translateY(-3px);box-shadow:var(--pp-shadow-hover)}
-    .vb-tier-highlight{border-color:var(--pp-primary);box-shadow:0 0 0 1px var(--pp-primary),var(--pp-shadow-md)}
-    .vb-tier-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--pp-primary);color:#fff;font-size:12px;font-weight:700;padding:4px 14px;border-radius:var(--pp-radius-pill);white-space:nowrap}
-    .vb-tier-name{font-family:var(--pp-font-heading);font-size:22px;color:var(--pp-text);margin:8px 0 4px}
-    .vb-tier-price{font-family:var(--pp-font-heading);font-size:42px;color:var(--pp-text);font-weight:700;letter-spacing:-.02em}
-    .vb-tier-period{font-size:16px;color:var(--pp-text-muted);font-weight:400}
-    .vb-tier-features{list-style:none;padding:0;margin:24px 0;text-align:left}
-    .vb-tier-features li{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--pp-text-secondary);padding:6px 0;line-height:1.5}
-    .vb-tier-features li svg{flex-shrink:0;color:var(--pp-secondary);margin-top:2px}
-    .vb-tier-cta{display:block;padding:12px;border:1px solid var(--pp-border);border-radius:var(--pp-radius-xs);font-family:var(--pp-font-ui);font-size:15px;font-weight:600;color:var(--pp-text);text-decoration:none;transition:background var(--pp-transition),border-color var(--pp-transition)}
-    .vb-tier-cta:hover{background:var(--pp-surface-hover);border-color:var(--pp-border-strong)}
-    .vb-tier-cta-primary{background:var(--pp-primary);color:#fff;border-color:var(--pp-primary)}
-    .vb-tier-cta-primary:hover{background:var(--pp-primary-dark);border-color:var(--pp-primary-dark)}
-
-    .vb-social{background:var(--pp-bg-warm);padding:48px 24px;text-align:center;border-radius:var(--pp-radius-lg);max-width:800px;margin:0 auto 64px}
-    .vb-social p{font-family:var(--pp-font-heading);font-size:clamp(20px,3.5vw,28px);color:var(--pp-text);margin:0;line-height:1.3}
-    .vb-social strong{color:var(--pp-primary)}
-
-    .vb-faq{max-width:680px;margin:0 auto}
-    .vb-faq-item{border-bottom:1px solid var(--pp-border);padding:0}
-    .vb-faq-item summary{padding:20px 0;font-family:var(--pp-font-heading);font-size:17px;color:var(--pp-text);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
-    .vb-faq-item summary::-webkit-details-marker{display:none}
-    .vb-faq-item summary::after{content:'+';font-size:22px;color:var(--pp-text-muted);transition:transform var(--pp-transition)}
-    .vb-faq-item[open] summary::after{transform:rotate(45deg)}
-    .vb-faq-item p{padding:0 0 20px;font-size:15px;color:var(--pp-text-secondary);line-height:1.7;margin:0}
-
-    .vb-bottom-cta{text-align:center;padding:80px 24px;background:linear-gradient(180deg,var(--pp-bg) 0%,var(--pp-bg-warm) 100%)}
-    .vb-bottom-cta h2{font-family:var(--pp-font-heading);font-size:clamp(24px,4vw,36px);color:var(--pp-text);margin:0 0 16px;letter-spacing:-.02em}
-    .vb-bottom-cta p{font-size:16px;color:var(--pp-text-secondary);margin:0 0 28px}
-  `;
 
   const html = `<!DOCTYPE html>
 <html lang="nl">
 <head>
-${headCommon(`
-  <style>${css}</style>`)}
+${headCommon()}
   <title>Voor bedrijven \u2014 PeuterPlannen</title>
   <meta name="description" content="Beheer je locatie op PeuterPlannen. Claim je profiel, update je informatie en bereik meer gezinnen met kinderen in jouw regio.">
   <meta name="robots" content="index,follow">

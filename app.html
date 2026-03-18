@@ -97,10 +97,10 @@
     <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/design-system.css?v=202603180734">
-    <link rel="stylesheet" href="/app.css">
-    <link rel="stylesheet" href="/nav-floating.css?v=202603180734">
-    <script src="/nav-floating.js?v=202603180734" defer></script>
+    <link rel="stylesheet" href="/design-system.css?v=202603181111">
+    <link rel="stylesheet" href="/app.min.css">
+    <link rel="stylesheet" href="/nav-floating.min.css?v=202603181034">
+    <script src="/nav-floating.js?v=202603181111" defer></script>
 
 </head>
 <body>
@@ -209,7 +209,7 @@
             </div>
             <div class="search-input-wrapper">
                 <input type="text" id="location-input" class="search-input" placeholder="Typ je stad of adres..." value="" autocomplete="off" aria-label="Zoek locatie">
-                <button class="icon-btn" id="gps-btn" onclick="getCurrentLocation()" title="Gebruik mijn locatie" aria-label="Gebruik mijn locatie">
+                <button class="icon-btn" id="gps-btn" onclick="getCurrentLocation()" data-tooltip="Gebruik mijn locatie" aria-label="Gebruik mijn locatie">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg>
                 </button>
                 <button class="icon-btn primary" onclick="updateLocation()" aria-label="Zoeken">
@@ -341,7 +341,7 @@
 
         <div id="map-container" class="map-container hidden">
             <div id="map" class="map-canvas"></div>
-            <button class="map-recenter" onclick="fitMapToMarkers()" title="Alle locaties in beeld" aria-label="Alle locaties in beeld">
+            <button class="map-recenter" onclick="fitMapToMarkers()" data-tooltip="Alle locaties in beeld" data-tooltip-pos="left" aria-label="Alle locaties in beeld">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
             </button>
             <div id="map-no-results" class="map-no-results hidden">
@@ -464,7 +464,7 @@
           aria-label="E-mailadres voor nieuwsbrief">
         <button type="submit">Aanmelden</button>
       </form>
-      <p style="font-size:13px;opacity:0.85;margin-top:12px;">Geen spam. Uitschrijven wanneer je wilt.</p>
+      <p style="font-size:var(--pp-text-sm);opacity:0.85;margin-top:12px;">Geen spam. Uitschrijven wanneer je wilt.</p>
     </div>
 
     <section class="app-seo-content" aria-labelledby="app-seo-heading">
@@ -1377,8 +1377,8 @@
             throw lastError || new Error('Unknown fetch failure');
         }
 
-        const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url';
-        const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url';
+        const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_source';
+        const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_source';
 
         async function fetchAllPages(baseUrl, signal) {
             const BATCH = 1000;
@@ -1658,7 +1658,7 @@
                     usingCachedData = true;
                     fetchedLocations = cached.items;
                     error.classList.remove('hidden');
-                    error.innerHTML = `${cached.partial ? 'Live data laden lukte niet. Je ziet een recente beperkte versie.' : 'Live data laden lukte niet. Je ziet een recente opgeslagen versie.'} <button onclick="loadLocations()" style="margin-left:8px;padding:6px 16px;border-radius:8px;border:1px solid var(--primary);color:var(--primary);background:white;cursor:pointer;font-family:var(--font-body)">Probeer opnieuw</button>`;
+                    error.innerHTML = `${cached.partial ? 'Live data laden lukte niet. Je ziet een recente beperkte versie.' : 'Live data laden lukte niet. Je ziet een recente opgeslagen versie.'} <button onclick="loadLocations()" style="margin-left:8px;padding:6px 16px;border-radius:var(--pp-radius-xs);border:1px solid var(--pp-primary);color:var(--pp-primary);background:var(--pp-surface);cursor:pointer;font-family:var(--pp-font-body)">Probeer opnieuw</button>`;
                     console.warn('Using cached locations after load failure', fetchError);
                 }
                 allLocations = fetchedLocations;
@@ -1710,7 +1710,7 @@
                     updateMapMarkers(allLocations); updateResultsCount(allLocations.length);
                 }
                 if (!usingCachedData) error.classList.add('hidden');
-            } catch (e) { if (e.name === 'AbortError') return; console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.innerHTML = 'Kon data niet laden. <button onclick="loadLocations()" style="margin-left:8px;padding:6px 16px;border-radius:8px;border:1px solid var(--primary);color:var(--primary);background:white;cursor:pointer;font-family:var(--font-body)">Probeer opnieuw</button>'; }
+            } catch (e) { if (e.name === 'AbortError') return; console.error('Error:', e); loader.classList.add('hidden'); error.classList.remove('hidden'); error.innerHTML = 'Kon data niet laden. <button onclick="loadLocations()" style="margin-left:8px;padding:6px 16px;border-radius:var(--pp-radius-xs);border:1px solid var(--pp-primary);color:var(--pp-primary);background:var(--pp-surface);cursor:pointer;font-family:var(--pp-font-body)">Probeer opnieuw</button>'; }
         }
 
         // === Detail URL ===
@@ -2021,10 +2021,10 @@
                 const ps = computePeuterScore(item);
                 const psBase = ps - (item.is_featured && item.featured_until && new Date(item.featured_until) > new Date() ? 5 : 0);
                 const psColor = psBase >= 7 ? '#4A7A4A' : psBase >= 4 ? '#C07830' : '#9E9E9E';
-                const psBadge = `<span class="peuterscore" style="background:${psColor}18;color:${psColor};border:1px solid ${psColor}30" title="Peuterscore: ${psBase}/10">${psBase}★</span>`;
+                const psBadge = `<span class="peuterscore" style="background:${psColor}18;color:${psColor};border:1px solid ${psColor}30" data-tooltip="Peuterscore: ${psBase}/10">${psBase}★</span>`;
                 const isFeaturedNow = item.is_featured && item.featured_until && new Date(item.featured_until) > new Date();
                 const featuredBadge = isFeaturedNow ? `<span class="badge-featured">★ Aanbevolen</span>` : '';
-                const verifiedBadge = item.owner_verified ? `<span class="badge-verified" title="Geverifieerd door eigenaar">✓</span>` : '';
+                const verifiedBadge = item.owner_verified ? `<span class="badge-verified" data-tooltip="Geverifieerd door eigenaar">✓</span>` : '';
 
                 const ageInfo = (item.min_age !== null && item.max_age !== null) ?
                     `<span class="age-range">${item.min_age}-${item.max_age} jaar</span>` : '';
@@ -2039,6 +2039,17 @@
                 const quickFacts = getCardQuickFacts(item, travelInfo);
                 const supportingIsDuplicate = supportingCopy && decisionSentence && isNearDuplicateCopy(supportingCopy, decisionSentence);
 
+                const photoSrc = item.owner_photo_url || item.photo_url;
+                const cardImgHTML = photoSrc
+                    ? `<div class="loc-img">
+                        <img src="${escapeHtml(photoSrc)}"
+                             alt="${escapeHtml(item.name)}"
+                             loading="lazy" width="400" height="267"
+                             onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+                        <span class="loc-type-badge">${escapeHtml(typeLabel)}</span>
+                      </div>`
+                    : '';
+
                 const card = document.createElement('article');
                 card.className = 'loc-card reveal';
                 card.style.animationDelay = `${Math.min(batchIdx * 0.04, 0.2)}s`;
@@ -2047,6 +2058,7 @@
                     card.addEventListener('mouseleave', () => highlightMarker(null));
                 }
                 card.innerHTML = `
+                    ${cardImgHTML}
                     <div class="card-top">
                         <div class="card-pills">
                             ${featuredBadge}
@@ -2055,7 +2067,7 @@
                             ${distancePill}
                             ${psBadge}
                         </div>
-                        <button class="card-fav" onclick="toggleFavorite(${item.id}, this)" title="${isFav ? 'Verwijder favoriet' : 'Opslaan'}" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
+                        <button class="card-fav" onclick="toggleFavorite(${item.id}, this)" data-tooltip="${isFav ? 'Verwijder favoriet' : 'Opslaan'}" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
                             <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                         </button>
                     </div>
@@ -2081,7 +2093,7 @@
                             Route
                         </a>
                         ${safeUrl(item.website) ? `<a href="${safeUrl(item.website)}" target="_blank" rel="noopener" class="btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
-                        <button class="btn btn-share" title="Delen" aria-label="Deel ${escapeHtml(item.name)}">
+                        <button class="btn btn-share" data-tooltip="Delen" aria-label="Deel ${escapeHtml(item.name)}">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                         </button>
                     </div>
@@ -2551,7 +2563,7 @@
                         ${weatherLabel ? `<span class="pill pill-weather">${weatherIcon}${weatherLabel}</span>` : ''}
                         ${distancePill}
                     </div>
-                    <button class="card-fav" onclick="toggleFavoriteFromSheet(${loc.id}, this)" title="${isFav ? 'Verwijder favoriet' : 'Opslaan'}" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
+                    <button class="card-fav" onclick="toggleFavoriteFromSheet(${loc.id}, this)" data-tooltip="${isFav ? 'Verwijder favoriet' : 'Opslaan'}" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
                         <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                     </button>
                 </div>
@@ -2583,7 +2595,7 @@
                         Route
                     </a>
                     ${safeUrl(loc.website) ? `<a href="${safeUrl(loc.website)}" target="_blank" rel="noopener" class="btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
-                    <button class="btn btn-share" title="Delen" aria-label="Deel ${escapeHtml(loc.name)}">
+                    <button class="btn btn-share" data-tooltip="Delen" aria-label="Deel ${escapeHtml(loc.name)}">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                     </button>
                 </div>
@@ -2876,7 +2888,7 @@
                     <span class="age-slider-label">Kind ${i + 1}</span>
                     <input type="range" class="age-slider" min="0" max="6" value="${age}" oninput="updateChildAge(${i}, this.value); document.getElementById('age-val-${i}').textContent=this.value">
                     <span class="age-slider-val" id="age-val-${i}">${age}</span>
-                    <span style="font-size:12px;color:var(--text-muted);">jaar</span>
+                    <span style="font-size:var(--pp-text-xs);color:var(--pp-text-muted);">jaar</span>
                 </div>
             `).join('');
         }
@@ -3076,10 +3088,10 @@
                 } else if (planState.duration === 'half_day' || planState.duration === 'whole_day') {
                     stopsHtml += `
                         <div class="plan-stop">
-                            <div class="plan-stop-dot" style="background:var(--bg-warm);border:1.5px solid rgba(45,41,38,0.15);"></div>
+                            <div class="plan-stop-dot" style="background:var(--pp-bg-warm);border:1.5px solid rgba(var(--pp-text-rgb),0.15);"></div>
                             <div>
                                 <div class="plan-stop-label">Lunch · 12:00</div>
-                                <div class="plan-stop-name" style="font-weight:500;color:var(--text-secondary);">Eigen lunch meenemen</div>
+                                <div class="plan-stop-name" style="font-weight:500;color:var(--pp-text-secondary);">Eigen lunch meenemen</div>
                                 <div class="plan-stop-meta">Geen horecagelegenheid gevonden in de buurt</div>
                             </div>
                         </div>
@@ -3105,7 +3117,7 @@
                             <p>${wDesc} · ${planState.childAges.length === 1 ? '1 kind' : planState.childAges.length + ' kinderen'} (${planState.childAges.join(', ')} jr) · ${TRANSPORT_LABELS[planState.transport]} · ${locationEstimated ? 'Amsterdam (stel locatie in)' : escapeHtml(userLocation.name)}</p>
                         </div>
                         <div class="plan-timeline">${stopsHtml}</div>
-                        <div class="plan-ai-quote" id="plan-ai-text" style="color:var(--text-muted);">Beschrijving laden…</div>
+                        <div class="plan-ai-quote" id="plan-ai-text" style="color:var(--pp-text-muted);">Beschrijving laden…</div>
                         <div class="plan-actions">
                             <button class="btn" onclick="sharePlan()">
                                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>

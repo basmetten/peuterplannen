@@ -17,14 +17,36 @@ function locationHTML_city(loc) {
   const normalizedWebsite = normalizeExternalUrl(loc.website);
   const websiteLink = normalizedWebsite ? `<a href="${escapeHtml(normalizedWebsite)}" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van ${escapeHtml(loc.name)}">Website</a>` : '';
   const desc = isFillerDescription(loc.description) ? '' : (loc.description || '');
+  const photoSrc = loc.owner_photo_url || loc.photo_url;
+  const regionSlug = loc.regionSlug || loc.region;
+  const locSlug = loc.locSlug || slugify(loc.name);
+  const typeLabel = TYPE_LABELS_CITY[loc.type] || loc.type || '';
+  const imgHTML = photoSrc
+    ? `<div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/${regionSlug}/${locSlug}/thumb.webp" type="image/webp">
+          <img src="/images/locations/${regionSlug}/${locSlug}/thumb.jpg"
+               alt="${escapeHtml(loc.name)}"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
+        <span class="loc-type-badge">${escapeHtml(typeLabel)}</span>
+      </div>`
+    : `<div class="loc-img loc-img--fallback">
+        <span class="loc-type-badge">${escapeHtml(typeLabel)}</span>
+      </div>`;
   return `
       <article class="loc-item">
-        <h3><a href="${locationUrl}">${escapeHtml(loc.name)}</a></h3>
-        ${desc ? `<p>${escapeHtml(desc)}</p>` : ''}
-        ${badgeHTML(loc)}
-        <div class="loc-actions">
-          <a href="${locationUrl}" class="loc-detail-btn">Bekijk details</a>
-          ${websiteLink}
+        ${imgHTML}
+        <div class="loc-body">
+          <h3><a href="${locationUrl}">${escapeHtml(loc.name)}</a></h3>
+          ${desc ? `<p>${escapeHtml(desc)}</p>` : ''}
+          ${badgeHTML(loc)}
+          <div class="loc-actions">
+            <a href="${locationUrl}" class="loc-detail-btn">Bekijk details</a>
+            ${websiteLink}
+          </div>
         </div>
       </article>`;
 }

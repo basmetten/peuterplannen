@@ -1248,7 +1248,7 @@ Verwachte fix: alle badge-iconen (coffee, diaper, alcohol) in `html-shared.js` u
 
 ## FASE 9: SCROLL ANIMATIONS & VIEW TRANSITIONS
 
-**Status:** `TODO`
+**Status:** `DONE`
 **Agents:** `implementer` (design-system.css + pp-interactions.js)
 **Prioriteit:** MEDIUM-HOOG
 **Afhankelijk van:** Fase 7 (animations foundation)
@@ -1868,3 +1868,1947 @@ Elke visuele keuze is gegrond in het merk en de doelgroep:
 - Design system groeit mee: nieuwe pagina-types gebruiken dezelfde tokens
 - Color ramp maakt nieuwe kleuren trivial (bijv. een 9e type toevoegen)
 - Variable fonts maken nieuwe weight-variaties gratis (geen extra downloads)
+
+---
+---
+
+# FASE 2: VAN TOKENS NAAR TOEPASSING
+
+> **Doel:** De uitstekende design-system tokens uit Fase 1 (fasen 1-13) daadwerkelijk en volledig doorvoeren in de gehele codebase. Fase 1 bouwde het museum — Fase 2 laat de kunst uit de vitrine en hangt ze op.
+> **Bron:** Gap-analyse op basis van [Every UI/UX Concept Explained in Under 10 Minutes](https://www.youtube.com/watch?v=EcbgbKtOELY) (Kole Jain) + Anthropic Claude Code Best Practices Guide
+> **Datum:** 2026-03-18
+> **Eigenaar:** Bas Metten
+
+---
+
+## DIAGNOSE: WAAROM FASE 2 NODIG IS
+
+### Het museum-probleem
+
+`design-system.css` bevat een **professioneel, compleet token-systeem** (kleuren, typography, shadows, radii, spacing, icons, components). Maar `style.css` en `app.css` — de bestanden die daadwerkelijk de site renderen — **negeren dit systeem bijna volledig**:
+
+| Categorie | Gedefinieerd in design-system.css | Daadwerkelijk gebruikt in style.css + app.css |
+|-----------|-----------------------------------|----------------------------------------------|
+| Kleur-tokens (`--pp-primary-*`) | 30+ tokens | 0 directe referenties (alleen via aliases) |
+| `rgba()` hardcoded kleuren | — | **240+** handmatige waarden |
+| Font-size tokens (`--pp-text-*`) | 8 fluid stappen | **0** referenties — 140+ hardcoded `px` waarden |
+| Shadow tokens (`--pp-shadow-*`) | 10 contextuele tokens | **~5** referenties via aliases — 65+ handmatig |
+| Radius tokens (`--pp-radius-*`) | 6 tokens | **0** referenties — 85+ hardcoded `px` waarden |
+| Icon tokens (`--pp-icon-*`) | 5 tokens | **0** referenties — 17+ ad-hoc maten |
+| Component classes (`--pp-btn`, `.pp-card`, etc.) | 40+ classes | **~2** in productie-HTML |
+| `:active` states | Gedefinieerd op `.pp-btn` | **7 van 60** interactieve elementen |
+| `:focus-visible` (element-specifiek) | Op `.pp-btn`, `.pp-input` | **1 van 60** elementen |
+| `:disabled` states | Op `.pp-btn`, `.pp-input` | **1 van 60** elementen |
+
+### Radius-alias bug
+
+De backward-compatible radius aliases wijken af van de canonical tokens:
+
+```
+--radius-xs: 10px   maar  --pp-radius-xs: 8px
+--radius-sm: 14px   maar  --pp-radius-sm: 12px
+--radius-md: 18px   maar  --pp-radius-md: 16px
+--radius-lg: 24px   maar  --pp-radius-lg: 22px
+```
+
+Dit betekent dat code die `var(--radius-sm)` gebruikt een **andere** waarde krijgt dan `var(--pp-radius-sm)`. Twee waarheden = geen waarheid.
+
+### Grootste visueel gemis
+
+> "An image always adds a great pop of color and makes scanning super easy." — Video, 2:04
+
+**Geen enkele van de 2.138+ locatiekaarten heeft een afbeelding.** Er is zelfs een `owner_photo_url` veld in de database dat nooit gerenderd wordt. Dit is het #1 gemis qua visual hierarchy.
+
+---
+
+## ARCHITECTUURPRINCIPES FASE 2
+
+### 1. Token-first migratie
+
+Elke hardcoded waarde → canonical `--pp-*` token. Geen aliases, geen parallelle systemen. Na Fase 2 is `design-system.css` de **enige** plek waar visuele waarden gedefinieerd staan.
+
+### 2. RGB channel variables voor opacity-patronen
+
+Veel `rgba()` gebruik is bewust (transparante borders, shadows). In plaats van deze naar solid tokens te forceren, voegen we RGB channel variables toe:
+
+```css
+--pp-primary-rgb: 212, 119, 90;
+/* Gebruik: */
+border: 1px solid rgba(var(--pp-primary-rgb), 0.12);
+```
+
+### 3. Geen scope creep
+
+Fase 2 wijzigt **alleen bestaande styling** naar tokens. Geen nieuwe features, geen redesigns, geen refactors van HTML-structuur — behalve waar strict nodig (locatie-afbeeldingen, form feedback).
+
+### 4. Verificatie via geautomatiseerde audits
+
+Elke fase eindigt met een grep-audit die bevestigt dat hardcoded waarden zijn vervangen. De finale fase (23) integreert dit in CI.
+
+### 5. Claude Code executie-principes (uit Anthropic Best Practices Guide)
+
+- **Explore first, then plan, then code** — elke fase start met `researcher` die exact inventariseert wat er moet veranderen
+- **Give Claude a way to verify** — elke fase heeft expliciete `grep`-commando's en build-checks
+- **Use subagents for investigation** — research in aparte context, implementatie in schone sessie
+- **`/clear` tussen fasen** — voorkomt context-vervuiling
+- **Parallel sub-agents waar mogelijk** — onafhankelijke bestanden gelijktijdig bewerken
+- **Specifieke prompts** — exacte bestandspaden, selectoren, en verwachte output per sub-agent
+
+---
+
+## AFHANKELIJKHEIDSGRAAF FASE 2
+
+```
+FASE 14 (Location Imagery) ──── ONAFHANKELIJK ────────────┐
+                                                            │
+FASE 15 (RGB Channel Vars) ──────────────────────────┐     │
+                                                      ▼     │
+FASE 16 (Token Migratie: style.css) ─── PARALLEL ────┤     │
+FASE 17 (Token Migratie: app.css) ───────────────────┤     │
+                                                      ▼     │
+FASE 18 (Icon Sizing Harmonisatie) ──────────────────┤     │
+                                                      ▼     │
+FASE 19 (Interaction State Matrix) ── SEQUENTIEEL ───┤     │
+                                                      ▼     │
+FASE 20 (Button & Chip Padding) ─────────────────────┤     │
+                                                      ▼     │
+FASE 21 (Form Feedback & Ontbrekende Stijlen) ───────┤     │
+                                                      ▼     ▼
+FASE 22 (CSS Consolidatie & Performance) ────────────────────┤
+                                                              ▼
+FASE 23 (Compliance Audit & Verificatie)
+```
+
+### Sub-agent rolverdeling
+
+| Rol | Model | Tools | Wanneer |
+|-----|-------|-------|---------|
+| `researcher` | Sonnet (Explore) | Read, Grep, Glob | Vooraf: inventariseer alle hardcoded waarden met exacte line numbers |
+| `implementer` | Opus 4.6 | Edit, Write, Read, Bash | Uitvoering: vervang waarden per bestand volgens mapping |
+| `verifier` | Sonnet | Read, Bash, Grep | Achteraf: `npm run build` + grep-audit + visuele steekproef |
+
+---
+
+## FASE 14: LOCATION IMAGERY PIPELINE
+
+**Status:** `DONE`
+**Agents:** `researcher` (inventariseer image infrastructure) → `implementer` (pipeline + CSS + generators) → `verifier` (build + visuele check)
+**Prioriteit:** KRITIEK — dit is het #1 gemis qua visual hierarchy
+**Parallel met:** Fase 15 (geen gedeelde bestanden)
+
+### Achtergrond
+
+> "An image always adds a great pop of color and makes scanning super easy. [...] Images are used whenever possible." — Video, Visual Hierarchy (2:04)
+
+De video toont expliciet dat afbeeldingen het belangrijkste instrument zijn voor scanning en visual hierarchy. Peuterplannen heeft 2.138+ locatiekaarten die puur uit tekst bestaan. Geen thumbnails, geen foto's, geen visueel anker. Het `owner_photo_url` veld in de database wordt nooit gerenderd.
+
+### Fallback-hiërarchie
+
+```
+1. owner_photo_url (partner-geüpload, hoogste kwaliteit, gratis)
+2. Google Places Photo (geautomatiseerd via place_id, betrouwbaar)
+3. Type-specifieke placeholder illustratie (altijd beschikbaar, on-brand)
+```
+
+### Stappen
+
+#### 14.1 Nieuwe tokens in design-system.css
+
+**Bestand:** `design-system.css`
+
+```css
+/* === Image & Card Image === */
+--pp-img-aspect: 3 / 2;
+--pp-img-radius: var(--pp-radius-sm) var(--pp-radius-sm) 0 0;
+--pp-img-overlay-from: transparent;
+--pp-img-overlay-to: rgba(var(--pp-text-rgb), 0.55);
+```
+
+#### 14.2 Photo fetch script
+
+**Bestand:** `.scripts/pipeline/fetch-photos.js`
+
+**Logica:**
+
+1. Query Supabase voor locaties waar `photo_url IS NULL` en `place_id IS NOT NULL`
+2. Per locatie: Places Photo API → download eerste foto op 640px breedte
+3. Sharp: resize naar 2 formaten (400w + 800w), convert naar WebP (quality 80) + JPEG fallback (quality 75)
+4. Opslaan in `/images/locations/{region_slug}/{location_slug}/`
+5. Update `photo_url` veld in Supabase met relatief pad
+6. Rate limit: max 10 requests/seconde, 500 per batch run
+7. Skip locaties waar `owner_photo_url` al gevuld is (die hebben prioriteit)
+
+**Fallback image generatie:**
+
+Per type een aantrekkelijke placeholder (al bestaande category icons opschalen of SVG illustraties):
+
+```
+/images/placeholders/speeltuinen.webp
+/images/placeholders/kinderboerderijen.webp
+/images/placeholders/natuur.webp
+/images/placeholders/musea.webp
+/images/placeholders/zwemmen.webp
+/images/placeholders/pannenkoeken.webp
+/images/placeholders/horeca.webp
+/images/placeholders/cultureel.webp
+```
+
+Elke placeholder: 800x533 WebP, on-brand kleuren (type-kleur + illustratief).
+
+#### 14.3 Database schema uitbreiding
+
+**Bestand:** `supabase/migrations/` (nieuw migratiebestand)
+
+```sql
+ALTER TABLE locations ADD COLUMN IF NOT EXISTS photo_url TEXT;
+ALTER TABLE locations ADD COLUMN IF NOT EXISTS photo_source TEXT CHECK (photo_source IN ('owner', 'google', 'placeholder'));
+ALTER TABLE locations ADD COLUMN IF NOT EXISTS photo_fetched_at TIMESTAMPTZ;
+```
+
+#### 14.4 Card image CSS component
+
+**Bestand:** `design-system.css` (toevoegen aan components sectie)
+
+```css
+/* === Location Card Image === */
+.pp-card-img {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--pp-img-aspect);
+  border-radius: var(--pp-img-radius);
+  background: var(--pp-bg);
+}
+.pp-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--pp-transition-slow);
+}
+.pp-card-interactive:hover .pp-card-img img {
+  transform: scale(1.05);
+}
+.pp-card-img .pp-card-type-badge {
+  position: absolute;
+  bottom: var(--pp-space-sm);
+  left: var(--pp-space-sm);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: var(--pp-space-xs) var(--pp-space-sm);
+  border-radius: var(--pp-radius-xs);
+  font-family: var(--pp-font-ui);
+  font-size: var(--pp-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--pp-text);
+}
+```
+
+**Skeleton state:**
+
+```css
+.pp-card-img.pp-skeleton {
+  background: linear-gradient(
+    110deg,
+    var(--pp-bg) 30%,
+    var(--pp-bg-warm) 50%,
+    var(--pp-bg) 70%
+  );
+  background-size: 200% 100%;
+  animation: pp-shimmer 1.5s ease-in-out infinite;
+}
+```
+
+#### 14.5 City page generator update
+
+**Bestand:** `.scripts/lib/generators/city-pages.js`
+
+Huidige card template (regel ~15-29):
+
+```html
+<article class="loc-item">
+  <h3><a href="/${slug}/">${name}</a></h3>
+  <p>${description}</p>
+  <span class="badges">...</span>
+  <div class="loc-actions">...</div>
+</article>
+```
+
+**Nieuwe card template:**
+
+```html
+<article class="loc-item">
+  <div class="loc-img">
+    <picture>
+      <source srcset="/images/locations/${region}/${slug}/thumb.webp" type="image/webp">
+      <img src="/images/locations/${region}/${slug}/thumb.jpg"
+           alt="${name}"
+           loading="lazy"
+           width="400" height="267"
+           onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+    </picture>
+    <span class="loc-type-badge">${typeLabel}</span>
+  </div>
+  <div class="loc-body">
+    <h3><a href="/${slug}/">${name}</a></h3>
+    <p>${description}</p>
+    <span class="badges">...</span>
+    <div class="loc-actions">...</div>
+  </div>
+</article>
+```
+
+**Fallback CSS** (als foto niet laadt, toon type-kleur gradient):
+
+```css
+.loc-img--fallback {
+  background: linear-gradient(
+    135deg,
+    var(--pp-bg-warm) 0%,
+    var(--pp-primary-50) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loc-img--fallback img { display: none; }
+.loc-img--fallback::after {
+  content: '';
+  width: var(--pp-icon-xl);
+  height: var(--pp-icon-xl);
+  background: url('/images/categories/${type}.webp') center/contain no-repeat;
+  opacity: 0.4;
+}
+```
+
+#### 14.6 Location detail page hero image
+
+**Bestand:** `.scripts/lib/generators/location-pages.js`
+
+Voeg hero image toe boven de locatietitel met gradient overlay:
+
+```html
+<div class="hero-location-img">
+  <picture>
+    <source srcset="/images/locations/${region}/${slug}/hero.webp" type="image/webp">
+    <img src="/images/locations/${region}/${slug}/hero.jpg"
+         alt="${name}"
+         width="800" height="533"
+         fetchpriority="high">
+  </picture>
+  <div class="hero-location-overlay"></div>
+</div>
+```
+
+```css
+.hero-location-img {
+  position: relative;
+  width: 100%;
+  max-height: 400px;
+  overflow: hidden;
+}
+.hero-location-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-location-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(var(--pp-text-rgb), 0.55)
+  );
+}
+```
+
+#### 14.7 app.html card image rendering
+
+**Bestand:** `app.html`
+
+Update twee dingen:
+
+**A) Supabase SELECT strings uitbreiden.** `FULL_LOCATION_SELECT` en `FALLBACK_LOCATION_SELECT` (regel ~1380-1381) bevatten momenteel `owner_photo_url` maar NIET `photo_url` (die Fase 14.3 toevoegt). Voeg toe:
+
+```javascript
+// Na owner_photo_url toevoegen:
+// ...owner_photo_url,photo_url,photo_source...
+```
+
+**B) Card render functie updaten** om foto te tonen:
+
+```javascript
+// In de card render functie:
+const photoSrc = loc.owner_photo_url || loc.photo_url
+  || `/images/placeholders/${loc.type}.webp`;
+
+const imgHTML = `
+  <div class="loc-img">
+    <img src="${escapeHtml(photoSrc)}"
+         alt="${escapeHtml(loc.name)}"
+         loading="lazy" width="400" height="267">
+    <span class="loc-type-badge">${typeLabel}</span>
+  </div>`;
+```
+
+#### 14.8 Image optimalisatie in build pipeline
+
+**Bestand:** `.scripts/optimize_images.js` (uitbreiden)
+
+- Process `/images/locations/` directory
+- Generate 400w (card thumb) + 800w (detail hero) formaten
+- WebP + JPEG dual output
+- Quality: WebP 80, JPEG 75
+- Strip EXIF metadata
+- Toevoegen aan `.scripts/sync_all.js` orchestrator
+
+#### 14.9 CI/CD integratie
+
+**Bestand:** `.github/workflows/sync-site.yml`
+
+Photo fetch als optionele stap (weekly cadence, niet elke 10 min):
+
+```yaml
+- name: Fetch new location photos
+  if: github.event.schedule == '0 3 * * 1'  # Maandag 03:00
+  run: node .scripts/pipeline/fetch-photos.js
+  env:
+    GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+```
+
+### Verificatie
+
+- [ ] `find images/locations -name "*.webp" | wc -l` toont substantieel aantal foto's
+- [ ] City pages tonen afbeeldingen op alle locatiekaarten
+- [ ] Fallback placeholder zichtbaar voor locaties zonder foto
+- [ ] Location detail pages tonen hero image
+- [ ] app.html kaarten tonen afbeeldingen
+- [ ] Lighthouse performance score niet significant gedaald (lazy loading werkt)
+- [ ] `npm run build` slaagt zonder errors
+- [ ] WebP bestanden ≤ 40KB per thumbnail, ≤ 80KB per hero
+
+---
+
+## FASE 15: TOKEN FOUNDATION — RGB CHANNEL VARIABLES
+
+**Status:** `DONE`
+**Agents:** `implementer` (kleine, gerichte wijziging) → `verifier` (build)
+**Prioriteit:** KRITIEK — fundament voor Fase 16 + 17
+**Afhankelijk van:** Geen
+
+### Achtergrond
+
+`style.css` en `app.css` bevatten samen **240+ hardcoded `rgba()` waarden**. De meeste zijn opacity-varianten van drie basiskleuren: primary (#D4775A), text (#2D2926), en white (#FFFFFF). Om deze naar tokens te migreren zonder het opacity-gedrag te verliezen, hebben we RGB channel variables nodig.
+
+### Stappen
+
+#### 15.1 RGB channel variables toevoegen
+
+**Bestand:** `design-system.css` — toevoegen direct na de color ramp definities (na regel 23)
+
+```css
+/* === RGB Channels (for rgba() patterns) === */
+--pp-primary-rgb: 212, 119, 90;
+--pp-secondary-rgb: 107, 149, 144;
+--pp-accent-rgb: 232, 184, 112;
+--pp-text-rgb: 45, 41, 38;
+--pp-bg-rgb: 250, 247, 242;
+--pp-surface-rgb: 255, 255, 255;
+```
+
+#### 15.2 Ontbrekende semantic tokens toevoegen
+
+**Bestand:** `design-system.css` — toevoegen bij Surfaces sectie
+
+```css
+/* === Extended Surfaces === */
+--pp-surface-dark: #1e1c1a;
+--pp-surface-dark-rgb: 30, 28, 26;
+
+/* === Brand colors (external) === */
+--pp-brand-whatsapp: #25D366;
+--pp-brand-whatsapp-hover: #1ebe57;
+
+/* === Facility badge colors (mapped to type colors where possible) === */
+--pp-badge-coffee-bg: var(--pp-primary-50);       /* #FDF1ED */
+--pp-badge-coffee-text: var(--pp-primary-600);     /* #B35D42 */
+--pp-badge-alcohol-bg: var(--pp-accent-50);        /* #FEF6E8 ≈ #FEF8E7 */
+--pp-badge-alcohol-text: var(--pp-accent-800);     /* #7A5F2E ≈ #8B6914 */
+--pp-badge-diaper-bg: var(--pp-secondary-50);      /* #E8F2F0 ≈ #EEF3EC */
+--pp-badge-diaper-text: var(--pp-secondary-700);   /* #3A615D ≈ #5C7A52 */
+```
+
+**Let op kleurverschuivingen bij badges:**
+- **badge-coffee:** `#FDF1ED` → `--pp-primary-50` (`#FDF1ED`) — **exacte match**, geen verschil
+- **badge-alcohol:** `#FEF8E7` → `--pp-accent-50` (`#FEF6E8`) — **minimaal**, nauwelijks zichtbaar
+- **badge-diaper:** `#EEF3EC` → `--pp-secondary-50` (`#E8F2F0`) — **MERKBARE verschuiving** van groenig naar tealig. Tekst verschuift van olijfgroen (`#5C7A52`) naar donkerteal (`#3A615D`). **Alternatief:** definieer aparte `--pp-badge-diaper-bg: #EEF3EC` en `--pp-badge-diaper-text: #5C7A52` tokens die de huidige kleuren exact behouden, onafhankelijk van de secondary ramp. Dit is veiliger.
+
+#### 15.3 Radius-alias bug fixen
+
+**Bestand:** `design-system.css` — fix de backward-compatible radius aliases (regel 205-210)
+
+```css
+/* Oud (FOUT — wijkt af van canonical tokens): */
+--radius-xs: 10px;
+--radius-sm: 14px;
+--radius-md: 18px;
+--radius-lg: 24px;
+
+/* Nieuw (correct — verwijst naar canonical tokens): */
+--radius-xs: var(--pp-radius-xs);   /* 8px */
+--radius-sm: var(--pp-radius-sm);   /* 12px */
+--radius-md: var(--pp-radius-md);   /* 16px */
+--radius-lg: var(--pp-radius-lg);   /* 22px */
+```
+
+**Impact:** Dit verandert visueel de rounding op ~20 elementen in `app.css` die `var(--radius-*)` gebruiken. De verandering is subtiel (2-4px verschil) maar maakt het systeem consistent.
+
+### Verificatie
+
+- [ ] `grep -c 'pp-primary-rgb' design-system.css` ≥ 1
+- [ ] `grep -c 'pp-text-rgb' design-system.css` ≥ 1
+- [ ] `grep 'radius-xs:' design-system.css` toont `var(--pp-radius-xs)`, niet `10px`
+- [ ] `npm run build` slaagt
+- [ ] Geen visuele regressies op homepage, stadspagina's en app
+
+---
+
+## FASE 16: TOKEN MIGRATIE — style.css COMPLEET
+
+**Status:** `DONE`
+**Agents:** `researcher` (exact inventaris met line numbers) → `implementer` (search-and-replace per categorie) → `verifier` (grep-audit + build)
+**Prioriteit:** KRITIEK — style.css bepaalt hoe 2.200+ gegenereerde pagina's eruitzien
+**Afhankelijk van:** Fase 15
+
+### Achtergrond
+
+> "Good UI has many signifiers [...] the difference between small and big, or colorful and not, that actually creates the hierarchy." — Video, Visual Hierarchy
+
+`style.css` bevat **90+ hardcoded kleuren**, **60+ hardcoded font sizes**, **15+ handmatige shadows**, **25+ hardcoded radii**, en **30+ off-grid spacing waarden**. Alle moeten gemigreerd worden naar canonical `--pp-*` tokens.
+
+### Stappen
+
+#### 16.1 Kleurmigratie
+
+**Bestand:** `style.css`
+
+**Mapping-tabel `rgba(212, 119, 90, X)` → `rgba(var(--pp-primary-rgb), X)`:**
+
+Vervang ELKE instantie van `rgba(212,119,90,...)` (met of zonder spaties) door `rgba(var(--pp-primary-rgb), <opacity>)`. Exacte instanties:
+
+| Huidige waarde | Nieuwe waarde | Voorbeeldselectoren |
+|---|---|---|
+| `rgba(212,119,90,0.08)` | `rgba(var(--pp-primary-rgb), 0.08)` | `.guide-kicker`, `.editorial-meta span`, `.coverage-chip` |
+| `rgba(212,119,90,0.10)` | `rgba(var(--pp-primary-rgb), 0.10)` | `.loc-item` border |
+| `rgba(212,119,90,0.12)` | `rgba(var(--pp-primary-rgb), 0.12)` | `nav` border, `.guide-card` border, `.guide-pill` border |
+| `rgba(212,119,90,0.14)` | `rgba(var(--pp-primary-rgb), 0.14)` | `.editorial-meta a:hover`, `.coverage-chip` border |
+| `rgba(212,119,90,0.15)` | `var(--pp-border)` | `.nav-links-box .divider`, `.location-info` |
+| `rgba(212,119,90,0.24)` | `rgba(var(--pp-primary-rgb), 0.24)` | `.editorial-support-links a:hover` border |
+| `rgba(212,119,90,0.25)` | `rgba(var(--pp-primary-rgb), 0.25)` | `.guide-link:hover` border |
+| `rgba(212,119,90,0.30)` | `var(--pp-border-strong)` | — |
+| `rgba(212,119,90,0.32)` | `rgba(var(--pp-primary-rgb), 0.32)` | `.editorial-body a` border |
+| `rgba(212,119,90,0.40)` | `rgba(var(--pp-primary-rgb), 0.40)` | `.cta-block a:hover` shadow |
+| `rgba(212,119,90,0.60)` | `rgba(var(--pp-primary-rgb), 0.60)` | `.editorial-body a:hover` border |
+| `rgba(212,119,90,0.95)` | `rgba(var(--pp-primary-rgb), 0.95)` | `.guide-card-lead::before` gradient |
+
+**Mapping-tabel `rgba(45, 41, 38, X)` → `rgba(var(--pp-text-rgb), X)`:**
+
+| Huidige waarde | Nieuwe waarde | Voorbeeldselectoren |
+|---|---|---|
+| `rgba(45,41,38,0.05)` | `rgba(var(--pp-text-rgb), 0.05)` | `.nav-link:hover`, `.intro-box` shadow |
+| `rgba(45,41,38,0.06)` | `rgba(var(--pp-text-rgb), 0.06)` | `.loc-item` shadow, `.editorial-support-card` shadow |
+| `rgba(45,41,38,0.07)` | `rgba(var(--pp-text-rgb), 0.07)` | `.guide-card` shadow |
+| `rgba(45,41,38,0.08)` | `rgba(var(--pp-text-rgb), 0.08)` | `.intro-box` border, `.guide-link:hover` shadow |
+| `rgba(45,41,38,0.10)` | `rgba(var(--pp-text-rgb), 0.10)` | `.type-section h2` border, `.loc-item:hover` shadow |
+| `rgba(45,41,38,0.12)` | `rgba(var(--pp-text-rgb), 0.12)` | `.faq-item:hover` shadow |
+| `rgba(45,41,38,0.18)` | `rgba(var(--pp-text-rgb), 0.18)` | `.skip-link:focus-visible` shadow |
+| `rgba(45,41,38,0.25)` | `rgba(var(--pp-text-rgb), 0.25)` | `.nav-cta:hover` shadow |
+
+**Mapping-tabel `rgba(255, 255, 255, X)` → `rgba(var(--pp-surface-rgb), X)`:**
+
+| Huidige waarde | Nieuwe waarde |
+|---|---|
+| `rgba(255,255,255,0.07)` | `rgba(var(--pp-surface-rgb), 0.07)` |
+| `rgba(255,255,255,0.12)` | `rgba(var(--pp-surface-rgb), 0.12)` |
+| `rgba(255,255,255,0.14)` | `rgba(var(--pp-surface-rgb), 0.14)` |
+| `rgba(255,255,255,0.15)` | `rgba(var(--pp-surface-rgb), 0.15)` |
+| `rgba(255,255,255,0.18)` | `rgba(var(--pp-surface-rgb), 0.18)` |
+| `rgba(255,255,255,0.25)` | `rgba(var(--pp-surface-rgb), 0.25)` |
+| `rgba(255,255,255,0.30)` | `rgba(var(--pp-surface-rgb), 0.30)` |
+| `rgba(255,255,255,0.50)` | `rgba(var(--pp-surface-rgb), 0.50)` |
+| `rgba(255,255,255,0.60)` | `rgba(var(--pp-surface-rgb), 0.60)` |
+| `rgba(255,255,255,0.75)` | `rgba(var(--pp-surface-rgb), 0.75)` |
+| `rgba(255,255,255,0.85)` | `rgba(var(--pp-surface-rgb), 0.85)` |
+| `rgba(255,255,255,0.86)` | `rgba(var(--pp-surface-rgb), 0.86)` |
+| `rgba(255,255,255,0.92)` | `rgba(var(--pp-surface-rgb), 0.92)` |
+| `rgba(255,255,255,0.95)` | `rgba(var(--pp-surface-rgb), 0.95)` |
+| `rgba(255,255,255,0.98)` | `rgba(var(--pp-surface-rgb), 0.98)` |
+| `rgba(255,255,255,0.99)` | `rgba(var(--pp-surface-rgb), 0.99)` |
+| `#fff` | `var(--pp-text-inverse)` |
+
+**Mapping-tabel `rgba(250, 212, 160, X)`:**
+
+| Huidige waarde | Nieuwe waarde | Toelichting |
+|---|---|---|
+| `rgba(250,212,160,0.18)` | Nieuw token: `--pp-hero-blog-glow-rgb: 250, 212, 160` → `rgba(var(--pp-hero-blog-glow-rgb), 0.18)` | `rgb(250,212,160)` ≠ accent-rgb (`232,184,112`). Peach/gold tint die specifiek is voor hero-blog. Definieer als apart token in design-system.css |
+
+**Mapping solid hex kleuren:**
+
+| Huidige waarde | Token | Context |
+|---|---|---|
+| `#C46050` | Nieuw token: `--pp-primary-450: #C46050` of gebruik `var(--pp-primary-500)` (`#C46A4F`, Δ26 green channel — acceptabele shift in gradient context) | Hero gradient stop |
+| `#B55A45` | Nieuw token: `--pp-primary-550: #B55A45` of gebruik `var(--pp-primary-600)` (`#B35D42`, minimaal verschil) | Hero gradient stop |
+| `#D4775A` | `var(--pp-primary)` | Direct primary reference |
+| `#a75a46` | `var(--pp-primary-600)` | `.hero-blog` gradient |
+| `#36241d` | `var(--pp-primary-900)` | `.hero-blog` gradient |
+| `#d4775a` | `var(--pp-primary)` | `.hero-blog` gradient |
+| `#1e1c1a` | `var(--pp-surface-dark)` | `footer` background |
+| `#25D366` | `var(--pp-brand-whatsapp)` | `.share-wa` |
+| `#1ebe57` | `var(--pp-brand-whatsapp-hover)` | `.share-wa:hover` |
+| `#756762` | Nieuw token: `--pp-text-tertiary: #756762` (NIET text-muted `#A39490` — dat is veel lichter) | `.blog-excerpt` |
+| `#FDF1ED` | `var(--pp-badge-coffee-bg)` | `.badge-coffee` |
+| `#B35D42` | `var(--pp-badge-coffee-text)` | `.badge-coffee` |
+| `#FEF8E7` | `var(--pp-badge-alcohol-bg)` | `.badge-alcohol` |
+| `#8B6914` | `var(--pp-badge-alcohol-text)` | `.badge-alcohol` |
+| `#EEF3EC` | `var(--pp-badge-diaper-bg)` | `.badge-diaper` |
+| `#5C7A52` | `var(--pp-badge-diaper-text)` | `.badge-diaper` |
+| `#6B9590` | `var(--pp-secondary)` | `.support-section` gradient |
+| `#4A7A76` | `var(--pp-secondary-dark)` | `.support-section` gradient |
+| `rgba(107,149,144,0.30)` | `rgba(var(--pp-secondary-rgb), 0.30)` | `.btn-support:hover` shadow |
+| `#f5e0da` | Nieuw token: `--pp-primary-75: #f5e0da` (tussenwaarde primary-50/100 — `--pp-primary-100` is `#FBDDD2`, te anders) | `.share-native:hover` |
+| `#f0e8dc` | Nieuw token: `--pp-bg-muted: #f0e8dc` (NIET bg-warm `#FFF5EB` — dat is significant lichter/warmer) | `.error-links a.secondary:hover` |
+| `#f0f0f0` | Nieuw token: `--pp-surface-neutral: #f0f0f0` (NIET surface-hover `#FEFCF9` — dat is warm wit, dit is neutraal grijs. Hover zou onzichtbaar worden op witte achtergrond) | `.newsletter-signup button:hover` |
+| `rgba(250,247,242,0.96)` | `rgba(var(--pp-bg-rgb), 0.96)` | `nav` background |
+| `rgba(250,247,242,0.98)` | `rgba(var(--pp-bg-rgb), 0.98)` | `.nav-mobile` background |
+| `#1a1714` | Nieuw token: `--pp-text-pressed: #1a1714` (donkerder dan `--pp-text` voor pressed/hover states) | `.nav-cta:hover`, `.loc-detail-btn:hover` |
+| `#1da851` | `var(--pp-brand-whatsapp-hover)` (of nieuw token `--pp-brand-whatsapp-active: #1da851` als er 3 WhatsApp shades nodig zijn) | `.share-whatsapp:hover` (blog share variant) |
+
+#### 16.2 Typografiemigratie
+
+**Bestand:** `style.css`
+
+**Mapping-tabel hardcoded font sizes → tokens:**
+
+| Huidige `px` | Token | Selectoren (voorbeelden) |
+|---|---|---|
+| `11px` | `var(--pp-text-xs)` | `.loc-region`, `.map-attribution` |
+| `12px` | `var(--pp-text-xs)` | `.hero-kicker`, `.guide-pill`, `.badge-pill`, `.coverage-chip`, `.info-label`, `.footer-copy`, `.hero-location-badge` |
+| `13px` | `var(--pp-text-sm)` | `.hero-stat span`, `.nav-cta`, `.loc-detail-btn`, `.loc-website-btn`, `.editorial-meta`, `.guide-link span` |
+| `14px` | `var(--pp-text-sm)` | `.nav-link`, `.logo-text`, `.skip-link`, `.breadcrumb`, `.loc-item p`, `.editorial-support-card p`, `.editorial-support-links a strong`, `.faq-item p`, `.nav-links-box h3/a`, `.info-value`, `.blog-meta`, `.error-tip` |
+| `15px` | `var(--pp-text-sm)` | `.guide-card p`, `.guide-link strong`, `.faq-item summary`, `.support-section p`, `.cta-block p`, `.location-highlight`. **Let op:** `--pp-text-sm` = 14px@1440px, `--pp-text-base` = 17px@1440px. Snap naar sm (1px kleiner) is minder disruptief dan base (2px groter). Visueel controleren na migratie. |
+| `16px` | `var(--pp-text-base)` | `.intro-box p`, `.nav-mobile-link`, `.location-subtitle`, `.location-description`, `.blog-content p`, `.error-page p` |
+| `17px` | `var(--pp-text-lg)` | `.hero p`, `.loc-item h3`, `.editorial-body p/li` |
+| `18px` | `var(--pp-text-lg)` | `.nav-logo`, `.editorial-support-card h3` |
+| `20px` | `var(--pp-text-xl)` | `.similar-locations h2`, `.support-section h3` |
+| `22px` | `var(--pp-text-xl)` | `.guide-card h3`, `.faq-section h2` |
+| `30px` | `var(--pp-text-2xl)` | `.hero-stat strong` |
+| `80px` | `var(--pp-text-4xl)` | `.error-emoji` |
+
+**Clamp-waarden:**
+
+| Huidige clamp | Token |
+|---|---|
+| `clamp(34px, 5.4vw, 66px)` | `var(--pp-text-4xl)` |
+| `clamp(34px, 5vw, 56px)` | `var(--pp-text-3xl)` |
+| `clamp(30px, 3vw, 40px)` | `var(--pp-text-2xl)` |
+| `clamp(28px, 3vw, 38px)` | `var(--pp-text-2xl)` |
+| `clamp(24px, 2.6vw, 32px)` | `var(--pp-text-xl)` |
+| `clamp(22px, 2.3vw, 28px)` | `var(--pp-text-xl)` |
+| `clamp(40px, 6vw, 76px)` | Behouden als custom clamp (`.hero-blog-title` — bewust groter dan standaard hero) |
+| `clamp(32px, 5vw, 52px)` | `var(--pp-text-3xl)` (`.location-header h1`) |
+| `clamp(72px, 16vw, 120px)` | Behouden als custom clamp (`.error-page h1` — bewust gigantisch, decoratief) |
+
+**Aanpak:** Aangezien de `clamp()` waarden in `style.css` iets afwijken van de design-system clamps, snap we naar de dichtstbijzijnde `--pp-text-*` token. Het resultaat is een fluid range in plaats van een vaste px-waarde, wat beter is voor responsive design.
+
+**Uitzondering:** De 404-pagina h1 (`clamp(72px, 16vw, 120px)`) is opzettelijk gigantisch. Definieer hiervoor een lokale custom property:
+
+```css
+.error-page h1 {
+  font-size: clamp(72px, 16vw, 120px); /* bewust buiten het type-systeem */
+}
+```
+
+#### 16.3 Shadowmigratie
+
+**Bestand:** `style.css`
+
+**Mapping-tabel:**
+
+| Huidige shadow | Token | Selectoren |
+|---|---|---|
+| `0 1px 3px rgba(..., 0.08)` | `var(--pp-shadow-sm)` | `.intro-box`, `.blog-card` (base) |
+| `0 1px 4px rgba(..., 0.05/0.06)` | `var(--pp-shadow-sm)` | `.intro-box`, `.loc-item` |
+| `0 4px 12px rgba(..., 0.07/0.08/0.10)` | `var(--pp-shadow-md)` | `.loc-item`, `.guide-card` |
+| `0 4px 14px rgba(..., 0.25)` | `var(--pp-shadow-md)` | `.nav-cta:hover` |
+| `0 4px 16px rgba(..., 0.40)` | `var(--pp-shadow-md)` | `.cta-block a:hover` |
+| `0 6px 20px rgba(..., 0.12)` | `var(--pp-shadow-md)` | `.faq-item:hover` |
+| `0 8px 24px rgba(...)` | `var(--pp-shadow-lg)` | `.blog-card` (base, 2nd layer) |
+| `0 10px 18px rgba(...)` | `var(--pp-shadow-lg)` | `.editorial-support-links a:hover` |
+| `0 10px 20px rgba(...)` | `var(--pp-shadow-lg)` | `.guide-link:hover` |
+| `0 10px 26px rgba(...)` | `var(--pp-shadow-lg)` | `.guide-card` |
+| `0 10px 30px rgba(...)` | `var(--pp-shadow-lg)` | `.skip-link:focus-visible` |
+| `0 12px 26px rgba(...)` | `var(--pp-shadow-lg)` | `.editorial-support-card` |
+| `0 12px 28px rgba(...)` | `var(--pp-shadow-card-hover)` | `.loc-item:hover` |
+| `0 14px 32px rgba(...)` | `var(--pp-shadow-card-hover)` | `.blog-card:hover` |
+| `0 16px 36px rgba(...)` | `var(--pp-shadow-hover)` | `.editorial-body` |
+| Dubbele shadow combinaties | `var(--pp-shadow-card)` / `var(--pp-shadow-card-hover)` | `.loc-item`, `.blog-card` |
+
+**Aanpak:** Vervang compound shadows (meerdere lagen) door het dichtstbijzijnde context-specifieke token. Waar de huidige shadow bewust sterker of subtieler is dan het token, accepteer het token als de nieuwe standaard voor consistentie.
+
+#### 16.4 Radiusmigratie
+
+**Bestand:** `style.css`
+
+**Mapping-tabel:**
+
+| Huidige waarde | Token | Selectoren |
+|---|---|---|
+| `6px` | `var(--pp-radius-xs)` | `*:focus-visible`, `.nav-link` |
+| `7px` | `var(--pp-radius-xs)` | — (snap naar 8px) |
+| `8px` | `var(--pp-radius-xs)` | `.nav-cta`, `.loc-detail-btn`, `.loc-website-btn` |
+| `9px` | `var(--pp-radius-xs)` | — (snap naar 8px) |
+| `10px` | `var(--pp-radius-sm)` | `.faq-item`, `.btn-route` |
+| `12px` | `var(--pp-radius-sm)` | `.intro-box` |
+| `14px` | `var(--pp-radius-sm)` | `.loc-item` (snap naar 12px) |
+| `16px` | `var(--pp-radius-md)` | `.guide-card`, `.newsletter-signup` |
+| `18px` | `var(--pp-radius-md)` | `.blog-card` (snap naar 16px) |
+| `20px` | `var(--pp-radius-lg)` | — (snap naar 22px) |
+| `24px` | `var(--pp-radius-lg)` | `.hero` (snap naar 22px) |
+| `999px` | `var(--pp-radius-pill)` | Pills, badges |
+
+#### 16.5 Spacing alignment naar 4pt grid
+
+**Bestand:** `style.css`
+
+Alle off-grid waarden snappen naar het dichtstbijzijnde punt op het 4pt grid:
+
+| Huidige | Snap naar | Selectoren |
+|---|---|---|
+| `7px` | `8px` / `var(--pp-space-sm)` | `.badge-pill`, `.loc-detail-btn`, `.guide-pill`, `.editorial-meta span`, `.coverage-chip`, `.hero-location-badge` |
+| `10px` | `8px` of `12px` | `.guide-kicker` padding |
+| `11px` | `12px` | `.guide-pill` padding-right |
+| `13px` | `12px` of `16px` | `.cta-block a` padding |
+| `14px` | `16px` / `var(--pp-space-md)` | `.loc-item` padding, `.guide-link` padding, `.editorial-support-links a` padding |
+| `15px` | `16px` | Diverse paddings |
+| `17px` | `16px` | — |
+| `18px` | `16px` of `20px` | `.hero-blog-meta` margin, `.editorial-meta` margin, `.editorial-support-card` padding |
+| `22px` | `24px` / `var(--pp-space-lg)` | `.loc-item` padding, `.guide-card-lead` padding |
+| `26px` | `24px` | `.guide-card-lead` padding-bottom |
+| `28px` | `32px` / `var(--pp-space-xl)` | `.cta-block p` margin |
+| `30px` | `32px` | `.editorial-body` padding |
+| `34px` | `32px` | `.editorial-meta span` min-height |
+| `54px` | `48px` / `var(--pp-space-2xl)` | `.hero-blog` padding-bottom |
+| `60px` | `64px` / `var(--pp-space-3xl)` | `.nav-inner` height |
+
+**Aanpak:** Gebruik `var(--pp-space-*)` tokens waar de waarde een veelvoud van een grid-stap is. Gebruik anders de dichtstbijzijnde waarde in `px`.
+
+#### 16.6 Backward-compatible alias referenties vervangen
+
+**Bestand:** `style.css`
+
+Na de bovenstaande migraties: vervang alle resterende `var(--text-muted)`, `var(--navy)`, `var(--primary)`, etc. door canonical `var(--pp-*)` equivalenten. Gebruik `replace_all`:
+
+| Alias | Canonical |
+|---|---|
+| `var(--font-heading)` | `var(--pp-font-heading)` |
+| `var(--font-body)` | `var(--pp-font-body)` |
+| `var(--font-accent)` | `var(--pp-font-accent)` |
+| `var(--font-ui)` | `var(--pp-font-ui)` |
+| `var(--navy)` | `var(--pp-text)` |
+| `var(--navy-light)` | `var(--pp-text-secondary)` |
+| `var(--primary)` | `var(--pp-primary)` |
+| `var(--primary-light)` | `var(--pp-primary-light)` |
+| `var(--primary-dark)` | `var(--pp-primary-dark)` |
+| `var(--accent)` | `var(--pp-accent)` |
+| `var(--accent-light)` | `var(--pp-accent-light)` |
+| `var(--secondary)` | `var(--pp-secondary)` |
+| `var(--bg)` | `var(--pp-bg)` |
+| `var(--bg-cream)` | `var(--pp-bg-cream)` |
+| `var(--bg-warm)` | `var(--pp-bg-warm)` |
+| `var(--surface)` | `var(--pp-surface)` |
+| `var(--text)` | `var(--pp-text)` |
+| `var(--text-secondary)` | `var(--pp-text-secondary)` |
+| `var(--text-muted)` | `var(--pp-text-muted)` |
+| `var(--card-shadow)` | `var(--pp-shadow-md)` |
+| `var(--shadow-sm)` | `var(--pp-shadow-sm)` |
+| `var(--shadow-md)` | `var(--pp-shadow-md)` |
+| `var(--shadow-lg)` | `var(--pp-shadow-lg)` |
+| `var(--shadow-hover)` | `var(--pp-shadow-hover)` |
+
+#### 16.7 nav-floating.css migratie
+
+**Bestand:** `nav-floating.css`
+
+Dit bestand bevat ~20 hardcoded waarden en unprefixed aliases die MOETEN gemigreerd worden VOORDAT Fase 22.4 de aliases verwijdert.
+
+**Alias-migratie:**
+
+| Huidig | Nieuw |
+|---|---|
+| `var(--navy, #2d2926)` | `var(--pp-text)` |
+| `var(--primary, #d4775a)` | `var(--pp-primary)` |
+| `var(--ink-light, #7a5e60)` | `var(--pp-text-secondary)` |
+| `var(--primary-dark, #b35d42)` | `var(--pp-primary-dark)` |
+| `var(--primary-light, #fdf1ed)` | `var(--pp-primary-light)` |
+| `var(--ink, var(--text, #2d2926))` | `var(--pp-text)` |
+| `var(--text, #2d2926)` | `var(--pp-text)` |
+| `#fff` | `var(--pp-text-inverse)` |
+
+**Kleurmigratie:**
+
+| Huidig | Nieuw | Toelichting |
+|---|---|---|
+| `rgba(255, 251, 246, X)` | `rgba(var(--pp-bg-rgb), X)` | Let op: `#FFFBF6` wijkt licht af van `--pp-bg` (#FAF7F2). Als het verschil te groot is, definieer `--pp-nav-bg-rgb: 255, 251, 246` als nav-specifiek token |
+| `rgba(212, 119, 90, X)` | `rgba(var(--pp-primary-rgb), X)` | Direct match |
+| `rgba(45, 41, 38, X)` | `rgba(var(--pp-text-rgb), X)` | Direct match |
+
+**Aanpak:** Researcher inventariseert exact; implementer vervangt. Verwijder alle inline CSS fallback waarden (de `var(--navy, #2d2926)` pattern) — na migratie naar canonical tokens zijn fallbacks overbodig.
+
+### Verificatie
+
+```bash
+# Geen hardcoded rgba() meer (max 5 uitzonderingen voor gradient stops)
+grep -cP 'rgba\(\d+\s*,' style.css
+# Verwacht: ≤ 5
+
+# Geen hardcoded px font-sizes meer (behalve 404 hero)
+grep -cP 'font-size:\s*\d+px' style.css
+# Verwacht: ≤ 2
+
+# Geen hardcoded shadow waarden meer
+grep -cP 'box-shadow:\s*\d' style.css
+# Verwacht: 0
+
+# Geen unprefixed aliases meer
+grep -cP 'var\(--(?!pp-)[a-z]' style.css
+# Verwacht: 0
+
+# Geen hardcoded border-radius meer
+grep -cP 'border-radius:\s*\d+px' style.css
+# Verwacht: ≤ 3
+
+# Build + audit
+npm run build
+```
+
+---
+
+## FASE 17: TOKEN MIGRATIE — app.html INLINE CSS COMPLEET
+
+**Status:** `DONE`
+**Agents:** `researcher` (inventariseer inline CSS in app.html) → `implementer` (migreer) → `verifier` (grep-audit + build)
+**Prioriteit:** KRITIEK — de app-ervaring voor alle gebruikers
+**Parallel met:** Fase 16 (verschillende bestanden, zelfde aanpak)
+**Afhankelijk van:** Fase 15
+
+### Achtergrond
+
+**Let op: `app.css` is GEEN apart bestand.** De ~68KB aan app-specifieke CSS staat als inline `<style>` blok in `app.html` (het HTML bestand is ~185KB / 3.281 regels totaal, waarvan ~1.070 regels CSS). Dit is relevant voor de implementatie: je bewerkt `app.html`, niet een los `.css` bestand.
+
+De inline CSS bevat dezelfde problemen als `style.css` maar op grotere schaal: **150+ hardcoded kleuren**, **80+ hardcoded font sizes**, **50+ handmatige shadows**, **60+ hardcoded radii**. De aanpak is identiek aan Fase 16.
+
+**Extra aandachtspunt: inline styles op HTML-elementen.** `app.html` bevat ook ~14 inline `style="..."` attributen op HTML-elementen, waaronder dynamisch gegenereerde kleuren via JavaScript template literals (bijv. peuterscore badges: `` style="background:${psColor}18;color:${psColor}" ``). Deze zijn NIET migreerbaar via CSS tokens en vereisen JS-refactoring:
+
+```javascript
+// Oud (hardcoded inline style):
+style="background:${psColor}18;color:${psColor};border:1px solid ${psColor}30"
+
+// Nieuw (CSS class + custom property):
+style="--ps-color:${psColor}"
+// Met CSS:
+// .peuterscore-badge { background: rgba(var(--ps-color-rgb), 0.09); color: var(--ps-color); }
+```
+
+Dit is een edge case die extra aandacht vereist in de implementatie.
+
+### Stappen
+
+#### 17.1 Kleurmigratie
+
+Exact dezelfde mapping-tabellen als Fase 16.1, toegepast op `app.css`. De `rgba()` patronen zijn identiek (zelfde basiskleuren met andere opacities). Gebruik `researcher` sub-agent om exacte line numbers te inventariseren.
+
+#### 17.2 Typografiemigratie
+
+Zelfde mapping als Fase 16.2. Extra font sizes die specifiek in app.css voorkomen:
+
+| Huidige `px` | Token | Context |
+|---|---|---|
+| `10px` | `var(--pp-text-xs)` | `.bnav-item` labels |
+| `11px` | `var(--pp-text-xs)` | `.pill-weather`, `.facility` labels |
+| `12px` | `var(--pp-text-xs)` | `.preset-chip`, `.filter-count` |
+| `13px` | `var(--pp-text-sm)` | `.plan-location-chip`, `.plan-chip`, `.filter-panel-toggle` |
+| `14px` | `var(--pp-text-sm)` | `.btn`, `.detail-back`, `.promo-cta` |
+| `15px` | `var(--pp-text-base)` | `.info-link`, `.detail-btn-route` |
+| `18px` | `var(--pp-text-lg)` | `.loc-card h3` |
+| `22px` | `var(--pp-text-xl)` | `.info-close`, `.info-title` |
+
+#### 17.3 Shadow, radius en spacing migratie
+
+Identieke aanpak als Fase 16.3-16.5. `researcher` agent inventariseert; `implementer` vervangt.
+
+#### 17.4 Backward-compatible alias referenties vervangen
+
+Zelfde mapping-tabel als Fase 16.6, toegepast op `app.css`.
+
+### Verificatie
+
+Zelfde grep-commando's als Fase 16, maar op `app.css`:
+
+```bash
+grep -cP 'rgba\(\d+\s*,' app.css        # verwacht: ≤ 5
+grep -cP 'font-size:\s*\d+px' app.css   # verwacht: 0
+grep -cP 'box-shadow:\s*\d' app.css      # verwacht: 0
+grep -cP 'var\(--(?!pp-)[a-z]' app.css  # verwacht: 0
+grep -cP 'border-radius:\s*\d+px' app.css  # verwacht: ≤ 3
+npm run build
+```
+
+---
+
+## FASE 18: ICON SIZING HARMONISATIE
+
+**Status:** `DONE`
+**Agents:** `researcher` (inventariseer alle icon sizes) → `implementer` (vervang) → `verifier` (visuele check)
+**Prioriteit:** HOOG
+**Afhankelijk van:** Fase 16 + 17 (tokens zijn dan beschikbaar)
+
+### Achtergrond
+
+> "The trick is to get the line-height of your font, in this case 24 pixels, and make the icons the same size. And then tighten up the text." — Video, Icons & Buttons (6:53)
+
+Er zijn momenteel **17+ verschillende hardcoded icon maten** (12px, 13px, 14px, 15px, 16px, 18px, 20px, 22px, 24px, 36px, 44px, 48px). Geen enkele gebruikt de `--pp-icon-*` tokens. Veel maten (13px, 15px, 18px, 22px) bestaan niet eens als token.
+
+### Regels
+
+1. **Inline icons** (naast tekst): icon size = line-height van begeleidende tekst
+2. **Standalone icons** (knoppen zonder tekst): `--pp-icon-sm` (20px) of `--pp-icon-md` (24px)
+3. **Decoratieve icons** (sectieheaders, categorieën): `--pp-icon-lg` (32px) of `--pp-icon-xl` (48px)
+
+### Mapping
+
+| Huidig | Nieuw token | Context | Reden |
+|---|---|---|---|
+| `12px` | `var(--pp-icon-xs)` (16px) | `.pill-weather svg` | Tekst is 11px → icon 16px is proportioneel |
+| `13px` | `var(--pp-icon-xs)` (16px) | `.badge-pill svg` | Tekst is 12px → icon 16px past |
+| `14px` | `var(--pp-icon-xs)` (16px) | `.facility svg`, `.plan-location-chip svg`, `.gps-status` | Inline bij 11-13px tekst |
+| `15px` | `var(--pp-icon-xs)` (16px) | `.preset-chip svg` | Inline bij 12px tekst |
+| `16px` | `var(--pp-icon-xs)` (16px) | `.btn svg`, `.detail-back svg`, `.plan-chip svg` | Token match — al correct |
+| `18px` | `var(--pp-icon-sm)` (20px) | `.filter-panel-toggle svg`, `.info-close svg`, `.detail-btn-route svg`, `.faq-item summary::after`, `.pp-btn[aria-busy]::after` | Standalone/action context |
+| `20px` | `var(--pp-icon-sm)` (20px) | `.icon-btn svg`, `.info-link svg`, `.map-recenter svg`, `.bnav-item svg`, `.info-item .info-icon` | Token match — al correct |
+| `22px` | `var(--pp-icon-md)` (24px) | `.card-fav svg`, `.promo-icon svg` | Prominent inline → snap naar 24px |
+| `24px` | `var(--pp-icon-md)` (24px) | `.pp-icon-text svg` | Token match — al correct |
+| `36px` | `var(--pp-icon-lg)` (32px) | `.nav-logo-svg`, `.category-icon` | Decoratief → snap naar 32px of gebruik `--pp-icon-xl` (48px) afhankelijk van context |
+
+### Stappen
+
+#### 18.1 Voeg icon sizing utilities toe aan design-system.css
+
+```css
+/* === Icon sizing utilities === */
+[class*="icon"] svg,
+.pp-icon { transition: color var(--pp-transition); }
+
+.pp-icon-xs svg, svg.pp-icon-xs { width: var(--pp-icon-xs); height: var(--pp-icon-xs); }
+.pp-icon-sm svg, svg.pp-icon-sm { width: var(--pp-icon-sm); height: var(--pp-icon-sm); }
+.pp-icon-md svg, svg.pp-icon-md { width: var(--pp-icon-md); height: var(--pp-icon-md); }
+.pp-icon-lg svg, svg.pp-icon-lg { width: var(--pp-icon-lg); height: var(--pp-icon-lg); }
+.pp-icon-xl svg, svg.pp-icon-xl { width: var(--pp-icon-xl); height: var(--pp-icon-xl); }
+```
+
+#### 18.2 Migreer alle icon sizes in style.css en app.css
+
+Vervang alle hardcoded `width: Xpx; height: Xpx;` op SVG/icon-selectoren door de overeenkomstige `var(--pp-icon-*)` tokens volgens bovenstaande mapping.
+
+**Voorbeeld:**
+
+```css
+/* Oud: */
+.badge-pill svg { width: 13px; height: 13px; }
+/* Nieuw: */
+.badge-pill svg { width: var(--pp-icon-xs); height: var(--pp-icon-xs); }
+
+/* Oud: */
+.card-fav svg { width: 22px; height: 22px; }
+/* Nieuw: */
+.card-fav svg { width: var(--pp-icon-md); height: var(--pp-icon-md); }
+```
+
+### Verificatie
+
+```bash
+# Alle icon sizes gebruiken tokens
+grep -P 'width:\s*\d+px.*height:\s*\d+px' style.css app.css | grep -i 'svg\|icon'
+# Verwacht: 0 matches (behalve .nav-logo als die bewust afwijkt)
+
+# Token usage check
+grep -c 'pp-icon-' style.css app.css
+# Verwacht: ≥ 20 matches
+```
+
+---
+
+## FASE 19: INTERACTION STATE MATRIX
+
+**Status:** `DONE`
+**Agents:** `researcher` (inventariseer alle interactieve elementen en hun states) → `implementer` (voeg states toe per bestand) → `verifier` (visuele check + keyboard navigatie test)
+**Prioriteit:** HOOG — video: "when a user does anything, there should be a response"
+**Parallel met:** Fase 18 + 20 (geen gedeelde CSS-selectoren)
+
+### Achtergrond
+
+> "A good rule of design is when a user does anything, there should be a response. For example, every button needs at least four states: default, hovered, active or pressed, and disabled." — Video, Feedback & States (7:29)
+
+**Huidige staat:**
+- `:hover` — aanwezig op ~55 van 60 elementen ✓
+- `:active` — aanwezig op **7 van 60** elementen ✗
+- `:focus-visible` — element-specifiek op **1 van 60** ✗
+- `:disabled` — op **1 van 60** ✗
+- `transition` — op **~30 van 60** ✗
+
+### Stappen
+
+#### 19.1 Generieke state templates in design-system.css
+
+**Bestand:** `design-system.css` — toevoegen aan utilities sectie
+
+```css
+/* === Interactive State Defaults ===
+   Applied to any element with a transition.
+   Individual selectors can override these patterns. */
+
+/* Active = slight scale down for tactile feel.
+   Excludes summary (FAQ accordion) — scale op summary voelt storend
+   bij open/close animatie. Excludes elements met eigen :active in app.css. */
+:where(a, button, [role="button"]):active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Focus-visible = brand-colored ring */
+:where(a, button, [role="button"], input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--pp-primary);
+  outline-offset: 2px;
+  border-radius: var(--pp-radius-xs);
+}
+
+/* Disabled = reduced opacity, no pointer events */
+:where(button, [role="button"], .btn, a.btn):disabled,
+:where(button, [role="button"], .btn, a.btn)[aria-disabled="true"] {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+```
+
+**Waarom `:where()`:** Specificity van 0, dus individuele selectors kunnen altijd overriden zonder `!important`.
+
+#### 19.2 Element-specifieke :active states in style.css
+
+**Bestand:** `style.css`
+
+Voeg `:active` toe aan alle interactieve elementen die dit missen. Patroon: subtiele visuele feedback bij klik/tap.
+
+```css
+/* Buttons — active = darker bg + slight inset shadow */
+.nav-cta:active { background: var(--pp-primary-600); }
+.loc-detail-btn:active { background: var(--pp-primary-600); color: var(--pp-text-inverse); }
+.loc-website-btn:active { background: rgba(var(--pp-text-rgb), 0.08); }
+.cta-block a:active { transform: scale(0.97); }
+.btn-route:active { background: var(--pp-primary-600); }
+.btn-support:active { background: var(--pp-secondary-700); }
+.btn-app-cta:active { transform: scale(0.97); }
+.newsletter-signup button:active { transform: scale(0.97); }
+
+/* Cards — active = deeper press */
+.loc-item:active { transform: translateY(0) rotate(0); box-shadow: var(--pp-shadow-sm); }
+.blog-card:active { transform: translateY(0); box-shadow: var(--pp-shadow-sm); }
+.guide-link:active { transform: scale(0.98); }
+
+/* Links — active = dimmed color */
+.breadcrumb a:active { color: var(--pp-primary-600); }
+.nav-links-box a:active { color: var(--pp-primary); }
+.other-cities a:active { color: var(--pp-primary); }
+footer a:active { opacity: 0.7; }
+
+/* Share buttons */
+.share-wa:active { transform: scale(0.95); }
+.share-native:active { transform: scale(0.95); }
+```
+
+#### 19.3 Element-specifieke :active states in app.css
+
+**Bestand:** `app.css`
+
+```css
+/* Buttons zonder :active */
+.btn-detail:active { background: var(--pp-primary-600); }
+.btn-maps:active { background: rgba(var(--pp-text-rgb), 0.08); }
+.card-fav:active { transform: scale(0.9); }
+.detail-back:active { background: rgba(var(--pp-text-rgb), 0.08); }
+.detail-btn-route:active { background: var(--pp-primary-600); }
+.detail-share-wa:active { transform: scale(0.95); }
+.detail-share-native:active { transform: scale(0.95); }
+.kids-counter button:active { transform: scale(0.9); }
+.btn-explore:active { background: var(--pp-primary-600); }
+.shortlist-btn:active { transform: scale(0.95); }
+.city-chip:active { transform: scale(0.97); }
+.preset-chip:active { transform: scale(0.97); }
+.info-close:active { transform: scale(0.9); }
+.info-link:active { opacity: 0.7; }
+.promo-cta:active { transform: scale(0.97); }
+.active-filters button:active { transform: scale(0.9); }
+```
+
+#### 19.4 Missende transitions toevoegen
+
+**Bestand:** `style.css` — voeg `transition` toe aan elementen die dit missen:
+
+```css
+/* Alle interactieve elementen met ontbrekende transition */
+.breadcrumb a,
+.guide-inline-link,
+.btn-route,
+.share-wa,
+.share-native,
+.newsletter-signup button,
+.blog-card h2 a,
+.blog-content a,
+.share-whatsapp,
+.error-links a,
+.other-cities a,
+.nav-links-box a,
+footer a,
+.editorial-meta a,
+.editorial-body a,
+.editorial-support-links a,
+.info-item a,
+.loc-item h3 a {
+  transition: all var(--pp-transition);
+}
+```
+
+**Bestand:** `app.css` — idem voor:
+
+```css
+.btn,
+.sort-select,
+.shortlist-btn,
+.promo-cta,
+.active-filters button {
+  transition: all var(--pp-transition);
+}
+```
+
+**Let op:** `transition: all` is een pragmatische keuze voor de eerste pass. In een **opvolgstap binnen deze fase** verfijnen naar specifieke properties waar GPU-impact merkbaar is (bijv. `transform`, `box-shadow`):
+
+```css
+/* Voorkeur (specifiek): */
+transition: color var(--pp-transition), background-color var(--pp-transition);
+/* Acceptabel voor elementen zonder layout-shifting properties: */
+transition: all var(--pp-transition);
+```
+
+De verifier checkt of `transition: all` niet op elementen staat die `width`, `height`, of `padding` animeren (die veroorzaken layout thrashing).
+
+### Verificatie
+
+- [ ] Tab door de gehele homepage → elke link/button toont focus ring
+- [ ] Klik op elke button → tactiele press feedback zichtbaar
+- [ ] `prefers-reduced-motion: reduce` → geen transitions/transforms
+- [ ] Lighthouse Accessibility score ≥ 95
+- [ ] Keyboard-only navigatie werkt op app.html (alle filters, cards, detail view)
+
+---
+
+## FASE 20: BUTTON & CHIP PADDING HARMONISATIE
+
+**Status:** `DONE`
+**Agents:** `implementer` (directe wijzigingen) → `verifier` (visuele check + responsive)
+**Prioriteit:** HOOG
+**Parallel met:** Fase 18 + 19
+**Afhankelijk van:** Fase 16 + 17 (spacing tokens beschikbaar)
+
+### Achtergrond
+
+> "A good guideline for padding on these is to double the height for the width." — Video, Icons & Buttons (6:53)
+
+Slechts **7 van 24** button-like elementen volgen de 1:2 (height:width) padding richtlijn. Veel gebruiken off-grid waarden (7px, 13px, 15px).
+
+### Regels
+
+1. **Buttons:** padding-block : padding-inline = 1 : 2 (bijv. `8px 16px`, `12px 24px`)
+2. **Chips/pills:** padding-block : padding-inline = 1 : 1.5-2 (bijv. `6px 12px`, `8px 14px`)
+3. **Alle waarden op het 4pt grid** (4, 8, 12, 16, 20, 24, 28, 32px)
+4. **Gebruik `var(--pp-space-*)` tokens** waar de waarde een token-stap is
+
+### Mapping — Buttons
+
+| Selector | Huidig | Nieuw | Ratio |
+|---|---|---|---|
+| `.loc-detail-btn` | `7px 16px` | `8px 16px` | 1:2 ✓ |
+| `.loc-website-btn` | `7px 16px` | `8px 16px` | 1:2 ✓ |
+| `.nav-cta` | `8px 18px` | `8px 16px` | 1:2 ✓ |
+| `.cta-block a` | `13px 28px` | `12px 24px` | 1:2 ✓ |
+| `.btn-app-cta` | `10px 22px` | `12px 24px` | 1:2 ✓ |
+| `.share-wa, .share-native` | `10px 18px` | `8px 16px` | 1:2 ✓ |
+| `.newsletter-signup button` | `14px 32px` | `12px 24px` | 1:2 ✓ |
+| `.share-btn` | `10px 20px` | `8px 16px` | 1:2 ✓ |
+| app `.btn` | `12px 14px` | `12px 24px` | 1:2 ✓ |
+| `.shortlist-btn` | `8px 12px` | `8px 16px` | 1:2 ✓ |
+| `.detail-back` | `8px 14px` | `8px 16px` | 1:2 ✓ |
+| `.detail-btn-route` | `12px 22px` | `12px 24px` | 1:2 ✓ |
+| `.detail-share-wa/native` | `10px 16px` | `8px 16px` | 1:2 ✓ |
+| `.plan-generate-btn` | `15px` (all) | `12px 24px` | 1:2 ✓ |
+| `.promo-cta` | `8px 16px` | `8px 16px` | 1:2 ✓ (al goed) |
+
+### Mapping — Chips/Pills
+
+| Selector | Huidig | Nieuw | Ratio |
+|---|---|---|---|
+| `.chip` | `10px 16px` | `8px 16px` | 1:2 ✓ |
+| `.plan-chip` | `10px 12px` | `8px 16px` | 1:2 ✓ |
+| `.preset-chip` | `10px 14px` | `8px 16px` | 1:2 ✓ |
+| `.badge-pill` | `3px 10px` | `4px 8px` | 1:2 ✓ (compact variant) |
+| `.guide-pill` | `7px 11px` | `4px 8px` | 1:2 ✓ |
+| `.coverage-chip` | `7px 11px` | `4px 8px` | 1:2 ✓ |
+| `.hero-kicker` | `7px 14px` | `4px 12px` | 1:3 (kicker is bewust breder) |
+
+### Verificatie
+
+```bash
+# Geen off-grid padding waarden meer
+grep -P 'padding.*\b(5|7|9|11|13|15|17|19|21|23|25|26|27|29|30|31|33|34)px' style.css app.css
+# Verwacht: 0
+
+# Visueel: alle buttons uniform en proportioneel op mobile + desktop
+```
+
+---
+
+## FASE 21: FORM FEEDBACK, TOOLTIPS & ONTBREKENDE STIJLEN
+
+**Status:** `DONE`
+**Agents:** `implementer` (CSS + JS wijzigingen) → `verifier` (interactieve test)
+**Prioriteit:** MEDIUM-HOOG
+**Afhankelijk van:** Fase 16-19
+
+### Achtergrond
+
+> "Inputs are even more critical. You'll need a focus state when the user clicks in, error states with red borders, and messages when something's wrong." — Video, Feedback & States (7:29)
+
+Drie specifieke problemen:
+1. Newsletter form heeft **geen enkele feedback** (geen loading, success, error state)
+2. `.section-hub-link` ("Bekijk alle Speeltuinen →") heeft **helemaal geen CSS**
+3. Geen custom tooltip component (alleen native `title` attributes)
+
+### Stappen
+
+#### 21.1 Newsletter form feedback
+
+**Bestand:** `style.css` (CSS) + generators (HTML) + eventueel een klein JS-blok
+
+**HTML wijziging** (in city page generator en andere generators die het newsletter block bevatten):
+
+```html
+<form class="newsletter-signup" action="..." method="post" target="popupwindow">
+  <div class="newsletter-field">
+    <input type="email" name="email" placeholder="Je e-mailadres" required
+           aria-describedby="newsletter-msg">
+    <button type="submit">
+      <span class="newsletter-btn-label">Aanmelden</span>
+      <span class="newsletter-btn-loading" hidden>
+        <svg class="pp-spinner" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor"
+                  stroke-width="2.5" stroke-dasharray="50" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+  <p id="newsletter-msg" class="newsletter-msg" aria-live="polite" hidden></p>
+</form>
+```
+
+**CSS:**
+
+```css
+/* Newsletter states */
+.newsletter-msg {
+  font-size: var(--pp-text-xs);
+  margin-top: var(--pp-space-sm);
+  padding: var(--pp-space-xs) var(--pp-space-sm);
+  border-radius: var(--pp-radius-xs);
+}
+.newsletter-msg--success {
+  background: var(--pp-semantic-success-bg);
+  color: var(--pp-semantic-success);
+  border: 1px solid var(--pp-semantic-success-border);
+}
+.newsletter-msg--error {
+  background: var(--pp-semantic-error-bg);
+  color: var(--pp-semantic-error);
+  border: 1px solid var(--pp-semantic-error-border);
+}
+.newsletter-signup input:invalid:not(:placeholder-shown) {
+  border-color: var(--pp-semantic-error);
+}
+.newsletter-signup button[aria-busy="true"] .newsletter-btn-label { display: none; }
+.newsletter-signup button[aria-busy="true"] .newsletter-btn-loading { display: inline-flex; }
+
+.pp-spinner {
+  width: var(--pp-icon-sm);
+  height: var(--pp-icon-sm);
+  animation: pp-spin 0.8s linear infinite;
+}
+/* NB: @keyframes pp-spin bestaat al in design-system.css (regel 619).
+   NIET opnieuw definiëren — hergebruik de bestaande keyframe. */
+```
+
+**JS** (inline in generator output of in `pp-interactions.js`):
+
+```javascript
+document.querySelectorAll('.newsletter-signup').forEach(form => {
+  form.addEventListener('submit', e => {
+    const btn = form.querySelector('button');
+    const msg = form.querySelector('.newsletter-msg');
+    btn.setAttribute('aria-busy', 'true');
+    btn.disabled = true;
+    msg.hidden = true;
+
+    // De form submit gaat via target="popupwindow", dus we simuleren feedback
+    setTimeout(() => {
+      btn.setAttribute('aria-busy', 'false');
+      btn.disabled = false;
+      msg.textContent = 'Bedankt voor je aanmelding!';
+      msg.className = 'newsletter-msg newsletter-msg--success';
+      msg.hidden = false;
+      form.reset();
+    }, 1500);
+  });
+});
+```
+
+#### 21.2 `.section-hub-link` styling
+
+**Bestand:** `style.css`
+
+```css
+.section-hub-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pp-space-xs);
+  font-family: var(--pp-font-ui);
+  font-size: var(--pp-text-sm);
+  font-weight: 600;
+  color: var(--pp-primary);
+  text-decoration: none;
+  padding: var(--pp-space-xs) var(--pp-space-sm);
+  border-radius: var(--pp-radius-xs);
+  transition: all var(--pp-transition);
+}
+.section-hub-link:hover {
+  color: var(--pp-primary-dark);
+  background: rgba(var(--pp-primary-rgb), 0.06);
+}
+.section-hub-link:active {
+  transform: scale(0.97);
+}
+.section-hub-link::after {
+  content: '→';
+  transition: transform var(--pp-transition);
+}
+.section-hub-link:hover::after {
+  transform: translateX(3px);
+}
+```
+
+#### 21.3 Custom tooltip component
+
+**Bestand:** `design-system.css`
+
+```css
+/* === Tooltip === */
+[data-tooltip] {
+  position: relative;
+}
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + var(--pp-space-sm));
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: var(--pp-space-xs) var(--pp-space-sm);
+  background: var(--pp-surface-dark);
+  color: var(--pp-text-inverse);
+  font-family: var(--pp-font-ui);
+  font-size: var(--pp-text-xs);
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  border-radius: var(--pp-radius-xs);
+  box-shadow: var(--pp-shadow-popover);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--pp-transition), transform var(--pp-transition);
+  z-index: 1000;
+}
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+/* Positionering-varianten */
+[data-tooltip-pos="bottom"]::after {
+  bottom: auto;
+  top: calc(100% + var(--pp-space-sm));
+}
+[data-tooltip-pos="left"]::after {
+  bottom: auto;
+  left: auto;
+  right: calc(100% + var(--pp-space-sm));
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
+}
+[data-tooltip-pos="left"]:hover::after,
+[data-tooltip-pos="left"]:focus-visible::after {
+  transform: translateY(-50%) translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-tooltip]::after { transition: none; }
+}
+```
+
+**Migratie in app.html:** Vervang `title="Gebruik mijn locatie"` door `data-tooltip="Gebruik mijn locatie"` op GPS button, map recenter, peuterscore badge, etc.
+
+**Op gegenereerde pagina's:** Voeg `data-tooltip` toe aan badge-pills, action buttons en informatie-iconen.
+
+#### 21.4 Breadcrumb hover transition
+
+**Bestand:** `style.css`
+
+```css
+.breadcrumb a {
+  transition: color var(--pp-transition);
+}
+.breadcrumb a:hover {
+  color: var(--pp-primary);
+}
+```
+
+### Verificatie
+
+- [ ] Newsletter: submit → loading spinner → success bericht
+- [ ] Newsletter: leeg veld → HTML5 validatie + rood border op `:invalid:not(:placeholder-shown)`
+- [ ] `.section-hub-link` zichtbaar en gestyled op alle stadspagina's
+- [ ] Tooltips verschijnen op hover + focus-visible
+- [ ] Breadcrumbs: smooth hover transition
+- [ ] `prefers-reduced-motion: reduce` → geen tooltip-animatie
+
+---
+
+## FASE 22: CSS CONSOLIDATIE & PERFORMANCE
+
+**Status:** `DONE`
+**Agents:** `researcher` (inventariseer duplicatie) → `implementer` (cleanup + minificatie) → `verifier` (build + performance)
+**Prioriteit:** MEDIUM
+**Afhankelijk van:** Fase 14-21 (alle inhoudelijke wijzigingen zijn klaar)
+
+### Achtergrond
+
+Na de token-migratie zijn er nog drie performance/maintenance issues:
+
+1. **Inline `<style>` blokken** in gegenereerde pagina's dupliceren (en soms divergeren van) `style.css`
+2. **app.css is niet geminified** (68KB — het grootste CSS bestand)
+3. **Fraunces font is 192KB** — ver boven het performancebudget van ≤150KB totaal
+4. **Backward-compatible aliases** in `design-system.css` zijn na migratie overbodig
+
+### Stappen
+
+#### 22.1 Inline `<style>` deduplicatie
+
+**Bestanden:** `.scripts/lib/generators/city-pages.js`, `location-pages.js`, `type-pages.js`, `cluster-pages.js`, `blog-pages.js`
+
+De generators injecteren `<style>` blokken met styles voor `.guide-card`, `.editorial-body`, `.explore-cta`, `.btn-explore`, `.related-blogs`, `.verified-badge`, etc. Deze moeten **verplaatst worden naar `style.css`** zodat ze (`style.min.css` wordt automatisch geregenereerd door `css-minify.js` bij `npm run build`):
+- Op één plek onderhouden worden
+- Gecacht worden tussen pagina's
+- Niet per pagina de HTML opblazen
+
+**Aanpak:**
+1. `researcher` agent: grep alle `<style>` blokken uit generator output
+2. Verplaats unieke regels naar `style.css`
+3. Verwijder inline `<style>` injectie uit generators
+4. Test met `npm run build` + steekproef van output pagina's
+
+#### 22.2 app.css minificatie
+
+**Bestand:** `.scripts/lib/css-minify.js` (uitbreiden)
+
+Momenteel minificeert het build systeem alleen `style.css` → `style.min.css`. Breid dit uit:
+
+```javascript
+// In css-minify.js:
+const filesToMinify = [
+  { src: 'style.css', dest: 'style.min.css' },
+  { src: 'app.css', dest: 'app.min.css' },       // NIEUW
+  { src: 'nav-floating.css', dest: 'nav-floating.min.css' }  // NIEUW
+];
+```
+
+Update `app.html` om `app.min.css` te laden:
+
+```html
+<link rel="stylesheet" href="/app.min.css?v=${timestamp}">
+```
+
+**Verwachte besparing:** ~30-40% (68KB → ~40-45KB).
+
+#### 22.3 Fraunces font subsetting
+
+**Probleem:** `fraunces-var.woff2` is 192KB — ruim boven het font budget van 150KB voor ALLE fonts samen.
+
+**Oorzaak:** Het bestand bevat waarschijnlijk het volledige character set inclusief Cyrillic, Vietnamese, en alle OpenType features.
+
+**Oplossing:** Subset het font met `pyftsubset` of `glyphhanger`:
+
+```bash
+# Alleen Latin + Latin Extended + common punctuation
+pyftsubset fraunces-var.woff2 \
+  --unicodes="U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD" \
+  --layout-features="kern,liga,calt,frac,sups,subs" \
+  --flavor=woff2 \
+  --output-file=fraunces-var-subset.woff2
+```
+
+**Verwachte besparing:** 192KB → ~80-100KB.
+
+#### 22.4 Backward-compatible aliases verwijderen
+
+**Bestand:** `design-system.css`
+
+Na voltooiing van Fase 16 + 17 gebruiken `style.css` en `app.css` geen unprefixed aliases meer. Verwijder het volledige `/* === Backward-compatible aliases === */` blok (regel 173-213 in huidige versie).
+
+**Controleer eerst:**
+
+```bash
+# Geen enkel CSS bestand mag nog unprefixed aliases gebruiken
+grep -rP 'var\(--(?!pp-)[a-z]' *.css
+# Verwacht: 0 matches
+```
+
+**Uitzondering:** Als `nav-floating.css` of portal CSS nog aliases gebruikt, migreer die ook eerst.
+
+#### 22.5 Ongebruikte `.pp-*` component classes opruimen
+
+Na Fase 14-21: inventariseer welke `.pp-*` classes nog steeds ongebruikt zijn. Verwijder deze uit `design-system.css` om het bestand lean te houden. Bewaar alleen:
+
+- Tokens (`:root` block) — altijd behouden
+- Components die daadwerkelijk in HTML voorkomen
+- Utility classes die door meerdere consumers gebruikt worden
+
+**Niet verwijderen:** `.pp-toast`, `.pp-skeleton`, `.pp-reveal` — deze worden door JS aangemaakt en zijn niet grep-baar in HTML.
+
+**Fix hardcoded waarden in design-system.css zelf:** `.pp-location-card` (regel ~551) gebruikt `border-radius: 14px` — vervang door `border-radius: var(--pp-radius-sm)`. Scan het hele bestand op andere hardcoded `px` waarden buiten de `:root` token-definitie.
+
+### Verificatie
+
+```bash
+# Geen inline <style> meer in gegenereerde pagina's
+grep -r '<style>' amsterdam.html rotterdam.html speeltuinen.html | wc -l
+# Verwacht: 0 (of max 1 voor critical CSS)
+
+# app.min.css bestaat en is kleiner dan app.css
+ls -la app.css app.min.css
+# app.min.css moet < 50KB zijn
+
+# Font budget
+ls -la fonts/
+# Totaal < 180KB (Fraunces ~90KB + DM Sans ~80KB + Instrument Serif ~16KB)
+
+# Geen backward-compatible aliases meer
+grep -c 'Backward-compatible' design-system.css
+# Verwacht: 0
+
+# Full build
+npm run build
+```
+
+---
+
+## FASE 23: COMPLIANCE AUDIT & VERIFICATIE
+
+**Status:** `DONE`
+**Agents:** `implementer` (audit script) → `verifier` (CI integratie + full run)
+**Prioriteit:** MEDIUM — borgt alles voor de toekomst
+**Afhankelijk van:** Alle voorgaande fasen
+
+### Achtergrond
+
+Zonder geautomatiseerde handhaving driften `style.css` en `app.css` onvermijdelijk weer af van het design system. Deze fase maakt het onmogelijk om hardcoded waarden terug te introduceren.
+
+### Stappen
+
+#### 23.1 Design system compliance audit script
+
+**Bestand:** `.scripts/audit_design_tokens.js` (nieuw)
+
+```javascript
+#!/usr/bin/env node
+/**
+ * Design Token Compliance Audit
+ * Scant CSS-bestanden op hardcoded waarden die tokens moeten zijn.
+ * Exit code 1 = violations gevonden (blokkeert CI in strict mode).
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const STRICT = process.argv.includes('--strict');
+const CSS_FILES = ['style.css', 'app.css', 'nav-floating.css'];
+
+const RULES = [
+  {
+    name: 'hardcoded-rgba',
+    pattern: /rgba\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}/g,
+    message: 'Hardcoded rgba() — gebruik rgba(var(--pp-*-rgb), opacity)',
+    allowList: [/design-system\.css/],
+    maxViolations: 5,
+  },
+  {
+    name: 'hardcoded-font-size',
+    pattern: /font-size:\s*\d+px/g,
+    message: 'Hardcoded font-size — gebruik var(--pp-text-*)',
+    allowList: [/design-system\.css/, /error-page h1/],
+    maxViolations: 2,
+  },
+  {
+    name: 'hardcoded-shadow',
+    pattern: /box-shadow:\s*\d+px\s+\d+px/g,
+    message: 'Hardcoded box-shadow — gebruik var(--pp-shadow-*)',
+    allowList: [/design-system\.css/],
+    maxViolations: 0,
+  },
+  {
+    name: 'hardcoded-radius',
+    pattern: /border-radius:\s*\d+px(?!\s*\/)/g,
+    message: 'Hardcoded border-radius — gebruik var(--pp-radius-*)',
+    allowList: [/design-system\.css/],
+    maxViolations: 3,
+  },
+  {
+    name: 'unprefixed-alias',
+    pattern: /var\(--(?!pp-)[a-z][a-z-]*\)/g,
+    message: 'Unprefixed CSS variable — gebruik var(--pp-*)',
+    allowList: [/design-system\.css/],
+    maxViolations: 0,
+  },
+  {
+    name: 'hardcoded-hex',
+    pattern: /#[0-9a-fA-F]{3,8}(?!.*(?:url|svg|data|content))/g,
+    message: 'Hardcoded hex kleur — gebruik var(--pp-*)',
+    allowList: [/design-system\.css/, /fonts\.css/],
+    maxViolations: 10, // Gradient stops en SVG fills mogen
+  },
+  {
+    name: 'off-grid-spacing',
+    pattern: /(?:padding|margin|gap).*?\b(?:5|7|9|11|13|15|17|19|21|23|25|26|27|29|30|31|33|34|35)px/g,
+    message: 'Off-grid spacing — gebruik 4pt grid (4,8,12,16,20,24,28,32,48,64,96,128)',
+    allowList: [/design-system\.css/],
+    maxViolations: 0,
+  },
+  {
+    name: 'hardcoded-icon-size',
+    pattern: /(?:width|height):\s*(?:12|13|14|15|18|22)px/g,
+    message: 'Non-standard icon size — gebruik var(--pp-icon-*)',
+    allowList: [/design-system\.css/],
+    maxViolations: 0,
+  },
+];
+
+let totalViolations = 0;
+
+for (const file of CSS_FILES) {
+  const filePath = path.resolve(file);
+  if (!fs.existsSync(filePath)) continue;
+  const content = fs.readFileSync(filePath, 'utf8');
+  const lines = content.split('\n');
+
+  for (const rule of RULES) {
+    if (rule.allowList?.some(re => re.test(file))) continue;
+
+    let count = 0;
+    lines.forEach((line, i) => {
+      const matches = line.match(rule.pattern);
+      if (matches) {
+        count += matches.length;
+        if (count <= 3 || !STRICT) {
+          console.log(`  ${file}:${i + 1} [${rule.name}] ${line.trim()}`);
+        }
+      }
+    });
+
+    if (count > rule.maxViolations) {
+      console.log(`\n❌ ${file}: ${rule.name} — ${count} violations (max ${rule.maxViolations})`);
+      console.log(`   ${rule.message}\n`);
+      totalViolations += count - rule.maxViolations;
+    }
+  }
+}
+
+if (totalViolations > 0) {
+  console.log(`\n🚫 ${totalViolations} design token violations gevonden.`);
+  if (STRICT) process.exit(1);
+} else {
+  console.log('\n✅ Alle CSS bestanden voldoen aan het design system.');
+}
+```
+
+#### 23.2 CI integratie
+
+**Bestand:** `.github/workflows/sync-site.yml`
+
+Voeg toe als audit gate (naast bestaande audits):
+
+```yaml
+- name: Design token compliance audit
+  run: node .scripts/audit_design_tokens.js --strict
+```
+
+#### 23.3 NPM script
+
+**Bestand:** `package.json`
+
+```json
+{
+  "scripts": {
+    "audit:tokens": "node .scripts/audit_design_tokens.js",
+    "audit:tokens:strict": "node .scripts/audit_design_tokens.js --strict"
+  }
+}
+```
+
+#### 23.4 Visuele regressie checklist
+
+Na alle fasen: handmatige visuele check op de volgende pagina's:
+
+- [ ] Homepage (desktop + mobile)
+- [ ] Amsterdam stadspagina (desktop + mobile)
+- [ ] Speeltuinen type pagina
+- [ ] Een locatie detailpagina
+- [ ] app.html (search, filters, results, detail view, map, plan wizard)
+- [ ] Een blogpost
+- [ ] 404 pagina
+- [ ] Contact pagina
+- [ ] admin.peuterplannen.nl
+- [ ] partner.peuterplannen.nl
+
+Per pagina controleren:
+- [ ] Geen visuele regressies t.o.v. huidige versie
+- [ ] Afbeeldingen laden correct (Fase 14)
+- [ ] Hover/active/focus states werken op alle interactieve elementen
+- [ ] Tooltips verschijnen waar verwacht
+- [ ] Mobile responsive layout intact
+- [ ] Dark mode niet gebroken (als die bestaat via OS preference)
+- [ ] `prefers-reduced-motion` respecteert: geen animaties
+
+### Verificatie
+
+```bash
+# Audit slaagt in strict mode
+npm run audit:tokens:strict
+# Exit code: 0
+
+# Full build succesvol
+npm run build
+# Exit code: 0
+
+# Alle bestaande audits slagen
+node .scripts/audit_internal.js --strict
+node .scripts/audit_portals.js --strict
+node .scripts/audit_seo.js --strict
+```
+
+---
+
+## IMPLEMENTATIE-VOLGORDE (EXECUTIEPLAN FASE 2)
+
+### Sprint 1: Fundament (Fase 15) + Imagery fundament (Fase 14 stap 1-4)
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  DAG 1-2                                                │
+│                                                         │
+│  [Fase 15: RGB Channel Vars]  ◄── Snel, ~30 min        │
+│        │                                                │
+│  [Fase 14 stap 1-4:]                                    │
+│  • 14.1 Tokens in design-system.css                     │
+│  • 14.2 fetch-photos.js schrijven (nog niet runnen)     │
+│  • 14.3 Database migratie (photo_url kolom)             │
+│  • 14.4 Card image CSS component                        │
+│                                                         │
+│  ⚠ Google API key setup is voorwaarde voor 14.2 te      │
+│    RUNNEN, maar het script kan al GESCHREVEN worden.     │
+│  /clear na Fase 15                                      │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Sprint 2: Token Migratie (Fase 16 + 17)
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  DAG 3-5                                                │
+│                                                         │
+│  [Fase 16: style.css]  ──── PARALLEL ────  [Fase 17:   │
+│                                             app.css]    │
+│                                                         │
+│  Sub-agent per bestand:                                 │
+│  • researcher: inventariseer exact                      │
+│  • implementer: vervang per categorie                   │
+│  • verifier: grep-audit                                 │
+│                                                         │
+│  /clear na elk bestand                                  │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Sprint 3: Harmonisatie (Fase 18 → 19 → 20)
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  DAG 6-8                                                │
+│                                                         │
+│  [Fase 18: Icons]                                       │
+│        │  /clear                                        │
+│        ▼                                                │
+│  [Fase 19: States]                                      │
+│        │  /clear                                        │
+│        ▼                                                │
+│  [Fase 20: Button Padding]                              │
+│                                                         │
+│  ⚠ NIET parallel: alle drie bewerken style.css +        │
+│    app.html. Sequentieel uitvoeren om merge conflicts    │
+│    te voorkomen. /clear na elke fase.                    │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Sprint 4: Polish (Fase 21 + 22)
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  DAG 8-9                                                │
+│                                                         │
+│  [Fase 21: Form + Tooltips + Hub Link]                  │
+│        │                                                │
+│        ▼                                                │
+│  [Fase 22: CSS Cleanup + Minification]                  │
+│                                                         │
+│  /clear tussen fasen                                    │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Sprint 5: Verificatie (Fase 23)
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  DAG 10                                                 │
+│                                                         │
+│  [Fase 23: Audit Script + CI + Visuele Check]           │
+│                                                         │
+│  Full build + alle audits + handmatige steekproef       │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Sprint 6: Imagery afronden (Fase 14 stap 5-9)
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  DAG 11-14                                              │
+│                                                         │
+│  Voorwaarde: Google Maps API key met Places Photos      │
+│  enabled in secrets.                                    │
+│                                                         │
+│  [Fase 14 stap 5-9:]                                    │
+│  • 14.5 City page generator update (card HTML)          │
+│  • 14.6 Location detail page hero image                 │
+│  • 14.7 app.html card rendering + SELECT update         │
+│  • 14.8 Image optimalisatie pipeline                    │
+│  • 14.9 CI/CD integratie (weekly photo fetch)           │
+│                                                         │
+│  Plus: eerste batch foto's downloaden en optimaliseren  │
+│  Visuele QA op 22 stadspagina's                        │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## DESIGN BESLISSINGEN FASE 2 — MOTIVATIE
+
+| Beslissing | Waarom | Alternatief overwogen |
+|---|---|---|
+| RGB channel variables i.p.v. `color-mix()` | Betere browser support (99%+ vs 96%), simpeler syntax | `color-mix(in srgb, var(--pp-primary) 12%, transparent)` — eleganter maar minder breed ondersteund |
+| `:where()` voor generieke states | Specificity 0 = geen cascade-conflicten | Individuele selectors — meer controle maar ~60 extra regels |
+| Snap off-grid waarden naar 4pt grid | Visuele consistentie > pixel-perfect behoud van huidige design | Niets doen — leidt tot steeds meer ad-hoc waarden |
+| Font subsetting | 192KB → ~90KB is significante winst | CDN (Google Fonts) — privacy concern + extra DNS lookup |
+| Inline `<style>` verwijderen | Cache-efficiëntie, DRY, onderhoudbaarheid | Critical CSS inline houden — complexer build, marginale FCP winst |
+| `data-tooltip` i.p.v. `title` | Styleable, animeerbaar, consistent met design system | Tooltip library (Tippy.js) — 10KB+ dependency, overkill |
+| Google Places Photos | Betrouwbaar, hoge kwaliteit, `place_id` al beschikbaar | Unsplash (niet locatie-specifiek), AI-generated (uncanny), scraping (juridisch risico) |
+
+---
+
+## WAT FASE 2 NIET DOET
+
+- **Dark mode** — bewuste keuze, de warme ivoor/terra look IS het merk
+- **HTML-structuur refactoren** — behalve wat strict nodig is voor images en form feedback
+- **Nieuwe pagina-types** — geen nieuwe generators of routes
+- **Component class consolidatie** (`.loc-item` → `.pp-card`) — dit is een Fase 3 project; te riskant om gelijktijdig met token migratie te doen
+- **Portal CSS migratie** — `portal-shell.css` en admin/partner portals worden apart behandeld
+- **JavaScript refactoring** — alleen minimale JS voor newsletter feedback en tooltip migratie
+- **A/B testing** — deploy als big bang na alle fasen, niet incrementeel
+
+---
+
+## STATUS TRACKER FASE 2
+
+| # | Fase | Status | Sprint | Prioriteit | Bestanden |
+|---|------|--------|--------|------------|-----------|
+| 14 | Location Imagery Pipeline | `TODO` | 1+6 | KRITIEK | `.scripts/pipeline/fetch-photos.js`, generators, design-system.css, style.css, app.html |
+| 15 | Token Foundation (RGB Channels) | `DONE` | 1 | KRITIEK | design-system.css |
+| 16 | Token Migratie: style.css + nav-floating.css | `TODO` | 2 | KRITIEK | style.css, nav-floating.css |
+| 17 | Token Migratie: app.html inline CSS | `TODO` | 2 | KRITIEK | app.html (inline `<style>` + inline `style=""` attrs) |
+| 18 | Icon Sizing Harmonisatie | `DONE` | 3 | HOOG | style.css, app.html, design-system.css |
+| 19 | Interaction State Matrix | `TODO` | 3 | HOOG | style.css, app.html, design-system.css |
+| 20 | Button & Chip Padding | `TODO` | 3 | HOOG | style.css, app.html |
+| 21 | Form Feedback & Ontbrekende Stijlen | `TODO` | 4 | MEDIUM-HOOG | style.css, generators, pp-interactions.js, design-system.css |
+| 22 | CSS Consolidatie & Performance | `DONE` | 4 | MEDIUM | generators, css-minify.js, design-system.css, fonts/ |
+| 23 | Compliance Audit & Verificatie | `DONE` | 5 | MEDIUM | `.scripts/audit_design_tokens.js`, sync-site.yml, package.json |
+
+---
+
+## VERWACHTE IMPACT FASE 2
+
+### Visueel
+- **Locatie-afbeeldingen** transformeren de scan-ervaring volledig — van tekst-wall naar visueel rijke cards
+- **Consistente tokens** elimineren subtiele visuele inconsistenties (2px verschil in radii, verschillende shadow-sterktes)
+- **Interaction states** maken de site voelbaar responsief op elke tap/click/hover
+- **Tooltips** geven context zonder de UI te vervuilen
+- **Newsletter feedback** bouwt vertrouwen
+
+### Performance
+- **app.css minificatie:** ~25KB bespaard (68KB → ~43KB)
+- **Fraunces subsetting:** ~100KB bespaard (192KB → ~90KB)
+- **Inline `<style>` verwijderen:** ~2-5KB per pagina × 2.200 pagina's = minder totale HTML
+- **Netto:** ~150KB minder data per unieke pageview
+
+### Onderhoudbaarheid
+- **Eén waarheidsbron:** elke visuele waarde staat in `design-system.css` en nergens anders
+- **Geen backward-compatible aliases** — geen verwarring meer over welke variabele te gebruiken
+- **Geautomatiseerde handhaving:** CI blokkeert nieuwe hardcoded waarden
+- **Grep-bare codebase:** `grep 'pp-primary' *.css` vindt alles
+
+### Schaalbaarheid
+- **Nieuwe pagina-types** hoeven alleen tokens te refereren, geen waarden te kopiëren
+- **Kleurwijzigingen** (bijv. seizoensthema) vereisen 1 token-wijziging → 2.200+ pagina's updaten automatisch
+- **Design system audit** vangt regressies voordat ze in productie komen
+- **Afbeeldingen-pipeline** schaalt automatisch mee bij nieuwe locaties

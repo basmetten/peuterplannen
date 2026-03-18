@@ -55,6 +55,28 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   });
 }
 
+// Newsletter form feedback
+document.querySelectorAll('.newsletter-form').forEach(function (form) {
+  form.addEventListener('submit', function () {
+    var btn = form.querySelector('button');
+    var msg = form.querySelector('.newsletter-msg');
+    btn.setAttribute('aria-busy', 'true');
+    btn.disabled = true;
+    if (msg) msg.hidden = true;
+
+    setTimeout(function () {
+      btn.setAttribute('aria-busy', 'false');
+      btn.disabled = false;
+      if (msg) {
+        msg.textContent = 'Bedankt voor je aanmelding!';
+        msg.className = 'newsletter-msg newsletter-msg--success';
+        msg.hidden = false;
+      }
+      form.reset();
+    }, 1500);
+  });
+});
+
 // Navbar scroll shrink (IntersectionObserver, no scroll listener)
 (function () {
   var nav = document.querySelector('nav');
