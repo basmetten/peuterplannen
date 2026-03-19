@@ -24,11 +24,13 @@
 
 /* Tokens are defined in design-system.css — loaded before this file */
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--pp-font-body); background: var(--pp-bg); color: var(--pp-text); line-height: 1.7; -webkit-font-smoothing: antialiased; overflow-wrap: break-word; }
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+html { overflow-x: hidden; scroll-padding-top: 70px; }
+body { font-family: var(--pp-font-body); background: var(--pp-bg); color: var(--pp-text); line-height: 1.7; -webkit-font-smoothing: antialiased; overflow-wrap: break-word; overflow-x: hidden; }
+img, video, svg, canvas { max-width: 100%; height: auto; }
 h1, h2, h3, h4, h5 { font-family: var(--pp-font-heading); text-wrap: balance; }
 p, li, .blog-excerpt, .location-description, .intro-box p { text-wrap: pretty; }
-html { scroll-padding-top: 70px; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 ::selection { background: var(--pp-primary); color: var(--pp-text-inverse); }
 :focus-visible { outline: 2.5px solid var(--pp-primary); outline-offset: 4px; border-radius: var(--pp-radius-xs); }

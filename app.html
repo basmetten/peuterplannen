@@ -385,8 +385,54 @@
                         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                     </button>
                 </div>
-                <div class="filter-chips" id="map-filter-chips" role="toolbar" aria-label="Kaart filters">
-                    <!-- Populated by JS -->
+                <!-- Type chips — always visible, scrollable -->
+                <div class="map-filter-type-row" id="map-filter-type-chips">
+                    <button class="chip active" onclick="toggleTag('all', event)" aria-selected="true">Alles</button>
+                    <button class="chip" onclick="toggleTag('favorites', event)" aria-selected="false">Favorieten</button>
+                    <button class="chip" onclick="toggleTag('play', event)" aria-selected="false">Speeltuin</button>
+                    <button class="chip" onclick="toggleTag('farm', event)" aria-selected="false">Boerderij</button>
+                    <button class="chip" onclick="toggleTag('nature', event)" aria-selected="false">Natuur</button>
+                    <button class="chip" onclick="toggleTag('museum', event)" aria-selected="false">Museum</button>
+                    <button class="chip" onclick="toggleTag('swim', event)" aria-selected="false">Zwemmen</button>
+                    <button class="chip" onclick="toggleTag('pancake', event)" aria-selected="false">Pannenkoeken</button>
+                    <button class="chip" onclick="toggleTag('horeca', event)" aria-selected="false">Horeca</button>
+                </div>
+                <!-- More filters — toggle -->
+                <button class="map-filter-more-btn" id="map-filter-more-btn" onclick="toggleMapMoreFilters()">
+                    Meer filters <span class="map-filter-more-badge" id="map-filter-more-badge" style="display:none;"></span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="map-filter-extra" id="map-filter-extra" style="display:none;">
+                    <div class="map-filter-group">
+                        <span class="map-filter-group-label">Weer</span>
+                        <div class="map-filter-group-chips">
+                            <button class="chip" onclick="toggleWeather('indoor', event)" aria-selected="false">Binnen</button>
+                            <button class="chip" onclick="toggleWeather('outdoor', event)" aria-selected="false">Buiten</button>
+                        </div>
+                    </div>
+                    <div class="map-filter-group">
+                        <span class="map-filter-group-label">Extra</span>
+                        <div class="map-filter-group-chips">
+                            <button class="chip" onclick="toggleFacility('coffee', event)" aria-selected="false">Koffie</button>
+                            <button class="chip" onclick="toggleFacility('diaper', event)" aria-selected="false">Verschonen</button>
+                            <button class="chip" onclick="toggleFacility('alcohol', event)" aria-selected="false">Alcohol</button>
+                        </div>
+                    </div>
+                    <div class="map-filter-group">
+                        <span class="map-filter-group-label">Leeftijd</span>
+                        <div class="map-filter-group-chips">
+                            <button class="chip" onclick="toggleAge('dreumes', event)" aria-selected="false">Dreumes (0–2)</button>
+                            <button class="chip" onclick="toggleAge('peuter', event)" aria-selected="false">Peuter (2–5)</button>
+                        </div>
+                    </div>
+                    <div class="map-filter-group">
+                        <span class="map-filter-group-label">Afstand</span>
+                        <div class="map-filter-group-chips">
+                            <button class="chip radius-chip" onclick="toggleRadius(5, event)" aria-selected="false">5 km</button>
+                            <button class="chip radius-chip" onclick="toggleRadius(10, event)" aria-selected="false">10 km</button>
+                            <button class="chip radius-chip" onclick="toggleRadius(25, event)" aria-selected="false">25 km</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="map-no-results" class="map-no-results hidden">
@@ -2692,11 +2738,73 @@
         }
 
         function syncMapFilterChips() {
-            const container = document.getElementById('map-filter-chips');
-            if (!container) return;
-            const mainChips = document.getElementById('filter-chip-toolbar');
-            if (!mainChips) return;
-            container.innerHTML = mainChips.innerHTML;
+            // Sync active states on type chips
+            const typeRow = document.getElementById('map-filter-type-chips');
+            if (typeRow) {
+                typeRow.querySelectorAll('.chip').forEach(chip => {
+                    const onclick = chip.getAttribute('onclick') || '';
+                    let isActive = false;
+                    if (onclick.includes("'all'")) isActive = activeTag === 'all';
+                    else if (onclick.includes("'favorites'")) isActive = activeTag === 'favorites';
+                    else if (onclick.includes("'play'")) isActive = activeTag === 'play';
+                    else if (onclick.includes("'farm'")) isActive = activeTag === 'farm';
+                    else if (onclick.includes("'nature'")) isActive = activeTag === 'nature';
+                    else if (onclick.includes("'museum'")) isActive = activeTag === 'museum';
+                    else if (onclick.includes("'swim'")) isActive = activeTag === 'swim';
+                    else if (onclick.includes("'pancake'")) isActive = activeTag === 'pancake';
+                    else if (onclick.includes("'horeca'")) isActive = activeTag === 'horeca';
+                    chip.classList.toggle('active', isActive);
+                    chip.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                });
+            }
+            // Sync extra filter states
+            const extra = document.getElementById('map-filter-extra');
+            if (extra) {
+                extra.querySelectorAll('.chip').forEach(chip => {
+                    const onclick = chip.getAttribute('onclick') || '';
+                    let isActive = false;
+                    if (onclick.includes("toggleWeather")) isActive = onclick.includes("'indoor'") ? activeWeather === 'indoor' : activeWeather === 'outdoor';
+                    else if (onclick.includes("toggleFacility('coffee'")) isActive = !!activeFacilities.coffee;
+                    else if (onclick.includes("toggleFacility('diaper'")) isActive = !!activeFacilities.diaper;
+                    else if (onclick.includes("toggleFacility('alcohol'")) isActive = !!activeFacilities.alcohol;
+                    else if (onclick.includes("toggleAge('dreumes'")) isActive = activeAgeGroup === 'dreumes';
+                    else if (onclick.includes("toggleAge('peuter'")) isActive = activeAgeGroup === 'peuter';
+                    else if (onclick.includes("toggleRadius(5")) isActive = activeRadius === 5;
+                    else if (onclick.includes("toggleRadius(10")) isActive = activeRadius === 10;
+                    else if (onclick.includes("toggleRadius(25")) isActive = activeRadius === 25;
+                    chip.classList.toggle('active', isActive);
+                    chip.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                });
+            }
+            // Update "more filters" badge count
+            updateMapMoreBadge();
+        }
+
+        function toggleMapMoreFilters() {
+            const extra = document.getElementById('map-filter-extra');
+            const btn = document.getElementById('map-filter-more-btn');
+            if (!extra || !btn) return;
+            const isHidden = extra.style.display === 'none';
+            extra.style.display = isHidden ? 'block' : 'none';
+            btn.classList.toggle('expanded', isHidden);
+        }
+
+        function updateMapMoreBadge() {
+            const badge = document.getElementById('map-filter-more-badge');
+            if (!badge) return;
+            let count = 0;
+            if (activeWeather) count++;
+            if (activeFacilities.coffee) count++;
+            if (activeFacilities.diaper) count++;
+            if (activeFacilities.alcohol) count++;
+            if (activeAgeGroup) count++;
+            if (activeRadius) count++;
+            if (count > 0) {
+                badge.textContent = count;
+                badge.style.display = '';
+            } else {
+                badge.style.display = 'none';
+            }
         }
 
         function updateMapPillBadge() {
