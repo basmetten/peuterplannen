@@ -1203,34 +1203,36 @@
           box-shadow: 4px 0 28px rgba(0,0,0,0.08) !important;
         }
 
-        /* Compact header inside floating panel */
+        /* Secondary floating bar — app context + mode switch */
         html.pp-desktop .app-context-strip {
-          position: sticky !important;
-          top: 0 !important;
-          z-index: 5 !important;
+          position: fixed !important;
+          top: 78px !important;
+          left: 50% !important;
+          transform: translateX(-50%) !important;
+          z-index: 99 !important;
           display: flex !important;
           align-items: center !important;
-          justify-content: space-between !important;
-          gap: 8px !important;
-          margin: 0 -16px !important;
-          padding: 12px 16px !important;
-          background: rgba(var(--pp-bg-rgb), 0.94) !important;
-          backdrop-filter: blur(12px) !important;
-          -webkit-backdrop-filter: blur(12px) !important;
-          border: none !important;
-          box-shadow: 0 1px 0 rgba(var(--pp-text-rgb), 0.06) !important;
+          justify-content: center !important;
+          gap: 16px !important;
+          margin: 0 !important;
+          padding: 10px 20px !important;
+          background: rgba(var(--pp-bg-rgb), 0.88) !important;
+          backdrop-filter: blur(16px) saturate(140%) !important;
+          -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
+          border: 1px solid rgba(var(--pp-text-rgb), 0.06) !important;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
           max-width: none !important;
-          width: calc(100% + 32px) !important;
-          text-align: left !important;
-          border-radius: 0 16px 0 0 !important;
+          width: auto !important;
+          text-align: center !important;
+          border-radius: 20px !important;
         }
         html.pp-desktop .app-context-strip::before { display: none !important; }
-        html.pp-desktop .app-context-copy { align-items: flex-start !important; flex: 0 0 auto !important; min-width: 0 !important; gap: 0 !important; }
+        html.pp-desktop .app-context-copy { align-items: center !important; flex: 0 0 auto !important; min-width: 0 !important; gap: 0 !important; }
         html.pp-desktop .app-context-kicker { display: none !important; }
-        html.pp-desktop .app-context-title { font-family: var(--pp-font-heading) !important; font-size: 17px !important; font-weight: 800 !important; letter-spacing: -0.02em !important; white-space: nowrap !important; color: var(--pp-text) !important; }
+        html.pp-desktop .app-context-title { font-family: var(--pp-font-heading) !important; font-size: 15px !important; font-weight: 800 !important; letter-spacing: -0.02em !important; white-space: nowrap !important; color: var(--pp-text) !important; }
         html.pp-desktop .app-context-sub { display: none !important; }
-        html.pp-desktop .app-mode-switch.compact { width: auto !important; margin: 0 !important; flex-shrink: 0 !important; gap: 2px !important; }
-        html.pp-desktop .app-mode-switch.compact .app-mode-chip { font-size: 11px !important; padding: 5px 10px !important; }
+        html.pp-desktop .app-mode-switch.compact { width: auto !important; margin: 0 !important; flex-shrink: 0 !important; gap: 4px !important; border-left: 1px solid rgba(var(--pp-text-rgb), 0.1) !important; padding-left: 16px !important; }
+        html.pp-desktop .app-mode-switch.compact .app-mode-chip { font-size: 12px !important; padding: 6px 14px !important; border-radius: 12px !important; }
         html.pp-desktop .app-mode-switch.compact .app-mode-link { display: none !important; }
 
         /* Push map controls away from floating panel */
