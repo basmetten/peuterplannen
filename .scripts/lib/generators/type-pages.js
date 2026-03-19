@@ -185,6 +185,12 @@ ${svgSpriteDefs()}
 
 ${navHTML()}
 
+<div class="category-header-img">
+  <picture>
+    <source type="image/webp" srcset="/images/categories/${page.slug}-header.webp">
+    <img src="/images/categories/${page.slug}-header.png" alt="${page.title}" loading="eager" width="1024" height="341">
+  </picture>
+</div>
 <div class="hero">
   <h1>${page.h1.replace('Nederland', '<span class="accent">Nederland</span>')}</h1>
   <p>Toplocaties in ${regionNamesStr}</p>

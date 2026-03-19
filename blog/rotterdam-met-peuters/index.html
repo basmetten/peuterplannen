@@ -18,48 +18,10 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603182039">
-  <link rel="stylesheet" href="/style.min.css?v=202603182039">
-  <style>
-  .guide-section{display:grid;gap:18px;margin:36px 0}
-  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .guide-card-compact{padding:20px 18px}
-  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
-  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
-  .guide-card h2{font-size:clamp(28px,5vw,40px)}
-  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
-  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
-  .guide-card-intro{max-width:58ch}
-  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .guide-links{display:grid;gap:12px;margin-top:16px}
-  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-  .guide-link:visited{color:var(--pp-text)}
-  .guide-link strong{font-size:15px;line-height:1.3}
-  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
-  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
-  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
-  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
-  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
-  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
-  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
-  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
-  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
-  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
-  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
-  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
-  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
-  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
-  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
-  .editorial-support-links a:visited{color:var(--pp-text)}
-  .editorial-support-links a strong{font-size:14px}
-  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
-  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
-</style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
-  <script src="/nav-floating.js?v=202603182039" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603191155">
+  <link rel="stylesheet" href="/style.min.css?v=202603191155">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603191155">
+  <script src="/nav-floating.js?v=202603191155" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -127,10 +89,12 @@
   <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
     <a href="/" class="nav-mobile-link">Home</a>
     <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
-    <a href="/about.html" class="nav-mobile-link">Over</a>
     <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
-    <a href="/contact.html" class="nav-mobile-link">Contact</a>
     <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
+    <div class="nav-mobile-secondary">
+      <a href="/about.html" class="nav-mobile-link">Over</a>
+      <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    </div>
   </div>
 </nav>
 
@@ -146,10 +110,32 @@
 <main id="main-content">
   <p class="blog-meta">4 maart 2026 &middot; rotterdam, tips, stadsuitje</p>
 
+  <nav class="blog-toc" aria-label="Inhoudsopgave">
+    <button class="blog-toc-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+      Inhoudsopgave <span class="toc-count">15</span>
+    </button>
+    <ol class="blog-toc-list">
+      <li><a href="#diergaarde-blijdorp-nog-steeds-de-beste-keuze">Diergaarde Blijdorp: nog steeds de beste keuze</a></li>
+      <li><a href="#plaswijckpark-de-geheime-tip-van-rotterdamse-ouder">Plaswijckpark: de geheime tip van Rotterdamse ouders</a></li>
+      <li><a href="#de-speeldernis-avontuur-op-maat-van-kleine-kindere">De Speeldernis: avontuur op maat van kleine kinderen</a></li>
+      <li><a href="#fenix-food-factory-en-katendrecht-voor-de-ouders-o">Fenix Food Factory en Katendrecht: voor de ouders ook</a></li>
+      <li><a href="#villa-zebra-het-museum-dat-wl-werkt-met-peuters">Villa Zebra: het museum dat wél werkt met peuters</a></li>
+      <li><a href="#natuurhistorisch-museum-rotterdam-stil-rustig-grat">Natuurhistorisch Museum Rotterdam: stil, rustig, gratis</a></li>
+      <li><a href="#miniworld-rotterdam-fascinerend-voor-de-wat-oudere">Miniworld Rotterdam: fascinerend voor de wat oudere peuters</a></li>
+      <li><a href="#kralingse-bos-gewoon-lopen-eenden-voeren-lucht-ina">Kralingse Bos: gewoon lopen, eenden voeren, lucht inademen</a></li>
+      <li><a href="#het-zuiderpark-de-onderschatte-kant-van-zuid">Het Zuiderpark: de onderschatte kant van Zuid</a></li>
+      <li><a href="#maritiem-museum-de-binnenhaven-is-de-echte-attract">Maritiem Museum: de binnenhaven is de echte attractie</a></li>
+      <li><a href="#wat-je-kunt-overslaan">Wat je kunt overslaan</a></li>
+      <li><a href="#praktisch-hoe-kom-je-er-wanneer-ga-je">Praktisch: hoe kom je er, wanneer ga je</a></li>
+      <li><a href="#voorbeeldprogramma-een-dag-rotterdam-met-je-peuter">Voorbeeldprogramma: een dag Rotterdam met je peuter</a></li>
+      <li><a href="#veelgestelde-vragen">Veelgestelde vragen</a></li>
+      <li><a href="#meer-uitjes-in-rotterdam">Meer uitjes in Rotterdam</a></li>
+    </ol>
+  </nav>
   <div class="blog-content">
     <p>Rotterdam heeft een reputatie als stad voor architectuurliefhebbers en culinaire avonturen. Maar met een peuter op sleeptouw? Verrassend goed georganiseerd. De stad is groot en overzichtelijk tegelijk, er zijn genoeg groene plekken, en de meeste dingen zijn goed bereikbaar met de metro.</p>
 <p>Dit is geen lijst van alle dingen die er te doen zijn — dat weet Google ook. Dit is wat wij aanraden als je er echt naartoe gaat met een kind van 1 tot 5 jaar. We bespreken zowel de klassiekers als een paar minder bekende plekken die het juist voor jonge kinderen goed doen.</p>
-<h2>Diergaarde Blijdorp: nog steeds de beste keuze</h2>
+<h2 id="diergaarde-blijdorp-nog-steeds-de-beste-keuze">Diergaarde Blijdorp: nog steeds de beste keuze</h2>
 <p>Laten we beginnen met het voor de hand liggende: <a href="/rotterdam/diergaarde-blijdorp/">Diergaarde Blijdorp</a> is uitstekend voor peuters. Niet omdat het de grootste dierentuin is of de meest spectaculaire, maar omdat het qua loopafstanden en tempo precies goed zit voor kleine kinderen.</p>
 <p><strong>Wat je niet mag overslaan: de Amazonica.</strong> Dat is de grote kas met regenwoud, luchtbruggen en kleurige vogels die vrij rondvliegen. Voor een peuter van 2 of 3 jaar is dat letterlijk overweldigend — in de goede zin. Warm, groen, grote vlinders, water dat druppelt. Tien minuten in die hal en je peuter vraagt er daarna nog weken naar.</p>
 <p>De kinderboerderij binnen Blijdorp (Rivierahal-kant) is ook altijd raak. Geiten aaien, konijnen bekijken, hooi ruiken. Klassiek, maar het werkt elke keer. Rotterdam heeft sowieso veel goede <a href="/kinderboerderijen.html">kinderboerderijen</a> — ook buiten de dierentuin.</p>
@@ -160,7 +146,7 @@
 <li>Parkeren kost geld en is stressvol. Neem de metro (station Blijdorp, lijn D) — dat scheelt je minstens twintig minuten loopstress.</li>
 <li>Dinsdag en woensdag zijn doorgaans de rustigste dagen.</li>
 </ul>
-<h2>Plaswijckpark: de geheime tip van Rotterdamse ouders</h2>
+<h2 id="plaswijckpark-de-geheime-tip-van-rotterdamse-ouder">Plaswijckpark: de geheime tip van Rotterdamse ouders</h2>
 <p>Veel mensen van buiten Rotterdam kennen <a href="/rotterdam/plaswijckpark/">Plaswijckpark</a> niet, maar lokale ouders zweren erbij. Het is een groot recreatiepark in Rotterdam-Noord met speeltuinen, een kinderboerderij, een kleine speeltrein, een meer, en genoeg ruimte om gewoon rond te lopen.</p>
 <p>Het voelt anders dan Blijdorp: rustiger, groener, meer ontspannen. Er zijn picknickplekken, een terras, en de kinderboerderij is gratis toegankelijk voor iedereen. De <a href="/speeltuinen.html">speeltuinen</a> zijn goed onderhouden en afgestemd op verschillende leeftijden — van een zandbak voor de allerkleinsten tot klimtoestellen voor de iets grotere kinderen.</p>
 <p>Voor peuters van 2-5 jaar is dit eigenlijk de perfecte bestemming: het is groot genoeg om een halve dag te vullen, maar niet zo groot dat je op je benen valt.</p>
@@ -169,7 +155,7 @@
 <li>Toegang tot het park zelf is gratis. Voor sommige attracties (speeltrein, e.d.) betaal je apart.</li>
 <li>Gelegen aan de Ringvaartweg, goed bereikbaar met de auto of bus vanuit het centrum.</li>
 </ul>
-<h2>De Speeldernis: avontuur op maat van kleine kinderen</h2>
+<h2 id="de-speeldernis-avontuur-op-maat-van-kleine-kindere">De Speeldernis: avontuur op maat van kleine kinderen</h2>
 <p>Een plek die je niet snel op een toeristenlijst vindt, maar die bij Rotterdamse gezinnen enorm populair is: <a href="/rotterdam/de-speeldernis/">De Speeldernis</a>. Dit is een avontuurlijke natuurspeelplek op het Eiland van Brienenoord, waar kinderen vrij kunnen bouwen, klimmen, graven en modderen.</p>
 <p>Voor peuters is vooral het waterdeel geweldig: ondiepe stroompjes, zandheuvels, en boomstammen om overheen te klimmen. Het is niet netjes en georganiseerd — dat is juist het punt. Het is de perfecte plek om een kind twee uur lang vuil te laten worden terwijl jij op een bankje zit.</p>
 <p><strong>Praktisch:</strong></p>
@@ -178,11 +164,11 @@
 <li>Neem reservekleren mee. Serieus. Je kind komt er niet droog of schoon vandaan.</li>
 <li>Bereikbaar met bus 77 vanaf metrostation Kralingse Zoom.</li>
 </ul>
-<h2>Fenix Food Factory en Katendrecht: voor de ouders ook</h2>
+<h2 id="fenix-food-factory-en-katendrecht-voor-de-ouders-o">Fenix Food Factory en Katendrecht: voor de ouders ook</h2>
 <p>Als je een middag hebt en de peuter heeft geslapt (of je durft het erop te wagen zonder slaap), dan is Katendrecht een aanrader. De <a href="/rotterdam/fenix-food-factory/">Fenix Food Factory</a> is een oude loods met lokale voedselproducenten, een terras aan de Maas, en genoeg ruimte om met een buggy te manoeuvreren.</p>
 <p>Het is eigenlijk meer voor de ouders — goede koffie, interessant eten, mooie uitzichten op het water. Maar voor peuters heeft het iets magisch: enorme ruimtes, echte werkende kranen in de verte, het water dat glinstert, mensen die voorbijlopen. Er is van alles te kijken zonder dat je iets speciaals hoeft te doen.</p>
 <p>De nabijgelegen kade langs het Rijnhavenkwartier is ook goed: breed, veilig, en de peuter kan zelf lopen terwijl jij de skyline bewondert. En als je toch in de buurt bent: de <a href="/rotterdam/floating-farm/">Floating Farm</a> is een drijvende boerderij een klein stukje verderop waar je koeien kunt bekijken op het water. Het is klein, maar voor peuters die dieren leuk vinden is het een mooie tussenstop.</p>
-<h2>Villa Zebra: het museum dat wél werkt met peuters</h2>
+<h2 id="villa-zebra-het-museum-dat-wl-werkt-met-peuters">Villa Zebra: het museum dat wél werkt met peuters</h2>
 <p>De meeste musea zijn lastig met jonge kinderen. <a href="/rotterdam/villa-zebra/">Villa Zebra</a> is de uitzondering. Dit kinderkunstmuseum in het Museumpark is specifiek ontworpen voor kinderen van 3 tot 10 jaar, en de tentoonstellingen zijn interactief: aanraken, bewegen, meedoen.</p>
 <p>De ruimtes zijn klein en overzichtelijk, er is altijd begeleiding, en het thema wisselt regelmatig. Reken op een bezoek van ongeveer een uur — precies goed voor de aandachtsspanne van een driejarige. Na afloop kun je in het Museumpark zelf nog even uitrennen.</p>
 <p><strong>Praktisch:</strong></p>
@@ -191,11 +177,11 @@
 <li>Reserveren is aan te raden, vooral in het weekend.</li>
 <li>Combineer het eventueel met de <a href="/rotterdam/kunsthal-rotterdam/">Kunsthal</a> ernaast als je oudere kinderen bij je hebt.</li>
 </ul>
-<h2>Natuurhistorisch Museum Rotterdam: stil, rustig, gratis</h2>
+<h2 id="natuurhistorisch-museum-rotterdam-stil-rustig-grat">Natuurhistorisch Museum Rotterdam: stil, rustig, gratis</h2>
 <p>Dit museum wordt enorm onderschat. Het <a href="/rotterdam/natuurhistorisch-museum-rotterdam/">Natuurhistorisch Museum Rotterdam</a> zit in een mooi oud gebouw aan de Westzeedijk, de entree is gratis voor kinderen onder de 18, en het heeft een geweldige collectie dieren en fossielen.</p>
 <p>Voor peuters is de afdeling met opgezette dieren het beste: grote neushoorn, giraffe, ijsbeer. Even groot als in het echt, maar stil en veilig op afstand te bekijken. Geen geluiden, geen stress — gewoon staren.</p>
 <p>Het is ook een prima regentip: het is nooit erg druk, de opzet is rustig en overzichtelijk, en na 45 minuten heb je er ook alles van gezien. Meer ideeën voor als het regent? Lees onze gids over <a href="/blog/uitjes-met-peuter-bij-regen/">uitjes met peuters bij regen</a>.</p>
-<h2>Miniworld Rotterdam: fascinerend voor de wat oudere peuters</h2>
+<h2 id="miniworld-rotterdam-fascinerend-voor-de-wat-oudere">Miniworld Rotterdam: fascinerend voor de wat oudere peuters</h2>
 <p><a href="/rotterdam/miniworld-rotterdam/">Miniworld Rotterdam</a> is de grootste miniatuurwereld van de Benelux, en het is precies het soort plek waar je van tevoren denkt &quot;dat is niks voor een peuter&quot; — en dan staat je driejarige een kwartier gebogen naar treintjes en autootjes te kijken. De dag-nachtcyclus (de lichten gaan uit en alles licht op) maakt indruk.</p>
 <p>Eerlijk: voor kinderen onder de 2,5 jaar is het minder geschikt. Ze willen aanraken en dat kan niet. Maar vanaf 3 jaar werkt het goed, zeker als je kind al iets heeft met auto&#39;s of treinen.</p>
 <p><strong>Praktisch:</strong></p>
@@ -204,33 +190,33 @@
 <li>Reken op 45-60 minuten bezoektijd.</li>
 <li>In het weekend kan het druk zijn; doordeweeks heb je meer ruimte.</li>
 </ul>
-<h2>Kralingse Bos: gewoon lopen, eenden voeren, lucht inademen</h2>
+<h2 id="kralingse-bos-gewoon-lopen-eenden-voeren-lucht-ina">Kralingse Bos: gewoon lopen, eenden voeren, lucht inademen</h2>
 <p>Soms is het niet nodig om ergens naartoe te gaan. Het <a href="/rotterdam/kralingse-bos/">Kralingse Bos</a> is het grote stadspark van Rotterdam: een meertje, veel eenden, bomen, grasvelden, en een paar terrasjes aan het water. Gratis, groot, goed voor een ochtend.</p>
 <p>Neem oud brood mee voor de eenden. Dat is voor peuters van alle leeftijden een bezigheid die ze nooit vervelend vinden. En als je na het voeren nog energie overhebt, loop dan door naar de speeltuin aan de noordkant van de plas — een fijne plek met schommels en een zandbak.</p>
-<h2>Het Zuiderpark: de onderschatte kant van Zuid</h2>
+<h2 id="het-zuiderpark-de-onderschatte-kant-van-zuid">Het Zuiderpark: de onderschatte kant van Zuid</h2>
 <p>Aan de andere kant van de stad ligt het <a href="/rotterdam/zuiderpark/">Zuiderpark</a>, een groot stadspark met een heel andere sfeer dan het Kralingse Bos. Minder chic, meer volkstuin-achtig, en daardoor juist lekker ongedwongen. Er is een grote speeltuin, er zijn dierenweides, en in de zomer is het waterplein een hit bij jonge kinderen.</p>
 <p>Het park grenst aan de <a href="/rotterdam/belevenisboerderij-schieveen/">Belevenisboerderij Schieveen</a> — een kinderboerderij waar je niet alleen dieren kunt bekijken maar ook mee kunt helpen met voeren. Voor peuters die graag &quot;zelf doen&quot; is dat fantastisch.</p>
-<h2>Maritiem Museum: de binnenhaven is de echte attractie</h2>
+<h2 id="maritiem-museum-de-binnenhaven-is-de-echte-attract">Maritiem Museum: de binnenhaven is de echte attractie</h2>
 <p>Het <a href="/rotterdam/maritiem-museum-rotterdam/">Maritiem Museum Rotterdam</a> zelf is voor peuters deels te abstract — veel van de tentoonstellingen richten zich op oudere kinderen. Maar de binnenhaven erachter (Leuvehaven) is een schot in de roos. Daar liggen echte schepen die je kunt betreden: een sleepboot, een reddingsboot, een stoomschip.</p>
 <p>Peuters vinden het geweldig om op een echt schip te staan, aan een stuurwiel te draaien en door ramen naar het water te kijken. Het buitendeel is gratis toegankelijk en je kunt er makkelijk een uur kwijt.</p>
-<h2>Wat je kunt overslaan</h2>
+<h2 id="wat-je-kunt-overslaan">Wat je kunt overslaan</h2>
 <p><strong>De Markthal.</strong> Prachtig architectonisch, maar met een peuter is het een logistieke nachtmerrie. Het is altijd druk, de acoustiek is verbluffend slecht, en de producten zijn mooi maar niet erg kindvriendelijk. Je peuter grijpt alles aan, jij verontschuldigt je voortdurend. Leuk voor een avond zonder kinderen, niet voor een uitje.</p>
 <p><strong>De Euromast.</strong> Het is een toren. Je gaat hoog. Je kijkt neer op de stad. Voor een peuter is dit geen belevenis — ze begrijpen de schaal niet en vinden de rij wachten niet leuk. Bewaar het voor als ze 7 of 8 zijn.</p>
 <p><strong>Het centrum op zaterdagmiddag.</strong> De Lijnbaan en omgeving zijn op zaterdagmiddag zo vol dat een buggy niet meer vooruitkomt. Ga eerder of kies een doordeweekse dag.</p>
 <p><strong>SplashTours en rondvaarten.</strong> De combinatiebus-boot klinkt leuk, maar de meeste peuters vinden het motorgeluid eng en het zitten saai. Boottochten werken pas echt vanaf een jaar of 5.</p>
-<h2>Praktisch: hoe kom je er, wanneer ga je</h2>
+<h2 id="praktisch-hoe-kom-je-er-wanneer-ga-je">Praktisch: hoe kom je er, wanneer ga je</h2>
 <p><strong>Trein en metro:</strong> Rotterdam Centraal is groot en goed verbonden. Vanaf CS neem je de metro naar Blijdorp (lijn D, richting De Akkers), of naar het centrum. Met een buggy is de metro goed te doen: de meeste stations hebben liften.</p>
 <p><strong>Auto:</strong> Rotterdam heeft betaald parkeren bijna overal in het centrum. P+R opties aan de rand van de stad zijn een stuk goedkoper en je rijdt dan met de metro verder.</p>
 <p><strong>Wanneer gaan:</strong> Dinsdag of woensdag ochtend is ideaal. Vrijdag en zaterdag zijn druk. In de vakanties: ga zo vroeg mogelijk of wacht een week.</p>
 <p><strong>Eten:</strong> Neem een lunch mee als je naar Blijdorp of Plaswijckpark gaat. Het eten in de parken zelf is prima maar duur. Bij Katendrecht en het Kralingse Bos zijn terrasjes die ook voor kinderen goed te doen zijn. Op zoek naar plekken waar je echt ontspannen kunt eten met je kleintje? Bekijk onze tips voor <a href="/blog/kindvriendelijke-terrassen-2026/">kindvriendelijke terrassen</a>.</p>
 <p><strong>Verschoonplekken:</strong> De meeste grote attracties (Blijdorp, Plaswijckpark, Maritiem Museum) hebben verschoonfaciliteiten. In het centrum zijn ze lastiger te vinden — de Centrale Bibliotheek aan de Hoogstraat is een betrouwbare optie met schone toiletten en een kindersectie waar je ook even kunt zitten.</p>
-<h2>Voorbeeldprogramma: een dag Rotterdam met je peuter</h2>
+<h2 id="voorbeeldprogramma-een-dag-rotterdam-met-je-peuter">Voorbeeldprogramma: een dag Rotterdam met je peuter</h2>
 <p>Nog nooit geweest en geen idee waar je moet beginnen? Dit werkt voor de meeste gezinnen met kinderen van 2-4 jaar:</p>
 <p><strong>Ochtend (09:00-12:00):</strong> Blijdorp of Plaswijckpark. Ga bij opening, loop rustig rond, en vertrek voordat het druk wordt. Neem zelf broodjes mee.</p>
 <p><strong>Lunch (12:00-13:00):</strong> Picknicken in het park, of als je in de stad bent: de Markthal is wél een optie als je er snel doorheen gaat (koop iets en eet buiten op het plein).</p>
 <p><strong>Middag (13:30-15:30):</strong> Na het middagslaapje: Kralingse Bos voor een rustige wandeling, of Villa Zebra als je iets actiefs wilt. Bij regen: Natuurhistorisch Museum of Miniworld.</p>
 <p><strong>Einde van de dag:</strong> Terrasje aan het water bij Katendrecht of het Kralingse Bos. Rustig afsluiten. Niet nog één ding erbij proppen — dat is de valkuil.</p>
-<h2>Veelgestelde vragen</h2>
+<h2 id="veelgestelde-vragen">Veelgestelde vragen</h2>
 <p><strong>Wat is de leukste plek in Rotterdam voor een peuter van 2 jaar?</strong>
 Plaswijckpark. Het is overzichtelijk, er is een mix van dieren, speeltuinen en water, en de sfeer is ontspannen. Blijdorp is ook goed, maar voor een tweejarige kan de omvang overweldigend zijn als je te laat op de dag gaat.</p>
 <p><strong>Is Rotterdam goed te doen met een buggy?</strong>
@@ -243,7 +229,7 @@ Reken op 2,5 tot 3,5 uur. Peuters hebben niet het uithoudingsvermogen voor een h
 De <a href="/rotterdam/de-pannenkoekenboot-rotterdam/">Pannenkoekenboot</a> is vermakelijk als je kind van boten houdt en goed kan stilzitten. Voor rustige driejarigen kan het werken. Voor actieve tweejarigen wordt het een uur lang pannenkoeken opruimen terwijl je kind van tafel wil. Ken je kind, en beslis op basis daarvan.</p>
 <p><strong>Zijn er gratis uitjes in Rotterdam met peuters?</strong>
 Absoluut. Het Kralingse Bos, het Zuiderpark, het Natuurhistorisch Museum (gratis onder 18) en De Speeldernis zijn allemaal gratis. De buitenhaven van het Maritiem Museum ook. Je kunt makkelijk een hele dag vullen zonder entreegeld te betalen.</p>
-<h2>Meer uitjes in Rotterdam</h2>
+<h2 id="meer-uitjes-in-rotterdam">Meer uitjes in Rotterdam</h2>
 <p>Bekijk alle kindvriendelijke locaties in Rotterdam in onze <a href="/rotterdam.html">Rotterdam-gids</a> — gefilterd op leeftijd, weer en type uitje.</p>
 
   </div>
@@ -316,21 +302,24 @@ Absoluut. Het Kralingse Bos, het Zuiderpark, het Natuurhistorisch Museum (gratis
 <footer class="pp-reveal">
   <div class="footer-container">
     <div class="footer-brand">
-      <strong style="font-size: 20px;">PeuterPlannen</strong>
+      <strong style="font-size: var(--pp-text-lg);">PeuterPlannen</strong>
       <p>Kindvriendelijke uitjes in heel Nederland. Gecheckt en actueel.</p>
     </div>
-    <div class="footer-links">
-      <h4>Product</h4>
-      <a href="/app.html">App</a>
-      <a href="/blog/">Inspiratie</a>
-      <a href="/about.html">Over</a>
+    <div class="footer-columns">
+      <div class="footer-links">
+        <h4>Product</h4>
+        <a href="/app.html">App</a>
+        <a href="/blog/">Inspiratie</a>
+        <a href="/about.html">Over</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <h4>Legal</h4>
-      <a href="/contact.html">Contact</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/disclaimer/">Disclaimer</a>
-    </div>
+    <button class="footer-expand" onclick="this.parentElement.classList.add('expanded');this.remove();" aria-label="Toon meer links">Meer ↓</button>
   </div>
   <div class="footer-bottom">
     &copy; 2026 PeuterPlannen. Gemaakt in Utrecht.

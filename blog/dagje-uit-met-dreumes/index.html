@@ -18,48 +18,10 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603182039">
-  <link rel="stylesheet" href="/style.min.css?v=202603182039">
-  <style>
-  .guide-section{display:grid;gap:18px;margin:36px 0}
-  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .guide-card-compact{padding:20px 18px}
-  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
-  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
-  .guide-card h2{font-size:clamp(28px,5vw,40px)}
-  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
-  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
-  .guide-card-intro{max-width:58ch}
-  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .guide-links{display:grid;gap:12px;margin-top:16px}
-  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-  .guide-link:visited{color:var(--pp-text)}
-  .guide-link strong{font-size:15px;line-height:1.3}
-  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
-  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
-  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
-  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
-  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
-  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
-  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
-  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
-  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
-  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
-  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
-  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
-  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
-  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
-  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
-  .editorial-support-links a:visited{color:var(--pp-text)}
-  .editorial-support-links a strong{font-size:14px}
-  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
-  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
-</style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
-  <script src="/nav-floating.js?v=202603182039" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603191155">
+  <link rel="stylesheet" href="/style.min.css?v=202603191155">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603191155">
+  <script src="/nav-floating.js?v=202603191155" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -127,10 +89,12 @@
   <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
     <a href="/" class="nav-mobile-link">Home</a>
     <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
-    <a href="/about.html" class="nav-mobile-link">Over</a>
     <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
-    <a href="/contact.html" class="nav-mobile-link">Contact</a>
     <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
+    <div class="nav-mobile-secondary">
+      <a href="/about.html" class="nav-mobile-link">Over</a>
+      <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    </div>
   </div>
 </nav>
 
@@ -146,55 +110,89 @@
 <main id="main-content">
   <p class="blog-meta">4 maart 2026 &middot; dreumes, tips, 1-2 jaar</p>
 
+  <nav class="blog-toc" aria-label="Inhoudsopgave">
+    <button class="blog-toc-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+      Inhoudsopgave <span class="toc-count">27</span>
+    </button>
+    <ol class="blog-toc-list">
+      <li><a href="#natuur-en-dieren">Natuur en dieren</a></li>
+      <li class="toc-sub"><a href="#1-kinderboerderij-bezoeken">1. Kinderboerderij bezoeken</a></li>
+      <li class="toc-sub"><a href="#2-eendjes-voeren-in-het-park">2. Eendjes voeren in het park</a></li>
+      <li class="toc-sub"><a href="#3-bos-of-duinwandeling">3. Bos- of duinwandeling</a></li>
+      <li class="toc-sub"><a href="#4-bloemen-of-kruidentuin">4. Bloemen- of kruidentuin</a></li>
+      <li><a href="#spelen-en-bewegen">Spelen en bewegen</a></li>
+      <li class="toc-sub"><a href="#5-peuterbinnenspeeltuin">5. Peuterbinnenspeeltuin</a></li>
+      <li class="toc-sub"><a href="#6-speeltuin-met-babyschommel">6. Speeltuin met babyschommel</a></li>
+      <li class="toc-sub"><a href="#7-babyzwemmen-of-peuterzwemmen">7. Babyzwemmen of peuterzwemmen</a></li>
+      <li class="toc-sub"><a href="#8-softplay-area">8. Softplay area</a></li>
+      <li><a href="#muziek-en-voorlezen">Muziek en voorlezen</a></li>
+      <li class="toc-sub"><a href="#9-babyconcert">9. Babyconcert</a></li>
+      <li class="toc-sub"><a href="#10-voorleesuurtje-in-de-bibliotheek">10. Voorleesuurtje in de bibliotheek</a></li>
+      <li class="toc-sub"><a href="#11-muziekles-voor-dreumesen">11. Muziekles voor dreumesen</a></li>
+      <li><a href="#musea-en-attracties">Musea en attracties</a></li>
+      <li class="toc-sub"><a href="#12-nijntje-museum">12. Nijntje Museum</a></li>
+      <li class="toc-sub"><a href="#13-ontdekmuseum-of-science-center">13. Ontdekmuseum of science center</a></li>
+      <li class="toc-sub"><a href="#14-tropisch-zwemparadijs">14. Tropisch zwemparadijs</a></li>
+      <li><a href="#water-en-buitenspelen">Water en buitenspelen</a></li>
+      <li class="toc-sub"><a href="#15-waterspeelplek">15. Waterspeelplek</a></li>
+      <li class="toc-sub"><a href="#16-strand">16. Strand</a></li>
+      <li class="toc-sub"><a href="#17-pannenkoekenschip-of-boerderij">17. Pannenkoekenschip of -boerderij</a></li>
+      <li><a href="#rustige-activiteiten">Rustige activiteiten</a></li>
+      <li class="toc-sub"><a href="#18-koffietentje-met-speelhoek">18. Koffietentje met speelhoek</a></li>
+      <li class="toc-sub"><a href="#19-stadspark-met-eendenvijver">19. Stadspark met eendenvijver</a></li>
+      <li class="toc-sub"><a href="#20-trein-of-busritje">20. Trein- of busritje</a></li>
+      <li><a href="#overlevingstips">Overlevingstips</a></li>
+    </ol>
+  </nav>
   <div class="blog-content">
     <p>Een dagje uit met een dreumes is anders dan met een peuter van drie of vier. Je kind loopt misschien net, heeft een kort aandachtsspannetje en stopt nog van alles in de mond. Maar er is genoeg te doen met kinderen van 1 tot 2 jaar, als je weet waar je moet zoeken. Het draait om zintuiglijke ervaringen: voelen, ruiken, zien en ontdekken. Hier zijn 20 activiteiten die bij deze leeftijd passen.</p>
-<h2>Natuur en dieren</h2>
-<h3>1. Kinderboerderij bezoeken</h3>
+<h2 id="natuur-en-dieren">Natuur en dieren</h2>
+<h3 id="1-kinderboerderij-bezoeken">1. Kinderboerderij bezoeken</h3>
 <p>De absolute nummer een voor dreumesen. Kinderboerderijen zijn overal in Nederland te vinden, vaak gratis, en bieden precies wat een dreumes nodig heeft: dieren die je kunt aaien, ruimte om te lopen en een zandbak om in te spelen. In <a href="/utrecht.html">Utrecht</a> is <a href="/utrecht/stadsboerderij-griftsteede/">Kinderboerderij Griftsteede</a> een aanrader, en in <a href="/amsterdam.html">Amsterdam</a> zijn er tientallen stadsboerderijen. Ga rond voedertijd, dan zijn de dieren het actiefst en mag je dreumes vaak meehelpen.</p>
-<h3>2. Eendjes voeren in het park</h3>
+<h3 id="2-eendjes-voeren-in-het-park">2. Eendjes voeren in het park</h3>
 <p>Simpel maar effectief. Een stukje oud brood (of beter: speciale eendenvoerkorrels van de dierenwinkel) en een vijver met eenden. Meer heeft een dreumes niet nodig. Het <a href="/amsterdam.html">Vondelpark</a> in Amsterdam en het Wilhelminapark in <a href="/utrecht.html">Utrecht</a> zijn goede opties.</p>
-<h3>3. Bos- of duinwandeling</h3>
+<h3 id="3-bos-of-duinwandeling">3. Bos- of duinwandeling</h3>
 <p>Een korte wandeling door het bos is voor een dreumes een avontuur. Laat je kind lopen, blaadjes oprapen, takjes verzamelen en in plassen stampen. Houd de wandeling kort: <strong>maximaal een half uur tot drie kwartier</strong> lopen is voor de meeste dreumesen genoeg. Neem de buggy mee als backup. Het <a href="/amsterdam/amsterdamse-bos/">Amsterdamse Bos</a> en de <a href="/utrechtse-heuvelrug.html">Utrechtse Heuvelrug</a> zijn mooi voor een korte wandeling.</p>
-<h3>4. Bloemen- of kruidentuin</h3>
+<h3 id="4-bloemen-of-kruidentuin">4. Bloemen- of kruidentuin</h3>
 <p>Een tuin vol geuren en kleuren is fascinerend voor een dreumes. Botanische tuinen zoals de Hortus in Amsterdam of Leiden bieden een rustige, veilige omgeving.</p>
-<h2>Spelen en bewegen</h2>
-<h3>5. Peuterbinnenspeeltuin</h3>
+<h2 id="spelen-en-bewegen">Spelen en bewegen</h2>
+<h3 id="5-peuterbinnenspeeltuin">5. Peuterbinnenspeeltuin</h3>
 <p>Steeds meer binnenspeeltuinen hebben een speciaal gedeelte voor kinderen onder de twee. Hier staan zachte blokken, lage glijbaantjes en ballenbaden met kleine ballen. <a href="/utrecht.html">Ballorig</a> en <a href="/amsterdam/monkey-town-amsterdam/">Monkey Town</a> hebben aparte dreumeshoeken. Let op leeftijdsgrenzen: bij sommige speeltuinen is de minimumleeftijd 1 jaar.</p>
-<h3>6. Speeltuin met babyschommel</h3>
+<h3 id="6-speeltuin-met-babyschommel">6. Speeltuin met babyschommel</h3>
 <p>Niet elke speeltuin is geschikt voor dreumesen. Zoek specifiek naar speeltuinen met een <strong>babyschommel</strong> (met beugeltje), een zandbak en lage klimtoestellen. De meeste gemeenten hebben overzichtelijke buurt-speeltuinen die perfect zijn voor de allerkleinsten.</p>
-<h3>7. Babyzwemmen of peuterzwemmen</h3>
+<h3 id="7-babyzwemmen-of-peuterzwemmen">7. Babyzwemmen of peuterzwemmen</h3>
 <p>Water is magisch voor dreumesen. Veel zwembaden bieden speciale sessies aan voor baby&#39;s en dreumesen, met <strong>extra warm water</strong> (31-33 graden) en speelmateriaal. Het gaat niet om leren zwemmen, maar om watergewenning en samen plezier maken. Neem altijd een zwemluier mee.</p>
-<h3>8. Softplay area</h3>
+<h3 id="8-softplay-area">8. Softplay area</h3>
 <p>In steeds meer winkelcentra en horecagelegenheden vind je kleine softplay-hoekjes met schuimblokken en kussentjes. Laagdrempelig en vaak gratis terwijl jij een kop koffie drinkt.</p>
-<h2>Muziek en voorlezen</h2>
-<h3>9. Babyconcert</h3>
+<h2 id="muziek-en-voorlezen">Muziek en voorlezen</h2>
+<h3 id="9-babyconcert">9. Babyconcert</h3>
 <p>Door heel Nederland organiseren orkesten speciale concerten voor baby&#39;s en dreumesen. Deze duren meestal <strong>30 tot 45 minuten</strong>, je kind mag rondkruipen en de muziek is bewust rustig. Het Concertgebouw in Amsterdam en TivoliVredenburg in Utrecht bieden dit regelmatig aan.</p>
-<h3>10. Voorleesuurtje in de bibliotheek</h3>
+<h3 id="10-voorleesuurtje-in-de-bibliotheek">10. Voorleesuurtje in de bibliotheek</h3>
 <p>Bijna elke bibliotheek in Nederland organiseert voorleessessies voor de allerkleinsten. Dreumesen luisteren, bladeren door boekjes en spelen met andere kinderen. Het is <strong>gratis</strong> als je een bibliotheekpas hebt (gratis voor kinderen). Een fijne, rustige activiteit voor een doordeweekse ochtend.</p>
-<h3>11. Muziekles voor dreumesen</h3>
+<h3 id="11-muziekles-voor-dreumesen">11. Muziekles voor dreumesen</h3>
 <p>Van Muziekids tot lokale muziekscholen: er zijn veel opties voor muziekles met je dreumes. Samen zingen, trommelen op instrumentjes en dansen. Dit soort lessen stimuleren de <strong>taalontwikkeling</strong> en motoriek. De meeste lessen duren een half uur, precies lang genoeg.</p>
-<h2>Musea en attracties</h2>
-<h3>12. Nijntje Museum</h3>
+<h2 id="musea-en-attracties">Musea en attracties</h2>
+<h3 id="12-nijntje-museum">12. Nijntje Museum</h3>
 <p>Het <a href="/utrecht/nijntje-museum/">Nijntje Museum</a> in <a href="/utrecht.html">Utrecht</a> is een van de weinige musea in Nederland die echt geschikt zijn voor kinderen vanaf <strong>1 jaar</strong>. Alles is op dreumeshoogte, interactief en stevig. Je kind kan rondlopen in het huisje van Nijntje, spelen in de tuin en boodschappen doen in de winkel. Reserveer vooraf, want het is populair.</p>
-<h3>13. Ontdekmuseum of science center</h3>
+<h3 id="13-ontdekmuseum-of-science-center">13. Ontdekmuseum of science center</h3>
 <p>Sommige science centers hebben speciale zones voor de allerkleinsten. <a href="/amsterdam/nemo-science-museum/">NEMO</a> in Amsterdam heeft bijvoorbeeld een ontdekruimte voor kleine kinderen met watertafels en lichtexperimenten. Dit soort plekken bieden zintuiglijke prikkels zonder dat het overweldigend wordt.</p>
-<h3>14. Tropisch zwemparadijs</h3>
+<h3 id="14-tropisch-zwemparadijs">14. Tropisch zwemparadijs</h3>
 <p>Een subtropisch zwemparadijs met een dreumes kan heel leuk zijn, mits je de rustige peuterbaden opzoekt. De golfslagbaden en wilde glijbanen zijn niets voor deze leeftijd, maar de ondiepe warmwaterbaden met kleine fonteintjes zijn perfect. Ga bij voorkeur <strong>doordeweeks buiten de vakanties</strong> als het rustig is.</p>
-<h2>Water en buitenspelen</h2>
-<h3>15. Waterspeelplek</h3>
+<h2 id="water-en-buitenspelen">Water en buitenspelen</h2>
+<h3 id="15-waterspeelplek">15. Waterspeelplek</h3>
 <p>In de zomer zijn waterspeelplekken ideaal voor dreumesen. Veel stadsparken hebben fonteinen of ondiepe waterloopjes waar kinderen in kunnen plonzen. In <a href="/rotterdam.html">Rotterdam</a> en <a href="/den-haag.html">Den Haag</a> vind je er meerdere. Neem extra kleren mee, want je dreumes wordt gegarandeerd drijfnat.</p>
-<h3>16. Strand</h3>
+<h3 id="16-strand">16. Strand</h3>
 <p>Een dagje strand met een dreumes draait om zandkastelen bouwen, schelpen zoeken en met de voetjes in het water staan. Kies een strand met voorzieningen: <strong>toiletten, een strandtent en schaduw</strong>. Vergeet de zonnebrandcreme niet.</p>
-<h3>17. Pannenkoekenschip of -boerderij</h3>
+<h3 id="17-pannenkoekenschip-of-boerderij">17. Pannenkoekenschip of -boerderij</h3>
 <p>Een uitstapje naar een pannenkoekenboerderij combineert eten met spelen. Veel pannenkoekenrestaurants hebben een speeltuin of dierenweide. Voor een dreumes is het eten van een pannenkoek al een avontuur op zich. In de buurt van <a href="/utrecht.html">Utrecht</a> zijn er meerdere opties, bijvoorbeeld rond de <a href="/utrechtse-heuvelrug.html">Utrechtse Heuvelrug</a>.</p>
-<h2>Rustige activiteiten</h2>
-<h3>18. Koffietentje met speelhoek</h3>
+<h2 id="rustige-activiteiten">Rustige activiteiten</h2>
+<h3 id="18-koffietentje-met-speelhoek">18. Koffietentje met speelhoek</h3>
 <p>Steeds meer horecagelegenheden snappen dat ouders met jonge kinderen ook gewoon een kop koffie willen drinken. Zoek naar cafes met een <strong>speelhoek</strong> of kindvriendelijke inrichting. In de grotere steden zoals <a href="/amsterdam.html">Amsterdam</a>, <a href="/rotterdam.html">Rotterdam</a> en <a href="/utrecht.html">Utrecht</a> zijn er steeds meer van dit soort plekken.</p>
-<h3>19. Stadspark met eendenvijver</h3>
+<h3 id="19-stadspark-met-eendenvijver">19. Stadspark met eendenvijver</h3>
 <p>Soms hoef je niet ver te zoeken. Een bankje in het stadspark en een dreumes die net kan lopen: meer heb je niet nodig. Laat je kind de omgeving ontdekken op eigen tempo. Voor een dreumes is alles nieuw en bijzonder.</p>
-<h3>20. Trein- of busritje</h3>
+<h3 id="20-trein-of-busritje">20. Trein- of busritje</h3>
 <p>Het klinkt gek, maar een ritje in de trein of bus is voor veel dreumesen een opwindende ervaring. Alles beweegt, er zijn mensen om naar te kijken en de trein maakt geluid. Kies een kort ritje (twee of drie haltes) en maak er een uitje van. <strong>Kinderen tot en met 3 jaar reizen gratis</strong> met het openbaar vervoer.</p>
-<h2>Overlevingstips</h2>
+<h2 id="overlevingstips">Overlevingstips</h2>
 <ul>
 <li>Pas je verwachtingen aan. Een dreumes heeft geen behoefte aan een vol programma. Een of twee activiteiten per dag is meer dan genoeg.</li>
 <li>Plan activiteiten rond het dutje, niet ertegen in. Een uitgerust kind is een blij kind.</li>
@@ -274,21 +272,24 @@
 <footer class="pp-reveal">
   <div class="footer-container">
     <div class="footer-brand">
-      <strong style="font-size: 20px;">PeuterPlannen</strong>
+      <strong style="font-size: var(--pp-text-lg);">PeuterPlannen</strong>
       <p>Kindvriendelijke uitjes in heel Nederland. Gecheckt en actueel.</p>
     </div>
-    <div class="footer-links">
-      <h4>Product</h4>
-      <a href="/app.html">App</a>
-      <a href="/blog/">Inspiratie</a>
-      <a href="/about.html">Over</a>
+    <div class="footer-columns">
+      <div class="footer-links">
+        <h4>Product</h4>
+        <a href="/app.html">App</a>
+        <a href="/blog/">Inspiratie</a>
+        <a href="/about.html">Over</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <h4>Legal</h4>
-      <a href="/contact.html">Contact</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/disclaimer/">Disclaimer</a>
-    </div>
+    <button class="footer-expand" onclick="this.parentElement.classList.add('expanded');this.remove();" aria-label="Toon meer links">Meer ↓</button>
   </div>
   <div class="footer-bottom">
     &copy; 2026 PeuterPlannen. Gemaakt in Utrecht.

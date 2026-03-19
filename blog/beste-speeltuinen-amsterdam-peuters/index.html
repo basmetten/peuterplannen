@@ -18,48 +18,10 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603182039">
-  <link rel="stylesheet" href="/style.min.css?v=202603182039">
-  <style>
-  .guide-section{display:grid;gap:18px;margin:36px 0}
-  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .guide-card-compact{padding:20px 18px}
-  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
-  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
-  .guide-card h2{font-size:clamp(28px,5vw,40px)}
-  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
-  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
-  .guide-card-intro{max-width:58ch}
-  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .guide-links{display:grid;gap:12px;margin-top:16px}
-  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-  .guide-link:visited{color:var(--pp-text)}
-  .guide-link strong{font-size:15px;line-height:1.3}
-  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
-  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
-  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
-  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
-  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
-  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
-  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
-  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
-  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
-  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
-  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
-  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
-  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
-  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
-  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
-  .editorial-support-links a:visited{color:var(--pp-text)}
-  .editorial-support-links a strong{font-size:14px}
-  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
-  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
-</style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
-  <script src="/nav-floating.js?v=202603182039" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603191155">
+  <link rel="stylesheet" href="/style.min.css?v=202603191155">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603191155">
+  <script src="/nav-floating.js?v=202603191155" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -127,10 +89,12 @@
   <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
     <a href="/" class="nav-mobile-link">Home</a>
     <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
-    <a href="/about.html" class="nav-mobile-link">Over</a>
     <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
-    <a href="/contact.html" class="nav-mobile-link">Contact</a>
     <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
+    <div class="nav-mobile-secondary">
+      <a href="/about.html" class="nav-mobile-link">Over</a>
+      <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    </div>
   </div>
 </nav>
 
@@ -146,11 +110,47 @@
 <main id="main-content">
   <p class="blog-meta">17 maart 2026 &middot; speeltuinen, amsterdam, peuter, 2026</p>
 
+  <nav class="blog-toc" aria-label="Inhoudsopgave">
+    <button class="blog-toc-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+      Inhoudsopgave <span class="toc-count">29</span>
+    </button>
+    <ol class="blog-toc-list">
+      <li><a href="#hoe-deze-lijst-werkt">Hoe deze lijst werkt</a></li>
+      <li><a href="#deel-1-grote-speeltuinen-en-parken">Deel 1: Grote speeltuinen en parken</a></li>
+      <li class="toc-sub"><a href="#1-vondelpark-de-speeltuinen-bij-het-melkhuis">1. Vondelpark — de speeltuinen bij het Melkhuis</a></li>
+      <li class="toc-sub"><a href="#2-amsterdamse-bos-speelbos-en-omgeving">2. Amsterdamse Bos — Speelbos en omgeving</a></li>
+      <li class="toc-sub"><a href="#3-amstelpark">3. Amstelpark</a></li>
+      <li class="toc-sub"><a href="#4-westerpark-en-kinderboerderij-westerpark">4. Westerpark en Kinderboerderij Westerpark</a></li>
+      <li class="toc-sub"><a href="#5-waterspeeltuin-oosterpark">5. Waterspeeltuin Oosterpark</a></li>
+      <li class="toc-sub"><a href="#6-speelpark-blijdag">6. Speelpark Blijdag</a></li>
+      <li><a href="#deel-2-buurtspeeltuintjes">Deel 2: Buurtspeeltuintjes</a></li>
+      <li class="toc-sub"><a href="#7-speeltuin-park-frankendael">7. Speeltuin Park Frankendael</a></li>
+      <li class="toc-sub"><a href="#8-de-vondeltuin">8. De Vondeltuin</a></li>
+      <li class="toc-sub"><a href="#9-speeltuin-sloten">9. Speeltuin Sloten</a></li>
+      <li class="toc-sub"><a href="#10-natuurspeeltuin-plan-west">10. Natuurspeeltuin Plan West</a></li>
+      <li class="toc-sub"><a href="#11-natuurspeeltuin-noordoogst">11. Natuurspeeltuin Noordoogst</a></li>
+      <li class="toc-sub"><a href="#12-speelbos-noorderpark">12. Speelbos Noorderpark</a></li>
+      <li><a href="#eerlijk-waar-moet-je-niet-naartoe-met-een-peuter">Eerlijk: waar moet je NIET naartoe met een peuter?</a></li>
+      <li><a href="#praktische-tips">Praktische tips</a></li>
+      <li class="toc-sub"><a href="#beste-tijden-om-te-gaan">Beste tijden om te gaan</a></li>
+      <li class="toc-sub"><a href="#wat-neem-je-mee">Wat neem je mee?</a></li>
+      <li class="toc-sub"><a href="#openbaar-vervoer-met-peuters">Openbaar vervoer met peuters</a></li>
+      <li class="toc-sub"><a href="#combineer-speeltuin-met-kinderboerderij">Combineer speeltuin met kinderboerderij</a></li>
+      <li><a href="#veelgestelde-vragen">Veelgestelde vragen</a></li>
+      <li class="toc-sub"><a href="#welke-speeltuin-in-amsterdam-is-het-beste-voor-peu">Welke speeltuin in Amsterdam is het beste voor peuters van 1-2 jaar?</a></li>
+      <li class="toc-sub"><a href="#zijn-speeltuinen-in-amsterdam-gratis">Zijn speeltuinen in Amsterdam gratis?</a></li>
+      <li class="toc-sub"><a href="#welke-speeltuin-in-amsterdam-heeft-de-beste-koffie">Welke speeltuin in Amsterdam heeft de beste koffie?</a></li>
+      <li class="toc-sub"><a href="#wat-doe-je-met-peuters-in-amsterdam-als-het-regent">Wat doe je met peuters in Amsterdam als het regent?</a></li>
+      <li class="toc-sub"><a href="#zijn-de-speeltuinen-in-amsterdam-buggy-vriendelijk">Zijn de speeltuinen in Amsterdam buggy-vriendelijk?</a></li>
+      <li class="toc-sub"><a href="#welke-speeltuin-in-amsterdam-is-het-rustigst">Welke speeltuin in Amsterdam is het rustigst?</a></li>
+      <li><a href="#tot-slot">Tot slot</a></li>
+    </ol>
+  </nav>
   <div class="blog-content">
     <p>Amsterdam heeft meer speeltuinen dan je in een jaar kunt bezoeken. Dat klinkt fijn, maar het maakt het kiezen er niet makkelijker op. Niet elke speeltuin is even geschikt voor peuters: sommige zijn ontworpen voor oudere kinderen, andere missen basisvoorzieningen als een wc of een bankje in de schaduw. En dan heb je nog de speeltuinen die op papier geweldig lijken maar in de praktijk verwaarloosd zijn.</p>
 <p>Deze gids bevat de twaalf speeltuinen die het echt waard zijn als je met een peuter (1-4 jaar) in <a href="/amsterdam.html">Amsterdam</a> bent. Per plek vind je eerlijke info over geschiktheid, voorzieningen, bereikbaarheid en de vraag die elke ouder stelt: kan ik daar koffie krijgen?</p>
 <p>Zoek je ook andere uitjes? Bekijk dan <a href="/amsterdam.html">alle Amsterdam-uitjes voor peuters</a> of open de <a href="/app.html?regio=Amsterdam">app met Amsterdam-filter</a>.</p>
-<h2>Hoe deze lijst werkt</h2>
+<h2 id="hoe-deze-lijst-werkt">Hoe deze lijst werkt</h2>
 <p>Elke speeltuin is beoordeeld op vier punten:</p>
 <ul>
 <li><strong>Peutergeschiktheid</strong> — zijn er toestellen voor 1-4 jaar, is het terrein overzichtelijk?</li>
@@ -160,8 +160,8 @@
 </ul>
 <p>De speeltuinen zijn ingedeeld in twee groepen: de grote parkspeeltuinen waar je een halve dag kwijt kunt, en de buurt-speeltuintjes die perfect zijn voor een uurtje tussendoor.</p>
 <hr>
-<h2>Deel 1: Grote speeltuinen en parken</h2>
-<h3>1. Vondelpark — de speeltuinen bij het Melkhuis</h3>
+<h2 id="deel-1-grote-speeltuinen-en-parken">Deel 1: Grote speeltuinen en parken</h2>
+<h3 id="1-vondelpark-de-speeltuinen-bij-het-melkhuis">1. Vondelpark — de speeltuinen bij het Melkhuis</h3>
 <p>Het <a href="/amsterdam/de-vondeltuin/">Vondelpark</a> is verreweg de populairste groene plek in Amsterdam en dat merk je. Maar de speeltuinen zijn goed, en met de juiste timing is het prima te doen met een peuter.</p>
 <p>De grote speeltuin bij het Melkhuis heeft klimtoestellen die ook voor peuters geschikt zijn: lage glijbaantjes, veerelementen en een grote zandbak. Voor de allerjongsten (1-2 jaar) is de zandbak de grote trekker. Iets oudere peuters (3-4 jaar) klimmen graag op de houten constructies. De speeltuin is niet omheind, dus je moet opletten bij een wegloper.</p>
 <p>Minder bekend: de <strong>speeltuin aan de kant van de Amstelveenseweg</strong> is kleiner, rustiger en beter overzichtelijk. Met een peuter die snel overprikkeld raakt, is dit de betere keuze.</p>
@@ -171,7 +171,7 @@
 <li><strong>Bereikbaarheid:</strong> Tram 1, 2 of 5. Fietsparkeren aan alle ingangen. Buggy-vriendelijk op de verharde paden.</li>
 <li><strong>Let op:</strong> In het weekend en bij mooi weer is het rond de grote speeltuin echt druk. Ga voor 10:00 of kies een doordeweekse dag.</li>
 </ul>
-<h3>2. Amsterdamse Bos — Speelbos en omgeving</h3>
+<h3 id="2-amsterdamse-bos-speelbos-en-omgeving">2. Amsterdamse Bos — Speelbos en omgeving</h3>
 <p>Het <a href="/amsterdam/amsterdamse-bos/">Amsterdamse Bos</a> is enorm (driemaal zo groot als het Vondelpark) en heeft meerdere speelplekken. Voor peuters zijn er twee goede opties.</p>
 <p>Het <a href="/amsterdam/speelbos/">Speelbos</a> is een natuurspeelplek met boomstammen, zandheuvels en waterloopjes. Peuters vinden het hier geweldig, maar het terrein is onverhard en bij regen modderig. Neem laarzen en wisselkleding mee. De plek is vrij toegankelijk en niet omheind; het werkt het best als je kind al redelijk stabiel loopt.</p>
 <p>Vlakbij ligt de <a href="/amsterdam/geitenboerderij-ridammerhoeve/">Geitenboerderij Ridammerhoeve</a>, waar je gratis de dieren kunt bekijken. Combineer de speelplek met een bezoek aan de geiten en je hebt een hele ochtend gevuld.</p>
@@ -181,7 +181,7 @@
 <li><strong>Bereikbaarheid:</strong> Bus 170 of 172 vanaf Station Zuid. Met de auto gratis parkeren op meerdere plekken. Buggy gaat op de verharde paden, maar niet bij het Speelbos zelf.</li>
 <li><strong>Let op:</strong> Het bos is groot. Kies van tevoren welk deel je wilt bezoeken, anders ben je de helft van je tijd aan het lopen.</li>
 </ul>
-<h3>3. Amstelpark</h3>
+<h3 id="3-amstelpark">3. Amstelpark</h3>
 <p>Het <a href="/amsterdam/amstelpark/">Amstelpark</a> in Buitenveldert is een van de best bewaarde geheimen van Amsterdam. Minder druk dan het Vondelpark, beter onderhouden, en met een speeltuin die specifiek goede toestellen heeft voor peuters.</p>
 <p>De speeltuin heeft een apart peutergedeelte met babyschommels, lage glijbanen en wipkippen. Het terrein is omheind en overzichtelijk. Rondom is veel gras om te picknicken. De <a href="/amsterdam/minigolf-amstelpark/">Minigolf</a> ernaast is leuk als je een ouder kind bij je hebt, maar voor peuters te moeilijk.</p>
 <ul>
@@ -190,7 +190,7 @@
 <li><strong>Bereikbaarheid:</strong> Tram 25 of metro 52 (Station Europaplein). Met de auto parkeren langs de Europaboulevard. Buggy-vriendelijk.</li>
 <li><strong>Let op:</strong> De toegang tot het park is gratis, maar sommige onderdelen (zoals de minigolf) zijn betaald.</li>
 </ul>
-<h3>4. Westerpark en Kinderboerderij Westerpark</h3>
+<h3 id="4-westerpark-en-kinderboerderij-westerpark">4. Westerpark en Kinderboerderij Westerpark</h3>
 <p>Het Westerpark in het gelijknamige stadsdeel heeft meerdere speelplekken en een goede <a href="/amsterdam/kinderboerderij-westerpark/">kinderboerderij</a>. De speeltuin bij de kinderboerderij is compact maar goed onderhouden, met een zandbak, lage glijbaan en klimrek op peuterhoogte.</p>
 <p>Wat het Westerpark extra fijn maakt: de combinatie van spelen, dieren kijken en daarna koffie drinken bij een van de horecagelegenheden op het Westergasfabriekterrein. Dat maakt het een compleet ochtendprogramma.</p>
 <ul>
@@ -199,7 +199,7 @@
 <li><strong>Bereikbaarheid:</strong> Bus 21 of 22, tram 3 of 5 (korte wandeling). Goed bereikbaar per fiets. Buggy geen probleem.</li>
 <li><strong>Let op:</strong> Het Westergasfabriekterrein kan in het weekend druk zijn door evenementen. Check vooraf of er iets gepland staat.</li>
 </ul>
-<h3>5. Waterspeeltuin Oosterpark</h3>
+<h3 id="5-waterspeeltuin-oosterpark">5. Waterspeeltuin Oosterpark</h3>
 <p>De <a href="/amsterdam/waterspeeltuin-oosterpark/">Waterspeeltuin in het Oosterpark</a> is in de zomermaanden een absolute aanrader. Peuters kunnen hier plonzen, scheppen en spelen met waterloopjes en fonteinen. Het is een afgesloten terrein met toezicht, wat het veiliger maakt dan een willekeurige fontein in de stad.</p>
 <p>De waterspeeltuin is gratis en heeft naast water ook zand- en klimelementen. Het is specifiek ontworpen voor jonge kinderen.</p>
 <ul>
@@ -208,7 +208,7 @@
 <li><strong>Bereikbaarheid:</strong> Tram 1, 3 of 7. Makkelijk per fiets vanuit Oost en De Pijp. Buggy-vriendelijk.</li>
 <li><strong>Let op:</strong> Alleen open in de zomer (ongeveer mei tot september, afhankelijk van het weer). Neem handdoek en wisselkleding mee. Bij hoge temperaturen is het druk.</li>
 </ul>
-<h3>6. Speelpark Blijdag</h3>
+<h3 id="6-speelpark-blijdag">6. Speelpark Blijdag</h3>
 <p><a href="/amsterdam/speelpark-blijdag/">Speelpark Blijdag</a> in Nieuw-West is een grote, goed onderhouden speeltuin met een apart peutergedeelte. Het park heeft houten speeltoestellen, een waterspeelplek en een dierenweide. Het terrein is omheind en er is begeleiding aanwezig.</p>
 <p>Dit is een van de weinige speeltuinen in Amsterdam waar alles samenkomt: goede toestellen voor peuters, een omheind terrein, toiletten, koffie en een ontspannen sfeer. De locatie in Nieuw-West betekent wel dat je er bewust naartoe moet; je komt er niet per ongeluk langs.</p>
 <ul>
@@ -218,9 +218,9 @@
 <li><strong>Let op:</strong> Check de openingstijden op de website. Buurtspeeltuinen hanteren soms afwijkende tijden in de winter.</li>
 </ul>
 <hr>
-<h2>Deel 2: Buurtspeeltuintjes</h2>
+<h2 id="deel-2-buurtspeeltuintjes">Deel 2: Buurtspeeltuintjes</h2>
 <p>De kracht van Amsterdam zit ook in de tientallen kleine buurtspeeltuinen. Deze zijn vaak omheind, hebben een clubhuis met koffie en wc, en worden beheerd door betrokken vrijwilligers. Hier zijn de beste voor peuters.</p>
-<h3>7. Speeltuin Park Frankendael</h3>
+<h3 id="7-speeltuin-park-frankendael">7. Speeltuin Park Frankendael</h3>
 <p><a href="/amsterdam/speeltuin-park-frankendael/">Speeltuin Park Frankendael</a> in Watergraafsmeer is een omheinde buurtspeeltuin met een apart peutergedeelte. De toestellen zijn goed onderhouden en op maat voor jonge kinderen. Het clubhuis serveert koffie, thee en eenvoudige snacks.</p>
 <p>Het aangrenzende Park Frankendael is een van de mooiste parken van Amsterdam-Oost, met een historische buitenplaats, een moestuin en wandelpaden. Combineer de speeltuin met een wandeling door het park.</p>
 <ul>
@@ -229,7 +229,7 @@
 <li><strong>Bereikbaarheid:</strong> Tram 1 of 19. Makkelijk per fiets. Buggy-vriendelijk.</li>
 <li><strong>Let op:</strong> Lidmaatschap is een paar euro per jaar. Dagentree is ook mogelijk. Check de openingstijden; niet altijd elke dag open.</li>
 </ul>
-<h3>8. De Vondeltuin</h3>
+<h3 id="8-de-vondeltuin">8. De Vondeltuin</h3>
 <p><a href="/amsterdam/de-vondeltuin/">De Vondeltuin</a> is een omheinde speeltuin midden in het Vondelpark en een totaal andere ervaring dan de open speelplekken elders in het park. Het terrein is afgesloten, er is toezicht, en er zijn aparte zones per leeftijd.</p>
 <p>Voor peuters is dit eigenlijk de beste speelplek in het Vondelpark: veiliger, overzichtelijker en met een clubhuis waar je koffie kunt halen. De keerzijde is dat het drukker kan aanvoelen doordat het terrein compact is.</p>
 <ul>
@@ -238,7 +238,7 @@
 <li><strong>Bereikbaarheid:</strong> Zie Vondelpark hierboven.</li>
 <li><strong>Let op:</strong> Lidmaatschap nodig. Niet-leden betalen een klein bedrag per bezoek. In de zomer kan het vol zijn.</li>
 </ul>
-<h3>9. Speeltuin Sloten</h3>
+<h3 id="9-speeltuin-sloten">9. Speeltuin Sloten</h3>
 <p><a href="/amsterdam/speeltuin-sloten/">Speeltuin Sloten</a> in het dorp Sloten (ja, dat ligt binnen Amsterdam) voelt als een speeltuin buiten de stad. Het is rustig, groen en heeft een gezellige dorpssfeer. De speeltuin heeft goede peutertoestellen en een zandbak.</p>
 <p>De omgeving is fijn om te wandelen: Sloten heeft nog echte dijkjes, een molen en een dorpsgevoel dat je niet verwacht binnen de gemeentegrenzen.</p>
 <ul>
@@ -247,7 +247,7 @@
 <li><strong>Bereikbaarheid:</strong> Bus 195 of tram 2 (korte wandeling). Met de auto prima bereikbaar, parkeren is hier geen probleem. Buggy-vriendelijk.</li>
 <li><strong>Let op:</strong> Echt een buurtspeeltuin; niet dagelijks de hele dag open.</li>
 </ul>
-<h3>10. Natuurspeeltuin Plan West</h3>
+<h3 id="10-natuurspeeltuin-plan-west">10. Natuurspeeltuin Plan West</h3>
 <p><a href="/amsterdam/natuurspeeltuin-plan-west/">Natuurspeeltuin Plan West</a> in het Erasmuspark is een avontuurlijke speeltuin waar kinderen spelen met natuurlijke materialen: hout, zand, water en planten. Voor peuters is er een apart, wat beschutter gedeelte.</p>
 <p>Dit is geen nette speeltuin met rubbermatten: het is bewust ruw en natuurlijk. Sommige peuters vinden dat geweldig, andere worden er onzeker van. Ken je kind.</p>
 <ul>
@@ -256,7 +256,7 @@
 <li><strong>Bereikbaarheid:</strong> Tram 7 of 13. Per fiets makkelijk bereikbaar vanuit West. Buggy gaat op de verharde paden, op het speelterrein zelf wordt het lastiger.</li>
 <li><strong>Let op:</strong> Bij regen is het terrein modderig. Neem oud speelgoed en wisselkleding mee.</li>
 </ul>
-<h3>11. Natuurspeeltuin Noordoogst</h3>
+<h3 id="11-natuurspeeltuin-noordoogst">11. Natuurspeeltuin Noordoogst</h3>
 <p><a href="/amsterdam/natuurspeeltuin-noordoogst/">Natuurspeeltuin Noordoogst</a> in Amsterdam-Noord is een verborgen parel. Deze natuurspeeltuin aan het water biedt ruimte, avontuur en rust. Er zijn zandheuvels, boomstammen, een waterpomp en een moestuin.</p>
 <p>Voor peuters is het terrein uitdagend maar niet ongeschikt. De zandheuvels en de waterpomp zijn favoriet. Het is rustiger dan de meeste speeltuinen in het centrum.</p>
 <ul>
@@ -265,7 +265,7 @@
 <li><strong>Bereikbaarheid:</strong> Pont naar Noord + bus of fiets. Met de auto via de IJ-tunnel. Buggy gaat op de toegangspaden maar niet overal op het terrein.</li>
 <li><strong>Let op:</strong> Door de locatie in Noord is het minder makkelijk bereikbaar. Maar dat is ook precies waarom het rustig is. Check openingstijden.</li>
 </ul>
-<h3>12. Speelbos Noorderpark</h3>
+<h3 id="12-speelbos-noorderpark">12. Speelbos Noorderpark</h3>
 <p>Het <a href="/amsterdam/speelbos-noorderpark/">Speelbos in het Noorderpark</a> in Amsterdam-Noord is een natuurlijke speelplek met boomstammen, takkenhutten en zandheuvels. Het terrein is vrij toegankelijk en niet omheind.</p>
 <p>Het Noorderpark zelf is een langgerekt, rustig park met wandelpaden en een kinderboerderij. Combineer het speelbos met een bezoek aan de kinderboerderij voor een complete ochtend.</p>
 <ul>
@@ -275,7 +275,7 @@
 <li><strong>Let op:</strong> Niet omheind. Het terrein is onverhard en kan na regen nat zijn.</li>
 </ul>
 <hr>
-<h2>Eerlijk: waar moet je NIET naartoe met een peuter?</h2>
+<h2 id="eerlijk-waar-moet-je-niet-naartoe-met-een-peuter">Eerlijk: waar moet je NIET naartoe met een peuter?</h2>
 <p>Niet elke populaire speelplek in Amsterdam is geschikt voor peuters. Een paar eerlijke waarschuwingen:</p>
 <ul>
 <li><p><strong>TunFun Speelpark</strong> — <a href="/amsterdam/tunfun-speelpark/">TunFun</a> is een indoor speelhal onder het Mr. Visserplein. Voor kinderen vanaf 5-6 jaar is het geweldig, maar voor peuters is het overweldigend. Het is groot, luidruchtig en de toestellen zijn grotendeels te hoog en te wild. Er is een klein peutergedeelte, maar dat is beperkt. Ga hier pas naartoe als je kind minstens 4 is en stevig in zijn schoenen staat.</p>
@@ -287,10 +287,10 @@
 <li><p><strong>Verwaarloosde speelplekjes</strong> — Niet elke speelplek die op Google Maps staat, wordt goed onderhouden. Kleine betonnen speelplekjes tussen flatgebouwen kunnen er op de kaart goed uitzien maar in de praktijk kapot of verwaarloosd zijn. De speeltuinen in deze gids worden actief beheerd.</p>
 </li>
 </ul>
-<h2>Praktische tips</h2>
-<h3>Beste tijden om te gaan</h3>
+<h2 id="praktische-tips">Praktische tips</h2>
+<h3 id="beste-tijden-om-te-gaan">Beste tijden om te gaan</h3>
 <p>Doordeweeks voor 10:30 is het rustigst. In het weekend loont het om vroeg te gaan, vooral bij de populaire parkspeeltuinen. Na 14:00 op doordeweekse dagen komen schoolkinderen, wat het drukker en wilder maakt voor peuters.</p>
-<h3>Wat neem je mee?</h3>
+<h3 id="wat-neem-je-mee">Wat neem je mee?</h3>
 <ul>
 <li>Wisselkleding (altijd, ook als het droog is — zand en water zijn overal)</li>
 <li>Zonnebrand en petje in de zomer</li>
@@ -298,9 +298,9 @@
 <li>Buggy-regenhoes</li>
 <li>Bij natuurspeeltuinen: laarzen en oude kleding</li>
 </ul>
-<h3>Openbaar vervoer met peuters</h3>
+<h3 id="openbaar-vervoer-met-peuters">Openbaar vervoer met peuters</h3>
 <p>Kinderen tot en met 3 jaar reizen gratis met het GVB. Vanaf 4 jaar heb je een kinderkaartje nodig. De pont naar Noord is gratis voor iedereen. In de spits kan het met een buggy krap zijn in tram en bus; plan buiten de spits als het kan.</p>
-<h3>Combineer speeltuin met kinderboerderij</h3>
+<h3 id="combineer-speeltuin-met-kinderboerderij">Combineer speeltuin met kinderboerderij</h3>
 <p>Amsterdam heeft een uitstekend netwerk van gratis kinderboerderijen. Veel liggen vlakbij een speeltuin. Combineer ze voor een complete ochtend:</p>
 <ul>
 <li>Vondelpark-speeltuin + <a href="/amsterdam/kinderboerderij-de-pijp/">Kinderboerderij De Pijp</a> (korte fietstocht)</li>
@@ -308,20 +308,20 @@
 <li>Amsterdamse Bos Speelbos + <a href="/amsterdam/geitenboerderij-ridammerhoeve/">Ridammerhoeve</a> (loopafstand)</li>
 <li>Noorderpark Speelbos + kinderboerderij in het Noorderpark (naast elkaar)</li>
 </ul>
-<h2>Veelgestelde vragen</h2>
-<h3>Welke speeltuin in Amsterdam is het beste voor peuters van 1-2 jaar?</h3>
+<h2 id="veelgestelde-vragen">Veelgestelde vragen</h2>
+<h3 id="welke-speeltuin-in-amsterdam-is-het-beste-voor-peu">Welke speeltuin in Amsterdam is het beste voor peuters van 1-2 jaar?</h3>
 <p>Voor de allerjongste peuters (net lopen tot 2 jaar) zijn omheinde speeltuinen met een zandbak en lage toestellen het fijnst. De Vondeltuin, Speeltuin Park Frankendael en Speelpark Blijdag zijn de beste opties. Ze zijn afgesloten, hebben peutertoestellen op de juiste hoogte en je kunt er koffie krijgen.</p>
-<h3>Zijn speeltuinen in Amsterdam gratis?</h3>
+<h3 id="zijn-speeltuinen-in-amsterdam-gratis">Zijn speeltuinen in Amsterdam gratis?</h3>
 <p>De meeste buurtspeeltuinen vragen een klein jaarlijks lidmaatschap (vaak rond vijf tot tien euro per gezin). De open speeltuinen in parken als het Vondelpark, Amstelpark en Amsterdamse Bos zijn gratis toegankelijk. Indoor speelparadijzen als <a href="/amsterdam/ballorig-amsterdam/">Ballorig</a> en <a href="/amsterdam/jimmy-s-speelparadijs/">Jimmy&#39;s Speelparadijs</a> zijn betaald.</p>
-<h3>Welke speeltuin in Amsterdam heeft de beste koffie?</h3>
+<h3 id="welke-speeltuin-in-amsterdam-heeft-de-beste-koffie">Welke speeltuin in Amsterdam heeft de beste koffie?</h3>
 <p>Het Amstelpark wint met het Rosarium. De Vondeltuin en Speeltuin Park Frankendael hebben prima clubhuiskoffie. Bij het Vondelpark kun je uitwijken naar het <a href="/amsterdam/blauwe-theehuis/">Blauwe Theehuis</a> voor goede koffie in een bijzondere setting.</p>
-<h3>Wat doe je met peuters in Amsterdam als het regent?</h3>
+<h3 id="wat-doe-je-met-peuters-in-amsterdam-als-het-regent">Wat doe je met peuters in Amsterdam als het regent?</h3>
 <p>Bij regen zijn de <a href="/speeltuinen.html">speelparadijzen</a> een optie: <a href="/amsterdam/ballorig-amsterdam/">Ballorig Amsterdam</a>, <a href="/amsterdam/jimmy-s-speelparadijs/">Jimmy&#39;s Speelparadijs</a> en <a href="/amsterdam/candy-castle-speelparadijs/">Candy Castle</a> hebben peuterzones. Lees ook ons artikel <a href="/blog/uitjes-met-peuter-bij-regen/">Uitjes met peuter bij regen</a> voor meer ideeeen. De OBA (bibliotheek) heeft een gratis kinderafdeling met speelgoed en voorleesuurtjes.</p>
-<h3>Zijn de speeltuinen in Amsterdam buggy-vriendelijk?</h3>
+<h3 id="zijn-de-speeltuinen-in-amsterdam-buggy-vriendelijk">Zijn de speeltuinen in Amsterdam buggy-vriendelijk?</h3>
 <p>De parkspeeltuinen (Vondelpark, Amstelpark, Westerpark) zijn goed bereikbaar met een buggy op de verharde paden. De natuurspeeltuinen (Speelbos Amsterdamse Bos, Natuurspeeltuin Plan West) zijn dat niet overal: onverharde paden en modder maken een buggy lastig. Neem een draagzak mee als alternatief.</p>
-<h3>Welke speeltuin in Amsterdam is het rustigst?</h3>
+<h3 id="welke-speeltuin-in-amsterdam-is-het-rustigst">Welke speeltuin in Amsterdam is het rustigst?</h3>
 <p>Speeltuin Sloten, Natuurspeeltuin Noordoogst en het Speelbos in het Noorderpark zijn het rustigst. Ze liggen verder van het centrum en trekken vooral buurtbewoners. Het Amstelpark is ook opvallend rustig voor een grote parkspeeltuin.</p>
-<h2>Tot slot</h2>
+<h2 id="tot-slot">Tot slot</h2>
 <p>De beste speeltuin voor jouw peuter hangt af van wat je zoekt: avontuur en natuur, of juist veiligheid en voorzieningen. Wat in alle gevallen werkt: ga op een rustig moment, neem je eigen eten mee en stel je verwachtingen bij. Een peuter heeft geen megaspeeltuin nodig. Vaak is een zandbak, een glijbaantje en een uur de tijd genoeg voor een geslaagde ochtend.</p>
 <p>Meer inspiratie voor Amsterdam met jonge kinderen? Lees <a href="/blog/gratis-peuteruitjes-amsterdam/">Gratis peuteruitjes Amsterdam</a> of de <a href="/blog/amsterdam-met-peuters-en-kleuters/">complete gids Amsterdam met peuters en kleuters</a>. En bekijk de <a href="/speeltuinen.html">speeltuinenpagina</a> voor speeltuinen door heel Nederland.</p>
 
@@ -395,21 +395,24 @@
 <footer class="pp-reveal">
   <div class="footer-container">
     <div class="footer-brand">
-      <strong style="font-size: 20px;">PeuterPlannen</strong>
+      <strong style="font-size: var(--pp-text-lg);">PeuterPlannen</strong>
       <p>Kindvriendelijke uitjes in heel Nederland. Gecheckt en actueel.</p>
     </div>
-    <div class="footer-links">
-      <h4>Product</h4>
-      <a href="/app.html">App</a>
-      <a href="/blog/">Inspiratie</a>
-      <a href="/about.html">Over</a>
+    <div class="footer-columns">
+      <div class="footer-links">
+        <h4>Product</h4>
+        <a href="/app.html">App</a>
+        <a href="/blog/">Inspiratie</a>
+        <a href="/about.html">Over</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <h4>Legal</h4>
-      <a href="/contact.html">Contact</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/disclaimer/">Disclaimer</a>
-    </div>
+    <button class="footer-expand" onclick="this.parentElement.classList.add('expanded');this.remove();" aria-label="Toon meer links">Meer ↓</button>
   </div>
   <div class="footer-bottom">
     &copy; 2026 PeuterPlannen. Gemaakt in Utrecht.

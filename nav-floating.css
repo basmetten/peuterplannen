@@ -237,6 +237,18 @@ nav.floating-nav .nav-mobile-cta {
   text-align: center;
 }
 
+/* Secondary nav items — visually separated */
+nav.floating-nav .nav-mobile-secondary {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(var(--pp-text-rgb), 0.08);
+}
+nav.floating-nav .nav-mobile-secondary .nav-mobile-link {
+  font-size: var(--pp-text-sm);
+  color: var(--pp-text-muted);
+  padding: 10px 16px;
+}
+
 @media (max-width: 768px) {
   nav.floating-nav[aria-label="Hoofdnavigatie"] {
     top: 10px;

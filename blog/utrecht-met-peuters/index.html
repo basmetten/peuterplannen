@@ -18,48 +18,10 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603182039">
-  <link rel="stylesheet" href="/style.min.css?v=202603182039">
-  <style>
-  .guide-section{display:grid;gap:18px;margin:36px 0}
-  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .guide-card-compact{padding:20px 18px}
-  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
-  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
-  .guide-card h2{font-size:clamp(28px,5vw,40px)}
-  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
-  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
-  .guide-card-intro{max-width:58ch}
-  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .guide-links{display:grid;gap:12px;margin-top:16px}
-  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-  .guide-link:visited{color:var(--pp-text)}
-  .guide-link strong{font-size:15px;line-height:1.3}
-  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
-  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
-  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
-  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
-  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
-  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
-  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
-  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
-  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
-  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
-  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
-  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
-  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
-  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
-  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
-  .editorial-support-links a:visited{color:var(--pp-text)}
-  .editorial-support-links a strong{font-size:14px}
-  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
-  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
-</style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
-  <script src="/nav-floating.js?v=202603182039" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603191155">
+  <link rel="stylesheet" href="/style.min.css?v=202603191155">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603191155">
+  <script src="/nav-floating.js?v=202603191155" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -127,10 +89,12 @@
   <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
     <a href="/" class="nav-mobile-link">Home</a>
     <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
-    <a href="/about.html" class="nav-mobile-link">Over</a>
     <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
-    <a href="/contact.html" class="nav-mobile-link">Contact</a>
     <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
+    <div class="nav-mobile-secondary">
+      <a href="/about.html" class="nav-mobile-link">Over</a>
+      <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    </div>
   </div>
 </nav>
 
@@ -146,10 +110,31 @@
 <main id="main-content">
   <p class="blog-meta">4 maart 2026 &middot; utrecht, tips, stadsuitje</p>
 
+  <nav class="blog-toc" aria-label="Inhoudsopgave">
+    <button class="blog-toc-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+      Inhoudsopgave <span class="toc-count">14</span>
+    </button>
+    <ol class="blog-toc-list">
+      <li><a href="#het-nijntje-museum-boek-van-tevoren-altijd">Het Nijntje Museum: boek van tevoren, altijd</a></li>
+      <li><a href="#het-spoorwegmuseum-treinen-op-ware-grootte">Het Spoorwegmuseum: treinen op ware grootte</a></li>
+      <li><a href="#kinderboerderijen-gratis-en-ontspannen">Kinderboerderijen: gratis en ontspannen</a></li>
+      <li><a href="#de-grachten-gewoon-lopen-werkt-ook">De grachten: gewoon lopen werkt ook</a></li>
+      <li><a href="#parken-en-speeltuinen-groen-genoeg">Parken en speeltuinen: groen genoeg</a></li>
+      <li><a href="#tivolivredenburg-zaterdagochtend-kinderconcertjes">TivoliVredenburg: zaterdagochtend, kinderconcertjes</a></li>
+      <li><a href="#regendagen-wat-werkt-dan">Regendagen: wat werkt dan?</a></li>
+      <li><a href="#eten-en-drinken-met-een-peuter">Eten en drinken met een peuter</a></li>
+      <li><a href="#park-oud-zuilen-kasteel-in-de-verte-veel-groen">Park Oud-Zuilen: kasteel in de verte, veel groen</a></li>
+      <li><a href="#wat-je-kunt-overslaan">Wat je kunt overslaan</a></li>
+      <li><a href="#praktisch-hoe-kom-je-er">Praktisch: hoe kom je er</a></li>
+      <li><a href="#voorbeeldprogramma-een-dag-utrecht-met-peuter">Voorbeeldprogramma: een dag Utrecht met peuter</a></li>
+      <li><a href="#meer-uitjes-in-utrecht">Meer uitjes in Utrecht</a></li>
+      <li><a href="#veelgestelde-vragen">Veelgestelde vragen</a></li>
+    </ol>
+  </nav>
   <div class="blog-content">
     <p>Utrecht is misschien wel de meest toegankelijke grote stad van Nederland voor een dagje uit met een peuter. Het centrum is compact, er is veel te doen voor kleine kinderen, en het openbaar vervoer werkt uitstekend. Parkeren in het centrum is een hoofdpijn die je kunt vermijden.</p>
 <p>Hier is wat wij aanraden — en wat je liever kunt overslaan.</p>
-<h2>Het Nijntje Museum: boek van tevoren, altijd</h2>
+<h2 id="het-nijntje-museum-boek-van-tevoren-altijd">Het Nijntje Museum: boek van tevoren, altijd</h2>
 <p>Het <a href="/utrecht/nijntje-museum/">Nijntje Museum</a> is in de straat van &quot;klinkt schattig&quot; maar valt dat dan mee? Het antwoord is: nee, het is echt goed. Wat het museum slim doet: het is ingericht voor heel kleine kinderen, maximaal tot 6 jaar, en dat merk je. De installaties zijn op peuter-hoogte, alles is aanraakbaar, er zijn geen lange uitlegborden en geen kringen rusteloos rondlopende scholieren.</p>
 <p>Er is een keuken waar je peuter kan &quot;koken&quot;, een tuin om in te spelen, een atelier om te tekenen, en rustige plekken om te zitten. Het heeft het formaat van een halve ochtend — niet meer, niet minder — en dat is precies goed.</p>
 <p><strong>Belangrijk:</strong> kaarten zijn online te koop per tijdslot en ze raken regelmatig weken van tevoren uitverkocht. Boek zodra je weet dat je gaat. Loop-in is niet mogelijk.</p>
@@ -158,7 +143,7 @@
 <li>Beste leeftijd: 1 tot 4 jaar. Ouder dan 5 jaar is het al te simpel.</li>
 <li>Adres: Agnietenstraat 2, vlakbij Utrecht Centraal.</li>
 </ul>
-<h2>Het Spoorwegmuseum: treinen op ware grootte</h2>
+<h2 id="het-spoorwegmuseum-treinen-op-ware-grootte">Het Spoorwegmuseum: treinen op ware grootte</h2>
 <p>Het <a href="/utrecht/spoorwegmuseum/">Spoorwegmuseum</a> is een van de grotere attracties van Utrecht en trekt veel gezinnen. Voor peuters is het een wisselend verhaal: de oude locomotieven en wagons zijn indrukwekkend om te zien, en er is een Kinder-Railcafe waar kleintjes met houten treinen kunnen spelen. Dat gedeelte alleen is al goed voor een uur.</p>
 <p>Maar: sommige attracties in het museum (De Vuurproef, De Grote Ontdekking) hebben luide geluiden en donkere ruimtes. Voor een peuter van 2 jaar kan dat overweldigend zijn. Begin met het rustige gedeelte — de perrons met echte treinen, het buitenterrein — en bouw op. Als je kind goed reageert, kun je verder.</p>
 <ul>
@@ -166,47 +151,47 @@
 <li>Er is een restaurant met kinderstoelen en een redelijk kindermenu.</li>
 <li>Bereikbaar met een apart treintje vanuit Utrecht Maliebaan, wat op zich al een uitje is.</li>
 </ul>
-<h2>Kinderboerderijen: gratis en ontspannen</h2>
+<h2 id="kinderboerderijen-gratis-en-ontspannen">Kinderboerderijen: gratis en ontspannen</h2>
 <p>Utrecht heeft een opvallend goed netwerk van <a href="/kinderboerderijen.html">kinderboerderijen</a> verspreid over de stad. De meeste zijn gratis, hebben dieren die geaaid mogen worden, en bieden genoeg ruimte om rond te lopen. Voor een peuter is dat vaak meer dan genoeg.</p>
 <p><a href="/utrecht/stadsboerderij-griftsteede/">Stadsboerderij Griftsteede</a> in het Griftpark is de bekendste en ligt op loopafstand van het centrum. Er zijn geiten, kippen, konijnen en soms lammeren in het voorjaar. Er is ook een moestuin en een kleine speeltuin. Het is dinsdag tot en met zondag geopend en er is geen entree. Combineer het met een rondje door het Griftpark zelf — daar staat een grote speeltuin die goed geschikt is voor peuters.</p>
 <p>Iets buiten het centrum, in Haarzuilens, ligt <a href="/utrecht/geertje-s-hoeve/">Geertje&#39;s Hoeve</a>. Dit is meer dan een kinderboerderij: het is een volwaardige boerderij-ervaring met koeien, varkens, paarden en een prachtige ligging aan de rand van het landgoed van Kasteel de Haar. Er is een hooischuur om in te klimmen, een speelveld en een boerderijwinkel. Het is een dagje uit op zich. Wil je meer opties? Lees ons overzicht van <a href="/blog/kinderboerderijen-utrecht/">kinderboerderijen in Utrecht</a>.</p>
-<h2>De grachten: gewoon lopen werkt ook</h2>
+<h2 id="de-grachten-gewoon-lopen-werkt-ook">De grachten: gewoon lopen werkt ook</h2>
 <p>Utrecht heeft een bijzonder grachtenstelsel met twee niveaus: de straat en de kade eronder. Die onderste laag langs het water — met werfkelders, bootjes, knobbelige kasseien en eenden die op de boot klimmen — is voor peuters een fascinerende wandeling zonder dat je er iets voor hoeft te betalen.</p>
 <p>Loop langs de Oudegracht van de Domburg naar de Vismarkt. Dat is een kwartiertje, maar met een peuter die alles wil aanwijzen eerder een halfuur. Neem de kinderwagen mee maar wees voorbereid op wat keitjes op de grachten zijweg — sommige stukken zijn minder buggy-vriendelijk.</p>
 <p>Een korte rondvaart door de grachten bestaat ook (vertrek bij meerdere punten langs de Oudegracht). Voor een dreumes van 2-3 jaar is een bootrit al een hele belevenis. Houd een oog op de reling.</p>
-<h2>Parken en speeltuinen: groen genoeg</h2>
+<h2 id="parken-en-speeltuinen-groen-genoeg">Parken en speeltuinen: groen genoeg</h2>
 <p>Naast het Griftpark heeft Utrecht een aantal parken die goed werken met peuters. Het Wilhelminapark is rustiger dan het centrum, heeft een grote vijver met eenden en ganzen, en grasvelden om op te picknicken. Er is geen speeltuin, maar voor een peuter die een bal wil trappen of eenden wil voeren is het prima.</p>
 <p>Het Maximapark in Leidsche Rijn is groter en heeft een flinke speeltuin met aparte peuterdelen. Het ligt wat verder van het centrum, maar als je met de auto bent is het goed bereikbaar. Er is veel ruimte, weinig drukte doordeweeks, en een theehuis waar je koffie kunt halen.</p>
 <p>Voor een bijzondere ervaring: <a href="/utrecht/speelbos-zuilen/">Speelbos Zuilen</a> is een stuk bos waar kinderen mogen klimmen, graven en bouwen met takken. Het is minder geschikt voor hele jonge peuters (het terrein is ongebaand), maar vanaf 2,5 jaar beginnen kinderen het geweldig te vinden. Het is gratis en altijd open.</p>
 <p>En in het centrum zelf ligt <a href="/utrecht/speeltuin-de-kleine-dom/">Speeltuin De Kleine Dom</a> — een compacte buurtspeeltuin die goed onderhouden is en een peutergedeelte heeft. Niet spectaculair, maar handig als je na het winkelen of lunchen even wat tijd wilt vullen.</p>
-<h2>TivoliVredenburg: zaterdagochtend, kinderconcertjes</h2>
+<h2 id="tivolivredenburg-zaterdagochtend-kinderconcertjes">TivoliVredenburg: zaterdagochtend, kinderconcertjes</h2>
 <p>TivoliVredenburg organiseert geregeld korte kinderconcertjes op zaterdagochtend — vaak gratis of goedkoop, 30-45 minuten, volledig afgestemd op kleine kinderen. Lieve muzikanten, interactief, nooit te lang.</p>
 <p>Controleer het programma op hun website. Het aanbod wisselt per maand, maar als er iets geschikts bij zit, is het een aanrader. Het is een van die uitjes waar peuters niets verwachten en toch helemaal in opgaan.</p>
-<h2>Regendagen: wat werkt dan?</h2>
+<h2 id="regendagen-wat-werkt-dan">Regendagen: wat werkt dan?</h2>
 <p>Het Nijntje Museum is al een prima regenplek. Maar als je een andere optie zoekt — en laten we eerlijk zijn, in Nederland heb je die nodig:</p>
 <p><strong>Speelhoek in de bibliotheek (Bibliotheek Utrecht):</strong> Er is een hoek ingericht voor kleine kinderen, boeken zijn er voor elk niveau, en het is droog, gratis en rustig. Goed voor als je na het Nijntje Museum nog een uur wilt vullen.</p>
 <p><strong>Binnenspeeltuinen:</strong> In Utrecht en omgeving zijn meerdere binnenspeeltuinen. De <a href="/utrecht/pretfabriek/">Pretfabriek</a> heeft een aparte peuterzone waar kleintjes veilig kunnen spelen zonder dat grotere kinderen er doorheen rennen. <a href="/utrecht/kidzcity/">KidZcity</a> is groter en drukker, maar heeft ook een peutergedeelte. Beide zijn goed voor een regenachtige middag.</p>
 <p><strong>Het Universiteitsmuseum:</strong> Het <a href="/utrecht/universiteitsmuseum/">Universiteitsmuseum</a> wordt vaak over het hoofd gezien, maar het heeft een botanische tuin met een kas die ook bij regen werkt, en interactieve tentoonstellingen die voor kleuters toegankelijk zijn. De buitenspeeltuin is een van de leukste van Utrecht — bewaar die voor een droge dag.</p>
 <p>Meer tips voor slecht weer? Bekijk onze <a href="/blog/uitjes-met-peuter-bij-regen/">complete regengids voor peuters</a>.</p>
-<h2>Eten en drinken met een peuter</h2>
+<h2 id="eten-en-drinken-met-een-peuter">Eten en drinken met een peuter</h2>
 <p>Utrecht heeft genoeg horeca, maar niet alles is even peutervriendelijk. Een paar tips:</p>
 <p>De terrassen langs de Oudegracht zijn sfeervol maar smal — met een buggy en een actieve peuter is dat niet altijd ontspannen. Kies liever een terras aan het Neude of het Vredenburg, waar meer ruimte is.</p>
 <p>Voor pannenkoeken — en welke peuter wil er geen pannenkoek — is het de moeite waard om even buiten de stad te rijden. Op de Utrechtse Heuvelrug zitten meerdere pannenkoekenboerderijen met speeltuinen en dieren. Lees er meer over in ons stuk over <a href="/blog/pannenkoekenboerderijen-utrecht-heuvelrug/">pannenkoekenboerderijen rond Utrecht</a>.</p>
 <p>In het centrum zelf zijn de ketens (La Place in Hoog Catharijne, Vapiano) niet inspirerend maar wel praktisch: kinderstoelen, kindermenu, toiletten, en niemand die raar kijkt als je peuter een bord op de grond gooit.</p>
-<h2>Park Oud-Zuilen: kasteel in de verte, veel groen</h2>
+<h2 id="park-oud-zuilen-kasteel-in-de-verte-veel-groen">Park Oud-Zuilen: kasteel in de verte, veel groen</h2>
 <p>Even buiten Utrecht (zo&#39;n 15 minuten met de auto) ligt Oud-Zuilen: een klein dorpje met een kasteel (Kasteel Zuylen) dat je van buiten kunt bewonderen, een brede laan met oude bomen, en veel ruimte om rond te lopen. Het is geen grote attractie — er is weinig te doen — maar het is ontzettend mooi en rustig.</p>
 <p>Voor peuters die de hele dag al druk bezig zijn geweest, is dit een goede afsluiter: gewoon lopen, lucht inademen, eventueel een klein picknickje. De omgeving heeft een oud-Hollands karakter dat je niet verwacht zo dicht bij de stad.</p>
-<h2>Wat je kunt overslaan</h2>
+<h2 id="wat-je-kunt-overslaan">Wat je kunt overslaan</h2>
 <p><strong>Het Domplein.</strong> De Domtoren is indrukwekkend, maar voor een peuter is het gewoon een grote toren. Betaald naar boven voor een uitzicht dat te abstract is voor een 2- of 3-jarige. Wacht maar tot ze ouder zijn.</p>
 <p><strong>Winkelgebied zaterdag.</strong> Utrecht&#39;s binnenstad is op zaterdagmiddag kurkdruk. Met een buggy kom je nauwelijks vooruit. Als je winkelt of eet, ga dan op een doordeweekse dag of al vroeg op zaterdagochtend.</p>
 <p><strong>Museum Speelklok zonder voorbereiding.</strong> Dit museum (muziekdozen, draaiorgels) is eigenlijk best geschikt voor peuters — het is interactief en ze mogen op bepaalde plekken drukken. Maar de geleide rondleidingen zijn te lang voor een peuter van 2 jaar. Wacht tot ze 4 of 5 zijn, of boek een korte kindertour.</p>
 <p><strong>Hoog Catharijne als bestemming.</strong> Het winkelcentrum bij het station is handig om doorheen te lopen, maar ga er niet naartoe als uitje. Het is druk, kunstmatig en er is niets voor peuters te doen. Gebruik het als doorgang van het station naar de binnenstad, niet als doel.</p>
-<h2>Praktisch: hoe kom je er</h2>
+<h2 id="praktisch-hoe-kom-je-er">Praktisch: hoe kom je er</h2>
 <p><strong>Trein:</strong> Utrecht Centraal is een groot station maar de verbindingen zijn uitstekend. Vanuit Amsterdam (25 min), Den Haag (35 min) en Rotterdam (40 min) kom je er makkelijk. Vanaf CS is de binnenstad te voet bereikbaar — het <a href="/utrecht/nijntje-museum/">Nijntje Museum</a> is 10 minuten lopen.</p>
 <p><strong>Auto:</strong> Parkeer buiten het centrum. P+R Westraven (aan de snelweg A12) is groot en goedkoop, met directe tram naar het centrum. Parkeren in het centrum zelf is beperkt en duur.</p>
 <p><strong>Buggy:</strong> Het centrum is grotendeels goed te doen met een buggy. Een paar straatjes bij de grachten zijn keitjes, maar er zijn altijd alternatieven.</p>
 <p><strong>Wanneer gaan:</strong> Doordeweeks is rustiger dan in het weekend. Als je het Nijntje Museum bezoekt, start de dag daarmee — daarna ben je vrij om de rest op je eigen tempo te doen.</p>
-<h2>Voorbeeldprogramma: een dag Utrecht met peuter</h2>
+<h2 id="voorbeeldprogramma-een-dag-utrecht-met-peuter">Voorbeeldprogramma: een dag Utrecht met peuter</h2>
 <p>Stel je hebt een hele dag. Dan zou dit werken:</p>
 <p><strong>10:00</strong> — Nijntje Museum (vooraf geboekt). Reken op anderhalf uur.
 <strong>11:30</strong> — Wandeling langs de Oudegracht richting Griftpark. Onderweg koffie halen.
@@ -215,9 +200,9 @@
 <strong>14:00</strong> — Terug naar het station of, als je kind nog fit is, even langs de <a href="/utrecht/verkeerstuin/">Verkeerstuin</a> in het Griftpark.
 <strong>15:00</strong> — Naar huis. Of als het regent: binnenspeeltuin als plan B.</p>
 <p>Dit is een vol programma. Met een peuter van 2 jaar is twee van deze activiteiten al genoeg voor een geslaagde dag.</p>
-<h2>Meer uitjes in Utrecht</h2>
+<h2 id="meer-uitjes-in-utrecht">Meer uitjes in Utrecht</h2>
 <p>Bekijk alle kindvriendelijke locaties in de regio via onze <a href="/utrecht.html">Utrecht-gids</a> — gefilterd op leeftijd, type en weer. Of bekijk specifiek de <a href="/musea.html">musea</a> en <a href="/kinderboerderijen.html">kinderboerderijen</a> in de provincie.</p>
-<h2>Veelgestelde vragen</h2>
+<h2 id="veelgestelde-vragen">Veelgestelde vragen</h2>
 <p><strong>Is Utrecht goed te doen met een buggy?</strong>
 Ja, grotendeels wel. Het centrum is compact en de meeste straten zijn goed begaanbaar. Alleen bij de grachten loop je soms over kasseien, en sommige werfkelders zijn via steile trapjes bereikbaar. Houd je aan de hoofdstraten en je hebt geen problemen.</p>
 <p><strong>Wat is de beste leeftijd voor het Nijntje Museum?</strong>
@@ -301,21 +286,24 @@ Reken op 4 tot 5 uur inclusief reistijd. Een ochtendprogramma (museum + wandelin
 <footer class="pp-reveal">
   <div class="footer-container">
     <div class="footer-brand">
-      <strong style="font-size: 20px;">PeuterPlannen</strong>
+      <strong style="font-size: var(--pp-text-lg);">PeuterPlannen</strong>
       <p>Kindvriendelijke uitjes in heel Nederland. Gecheckt en actueel.</p>
     </div>
-    <div class="footer-links">
-      <h4>Product</h4>
-      <a href="/app.html">App</a>
-      <a href="/blog/">Inspiratie</a>
-      <a href="/about.html">Over</a>
+    <div class="footer-columns">
+      <div class="footer-links">
+        <h4>Product</h4>
+        <a href="/app.html">App</a>
+        <a href="/blog/">Inspiratie</a>
+        <a href="/about.html">Over</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <h4>Legal</h4>
-      <a href="/contact.html">Contact</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/disclaimer/">Disclaimer</a>
-    </div>
+    <button class="footer-expand" onclick="this.parentElement.classList.add('expanded');this.remove();" aria-label="Toon meer links">Meer ↓</button>
   </div>
   <div class="footer-bottom">
     &copy; 2026 PeuterPlannen. Gemaakt in Utrecht.

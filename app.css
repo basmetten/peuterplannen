@@ -591,6 +591,26 @@
         .preset-chip span { display: block; font-size: var(--pp-text-xs); line-height: 1.3; color: var(--pp-text-muted); }
         .preset-chip.active span { color: var(--pp-text-secondary); }
         .preset-chip svg { width: var(--pp-icon-xs); height: var(--pp-icon-xs); stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; color: var(--pp-primary-dark); }
+
+        /* Preset disclosure — show 3 on mobile, all on desktop */
+        .preset-strip:not(.expanded) .preset-chip:nth-child(n+4) { display: none; }
+        .preset-more {
+          display: block;
+          width: 100%;
+          margin: 4px 0 8px;
+          padding: 10px;
+          background: none;
+          border: 1px dashed rgba(var(--pp-primary-rgb), 0.2);
+          border-radius: var(--pp-radius-sm);
+          font-family: inherit;
+          font-size: var(--pp-text-xs);
+          font-weight: 600;
+          color: var(--pp-primary);
+          cursor: pointer;
+          transition: background 0.2s, border-color 0.2s;
+        }
+        .preset-more:hover { background: rgba(var(--pp-primary-rgb), 0.04); border-color: var(--pp-primary); }
+
         .results-utilities {
             display: grid;
             gap: 10px;
@@ -1194,6 +1214,8 @@
           flex-wrap: nowrap;
           padding-bottom: 0;
         }
+        html.pp-desktop .preset-strip .preset-chip:nth-child(n+4) { display: inline-flex !important; }
+        html.pp-desktop .preset-more { display: none !important; }
         html.pp-desktop .preset-chip { min-height: 92px; }
         html.pp-desktop .chip-label { display: none; }
         html.pp-desktop .chip { padding: var(--pp-space-xs) var(--pp-space-sm); font-size: var(--pp-text-xs); }

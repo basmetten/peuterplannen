@@ -38,6 +38,44 @@ function buildBlog(data) {
   const blogDir = path.join(ROOT, 'blog');
   if (!fs.existsSync(blogDir)) fs.mkdirSync(blogDir, { recursive: true });
 
+  // Generate TOC from HTML content — adds IDs to h2/h3 and returns TOC HTML
+  function generateTOC(htmlContent) {
+    const headings = [];
+    const usedIds = new Set();
+    const processed = htmlContent.replace(/<(h[23])>([\s\S]*?)<\/\1>/gi, (match, tag, text) => {
+      const level = parseInt(tag[1]);
+      const plainText = text.replace(/<[^>]+>/g, '').trim();
+      let id = plainText.toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .substring(0, 50);
+      // Deduplicate IDs
+      if (usedIds.has(id)) { let i = 2; while (usedIds.has(id + '-' + i)) i++; id = id + '-' + i; }
+      usedIds.add(id);
+      headings.push({ level, text: plainText, id });
+      return `<${tag} id="${id}">${text}</${tag}>`;
+    });
+
+    if (headings.length < 4) return { content: processed, toc: '' };
+
+    const tocItems = headings.map(h => {
+      const cls = h.level === 3 ? ' class="toc-sub"' : '';
+      return `<li${cls}><a href="#${h.id}">${escapeHtml(h.text)}</a></li>`;
+    }).join('\n      ');
+
+    const toc = `<nav class="blog-toc" aria-label="Inhoudsopgave">
+    <button class="blog-toc-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+      Inhoudsopgave <span class="toc-count">${headings.length}</span>
+    </button>
+    <ol class="blog-toc-list">
+      ${tocItems}
+    </ol>
+  </nav>`;
+
+    return { content: processed, toc };
+  }
+
   const posts = [];
 
   for (const file of files) {
@@ -136,7 +174,7 @@ ${navHTML()}
 
 ${p.featured_image ? `<div class="blog-hero-img"><picture><source type="image/webp" srcset="${p.featured_image.replace(/\.jpe?g$/, '.webp')}"><img src="${p.featured_image}" alt="${escapeHtml(p.title)}" loading="eager"></picture></div>` : ''}
 <div class="hero" style="padding: ${p.featured_image ? '24px' : '100px'} 24px 40px;">
-  <h1>${escapeHtml(p.title)}</h1>
+  <h1>${escapeHtml(p.title).replace(/\*([^*]+)\*/g, '<span class="accent">$1</span>')}</h1>
 </div>
 
 <nav aria-label="Kruimelpad" class="breadcrumb">
@@ -146,8 +184,9 @@ ${p.featured_image ? `<div class="blog-hero-img"><picture><source type="image/we
 <main id="main-content">
   <p class="blog-meta">${p.dateDisplay}${p.tags?.length ? ' &middot; ' + p.tags.join(', ') : ''}</p>
 
+  ${(() => { const { content: tocContent, toc } = generateTOC(p.content); p._tocContent = tocContent; return toc; })()}
   <div class="blog-content">
-    ${p.content}
+    ${p._tocContent || p.content}
   </div>
 
   <div class="blog-share pp-reveal">
@@ -259,7 +298,7 @@ ${navHTML()}
 <div class="hero hero-blog">
   <p class="hero-kicker">PeuterPlannen redactie</p>
   <h1 class="hero-blog-title">Inspiratie voor dagen die echt werken</h1>
-  <p class="hero-blog-sub">Praktische gidsen, rustige tips en slimme routes voor ouders met peuters en kleuters. Minder generiek zoeken, sneller een dag die klopt.</p>
+  <p class="hero-blog-sub"><span class="accent">Praktische gidsen</span>, rustige tips en slimme routes voor ouders met peuters en kleuters. Minder generiek zoeken, sneller een dag die klopt.</p>
   <div class="hero-blog-meta">
     <span>${publishedPosts.length} gidsen</span>
     <span>Nederland breed</span>

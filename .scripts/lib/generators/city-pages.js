@@ -222,6 +222,11 @@ ${svgSpriteDefs()}
 
 ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region.name)}`)}
 
+${fs.existsSync(path.join(ROOT, 'images', 'blog', `${region.slug}-met-peuters.webp`))
+  ? `<div class="category-header-img"><picture><source type="image/webp" srcset="/images/blog/${region.slug}-met-peuters.webp"><img src="/images/blog/${region.slug}-met-peuters.jpg" alt="${region.name} met peuters" loading="eager" width="1024" height="341"></picture></div>`
+  : fs.existsSync(path.join(ROOT, 'images', 'blog', `${region.slug}-met-peuters-en-kleuters.webp`))
+    ? `<div class="category-header-img"><picture><source type="image/webp" srcset="/images/blog/${region.slug}-met-peuters-en-kleuters.webp"><img src="/images/blog/${region.slug}-met-peuters-en-kleuters.jpg" alt="${region.name} met peuters" loading="eager" width="1024" height="341"></picture></div>`
+    : ''}
 <div class="hero">
   <h1>Uitjes met peuters in <span class="accent">${region.name}${omgevingLabel}</span></h1>
   <p>${escapeHtml(region.blurb)}</p>

@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { ROOT, CLUSTER_PAGES, TYPE_PAGES, CRITICAL_EDITORIAL_GUIDE_CSS, ASSET_VERSION, CF_ANALYTICS_TOKEN, analyticsHTML } = require('../config');
+const { ROOT, CLUSTER_PAGES, TYPE_PAGES, ASSET_VERSION, CF_ANALYTICS_TOKEN, analyticsHTML } = require('../config');
 const { escapeHtml, fullSiteUrl } = require('../helpers');
 const { navHTML, footerHTML, headCommon, supportHTML, revealScript, editorialMetaHTML, editorialBodyHTML, relatedBlogLinksHTML, formatEditorialDate } = require('../html-shared');
 const { getBlogEntriesBySlug } = require('../seo-content');

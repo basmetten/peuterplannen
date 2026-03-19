@@ -38,7 +38,7 @@ function updateIndex(data) {
   const typeGridHTML = `    <section class="cities-section pp-reveal" style="background: var(--pp-bg-warm);">
         <div class="container">
             <h2 class="section-title">Uitjes per type</h2>
-            <p class="section-sub">Weet je al wat voor dag het wordt? Zoek direct op type uitje.</p>
+            <p class="section-sub">Weet je al wat voor dag het wordt? Zoek <span class="accent">direct</span> op type uitje.</p>
             <div class="cities-grid">
 ${typeCards}
             </div>
@@ -71,10 +71,11 @@ ${clusterCards}
   const cityGridHTML = `    <section class="cities-section pp-reveal">
         <div class="container">
             <h2 class="section-title">Uitjes per regio</h2>
-            <p class="section-sub">Elke regio omvat de stad én omliggende gemeenten. Gecheckt en actueel.</p>
+            <p class="section-sub"><span class="accent">Elke regio</span> omvat de stad én omliggende gemeenten. Gecheckt en actueel.</p>
             <div class="cities-grid">
 ${cityCards}
             </div>
+            <button class="show-all-regions pp-show-all">Alle ${regions.length} regio's bekijken</button>
 ${crawlHubHTML}
         </div>
     </section>`;

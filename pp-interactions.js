@@ -77,6 +77,39 @@ document.querySelectorAll('.newsletter-form').forEach(function (form) {
   });
 });
 
+// Viewport-focus for guide cards — compact cards expand when scrolled into center
+if ('IntersectionObserver' in window && window.innerWidth < 768 &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  var focusObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      e.target.classList.toggle('in-view', e.isIntersecting);
+    });
+  }, { rootMargin: '-25% 0px -25% 0px', threshold: 0.2 });
+
+  document.querySelectorAll('.guide-card').forEach(function (card) {
+    focusObs.observe(card);
+  });
+}
+
+// Disclosure: show-all buttons for lists with hidden overflow
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest('.pp-show-all');
+  if (!btn) return;
+  var target = btn.previousElementSibling;
+  if (target) target.classList.add('expanded');
+  btn.remove();
+});
+
+// Auto-generate show-all buttons for long location lists
+document.querySelectorAll('.loc-list').forEach(function (list) {
+  var count = list.children.length;
+  if (count <= 6) return;
+  var btn = document.createElement('button');
+  btn.className = 'pp-show-all';
+  btn.textContent = 'Toon alle ' + count + ' locaties';
+  list.after(btn);
+});
+
 // Navbar scroll shrink (IntersectionObserver, no scroll listener)
 (function () {
   var nav = document.querySelector('nav');

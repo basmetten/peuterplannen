@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { TIKKIE_URL, ASSET_VERSION, CRITICAL_EDITORIAL_GUIDE_CSS } = require('./config');
+const { TIKKIE_URL, ASSET_VERSION } = require('./config');
 const { escapeHtml, parseDateSafe } = require('./helpers');
 const { getBlogEntriesBySlug } = require('./seo-content');
 
@@ -61,10 +61,12 @@ function navHTML(ctaText = 'Uitjes zoeken', ctaHref = '/app.html') {
   <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
     <a href="/" class="nav-mobile-link">Home</a>
     <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
-    <a href="/about.html" class="nav-mobile-link">Over</a>
     <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
-    <a href="/contact.html" class="nav-mobile-link">Contact</a>
     <a href="${ctaHref}" class="nav-mobile-link nav-mobile-cta nav-cta">${ctaText}</a>
+    <div class="nav-mobile-secondary">
+      <a href="/about.html" class="nav-mobile-link">Over</a>
+      <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    </div>
   </div>
 </nav>`;
 }
@@ -73,21 +75,24 @@ function footerHTML() {
   return `<footer class="pp-reveal">
   <div class="footer-container">
     <div class="footer-brand">
-      <strong style="font-size: 20px;">PeuterPlannen</strong>
+      <strong style="font-size: var(--pp-text-lg);">PeuterPlannen</strong>
       <p>Kindvriendelijke uitjes in heel Nederland. Gecheckt en actueel.</p>
     </div>
-    <div class="footer-links">
-      <h4>Product</h4>
-      <a href="/app.html">App</a>
-      <a href="/blog/">Inspiratie</a>
-      <a href="/about.html">Over</a>
+    <div class="footer-columns">
+      <div class="footer-links">
+        <h4>Product</h4>
+        <a href="/app.html">App</a>
+        <a href="/blog/">Inspiratie</a>
+        <a href="/about.html">Over</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <h4>Legal</h4>
-      <a href="/contact.html">Contact</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/disclaimer/">Disclaimer</a>
-    </div>
+    <button class="footer-expand" onclick="this.parentElement.classList.add('expanded');this.remove();" aria-label="Toon meer links">Meer ↓</button>
   </div>
   <div class="footer-bottom">
     &copy; 2026 PeuterPlannen. Gemaakt in Utrecht.
@@ -219,7 +224,6 @@ function headCommon(extra = '') {
   <link rel="stylesheet" href="/fonts.css">
   <link rel="stylesheet" href="${dsHref}">
   <link rel="stylesheet" href="${styleHref}">
-  <style>${CRITICAL_EDITORIAL_GUIDE_CSS}</style>
   <link rel="stylesheet" href="${navCssHref}">
   <script src="${navJsHref}" defer></script>
   <script src="/pp-interactions.js" defer></script>

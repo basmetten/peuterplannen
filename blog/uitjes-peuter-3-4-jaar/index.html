@@ -18,48 +18,10 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603182039">
-  <link rel="stylesheet" href="/style.min.css?v=202603182039">
-  <style>
-  .guide-section{display:grid;gap:18px;margin:36px 0}
-  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .guide-card-compact{padding:20px 18px}
-  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
-  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
-  .guide-card h2{font-size:clamp(28px,5vw,40px)}
-  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
-  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
-  .guide-card-intro{max-width:58ch}
-  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .guide-links{display:grid;gap:12px;margin-top:16px}
-  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-  .guide-link:visited{color:var(--pp-text)}
-  .guide-link strong{font-size:15px;line-height:1.3}
-  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
-  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
-  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
-  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
-  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
-  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
-  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
-  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
-  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
-  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
-  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
-  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
-  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
-  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
-  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
-  .editorial-support-links a:visited{color:var(--pp-text)}
-  .editorial-support-links a strong{font-size:14px}
-  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
-  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
-</style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
-  <script src="/nav-floating.js?v=202603182039" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603191155">
+  <link rel="stylesheet" href="/style.min.css?v=202603191155">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603191155">
+  <script src="/nav-floating.js?v=202603191155" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -127,10 +89,12 @@
   <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
     <a href="/" class="nav-mobile-link">Home</a>
     <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
-    <a href="/about.html" class="nav-mobile-link">Over</a>
     <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
-    <a href="/contact.html" class="nav-mobile-link">Contact</a>
     <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
+    <div class="nav-mobile-secondary">
+      <a href="/about.html" class="nav-mobile-link">Over</a>
+      <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    </div>
   </div>
 </nav>
 
@@ -146,11 +110,28 @@
 <main id="main-content">
   <p class="blog-meta">3 maart 2026 &middot; 3 jaar, 4 jaar, tips, activiteiten</p>
 
+  <nav class="blog-toc" aria-label="Inhoudsopgave">
+    <button class="blog-toc-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+      Inhoudsopgave <span class="toc-count">10</span>
+    </button>
+    <ol class="blog-toc-list">
+      <li><a href="#wat-er-verandert-rond-het-derde-jaar">Wat er verandert rond het derde jaar</a></li>
+      <li><a href="#dierentuin-nu-cht-de-moeite-waard">Dierentuin: nu écht de moeite waard</a></li>
+      <li><a href="#avontuurlijke-speeltuinen-klauteren-niet-zandbakke">Avontuurlijke speeltuinen: klauteren, niet zandbakken</a></li>
+      <li><a href="#fietsen-of-loopfietsen-zelf-rijden-is-het-halve-pl">Fietsen of loopfietsen: zelf rijden is het halve plezier</a></li>
+      <li><a href="#kindertheater-30-tot-45-minuten-is-genoeg">Kindertheater: 30 tot 45 minuten is genoeg</a></li>
+      <li><a href="#knutselworkshop-of-kinderatelier">Knutselworkshop of kinderatelier</a></li>
+      <li><a href="#pannenkoekenboerderij-nu-snappen-ze-het-ritueel">Pannenkoekenboerderij: nu snappen ze het ritueel</a></li>
+      <li><a href="#mini-klimhal-of-boulderhoek">Mini-klimhal of boulderhoek</a></li>
+      <li><a href="#overlevingstips-voor-de-3-4-leeftijd">Overlevingstips voor de 3-4 leeftijd</a></li>
+      <li><a href="#meer-inspiratie">Meer inspiratie</a></li>
+    </ol>
+  </nav>
   <div class="blog-content">
     <p>Er is een duidelijk kantelpunt ergens rond de derde verjaardag. Ineens kan je kind langer focussen, begrijpt het oorzaak en gevolg, stelt het vragen die je moeten beantwoorden (&quot;waarom slaapt die leeuw?&quot;), en wil het meedoen in plaats van alleen maar kijken.</p>
 <p>Dat verandert wat een uitje kan zijn. Geen tien minuten en dan klaar — maar ook nog niet de hele middag in een museum. Ergens daartussenin.</p>
 <p>Dit zijn de uitjes die echt goed passen bij een peuter van 3 of 4 jaar.</p>
-<h2>Wat er verandert rond het derde jaar</h2>
+<h2 id="wat-er-verandert-rond-het-derde-jaar">Wat er verandert rond het derde jaar</h2>
 <p>Een dreumes van 1-2 jaar ervaart de wereld voornamelijk via zintuigen: aanraken, proeven, geluiden. Een peuter van 3-4 jaar doet er een laag bij: verhalen, rollen, namen, regels. Ze bouwen een wereld in hun hoofd die ze dan gaan uitproberen in de echte wereld.</p>
 <p>Dat betekent concreet:</p>
 <ul>
@@ -161,41 +142,41 @@
 <li>Ze kunnen wachten — niet lang, maar even</li>
 </ul>
 <p>De aandachtsspanne is nog steeds kort. Denk aan blokken van 30-45 minuten per activiteit. Na twee uur is de reserve op.</p>
-<h2>Dierentuin: nu écht de moeite waard</h2>
+<h2 id="dierentuin-nu-cht-de-moeite-waard">Dierentuin: nu écht de moeite waard</h2>
 <p>Een dierentuin met een dreumes is leuk maar ook een beetje passief. Met een 3- of 4-jarige verandert dat volledig. Ze herkennen de dieren, weten de namen, hebben al boeken over olifanten gelezen en willen nu de echte zien.</p>
 <p>Goede opties per regio: <a href="/amsterdam/artis/">Artis</a> in Amsterdam (compact en goed te doen in een ochtend), <a href="/rotterdam/diergaarde-blijdorp/">Diergaarde Blijdorp</a> in Rotterdam en <a href="/utrecht/dierenpark-amersfoort/">Dierenpark Amersfoort</a> in de Utrechtse regio.</p>
 <p>Het gesprek tijdens een dierentuinbezoek op deze leeftijd is goud: &quot;Dat is een giraf, die heeft een lange nek omdat hij hoge bladeren eet&quot;, en ze begrijpen het en onthouden het. Een maand later praten ze er nog over.</p>
 <p>Tip: ga niet alles af. Kies twee of drie favorieten en geef daar de tijd voor. Een halfuur bij de apen is beter dan vijf minuten bij elk dier.</p>
-<h2>Avontuurlijke speeltuinen: klauteren, niet zandbakken</h2>
+<h2 id="avontuurlijke-speeltuinen-klauteren-niet-zandbakke">Avontuurlijke speeltuinen: klauteren, niet zandbakken</h2>
 <p>Op 3 en 4 jaar begint de zandbak zijn glans te verliezen. Wat ze nu willen: klimmen, glijden, balanceren, een uitdaging.</p>
 <p>Kijk naar speeltuinen met touwenparcours, hogere klimrekken, schommels met een borstelhoogte, en bij voorkeur ook wat water of zand als bijgerecht. Veel steden hebben een paar speeltuinen die duidelijk meer bieden dan de standaard: zoek op &quot;avontuursspeeltuin&quot; of &quot;klimtuin&quot; in jouw regio.</p>
 <p>Speeltuinen als <a href="/rotterdam/hitland-zuid/">Hitland Zuid</a> (Nieuwerkerk aan den IJssel), <a href="/rotterdam/avonturenspeeltuin-pietje-bell/">Avontuursspeeltuin Pietje Bell</a> in Rotterdam, <a href="/utrecht/avontura-speeltuin-utrecht/">Avontura Speeltuin Utrecht</a> of de <a href="/den-haag/natuurspeeltuin-de-vrijbuiter/">Natuurspeeltuin de Vrijbuiter</a> in Den Haag hebben voor deze leeftijd ruimschoots genoeg te bieden.</p>
-<h2>Fietsen of loopfietsen: zelf rijden is het halve plezier</h2>
+<h2 id="fietsen-of-loopfietsen-zelf-rijden-is-het-halve-pl">Fietsen of loopfietsen: zelf rijden is het halve plezier</h2>
 <p>Rond het derde jaar begint het echte fietsen of loopfietsen. Een uitje in het bos of een park waarbij de peuter zelf rijdt terwijl jij meeloopt is voor deze leeftijd een voltreffer.</p>
 <p>Het gaat niet om de afstand. Het gaat om de controle: ik rijd, ik bepaal, ik kan dit. Dat gevoel van eigen competentie is enorm voor een 3-jarige.</p>
 <p>Kies een route zonder auto&#39;s, met een beetje hoogteverschil voor de opwinding, en een eindbestemming (speeltuin, ijs, vijver met eenden). Duin- en bosgebieden zijn hier perfect voor: de Amsterdamse Waterleidingduinen, het Haagse Bos, de Utrechtse Heuvelrug.</p>
-<h2>Kindertheater: 30 tot 45 minuten is genoeg</h2>
+<h2 id="kindertheater-30-tot-45-minuten-is-genoeg">Kindertheater: 30 tot 45 minuten is genoeg</h2>
 <p>Op 3 jaar kunnen kinderen voor het eerst echt iets meemaken in een theater. Niet een lange voorstelling, maar een korte — 30 tot 45 minuten — met visuele humor, muziek, en een verhaal dat simpel maar goed verteld is.</p>
 <p>Gezelschappen als <a href="/amsterdam/de-krakeling/">De Krakeling</a> (Amsterdam), <a href="/den-haag/ludens-theater/">Ludens Theater</a> en <a href="/den-haag/theater-pepijn/">Theater Pepijn</a> (Den Haag), <a href="/utrecht/kindertheater-de-toverknol/">Kindertheater De Toverknol</a> (Utrecht) en allerlei lokale jeugdtheaters bieden dit soort programmering. Veel voorstellingen zijn specifiek voor 3+ of 4+ jaar.</p>
 <p>Controleer de website van een theatergezelschap bij jou in de buurt op &quot;peuter&quot; of &quot;kleuter&quot; in het programma. Het is een uitje dat anders is dan een dierentuin of speeltuin, en dat verschil waarderen ze.</p>
-<h2>Knutselworkshop of kinderatelier</h2>
+<h2 id="knutselworkshop-of-kinderatelier">Knutselworkshop of kinderatelier</h2>
 <p>Rond het vierde jaar begint sturing bij knutselen te werken: ze kunnen luisteren naar &quot;dit is de stap&quot;, kunnen gericht werken, en zijn trots op wat ze maken.</p>
 <p>Veel musea en bibliotheken bieden op zaterdag of in vakanties kinder-ateliers aan. Het Kindermuseum van het Tropenmuseum (Amsterdam), De Balie, lokale ateliers — er is meer dan je denkt.</p>
 <p>De prijs varieert (soms gratis, soms een paar euro), en je kind gaat naar huis met iets zelf gemaakts. Dat laatste is niet onbelangrijk: een 4-jarige die zijn eigen aardewerk kommetje laat zien is een gelukkig kind.</p>
-<h2>Pannenkoekenboerderij: nu snappen ze het ritueel</h2>
+<h2 id="pannenkoekenboerderij-nu-snappen-ze-het-ritueel">Pannenkoekenboerderij: nu snappen ze het ritueel</h2>
 <p>Met een dreumes is een pannenkoekenboerderij leuk maar ook een beetje overweldigend. Op 3 en 4 jaar werkt het perfect: ze begrijpen dat je aankomt, dieren gaat zien, pannenkoekenbestelt en opeet, en daarna nog een keer naar de dieren gaat. Dat ritme is precies goed.</p>
 <p>De meeste pannenkoekenboerderijen hebben ook een speeltuin, soms een klimhuis of een paar schapen. De combinatie &quot;dieren + eten + spelen&quot; in één omgeving is voor deze leeftijd bijna ideaal.</p>
 <p>Zie ook onze <a href="/blog/pannenkoekenboerderijen-utrecht-heuvelrug/">gids over pannenkoekenboerderijen rondom Utrecht en de Heuvelrug</a> voor concrete tips.</p>
-<h2>Mini-klimhal of boulderhoek</h2>
+<h2 id="mini-klimhal-of-boulderhoek">Mini-klimhal of boulderhoek</h2>
 <p>Dit klinkt misschien verrassend, maar peuter-boulderen bestaat echt. Verschillende klimhallen hebben een speciale zone voor kleine kinderen — lage routes, dikke matten, kleurrijke grepen. Sommige hallen bieden zelfs peuter-klimsessies aan met begeleiding.</p>
 <p>Het is niet voor elk kind: sommige peuters vinden het fantastisch, anderen willen liever grond onder de voeten houden. Maar als je kind graag klimt en je wil iets nieuws proberen, is dit het eens waard.</p>
 <p>Zoek op &quot;boulderen kinderen&quot; of &quot;klimhal peuter&quot; in jouw regio. De meeste grote steden hebben er wel een.</p>
-<h2>Overlevingstips voor de 3-4 leeftijd</h2>
+<h2 id="overlevingstips-voor-de-3-4-leeftijd">Overlevingstips voor de 3-4 leeftijd</h2>
 <p><strong>Het dutje is weg, maar het moe-zijn niet.</strong> Veel kinderen stoppen rond het derde jaar met de middagslaap, maar ze worden nog steeds moe. Reken erop dat de peuter rond 15:00-16:00 zijn grens heeft bereikt, ook al slaapt hij niet meer.</p>
 <p><strong>Plan maar één ding.</strong> Op deze leeftijd is &quot;we gaan naar het theater en daarna naar de dierentuin en dan nog even een ijsje bij de markt&quot; altijd te veel. Kies één hoofdactiviteit, doe die goed, en ga dan naar huis of naar een terrasje. Eén goed ding is beter dan drie halfbakken dingen.</p>
 <p><strong>Voorbereiding werkt nu.</strong> Vertel &#39;s ochtends wat jullie gaan doen. Op 3-4 jaar begrijpen ze het, en het helpt bij de overgang van thuis naar buiten. &quot;We gaan naar de dieren, dan eten we een pannenkoek, dan gaan we weer naar huis&quot; — dat geeft structuur.</p>
 <p><strong>Laat ze meehelpen.</strong> Of het nu het kaartje knippen is bij de ingang, de weg kiezen bij een T-splitsing, of als eerste de tent omhoogzetten: op deze leeftijd willen ze meedoen en bijdragen. Geef ze die kans, ook als het iets langzamer gaat.</p>
-<h2>Meer inspiratie</h2>
+<h2 id="meer-inspiratie">Meer inspiratie</h2>
 <p>Zoek locaties op leeftijd, type en regio in onze <a href="/app.html">uitjes-app</a> — je kunt filteren op minimale en maximale leeftijd.</p>
 <p>Wil je verder lezen? Bekijk ook <a href="/blog/dagje-uit-met-kleuter-4-6-jaar/">dagje uit met kleuter (4-6 jaar)</a> voor als je kind net wat ouder is, <a href="/blog/dagje-uit-met-1-jarige/">dagje uit met een 1-jarige</a> als je jongere kinderen in het gezin hebt, en <a href="/blog/museum-met-peuter/">museum met peuter</a> voor de binnenopties.</p>
 
@@ -269,21 +250,24 @@
 <footer class="pp-reveal">
   <div class="footer-container">
     <div class="footer-brand">
-      <strong style="font-size: 20px;">PeuterPlannen</strong>
+      <strong style="font-size: var(--pp-text-lg);">PeuterPlannen</strong>
       <p>Kindvriendelijke uitjes in heel Nederland. Gecheckt en actueel.</p>
     </div>
-    <div class="footer-links">
-      <h4>Product</h4>
-      <a href="/app.html">App</a>
-      <a href="/blog/">Inspiratie</a>
-      <a href="/about.html">Over</a>
+    <div class="footer-columns">
+      <div class="footer-links">
+        <h4>Product</h4>
+        <a href="/app.html">App</a>
+        <a href="/blog/">Inspiratie</a>
+        <a href="/about.html">Over</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <h4>Legal</h4>
-      <a href="/contact.html">Contact</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/disclaimer/">Disclaimer</a>
-    </div>
+    <button class="footer-expand" onclick="this.parentElement.classList.add('expanded');this.remove();" aria-label="Toon meer links">Meer ↓</button>
   </div>
   <div class="footer-bottom">
     &copy; 2026 PeuterPlannen. Gemaakt in Utrecht.

@@ -18,48 +18,10 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603182039">
-  <link rel="stylesheet" href="/style.min.css?v=202603182039">
-  <style>
-  .guide-section{display:grid;gap:18px;margin:36px 0}
-  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .guide-card-compact{padding:20px 18px}
-  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
-  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
-  .guide-card h2{font-size:clamp(28px,5vw,40px)}
-  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
-  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
-  .guide-card-intro{max-width:58ch}
-  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .guide-links{display:grid;gap:12px;margin-top:16px}
-  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-  .guide-link:visited{color:var(--pp-text)}
-  .guide-link strong{font-size:15px;line-height:1.3}
-  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
-  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
-  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
-  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
-  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
-  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
-  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
-  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
-  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
-  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
-  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
-  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
-  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
-  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
-  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
-  .editorial-support-links a:visited{color:var(--pp-text)}
-  .editorial-support-links a strong{font-size:14px}
-  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
-  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
-</style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
-  <script src="/nav-floating.js?v=202603182039" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603191155">
+  <link rel="stylesheet" href="/style.min.css?v=202603191155">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603191155">
+  <script src="/nav-floating.js?v=202603191155" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -127,10 +89,12 @@
   <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
     <a href="/" class="nav-mobile-link">Home</a>
     <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
-    <a href="/about.html" class="nav-mobile-link">Over</a>
     <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
-    <a href="/contact.html" class="nav-mobile-link">Contact</a>
     <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
+    <div class="nav-mobile-secondary">
+      <a href="/about.html" class="nav-mobile-link">Over</a>
+      <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    </div>
   </div>
 </nav>
 
@@ -146,10 +110,49 @@
 <main id="main-content">
   <p class="blog-meta">5 maart 2026 &middot; amsterdam, peuters, kleuters, dagje uit, kindvriendelijk</p>
 
+  <nav class="blog-toc" aria-label="Inhoudsopgave">
+    <button class="blog-toc-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+      Inhoudsopgave <span class="toc-count">32</span>
+    </button>
+    <ol class="blog-toc-list">
+      <li><a href="#dagplanning-die-werkt-voor-peuters-en-kleuters">Dagplanning die werkt voor peuters en kleuters</a></li>
+      <li><a href="#ochtend-waar-start-je-in-amsterdam">Ochtend: waar start je in Amsterdam?</a></li>
+      <li class="toc-sub"><a href="#vondelpark-de-klassieker">Vondelpark — de klassieker</a></li>
+      <li class="toc-sub"><a href="#kinderboerderijen-dicht-bij-het-centrum">Kinderboerderijen — dicht bij het centrum</a></li>
+      <li class="toc-sub"><a href="#amsterdamse-bos-voor-wie-meer-ruimte-wil">Amsterdamse Bos — voor wie meer ruimte wil</a></li>
+      <li><a href="#lunch-zo-voorkom-je-gedoe">Lunch: zo voorkom je gedoe</a></li>
+      <li class="toc-sub"><a href="#praktische-lunchtips-per-locatie">Praktische lunchtips per locatie</a></li>
+      <li class="toc-sub"><a href="#lunchtiming">Lunchtiming</a></li>
+      <li><a href="#middagopties-bij-goed-weer">Middagopties bij goed weer</a></li>
+      <li class="toc-sub"><a href="#concrete-middagideen">Concrete middagideeën</a></li>
+      <li><a href="#middagopties-bij-regen">Middagopties bij regen</a></li>
+      <li class="toc-sub"><a href="#nemo-science-museum">NEMO Science Museum</a></li>
+      <li class="toc-sub"><a href="#indoor-speelparadijzen">Indoor speelparadijzen</a></li>
+      <li class="toc-sub"><a href="#andere-indooropties">Andere indooropties</a></li>
+      <li><a href="#artis-museum-of-dierentuin">Artis: museum of dierentuin?</a></li>
+      <li><a href="#vervoer-hoe-kom-je-rond-met-kleine-kinderen">Vervoer: hoe kom je rond met kleine kinderen?</a></li>
+      <li class="toc-sub"><a href="#met-de-auto">Met de auto</a></li>
+      <li class="toc-sub"><a href="#met-het-ov">Met het ov</a></li>
+      <li class="toc-sub"><a href="#lopen">Lopen</a></li>
+      <li><a href="#peuter-vs-kleuter-wat-verander-je">Peuter vs. kleuter: wat verander je?</a></li>
+      <li class="toc-sub"><a href="#met-peuter-2-4-jaar">Met peuter (2-4 jaar)</a></li>
+      <li class="toc-sub"><a href="#met-kleuter-4-6-jaar">Met kleuter (4-6 jaar)</a></li>
+      <li><a href="#gratis-amsterdam-met-peuters">Gratis Amsterdam met peuters</a></li>
+      <li><a href="#veelgemaakte-fouten-in-amsterdam">Veelgemaakte fouten in Amsterdam</a></li>
+      <li><a href="#veelgestelde-vragen">Veelgestelde vragen</a></li>
+      <li class="toc-sub"><a href="#wat-is-leuk-in-amsterdam-met-peuters-en-kleuters">Wat is leuk in Amsterdam met peuters en kleuters?</a></li>
+      <li class="toc-sub"><a href="#is-amsterdam-geschikt-met-kleine-kinderen">Is Amsterdam geschikt met kleine kinderen?</a></li>
+      <li class="toc-sub"><a href="#wat-doe-je-in-amsterdam-met-kinderen-bij-regen">Wat doe je in Amsterdam met kinderen bij regen?</a></li>
+      <li class="toc-sub"><a href="#welke-kinderboerderij-in-amsterdam-is-het-beste-vo">Welke kinderboerderij in Amsterdam is het beste voor peuters?</a></li>
+      <li class="toc-sub"><a href="#wat-kost-een-dagje-amsterdam-met-kinderen">Wat kost een dagje Amsterdam met kinderen?</a></li>
+      <li class="toc-sub"><a href="#hoe-lang-duurt-een-dagje-amsterdam-met-peuters">Hoe lang duurt een dagje Amsterdam met peuters?</a></li>
+      <li><a href="#samenvatting">Samenvatting</a></li>
+    </ol>
+  </nav>
   <div class="blog-content">
     <p>Amsterdam met peuters en kleuters kan heel ontspannen zijn, als je niet te veel tegelijk wilt doen. De stad is groot, maar veel kindvriendelijke plekken liggen dichter bij elkaar dan je denkt. Met de juiste volgorde kun je een complete dag draaien zonder haast, files of overprikkeling.</p>
 <p>Wil je direct filteren op locaties? Bekijk <a href="/amsterdam.html">alle uitjes in Amsterdam</a> of open de <a href="/app.html?regio=Amsterdam">app met Amsterdam-filter</a>.</p>
-<h2>Dagplanning die werkt voor peuters en kleuters</h2>
+<h2 id="dagplanning-die-werkt-voor-peuters-en-kleuters">Dagplanning die werkt voor peuters en kleuters</h2>
 <p>Gebruik dit als basis:</p>
 <ol>
 <li><strong>Ochtend buiten</strong>: eerst bewegen</li>
@@ -158,7 +161,7 @@
 </ol>
 <p>Voor peuters houd je de blokken korter. Voor kleuters kun je per blok 20-30 minuten extra plannen.</p>
 <p>Een hele dag Amsterdam klinkt ambitieus, maar met deze structuur is het goed te doen. De sleutel: kies per dagdeel één activiteit en plan er niet nog iets &quot;extra&quot; bij. Dat extra blok is bijna altijd het moment waarop het misgaat.</p>
-<h2>Ochtend: waar start je in Amsterdam?</h2>
+<h2 id="ochtend-waar-start-je-in-amsterdam">Ochtend: waar start je in Amsterdam?</h2>
 <p>Voor gezinnen werken drie soorten locaties bijna altijd:</p>
 <ul>
 <li><a href="/speeltuinen.html">speeltuinen</a> voor direct bewegen</li>
@@ -166,17 +169,17 @@
 <li><a href="/natuur.html">natuurplekken</a> als je ruimte wilt en minder drukte</li>
 </ul>
 <p>In Amsterdam is vroeg starten extra belangrijk. Voor 10:30 is het rustiger op populaire plekken, en parkeren of ov overstappen gaat soepeler.</p>
-<h3>Vondelpark — de klassieker</h3>
+<h3 id="vondelpark-de-klassieker">Vondelpark — de klassieker</h3>
 <p>Het <a href="/amsterdam/de-vondeltuin/">Vondelpark</a> is de meest voor de hand liggende keuze, en daar is niks mis mee. Meerdere speeltuinen, een grote zandbak, eendjes bij de vijver. De speeltuin bij het Melkhuis is goed voor kleuters; de kleinere speeltuin aan de Amstelveenseweg-kant is rustiger en overzichtelijker voor peuters.</p>
 <p>Tip: loop niet het hele park door. Kies één speeltuin, blijf daar anderhalf uur, en ga dan naar lunch. De verleiding om &quot;even door te lopen naar die andere speeltuin&quot; is groot, maar je peuter is dan al halverwege een meltdown.</p>
-<h3>Kinderboerderijen — dicht bij het centrum</h3>
+<h3 id="kinderboerderijen-dicht-bij-het-centrum">Kinderboerderijen — dicht bij het centrum</h3>
 <p>Amsterdam heeft verrassend veel stadsboerderijen, en de meeste zijn gratis. <a href="/amsterdam/kinderboerderij-de-pijp/">Kinderboerderij de Pijp</a> zit midden in de stad en is compact genoeg om in drie kwartier te doen. Geiten aaien, kippen bekijken, zandbak erbij. Perfect als ochtendactiviteit.</p>
 <p>Wil je iets meer ruimte? De <a href="/amsterdam/stadsboerderij-zimmerhoeve/">Stadsboerderij Zimmerhoeve</a> in Noord is groter, heeft een moestuin en een natuurspeeltuin. Je bent er iets langer zoet, wat prettig is als je kleuter meer prikkels nodig heeft. Neem de pont achter Centraal Station — voor kinderen is die overtocht al een halve attractie.</p>
 <p>Iets buiten de stad maar absoluut de moeite waard: <a href="/amsterdam/geitenboerderij-ridammerhoeve/">Geitenboerderij Ridammerhoeve</a> in het Amsterdamse Bos. Echte boerderij-sfeer, pannenkoeken ter plekke, en geiten die je kunt voeren. Peuters vinden dit fantastisch. Reken op een ochtend van twee uur inclusief pannenkoek.</p>
-<h3>Amsterdamse Bos — voor wie meer ruimte wil</h3>
+<h3 id="amsterdamse-bos-voor-wie-meer-ruimte-wil">Amsterdamse Bos — voor wie meer ruimte wil</h3>
 <p>Als je niet per se naar het centrum wilt, is het <a href="/amsterdam/amsterdamse-bos/">Amsterdamse Bos</a> een sterke keuze. Het is enorm, maar je hoeft niet het hele bos te doen. De geitenboerderij, de speelweide en het begin van het bos bij de hoofdingang zijn prima met peuters. Er is een speeltuin, een pannenkoekenhuisje en veel ruimte om te rennen.</p>
 <p>Het voordeel: parkeren is makkelijker, het is minder druk dan het centrum, en je kunt de hele dag op één plek blijven zonder dat het saai wordt. Nadeel: het is minder goed bereikbaar met het ov.</p>
-<h2>Lunch: zo voorkom je gedoe</h2>
+<h2 id="lunch-zo-voorkom-je-gedoe">Lunch: zo voorkom je gedoe</h2>
 <p>Met peuters en kleuters is lunch vooral logistiek. Kies niet op &quot;hip&quot;, maar op praktisch:</p>
 <ul>
 <li>snel iets op tafel</li>
@@ -185,14 +188,14 @@
 <li>liefst in de buurt van je ochtendactiviteit</li>
 </ul>
 <p>Het <a href="/horeca.html">horeca-overzicht</a> helpt als startpunt. In de <a href="/app.html?regio=Amsterdam">app</a> kun je combineren met je andere wensen voor de middag.</p>
-<h3>Praktische lunchtips per locatie</h3>
+<h3 id="praktische-lunchtips-per-locatie">Praktische lunchtips per locatie</h3>
 <p>Als je in het <strong>Vondelpark</strong> bent: het Melkhuis zit letterlijk naast de speeltuin. Niet de goedkoopste keuze, maar je hoeft niet te verplaatsen en er is ruimte. Tosti&#39;s en soep gaan het snelst.</p>
 <p>Na een <strong>kinderboerderij in de Pijp</strong>: loop naar de Albert Cuypmarkt. Kibbeling, een broodje, fruit — alles op straat te krijgen. Peuters vinden een marktkraam vaak al spannend genoeg.</p>
 <p>Bij de <strong>Ridammerhoeve</strong>: eet daar. De pannenkoeken zijn goed en je voorkomt een verplaatsing met een moe kind.</p>
 <p>In het <strong>Amsterdamse Bos</strong>: het pannenkoekenhuisje Meerzicht is de voor de hand liggende optie. Wisselend druk. Als je wilt picknicken, neem iets mee — er zijn genoeg bankjes.</p>
-<h3>Lunchtiming</h3>
+<h3 id="lunchtiming">Lunchtiming</h3>
 <p>Plan lunch tussen 12:00 en 12:30. Later dan 12:30 en je peuter is al voorbij het punt van honger — dan wordt het huilpunt. Eerder kan ook, zeker als je vroeg bent gestart. Er is niks mis met lunchen om 11:45.</p>
-<h2>Middagopties bij goed weer</h2>
+<h2 id="middagopties-bij-goed-weer">Middagopties bij goed weer</h2>
 <p>Als de ochtend actief was, kies in de middag voor:</p>
 <ul>
 <li>een korte tweede speeltuin</li>
@@ -200,40 +203,40 @@
 <li>een eenvoudige route waarbij kinderen zelf kunnen lopen</li>
 </ul>
 <p>Probeer niet nog &quot;even één groot museum&quot; te doen als je kind al moe is. Een kort blok met weinig reistijd is vaak succesvoller.</p>
-<h3>Concrete middagideeën</h3>
+<h3 id="concrete-middagideen">Concrete middagideeën</h3>
 <p><strong>Na het Vondelpark</strong>: loop naar het Museumplein. Op het plein zelf is er ruimte om te rennen, en de vijver is leuk om even langs te lopen. Het plein zelf is de activiteit — maak er geen museumbezoek van tenzij je kind dat echt nog aankan.</p>
 <p><strong>Na een kinderboerderij</strong>: zoek een buurt-speeltuin in de buurt. Amsterdam heeft er honderden. Ze zijn vaak omheind, kleiner en rustiger dan de bekende parken. Perfect voor het laatste uur van de dag. De <a href="/app.html?regio=Amsterdam">app</a> toont welke speeltuinen dichtbij zijn. Lees ook <a href="/blog/beste-speeltuinen-amsterdam-peuters/">Beste speeltuinen Amsterdam</a> voor specifieke aanraders.</p>
 <p><strong>Na het Amsterdamse Bos</strong>: blijf gewoon. Loop een klein rondje, ga naar de speelweide, of laat je kind stenen in het water gooien. Dat is genoeg.</p>
-<h2>Middagopties bij regen</h2>
+<h2 id="middagopties-bij-regen">Middagopties bij regen</h2>
 <p>Regen in Amsterdam hoeft je dag niet te breken. Zet vooraf een backup klaar. Meer tips in onze post over <a href="/blog/uitjes-met-peuter-bij-regen/">uitjes met peuter bij regen</a>.</p>
-<h3>NEMO Science Museum</h3>
+<h3 id="nemo-science-museum">NEMO Science Museum</h3>
 <p>Het <a href="/amsterdam/nemo-science-museum/">NEMO Science Museum</a> is de bekendste indoor-optie voor gezinnen, en voor kleuters is het geweldig. De onderste verdiepingen zijn het meest geschikt voor jonge kinderen: waterexperimenten, bouwblokken, en veel knoppen om op te drukken.</p>
 <p>Voor peuters onder de 3 is NEMO wisselend. Sommige kinderen vinden het overweldigend, andere zijn er uren zoet. Ken je kind. Het dakterras is overigens gratis toegankelijk en leuk bij droog weer.</p>
 <p>Praktisch: NEMO is dicht op maandag. Reserveer online — zeker in vakanties en weekenden. De rijen bij de kassa zijn lang.</p>
-<h3>Indoor speelparadijzen</h3>
+<h3 id="indoor-speelparadijzen">Indoor speelparadijzen</h3>
 <p><a href="/amsterdam/monkey-town-amsterdam/">Monkey Town Amsterdam</a> is een optie als je kind echt moet bewegen maar het buiten niet kan. Het is druk, luidruchtig, en niet charmant — maar peuters en kleuters vinden het fantastisch. Eetopties ter plekke. Niet de hele dag, maar als middagvulling bij slecht weer werkt het prima.</p>
-<h3>Andere indooropties</h3>
+<h3 id="andere-indooropties">Andere indooropties</h3>
 <ul>
 <li>Bibliotheken met kinderafdeling (OBA Oosterdok heeft een goede kinderverdieping)</li>
 <li>TunFun in het Vondelpark — underground speeltuin, betaalbaar</li>
 <li>Indoor filter in de <a href="/app.html?weather=indoor&regio=Amsterdam">app</a></li>
 </ul>
 <p>Zo hoef je niet in de regen te beslissen met hongerige kinderen.</p>
-<h2>Artis: museum of dierentuin?</h2>
+<h2 id="artis-museum-of-dierentuin">Artis: museum of dierentuin?</h2>
 <p><a href="/amsterdam/artis/">Artis</a> verdient een apart blok. Het is niet goedkoop, maar voor een dag Amsterdam met peuters en kleuters is het een van de meest complete opties. Dieren, een aquarium, speeltuinen, en genoeg horeca ter plekke. Je kunt er makkelijk een hele dag doorbrengen zonder te verplaatsen.</p>
 <p>Wat werkt: begin bij de dieren die je kind het leukst vindt (voor de meeste peuters: de apen en de giraffen), neem een pauze bij de speeltuin halverwege, en eindig bij het aquarium als het energie nog toelaat.</p>
 <p>Wat niet werkt: proberen alles te zien. Artis is groot genoeg voor twee bezoeken. Doe de helft, en houd de rest voor de volgende keer.</p>
 <p>Koop kaartjes online — het scheelt wachttijd bij de ingang en is soms iets goedkoper. Peuters onder de 3 zijn gratis.</p>
-<h2>Vervoer: hoe kom je rond met kleine kinderen?</h2>
-<h3>Met de auto</h3>
+<h2 id="vervoer-hoe-kom-je-rond-met-kleine-kinderen">Vervoer: hoe kom je rond met kleine kinderen?</h2>
+<h3 id="met-de-auto">Met de auto</h3>
 <p>Parkeren in het centrum is duur (tot €7,50 per uur). P+R-locaties aan de rand zijn veel goedkoper en je stapt zo op de metro of tram. P+R Olympisch Stadion, P+R Zeeburg en P+R Sloterdijk zijn de bekendste opties.</p>
 <p>Als je naar het Amsterdamse Bos gaat, kun je gratis of goedkoop parkeren bij de ingang.</p>
-<h3>Met het ov</h3>
+<h3 id="met-het-ov">Met het ov</h3>
 <p>Tram en metro werken goed met buggy, maar niet in de spits. Probeer voor 8:30 of na 9:30 te reizen. De pont naar Noord is gratis en een attractie op zich.</p>
-<h3>Lopen</h3>
+<h3 id="lopen">Lopen</h3>
 <p>Veel locaties in het centrum liggen op loopafstand van elkaar, maar overschat niet hoeveel een peuter wil lopen. Neem altijd de buggy mee, ook als je kind &quot;nu groot is en zelf wil lopen.&quot; Na een uur is dat verhaal voorbij.</p>
-<h2>Peuter vs. kleuter: wat verander je?</h2>
-<h3>Met peuter (2-4 jaar)</h3>
+<h2 id="peuter-vs-kleuter-wat-verander-je">Peuter vs. kleuter: wat verander je?</h2>
+<h3 id="met-peuter-2-4-jaar">Met peuter (2-4 jaar)</h3>
 <ul>
 <li>maximaal 2 hoofdmomenten</li>
 <li>vaker snack- en rustpauzes</li>
@@ -241,7 +244,7 @@
 <li>kies locaties met verschoonfaciliteiten</li>
 <li>vermijd drukke musea (behalve NEMO onderste verdieping)</li>
 </ul>
-<h3>Met kleuter (4-6 jaar)</h3>
+<h3 id="met-kleuter-4-6-jaar">Met kleuter (4-6 jaar)</h3>
 <ul>
 <li>iets langere activiteiten</li>
 <li>meer behoefte aan &quot;iets doen&quot; of opdrachtjes</li>
@@ -249,7 +252,7 @@
 <li><a href="/amsterdam/artis/">Artis</a> en <a href="/amsterdam/nemo-science-museum/">NEMO</a> zijn voor kleuters beter te doen dan voor peuters</li>
 <li>een speurtocht door een park of buurt houdt ze langer bezig</li>
 </ul>
-<h2>Gratis Amsterdam met peuters</h2>
+<h2 id="gratis-amsterdam-met-peuters">Gratis Amsterdam met peuters</h2>
 <p>Een dagje Amsterdam hoeft niet duur te zijn. Veel van de beste peuter-activiteiten zijn gratis: parken, kinderboerderijen, pontveer, markten. In onze uitgebreide post over <a href="/blog/gratis-peuteruitjes-amsterdam/">gratis peuteruitjes Amsterdam</a> staan tien concrete opties uitgewerkt.</p>
 <p>Kort overzicht van gratis opties:</p>
 <ul>
@@ -259,7 +262,7 @@
 <li>Pontje naar Noord — avontuur op zich</li>
 <li>Albert Cuypmarkt — kijken, proeven, beleven</li>
 </ul>
-<h2>Veelgemaakte fouten in Amsterdam</h2>
+<h2 id="veelgemaakte-fouten-in-amsterdam">Veelgemaakte fouten in Amsterdam</h2>
 <ol>
 <li><strong>Te veel reistijd tussen wijken</strong>
 Kies maximaal twee zones op één dag. Centrum + Oost werkt. Centrum + het Amsterdamse Bos is al pittig met peuters.</li>
@@ -272,20 +275,20 @@ Twee activiteiten is genoeg. Drie is te veel. Eén is prima.</li>
 <li><strong>Spits onderschatten</strong>
 Amsterdam is druk. De tram is vol. De parkeergarage is vol. Vroeg beginnen scheelt enorm.</li>
 </ol>
-<h2>Veelgestelde vragen</h2>
-<h3>Wat is leuk in Amsterdam met peuters en kleuters?</h3>
+<h2 id="veelgestelde-vragen">Veelgestelde vragen</h2>
+<h3 id="wat-is-leuk-in-amsterdam-met-peuters-en-kleuters">Wat is leuk in Amsterdam met peuters en kleuters?</h3>
 <p>Een mix van speeltuin, kinderboerderij en kindvriendelijke lunch werkt het vaakst goed. Het <a href="/amsterdam/de-vondeltuin/">Vondelpark</a> met aansluitend lunch bij het Melkhuis is een beproefde combinatie. Met kleuters kun je <a href="/amsterdam/nemo-science-museum/">NEMO</a> of <a href="/amsterdam/artis/">Artis</a> overwegen.</p>
-<h3>Is Amsterdam geschikt met kleine kinderen?</h3>
+<h3 id="is-amsterdam-geschikt-met-kleine-kinderen">Is Amsterdam geschikt met kleine kinderen?</h3>
 <p>Ja, vooral als je compact plant en per dagdeel één duidelijke keuze maakt. De stad is verrassend groen, er zijn overal kindvriendelijke voorzieningen, en het ov-netwerk maakt verplaatsen zonder auto goed mogelijk.</p>
-<h3>Wat doe je in Amsterdam met kinderen bij regen?</h3>
+<h3 id="wat-doe-je-in-amsterdam-met-kinderen-bij-regen">Wat doe je in Amsterdam met kinderen bij regen?</h3>
 <p><a href="/amsterdam/nemo-science-museum/">NEMO Science Museum</a> is de populairste keuze. <a href="/amsterdam/monkey-town-amsterdam/">Monkey Town Amsterdam</a> werkt als je kind moet bewegen. Bibliotheken en TunFun zijn rustigere alternatieven. Gebruik de indoor-filter in <a href="/app.html?weather=indoor&regio=Amsterdam">de app</a> voor meer opties.</p>
-<h3>Welke kinderboerderij in Amsterdam is het beste voor peuters?</h3>
+<h3 id="welke-kinderboerderij-in-amsterdam-is-het-beste-vo">Welke kinderboerderij in Amsterdam is het beste voor peuters?</h3>
 <p><a href="/amsterdam/kinderboerderij-de-pijp/">Kinderboerderij de Pijp</a> is het meest centraal en compact — ideaal voor een kort bezoek. <a href="/amsterdam/geitenboerderij-ridammerhoeve/">Geitenboerderij Ridammerhoeve</a> is groter en heeft pannenkoeken, maar ligt buiten het centrum. <a href="/amsterdam/stadsboerderij-zimmerhoeve/">Stadsboerderij Zimmerhoeve</a> in Noord zit er tussenin qua grootte en bereikbaarheid.</p>
-<h3>Wat kost een dagje Amsterdam met kinderen?</h3>
+<h3 id="wat-kost-een-dagje-amsterdam-met-kinderen">Wat kost een dagje Amsterdam met kinderen?</h3>
 <p>Dat hangt van je keuzes af. Een dag met <a href="/amsterdam/de-vondeltuin/">Vondelpark</a>, kinderboerderij en picknick kan voor onder de €20. Een dag met <a href="/amsterdam/artis/">Artis</a> of <a href="/amsterdam/nemo-science-museum/">NEMO</a> plus lunch zit je al snel op €60-80 voor een gezin. Parkeerkosten in het centrum tikken aan — P+R is veel goedkoper.</p>
-<h3>Hoe lang duurt een dagje Amsterdam met peuters?</h3>
+<h3 id="hoe-lang-duurt-een-dagje-amsterdam-met-peuters">Hoe lang duurt een dagje Amsterdam met peuters?</h3>
 <p>Plan 4-6 uur effectieve tijd. Met reistijd erbij ben je een volle dag kwijt. Peuters zijn na 5 uur vaak op. Begin vroeg, dan heb je de meeste speelruimte.</p>
-<h2>Samenvatting</h2>
+<h2 id="samenvatting">Samenvatting</h2>
 <p>Amsterdam met peuters en kleuters wordt pas echt leuk als je simpel plant: buiten starten, dichtbij lunchen, korte middagactiviteit en altijd een regenbackup. Kies locaties die dicht bij elkaar liggen — het <a href="/amsterdam/de-vondeltuin/">Vondelpark</a>, de <a href="/kinderboerderijen.html">kinderboerderijen</a> in de stad, of een hele dag in het <a href="/amsterdam/amsterdamse-bos/">Amsterdamse Bos</a>. Daarmee blijft de dag haalbaar voor kinderen en ouders.</p>
 <p>Bekijk alle actuele opties op <a href="/amsterdam.html">amsterdam.html</a> of plan direct in <a href="/app.html?regio=Amsterdam">de app</a>.</p>
 
@@ -359,21 +362,24 @@ Amsterdam is druk. De tram is vol. De parkeergarage is vol. Vroeg beginnen schee
 <footer class="pp-reveal">
   <div class="footer-container">
     <div class="footer-brand">
-      <strong style="font-size: 20px;">PeuterPlannen</strong>
+      <strong style="font-size: var(--pp-text-lg);">PeuterPlannen</strong>
       <p>Kindvriendelijke uitjes in heel Nederland. Gecheckt en actueel.</p>
     </div>
-    <div class="footer-links">
-      <h4>Product</h4>
-      <a href="/app.html">App</a>
-      <a href="/blog/">Inspiratie</a>
-      <a href="/about.html">Over</a>
+    <div class="footer-columns">
+      <div class="footer-links">
+        <h4>Product</h4>
+        <a href="/app.html">App</a>
+        <a href="/blog/">Inspiratie</a>
+        <a href="/about.html">Over</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <h4>Legal</h4>
-      <a href="/contact.html">Contact</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/disclaimer/">Disclaimer</a>
-    </div>
+    <button class="footer-expand" onclick="this.parentElement.classList.add('expanded');this.remove();" aria-label="Toon meer links">Meer ↓</button>
   </div>
   <div class="footer-bottom">
     &copy; 2026 PeuterPlannen. Gemaakt in Utrecht.

@@ -18,48 +18,10 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603182039">
-  <link rel="stylesheet" href="/style.min.css?v=202603182039">
-  <style>
-  .guide-section{display:grid;gap:18px;margin:36px 0}
-  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .guide-card-compact{padding:20px 18px}
-  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
-  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
-  .guide-card h2{font-size:clamp(28px,5vw,40px)}
-  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
-  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
-  .guide-card-intro{max-width:58ch}
-  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .guide-links{display:grid;gap:12px;margin-top:16px}
-  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-  .guide-link:visited{color:var(--pp-text)}
-  .guide-link strong{font-size:15px;line-height:1.3}
-  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
-  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
-  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
-  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
-  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
-  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
-  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
-  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
-  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
-  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
-  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
-  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
-  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
-  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
-  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
-  .editorial-support-links a:visited{color:var(--pp-text)}
-  .editorial-support-links a strong{font-size:14px}
-  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
-  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
-</style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
-  <script src="/nav-floating.js?v=202603182039" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603191155">
+  <link rel="stylesheet" href="/style.min.css?v=202603191155">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603191155">
+  <script src="/nav-floating.js?v=202603191155" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -127,10 +89,12 @@
   <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
     <a href="/" class="nav-mobile-link">Home</a>
     <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
-    <a href="/about.html" class="nav-mobile-link">Over</a>
     <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
-    <a href="/contact.html" class="nav-mobile-link">Contact</a>
     <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
+    <div class="nav-mobile-secondary">
+      <a href="/about.html" class="nav-mobile-link">Over</a>
+      <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    </div>
   </div>
 </nav>
 
@@ -146,11 +110,39 @@
 <main id="main-content">
   <p class="blog-meta">17 maart 2026 &middot; tilburg, tips, speeltuin, natuur</p>
 
+  <nav class="blog-toc" aria-label="Inhoudsopgave">
+    <button class="blog-toc-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+      Inhoudsopgave <span class="toc-count">21</span>
+    </button>
+    <ol class="blog-toc-list">
+      <li><a href="#dagplanning-hoe-bouw-je-een-goede-dag-op">Dagplanning: hoe bouw je een goede dag op?</a></li>
+      <li><a href="#ochtend-parken-en-kinderboerderijen">Ochtend: parken en kinderboerderijen</a></li>
+      <li class="toc-sub"><a href="#spoorpark-en-omgeving">Spoorpark en omgeving</a></li>
+      <li class="toc-sub"><a href="#kinderboerderijen">Kinderboerderijen</a></li>
+      <li class="toc-sub"><a href="#quirijnstokpark">Quirijnstokpark</a></li>
+      <li><a href="#lunch-brabants-en-relaxed">Lunch: Brabants en relaxed</a></li>
+      <li><a href="#middag-kies-kort-en-leuk">Middag: kies kort en leuk</a></li>
+      <li class="toc-sub"><a href="#natuurmuseum-brabant">Natuurmuseum Brabant</a></li>
+      <li class="toc-sub"><a href="#nog-even-buiten">Nog even buiten</a></li>
+      <li><a href="#natuur-aan-de-rand-bossen-en-vennen">Natuur aan de rand: bossen en vennen</a></li>
+      <li><a href="#regenplan-wat-als-het-weer-niet-meewerkt">Regenplan: wat als het weer niet meewerkt</a></li>
+      <li><a href="#pannenkoeken-de-brabantse-joker">Pannenkoeken: de Brabantse joker</a></li>
+      <li><a href="#en-de-efteling-dan">En de Efteling dan?</a></li>
+      <li><a href="#praktische-tips-voor-tilburg-met-peuters">Praktische tips voor Tilburg met peuters</a></li>
+      <li><a href="#veelgestelde-vragen">Veelgestelde vragen</a></li>
+      <li class="toc-sub"><a href="#is-tilburg-leuk-voor-een-dagje-uit-met-peuter">Is Tilburg leuk voor een dagje uit met peuter?</a></li>
+      <li class="toc-sub"><a href="#wat-doe-je-in-tilburg-met-peuters-als-het-regent">Wat doe je in Tilburg met peuters als het regent?</a></li>
+      <li class="toc-sub"><a href="#hoeveel-activiteiten-plan-je-op-een-dag-met-peuter">Hoeveel activiteiten plan je op een dag met peuter in Tilburg?</a></li>
+      <li class="toc-sub"><a href="#is-tilburg-kindvriendelijker-dan-eindhoven-of-bred">Is Tilburg kindvriendelijker dan Eindhoven of Breda?</a></li>
+      <li class="toc-sub"><a href="#kun-je-tilburg-combineren-met-de-efteling">Kun je Tilburg combineren met de Efteling?</a></li>
+      <li><a href="#tot-slot">Tot slot</a></li>
+    </ol>
+  </nav>
   <div class="blog-content">
     <p>Tilburg staat niet bovenaan de lijst als je &quot;dagje uit met peuter&quot; googelt. En dat is precies waarom het zo goed werkt. Geen drukke toeristische binnenstad, geen overvolle attractieparken op zaterdag — wel ruime parken, veel kinderboerderijen en een Brabantse gastvrijheid die je met peuters heel goed kunt gebruiken.</p>
 <p>Tilburg is een leefstad. En dat merk je: speeltuinen zijn goed onderhouden, horeca is relaxed over kinderwagens en buggy&#39;s, en de natuur begint waar de wijk ophoudt. In deze gids lees je hoe je daar een fijne peuterdag van maakt — zonder overplanning.</p>
 <p>Wil je direct alle opties zien? Bekijk <a href="/tilburg.html">alle locaties in Tilburg</a> of open de <a href="/app.html?regio=Tilburg">app met Tilburg-filter</a>.</p>
-<h2>Dagplanning: hoe bouw je een goede dag op?</h2>
+<h2 id="dagplanning-hoe-bouw-je-een-goede-dag-op">Dagplanning: hoe bouw je een goede dag op?</h2>
 <p>Met een peuter in Tilburg werkt hetzelfde ritme als in elke stad, maar de afstanden vallen hier mee. Je rijdt zelden langer dan tien minuten van de ene plek naar de andere.</p>
 <ol>
 <li><strong>Ochtend (09:30-11:30):</strong> buiten starten — park, kinderboerderij of bos</li>
@@ -158,17 +150,17 @@
 <li><strong>Middag (13:00-14:30):</strong> korte tweede activiteit of vrij spelen</li>
 </ol>
 <p>Die volgorde houdt de energie in balans. Peuters die vroeg buiten starten, zijn vaak rustiger bij de lunch. En een korte middag voorkomt dat je om 15:00 met een oververmoeide peuter in de auto zit.</p>
-<h2>Ochtend: parken en kinderboerderijen</h2>
+<h2 id="ochtend-parken-en-kinderboerderijen">Ochtend: parken en kinderboerderijen</h2>
 <p>Tilburg heeft opvallend veel groene plekken die prima werken met peuters. Niet alles hoeft een &quot;attractie&quot; te zijn — een goede speeltuin met wat ruimte eromheen is voor de meeste tweejarigen al een geweldige ochtend.</p>
-<h3>Spoorpark en omgeving</h3>
+<h3 id="spoorpark-en-omgeving">Spoorpark en omgeving</h3>
 <p>Het <a href="/tilburg/spoorpark-tilburg/">Spoorpark Tilburg</a> is een van de beste opties voor een ochtend met peuters. Het park ligt centraal, heeft een grote waterspeelplek (in de zomer), een zandbak en veel grasvelden. Er is genoeg ruimte om te rennen zonder dat je je kind continu uit het verkeer hoeft te halen.</p>
 <p>Bij het park zit <a href="/tilburg/t-huis-spoorpark/">t Huis Spoorpark</a>, waar je koffie kunt drinken terwijl je kind speelt. Dat klinkt als een klein ding, maar met peuters is &quot;koffie binnen handbereik terwijl je kind in zicht speelt&quot; eigenlijk de definitie van een geslaagde ochtend.</p>
-<h3>Kinderboerderijen</h3>
+<h3 id="kinderboerderijen">Kinderboerderijen</h3>
 <p>Tilburg heeft meerdere kinderboerderijen verspreid over de stad. <a href="/tilburg/kinderboerderij-wandelbos/">Kinderboerderij Wandelbos</a> is een goede keuze als je ook wilt wandelen — het Wandelbos zelf is rustig en peuterproof met brede paden. <a href="/tilburg/kinderboerderij-kerkibo/">Kinderboerderij Kerkibo</a> is kleiner en overzichtelijker, wat voor jongere peuters fijn kan zijn.</p>
 <p>De meeste kinderboerderijen in Tilburg zijn gratis. Reken op 45-60 minuten per bezoek. Langer kan, maar hoeft niet — peuters bepalen zelf wel wanneer het klaar is.</p>
-<h3>Quirijnstokpark</h3>
+<h3 id="quirijnstokpark">Quirijnstokpark</h3>
 <p>Als je in het noorden van de stad bent: het <a href="/tilburg/quirijnstokpark/">Quirijnstokpark</a> heeft een speeltuin en de <a href="/tilburg/dierenweide-quirijnstokpark/">Dierenweide Quirijnstokpark</a> zit er direct naast. Die combinatie van dieren kijken en daarna spelen werkt bijna altijd goed met peuters. Geen entree, geen tijdslot, geen druk.</p>
-<h2>Lunch: Brabants en relaxed</h2>
+<h2 id="lunch-brabants-en-relaxed">Lunch: Brabants en relaxed</h2>
 <p>Tilburg is geen stad waar je moeite hoeft te doen om kindvriendelijk te eten. De meeste zaken hebben kinderstoelen, de bediening is doorgaans ontspannen en niemand kijkt op van een peuter die een boterham over de grond smeert.</p>
 <p>Een paar opties die in de praktijk goed werken:</p>
 <ul>
@@ -177,17 +169,17 @@
 <li><a href="/tilburg/onsz/">Onsz</a> — wat meer trendy maar prima met kinderen</li>
 </ul>
 <p>De gouden regel: lunch voor 12:30. Daarna wordt het drukker, je peuter wordt onrustiger, en de combinatie van wachten op eten plus een vermoeid kind is zelden een succes.</p>
-<h2>Middag: kies kort en leuk</h2>
+<h2 id="middag-kies-kort-en-leuk">Middag: kies kort en leuk</h2>
 <p>Na de lunch heb je met peuters meestal nog een klein raam van energie. Gebruik dat voor iets laagdrempeligs — geen grote attractie, maar een plek waar je kind nog even kan bewegen of ontdekken.</p>
-<h3>Natuurmuseum Brabant</h3>
+<h3 id="natuurmuseum-brabant">Natuurmuseum Brabant</h3>
 <p>Het <a href="/tilburg/natuurmuseum-brabant/">Natuurmuseum Brabant</a> is een van de weinige musea die echt werken met peuters. Opgezette dieren, een peuterhoek en genoeg om aan te raken. Je bent er in 45-60 minuten doorheen, precies de juiste lengte voor een middagbezoek. Oudere peuters (3+) vinden de dinosaurusafdeling vaak het hoogtepunt.</p>
-<h3>Nog even buiten</h3>
+<h3 id="nog-even-buiten">Nog even buiten</h3>
 <p>Wil je liever nog even buiten zijn? De <a href="/tilburg/oude-warande/">Oude Warande</a> is een stadspark met oude bomen en brede lanen — rustig genoeg voor een wandeling met een peuter die half loopt, half in de buggy zit. Het ligt vlak bij het centrum en er zijn geen fietspaden die je dwars kruisen.</p>
-<h2>Natuur aan de rand: bossen en vennen</h2>
+<h2 id="natuur-aan-de-rand-bossen-en-vennen">Natuur aan de rand: bossen en vennen</h2>
 <p>Een van de grote voordelen van Tilburg is dat je binnen een kwartier rijden midden in de natuur zit. De <a href="/tilburg/oisterwijkse-bossen-en-vennen/">Oisterwijkse Bossen en Vennen</a> zijn prachtig, ook met peuters. Kies een kort rondje (1-2 km), neem laarzen mee en verwacht niet dat je het hele gebied doet. Met peuters is een uur in het bos al een complete activiteit.</p>
 <p>Wat dichter bij de stad is <a href="/tilburg/kampina/">Kampina</a> een optie — uitgestrekt heidelandschap met houten vlonders. Mooi, maar minder geschikt voor buggy&#39;s. Met een draagzak of een peuter die goed loopt, prima te doen.</p>
 <p>En voor wie het bos wil combineren met spelen: <a href="/tilburg/speelbos-gilze/">Speelbos Gilze</a> is een natuurspeelplaats waar kinderen met takken, zand en water kunnen spelen. Geen plastic glijbanen, wel modder. Trek oude kleren aan.</p>
-<h2>Regenplan: wat als het weer niet meewerkt</h2>
+<h2 id="regenplan-wat-als-het-weer-niet-meewerkt">Regenplan: wat als het weer niet meewerkt</h2>
 <p>In Brabant regent het net zo vaak als in de rest van Nederland, maar de sfeer blijft droog. Je hebt meerdere binnenopties:</p>
 <ul>
 <li><strong><a href="/tilburg/ballorig-tilburg-noord/">Ballorig Tilburg Noord</a></strong> — binnenspeeltuin met aparte peuterzone. Kan druk zijn op regenachtige zaterdagen, maar doordeweeks prima</li>
@@ -195,7 +187,7 @@
 <li><strong><a href="/tilburg/natuurmuseum-brabant/">Natuurmuseum Brabant</a></strong> — zie hierboven, werkt ook goed als regenbackup</li>
 </ul>
 <p>Tip: kies je binnenlocatie vooraf. Het moment dat het gaat regenen is het slechtste moment om te gaan zoeken naar een plan B. Meer ideeën voor slechtweerplannen vind je in <a href="/blog/uitjes-met-peuter-bij-regen/">uitjes met peuter bij regen</a>.</p>
-<h2>Pannenkoeken: de Brabantse joker</h2>
+<h2 id="pannenkoeken-de-brabantse-joker">Pannenkoeken: de Brabantse joker</h2>
 <p>Tilburg en omgeving heeft opvallend veel pannenkoekenrestaurants. Met peuters is dat bijna een cheatcode: de kaart is simpel, het eten komt snel en bijna elk kind vindt pannenkoeken lekker.</p>
 <p>Een paar opties in de regio:</p>
 <ul>
@@ -204,27 +196,27 @@
 </ul>
 <p>Pannenkoeken werken goed als gecombineerde lunch en middagactiviteit. Je eet, je kind speelt even, en daarna rijd je naar huis. Simpel en effectief.</p>
 <p>Meer opties vind je in <a href="/blog/pannenkoekenrestaurant-met-speeltuin/">pannenkoekenrestaurant met speeltuin</a>.</p>
-<h2>En de Efteling dan?</h2>
+<h2 id="en-de-efteling-dan">En de Efteling dan?</h2>
 <p>Het moet gezegd: de Efteling ligt op een kwartiertje rijden van Tilburg. Met peuters van drie jaar en ouder kan dat een mooie dagbesteding zijn, maar het is een ander soort dag — duurder, voller en intensiever. Voor een rustige peuterdag is Tilburg zelf vaak de betere keuze. Bewaar de Efteling voor een dag waarop je er helemaal klaar voor bent. Voor meer over pretparken met kleine kinderen, lees <a href="/blog/pretparken-peuter-nederland/">pretparken met peuter</a>.</p>
-<h2>Praktische tips voor Tilburg met peuters</h2>
+<h2 id="praktische-tips-voor-tilburg-met-peuters">Praktische tips voor Tilburg met peuters</h2>
 <ul>
 <li><strong>Parkeren:</strong> in de wijken gratis, in het centrum betaald maar niet duur. Bij parken en kinderboerderijen is altijd plek</li>
 <li><strong>Bereikbaarheid:</strong> Tilburg CS ligt centraal, maar met peuter en spullen is de auto vaak praktischer</li>
 <li><strong>Beste dagen:</strong> doordeweeks is rustiger bij alle binnenlocaties. In het weekend zijn parken en kinderboerderijen prima, maar binnenspeeltuinen vol</li>
 <li><strong>Seizoen:</strong> lente en herfst zijn ideaal. Zomer kan warm worden in de stad, maar de bossen bieden schaduw. Winter is goed voor binnenopties</li>
 </ul>
-<h2>Veelgestelde vragen</h2>
-<h3>Is Tilburg leuk voor een dagje uit met peuter?</h3>
+<h2 id="veelgestelde-vragen">Veelgestelde vragen</h2>
+<h3 id="is-tilburg-leuk-voor-een-dagje-uit-met-peuter">Is Tilburg leuk voor een dagje uit met peuter?</h3>
 <p>Ja. Tilburg is niet spectaculair, maar dat hoeft ook niet. De stad heeft precies wat peuters nodig hebben: ruimte, dieren, speeltuinen en weinig gedoe. De relaxte Brabantse sfeer helpt ook — je voelt hier minder druk om &quot;er iets van te maken&quot;.</p>
-<h3>Wat doe je in Tilburg met peuters als het regent?</h3>
+<h3 id="wat-doe-je-in-tilburg-met-peuters-als-het-regent">Wat doe je in Tilburg met peuters als het regent?</h3>
 <p>Je hebt meerdere binnenspeeltuinen (Ballorig, Monkey Town), het Natuurmuseum Brabant en diverse pannenkoekenrestaurants. Kies er vooraf eentje uit, dan hoef je niet met een natte peuter in de auto te gaan zoeken.</p>
-<h3>Hoeveel activiteiten plan je op een dag met peuter in Tilburg?</h3>
+<h3 id="hoeveel-activiteiten-plan-je-op-een-dag-met-peuter">Hoeveel activiteiten plan je op een dag met peuter in Tilburg?</h3>
 <p>Maximaal twee. Eentje in de ochtend, eentje na de lunch. Alles daarboven is bonus, geen planning. Met dreumesen (1-2 jaar) is zelfs een activiteit plus een rustige lunch al genoeg.</p>
-<h3>Is Tilburg kindvriendelijker dan Eindhoven of Breda?</h3>
+<h3 id="is-tilburg-kindvriendelijker-dan-eindhoven-of-bred">Is Tilburg kindvriendelijker dan Eindhoven of Breda?</h3>
 <p>Alle drie de steden werken goed met peuters. Tilburg heeft iets meer groene ruimte aan de stadsrand en voelt iets minder stedelijk. Eindhoven heeft meer moderne binnenopties, Breda is compacter. Het hangt af van wat je zoekt. Lees ook de gidsen voor <a href="/blog/breda-met-peuters/">Breda met peuters</a> en <a href="/blog/eindhoven-met-peuters/">Eindhoven met peuters</a>.</p>
-<h3>Kun je Tilburg combineren met de Efteling?</h3>
+<h3 id="kun-je-tilburg-combineren-met-de-efteling">Kun je Tilburg combineren met de Efteling?</h3>
 <p>Dat kan, maar doe het niet op dezelfde dag. Een Efteling-dag is een Efteling-dag, en een Tilburg-dag is een Tilburg-dag. Combineren levert vooral stress op met peuters.</p>
-<h2>Tot slot</h2>
+<h2 id="tot-slot">Tot slot</h2>
 <p>Tilburg is geen stad die zichzelf verkoopt als peuterdestinatie. Maar juist die nuchterheid maakt het zo geschikt. Geen overvolle trekpleisters, geen reserveringen die weken van tevoren vol zitten, geen parkeerdruk. Gewoon een stad met goede parken, aardige kinderboerderijen, fatsoenlijke horeca en natuur op fietsafstand.</p>
 <p>Plan niet te veel, begin buiten, en heb een regenbackup klaar. Dan zit je goed.</p>
 <p>Bekijk alle locaties op de <a href="/tilburg.html">Tilburg-pagina</a> of stel je dag samen in <a href="/app.html?regio=Tilburg">de app</a>.</p>
@@ -299,21 +291,24 @@
 <footer class="pp-reveal">
   <div class="footer-container">
     <div class="footer-brand">
-      <strong style="font-size: 20px;">PeuterPlannen</strong>
+      <strong style="font-size: var(--pp-text-lg);">PeuterPlannen</strong>
       <p>Kindvriendelijke uitjes in heel Nederland. Gecheckt en actueel.</p>
     </div>
-    <div class="footer-links">
-      <h4>Product</h4>
-      <a href="/app.html">App</a>
-      <a href="/blog/">Inspiratie</a>
-      <a href="/about.html">Over</a>
+    <div class="footer-columns">
+      <div class="footer-links">
+        <h4>Product</h4>
+        <a href="/app.html">App</a>
+        <a href="/blog/">Inspiratie</a>
+        <a href="/about.html">Over</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <h4>Legal</h4>
-      <a href="/contact.html">Contact</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/disclaimer/">Disclaimer</a>
-    </div>
+    <button class="footer-expand" onclick="this.parentElement.classList.add('expanded');this.remove();" aria-label="Toon meer links">Meer ↓</button>
   </div>
   <div class="footer-bottom">
     &copy; 2026 PeuterPlannen. Gemaakt in Utrecht.

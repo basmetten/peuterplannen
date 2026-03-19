@@ -169,8 +169,8 @@
     <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/design-system.css?v=202603182039">
-    <link rel="stylesheet" href="/style.min.css?v=202603182039">
+    <link rel="stylesheet" href="/design-system.css?v=202603191155">
+    <link rel="stylesheet" href="/style.min.css?v=202603191155">
     <style>
         /* Homepage-specific styles */
         .hero-home {
@@ -193,25 +193,25 @@
             display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; margin-bottom: 16px;
             border-radius: var(--pp-radius-pill); border: 1px solid rgba(212, 119, 90, 0.26);
             background: rgba(255, 245, 235, 0.92); color: var(--pp-primary-dark);
-            font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+            font-size: var(--pp-text-xs); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
         }
-        .hero-content h1 { view-transition-name: hero-title; font-size: clamp(44px, 5.8vw, 68px); font-weight: 700; line-height: 0.96; margin-bottom: 20px; letter-spacing: -0.03em; text-wrap: balance; max-width: 11ch; color: var(--pp-text); }
+        .hero-content h1 { view-transition-name: hero-title; font-size: var(--pp-text-4xl); font-weight: 700; line-height: 0.96; margin-bottom: 20px; letter-spacing: -0.03em; text-wrap: balance; max-width: 11ch; color: var(--pp-text); }
         .hero-content h1 span {
             background: linear-gradient(125deg, var(--pp-primary) 0%, #D66B57 45%, var(--pp-accent) 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
             font-style: normal;
         }
-        .hero-content p { font-size: 20px; color: var(--pp-text-secondary); margin-bottom: 24px; max-width: 500px; opacity: 1; text-align: left; }
+        .hero-content p { font-size: var(--pp-text-lg); color: var(--pp-text-secondary); margin-bottom: 24px; max-width: 500px; opacity: 1; text-align: left; }
         .hero-popular { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-        .hero-popular span { font-size: 13px; color: var(--pp-text-muted); font-weight: 600; }
-        .hero-popular a { font-size: 13px; color: var(--pp-primary-dark); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        .hero-popular span { font-size: var(--pp-text-xs); color: var(--pp-text-muted); font-weight: 600; }
+        .hero-popular a { font-size: var(--pp-text-xs); color: var(--pp-primary-dark); text-decoration: none; font-weight: 500; transition: color 0.2s; }
         .hero-popular a:hover { color: var(--pp-primary); text-decoration: underline; }
         .hero-presets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 400px; }
         .hero-preset-chip {
             display: flex; align-items: center; justify-content: center;
             padding: 14px 16px; min-height: 48px;
             border-radius: var(--pp-radius-sm); background: var(--pp-surface);
-            color: var(--pp-text); text-decoration: none; font-weight: 600; font-size: 14px;
+            color: var(--pp-text); text-decoration: none; font-weight: 600; font-size: var(--pp-text-sm);
             border: 1px solid var(--pp-border); transition: all 0.2s;
             font-family: var(--pp-font-body); text-align: center;
         }
@@ -243,8 +243,8 @@
         .hero-visual::before { content: ''; position: absolute; width: 80%; height: 80%; background: linear-gradient(135deg, var(--pp-primary), var(--pp-accent)); filter: blur(100px); opacity: 0.15; z-index: -1; }
 
         .cities-section { padding: 80px 24px; background: var(--pp-bg-cream); }
-        .section-title { font-size: clamp(30px, 4vw, 46px); font-weight: 700; color: var(--pp-text); text-align: center; margin-bottom: 12px; letter-spacing: -0.02em; line-height: 0.96; text-wrap: balance; }
-        .section-sub { color: var(--pp-text-secondary); text-align: center; font-size: 17px; margin-bottom: 40px; }
+        .section-title { font-size: var(--pp-text-3xl); font-weight: 700; color: var(--pp-text); text-align: center; margin-bottom: 12px; letter-spacing: -0.02em; line-height: 0.96; text-wrap: balance; }
+        .section-sub { color: var(--pp-text-secondary); text-align: center; font-size: var(--pp-text-base); margin-bottom: 40px; }
         .container { max-width: 1100px; margin: 0 auto; }
         .cities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
         .city-card {
@@ -256,36 +256,36 @@
         .city-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--pp-primary), var(--pp-accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; border-radius: 12px 12px 0 0; }
         .city-card:hover { transform: translateY(-3px); box-shadow: var(--pp-shadow-card-hover); border-color: var(--pp-primary-200); }
         .city-card:hover::before { transform: scaleX(1); }
-        .city-card strong { font-size: 19px; font-weight: 700; color: var(--pp-text); letter-spacing: -0.03em; }
-        .city-card span { font-size: 13px; color: var(--pp-text-muted); }
+        .city-card strong { font-size: var(--pp-text-lg); font-weight: 700; color: var(--pp-text); letter-spacing: -0.03em; }
+        .city-card span { font-size: var(--pp-text-xs); color: var(--pp-text-muted); }
 
         footer { background: var(--pp-text); color: white; padding: 60px 24px 40px; margin-top: 60px; }
         .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
         .footer-brand strong { font-family: var(--pp-font-heading); }
-        .footer-brand p { color: rgba(255,255,255,0.7); margin-top: 12px; font-size: 15px; }
-        .footer-links h4 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; color: var(--pp-accent-300); }
-        .footer-links a { display: block; color: rgba(255,255,255,0.7); text-decoration: none; margin-bottom: 10px; font-size: 15px; transition: color 0.2s; }
+        .footer-brand p { color: rgba(255,255,255,0.7); margin-top: 12px; font-size: var(--pp-text-sm); }
+        .footer-links h4 { font-size: var(--pp-text-sm); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; color: var(--pp-accent-300); }
+        .footer-links a { display: block; color: rgba(255,255,255,0.7); text-decoration: none; margin-bottom: 10px; font-size: var(--pp-text-sm); transition: color 0.2s; }
         .footer-links a:hover { color: white; padding-left: 4px; }
-        .footer-bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: rgba(255,255,255,0.5); font-size: 14px; }
+        .footer-bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: rgba(255,255,255,0.5); font-size: var(--pp-text-sm); }
 
         .blog-preview-section { max-width: 1200px; margin: 48px auto; padding: 0 24px; }
         .blog-preview-scroll { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding-bottom: 8px; }
         .blog-preview-scroll::-webkit-scrollbar { display: none; }
         .blog-preview-card { flex: 0 0 280px; scroll-snap-align: start; background: white; border: 1px solid var(--pp-border); border-radius: 12px; padding: 20px; text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; gap: 8px; }
         .blog-preview-card:hover { transform: translateY(-2px); box-shadow: var(--pp-shadow-card-hover); }
-        .blog-preview-card strong { font-size: 16px; font-weight: 700; color: var(--pp-text); line-height: 1.35; }
-        .blog-preview-card span { font-size: 14px; color: var(--pp-text-muted); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        .blog-preview-more { display: inline-block; margin-top: 16px; font-size: 15px; font-weight: 600; color: var(--pp-primary); text-decoration: none; }
+        .blog-preview-card strong { font-size: var(--pp-text-base); font-weight: 700; color: var(--pp-text); line-height: 1.35; }
+        .blog-preview-card span { font-size: var(--pp-text-sm); color: var(--pp-text-muted); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .blog-preview-more { display: inline-block; margin-top: 16px; font-size: var(--pp-text-sm); font-weight: 600; color: var(--pp-primary); text-decoration: none; }
         .blog-preview-more:hover { text-decoration: underline; }
         .guide-section-compact { background: var(--pp-bg-warm); border-radius: 12px; padding: 20px 24px; }
-        .guide-section-compact .guide-kicker { font-size: 13px; font-weight: 600; color: var(--pp-text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+        .guide-section-compact .guide-kicker { font-size: var(--pp-text-xs); font-weight: 600; color: var(--pp-text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
         .quick-results-section { display: none; }
         .quick-results-section.has-data { display: block; }
         .quick-results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
         .quick-result-card { background: white; border: 1px solid var(--pp-border); border-radius: 12px; padding: 20px; text-decoration: none; color: inherit; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; gap: 6px; }
         .quick-result-card:hover { transform: translateY(-2px); box-shadow: var(--pp-shadow-card-hover); }
-        .quick-result-card strong { font-size: 16px; font-weight: 700; color: var(--pp-text); }
-        .quick-result-card span { font-size: 14px; color: var(--pp-text-muted); }
+        .quick-result-card strong { font-size: var(--pp-text-base); font-weight: 700; color: var(--pp-text); }
+        .quick-result-card span { font-size: var(--pp-text-sm); color: var(--pp-text-muted); }
         @media (max-width: 768px) { .quick-results-grid { grid-template-columns: 1fr; } }
 
         .hero-search { display: flex; gap: 8px; max-width: 480px; margin: 16px 0; }
@@ -323,7 +323,7 @@
             .show-all-regions {
                 display: block; width: 100%; margin-top: 16px; padding: 12px; background: none;
                 border: 1px solid var(--pp-border); border-radius: 10px; font-family: var(--pp-font-body);
-                font-size: 15px; font-weight: 600; color: var(--pp-primary); cursor: pointer; transition: all 0.2s;
+                font-size: var(--pp-text-sm); font-weight: 600; color: var(--pp-primary); cursor: pointer; transition: all 0.2s;
             }
             .show-all-regions:hover { background: var(--pp-primary-light); border-color: var(--pp-primary); }
         }
@@ -335,8 +335,8 @@
             .footer-bottom { margin-top: 24px; }
         }
     </style>
-    <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
-    <script src="/nav-floating.js?v=202603182039" defer></script>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603191155">
+    <script src="/nav-floating.js?v=202603191155" defer></script>
     <script src="/pp-interactions.js" defer></script>
 </head>
 <body>
@@ -431,7 +431,7 @@
     <section class="cities-section pp-reveal" style="background: var(--pp-bg-warm);">
         <div class="container">
             <h2 class="section-title">Uitjes per type</h2>
-            <p class="section-sub">Weet je al wat voor dag het wordt? Zoek direct op type uitje.</p>
+            <p class="section-sub">Weet je al wat voor dag het wordt? Zoek <span class="accent">direct</span> op type uitje.</p>
             <div class="cities-grid">
                 <a href="speeltuinen.html" class="city-card">
                     <picture><source type="image/webp" srcset="/images/categories/speeltuinen.webp"><img src="/images/categories/speeltuinen.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>
@@ -510,7 +510,7 @@
     <section class="cities-section pp-reveal">
         <div class="container">
             <h2 class="section-title">Uitjes per regio</h2>
-            <p class="section-sub">Elke regio omvat de stad én omliggende gemeenten. Gecheckt en actueel.</p>
+            <p class="section-sub"><span class="accent">Elke regio</span> omvat de stad én omliggende gemeenten. Gecheckt en actueel.</p>
             <div class="cities-grid">
                 <a href="amsterdam.html" class="city-card">
                     <strong>Amsterdam</strong>
@@ -601,6 +601,7 @@
                     <span>46 locaties</span>
                 </a>
             </div>
+            <button class="show-all-regions pp-show-all">Alle 22 regio's bekijken</button>
           <div class="guide-section-compact" style="margin-top:24px;">
                 <div class="guide-links">
                   <a href="/ontdekken/" class="guide-link"><strong>Alles geordend bekijken</strong><span>Regio’s, typen, situaties en blogroutes op één pagina.</span></a>

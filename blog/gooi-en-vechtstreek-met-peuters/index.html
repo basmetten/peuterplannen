@@ -18,48 +18,10 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603182039">
-  <link rel="stylesheet" href="/style.min.css?v=202603182039">
-  <style>
-  .guide-section{display:grid;gap:18px;margin:36px 0}
-  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .guide-card-compact{padding:20px 18px}
-  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
-  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
-  .guide-card h2{font-size:clamp(28px,5vw,40px)}
-  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
-  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
-  .guide-card-intro{max-width:58ch}
-  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .guide-links{display:grid;gap:12px;margin-top:16px}
-  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-  .guide-link:visited{color:var(--pp-text)}
-  .guide-link strong{font-size:15px;line-height:1.3}
-  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
-  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
-  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
-  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
-  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
-  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
-  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
-  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
-  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
-  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
-  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
-  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
-  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
-  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
-  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
-  .editorial-support-links a:visited{color:var(--pp-text)}
-  .editorial-support-links a strong{font-size:14px}
-  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
-  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
-</style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
-  <script src="/nav-floating.js?v=202603182039" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603191155">
+  <link rel="stylesheet" href="/style.min.css?v=202603191155">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603191155">
+  <script src="/nav-floating.js?v=202603191155" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -127,10 +89,12 @@
   <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
     <a href="/" class="nav-mobile-link">Home</a>
     <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
-    <a href="/about.html" class="nav-mobile-link">Over</a>
     <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
-    <a href="/contact.html" class="nav-mobile-link">Contact</a>
     <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
+    <div class="nav-mobile-secondary">
+      <a href="/about.html" class="nav-mobile-link">Over</a>
+      <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    </div>
   </div>
 </nav>
 
@@ -146,36 +110,57 @@
 <main id="main-content">
   <p class="blog-meta">17 maart 2026 &middot; gooi-en-vechtstreek, tips, natuur, museum</p>
 
+  <nav class="blog-toc" aria-label="Inhoudsopgave">
+    <button class="blog-toc-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+      Inhoudsopgave <span class="toc-count">14</span>
+    </button>
+    <ol class="blog-toc-list">
+      <li><a href="#bossen-en-heide-het-hart-van-het-gooi">Bossen en heide: het hart van het Gooi</a></li>
+      <li><a href="#hilversum-mediastad-met-verrassingen">Hilversum: mediastad met verrassingen</a></li>
+      <li><a href="#pannenkoekenboerderijen-de-specialiteit-van-het-go">Pannenkoekenboerderijen: de specialiteit van het Gooi</a></li>
+      <li><a href="#kinderboerderijen-dorps-en-dichtbij">Kinderboerderijen: dorps en dichtbij</a></li>
+      <li><a href="#zwemmen-en-water">Zwemmen en water</a></li>
+      <li><a href="#regenplan">Regenplan</a></li>
+      <li><a href="#praktisch-hoe-pak-je-een-dag-in-het-gooi-aan">Praktisch: hoe pak je een dag in het Gooi aan</a></li>
+      <li><a href="#veelgestelde-vragen">Veelgestelde vragen</a></li>
+      <li class="toc-sub"><a href="#is-het-gooi-geschikt-voor-een-dagje-uit-met-peuter">Is het Gooi geschikt voor een dagje uit met peuters?</a></li>
+      <li class="toc-sub"><a href="#heb-je-een-auto-nodig-in-het-gooi">Heb je een auto nodig in het Gooi?</a></li>
+      <li class="toc-sub"><a href="#wat-is-de-beste-tijd-van-het-jaar-voor-het-gooi-me">Wat is de beste tijd van het jaar voor het Gooi met peuters?</a></li>
+      <li class="toc-sub"><a href="#wat-is-het-verschil-met-de-utrechtse-heuvelrug">Wat is het verschil met de Utrechtse Heuvelrug?</a></li>
+      <li class="toc-sub"><a href="#kan-ik-het-gooi-combineren-met-amsterdam">Kan ik het Gooi combineren met Amsterdam?</a></li>
+      <li><a href="#tot-slot">Tot slot</a></li>
+    </ol>
+  </nav>
   <div class="blog-content">
     <p>Het Gooi is geen stad. Het is een verzameling dorpen en kleine stadjes — Hilversum, Bussum, Naarden, Laren, Blaricum, Huizen, Weesp — verbonden door bossen, heide en weilanden. Dat klinkt misschien als een lastige regio om met een peuter te bezoeken, maar het tegenovergestelde is waar. Juist de ruimte, het groen en de relatieve rust maken het Gooi tot een van de betere gebieden voor een dagje uit met jonge kinderen.</p>
 <p>Wel eerlijk: je hebt hier een auto nodig. Het openbaar vervoer bestaat, maar de afstanden tussen de leuke plekken zijn te groot om met een peuter en een kinderwagen op de bus te wachten. Plan je dag met de auto en het wordt een stuk ontspannener.</p>
 <p>Voor een direct overzicht: <a href="/gooi-en-vechtstreek.html">alle peuteruitjes in het Gooi en de Vechtstreek</a> of plan via <a href="/app.html?regio=Gooi+en+Vechtstreek">de app op regio Gooi en Vechtstreek</a>.</p>
-<h2>Bossen en heide: het hart van het Gooi</h2>
+<h2 id="bossen-en-heide-het-hart-van-het-gooi">Bossen en heide: het hart van het Gooi</h2>
 <p>De belangrijkste reden om met peuters naar het Gooi te gaan is de natuur. Niet het soort natuur waar je speciaal een wandelroute voor moet uitstippelen — maar bossen en heide die je direct in loopt, met parkeergelegenheid op vijf minuten van de paden.</p>
 <p>De <a href="/gooi-en-vechtstreek/blaricum-oerrr-speelnatuur/">OERRR Speelnatuur in Blaricum</a> is voor peuters een van de sterkste plekken in de regio. Het concept is simpel: een natuurspeelplek waar kinderen klimmen, graven en klauteren in een bos. Geen plastic glijbanen, maar boomstammen, takkenhutten en zandheuvels. Peuters van twee jaar en ouder vermaken zich hier moeiteloos een uur of twee. Het is gratis en het hele jaar open, al is het bij droog weer het prettigst.</p>
 <p>De Gooise heide — het open landschap tussen Hilversum, Laren en Blaricum — is minder geschikt voor heel jonge peuters (te open, weinig schaduw in de zomer), maar voor driejarigen die al goed lopen is het een avontuur. De paarse heide in augustus en september is prachtig, al maakt dat een peuter weinig uit.</p>
 <p>Het <a href="/gooi-en-vechtstreek/bezoekerscentrum-gooi-en-vechtstreek/">Bezoekerscentrum Gooi en Vechtstreek</a> bij Hilversum is een goed startpunt. Er is een kleine tentoonstelling over de natuur in de regio, een speelplek buiten, en je krijgt er advies over welke wandelingen geschikt zijn met jonge kinderen. Houd rekening met een half uur tot drie kwartier.</p>
 <p>Praktische tip: parkeer bij het bezoekerscentrum of bij een van de parkeerplaatsen langs de Naarderweg. Loop niet te ver het bos in met een peuter die halverwege besluit dat lopen niet meer leuk is — een buggy of drager is aan te raden voor langere stukken.</p>
-<h2>Hilversum: mediastad met verrassingen</h2>
+<h2 id="hilversum-mediastad-met-verrassingen">Hilversum: mediastad met verrassingen</h2>
 <p>Hilversum is de grootste plaats in het Gooi en het culturele centrum. Het is niet per se een peuterstad — er zijn geen grote binnenspeeltuinen — maar het heeft een paar plekken die echt de moeite waard zijn.</p>
 <p><a href="/gooi-en-vechtstreek/beeld-geluid/">Beeld &amp; Geluid</a> is het bekendste museum van Hilversum. Sinds de vernieuwing is er een duidelijke kindersectie waar peuters en kleuters met knoppen, schermen en geluiden kunnen spelen. Het is geen Nemo qua omvang, maar voor een uur tot anderhalf uur is het prima. Peuters zijn vooral gefascineerd door de grote schermen en de interactieve geluidstafels. De rest van het museum — de mediatentoonstelling — is meer voor oudere kinderen en volwassenen.</p>
 <p>Eerlijk: voor tweejarigen is Beeld &amp; Geluid beperkt. De interactieve elementen vragen een beetje begrip van oorzaak en gevolg. Vanaf drie jaar wordt het leuker. Als je specifiek met een jonge peuter gaat, combineer het dan met iets buiten — het museum alleen is geen dagvulling.</p>
 <p>Verder in Hilversum: er zijn meerdere speeltuinen verspreid door de wijken. Ze zijn niet spectaculair, maar functioneel. Na een museumbezoek is een half uur speeltuin een goede afsluiter.</p>
-<h2>Pannenkoekenboerderijen: de specialiteit van het Gooi</h2>
+<h2 id="pannenkoekenboerderijen-de-specialiteit-van-het-go">Pannenkoekenboerderijen: de specialiteit van het Gooi</h2>
 <p>Het Gooi heeft opvallend veel pannenkoekenboerderijen en -restaurants. Meer dan welke andere regio op PeuterPlannen ook. De combinatie van landelijk gebied en gezinspubliek heeft dat vanzelf opgeleverd, en het werkt uitstekend met peuters.</p>
 <p><a href="/gooi-en-vechtstreek/de-leeuwenkuil/">De Leeuwenkuil</a> is de bekendste — een pannenkoekenboerderij met speeltuin, dieren en veel ruimte. Het is op drukke dagen vol, maar doordeweeks of op een rustige zondagochtend is het precies wat je zoekt: pannenkoek eten, dieren kijken, even spelen, en dan naar huis. Peuters hoeven hier niet stil te zitten.</p>
 <p>Er zijn in de regio nog zes andere pannenkoekenhuizen. De meeste liggen aan de rand van bossen of in het buitengebied. Ze zijn stuk voor stuk gericht op gezinnen: buitenspeelplekken, kindermenu&#39;s en genoeg ruimte om een kinderwagen kwijt te kunnen.</p>
 <p>Tip: combineer een ochtend in het bos met lunch bij een pannenkoekenboerderij. Dat is in het Gooi bijna altijd de beste dagindeling. Je hoeft dan &#39;s middags alleen nog rustig naar huis te rijden. Lees meer over dit type uitje in <a href="/blog/pannenkoekenrestaurant-met-speeltuin/">pannenkoekenrestaurant met speeltuin</a>.</p>
-<h2>Kinderboerderijen: dorps en dichtbij</h2>
+<h2 id="kinderboerderijen-dorps-en-dichtbij">Kinderboerderijen: dorps en dichtbij</h2>
 <p>Elk dorp in het Gooi lijkt een eigen kinderboerderij te hebben. Dat klopt ook zo&#39;n beetje — er zijn er zes in de regio. De meeste zijn klein, gratis, en precies wat je nodig hebt voor een ochtend met een anderhalf- tot driejarige.</p>
 <p>Het patroon is overal hetzelfde: geiten, konijnen, kippen, soms een ezel of een pony. Kinderen mogen vaak voeren (breng wortels mee). Er is bijna altijd een zandbak of een kleine speelplek erbij.</p>
 <p>Wat het Gooi onderscheidt van stedelijke kinderboerderijen: de omgeving. In plaats van een betonnen stadswijk kijk je uit op weilanden of bos. Dat maakt voor een peuter niet uit, maar voor jou als ouder is het prettiger.</p>
 <p>Praktisch: kinderboerderijen in het Gooi zijn doordeweeks vaak rustig. In het weekend — vooral op zondagochtend — kan het drukker zijn, maar nooit zo vol als in Amsterdam of Utrecht.</p>
-<h2>Zwemmen en water</h2>
+<h2 id="zwemmen-en-water">Zwemmen en water</h2>
 <p>De Vechtstreek — het oostelijke deel van de regio, rond Weesp en Muiden — heeft een ander karakter dan het bosrijke Gooi. Hier draait het om water: de Vecht, slootjes en plassen. Voor peuters is open water niet ideaal, maar er zijn drie zwembaden in de regio die prima werken.</p>
 <p>Bij warm weer in de zomer zijn de buitenbaden een goede optie. Let op: de meeste hebben een apart peuterbad of ondiepe sectie. Vraag ernaar als je voor het eerst gaat.</p>
 <p>Als het weer niet meewerkt, is een binnenzwembad een uitstekend regenplan. Een uur zwemmen met een peuter is fysiek vermoeiend genoeg om de rest van de middag rustig te houden.</p>
-<h2>Regenplan</h2>
+<h2 id="regenplan">Regenplan</h2>
 <p>Het Gooi is op zijn best bij droog weer. Bossen en heide, pannenkoekenboerderijen met buitenspeelplekken, kinderboerderijen — het draait hier om buiten zijn. Maar regen hoort erbij, zeker in het voorjaar en najaar.</p>
 <p>Bij regen in het Gooi werkt dit:</p>
 <ul>
@@ -185,7 +170,7 @@
 <li><strong>Bibliotheek</strong> — Hilversum heeft een goede bibliotheek met kinderafdeling. Gratis en warm</li>
 </ul>
 <p>Eerlijk advies: als je de keuze hebt, plan je Gooi-dag op een droge dag. De regio verliest veel van zijn charme als je de hele dag binnen zit. Bekijk ook <a href="/blog/uitjes-met-peuter-bij-regen/">uitjes met peuter bij regen</a> voor meer ideeën.</p>
-<h2>Praktisch: hoe pak je een dag in het Gooi aan</h2>
+<h2 id="praktisch-hoe-pak-je-een-dag-in-het-gooi-aan">Praktisch: hoe pak je een dag in het Gooi aan</h2>
 <p>Het Gooi vraagt een andere aanpak dan een stadsuitje. In Utrecht of Haarlem loop je van de ene plek naar de andere. In het Gooi rij je. Dat is niet erg, maar je moet het weten.</p>
 <p><strong>Auto:</strong> vrijwel noodzakelijk. De leukste plekken liggen verspreid over een gebied van zo&#39;n 20 bij 15 kilometer. Met de auto ben je overal binnen een kwartier.</p>
 <p><strong>Openbaar vervoer:</strong> Hilversum heeft een station met goede verbindingen (intercity vanuit Amsterdam en Utrecht in 25 minuten). Maar vanuit Hilversum naar een pannenkoekenboerderij in Blaricum of een speelnatuurplek buiten het dorp heb je een bus nodig, en dat is met een peuter en buggy vaak net te veel gedoe.</p>
@@ -197,18 +182,18 @@
 </ol>
 <p>Probeer niet te veel te doen. Twee activiteiten per dag is voor een peuter genoeg. Het Gooi leent zich goed voor langzame dagen — dat is juist de kracht van de regio.</p>
 <p><strong>Parkeren:</strong> bij de meeste locaties gratis of goedkoop. Alleen in het centrum van Hilversum is betaald parkeren de norm.</p>
-<h2>Veelgestelde vragen</h2>
-<h3>Is het Gooi geschikt voor een dagje uit met peuters?</h3>
+<h2 id="veelgestelde-vragen">Veelgestelde vragen</h2>
+<h3 id="is-het-gooi-geschikt-voor-een-dagje-uit-met-peuter">Is het Gooi geschikt voor een dagje uit met peuters?</h3>
 <p>Ja, maar op een andere manier dan een stad. Je komt hier voor de ruimte, de natuur en de rust. Het is geen plek met een groot attractiepark of een binnenspeelparadijs om de hoek. Het is een regio waar je een ochtend in het bos doorbrengt, pannenkoeken eet bij een boerderij, en &#39;s middags weer naar huis rijdt. Dat is precies wat de meeste peuters prettig vinden.</p>
-<h3>Heb je een auto nodig in het Gooi?</h3>
+<h3 id="heb-je-een-auto-nodig-in-het-gooi">Heb je een auto nodig in het Gooi?</h3>
 <p>Ja, in de praktijk wel. Hilversum is bereikbaar met de trein, maar de meeste kindvriendelijke locaties liggen buiten de dorpskernen. Met een auto ben je flexibel en kun je makkelijk schakelen als plannen veranderen — en met peuters veranderen plannen altijd.</p>
-<h3>Wat is de beste tijd van het jaar voor het Gooi met peuters?</h3>
+<h3 id="wat-is-de-beste-tijd-van-het-jaar-voor-het-gooi-me">Wat is de beste tijd van het jaar voor het Gooi met peuters?</h3>
 <p>April tot juni en september tot oktober. Dan is het droog genoeg voor buitenactiviteiten, niet te warm, en de bossen en heide zijn op hun mooist. Juli en augustus kan ook, maar dan is het drukker en op de heide erg warm. Winter is prima voor een pannenkoekenboerderij of museum, maar de natuur — het sterkste punt van de regio — is dan minder aantrekkelijk.</p>
-<h3>Wat is het verschil met de Utrechtse Heuvelrug?</h3>
+<h3 id="wat-is-het-verschil-met-de-utrechtse-heuvelrug">Wat is het verschil met de Utrechtse Heuvelrug?</h3>
 <p>De Utrechtse Heuvelrug ligt direct ten zuiden van het Gooi en heeft een vergelijkbaar landschap. Het belangrijkste verschil: de Heuvelrug heeft meer boerderijcafés en minder stedelijke voorzieningen. Het Gooi heeft met Hilversum een duidelijk centrum en met Beeld &amp; Geluid een museum dat de Heuvelrug niet heeft. Beide regio&#39;s zijn goed voor peuters — je kunt ze ook combineren als je een lang weekend hebt.</p>
-<h3>Kan ik het Gooi combineren met Amsterdam?</h3>
+<h3 id="kan-ik-het-gooi-combineren-met-amsterdam">Kan ik het Gooi combineren met Amsterdam?</h3>
 <p>Technisch wel, maar het is niet ideaal als dagtrip. De reistijd Amsterdam-Hilversum is 25-30 minuten met de auto (langer in de spits), en het karakter van de dag is compleet anders. Beter om een aparte dag voor het Gooi te plannen. Bekijk anders <a href="/blog/amsterdam-met-peuters-en-kleuters/">Amsterdam met peuters en kleuters</a> voor stadstips.</p>
-<h2>Tot slot</h2>
+<h2 id="tot-slot">Tot slot</h2>
 <p>Het Gooi en de Vechtstreek zijn geen voor de hand liggende peuterbestemming. Er is geen Efteling, geen Nemo, geen grote trekpleister. Maar dat is precies wat het aantrekkelijk maakt: het is een rustige, groene regio waar je met een jong kind een ontspannen dag kunt hebben zonder gedoe.</p>
 <p>Een ochtend in het bos bij <a href="/gooi-en-vechtstreek/blaricum-oerrr-speelnatuur/">OERRR Speelnatuur Blaricum</a>, pannenkoeken bij <a href="/gooi-en-vechtstreek/de-leeuwenkuil/">De Leeuwenkuil</a>, en om twee uur weer in de auto. Dat is geen spectaculaire dag, maar het is precies het soort dag waar peuters het meest van genieten.</p>
 <p>Bekijk alle 60 locaties op de <a href="/gooi-en-vechtstreek.html">Gooi en Vechtstreek-pagina</a> of plan direct via <a href="/app.html?regio=Gooi+en+Vechtstreek">de app</a>.</p>
@@ -283,21 +268,24 @@
 <footer class="pp-reveal">
   <div class="footer-container">
     <div class="footer-brand">
-      <strong style="font-size: 20px;">PeuterPlannen</strong>
+      <strong style="font-size: var(--pp-text-lg);">PeuterPlannen</strong>
       <p>Kindvriendelijke uitjes in heel Nederland. Gecheckt en actueel.</p>
     </div>
-    <div class="footer-links">
-      <h4>Product</h4>
-      <a href="/app.html">App</a>
-      <a href="/blog/">Inspiratie</a>
-      <a href="/about.html">Over</a>
+    <div class="footer-columns">
+      <div class="footer-links">
+        <h4>Product</h4>
+        <a href="/app.html">App</a>
+        <a href="/blog/">Inspiratie</a>
+        <a href="/about.html">Over</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <h4>Legal</h4>
-      <a href="/contact.html">Contact</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/disclaimer/">Disclaimer</a>
-    </div>
+    <button class="footer-expand" onclick="this.parentElement.classList.add('expanded');this.remove();" aria-label="Toon meer links">Meer ↓</button>
   </div>
   <div class="footer-bottom">
     &copy; 2026 PeuterPlannen. Gemaakt in Utrecht.

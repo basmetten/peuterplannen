@@ -18,48 +18,10 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603182039">
-  <link rel="stylesheet" href="/style.min.css?v=202603182039">
-  <style>
-  .guide-section{display:grid;gap:18px;margin:36px 0}
-  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .guide-card-compact{padding:20px 18px}
-  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
-  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
-  .guide-card h2{font-size:clamp(28px,5vw,40px)}
-  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
-  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
-  .guide-card-intro{max-width:58ch}
-  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .guide-links{display:grid;gap:12px;margin-top:16px}
-  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-  .guide-link:visited{color:var(--pp-text)}
-  .guide-link strong{font-size:15px;line-height:1.3}
-  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
-  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
-  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
-  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
-  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
-  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
-  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
-  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
-  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
-  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
-  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
-  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
-  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
-  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
-  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
-  .editorial-support-links a:visited{color:var(--pp-text)}
-  .editorial-support-links a strong{font-size:14px}
-  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
-  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
-</style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
-  <script src="/nav-floating.js?v=202603182039" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603191155">
+  <link rel="stylesheet" href="/style.min.css?v=202603191155">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603191155">
+  <script src="/nav-floating.js?v=202603191155" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -127,10 +89,12 @@
   <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
     <a href="/" class="nav-mobile-link">Home</a>
     <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
-    <a href="/about.html" class="nav-mobile-link">Over</a>
     <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
-    <a href="/contact.html" class="nav-mobile-link">Contact</a>
     <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
+    <div class="nav-mobile-secondary">
+      <a href="/about.html" class="nav-mobile-link">Over</a>
+      <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    </div>
   </div>
 </nav>
 
@@ -146,10 +110,45 @@
 <main id="main-content">
   <p class="blog-meta">17 maart 2026 &middot; zwolle, tips, speeltuin, natuur</p>
 
+  <nav class="blog-toc" aria-label="Inhoudsopgave">
+    <button class="blog-toc-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+      Inhoudsopgave <span class="toc-count">28</span>
+    </button>
+    <ol class="blog-toc-list">
+      <li><a href="#waarom-zwolle-werkt-met-peuters">Waarom Zwolle werkt met peuters</a></li>
+      <li><a href="#dagplanning-houd-het-simpel">Dagplanning: houd het simpel</a></li>
+      <li><a href="#ochtend-buiten-kinderboerderijen-en-parken">Ochtend buiten: kinderboerderijen en parken</a></li>
+      <li class="toc-sub"><a href="#kinderboerderij-wezenlanden">Kinderboerderij Wezenlanden</a></li>
+      <li class="toc-sub"><a href="#kinderboerderij-eekhout">Kinderboerderij Eekhout</a></li>
+      <li class="toc-sub"><a href="#park-het-engelse-werk">Park het Engelse Werk</a></li>
+      <li class="toc-sub"><a href="#park-de-stadshoeve">Park de Stadshoeve</a></li>
+      <li><a href="#lunch-binnenstad-of-ter-plekke">Lunch: binnenstad of ter plekke</a></li>
+      <li class="toc-sub"><a href="#pannenkoeken-als-veilige-keuze">Pannenkoeken als veilige keuze</a></li>
+      <li><a href="#middag-speeltuinen-en-water">Middag: speeltuinen en water</a></li>
+      <li class="toc-sub"><a href="#speeltuin-bestevaer">Speeltuin Bestevaer</a></li>
+      <li class="toc-sub"><a href="#speeltuin-het-noorden">Speeltuin Het Noorden</a></li>
+      <li class="toc-sub"><a href="#de-flierefluiter">De Flierefluiter</a></li>
+      <li><a href="#bij-regen-indoor-opties">Bij regen: indoor opties</a></li>
+      <li class="toc-sub"><a href="#ballorig-zwolle">Ballorig Zwolle</a></li>
+      <li class="toc-sub"><a href="#binnenspeeltuin-de-tol">Binnenspeeltuin De Tol</a></li>
+      <li class="toc-sub"><a href="#anno-stadsmuseum-zwolle">Anno Stadsmuseum Zwolle</a></li>
+      <li><a href="#dierenpark-ten-kate-buiten-de-stad-maar-het-vermel">Dierenpark Ten Kate: buiten de stad maar het vermelden waard</a></li>
+      <li><a href="#zwemmen-met-peuters">Zwemmen met peuters</a></li>
+      <li><a href="#zwolle-als-uitvalsbasis">Zwolle als uitvalsbasis</a></li>
+      <li><a href="#praktische-informatie">Praktische informatie</a></li>
+      <li><a href="#veelgestelde-vragen">Veelgestelde vragen</a></li>
+      <li class="toc-sub"><a href="#is-zwolle-leuk-met-peuters">Is Zwolle leuk met peuters?</a></li>
+      <li class="toc-sub"><a href="#wat-doe-je-in-zwolle-met-peuters-bij-regen">Wat doe je in Zwolle met peuters bij regen?</a></li>
+      <li class="toc-sub"><a href="#hoeveel-tijd-heb-je-nodig-voor-een-dagje-zwolle-me">Hoeveel tijd heb je nodig voor een dagje Zwolle met peuter?</a></li>
+      <li class="toc-sub"><a href="#is-zwolle-een-goede-tussenstop-op-weg-naar-het-noo">Is Zwolle een goede tussenstop op weg naar het noorden?</a></li>
+      <li class="toc-sub"><a href="#wat-is-de-beste-kinderboerderij-in-zwolle">Wat is de beste kinderboerderij in Zwolle?</a></li>
+      <li><a href="#tot-slot">Tot slot</a></li>
+    </ol>
+  </nav>
   <div class="blog-content">
     <p>Zwolle is een stad die je niet meteen associeert met een peuteruitje, en dat is jammer. De oude Hanzestad is compact, goed bereikbaar en heeft een verrassend breed aanbod aan kinderboerderijen, speeltuinen en parken. De binnenstad is klein genoeg om lopend te doen, er is veel groen aan de randen, en de combinatie van grachten, oude poorten en bruggen maakt een wandeling met een peuter al snel een klein avontuur. Je kind wijst naar boten, eenden en kerktorens terwijl jij gewoon koffie kunt drinken.</p>
 <p>Voor direct overzicht: bekijk <a href="/zwolle.html">alle peuteruitjes in Zwolle</a> of open de <a href="/app.html?regio=Zwolle">app met Zwolle-filter</a>.</p>
-<h2>Waarom Zwolle werkt met peuters</h2>
+<h2 id="waarom-zwolle-werkt-met-peuters">Waarom Zwolle werkt met peuters</h2>
 <p>Zwolle heeft drie dingen die een peuterdag makkelijk maken:</p>
 <ol>
 <li><strong>Korte afstanden.</strong> De binnenstad is in een kwartier doorgelopen. Kinderboerderijen en parken liggen op fietsafstand van het centrum.</li>
@@ -157,7 +156,7 @@
 <li><strong>Veel gratis opties.</strong> Kinderboerderijen, parken en speeltuinen kosten niets. Een dagje Zwolle hoeft niet duur te zijn.</li>
 </ol>
 <p>Wat het ook aantrekkelijk maakt: Zwolle is een logische tussenstop als je richting de Weerribben, Giethoorn of de Veluwe gaat. Je kunt er prima een halve of hele dag vullen zonder dat het voelt als omrijden.</p>
-<h2>Dagplanning: houd het simpel</h2>
+<h2 id="dagplanning-houd-het-simpel">Dagplanning: houd het simpel</h2>
 <p>Met een peuter in Zwolle werkt deze opbouw:</p>
 <ol>
 <li><strong>Ochtend (9:30-11:30):</strong> kinderboerderij of park — energie kwijtraken</li>
@@ -165,19 +164,19 @@
 <li><strong>Middag (13:00-14:30):</strong> korte tweede activiteit of vrij spelen</li>
 </ol>
 <p>Twee hoofdactiviteiten is genoeg. Drie is te veel. En als je peuter rond 13:00 in slaap valt in de buggy, is dat geen mislukking maar een teken dat de ochtend goed was.</p>
-<h2>Ochtend buiten: kinderboerderijen en parken</h2>
+<h2 id="ochtend-buiten-kinderboerderijen-en-parken">Ochtend buiten: kinderboerderijen en parken</h2>
 <p>Zwolle heeft opvallend veel kinderboerderijen voor een stad van deze omvang — vijf stuks. Ze zijn gratis, overzichtelijk en precies het soort uitje waar peuters het langst plezier aan beleven.</p>
-<h3>Kinderboerderij Wezenlanden</h3>
+<h3 id="kinderboerderij-wezenlanden">Kinderboerderij Wezenlanden</h3>
 <p><a href="/zwolle/kinderboerderij-wezenlanden/">Kinderboerderij Wezenlanden</a> ligt in Park Wezenlanden, vlak bij het centrum. Het is een van de betere stadsboerderijen van Overijssel: geiten, kippen, konijnen, en genoeg ruimte om rond te lopen. Het park eromheen heeft een grote vijver met eenden en ganzen, en een speeltuin die geschikt is voor peuters.</p>
 <p>De combinatie kinderboerderij plus park plus speeltuin maakt dit een plek waar je makkelijk anderhalf tot twee uur kunt zijn zonder dat je kind zich verveelt of dat jij je verveelt. Er zijn bankjes, er is schaduw, en het is rustig genoeg om je kind even los te laten lopen.</p>
-<h3>Kinderboerderij Eekhout</h3>
+<h3 id="kinderboerderij-eekhout">Kinderboerderij Eekhout</h3>
 <p><a href="/zwolle/kinderboerderij-eekhout/">Kinderboerderij Eekhout</a> ligt in het zuiden van de stad, in de wijk Holtenbroek. Het is iets kleiner dan Wezenlanden maar heeft een eigen charme. Er is een moestuin, er zijn kleine dieren, en de sfeer is dorps. Op woensdagmiddag en in het weekend is het het drukst, maar &quot;druk&quot; betekent in Zwolle dat er misschien tien andere gezinnen zijn.</p>
-<h3>Park het Engelse Werk</h3>
+<h3 id="park-het-engelse-werk">Park het Engelse Werk</h3>
 <p>Als je liever begint met natuur dan met dieren, is <a href="/zwolle/park-het-engelse-werk/">Park het Engelse Werk</a> een uitstekende keuze. Dit is het oudste stadspark van Zwolle, aangelegd op de voormalige vestingwerken. Er zijn brede paden die goed met een buggy te doen zijn, grote bomen, en een vijver. Het park heeft iets dat je in nieuwere parken mist: hoogteverschillen, kronkelpaadjes en hoekjes waar een peuter zich kan &quot;verstoppen.&quot;</p>
 <p>Het ligt aan de rand van het centrum, dus je kunt het combineren met een wandeling door de binnenstad richting lunch.</p>
-<h3>Park de Stadshoeve</h3>
+<h3 id="park-de-stadshoeve">Park de Stadshoeve</h3>
 <p><a href="/zwolle/park-de-stadshoeve/">Park de Stadshoeve</a> ligt in het noorden van Zwolle en is nieuwer en groter. Er is een waterspeelplaats die in de zomer fantastisch is voor peuters, en een natuurspeeltuin met boomstammen en zand. Het is iets verder van het centrum, maar als je met de auto komt en toch in die hoek zit, is het een sterke ochtendplek. Neem handdoek en extra kleren mee — je kind gaat nat worden bij de waterspeelplaats, ook als je zegt dat het niet mag.</p>
-<h2>Lunch: binnenstad of ter plekke</h2>
+<h2 id="lunch-binnenstad-of-ter-plekke">Lunch: binnenstad of ter plekke</h2>
 <p>Zwolle heeft een gezellige binnenstad met genoeg horecagelegenheden, en de meeste zijn prima met een peuter. De straten rond de Grote Markt en de Diezerstraat hebben terrassen en lunchcafes. Het is geen stad waar je kinderwagen een probleem is — de stoepen zijn breed genoeg en het is niet zo druk dat je constant moet manoeuvreren.</p>
 <p>Een paar praktische punten:</p>
 <ul>
@@ -186,33 +185,33 @@
 <li>De <a href="/horeca.html">horeca in Zwolle</a> is over het algemeen kindvriendelijk zonder dat het speciaal &quot;kindcafes&quot; zijn</li>
 </ul>
 <p>Als je bij een kinderboerderij of park bent en niet wilt verplaatsen: neem een picknick mee. Park Wezenlanden en het Engelse Werk hebben genoeg bankjes en grasvelden. Een boterham met pindakaas en een pakje drinken op een bankje bij de eenden is voor een peuter net zo goed als een restaurantlunch. Beter, waarschijnlijk.</p>
-<h3>Pannenkoeken als veilige keuze</h3>
+<h3 id="pannenkoeken-als-veilige-keuze">Pannenkoeken als veilige keuze</h3>
 <p>Zwolle heeft een bijzondere pannenkoekenoptie: <a href="/zwolle/t-pannenkoekschip/">&#39;t Pannenkoekschip</a> ligt aan de IJssel, vlak bij het centrum. Je eet pannenkoeken op een schip — voor een peuter is dat al een halve attractie. Het is precies het soort plek waar je kind het eten vergeet omdat het naar boten en water kijkt, en dat is eigenlijk ideaal. Reserveren is aan te raden, zeker in het weekend.</p>
 <p>Meer over pannenkoekrestaurants vind je in onze gids over <a href="/blog/pannenkoekenrestaurant-met-speeltuin/">pannenkoekenrestaurants met speeltuin</a>.</p>
-<h2>Middag: speeltuinen en water</h2>
+<h2 id="middag-speeltuinen-en-water">Middag: speeltuinen en water</h2>
 <p>Na de lunch wil je iets luchtigers. Zwolle heeft meerdere speeltuinen die de moeite waard zijn voor peuters.</p>
-<h3>Speeltuin Bestevaer</h3>
+<h3 id="speeltuin-bestevaer">Speeltuin Bestevaer</h3>
 <p><a href="/zwolle/speeltuin-bestevaer/">Speeltuin Bestevaer</a> is een van de grotere speeltuinen in Zwolle, met een apart peutergedeelte. Er is een zandbak, lage glijbanen en schommels op peuterhoogte. Het is omheind, wat fijn is als je een kind hebt dat graag de andere kant op rent. Je kunt hier makkelijk een uur zitten terwijl je kind speelt en jij op een bankje toekijkt.</p>
-<h3>Speeltuin Het Noorden</h3>
+<h3 id="speeltuin-het-noorden">Speeltuin Het Noorden</h3>
 <p><a href="/zwolle/speeltuin-het-noorden/">Speeltuin Het Noorden</a> ligt in de gelijknamige wijk en is een klassieke buurt-speeltuin met een goede mix van toestellen. Het is er rustig op doordeweekse dagen en je treft er vooral buurtkinderen. Dat is precies de sfeer die voor een peuter het prettigst is: bekende schaal, niet te veel prikkels, gewoon lekker spelen.</p>
-<h3>De Flierefluiter</h3>
+<h3 id="de-flierefluiter">De Flierefluiter</h3>
 <p><a href="/zwolle/de-flierefluiter/">De Flierefluiter</a> is een buitenspeeltuin aan de rand van Zwolle die meer ruimte biedt. Er is een dierenweide, een waterspeelplek en veel groen. Het is het type uitje dat goed werkt als alternatief voor een kinderboerderij — je kind kan zowel spelen als dieren bekijken.</p>
-<h2>Bij regen: indoor opties</h2>
+<h2 id="bij-regen-indoor-opties">Bij regen: indoor opties</h2>
 <p>Slecht weer hoeft je dag in Zwolle niet te verpesten, maar eerlijk is eerlijk: het indoor-aanbod is kleiner dan in grotere steden. Dat maakt voorbereiding extra belangrijk.</p>
-<h3>Ballorig Zwolle</h3>
+<h3 id="ballorig-zwolle">Ballorig Zwolle</h3>
 <p><a href="/zwolle/ballorig-zwolle/">Ballorig Zwolle</a> is de meest voor de hand liggende regenoptie. Het is een binnenspeelparadijs met een apart peutergedeelte. Het is er luidruchtig en druk in het weekend, maar peuters vinden het geweldig. Er is horeca ter plekke, dus je kunt er ook lunchen als het moet. Plan anderhalf tot twee uur.</p>
-<h3>Binnenspeeltuin De Tol</h3>
+<h3 id="binnenspeeltuin-de-tol">Binnenspeeltuin De Tol</h3>
 <p><a href="/zwolle/binnenspeeltuin-de-tol/">Binnenspeeltuin De Tol</a> is kleiner en rustiger dan Ballorig — meer een buurt-binnenspeeltuin dan een groot speelparadijs. Voor peuters is dat vaak juist fijner. Minder overweldigend, overzichtelijker, en je kunt je kind beter in de gaten houden. Check vooraf de openingstijden, want die zijn niet elke dag hetzelfde.</p>
-<h3>Anno Stadsmuseum Zwolle</h3>
+<h3 id="anno-stadsmuseum-zwolle">Anno Stadsmuseum Zwolle</h3>
 <p><a href="/zwolle/anno-stadsmuseum-zwolle/">Anno Stadsmuseum Zwolle</a> is het stadsmuseum en heeft wisselende activiteiten voor kinderen. Het is niet specifiek een peutermuseum, maar er zijn regelmatig workshops en tentoonstellingen waar jonge kinderen iets aan hebben. Voor peuters van 3+ die al gewend zijn aan <a href="/musea.html">musea</a> kan het een leuk uur vullen. Jongere peuters hebben er minder aan. Kijk vooraf op de website wat er op het programma staat.</p>
 <p>Meer tips voor regendagen? Lees onze uitgebreide gids over <a href="/blog/uitjes-met-peuter-bij-regen/">uitjes met peuter bij regen</a>.</p>
-<h2>Dierenpark Ten Kate: buiten de stad maar het vermelden waard</h2>
+<h2 id="dierenpark-ten-kate-buiten-de-stad-maar-het-vermel">Dierenpark Ten Kate: buiten de stad maar het vermelden waard</h2>
 <p><a href="/zwolle/dierenpark-ten-kate/">Dierenpark Ten Kate</a> ligt net buiten Zwolle, in Heerde, en is een klein familiedierenpark dat goed past bij peuters. Het is niet groot — reken op anderhalf tot twee uur — maar dat is precies de juiste maat voor jonge kinderen. Er zijn ezels, herten, stokstaartjes en een speeltuin. De paden zijn goed begaanbaar met een buggy.</p>
 <p>Het is geen Artis en geen Apenheul, en dat is juist het punt. De schaal is overzichtelijk, het is rustig, en je kind kan dicht bij de dieren komen. Combineer het eventueel met een ochtend in Zwolle-centrum voor een volle dag.</p>
-<h2>Zwemmen met peuters</h2>
+<h2 id="zwemmen-met-peuters">Zwemmen met peuters</h2>
 <p>Zwolle heeft meerdere zwembaden die geschikt zijn voor peuters. <a href="/zwolle/bad-hesselingen/">Bad Hesselingen</a> is een recreatiebad met een peuterbad en glijbanen. Het peuterdeel heeft ondiep warm water en is veilig afgeschermd. Zwemmen is een van de weinige activiteiten waar peuters bijna nooit op uitgekeken raken, dus het is een betrouwbare optie — zowel bij regen als bij zon.</p>
 <p>In de zomer is <a href="/zwolle/openluchtbad-gerner/">Openluchtbad Gerner</a> in Dalfsen een mooie optie. Het is een buitenbad met een groot ligveld en een apart kinderbad. De sfeer is dorps en ontspannen. Check wel de watertemperatuur — het is een openluchtbad, dus vroeg in het seizoen kan het fris zijn.</p>
-<h2>Zwolle als uitvalsbasis</h2>
+<h2 id="zwolle-als-uitvalsbasis">Zwolle als uitvalsbasis</h2>
 <p>Een van de sterke punten van Zwolle is de ligging. Als je een weekend in de regio plant, kun je Zwolle combineren met:</p>
 <ul>
 <li><strong>De Weerribben:</strong> fluisterboten en natuur, op een half uur rijden. Meer geschikt voor oudere peuters (3+) die stil kunnen zitten in een bootje.</li>
@@ -221,23 +220,23 @@
 <li><strong>Hattem:</strong> het Nederlands Bakkerijmuseum en een pittoresk stadje, op tien minuten van Zwolle.</li>
 </ul>
 <p>Daardoor kun je een dagje Zwolle goed oprekken tot een weekendje Overijssel zonder dat je ver hoeft te rijden.</p>
-<h2>Praktische informatie</h2>
+<h2 id="praktische-informatie">Praktische informatie</h2>
 <p><strong>Bereikbaarheid.</strong> Zwolle heeft een groot station en is goed bereikbaar per trein vanuit de Randstad (ongeveer een uur vanuit Amsterdam of Utrecht). Met de auto zit je aan de A28 en is parkeren in het centrum betaalbaar en meestal beschikbaar. Op zaterdag is het iets drukker, maar het is geen vergelijking met parkeren in Amsterdam of Utrecht.</p>
 <p><strong>Parkeren.</strong> Het centrum heeft meerdere parkeergarages. De Diezerpoort en het Katwolderplein zijn de meest centraal gelegen opties. Tarieven liggen rond de 2 euro per uur — prima te doen voor een dagje uit.</p>
 <p><strong>Met de buggy.</strong> De binnenstad is goed begaanbaar. De meeste straten zijn verhard en breed genoeg. Alleen de kleine steegjes rond de Sassenstraat zijn soms krap met een grote kinderwagen.</p>
 <p><strong>Verschoonfaciliteiten.</strong> De meeste horecagelegenheden en het winkelcentrum in het centrum hebben verschoonmogelijkheden. Bij kinderboerderijen en speeltuinen is het wisselend — neem voor de zekerheid je eigen verschoonmatje mee.</p>
-<h2>Veelgestelde vragen</h2>
-<h3>Is Zwolle leuk met peuters?</h3>
+<h2 id="veelgestelde-vragen">Veelgestelde vragen</h2>
+<h3 id="is-zwolle-leuk-met-peuters">Is Zwolle leuk met peuters?</h3>
 <p>Ja. Het is compact, rustig en heeft een goed aanbod aan kinderboerderijen, speeltuinen en parken. Het is niet spectaculair in de zin van grote attracties, maar juist die kleinschaligheid werkt goed met jonge kinderen. Geen drukte, geen rijen, geen overprikkeling.</p>
-<h3>Wat doe je in Zwolle met peuters bij regen?</h3>
+<h3 id="wat-doe-je-in-zwolle-met-peuters-bij-regen">Wat doe je in Zwolle met peuters bij regen?</h3>
 <p><a href="/zwolle/ballorig-zwolle/">Ballorig Zwolle</a> is de meest voor de hand liggende keuze. <a href="/zwolle/binnenspeeltuin-de-tol/">Binnenspeeltuin De Tol</a> is een rustiger alternatief. Zwemmen in <a href="/zwolle/bad-hesselingen/">Bad Hesselingen</a> werkt ook goed als regenplan. Combineer met een lunch in de binnenstad voor een volle dag.</p>
-<h3>Hoeveel tijd heb je nodig voor een dagje Zwolle met peuter?</h3>
+<h3 id="hoeveel-tijd-heb-je-nodig-voor-een-dagje-zwolle-me">Hoeveel tijd heb je nodig voor een dagje Zwolle met peuter?</h3>
 <p>Een halve dag (3-4 uur) is prima te vullen met een kinderboerderij, lunch en een speeltuin. Voor een hele dag (5-6 uur) voeg je een middagactiviteit toe of combineer je met een bezoek aan een park. Meer dan zes uur is met een peuter zelden productief.</p>
-<h3>Is Zwolle een goede tussenstop op weg naar het noorden?</h3>
+<h3 id="is-zwolle-een-goede-tussenstop-op-weg-naar-het-noo">Is Zwolle een goede tussenstop op weg naar het noorden?</h3>
 <p>Absoluut. Zwolle ligt aan de A28 tussen de Randstad en Noordoost-Nederland. Als je richting Groningen, Friesland of de Weerribben rijdt, is een stop van twee tot drie uur in Zwolle een logische keuze. Kinderboerderij Wezenlanden of Park het Engelse Werk liggen dicht bij de snelweg en zijn snel te bereiken.</p>
-<h3>Wat is de beste kinderboerderij in Zwolle?</h3>
+<h3 id="wat-is-de-beste-kinderboerderij-in-zwolle">Wat is de beste kinderboerderij in Zwolle?</h3>
 <p><a href="/zwolle/kinderboerderij-wezenlanden/">Kinderboerderij Wezenlanden</a> is het meest centraal en het compleetst: dieren, speeltuin en een mooi park eromheen. <a href="/zwolle/kinderboerderij-eekhout/">Kinderboerderij Eekhout</a> is kleiner maar heeft een eigen sfeer. Voor een iets andere ervaring is <a href="/zwolle/natuurboerderij-lindehoeve/">Natuurboerderij Lindehoeve</a> buiten de stad de moeite waard.</p>
-<h2>Tot slot</h2>
+<h2 id="tot-slot">Tot slot</h2>
 <p>Zwolle is geen stad die op lijstjes van &quot;leukste dagjes uit met kinderen&quot; verschijnt, en dat is eigenlijk precies waarom het zo goed werkt. Het is rustig, overzichtelijk en heeft genoeg te bieden voor een ontspannen dag met een peuter. Geen grote attracties, geen drukte, geen stress — gewoon een fijne Hanzestad met goede speeltuinen, aardige kinderboerderijen en een binnenstad waar je met een kinderwagen gewoon kunt lopen.</p>
 <p>Heb je een kleuter? Lees dan ook <a href="/blog/dagje-uit-met-kleuter-4-6-jaar/">dagje uit met kleuter (4-6 jaar)</a> voor extra ideeën.</p>
 <p>Bekijk alle actuele locaties op <a href="/zwolle.html">zwolle.html</a> of plan je dag direct via <a href="/app.html?regio=Zwolle">de app</a>.</p>
@@ -312,21 +311,24 @@
 <footer class="pp-reveal">
   <div class="footer-container">
     <div class="footer-brand">
-      <strong style="font-size: 20px;">PeuterPlannen</strong>
+      <strong style="font-size: var(--pp-text-lg);">PeuterPlannen</strong>
       <p>Kindvriendelijke uitjes in heel Nederland. Gecheckt en actueel.</p>
     </div>
-    <div class="footer-links">
-      <h4>Product</h4>
-      <a href="/app.html">App</a>
-      <a href="/blog/">Inspiratie</a>
-      <a href="/about.html">Over</a>
+    <div class="footer-columns">
+      <div class="footer-links">
+        <h4>Product</h4>
+        <a href="/app.html">App</a>
+        <a href="/blog/">Inspiratie</a>
+        <a href="/about.html">Over</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <h4>Legal</h4>
-      <a href="/contact.html">Contact</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/disclaimer/">Disclaimer</a>
-    </div>
+    <button class="footer-expand" onclick="this.parentElement.classList.add('expanded');this.remove();" aria-label="Toon meer links">Meer ↓</button>
   </div>
   <div class="footer-bottom">
     &copy; 2026 PeuterPlannen. Gemaakt in Utrecht.

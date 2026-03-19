@@ -18,48 +18,10 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603182039">
-  <link rel="stylesheet" href="/style.min.css?v=202603182039">
-  <style>
-  .guide-section{display:grid;gap:18px;margin:36px 0}
-  .guide-card{padding:24px 22px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.94));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .guide-card-compact{padding:20px 18px}
-  .guide-kicker{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pp-text-secondary)}
-  .guide-card h2,.guide-card h3{margin:0 0 12px;color:var(--pp-text);line-height:.98;letter-spacing:-.04em}
-  .guide-card h2{font-size:clamp(28px,5vw,40px)}
-  .guide-card h3{font-size:clamp(22px,4.2vw,28px)}
-  .guide-card p,.guide-card li{color:var(--pp-text-secondary);font-size:16px;line-height:1.72}
-  .guide-card-intro{max-width:58ch}
-  .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .guide-pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;font-size:12px;font-weight:700;color:var(--pp-primary-dark);background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .guide-links{display:grid;gap:12px;margin-top:16px}
-  .guide-link{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.78);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-  .guide-link:visited{color:var(--pp-text)}
-  .guide-link strong{font-size:15px;line-height:1.3}
-  .guide-link span{font-size:13px;line-height:1.5;color:var(--pp-text-muted)}
-  .guide-link:hover{transform:translateY(-1px);border-color:var(--pp-border-strong);box-shadow:0 10px 20px rgba(45,41,38,.08)}
-  .editorial-meta{max-width:840px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:10px;color:var(--pp-text-muted);font-size:13px}
-  .editorial-meta span,.editorial-meta a{display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border-radius:999px;background:rgba(212,119,90,.08);border:1px solid var(--pp-border)}
-  .editorial-meta a,.editorial-meta a:visited{color:var(--pp-primary-dark);font-weight:700;text-decoration:none}
-  .editorial-body{max-width:840px;margin:0 auto 32px;padding:28px 24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,248,242,.95));border:1px solid var(--pp-border);box-shadow:0 16px 36px rgba(45,41,38,.08)}
-  .editorial-body h2,.editorial-body h3{margin:0 0 14px;color:var(--pp-text);line-height:.98;letter-spacing:-.05em}
-  .editorial-body h2{font-size:clamp(28px,5vw,38px)}
-  .editorial-body h3{font-size:clamp(22px,4vw,28px);margin-top:28px}
-  .editorial-body p,.editorial-body li{font-size:17px;line-height:1.82;color:var(--pp-text-secondary)}
-  .editorial-body a{color:var(--pp-primary-dark);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(212,119,90,.32)}
-  .editorial-support{max-width:840px;margin:-8px auto 0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:16px}
-  .editorial-support-card{background:rgba(255,255,255,.92);border:1px solid var(--pp-border);border-radius:18px;padding:18px 20px;box-shadow:0 12px 26px rgba(45,41,38,.06)}
-  .editorial-support-card h3{margin:0 0 8px;font-size:18px;line-height:1.05;color:var(--pp-text)}
-  .editorial-support-card p{font-size:14px;line-height:1.72;color:var(--pp-text-secondary)}
-  .editorial-support-links{display:grid;gap:10px;margin-top:14px}
-  .editorial-support-links a{display:grid;gap:4px;padding:12px 14px;border-radius:14px;background:rgba(250,247,242,.92);border:1px solid rgba(45,41,38,.08);text-decoration:none;color:var(--pp-text)}
-  .editorial-support-links a:visited{color:var(--pp-text)}
-  .editorial-support-links a strong{font-size:14px}
-  .editorial-support-links a span{font-size:12px;line-height:1.5;color:var(--pp-text-muted)}
-  @media (max-width:768px){.guide-section,.editorial-support{grid-template-columns:1fr}.guide-card,.editorial-body{padding:22px 18px}.guide-link,.editorial-support-links a{padding:13px 14px}.editorial-body p,.editorial-body li{font-size:16px;line-height:1.72}.editorial-meta{gap:8px}}
-</style>
-  <link rel="stylesheet" href="/nav-floating.css?v=202603182039">
-  <script src="/nav-floating.js?v=202603182039" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603191155">
+  <link rel="stylesheet" href="/style.min.css?v=202603191155">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603191155">
+  <script src="/nav-floating.js?v=202603191155" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -127,10 +89,12 @@
   <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
     <a href="/" class="nav-mobile-link">Home</a>
     <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
-    <a href="/about.html" class="nav-mobile-link">Over</a>
     <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
-    <a href="/contact.html" class="nav-mobile-link">Contact</a>
     <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
+    <div class="nav-mobile-secondary">
+      <a href="/about.html" class="nav-mobile-link">Over</a>
+      <a href="/contact.html" class="nav-mobile-link">Contact</a>
+    </div>
   </div>
 </nav>
 
@@ -146,21 +110,44 @@
 <main id="main-content">
   <p class="blog-meta">17 maart 2026 &middot; zomervakantie, peuter, weekplanning, uitjes, nederland, zomer</p>
 
+  <nav class="blog-toc" aria-label="Inhoudsopgave">
+    <button class="blog-toc-toggle" onclick="this.parentElement.classList.toggle('expanded')">
+      Inhoudsopgave <span class="toc-count">16</span>
+    </button>
+    <ol class="blog-toc-list">
+      <li><a href="#het-basisprincipe-afwisseling-is-je-beste-vriend">Het basisprincipe: afwisseling is je beste vriend</a></li>
+      <li><a href="#voorbeeldweek-maandag-tm-zondag">Voorbeeldweek: maandag t/m zondag</a></li>
+      <li class="toc-sub"><a href="#maandag-rustige-start">Maandag — Rustige start</a></li>
+      <li class="toc-sub"><a href="#dinsdag-groot-uitje">Dinsdag — Groot uitje</a></li>
+      <li class="toc-sub"><a href="#woensdag-halverwege">Woensdag — Halverwege</a></li>
+      <li class="toc-sub"><a href="#donderdag-tweede-uitje-budget-vriendelijk">Donderdag — Tweede uitje (budget-vriendelijk)</a></li>
+      <li class="toc-sub"><a href="#vrijdag-luchtig-en-dicht-bij-huis">Vrijdag — Luchtig en dicht bij huis</a></li>
+      <li class="toc-sub"><a href="#zaterdag-weekenduitje">Zaterdag — Weekenduitje</a></li>
+      <li class="toc-sub"><a href="#zondag-opladen">Zondag — Opladen</a></li>
+      <li><a href="#top-uitjes-voor-warme-dagen">Top uitjes voor warme dagen</a></li>
+      <li><a href="#top-uitjes-voor-koele-of-regenachtige-dagen">Top uitjes voor koele of regenachtige dagen</a></li>
+      <li><a href="#gratis-en-budgettips-6-weken-hoeft-niet-duur-te-zi">Gratis en budgettips: 6 weken hoeft niet duur te zijn</a></li>
+      <li><a href="#overleven-als-ouder-de-onbesproken-kant-van-de-zom">Overleven als ouder: de onbesproken kant van de zomervakantie</a></li>
+      <li><a href="#inpaklijst-voor-een-dagje-uit-in-de-zomer">Inpaklijst voor een dagje uit in de zomer</a></li>
+      <li><a href="#weekplanning-voor-de-hele-zomer-een-grove-schets">Weekplanning voor de hele zomer: een grove schets</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ol>
+  </nav>
   <div class="blog-content">
     <h1>Zomervakantie met peuter: een weekplanning die werkt</h1>
 <p>Zes weken. Dat klinkt als een cadeau — en dat is het ook — maar ergens in week twee begin je toch te voelen wat zes weken zomervakantie met een peuter betekent. De ochtendroutine van de crèche valt weg, je dagindeling is verdwenen, en je staat elke ochtend met koffie in de hand te denken: oké, en nu?</p>
 <p>Dit artikel is geen bullet-point lijst met &quot;top 50 zomeractiviteiten&quot; die je al tien keer hebt gelezen. Het is een echte weekplanning, met een echt tijdschema, inclusief de middagdip en de vrijdagavond-uitputting. Want zomervakantie met een peuter is heerlijk én vermoeiend, en het helpt als je iets van structuur hebt.</p>
 <hr>
-<h2>Het basisprincipe: afwisseling is je beste vriend</h2>
+<h2 id="het-basisprincipe-afwisseling-is-je-beste-vriend">Het basisprincipe: afwisseling is je beste vriend</h2>
 <p>Peuters kunnen niet zes weken lang elke dag naar een groot uitje. Dat wil je ook niet — financieel niet, en energetisch niet. Maar zes weken Netflix-babysitting wil je ook niet. De oplossing zit in bewuste afwisseling op drie assen:</p>
 <p><strong>Actief vs. rustig.</strong> Een dag vol klimmen, rennen en springen in de <a href="/speeltuinen.html">speeltuinen</a> vraagt de volgende dag wat meer ruimte. Plan een rustige ochtend thuis, knutselen, of een wandeling door de buurt.</p>
 <p><strong>Buiten vs. binnen.</strong> Nederland zomer is grillig. Als je alleen buitendagen plant, zit je bij regen met een ontploffende peuter op de bank. Bouw binnenalternatieven in — niet als noodplan, maar als bewuste keuze.</p>
 <p><strong>Uitje vs. thuisdag.</strong> Niet elke dag hoeft een &quot;hoogtepunt&quot; te zijn. Peuters doen het prima met gewone dagen: bakken, watertafel in de tuin, een boekje lezen. Ouders ook.</p>
 <p>De gouden verhouding voor een gemiddelde week: 2-3 uitjes, 1-2 halfuurtjes-buiten-dicht-bij-huis, en 1-2 rustige thuisdagen. Dat voelt misschien weinig, maar het is genoeg — en je houdt jezelf overeind.</p>
 <hr>
-<h2>Voorbeeldweek: maandag t/m zondag</h2>
+<h2 id="voorbeeldweek-maandag-tm-zondag">Voorbeeldweek: maandag t/m zondag</h2>
 <p>Dit is een concrete week voor een peuter van 2,5 à 3 jaar met een middagdutje. Pas aan naar je eigen kind.</p>
-<h3>Maandag — Rustige start</h3>
+<h3 id="maandag-rustige-start">Maandag — Rustige start</h3>
 <p><strong>08:30</strong> Ontbijt, geen haast
 <strong>09:30</strong> Spelen in de tuin of buurtpark (maximaal een uur, geen auto)
 <strong>11:00</strong> Thuis knutselen of watertafel
@@ -169,7 +156,7 @@
 <strong>15:30</strong> Wandeling naar de dichtstbijzijnde <a href="/kinderboerderijen.html">kinderboerderijen</a> — gratis, rustig, en peuters gaan er nooit van af. In Amsterdam is <a href="/amsterdam/kinderboerderij-de-pijp/">Kinderboerderij De Pijp</a> makkelijk te bereiken; in Rotterdam werkt <a href="/rotterdam/kinderboerderij-vroesenpark/">Kinderboerderij Vroesenpark</a> goed als je in of bij het Rotterdamse centrum zit.
 <strong>17:30</strong> Thuis, avondeten, bad, bed</p>
 <p>Maandag rustig houden geeft je de week een goede start. Jij bent ook net bijgekomen van het weekend.</p>
-<h3>Dinsdag — Groot uitje</h3>
+<h3 id="dinsdag-groot-uitje">Dinsdag — Groot uitje</h3>
 <p><strong>08:00</strong> Iets vroeger op, vroeg vertrekken vermijdt files en drukte
 <strong>09:00</strong> Vertrek naar uitje (zie hieronder voor warme-dag-opties)
 <strong>12:00</strong> Lunch ter plekke of onderweg
@@ -177,7 +164,7 @@
 <strong>15:30</strong> Thuis, vrij spelen
 <strong>17:00</strong> Rustige avond</p>
 <p>Dinsdag is je &quot;dure dag&quot; van de week. Gebruik hem goed.</p>
-<h3>Woensdag — Halverwege</h3>
+<h3 id="woensdag-halverwege">Woensdag — Halverwege</h3>
 <p><strong>09:00</strong> Rustig ontbijt
 <strong>10:00</strong> Boodschappen doen mét peuter (leer ze mee te helpen, dat is ook activiteit)
 <strong>11:00</strong> Speeltuin bij de supermarkt of in de buurt
@@ -185,14 +172,14 @@
 <strong>13:00–15:00</strong> Dutje
 <strong>15:30</strong> Bezoek aan opa en oma, of een vriendje van de crèche</p>
 <p>Woensdag is vaak een dag die vanzelf invult als je een beetje loslaat.</p>
-<h3>Donderdag — Tweede uitje (budget-vriendelijk)</h3>
+<h3 id="donderdag-tweede-uitje-budget-vriendelijk">Donderdag — Tweede uitje (budget-vriendelijk)</h3>
 <p><strong>09:30</strong> Vertrek naar <a href="/natuur.html">natuur</a> in de buurt — bos, duinen, polder. Laarzen aan, boterhammen mee.
 <strong>10:00–13:00</strong> Buitendag in de natuur. Slootjes, stokken, beestjes zoeken.
 <strong>13:30</strong> Picknick onderweg of thuis
 <strong>14:00</strong> Dutje
 <strong>15:30</strong> Thuis, vrij</p>
 <p>Natuur is gratis, peuters vinden het geweldig, en jij hoeft nergens op te letten. Win-win-win.</p>
-<h3>Vrijdag — Luchtig en dicht bij huis</h3>
+<h3 id="vrijdag-luchtig-en-dicht-bij-huis">Vrijdag — Luchtig en dicht bij huis</h3>
 <p><strong>09:30</strong> Watertafel of zandbak in de tuin
 <strong>10:30</strong> Loop naar de buurt<a href="/natuur.html">parken</a> — geen auto, geen planning
 <strong>12:00</strong> Lunch
@@ -200,14 +187,14 @@
 <strong>15:00</strong> Film of serie op de bank (ja, echt. Vrijdagmiddag mag.)
 <strong>18:00</strong> Samen pizza of iets makkelijks</p>
 <p>Vrijdag niet te vol plannen. Je bent ook moe.</p>
-<h3>Zaterdag — Weekenduitje</h3>
+<h3 id="zaterdag-weekenduitje">Zaterdag — Weekenduitje</h3>
 <p><strong>10:00</strong> Uitje met het hele gezin, eventueel inclusief partner
 <strong>14:00</strong> Dutje of rusttijd
 <strong>16:00</strong> Buiten spelen of <a href="/horeca.html">horeca</a> met een ijsje en koffie voor de ouders</p>
-<h3>Zondag — Opladen</h3>
+<h3 id="zondag-opladen">Zondag — Opladen</h3>
 <p>Zondag is geen uitje-dag. Zondag is boodschappen, was, luieren en voorbereiden op de nieuwe week. Je peuter speelt thuis of in de tuin. Jij drinkt koffie in de zon.</p>
 <hr>
-<h2>Top uitjes voor warme dagen</h2>
+<h2 id="top-uitjes-voor-warme-dagen">Top uitjes voor warme dagen</h2>
 <p>Als het 25 graden is en er is zon, zijn er een paar soorten uitjes die echt werken.</p>
 <p><strong>Strand en zee.</strong> De <a href="/zwemmen.html">stranden</a> langs de Nederlandse kust zijn voor peuters ideaal: zand, water, bakken, graven. In de buurt van Den Haag is <a href="/den-haag/scheveningen/">Scheveningen</a> een van de meest kindvriendelijke opties met goede voorzieningen. Kies een strandopgang met parkeerplaats dicht bij het strand zodat je niet eindeloos sjouwt. Ga vóór 10:00 uur of rond 16:00 uur — dan is het minder druk en koeler. Breng een parasol mee, niet voor jezelf, maar voor je peuter. Die verbrandt in een halfuur.</p>
 <p><strong>Waterspeelplaatsen.</strong> Steeds meer steden hebben waterparken of waterspeelplekken in <a href="/natuur.html">parken</a>. Vrij toegankelijk, spetterend water, en jij zit in de schaduw. In Amsterdam is de <a href="/amsterdam/waterspeeltuin-oosterpark/">Waterspeeltuin Oosterpark</a> gratis en centraal. Zoek op &quot;waterspeeltuin&quot; plus jouw stad — ze zijn er bijna overal.</p>
@@ -215,7 +202,7 @@
 <p><strong>IJsje eten als activiteit.</strong> Klink simpel, maar maak er een uitje van. Loop naar de ijskraam, kies samen, eet buiten op een bankje. Dat is voor een peuter een complete belevenis.</p>
 <p><strong>Kinderboerderij in de ochtend.</strong> De <a href="/kinderboerderijen.html">kinderboerderijen</a> zijn &#39;s ochtends vroeg rustig, koel en gratis. Konijnen aaien, kippen kijken, geiten voeren. Uur weg, kind blij.</p>
 <hr>
-<h2>Top uitjes voor koele of regenachtige dagen</h2>
+<h2 id="top-uitjes-voor-koele-of-regenachtige-dagen">Top uitjes voor koele of regenachtige dagen</h2>
 <p>Regen in de zomervakantie voelt als persoonlijk falen, maar het hoeft geen ramp te zijn.</p>
 <p><strong>Museum.</strong> Kies een <a href="/musea.html">musea</a>-pagina voor kindvriendelijke musea bij jou in de buurt. Niet elk museum werkt voor peuters — zoek naar musea met een doe-ruimte, interactieve tentoonstellingen, of gewoon veel ruimte om rond te lopen. <a href="/amsterdam/artis/">Artis</a> in Amsterdam (ook bij regen prachtig), <a href="/amsterdam/nemo-science-museum/">NEMO Science Museum</a> op de Oosterdokskade, het <a href="/arnhem/nederlands-openluchtmuseum-sonsbeek-zijpendaal/">Nederlands Openluchtmuseum</a> in Arnhem — er zijn tientallen opties.</p>
 <p><strong>Indoor speeltuin.</strong> De <a href="/binnenlocaties-peuters.html">indoor speeltuinen</a> zijn gemaakt voor dit soort dagen. Klimmen, glijden, ballen gooien — peuters zijn in een halfuur compleet uitgeput. In Utrecht vind je <a href="/utrecht/ballorig-utrecht/">Ballorig Utrecht</a> met peutervriendelijke zones; in Rotterdam is <a href="/rotterdam/biotopia-binnenspeeltuin/">Biotopia Binnenspeeltuin</a> een goede keuze. Tip: ga op een dinsdag- of woensdagochtend, dan is het rustiger.</p>
@@ -223,7 +210,7 @@
 <p><strong>Bioscoop.</strong> Controleer of jouw lokale bioscoop speciale peuter-voorstellingen heeft (sommige draaien ze op rustige tijden, met wat meer licht). Anders: Disney of Pixar-films zijn ook voor peuters van 2,5+ prima. Popcorn is het halve plezier.</p>
 <p><strong>Knutselen thuis.</strong> Verf, klei, stickers, plakken. Doe een oud laken op tafel, trek oude kleding aan, en laat los. De chaos is te overzien en je kind is een uur zoet.</p>
 <hr>
-<h2>Gratis en budgettips: 6 weken hoeft niet duur te zijn</h2>
+<h2 id="gratis-en-budgettips-6-weken-hoeft-niet-duur-te-zi">Gratis en budgettips: 6 weken hoeft niet duur te zijn</h2>
 <p>Zes weken vakantie kan makkelijk oplopen tot honderden euro&#39;s als je elke dag ergens entree betaalt. Dat hoeft niet.</p>
 <p><strong>Maak een weekbudget.</strong> Besluit van tevoren wat je per week uitgeeft aan uitjes. Zeg 40 euro. Dan moet je kiezen, en dat is goed — het dwingt je creatief te zijn.</p>
 <p><strong>Gratis opties zijn de beste opties voor peuters.</strong> Kinderboerderijen, parken, stranden, natuur, bibliotheken, de watertafel in je eigen tuin — peuters hebben geen toegangsprijs nodig voor pret. Ze weten niet eens wat duur is.</p>
@@ -232,7 +219,7 @@
 <p><strong>Kook mee.</strong> Picknick meenemen naar het strand scheelt makkelijk 20-30 euro per uitje ten opzichte van ter plekke eten. Boterhammen in een koeltas, wat fruit, en water. Peuters klagen er niet over.</p>
 <p><strong>Kijk naar je gemeente.</strong> Veel gemeenten organiseren gratis zomerprogramma&#39;s voor jonge kinderen. Check de website van je gemeente of het wijkcentrum.</p>
 <hr>
-<h2>Overleven als ouder: de onbesproken kant van de zomervakantie</h2>
+<h2 id="overleven-als-ouder-de-onbesproken-kant-van-de-zom">Overleven als ouder: de onbesproken kant van de zomervakantie</h2>
 <p>Iedereen praat over de peuter. Niemand praat over jou.</p>
 <p>Zes weken fulltime ouder zijn — ook als je normaal gesproken werkt — is intensief. Dat is geen klagen, het is een feit. Een paar dingen die helpen:</p>
 <p><strong>Vraag om hulp.</strong> Als opa of oma beschikbaar is, plan dan bewust een dag per week in waarbij zij op het kind passen. Geen uitleg nodig, geen excuus. Gewoon een middag waarop jij iets anders doet.</p>
@@ -242,7 +229,7 @@
 <p><strong>Neem zelf pauze.</strong> Vroeg naar bed als het kind slaapt. Een boek, een serie, een wandeling alleen. Het is niet luxe, het is noodzakelijk.</p>
 <p>Lees ook <a href="/blog/dagje-uit-met-dreumes/">dagje uit met dreumes</a> als je ook een kleintje onder de twee hebt — de combinatie van een dreumes en een peuter vraagt net andere planning.</p>
 <hr>
-<h2>Inpaklijst voor een dagje uit in de zomer</h2>
+<h2 id="inpaklijst-voor-een-dagje-uit-in-de-zomer">Inpaklijst voor een dagje uit in de zomer</h2>
 <p>Bewaar deze lijst op je telefoon, dan hoef je &#39;s ochtends niet na te denken.</p>
 <p><strong>Altijd mee:</strong></p>
 <ul>
@@ -275,7 +262,7 @@
 <li>Iets te lezen voor rustige momenten</li>
 </ul>
 <hr>
-<h2>Weekplanning voor de hele zomer: een grove schets</h2>
+<h2 id="weekplanning-voor-de-hele-zomer-een-grove-schets">Weekplanning voor de hele zomer: een grove schets</h2>
 <p>Als je de hele zes weken wilt structureren, help het om thema&#39;s per week te kiezen. Niet strikt, maar als kapstok:</p>
 <ul>
 <li><strong>Week 1:</strong> Rustig opstarten, dicht bij huis</li>
@@ -289,7 +276,7 @@
 <p>Voor meer inspiratie over dagtrips met je kind, lees ook <a href="/blog/dagje-uit-met-kleuter-4-6-jaar/">dagje uit met kleuter</a> — veel van de tips gelden ook voor peuters, en als jij meerdere kinderen hebt is dit een handige aanvulling. En als het budget echt krap is, check dan <a href="/blog/goedkoop-op-stap-peuters/">goedkoop op stap</a> voor concrete gratis uitjes per regio.</p>
 <p>Heb je de meivakantie al voor de boeg? <a href="/blog/meivakantie-met-peuters/">Meivakantie met peuters</a> geeft een vergelijkbare aanpak maar specifiek voor die twee weken in het voorjaar. Op warme zomerdagen is een kindvriendelijk terras soms precies genoeg — <a href="/blog/kindvriendelijke-terrassen-2026/">kindvriendelijke terrassen 2026</a> helpt je de juiste plek te vinden. Heb je ook een heel jonge dreumes? <a href="/blog/dagje-uit-met-1-jarige/">Dagje uit met 1-jarige</a> behandelt de specifieke uitdagingen van die leeftijdscategorie.</p>
 <hr>
-<h2>FAQ</h2>
+<h2 id="faq">FAQ</h2>
 <p><strong>Hoe lang mag een uitje duren met een peuter van 2 jaar?</strong></p>
 <p>Reken op maximaal 2 à 3 uur actieve tijd buiten, daarna is de meeste peuters op. Het is beter om vroeg te vertrekken en voor de middagslaap thuis te zijn dan door te bijten en de middag te verknallen. Een succesvol uitje dat om 12:00 uur eindigt is beter dan een ellendige namiddag die om 17:00 uur eindigt.</p>
 <p><strong>Mijn peuter slaapt niet meer overdag — hoe plan ik dan de dag?</strong></p>
@@ -369,21 +356,24 @@
 <footer class="pp-reveal">
   <div class="footer-container">
     <div class="footer-brand">
-      <strong style="font-size: 20px;">PeuterPlannen</strong>
+      <strong style="font-size: var(--pp-text-lg);">PeuterPlannen</strong>
       <p>Kindvriendelijke uitjes in heel Nederland. Gecheckt en actueel.</p>
     </div>
-    <div class="footer-links">
-      <h4>Product</h4>
-      <a href="/app.html">App</a>
-      <a href="/blog/">Inspiratie</a>
-      <a href="/about.html">Over</a>
+    <div class="footer-columns">
+      <div class="footer-links">
+        <h4>Product</h4>
+        <a href="/app.html">App</a>
+        <a href="/blog/">Inspiratie</a>
+        <a href="/about.html">Over</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/disclaimer/">Disclaimer</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <h4>Legal</h4>
-      <a href="/contact.html">Contact</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/disclaimer/">Disclaimer</a>
-    </div>
+    <button class="footer-expand" onclick="this.parentElement.classList.add('expanded');this.remove();" aria-label="Toon meer links">Meer ↓</button>
   </div>
   <div class="footer-bottom">
     &copy; 2026 PeuterPlannen. Gemaakt in Utrecht.
