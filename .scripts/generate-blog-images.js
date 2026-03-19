@@ -50,7 +50,22 @@ const SCENE_MAP = {
   'pasen-met-peuters': 'Toddlers searching for Easter eggs in a garden. Colorful eggs hidden in bushes and flowers. Spring flowers, bunnies, baskets.',
   'pretparken-peuter-nederland': 'A toddler riding a miniature carousel/merry-go-round in a theme park. Fairy tale castle, balloons, cotton candy cart.',
   'wat-meenemen-speeltuin-checklist': 'A neatly laid out flat-lay of playground essentials: water bottle, sunscreen, snack box, hat, wet wipes, small towel, band-aids. Clean organized grid layout.',
-  'zomervakantie-met-peuter': 'A toddler building a sandcastle at a Dutch beach. Beach grass, wooden beach pavilion, seagulls, gentle waves, bucket and spade.'
+  'zomervakantie-met-peuter': 'A toddler building a sandcastle at a Dutch beach. Beach grass, wooden beach pavilion, seagulls, gentle waves, bucket and spade.',
+  'almere-met-peuters': 'A parent and toddler cycling on a modern bike path through Almere. Geometric modern architecture, wide green spaces, a playground visible, Weerwater lake in background.',
+  'apeldoorn-met-peuters': 'A toddler watching monkeys at Apenheul. Lush forest setting, wooden walkways, a small monkey sitting nearby. Veluwe trees, dappled sunlight.',
+  'arnhem-met-peuters': 'A family visiting an open-air museum. Traditional Dutch farmhouse, a toddler feeding chickens, windmill in background. Green rolling hills.',
+  'beste-buggy-voor-uitjes': 'A flat-lay of three different types of strollers/buggies arranged side by side. Forest path, city cobblestones, and beach sand below each one. Clean comparison layout.',
+  'beste-speeltuinen-rotterdam-peuters': 'A toddler on a modern playground in Rotterdam with the Erasmusbrug bridge visible. Urban setting, colorful play equipment, cube houses in background.',
+  'dordrecht-met-peuters': 'A parent and toddler on a historic quay in Dordrecht. Old harbor, boats, medieval church tower, willow trees along the water.',
+  'enschede-met-peuters': 'A toddler playing in a large green park in Enschede. Volkspark setting, pond with ducks, playground, trees. Eastern Dutch landscape, flat and green.',
+  'gooi-en-vechtstreek-met-peuters': 'A family walking on a heathland trail in het Gooi. Purple heather, birch trees, a toddler pointing at a highland cow. Hilversum media tower barely visible in distance.',
+  'leiden-met-peuters': 'A toddler sitting on a canal wall in Leiden. University town, windmill De Valk visible, bridges, bikes. Parent nearby with a coffee cup.',
+  'maastricht-met-peuters': 'A family at a Burgundian square in Maastricht. Limestone buildings, café terraces, Vrijthof square, toddler eating a vlaai (pie). Hilly Limburg landscape.',
+  'pannenkoekenboerderijen-utrecht-heuvelrug': 'A toddler eating a huge pancake at a farmhouse table. Dutch farm setting on the Utrechtse Heuvelrug, wooden beams, chickens outside, forest visible through window.',
+  'regenkleding-peuters-wat-werkt': 'A flat-lay of toddler rain gear: yellow rain suit, rain boots, waterproof mittens, hat. Puddles and raindrops around the edges. Cheerful and practical.',
+  's-hertogenbosch-met-peuters': 'A parent and toddler on a boat tour through Den Bosch. The Binnendieze underground river, medieval arches, lanterns reflected in water. Magical atmosphere.',
+  'tilburg-met-peuters': 'A toddler at a textile-themed playground in Tilburg. Colorful fabric banners, industrial-chic setting with old factory chimney, green park.',
+  'zwolle-met-peuters': 'A family crossing a historic bridge in Zwolle. The Sassenpoort gate visible, canal, swans, a toddler throwing bread to ducks. Medieval town charm.'
 };
 
 async function generateImage(slug, title, description) {
