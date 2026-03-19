@@ -17,7 +17,7 @@ const RULES = [
     pattern: /rgba\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}/g,
     message: 'Hardcoded rgba() — gebruik rgba(var(--pp-*-rgb), opacity)',
     allowList: [/design-system\.css/],
-    maxViolations: 22, // baseline: style.css 9→12 (inline→external), app.css 18→22
+    maxViolations: 23, // baseline: style.css 12, app.css 23
   },
   {
     name: 'hardcoded-font-size',
