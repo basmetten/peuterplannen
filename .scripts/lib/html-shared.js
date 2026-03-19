@@ -84,6 +84,7 @@ function footerHTML() {
         <a href="/app.html">App</a>
         <a href="/blog/">Inspiratie</a>
         <a href="/about.html">Over</a>
+        <a href="/methode/">Methode</a>
       </div>
       <div class="footer-links">
         <h4>Legal</h4>
