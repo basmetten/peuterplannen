@@ -1526,8 +1526,8 @@
             throw lastError || new Error('Unknown fetch failure');
         }
 
-        const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url';
-        const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url';
+        const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url';
+        const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url';
 
         async function fetchAllPages(baseUrl, signal) {
             const BATCH = 1000;
@@ -2227,16 +2227,16 @@
                 const quickFacts = getCardQuickFacts(item, travelInfo);
                 const supportingIsDuplicate = supportingCopy && decisionSentence && isNearDuplicateCopy(supportingCopy, decisionSentence);
 
-                const photoSrc = item.owner_photo_url;
-                const cardImgHTML = photoSrc
-                    ? `<div class="loc-img">
-                        <img src="${escapeHtml(photoSrc)}"
+                const photoSrc = item.owner_photo_url || item.photo_url;
+                const CATEGORY_IMAGES = { play: '/images/categories/speeltuinen.webp', farm: '/images/categories/kinderboerderijen.webp', nature: '/images/categories/natuur.webp', museum: '/images/categories/musea.webp', swim: '/images/categories/zwemmen.webp', pancake: '/images/categories/pannenkoeken.webp', horeca: '/images/categories/horeca.webp', culture: '/images/categories/cultuur.webp' };
+                const imgSrc = photoSrc || CATEGORY_IMAGES[item.type] || CATEGORY_IMAGES.play;
+                const cardImgHTML = `<div class="loc-img${!photoSrc ? ' loc-img--category' : ''}">
+                        <img src="${escapeHtml(imgSrc)}"
                              alt="${escapeHtml(item.name)}"
                              loading="lazy" width="400" height="267"
                              onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
                         <span class="loc-type-badge">${escapeHtml(typeLabel)}</span>
-                      </div>`
-                    : '';
+                      </div>`;
 
                 const card = document.createElement('article');
                 card.className = 'loc-card reveal';

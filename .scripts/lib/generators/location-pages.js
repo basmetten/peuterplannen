@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { ROOT, TYPE_MAP, WEATHER_LABELS, SEO_DESCRIPTION_MIN_LENGTH, CF_ANALYTICS_TOKEN, analyticsHTML, AFFILIATE } = require('../config');
+const { ROOT, TYPE_MAP, TYPE_IMAGES, WEATHER_LABELS, SEO_DESCRIPTION_MIN_LENGTH, CF_ANALYTICS_TOKEN, analyticsHTML, AFFILIATE } = require('../config');
 const { escapeHtml, slugify, fullSiteUrl, normalizeExternalUrl, displayExternalUrl, isoDateInTimeZone, todayISOAmsterdam, parseDateSafe } = require('../helpers');
 const { navHTML, footerHTML, headCommon, supportHTML, badgeHTML, svgSpriteDefs, revealScript, newsletterHTML, formatEditorialDate, editorialMetaHTML, editorialBodyHTML, relatedBlogLinksHTML, affiliateTicketHTML, affiliateProductsHTML, affiliateReservationHTML, affiliateBookingHTML } = require('../html-shared');
 const { isFillerDescription, sortLocationsForSeo, getClusterPagesForLocation, matchesClusterPage, selectHubLocations } = require('../seo-policy');
@@ -466,7 +466,7 @@ ${breadcrumbLd}
 ${svgSpriteDefs()}
 ${navHTML(`Zoek in ${region.name}`, `/app.html?regio=${encodeURIComponent(region.name)}`)}
 
-${(loc.owner_photo_url || loc.photo_url) ? `<div class="hero-location-img">
+${fs.existsSync(path.join(ROOT, 'images', 'locations', region.slug, loc.locSlug, 'hero.webp')) ? `<div class="hero-location-img">
   <picture>
     <source srcset="/images/locations/${region.slug}/${loc.locSlug}/hero.webp" type="image/webp">
     <img src="/images/locations/${region.slug}/${loc.locSlug}/hero.jpg"
@@ -475,8 +475,12 @@ ${(loc.owner_photo_url || loc.photo_url) ? `<div class="hero-location-img">
          fetchpriority="high">
   </picture>
   <div class="hero-location-overlay"></div>
-</div>` : `<div class="loc-hero-placeholder" style="background: var(--pp-primary-50); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 24px; max-width: 800px; margin-left: auto; margin-right: auto;">
-  <span style="font-size: 4rem; opacity: 0.3;">${placeholderEmoji}</span>
+</div>` : `<div class="hero-location-img hero-location-img--category">
+  <img src="${TYPE_IMAGES[loc.type] || TYPE_IMAGES.play}"
+       alt="${escapeHtml(typeLabel)}"
+       width="800" height="267"
+       fetchpriority="high"
+       style="width: 100%; max-width: 800px; border-radius: 12px; display: block; margin: 0 auto 24px;">
 </div>`}
 <div class="hero hero-location">
   <span class="hero-location-badge">${typeLabel}</span>
