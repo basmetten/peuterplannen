@@ -1185,7 +1185,7 @@
         html.pp-desktop #map-container { position: absolute !important; inset: 0 !important; z-index: 0 !important; display: block !important; width: 100% !important; height: 100% !important; }
         html.pp-desktop .map-container { width: 100% !important; margin: 0 !important; height: 100% !important; max-height: none !important; min-height: unset !important; border-top: none !important; }
 
-        /* Floating glass panel over the map */
+        /* Left panel — no background, cards float directly on map */
         html.pp-desktop #list-view {
           position: absolute !important;
           top: 0 !important;
@@ -1197,78 +1197,47 @@
           height: 100% !important;
           overflow-y: auto !important;
           padding: 90px 16px 20px !important;
-          border-radius: 0 20px 20px 0 !important;
-          background: rgba(var(--pp-bg-rgb), 0.55) !important;
-          backdrop-filter: blur(18px) saturate(140%) !important;
-          -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
-          border-right: 1px solid rgba(var(--pp-primary-rgb), 0.10) !important;
-          box-shadow: 4px 0 28px rgba(0,0,0,0.06) !important;
-        }
-
-        /* Hide nav links + CTA on app page — mode toggle replaces them */
-        html.pp-desktop .nav-links { display: none !important; }
-        html.pp-desktop .nav-cta { display: none !important; }
-
-        /* Mode switch sits inside the nav bar, replacing the CTA */
-        html.pp-desktop .app-context-strip {
-          position: fixed !important;
-          top: var(--pp-nav-top, 14px) !important;
-          /* Right-align inside the nav bounds (nav padding = 18px) */
-          right: calc((100vw - min(1100px, calc(100vw - 28px))) / 2 + 18px) !important;
-          left: auto !important;
-          transform: none !important;
-          z-index: 122 !important;
-          display: flex !important;
-          align-items: center !important;
-          gap: 0 !important;
-          min-height: 62px !important;
-          padding: 0 !important;
-          margin: 0 !important;
+          border-radius: 0 !important;
           background: transparent !important;
           backdrop-filter: none !important;
           -webkit-backdrop-filter: none !important;
-          border: none !important;
+          border-right: none !important;
           box-shadow: none !important;
-          border-radius: 0 !important;
-          width: auto !important;
-          max-width: none !important;
         }
-        html.pp-desktop .app-context-strip::before { display: none !important; }
-        html.pp-desktop .app-context-copy { display: none !important; }
-        html.pp-desktop .app-context-kicker { display: none !important; }
-        html.pp-desktop .app-context-title { display: none !important; }
-        html.pp-desktop .app-context-sub { display: none !important; }
-        /* Mode switch as a compact segmented control, blending naturally into the nav */
-        html.pp-desktop .app-mode-switch.compact {
-          width: auto !important;
-          margin: 0 !important;
-          flex-shrink: 0 !important;
+
+        /* Hide only CTA on app page — nav links stay */
+        html.pp-desktop .nav-cta { display: none !important; }
+
+        /* Context strip only needed on mobile — hide entirely on desktop */
+        html.pp-desktop .app-context-strip { display: none !important; }
+
+        /* In-nav mode toggle: hidden by default, shown only on desktop app */
+        .app-nav-toggle { display: none; }
+        html.pp-desktop .app-nav-toggle {
+          display: flex !important;
           gap: 2px !important;
           padding: 3px !important;
-          border-left: none !important;
           background: rgba(var(--pp-text-rgb), 0.06) !important;
           border-radius: var(--pp-radius-sm) !important;
+          flex-shrink: 0 !important;
         }
-        html.pp-desktop .app-mode-switch.compact .app-mode-chip {
+        html.pp-desktop .app-nav-toggle .app-mode-chip {
           font-size: var(--pp-text-sm) !important;
           padding: 7px 16px !important;
           border-radius: calc(var(--pp-radius-sm) - 2px) !important;
           background: transparent !important;
           color: var(--pp-text-secondary) !important;
           font-weight: 500 !important;
-          letter-spacing: 0 !important;
-          transition: background 0.15s ease, color 0.15s ease !important;
           white-space: nowrap !important;
+          transition: background 0.15s ease, color 0.15s ease !important;
+          border: none !important; cursor: pointer !important;
         }
-        html.pp-desktop .app-mode-switch.compact .app-mode-chip.active {
+        html.pp-desktop .app-nav-toggle .app-mode-chip.active {
           background: var(--pp-primary) !important;
           color: var(--pp-text-inverse) !important;
           font-weight: 600 !important;
-          transform: none !important;
         }
-        html.pp-desktop .app-mode-switch.compact .app-mode-chip:hover:not(.active) { background: rgba(var(--pp-text-rgb), 0.08) !important; color: var(--pp-text) !important; }
-        html.pp-desktop .app-mode-switch.compact::before { display: none !important; }
-        html.pp-desktop .app-mode-switch.compact .app-mode-link { display: none !important; }
+        html.pp-desktop .app-nav-toggle .app-mode-chip:hover:not(.active) { background: rgba(var(--pp-text-rgb), 0.08) !important; color: var(--pp-text) !important; }
 
         /* Push map controls away from floating panel */
         html.pp-desktop .maplibregl-ctrl-top-left { left: 416px !important; }

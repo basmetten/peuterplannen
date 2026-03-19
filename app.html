@@ -98,10 +98,10 @@
     <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/design-system.css?v=202603191622">
+    <link rel="stylesheet" href="/design-system.css?v=202603191630">
     <link rel="stylesheet" href="/app.min.css">
     <link rel="stylesheet" href="/nav-floating.min.css?v=202603181034">
-    <script src="/nav-floating.js?v=202603191622" defer></script>
+    <script src="/nav-floating.js?v=202603191630" defer></script>
 
 </head>
 <body>
@@ -172,6 +172,10 @@
                 <a href="/blog/" class="nav-link">Inspiratie</a>
                 <a href="/contact.html" class="nav-link">Contact</a>
                 <a href="/app.html" class="nav-cta">Uitjes zoeken</a>
+            </div>
+            <div class="app-mode-switch compact app-nav-toggle" role="group" aria-label="App-modus">
+                <button type="button" class="app-mode-chip active" data-mode-target="home" onclick="switchView('home')">Ontdek locaties</button>
+                <button type="button" class="app-mode-chip" data-mode-target="plan" onclick="switchView('plan')">Plan mijn dag</button>
             </div>
             <button class="nav-burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-mobile-menu">
                 <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
