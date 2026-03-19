@@ -98,10 +98,10 @@
     <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/design-system.css?v=202603191452">
+    <link rel="stylesheet" href="/design-system.css?v=202603191622">
     <link rel="stylesheet" href="/app.min.css">
     <link rel="stylesheet" href="/nav-floating.min.css?v=202603181034">
-    <script src="/nav-floating.js?v=202603191452" defer></script>
+    <script src="/nav-floating.js?v=202603191622" defer></script>
 
 </head>
 <body>
@@ -187,19 +187,19 @@
         </div>
     </nav>
 
+    <header class="app-context-strip">
+        <div class="app-context-copy">
+            <p class="app-context-kicker">PeuterPlannen App</p>
+            <p class="app-context-title">Wat gaan we doen?</p>
+            <p class="app-context-sub">Ontdek direct kindvriendelijke uitjes in de buurt</p>
+        </div>
+        <div class="app-mode-switch compact" aria-label="Desktop app-modus">
+            <button type="button" class="app-mode-chip active" data-mode-target="home" onclick="switchView('home')">Ontdek locaties</button>
+            <button type="button" class="app-mode-chip" data-mode-target="plan" onclick="switchView('plan')">Plan mijn dag</button>
+            <a href="/ontdekken/" class="app-mode-chip app-mode-link">Per regio/thema</a>
+        </div>
+    </header>
     <div class="app-wrapper">
-        <header class="app-context-strip">
-            <div class="app-context-copy">
-                <p class="app-context-kicker">PeuterPlannen App</p>
-                <p class="app-context-title">Wat gaan we doen?</p>
-                <p class="app-context-sub">Ontdek direct kindvriendelijke uitjes in de buurt</p>
-            </div>
-            <div class="app-mode-switch compact" aria-label="Desktop app-modus">
-                <button type="button" class="app-mode-chip active" data-mode-target="home" onclick="switchView('home')">Ontdek locaties</button>
-                <button type="button" class="app-mode-chip" data-mode-target="plan" onclick="switchView('plan')">Plan mijn dag</button>
-                <a href="/ontdekken/" class="app-mode-chip app-mode-link">Per regio/thema</a>
-            </div>
-        </header>
     <div class="app-container" id="app-container">
         <div id="offline-banner" class="offline-banner hidden" role="status">Je bent offline — getoonde gegevens kunnen verouderd zijn.</div>
         <div id="list-view">

@@ -1174,9 +1174,11 @@
           body.plan-mode .plan-side { position: sticky; top: 116px; }
         }
         /* Desktop split view — JS class fallback (belt AND suspenders) */
-        html.pp-desktop body { overflow: hidden !important; padding-bottom: 0 !important; }
-        /* Desktop: fullscreen map + floating glass panel */
-        html.pp-desktop .app-wrapper { display: block !important; position: relative !important; height: calc(100dvh - 92px) !important; overflow: hidden !important; margin-top: 92px !important; }
+        /* Lock html+body to viewport so newsletter below fold is hidden, no stacking context on app-wrapper */
+        html.pp-desktop { height: 100dvh !important; overflow: hidden !important; }
+        html.pp-desktop body { height: 100dvh !important; overflow: hidden !important; padding-bottom: 0 !important; }
+        /* Desktop: fullscreen map behind nav — no z-index so nav stays above */
+        html.pp-desktop .app-wrapper { display: block !important; position: fixed !important; inset: 0 !important; height: 100dvh !important; overflow: hidden !important; margin-top: 0 !important; z-index: 50 !important; }
         html.pp-desktop .app-container { display: block !important; position: relative !important; width: 100% !important; height: 100% !important; max-width: 100% !important; overflow: hidden !important; padding: 0 !important; margin: 0 !important; }
 
         /* Map fills entire viewport behind everything */
@@ -1194,45 +1196,78 @@
           width: 400px !important;
           height: 100% !important;
           overflow-y: auto !important;
-          padding: 0 16px 20px !important;
-          border-radius: 0 16px 16px 0 !important;
-          background: rgba(var(--pp-bg-rgb), 0.82) !important;
-          backdrop-filter: blur(20px) saturate(160%) !important;
-          -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
-          border-right: 1px solid rgba(var(--pp-text-rgb), 0.05) !important;
-          box-shadow: 4px 0 28px rgba(0,0,0,0.08) !important;
+          padding: 90px 16px 20px !important;
+          border-radius: 0 20px 20px 0 !important;
+          background: rgba(var(--pp-bg-rgb), 0.55) !important;
+          backdrop-filter: blur(18px) saturate(140%) !important;
+          -webkit-backdrop-filter: blur(18px) saturate(140%) !important;
+          border-right: 1px solid rgba(var(--pp-primary-rgb), 0.10) !important;
+          box-shadow: 4px 0 28px rgba(0,0,0,0.06) !important;
         }
 
-        /* Secondary floating bar — app context + mode switch */
+        /* Hide nav links + CTA on app page — mode toggle replaces them */
+        html.pp-desktop .nav-links { display: none !important; }
+        html.pp-desktop .nav-cta { display: none !important; }
+
+        /* Mode switch sits inside the nav bar, replacing the CTA */
         html.pp-desktop .app-context-strip {
           position: fixed !important;
-          top: 78px !important;
-          left: 50% !important;
-          transform: translateX(-50%) !important;
-          z-index: 99 !important;
+          top: var(--pp-nav-top, 14px) !important;
+          /* Right-align inside the nav bounds (nav padding = 18px) */
+          right: calc((100vw - min(1100px, calc(100vw - 28px))) / 2 + 18px) !important;
+          left: auto !important;
+          transform: none !important;
+          z-index: 122 !important;
           display: flex !important;
           align-items: center !important;
-          justify-content: center !important;
-          gap: 16px !important;
+          gap: 0 !important;
+          min-height: 62px !important;
+          padding: 0 !important;
           margin: 0 !important;
-          padding: 10px 20px !important;
-          background: rgba(var(--pp-bg-rgb), 0.88) !important;
-          backdrop-filter: blur(16px) saturate(140%) !important;
-          -webkit-backdrop-filter: blur(16px) saturate(140%) !important;
-          border: 1px solid rgba(var(--pp-text-rgb), 0.06) !important;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
-          max-width: none !important;
+          background: transparent !important;
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          border: none !important;
+          box-shadow: none !important;
+          border-radius: 0 !important;
           width: auto !important;
-          text-align: center !important;
-          border-radius: 20px !important;
+          max-width: none !important;
         }
         html.pp-desktop .app-context-strip::before { display: none !important; }
-        html.pp-desktop .app-context-copy { align-items: center !important; flex: 0 0 auto !important; min-width: 0 !important; gap: 0 !important; }
+        html.pp-desktop .app-context-copy { display: none !important; }
         html.pp-desktop .app-context-kicker { display: none !important; }
-        html.pp-desktop .app-context-title { font-family: var(--pp-font-heading) !important; font-size: 15px !important; font-weight: 800 !important; letter-spacing: -0.02em !important; white-space: nowrap !important; color: var(--pp-text) !important; }
+        html.pp-desktop .app-context-title { display: none !important; }
         html.pp-desktop .app-context-sub { display: none !important; }
-        html.pp-desktop .app-mode-switch.compact { width: auto !important; margin: 0 !important; flex-shrink: 0 !important; gap: 4px !important; border-left: 1px solid rgba(var(--pp-text-rgb), 0.1) !important; padding-left: 16px !important; }
-        html.pp-desktop .app-mode-switch.compact .app-mode-chip { font-size: 12px !important; padding: 6px 14px !important; border-radius: 12px !important; }
+        /* Mode switch as a compact segmented control, blending naturally into the nav */
+        html.pp-desktop .app-mode-switch.compact {
+          width: auto !important;
+          margin: 0 !important;
+          flex-shrink: 0 !important;
+          gap: 2px !important;
+          padding: 3px !important;
+          border-left: none !important;
+          background: rgba(var(--pp-text-rgb), 0.06) !important;
+          border-radius: var(--pp-radius-sm) !important;
+        }
+        html.pp-desktop .app-mode-switch.compact .app-mode-chip {
+          font-size: var(--pp-text-sm) !important;
+          padding: 7px 16px !important;
+          border-radius: calc(var(--pp-radius-sm) - 2px) !important;
+          background: transparent !important;
+          color: var(--pp-text-secondary) !important;
+          font-weight: 500 !important;
+          letter-spacing: 0 !important;
+          transition: background 0.15s ease, color 0.15s ease !important;
+          white-space: nowrap !important;
+        }
+        html.pp-desktop .app-mode-switch.compact .app-mode-chip.active {
+          background: var(--pp-primary) !important;
+          color: var(--pp-text-inverse) !important;
+          font-weight: 600 !important;
+          transform: none !important;
+        }
+        html.pp-desktop .app-mode-switch.compact .app-mode-chip:hover:not(.active) { background: rgba(var(--pp-text-rgb), 0.08) !important; color: var(--pp-text) !important; }
+        html.pp-desktop .app-mode-switch.compact::before { display: none !important; }
         html.pp-desktop .app-mode-switch.compact .app-mode-link { display: none !important; }
 
         /* Push map controls away from floating panel */
