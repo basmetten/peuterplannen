@@ -1,0 +1,142 @@
+/**
+ * warm-glass-tokens.css
+ * PeuterPlannen — Warm Glass Design Tokens
+ *
+ * ADDITIVE: builds on design-system.css, does not replace it.
+ * All tokens are CSS custom properties so dark mode can override values later.
+ *
+ * Sections:
+ *   3.1 Colors
+ *   3.2 Typography
+ *   3.3 Spacing (Apple 4px grid)
+ *   3.4 Radii (Apple Maps values)
+ *   3.5 Animation (Apple Maps timing)
+ */
+
+:root {
+
+  /* ─── 3.1 Colors ──────────────────────────────────────────────────────────── */
+
+  /* Glass surfaces — warm tinted, matching --pp-bg (#FAF7F2) */
+  --wg-glass-light:   rgba(250, 247, 242, 0.78);   /* panels, sidebar */
+  --wg-glass-medium:  rgba(250, 247, 242, 0.60);   /* bottom sheet */
+  --wg-glass-heavy:   rgba(250, 247, 242, 0.92);   /* search bar, controls */
+  --wg-glass-overlay: rgba(250, 247, 242, 0.95);   /* full sheet, modals */
+
+  /* Blur levels — conservative, test on real iPhone before increasing */
+  --wg-blur-panel:   blur(20px) saturate(150%);    /* large surfaces */
+  --wg-blur-control: blur(10px) saturate(150%);    /* small controls */
+  --wg-blur-overlay: blur(20px) saturate(120%);    /* modals, overlays */
+  /* NOTE: disable backdrop-filter during drag gestures (existing pattern in glass.css)
+     to prevent jank on lower-end iOS devices */
+
+  /* Borders (Apple Maps: extremely subtle) */
+  --wg-border-subtle: 1px solid rgba(180, 140, 110, 0.12);
+  --wg-border-medium: 1px solid rgba(180, 140, 110, 0.20);
+
+  /* Brand colors — keep existing warm palette */
+  --wg-primary:       #D47756;   /* terracotta/coral */
+  --wg-primary-light: #E8956F;
+  --wg-primary-dark:  #B85E3D;
+  --wg-accent:        #4A7A4A;   /* green for scores */
+
+  /* Text — warm grays (not Apple's cold grays) */
+  --wg-text:           #2D2926;
+  --wg-text-secondary: rgba(60, 45, 38, 0.60);
+  --wg-text-tertiary:  rgba(60, 45, 38, 0.30);
+  --wg-text-inverse:   #FFFBF7;
+
+  /* Backgrounds */
+  --wg-bg:           #FAF7F2;   /* identical to --pp-bg */
+  --wg-surface:      #FFFFFF;
+  --wg-surface-warm: #FFFBF7;
+
+  /* Shadows (Apple Maps dual-layer pattern) */
+  --wg-shadow-raised:   0 2px 4px rgba(60, 40, 20, 0.08),  0 2px 12px rgba(60, 40, 20, 0.04);
+  --wg-shadow-elevated: 0 2px 8px rgba(60, 40, 20, 0.10),  0 2px 16px rgba(60, 40, 20, 0.06);
+  --wg-shadow-floating: 0 2px 8px rgba(60, 40, 20, 0.12),  0 8px 24px rgba(60, 40, 20, 0.08);
+
+  /* === Dark mode prep: override these in @media (prefers-color-scheme: dark) later === */
+
+
+  /* ─── 3.2 Typography ─────────────────────────────────────────────────────── */
+
+  /* Font stack — keep existing Fraunces + DM Sans */
+  --wg-font:         var(--pp-font-ui);       /* 'DM Sans', fallbacks */
+  --wg-font-display: var(--pp-font-heading);  /* 'Fraunces', fallbacks */
+
+  /* Fluid type scale — reference existing design-system.css clamp() values */
+  --wg-text-xs:   var(--pp-text-xs);    /* clamp(0.75rem, ...) */
+  --wg-text-sm:   var(--pp-text-sm);    /* clamp(0.8125rem, ...) */
+  --wg-text-base: var(--pp-text-base);  /* clamp(0.9375rem, ...) */
+  --wg-text-lg:   var(--pp-text-lg);    /* clamp(1.0625rem, ...) */
+  --wg-text-xl:   var(--pp-text-xl);    /* clamp(1.25rem, ...) */
+  --wg-text-2xl:  var(--pp-text-2xl);   /* clamp(1.5rem, ...) */
+  --wg-text-3xl:  var(--pp-text-3xl);   /* clamp(2rem, ...) */
+
+  /* Line heights */
+  --wg-leading-tight:   1.2;    /* headings */
+  --wg-leading-normal:  1.5;    /* body text */
+  --wg-leading-relaxed: 1.65;   /* long-form content */
+  --wg-leading-none:    1;      /* single-line labels */
+
+  /* Weights */
+  --wg-weight-normal:   400;
+  --wg-weight-medium:   500;
+  --wg-weight-semibold: 600;
+  --wg-weight-bold:     700;
+
+  /* Letter spacing */
+  --wg-tracking-tight:  -0.3px;
+  --wg-tracking-normal:  0;
+  --wg-tracking-wide:    0.2px;
+
+
+  /* ─── 3.3 Spacing (Apple 4px grid) ──────────────────────────────────────── */
+
+  --wg-sp-2:  2px;
+  --wg-sp-4:  4px;
+  --wg-sp-8:  8px;
+  --wg-sp-12: 12px;
+  --wg-sp-16: 16px;
+  --wg-sp-20: 20px;   /* Apple Maps' most-used padding */
+  --wg-sp-24: 24px;
+  --wg-sp-32: 32px;
+  --wg-sp-48: 48px;
+  --wg-sp-64: 64px;
+
+
+  /* ─── 3.4 Radii (Apple Maps values) ─────────────────────────────────────── */
+
+  --wg-radius-sm:     8px;
+  --wg-radius-md:    12px;   /* default — controls, cards, search */
+  --wg-radius-lg:    16px;   /* flatter containers */
+  --wg-radius-xl:    20px;   /* bottom sheet top corners */
+  --wg-radius-pill: 100px;
+  --wg-radius-circle: 50%;
+
+
+  /* ─── 3.5 Animation (Apple Maps timing) ─────────────────────────────────── */
+
+  /* Durations */
+  --wg-duration-fast:   100ms;
+  --wg-duration-normal: 150ms;
+  --wg-duration-slow:   300ms;
+  --wg-duration-sheet:  400ms;
+
+  /* Easing curves */
+  --wg-ease-default:   cubic-bezier(0.12, 0.55, 0.19, 1);
+  --wg-ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);   /* overshoot */
+  --wg-ease-heavy-in:  cubic-bezier(0.03, 0,    0.31, 1);
+  --wg-ease-heavy-out: cubic-bezier(0.64, 0,    0.85, 1);
+  --wg-ease-sheet:     cubic-bezier(0.32, 0.72, 0,    1);
+
+}
+
+/* ─── Reduced motion fallbacks ──────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.15s !important;
+  }
+}
