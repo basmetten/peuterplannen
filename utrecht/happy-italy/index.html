@@ -18,10 +18,10 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603191630">
-  <link rel="stylesheet" href="/style.min.css?v=202603191630">
-  <link rel="stylesheet" href="/nav-floating.css?v=202603191630">
-  <script src="/nav-floating.js?v=202603191630" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603200616">
+  <link rel="stylesheet" href="/style.min.css?v=202603200616">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603200616">
+  <script src="/nav-floating.js?v=202603200616" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -177,8 +177,15 @@
   </div>
 </nav>
 
-<div class="loc-hero-placeholder" style="background: var(--pp-primary-50); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 24px; max-width: 800px; margin-left: auto; margin-right: auto;">
-  <span style="font-size: 4rem; opacity: 0.3;">☕</span>
+<div class="hero-location-img">
+  <picture>
+    <source srcset="/images/locations/utrecht/happy-italy/hero.webp" type="image/webp">
+    <img src="/images/locations/utrecht/happy-italy/hero.jpg"
+         alt="Happy Italy"
+         width="800" height="533"
+         fetchpriority="high">
+  </picture>
+  <div class="hero-location-overlay"></div>
 </div>
 <div class="hero hero-location">
   <span class="hero-location-badge">Horeca</span>
@@ -263,16 +270,16 @@
         <p>Buurtrestaurant in De Gaard (Utrecht Oost) met speelhoek. Dagelijks open, ook ontbijt. Vegetarisch aanbod, gezinsvriende...</p>
       </article>
       <article class="loc-item">
-        <h3><a href="/utrecht/de-roozeboom/">De Roozeboom</a></h3>
-        <p>Pannenkoekenrestaurant met speeltuin en speelhoek waar kinderen zich kunnen vermaken terwijl het gezin eet.</p>
-      </article>
-      <article class="loc-item">
         <h3><a href="/utrecht/papa-s-pannekoeken/">Papa's Pannekoeken</a></h3>
         <p>Pannenkoekenrestaurant met binnenspeelplaats in Leidsche Rijn. Combinatie van pannenkoeken eten en indoor spelen, bijna ...</p>
       </article>
       <article class="loc-item">
         <h3><a href="/utrecht/pretfabriek/">Pretfabriek</a></h3>
         <p>Binnenspeeltuin in Woerden, ideaal voor regendagen. Entree betaald. Speciaal voor kinderen ingericht.</p>
+      </article>
+      <article class="loc-item">
+        <h3><a href="/utrecht/universiteitsmuseum/">Universiteitsmuseum</a></h3>
+        <p>Wetenschapsmuseum van de UU met een grote kindvriendelijke tuin en interactieve zalen. Museumkaart geldig. Di–zo 10–17u.</p>
       </article>
     </div>
   </div>

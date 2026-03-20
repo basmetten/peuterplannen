@@ -18,10 +18,10 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603191630">
-  <link rel="stylesheet" href="/style.min.css?v=202603191630">
-  <link rel="stylesheet" href="/nav-floating.css?v=202603191630">
-  <script src="/nav-floating.js?v=202603191630" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603200616">
+  <link rel="stylesheet" href="/style.min.css?v=202603200616">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603200616">
+  <script src="/nav-floating.js?v=202603200616" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -138,28 +138,6 @@
     {
       "@type": "ListItem",
       "position": 5,
-      "name": "De Roozeboom",
-      "description": "Pannenkoekenrestaurant met speeltuin en speelhoek waar kinderen zich kunnen vermaken terwijl het gezin eet.",
-      "url": "https://peuterplannen.nl/utrecht/de-roozeboom/",
-      "item": {
-        "@type": "TouristAttraction",
-        "name": "De Roozeboom",
-        "description": "Pannenkoekenrestaurant met speeltuin en speelhoek waar kinderen zich kunnen vermaken terwijl het gezin eet.",
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 52.03889,
-          "longitude": 5.035283
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Utrecht",
-          "addressCountry": "NL"
-        }
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 6,
       "name": "Fort aan de Klop",
       "description": "Restaurant op een historisch fort bij de Klop, met groot speelterrein buiten. Rolstoeltoegankelijk, kindvriendelijk, seizoensgebonden openingstijden.",
       "url": "https://peuterplannen.nl/utrecht/fort-aan-de-klop/",
@@ -181,7 +159,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 7,
+      "position": 6,
       "name": "Papa's Pannekoeken",
       "description": "Pannenkoekenrestaurant met binnenspeelplaats in Leidsche Rijn. Combinatie van pannenkoeken eten en indoor spelen, bijna dagelijks open.",
       "url": "https://peuterplannen.nl/utrecht/papa-s-pannekoeken/",
@@ -203,7 +181,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 8,
+      "position": 7,
       "name": "Pretfabriek",
       "description": "Binnenspeeltuin in Woerden, ideaal voor regendagen. Entree betaald. Speciaal voor kinderen ingericht.",
       "url": "https://peuterplannen.nl/utrecht/pretfabriek/",
@@ -225,7 +203,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 9,
+      "position": 8,
       "name": "Universiteitsmuseum",
       "description": "Wetenschapsmuseum van de UU met een grote kindvriendelijke tuin en interactieve zalen. Museumkaart geldig. Di–zo 10–17u.",
       "url": "https://peuterplannen.nl/utrecht/universiteitsmuseum/",
@@ -247,7 +225,7 @@
     },
     {
       "@type": "ListItem",
-      "position": 10,
+      "position": 9,
       "name": "You Jump",
       "description": "Indoor trampolinepark You Jump in Nieuwegein. Vaste peuterochtenden, veilig en uitdagend voor 1-6 jaar.",
       "url": "https://peuterplannen.nl/utrecht/you-jump/",
@@ -259,6 +237,28 @@
           "@type": "GeoCoordinates",
           "latitude": 52.026978,
           "longitude": 5.103332
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Utrecht",
+          "addressCountry": "NL"
+        }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "name": "De Roozeboom",
+      "description": "Pannenkoekenrestaurant met speeltuin en speelhoek waar kinderen zich kunnen vermaken terwijl het gezin eet.",
+      "url": "https://peuterplannen.nl/utrecht/de-roozeboom/",
+      "item": {
+        "@type": "TouristAttraction",
+        "name": "De Roozeboom",
+        "description": "Pannenkoekenrestaurant met speeltuin en speelhoek waar kinderen zich kunnen vermaken terwijl het gezin eet.",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 52.03889,
+          "longitude": 5.035283
         },
         "address": {
           "@type": "PostalAddress",
@@ -680,7 +680,15 @@
       <div class="loc-list pp-reveal-stagger">
         
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/pretfabriek/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/pretfabriek/thumb.jpg"
+               alt="Pretfabriek"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -694,7 +702,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/you-jump/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/you-jump/thumb.jpg"
+               alt="You Jump"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -708,7 +724,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/ballorig-almere/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/ballorig-almere/thumb.jpg"
+               alt="Ballorig Almere"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -722,7 +746,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/ballorig-gouda/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/ballorig-gouda/thumb.jpg"
+               alt="Ballorig Gouda"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -736,7 +768,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/monkey-town-amersfoort/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/monkey-town-amersfoort/thumb.jpg"
+               alt="Monkey Town Amersfoort"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -750,7 +790,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/kidzcity/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/kidzcity/thumb.jpg"
+               alt="KidZcity"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -764,7 +812,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/play-in/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/play-in/thumb.jpg"
+               alt="Play-In"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -778,7 +834,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/ballorig-amersfoort/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/ballorig-amersfoort/thumb.jpg"
+               alt="Ballorig Amersfoort"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -820,7 +884,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/ballorig-utrecht/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/ballorig-utrecht/thumb.jpg"
+               alt="Ballorig Utrecht"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -834,7 +906,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/ballorig-veenendaal/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/ballorig-veenendaal/thumb.jpg"
+               alt="Ballorig Veenendaal"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -862,7 +942,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/speeltuin-de-bloesem/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/speeltuin-de-bloesem/thumb.jpg"
+               alt="Speeltuin De Bloesem"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -876,7 +964,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/speeltuin-de-kleine-dom/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/speeltuin-de-kleine-dom/thumb.jpg"
+               alt="Speeltuin De Kleine Dom"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -890,7 +986,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/speeltuin-de-torteltuin/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/speeltuin-de-torteltuin/thumb.jpg"
+               alt="Speeltuin De Torteltuin"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -904,7 +1008,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/you-jump-nieuwegein/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/you-jump-nieuwegein/thumb.jpg"
+               alt="You Jump Nieuwegein"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -974,7 +1086,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/maisdoolhof/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/maisdoolhof/thumb.jpg"
+               alt="Maisdoolhof"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -1030,7 +1150,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/de-bosspeeltuin/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/de-bosspeeltuin/thumb.jpg"
+               alt="De Bosspeeltuin"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -1044,7 +1172,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/natuurspeeltuin-de-hoef/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/natuurspeeltuin-de-hoef/thumb.jpg"
+               alt="Natuurspeeltuin De Hoef"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -1058,7 +1194,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/speeltuin-anansi/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/speeltuin-anansi/thumb.jpg"
+               alt="Speeltuin Anansi"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -1086,7 +1230,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/bouwspeeltuin-voorn/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/bouwspeeltuin-voorn/thumb.jpg"
+               alt="Bouwspeeltuin Voorn"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Speeltuinen &amp; Speelparadijzen</span>
       </div>
         <div class="loc-body">
@@ -1162,7 +1314,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/natuurkwartier-nieuwegein/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/natuurkwartier-nieuwegein/thumb.jpg"
+               alt="Natuurkwartier Nieuwegein"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1176,7 +1336,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/kinderboerderij-oortjespad/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/kinderboerderij-oortjespad/thumb.jpg"
+               alt="Kinderboerderij Oortjespad"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1190,7 +1358,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/stadsboerderij-de-griftsteede/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/stadsboerderij-de-griftsteede/thumb.jpg"
+               alt="Stadsboerderij De Griftsteede"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1204,7 +1380,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/griftpark/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/griftpark/thumb.jpg"
+               alt="Griftpark"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1218,7 +1402,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/molen-de-ster/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/molen-de-ster/thumb.jpg"
+               alt="Molen de Ster"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1246,7 +1438,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/hoeve-wielrevelt/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/hoeve-wielrevelt/thumb.jpg"
+               alt="Hoeve Wielrevelt"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1260,7 +1460,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/kinderboerderij-de-schaapskooi/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/kinderboerderij-de-schaapskooi/thumb.jpg"
+               alt="Kinderboerderij De Schaapskooi"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1274,7 +1482,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/speelboerderij-houten/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/speelboerderij-houten/thumb.jpg"
+               alt="Speelboerderij Houten"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1288,7 +1504,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/stadsboerderij-griftsteede/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/stadsboerderij-griftsteede/thumb.jpg"
+               alt="Stadsboerderij Griftsteede"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1316,7 +1540,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/dierenweide-haarzuilens/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/dierenweide-haarzuilens/thumb.jpg"
+               alt="Dierenweide Haarzuilens"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1330,7 +1562,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/dierenweide-vleuten-de-meern/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/dierenweide-vleuten-de-meern/thumb.jpg"
+               alt="Dierenweide Vleuten - De Meern"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1344,7 +1584,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/dierenweide-west/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/dierenweide-west/thumb.jpg"
+               alt="Dierenweide West"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1358,7 +1606,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/ooievaarsbuitenstation-zegveld/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/ooievaarsbuitenstation-zegveld/thumb.jpg"
+               alt="Ooievaarsbuitenstation Zegveld"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1372,7 +1628,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/rustpunt-bio-van-dijk/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/rustpunt-bio-van-dijk/thumb.jpg"
+               alt="Rustpunt Bio van Dijk"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1386,7 +1650,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/dierenweide-vleuten-vleuten-de-meern/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/dierenweide-vleuten-vleuten-de-meern/thumb.jpg"
+               alt="Dierenweide Vleuten Vleuten - De Meern"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1414,7 +1686,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/stadsboerderij-eilandsteede/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/stadsboerderij-eilandsteede/thumb.jpg"
+               alt="Stadsboerderij Eilandsteede"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1428,7 +1708,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/stadsboerderij-gagelsteede/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/stadsboerderij-gagelsteede/thumb.jpg"
+               alt="Stadsboerderij Gagelsteede"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1442,7 +1730,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/stadsboerderij-koppelsteede-zuid/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/stadsboerderij-koppelsteede-zuid/thumb.jpg"
+               alt="Stadsboerderij Koppelsteede Zuid"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1456,7 +1752,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/steede-hoge-woerd/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/steede-hoge-woerd/thumb.jpg"
+               alt="Steede Hoge Woerd"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1470,7 +1774,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/moestuin-en-dierenweide/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/moestuin-en-dierenweide/thumb.jpg"
+               alt="Moestuin en dierenweide"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kinderboerderijen &amp; Dieren</span>
       </div>
         <div class="loc-body">
@@ -1532,7 +1844,15 @@
       <div class="loc-list pp-reveal-stagger">
         
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/botanische-tuinen-universiteit-utrecht/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/botanische-tuinen-universiteit-utrecht/thumb.jpg"
+               alt="Botanische Tuinen Universiteit Utrecht"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Natuur &amp; Buiten</span>
       </div>
         <div class="loc-body">
@@ -1546,7 +1866,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/kasteel-de-haar/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/kasteel-de-haar/thumb.jpg"
+               alt="Kasteel de Haar"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Natuur &amp; Buiten</span>
       </div>
         <div class="loc-body">
@@ -1560,7 +1888,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/oude-hortus/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/oude-hortus/thumb.jpg"
+               alt="Oude Hortus"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Natuur &amp; Buiten</span>
       </div>
         <div class="loc-body">
@@ -1574,7 +1910,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/rotstuin/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/rotstuin/thumb.jpg"
+               alt="Rotstuin"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Natuur &amp; Buiten</span>
       </div>
         <div class="loc-body">
@@ -1630,7 +1974,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/de-leyen/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/de-leyen/thumb.jpg"
+               alt="De Leyen"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Natuur &amp; Buiten</span>
       </div>
         <div class="loc-body">
@@ -1644,7 +1996,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/evolutietuin/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/evolutietuin/thumb.jpg"
+               alt="Evolutietuin"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Natuur &amp; Buiten</span>
       </div>
         <div class="loc-body">
@@ -1658,7 +2018,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/natuurpark-bloeyendael/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/natuurpark-bloeyendael/thumb.jpg"
+               alt="Natuurpark Bloeyendael"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Natuur &amp; Buiten</span>
       </div>
         <div class="loc-body">
@@ -1672,7 +2040,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/ontdektuin/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/ontdektuin/thumb.jpg"
+               alt="Ontdektuin"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Natuur &amp; Buiten</span>
       </div>
         <div class="loc-body">
@@ -1686,7 +2062,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/vlindertuin/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/vlindertuin/thumb.jpg"
+               alt="Vlindertuin"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Natuur &amp; Buiten</span>
       </div>
         <div class="loc-body">
@@ -1700,7 +2084,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/amelisweerd-utrecht/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/amelisweerd-utrecht/thumb.jpg"
+               alt="Amelisweerd Utrecht"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Natuur &amp; Buiten</span>
       </div>
         <div class="loc-body">
@@ -1714,7 +2106,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/de-kievit/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/de-kievit/thumb.jpg"
+               alt="De Kievit"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Natuur &amp; Buiten</span>
       </div>
         <div class="loc-body">
@@ -1728,7 +2128,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/gagelsteede/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/gagelsteede/thumb.jpg"
+               alt="Gagelsteede"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Natuur &amp; Buiten</span>
       </div>
         <div class="loc-body">
@@ -1742,7 +2150,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/vlinderidylle/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/vlinderidylle/thumb.jpg"
+               alt="Vlinderidylle"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Natuur &amp; Buiten</span>
       </div>
         <div class="loc-body">
@@ -1770,7 +2186,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/recreatiegebied-ruigenhoek/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/recreatiegebied-ruigenhoek/thumb.jpg"
+               alt="Recreatiegebied Ruigenhoek"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Natuur &amp; Buiten</span>
       </div>
         <div class="loc-body">
@@ -1804,7 +2228,15 @@
       <div class="loc-list pp-reveal-stagger">
         
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/universiteitsmuseum/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/universiteitsmuseum/thumb.jpg"
+               alt="Universiteitsmuseum"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Musea &amp; Ontdekken</span>
       </div>
         <div class="loc-body">
@@ -1818,7 +2250,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/spoorwegmuseum/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/spoorwegmuseum/thumb.jpg"
+               alt="Spoorwegmuseum"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Musea &amp; Ontdekken</span>
       </div>
         <div class="loc-body">
@@ -1832,7 +2272,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/het-klooster/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/het-klooster/thumb.jpg"
+               alt="Het Klooster"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Musea &amp; Ontdekken</span>
       </div>
         <div class="loc-body">
@@ -1846,7 +2294,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/oortjespad-bezoekerscentrum/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/oortjespad-bezoekerscentrum/thumb.jpg"
+               alt="Oortjespad Bezoekerscentrum"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Musea &amp; Ontdekken</span>
       </div>
         <div class="loc-body">
@@ -1860,7 +2316,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/professor-loep/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/professor-loep/thumb.jpg"
+               alt="Professor Loep"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Musea &amp; Ontdekken</span>
       </div>
         <div class="loc-body">
@@ -1874,7 +2338,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/museumwerf-vreeswijk/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/museumwerf-vreeswijk/thumb.jpg"
+               alt="Museumwerf Vreeswijk"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Musea &amp; Ontdekken</span>
       </div>
         <div class="loc-body">
@@ -1888,7 +2360,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/centraal-museum/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/centraal-museum/thumb.jpg"
+               alt="Centraal Museum"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Musea &amp; Ontdekken</span>
       </div>
         <div class="loc-body">
@@ -1908,7 +2388,15 @@
       <div class="loc-list pp-reveal-stagger">
         
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/theater-kikker/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/theater-kikker/thumb.jpg"
+               alt="Theater Kikker"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Cultuur &amp; Theater</span>
       </div>
         <div class="loc-body">
@@ -1922,7 +2410,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/kindertheater-de-toverknol/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/kindertheater-de-toverknol/thumb.jpg"
+               alt="Kindertheater de Toverknol"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Cultuur &amp; Theater</span>
       </div>
         <div class="loc-body">
@@ -1942,7 +2438,15 @@
       <div class="loc-list pp-reveal-stagger">
         
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/batenstein-buiten/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/batenstein-buiten/thumb.jpg"
+               alt="Batenstein-buiten"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Zwembaden &amp; Waterplezier</span>
       </div>
         <div class="loc-body">
@@ -1976,21 +2480,15 @@
       <div class="loc-list pp-reveal-stagger">
         
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
-        <span class="loc-type-badge">Pannenkoekenrestaurants</span>
-      </div>
-        <div class="loc-body">
-          <h3><a href="/utrecht/de-roozeboom/">De Roozeboom</a></h3>
-          <p>Pannenkoekenrestaurant met speeltuin en speelhoek waar kinderen zich kunnen vermaken terwijl het gezin eet.</p>
-          <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Terras</span></span>
-          <div class="loc-actions">
-            <a href="/utrecht/de-roozeboom/" class="loc-detail-btn">Bekijk details</a>
-            <a href="https://www.pannenkoeken.org/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Roozeboom">Website</a>
-          </div>
-        </div>
-      </article>
-      <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/papa-s-pannekoeken/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/papa-s-pannekoeken/thumb.jpg"
+               alt="Papa's Pannekoeken"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Pannenkoekenrestaurants</span>
       </div>
         <div class="loc-body">
@@ -2004,7 +2502,37 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/de-roozeboom/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/de-roozeboom/thumb.jpg"
+               alt="De Roozeboom"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
+        <span class="loc-type-badge">Pannenkoekenrestaurants</span>
+      </div>
+        <div class="loc-body">
+          <h3><a href="/utrecht/de-roozeboom/">De Roozeboom</a></h3>
+          <p>Pannenkoekenrestaurant met speeltuin en speelhoek waar kinderen zich kunnen vermaken terwijl het gezin eet.</p>
+          <span class="badges"><span class="badge-pill badge-coffee"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-coffee"/></svg>Koffie</span><span class="badge-pill badge-alcohol"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alcohol"/></svg>Terras</span></span>
+          <div class="loc-actions">
+            <a href="/utrecht/de-roozeboom/" class="loc-detail-btn">Bekijk details</a>
+            <a href="https://www.pannenkoeken.org/" target="_blank" rel="noopener" class="loc-website-btn" aria-label="Website van De Roozeboom">Website</a>
+          </div>
+        </div>
+      </article>
+      <article class="loc-item">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/pancake-in-the-park-overvecht/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/pancake-in-the-park-overvecht/thumb.jpg"
+               alt="Pancake in the Park Overvecht"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Pannenkoekenrestaurants</span>
       </div>
         <div class="loc-body">
@@ -2018,7 +2546,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/anna-pancakes-leidsche-rijn/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/anna-pancakes-leidsche-rijn/thumb.jpg"
+               alt="Anna Pancakes Leidsche Rijn"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Pannenkoekenrestaurants</span>
       </div>
         <div class="loc-body">
@@ -2032,7 +2568,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/pand-pannenkoek/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/pand-pannenkoek/thumb.jpg"
+               alt="PAND Pannenkoek"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Pannenkoekenrestaurants</span>
       </div>
         <div class="loc-body">
@@ -2060,7 +2604,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/pannenkoe-gouda/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/pannenkoe-gouda/thumb.jpg"
+               alt="Pannenkoe Gouda"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Pannenkoekenrestaurants</span>
       </div>
         <div class="loc-body">
@@ -2074,7 +2626,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/pannenkoe-nieuwegein/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/pannenkoe-nieuwegein/thumb.jpg"
+               alt="Pannenkoe Nieuwegein"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Pannenkoekenrestaurants</span>
       </div>
         <div class="loc-body">
@@ -2088,7 +2648,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/oh-crepe/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/oh-crepe/thumb.jpg"
+               alt="Oh Crêpe"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Pannenkoekenrestaurants</span>
       </div>
         <div class="loc-body">
@@ -2102,7 +2670,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/anna-pancakes-binnenstad/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/anna-pancakes-binnenstad/thumb.jpg"
+               alt="Anna Pancakes Binnenstad"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Pannenkoekenrestaurants</span>
       </div>
         <div class="loc-body">
@@ -2116,7 +2692,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/pannenkoekenrestaurant-de-oude-muntkelder/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/pannenkoekenrestaurant-de-oude-muntkelder/thumb.jpg"
+               alt="Pannenkoekenrestaurant De Oude Muntkelder"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Pannenkoekenrestaurants</span>
       </div>
         <div class="loc-body">
@@ -2130,7 +2714,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/restaurant-de-paddestoel/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/restaurant-de-paddestoel/thumb.jpg"
+               alt="Restaurant De Paddestoel"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Pannenkoekenrestaurants</span>
       </div>
         <div class="loc-body">
@@ -2144,7 +2736,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/pannenkoekenrestaurant-vreeswijk/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/pannenkoekenrestaurant-vreeswijk/thumb.jpg"
+               alt="Pannenkoekenrestaurant Vreeswijk"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Pannenkoekenrestaurants</span>
       </div>
         <div class="loc-body">
@@ -2158,7 +2758,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/papa-s-pannenkoeken/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/papa-s-pannenkoeken/thumb.jpg"
+               alt="Papa's Pannenkoeken"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Pannenkoekenrestaurants</span>
       </div>
         <div class="loc-body">
@@ -2192,7 +2800,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/brownies-downies-woerden/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/brownies-downies-woerden/thumb.jpg"
+               alt="Brownies&amp;downieS Woerden"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2206,7 +2822,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/buurten-in-de-gaard/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/buurten-in-de-gaard/thumb.jpg"
+               alt="Buurten in de Gaard"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2234,7 +2858,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/fort-aan-de-klop/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/fort-aan-de-klop/thumb.jpg"
+               alt="Fort aan de Klop"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2248,7 +2880,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/maximus-brouwerij/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/maximus-brouwerij/thumb.jpg"
+               alt="Maximus Brouwerij"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2276,7 +2916,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/de-hoge-weide/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/de-hoge-weide/thumb.jpg"
+               alt="De Hoge Weide"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2290,7 +2938,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/bubbles-blessings/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/bubbles-blessings/thumb.jpg"
+               alt="Bubbles &amp; Blessings"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2318,7 +2974,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/stadsjochies/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/stadsjochies/thumb.jpg"
+               alt="Stadsjochies"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2332,7 +2996,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/theehuis-wku/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/theehuis-wku/thumb.jpg"
+               alt="Theehuis WKU"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2346,7 +3018,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/restaurant-kasteel-heemstede/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/restaurant-kasteel-heemstede/thumb.jpg"
+               alt="Restaurant Kasteel Heemstede"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2360,7 +3040,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/happy-italy/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/happy-italy/thumb.jpg"
+               alt="Happy Italy"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2374,7 +3062,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/lunet-iv/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/lunet-iv/thumb.jpg"
+               alt="Lunet IV"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2388,7 +3084,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/pk-bilthoven/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/pk-bilthoven/thumb.jpg"
+               alt="PK Bilthoven"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2402,7 +3106,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/30ml-coffee-food/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/30ml-coffee-food/thumb.jpg"
+               alt="30ML Coffee &amp; Food"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2416,7 +3128,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/bij-de-piste/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/bij-de-piste/thumb.jpg"
+               alt="Bij de Piste"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2430,7 +3150,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/buurten-in-de-fabriek/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/buurten-in-de-fabriek/thumb.jpg"
+               alt="Buurten in de Fabriek"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2444,7 +3172,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/camping-ganspoort/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/camping-ganspoort/thumb.jpg"
+               alt="Camping Ganspoort"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2458,7 +3194,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/fort-de-gagel-overvecht/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/fort-de-gagel-overvecht/thumb.jpg"
+               alt="Fort de Gagel Overvecht"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2472,7 +3216,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/gauchos/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/gauchos/thumb.jpg"
+               alt="Gauchos"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2486,7 +3238,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/hygge/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/hygge/thumb.jpg"
+               alt="Hygge"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2514,7 +3274,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/landhuis-in-de-stad/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/landhuis-in-de-stad/thumb.jpg"
+               alt="Landhuis in de stad"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2528,7 +3296,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/loft-88/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/loft-88/thumb.jpg"
+               alt="Loft 88"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2556,7 +3332,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/restaurant-balijepark/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/restaurant-balijepark/thumb.jpg"
+               alt="Restaurant Balijepark"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2570,7 +3354,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/ted-s/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/ted-s/thumb.jpg"
+               alt="Ted's"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2584,7 +3376,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/topkapi/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/topkapi/thumb.jpg"
+               alt="Topkapi"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2598,7 +3398,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/bar-restaurant-van-rossum/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/bar-restaurant-van-rossum/thumb.jpg"
+               alt="Bar Restaurant van Rossum"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2612,7 +3420,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/brownies-downies-nieuwegein/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/brownies-downies-nieuwegein/thumb.jpg"
+               alt="Brownies&amp;downieS Nieuwegein"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2626,7 +3442,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/ijssalon-italia/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/ijssalon-italia/thumb.jpg"
+               alt="IJssalon Italia"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2640,7 +3464,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/proefwerk/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/proefwerk/thumb.jpg"
+               alt="Proefwerk"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2654,7 +3486,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/restaurant-dengh/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/restaurant-dengh/thumb.jpg"
+               alt="Restaurant Dengh"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2668,7 +3508,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/restaurant-laverie/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/restaurant-laverie/thumb.jpg"
+               alt="Restaurant Laverie"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2682,7 +3530,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/smaak-stijl/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/smaak-stijl/thumb.jpg"
+               alt="Smaak&amp;Stijl"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2696,7 +3552,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/humphrey-s/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/humphrey-s/thumb.jpg"
+               alt="Humphrey's"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2710,7 +3574,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/molencafe/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/molencafe/thumb.jpg"
+               alt="Molencafé"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2724,7 +3596,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/anne-max/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/anne-max/thumb.jpg"
+               alt="Anne&amp;Max"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2738,7 +3618,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/de-pizzabakkers/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/de-pizzabakkers/thumb.jpg"
+               alt="De Pizzabakkers"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2752,7 +3640,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/de-pizzabakkers-croeselaan/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/de-pizzabakkers-croeselaan/thumb.jpg"
+               alt="De Pizzabakkers Croeselaan"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2766,7 +3662,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/de-pizzabakkers-voorstraat/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/de-pizzabakkers-voorstraat/thumb.jpg"
+               alt="De Pizzabakkers Voorstraat"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2780,7 +3684,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/het-oude-tolhuys/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/het-oude-tolhuys/thumb.jpg"
+               alt="Het Oude Tolhuys"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2794,7 +3706,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/noordertuin/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/noordertuin/thumb.jpg"
+               alt="Noordertuin"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2808,7 +3728,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/smoesjes/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/smoesjes/thumb.jpg"
+               alt="Smoesjes"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">
@@ -2822,7 +3750,15 @@
         </div>
       </article>
       <article class="loc-item">
-        <div class="loc-img loc-img--fallback">
+        <div class="loc-img">
+        <picture>
+          <source srcset="/images/locations/utrecht/warmoes/thumb.webp" type="image/webp">
+          <img src="/images/locations/utrecht/warmoes/thumb.jpg"
+               alt="Warmoes"
+               loading="lazy"
+               width="400" height="267"
+               onerror="this.closest('.loc-img').classList.add('loc-img--fallback')">
+        </picture>
         <span class="loc-type-badge">Kindvriendelijke Horeca</span>
       </div>
         <div class="loc-body">

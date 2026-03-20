@@ -18,10 +18,10 @@
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
-  <link rel="stylesheet" href="/design-system.css?v=202603191630">
-  <link rel="stylesheet" href="/style.min.css?v=202603191630">
-  <link rel="stylesheet" href="/nav-floating.css?v=202603191630">
-  <script src="/nav-floating.js?v=202603191630" defer></script>
+  <link rel="stylesheet" href="/design-system.css?v=202603200616">
+  <link rel="stylesheet" href="/style.min.css?v=202603200616">
+  <link rel="stylesheet" href="/nav-floating.css?v=202603200616">
+  <script src="/nav-floating.js?v=202603200616" defer></script>
   <script src="/pp-interactions.js" defer></script>
   <script src="/error-reporter.js" defer></script>
   <meta name="pinterest-rich-pin" content="true">
@@ -172,8 +172,15 @@
   </div>
 </nav>
 
-<div class="loc-hero-placeholder" style="background: var(--pp-primary-50); aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 24px; max-width: 800px; margin-left: auto; margin-right: auto;">
-  <span style="font-size: 4rem; opacity: 0.3;">🥞</span>
+<div class="hero-location-img">
+  <picture>
+    <source srcset="/images/locations/rotterdam/pannenkoe-krimpen-aan-den-ijssel/hero.webp" type="image/webp">
+    <img src="/images/locations/rotterdam/pannenkoe-krimpen-aan-den-ijssel/hero.jpg"
+         alt="Pannenkoe Krimpen aan den IJssel"
+         width="800" height="533"
+         fetchpriority="high">
+  </picture>
+  <div class="hero-location-overlay"></div>
 </div>
 <div class="hero hero-location">
   <span class="hero-location-badge">Pannenkoeken</span>
