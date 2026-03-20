@@ -798,20 +798,6 @@
         .favorites-empty strong { display: block; color: var(--pp-text); font-size: var(--pp-text-lg); font-family: var(--pp-font-heading); margin-bottom: 8px; }
         .favorites-empty p { margin: 0; }
 
-        /* Bottom nav (mobile) */
-        /* Floating pill bottom nav */
-        .bottom-nav { position: fixed; bottom: max(16px, env(safe-area-inset-bottom, 16px)); left: 50%; transform: translateX(-50%); background: var(--wg-glass-surface); backdrop-filter: var(--wg-blur-heavy); -webkit-backdrop-filter: var(--wg-blur-heavy); border-radius: var(--pp-radius-pill); padding: 6px; display: flex; align-items: center; z-index: 100; box-shadow: var(--pp-shadow-popover); border: 1px solid rgba(var(--pp-surface-rgb), 0.48); }
-        @supports not (backdrop-filter: blur(1px)) { .bottom-nav { background: var(--wg-glass-solid); } }
-        /* will-change: transform — remove if this causes memory issues on low-end devices */
-        .nav-indicator { position: absolute; background: var(--pp-primary); border-radius: var(--pp-radius-pill); top: 6px; bottom: 6px; left: 6px; width: 60px; z-index: 0; pointer-events: none; transition: left 0.38s var(--wg-ease-bounce), width 0.38s var(--wg-ease-bounce); will-change: transform; }
-        .nav-indicator.no-transition { transition: none !important; }
-        .bnav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 18px; font-size: var(--pp-text-xs); font-weight: 600; color: var(--pp-text-muted); transition: color 0.2s; background: none; border: none; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; position: relative; z-index: 1; min-height: 48px; border-radius: var(--pp-radius-pill); }
-        .bnav-item.active { color: var(--pp-text-inverse); }
-        .bnav-item svg { width: var(--pp-icon-sm); height: var(--pp-icon-sm); stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), fill 0.2s; }
-        .bnav-item.active svg { transform: scale(1.1); fill: currentColor; }
-        .bnav-icon-wrap { position: relative; display: inline-flex; }
-        .fav-badge { position: absolute; top: -4px; right: -8px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: var(--pp-primary); color: var(--pp-surface); font-size: 10px; font-weight: 700; line-height: 16px; text-align: center; pointer-events: none; }
-        @media (min-width: 680px) { .bottom-nav { display: none; } body { padding-bottom: 0; } }
 
         /* Skeleton cards */
         .skeleton-card { background: var(--pp-surface); border-radius: var(--pp-radius-md); padding: 18px 20px; border: 1px solid rgba(var(--pp-primary-rgb), 0.08); }
@@ -1385,7 +1371,6 @@
           #list-view { display: flex !important; flex-direction: column; overflow-y: auto; height: 100%; border-right: 1px solid rgba(var(--pp-text-rgb), 0.08); padding: 12px 16px 20px; }
           #map-container { display: block !important; height: 100%; position: relative; width: 100%; }
           .map-container { width: 100%; margin: 0; height: 100%; max-height: none; min-height: unset; border-top: none; }
-          .bottom-nav { display: none; }
           .filter-chips { top: 0; }
           .preset-strip { padding-bottom: 10px; }
           .shortlist-bar { align-items: center; }
@@ -1465,7 +1450,6 @@
         /* Push map controls away from floating panel */
         html.pp-desktop .maplibregl-ctrl-top-left { left: 416px !important; }
         html.pp-desktop .maplibregl-ctrl-bottom-left { left: 416px !important; }
-        html.pp-desktop .bottom-nav { display: none !important; }
         html.pp-desktop .filter-panel-toggle { display: flex !important; }
         html.pp-desktop .filter-panel {
           margin-top: 14px;

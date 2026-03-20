@@ -358,14 +358,13 @@
   .sheet-overlay { display: none !important; }
 }
 
-/* Peek: floating card, small, fully rounded */
+/* Peek: floating card, small, fully rounded — 180px to fit search pill + tabs */
 .bottom-sheet[data-state="peek"] {
-  transform: translateY(calc(100% - 140px));
+  transform: translateY(calc(100% - 180px));
   left: 8px; right: 8px; bottom: 8px;
   border-radius: var(--wg-radius-sheet);
 }
-/* Hide tabs and filter chips in peek — only pill + meta visible */
-.bottom-sheet[data-state="peek"] .sheet-tabs,
+/* Hide filter chips in peek — only pill + tabs visible */
 .bottom-sheet[data-state="peek"] .sheet-filter-chips {
   display: none !important;
 }
@@ -766,29 +765,10 @@
     pointer-events: auto;
   }
 
-  /* Bottom nav: glass floating, sits above sheet */
-  .pp-mobile-map .bottom-nav {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    z-index: 1001;
-    transform: none;
-    border-radius: 0;
-    background: var(--wg-glass-nav) !important;
-    backdrop-filter: var(--wg-blur-heavy);
-    -webkit-backdrop-filter: var(--wg-blur-heavy);
-    border-top: var(--wg-border-top-sheet);
-    box-shadow: var(--wg-shadow-nav);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    display: flex;
-    justify-content: space-around;
-    pointer-events: auto;
-  }
-
-  /* Sheet needs to sit above map but below bottom-nav */
+  /* Sheet sits above map */
   .pp-mobile-map .bottom-sheet {
     z-index: 1000;
-    /* Account for bottom nav height (~56px + safe area) */
-    bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 8px);
+    bottom: env(safe-area-inset-bottom, 0px);
   }
   .pp-mobile-map .bottom-sheet[data-state="half"] {
     bottom: 0;
@@ -918,6 +898,16 @@
   }
   .sheet-tab:not(.active):active {
     background: var(--wg-tag-bg);
+  }
+  .sheet-tab-gear {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sheet-tab-gear svg {
+    display: block;
   }
 
   /* Map/List toggle button */

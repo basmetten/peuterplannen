@@ -182,15 +182,11 @@ function toggleTagBase(tag, evt) {
 // Extended toggleTag with nav sync
 export function toggleTag(tag, evt) {
     if (state.currentDisplayMode === 'map') bus.emit('map:displaymode', 'list');
-    document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
     if (tag === 'favorites') {
-        document.getElementById('tab-favorites')?.classList.add('active');
         state.currentView = 'favorites';
     } else {
-        document.getElementById('tab-home')?.classList.add('active');
         state.currentView = 'home';
     }
-    bus.emit('nav:indicator');
     bus.emit('nav:syncdesktop', 'home');
     toggleTagBase(tag, evt);
 }

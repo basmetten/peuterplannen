@@ -732,8 +732,11 @@
                 <div id="sheet-forecast"></div>
                 <div class="sheet-tabs" id="sheet-tabs">
                     <button class="sheet-tab active" data-tab="ontdek">Ontdek</button>
-                    <button class="sheet-tab" data-tab="opgeslagen">Opgeslagen</button>
+                    <button class="sheet-tab" data-tab="bewaard">Bewaard</button>
                     <button class="sheet-tab" data-tab="plan">Plan</button>
+                    <button class="sheet-tab sheet-tab-gear" data-tab="info" aria-label="Instellingen">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    </button>
                 </div>
             </div>
             <!-- Deze week picks -->
@@ -754,33 +757,6 @@
         <span class="toggle-label">Lijst</span>
     </button>
 
-    <!-- Mobile bottom navigation -->
-    <nav class="bottom-nav" id="bottom-nav" aria-label="Navigatie">
-        <span class="nav-indicator" id="nav-indicator"></span>
-        <button class="bnav-item active" onclick="switchView('home')" id="tab-home" aria-label="Ontdek">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-            <span>Ontdek</span>
-        </button>
-        <button class="bnav-item" onclick="switchView('map')" id="tab-map" aria-label="Kaart">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
-            <span>Kaart</span>
-        </button>
-        <button class="bnav-item" onclick="switchView('favorites')" id="tab-favorites" aria-label="Favorieten">
-            <span class="bnav-icon-wrap">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                <span class="fav-badge" id="fav-badge" hidden></span>
-            </span>
-            <span>Favorieten</span>
-        </button>
-        <button class="bnav-item" onclick="switchView('plan')" id="tab-plan" aria-label="Plan mijn dag">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
-            <span>Plan</span>
-        </button>
-        <button class="bnav-item" onclick="switchView('info')" id="tab-info" aria-label="Info">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-            <span>Info</span>
-        </button>
-    </nav>
 
     <!-- Screen reader announcements for sheet state changes -->
     <div id="sr-announcer" class="sr-only" aria-live="polite" role="status"></div>

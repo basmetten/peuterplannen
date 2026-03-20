@@ -19,20 +19,6 @@ export function applyLayout() {
     if (!isDesktop && state.mapInstance) {
         setTimeout(() => state.mapInstance.resize(), 50);
     }
-    moveNavIndicator(true);
-}
-
-export function moveNavIndicator(instant = false) {
-    const active = document.querySelector('.bnav-item.active');
-    const indicator = document.getElementById('nav-indicator');
-    const nav = document.getElementById('bottom-nav');
-    if (!active || !indicator || !nav) return;
-    const nr = nav.getBoundingClientRect();
-    const br = active.getBoundingClientRect();
-    if (instant) indicator.classList.add('no-transition');
-    indicator.style.left = (br.left - nr.left) + 'px';
-    indicator.style.width = br.width + 'px';
-    if (instant) requestAnimationFrame(() => indicator.classList.remove('no-transition'));
 }
 
 export function syncDesktopModeSwitch(mode = 'home') {
@@ -46,6 +32,15 @@ export function syncDesktopModeSwitch(mode = 'home') {
 
 // --- Shared helpers ---
 
+/** Sync the sheet tabs active state to match the current view */
+function syncSheetTabs(view) {
+    const tabMap = { home: 'ontdek', favorites: 'bewaard', plan: 'plan' };
+    const tabName = tabMap[view] || 'ontdek';
+    document.querySelectorAll('.sheet-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.tab === tabName);
+    });
+}
+
 /** Reset all filters to defaults */
 function resetFilters() {
     state.activeTag = 'all';
@@ -53,14 +48,6 @@ function resetFilters() {
     state.activeFacilities = { coffee: false, diaper: false, alcohol: false };
     state.activeAgeGroup = null;
     state.activeRadius = null;
-}
-
-/** Mark the given tab active in the bottom nav and slide the indicator */
-function markNavActive(view) {
-    document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
-    const tab = document.getElementById('tab-' + view);
-    if (tab) tab.classList.add('active');
-    moveNavIndicator();
 }
 
 // --- View switching per viewport ---
@@ -137,7 +124,7 @@ function switchViewCore(view) {
     closeLocSheet();
     if (view !== 'info') closeInfoPanel();
     if (view !== 'map') document.body.classList.remove('map-view-active');
-    markNavActive(view);
+    syncSheetTabs(view);
 
     if (isDesktop) {
         switchViewDesktop(view);
@@ -156,12 +143,10 @@ export function switchView(view) {
         document.body.classList.add('plan-mode');
         if (appWrapper) appWrapper.classList.add('hidden');
         if (planView) planView.classList.remove('hidden');
-        document.querySelectorAll('.bnav-item').forEach(i => i.classList.remove('active'));
-        document.getElementById('tab-plan')?.classList.add('active');
         state.currentView = 'plan';
+        syncSheetTabs('plan');
         bus.emit('plan:chipupdate');
         syncDesktopModeSwitch('plan');
-        moveNavIndicator();
         bus.emit('hash:update', 'plan');
 
         // Mode transition animation
@@ -249,5 +234,4 @@ function renderMobileList() {
 
 // Bus listeners
 bus.on('view:switch', switchView);
-bus.on('nav:indicator', moveNavIndicator);
 bus.on('nav:syncdesktop', syncDesktopModeSwitch);

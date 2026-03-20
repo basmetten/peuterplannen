@@ -243,9 +243,6 @@ export function closeInfoPanel() {
     document.body.style.overflow = '';
     if (state.currentView === 'info') {
         state.currentView = 'home';
-        document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
-        document.getElementById('tab-home').classList.add('active');
-        bus.emit('nav:indicator');
     }
 }
 
@@ -254,11 +251,8 @@ export async function showLocationDetail(regionSlug, locSlug) {
     const detailView = document.getElementById('detail-view');
     const appWrapper = document.querySelector('.app-wrapper');
     const planView = document.getElementById('plan-view');
-    const bottomNav = document.getElementById('bottom-nav');
-
     if (appWrapper) appWrapper.classList.add('hidden');
     if (planView) planView.classList.add('hidden');
-    if (bottomNav) bottomNav.classList.add('hidden');
     detailView.classList.remove('hidden');
     detailView.innerHTML = '<div class="detail-loading"><div class="spinner"></div><p>Locatie laden...</p></div>';
 

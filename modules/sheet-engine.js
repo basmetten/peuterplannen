@@ -203,7 +203,7 @@ function onTouchEnd() {
 function getStateOffset(st) {
     const vh = window.innerHeight;
     if (st === 'hidden') return vh;
-    if (st === 'peek') return vh - 140;
+    if (st === 'peek') return vh - 180;
     if (st === 'half') return vh * 0.45;
     if (st === 'full') return 0;
     return vh;
@@ -325,17 +325,24 @@ export function initSheetTabs() {
                 return;
             }
 
-            if (tabName === 'opgeslagen') {
+            if (tabName === 'info') {
+                bus.emit('view:switch', 'info');
+                return;
+            }
+
+            if (tabName === 'bewaard') {
                 // Switch to favorites and re-render sheet list
                 state.activeTag = 'favorites';
+                state.currentView = 'favorites';
                 bus.emit('data:reload');
                 setSheetState('half');
             } else {
                 // Ontdek - reset to all
                 if (state.activeTag === 'favorites') {
                     state.activeTag = 'all';
-                    bus.emit('data:reload');
                 }
+                state.currentView = 'home';
+                bus.emit('data:reload');
                 setSheetState('half');
             }
         });
