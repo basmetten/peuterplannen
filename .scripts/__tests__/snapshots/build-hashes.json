@@ -1,4 +1,5 @@
 {
+  ".scripts/output/newsletter-2026-03-20.html": "34215626e19bd33a820b68e6d815b55e",
   "404.html": "d4fec9077f127c1f6f51182826ac0cb2",
   "about.html": "b7e36b81a154cd9052920ec51a070a5d",
   "admin/index.html": "bfbba909721c96f76caa2676f93f644a",
@@ -558,7 +559,7 @@
   "apeldoorn/wok-sprengenhorst/index.html": "ccddfcbd1fd91e07c6685027c777d8db",
   "apeldoorn/zwembad-de-sprenkelaar/index.html": "28df2a88225142b038d31d49ce259697",
   "apeldoorn.html": "78d3d241fe24f247349cb9f6af2e0f81",
-  "app.html": "c56e55e23438369280c93f6707df94a3",
+  "app.html": "12404ddba57e1bd4ffdec8c92f6ff006",
   "arnhem/adventurepark-harderwijk/index.html": "13351a0875e5b4beedf4d3797bea73e4",
   "arnhem/airborne-museum/index.html": "54090bc0ddd7f6fa8bcc92e2a6e9d3d4",
   "arnhem/apenheul/index.html": "b88ad3be43d635c5d63254181883ca02",
@@ -1570,6 +1571,7 @@
   "maastricht/zwembad-mosaqua/index.html": "29f0ab74ca66020d1db45a924fd54ac7",
   "maastricht.html": "71c956b61fe5b049d9de821300f3c983",
   "methode/index.html": "b16b43c35ac43c5795a61b1c1b83a950",
+  "mockup-mobile.html": "4e6426623377b1bf99671a00462ad2f7",
   "musea.html": "598c408d711e3620bee7a4fb7e273f82",
   "natuur.html": "8eca13a0c6300dac4df850f2b0517857",
   "nijmegen/amusementspark-tivoli/index.html": "f75aa225033697a36497ca03aba626aa",
