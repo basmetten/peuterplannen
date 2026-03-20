@@ -114,10 +114,15 @@ export function openLocSheet(locationId) {
     const content = document.getElementById('loc-sheet-content');
     content.innerHTML = `
         <!-- TIER 1: Hero + essentials + actions -->
-        <div class="sheet-hero-photo${!photoSrc ? ' sheet-hero--category' : ''}" style="--photo-color: ${photoColor}">
-            <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" decoding="async"
-                 onload="this.classList.add('loaded')"
-                 onerror="if(this.dataset.retried){this.parentElement.classList.add('sheet-hero--fallback')}else{this.dataset.retried='1';this.src='${escapeHtml(fallbackSrc || categoryImg)}'}">
+        <div class="sheet-hero-wrap">
+            <div class="sheet-hero-photo${!photoSrc ? ' sheet-hero--category' : ''}" style="--photo-color: ${photoColor}">
+                <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" decoding="async"
+                     onload="this.classList.add('loaded')"
+                     onerror="if(this.dataset.retried){this.parentElement.classList.add('sheet-hero--fallback')}else{this.dataset.retried='1';this.src='${escapeHtml(fallbackSrc || categoryImg)}'}">
+            </div>
+            <button class="loc-sheet-back" id="loc-sheet-back" aria-label="Terug naar overzicht">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </button>
         </div>
 
         <div class="sheet-detail-header">
@@ -189,6 +194,10 @@ export function openLocSheet(locationId) {
     const shareButton = content.querySelector('.btn-share');
     if (shareButton) {
         shareButton.addEventListener('click', () => bus.emit('location:share', loc));
+    }
+    const backButton = content.querySelector('#loc-sheet-back');
+    if (backButton) {
+        backButton.addEventListener('click', () => closeLocSheet());
     }
 
     const overlay = document.getElementById('loc-overlay');

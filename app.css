@@ -928,12 +928,12 @@
         .maplibregl-ctrl-attrib { font-size: var(--pp-text-xs) !important; opacity: 0.6; }
         .maplibregl-popup { display: none; }
 
-        /* Location bottom sheet */
-        .loc-sheet { position: fixed; bottom: 0; left: 0; right: 0; max-height: 70vh; background: rgba(255, 248, 240, 0.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid rgba(212, 119, 86, 0.1); border-radius: var(--pp-radius-lg) var(--pp-radius-lg) 0 0; box-shadow: var(--wg-shadow-panel); z-index: 201; transform: translateY(100%); transition: transform 0.25s ease-out; overflow-y: auto; overscroll-behavior: contain; padding-bottom: calc(20px + var(--pp-safe-bottom)); }
+        /* Location bottom sheet — warm glass overlay */
+        .loc-sheet { position: fixed; bottom: 0; left: 0; right: 0; max-height: 85vh; background: rgba(255, 252, 249, 0.94); backdrop-filter: blur(24px) saturate(140%); -webkit-backdrop-filter: blur(24px) saturate(140%); border-top: 0.5px solid rgba(255, 255, 255, 0.5); border-radius: 20px 20px 0 0; box-shadow: 0 -4px 32px rgba(80, 50, 30, 0.12), 0 -1px 6px rgba(80, 50, 30, 0.06), inset 0 0.5px 0 rgba(255, 255, 255, 0.5); z-index: 201; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1); overflow-y: auto; overscroll-behavior: contain; padding-bottom: calc(20px + var(--pp-safe-bottom)); }
         .loc-sheet.open { transform: translateY(0); }
         .loc-sheet-content { padding: 0 20px 20px; }
         .loc-sheet-content .card-top { margin-bottom: 8px; }
-        .loc-sheet-content .card-name { font-size: var(--pp-text-xl); }
+        .loc-sheet-content .card-name { font-size: var(--pp-text-xl); letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 4px; }
         .loc-sheet-content .card-desc { font-size: var(--pp-text-sm); margin-bottom: 12px; }
         .loc-sheet-content .card-highlight { font-size: var(--pp-text-sm); color: var(--pp-primary-dark); font-weight: 500; margin-bottom: 12px; padding: 8px 12px; background: var(--pp-primary-light); border-radius: var(--pp-radius-xs); line-height: 1.5; }
         .loc-sheet-content .card-decision { margin-bottom: 12px; padding: 12px var(--pp-space-md); border-radius: var(--pp-radius-md); background: linear-gradient(135deg, rgba(var(--pp-primary-rgb), 0.12), rgba(255,248,243,0.96)); border: 1px solid rgba(var(--pp-primary-rgb), 0.14); }

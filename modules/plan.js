@@ -341,7 +341,9 @@ export async function generatePlan() {
             resultContainer.classList.remove('hidden');
             if (window.innerWidth < DESKTOP_WIDTH) resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-            generateAINarrative(planStops, wDesc, dayLabel);
+            generateAINarrative(planStops, wDesc, dayLabel, {
+                dateStr, childAges: planState.childAges, transport: planState.transport, forecast,
+            });
 
             return;
         }
@@ -409,7 +411,9 @@ export async function generatePlan() {
         if (window.innerWidth < DESKTOP_WIDTH) resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         const legacyStops = [morning, lunch, afternoon].filter(Boolean);
-        generateAINarrative(legacyStops, wDesc, dayLabel);
+        generateAINarrative(legacyStops, wDesc, dayLabel, {
+            dateStr, childAges: planState.childAges, transport: planState.transport, forecast,
+        });
     } catch (err) {
         console.error('generatePlan error:', err);
         resultContainer.innerHTML = `<div class="error-msg">Er ging iets mis bij het genereren van je plan. Probeer het opnieuw.</div>`;
@@ -420,34 +424,47 @@ export async function generatePlan() {
     }
 }
 
-async function generateAINarrative(plan, weather, dayLabel) {
+async function generateAINarrative(plan, weather, dayLabel, narrativeContext) {
     const aiEl = document.getElementById('plan-ai-text');
     if (!aiEl) return;
 
-    const stops = plan.filter(p => p?.name || p?.location?.name).map(p => {
-        const loc = p.location || p;
-        return `${p.slotTime || ''} ${loc.name} (${getTypeLabel(loc.type)}, ${loc.region || ''})`.trim();
-    }).join(', ');
+    // Extract morning/lunch/afternoon locations for the Edge Function
+    const extractLoc = (loc) => loc ? { name: loc.name, region: loc.region || null } : null;
+    let morning = null, lunch = null, afternoon = null;
 
-    const prompt = `Je bent een warme, behulpzame ouder-app. Schrijf 2 zinnen over dit dagplan voor een gezin met jonge kinderen. Niet te enthousiast, niet te formeel. Geen emoji. Plan: ${stops}. Weer: ${weather}. Dag: ${dayLabel}. Schrijf in het Nederlands.`;
+    if (plan[0]?.location) {
+        // V2 plan stops
+        morning = extractLoc(plan[0]?.location);
+        lunch = extractLoc(plan.find(s => s.slotLabel === 'Lunch')?.location);
+        afternoon = extractLoc(plan.find(s => s.slotLabel === 'Middag' || s.slotLabel === 'Late middag')?.location);
+    } else {
+        // Legacy plan (raw location objects)
+        morning = extractLoc(plan[0]);
+        lunch = extractLoc(plan[1]);
+        afternoon = extractLoc(plan[2]);
+    }
 
     try {
         const resp = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${atob('QUl6YVN5QWRsa2lzYlpvbzRyR1dORVhYVU5tS05HNXhIRDIxbGdv')}`,
+            'https://piujsvgbfflrrvauzsxe.supabase.co/functions/v1/generate-plan',
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }],
-                    generationConfig: { maxOutputTokens: 100, temperature: 0.7 }
+                    date: narrativeContext.dateStr,
+                    childAges: narrativeContext.childAges,
+                    transport: narrativeContext.transport,
+                    morning,
+                    lunch,
+                    afternoon,
+                    forecast: narrativeContext.forecast,
                 })
             }
         );
 
         const data = await resp.json();
-        console.warn('AI narrative response:', resp.status, data);
-        if (!resp.ok) throw new Error(`Gemini API error ${resp.status}`);
-        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!resp.ok) throw new Error(`Edge Function error ${resp.status}`);
+        const text = data?.description;
         if (text) {
             aiEl.textContent = text.trim();
             aiEl.style.color = '';
