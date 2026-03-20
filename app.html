@@ -703,7 +703,7 @@
             <div class="sheet-handle-bar"></div>
         </div>
         <div class="sheet-content" id="sheet-content">
-            <!-- Peek content: search pill + weather + count -->
+            <!-- Peek content: search pill + preset chips + tabs -->
             <div class="sheet-peek" id="sheet-peek">
                 <div class="sheet-search-area" id="sheet-search-area">
                     <div class="sheet-search-pill" id="sheet-search-pill">
@@ -713,11 +713,17 @@
                     </div>
                     <button class="sheet-search-cancel" id="sheet-search-cancel">Annuleren</button>
                 </div>
-                <div class="sheet-meta" id="sheet-meta">
-                    <span class="sheet-weather" id="sheet-weather"></span>
-                    <span class="sheet-count" id="sheet-count"></span>
+                <!-- Preset chips — compact horizontal scroll -->
+                <div class="sheet-presets" id="sheet-presets">
+                    <button class="sheet-preset" data-preset="rain" onclick="togglePreset('rain', event)">Regenproof</button>
+                    <button class="sheet-preset" data-preset="outdoor-coffee" onclick="togglePreset('outdoor-coffee', event)">Buiten+Koffie</button>
+                    <button class="sheet-preset" data-preset="dreumesproof" onclick="togglePreset('dreumesproof', event)">Dreumesproof</button>
+                    <button class="sheet-preset" data-preset="peuterproof" onclick="togglePreset('peuterproof', event)">Peuterproof</button>
+                    <button class="sheet-preset" data-preset="short-drive" onclick="togglePreset('short-drive', event)">Korte rit</button>
+                    <button class="sheet-preset" data-preset="lunch-play" onclick="togglePreset('lunch-play', event)">Lunch+Spelen</button>
+                    <button class="sheet-preset" data-preset="terras-kids" onclick="togglePreset('terras-kids', event)">Terrasje</button>
                 </div>
-                <!-- Inline filter chips (shown when search pill tapped) -->
+                <!-- Inline filter chips (shown when search expanded) -->
                 <div class="sheet-filter-chips" id="sheet-filter-chips">
                     <button class="sheet-filter-chip active" data-filter="all">Alles</button>
                     <button class="sheet-filter-chip" data-filter="play">Speeltuin</button>
@@ -728,17 +734,21 @@
                     <button class="sheet-filter-chip" data-filter="swim">Zwemmen</button>
                     <button class="sheet-filter-chip" data-filter="favorites">Favorieten</button>
                 </div>
-                <!-- Forecast strip -->
-                <div id="sheet-forecast"></div>
                 <div class="sheet-tabs" id="sheet-tabs">
                     <button class="sheet-tab active" data-tab="ontdek">Ontdek</button>
                     <button class="sheet-tab" data-tab="bewaard">Bewaard</button>
                     <button class="sheet-tab" data-tab="plan">Plan</button>
                     <button class="sheet-tab sheet-tab-gear" data-tab="info" aria-label="Instellingen">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                     </button>
                 </div>
             </div>
+            <!-- Meta + forecast (shown in half/full, not peek) -->
+            <div class="sheet-meta" id="sheet-meta">
+                <span class="sheet-weather" id="sheet-weather"></span>
+                <span class="sheet-count" id="sheet-count"></span>
+            </div>
+            <div id="sheet-forecast"></div>
             <!-- Deze week picks -->
             <div id="sheet-week-picks"></div>
             <!-- Location preview (shown when marker tapped) -->

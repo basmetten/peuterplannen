@@ -358,14 +358,16 @@
   .sheet-overlay { display: none !important; }
 }
 
-/* Peek: floating card, small, fully rounded — 180px to fit search pill + tabs */
+/* Peek: floating card — search pill + preset chips + tabs */
 .bottom-sheet[data-state="peek"] {
-  transform: translateY(calc(100% - 180px));
+  transform: translateY(calc(100% - 200px));
   left: 8px; right: 8px; bottom: 8px;
   border-radius: var(--wg-radius-sheet);
 }
-/* Hide filter chips in peek — only pill + tabs visible */
-.bottom-sheet[data-state="peek"] .sheet-filter-chips {
+/* In peek: hide filter chips, meta, and forecast — only pill + presets + tabs visible */
+.bottom-sheet[data-state="peek"] .sheet-filter-chips,
+.bottom-sheet[data-state="peek"] .sheet-meta,
+.bottom-sheet[data-state="peek"] #sheet-forecast {
   display: none !important;
 }
 /* Half: still floating but tighter to edges */
@@ -426,7 +428,45 @@
 
 /* Peek section */
 .sheet-peek {
-  padding-bottom: 8px;
+  padding-bottom: 2px;
+}
+
+/* Preset chips — compact horizontal scroll in peek */
+.sheet-presets {
+  display: flex;
+  gap: 8px;
+  padding: 10px 0 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
+}
+.sheet-presets::-webkit-scrollbar { display: none; }
+.sheet-preset {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border: 1px solid rgba(60,60,67,0.18);
+  border-radius: 16px;
+  background: transparent;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--wg-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.sheet-preset:active {
+  background: var(--wg-tag-bg);
+}
+.sheet-preset.active {
+  background: var(--pp-primary);
+  border-color: var(--pp-primary);
+  color: white;
 }
 .sheet-search-pill {
   display: flex;
@@ -509,6 +549,10 @@
 }
 .bottom-sheet.search-active .sheet-search-cancel {
   display: block;
+}
+/* Hide presets when search is expanded — filter chips take over */
+.bottom-sheet.search-active .sheet-presets {
+  display: none;
 }
 
 /* Search suggestions dropdown */
@@ -1020,10 +1064,6 @@
     touch-action: pan-y;
   }
 
-  /* Hide forecast in peek state — too much space */
-  .bottom-sheet[data-state="peek"] #sheet-forecast {
-    display: none;
-  }
 
   /* Sheet filter chips — shown inline when search pill tapped */
   .sheet-filter-chips {

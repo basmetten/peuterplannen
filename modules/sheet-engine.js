@@ -203,7 +203,7 @@ function onTouchEnd() {
 function getStateOffset(st) {
     const vh = window.innerHeight;
     if (st === 'hidden') return vh;
-    if (st === 'peek') return vh - 180;
+    if (st === 'peek') return vh - 200;
     if (st === 'half') return vh * 0.45;
     if (st === 'full') return 0;
     return vh;

@@ -10,7 +10,7 @@ export function syncChipAria() {
 }
 
 export function syncPresetAria() {
-    document.querySelectorAll('.preset-chip').forEach((chip) => {
+    document.querySelectorAll('.preset-chip, .sheet-preset').forEach((chip) => {
         const active = chip.dataset.preset === state.activePreset;
         chip.classList.toggle('active', active);
         chip.setAttribute('aria-pressed', active ? 'true' : 'false');
