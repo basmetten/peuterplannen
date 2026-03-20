@@ -61,7 +61,7 @@ export function getThisWeekPicks(locations, region) {
 export async function fetch5DayForecast(lat, lng) {
     try {
         const res = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max&timezone=Europe/Amsterdam&forecast_days=2`
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max&timezone=Europe/Amsterdam&forecast_days=5`
         );
         if (!res.ok) return null;
         const data = await res.json();
@@ -95,6 +95,9 @@ export function renderWeekPicks(picks, containerEl) {
                     </div>`;
                 }).join('')}
             </div>
+            <a href="mailto:basmetten@gmail.com?subject=Peuterplannen%20updates&body=Ik%20wil%20graag%20wekelijks%20tips%20ontvangen!" class="week-picks-newsletter">
+                Wekelijks tips ontvangen? <span class="newsletter-arrow">\u2192</span>
+            </a>
         </div>`;
 
     containerEl.innerHTML = html;

@@ -1,6 +1,6 @@
 # PeuterPlannen — Groot Plan: Apple Maps Polish + Photo Quality + Testing
 
-**Status:** IN UITVOERING — Sessie 1 (A1-A5) klaar, rest TODO
+**Status:** IN UITVOERING — Sessie 1 + 3 klaar, Sessie 2 (foto's) TODO
 **Datum:** 20 maart 2026
 **Context:** UX revamp (10 fasen) is in ~4 uur uitgevoerd. Fase 1-3 klaar, 4-5 grotendeels. Dit plan pakt de drie grootste gaps aan: (A) de UX voelt nog niet genoeg als Apple Maps, (B) foto's zijn te laag kwalitatief, (C) testen is niet grondig genoeg.
 
@@ -181,9 +181,9 @@
 | **Sessie 2** | B1: Google Places gap-fill | TODO | `.scripts/pipeline/fetch-photos.js` |
 | **Sessie 2** | B3: Gemini kwaliteitsfilter | TODO | nieuw script |
 | **Sessie 2** | B4: photo_quality kolom + scoring | TODO | migration + `discovery.js` + `scoring.js` |
-| **Sessie 3** | D1: Personalisatie onboarding | TODO | `prefs.js`, `sheet.js`, `scoring.js` |
-| **Sessie 3** | D2: Discovery aansluiten | TODO | `discovery.js`, `app.js` |
-| **Sessie 3** | D3: Score breakdown | TODO | `scoring.js`, `cards.js` |
+| ~~Sessie 3~~ | ~~D1: Personalisatie onboarding~~ | ✅ DONE | `prefs.js`, `sheet.js`, `app.js`, `app.css` |
+| ~~Sessie 3~~ | ~~D2: Discovery aansluiten~~ | ✅ DONE | `discovery.js`, `app.js`, `glass.css` |
+| ~~Sessie 3~~ | ~~D3: Score breakdown~~ | ✅ DONE | `scoring.js`, `cards.js`, `glass.css` |
 
 B2 (browser scraping) is optioneel — eerst B1 draaien en kijken hoeveel gap er overblijft.
 

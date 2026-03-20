@@ -1,6 +1,6 @@
 import { state, DESKTOP_WIDTH, TYPE_LABELS, WEATHER_LABELS, WEATHER_ICONS, CATEGORY_IMAGES, TYPE_PHOTO_COLORS, PROMO_ITEMS, ADSENSE_PUB_ID, ADSENSE_SLOT_ID, ADSENSE_EVERY_N, BATCH_SIZE } from './state.js';
 import { escapeHtml, safeUrl, getCardSupportingCopy, isNearDuplicateCopy, buildDetailUrl, buildMapsUrl } from './utils.js';
-import { computePeuterScore, getCardDecisionSentence, getCompactTrustChip, getCardQuickFacts } from './scoring.js';
+import { computePeuterScore, computePeuterScoreV2, getTopStrengths, getCardDecisionSentence, getCompactTrustChip, getCardQuickFacts } from './scoring.js';
 import { isFavorite } from './favorites.js';
 import { getTopTags, getWeatherBadge } from './tags.js';
 import { isVisited } from './visited.js';
@@ -91,6 +91,12 @@ function appendBatch() {
         const psBase = ps - (item.is_featured && item.featured_until && new Date(item.featured_until) > new Date() ? 5 : 0);
         const psColor = psBase >= 7 ? '#4A7A4A' : psBase >= 4 ? '#C07830' : '#9E9E9E';
         const psBadge = `<span class="peuterscore" style="background:${psColor}18;color:${psColor};border:1px solid ${psColor}30" data-tooltip="Peuterscore: ${psBase}/10">${psBase}★</span>`;
+        const weather = state.isRaining ? 'rain' : state.isSunny ? 'sun' : null;
+        const v2Result = computePeuterScoreV2(item, { weather, dayOfWeek: new Date().getDay() });
+        const strengths = getTopStrengths(v2Result, { weather });
+        const strengthHtml = strengths.slice(0, 2).map(s =>
+            `<span class="card-strength">${escapeHtml(s.label)}</span>`
+        ).join('');
         const isFeaturedNow = item.is_featured && item.featured_until && new Date(item.featured_until) > new Date();
         const featuredBadge = isFeaturedNow ? `<span class="badge-featured">★ Aanbevolen</span>` : '';
         const verifiedBadge = item.owner_verified ? `<span class="badge-verified" data-tooltip="Geverifieerd door eigenaar">✓</span>` : '';
@@ -149,6 +155,7 @@ function appendBatch() {
             <h2 class="card-name">${escapeHtml(item.name)}${verifiedBadge}</h2>
             ${tags.length ? `<div class="card-tags">${tags.map(t => `<span class="card-tag">${t.icon} ${t.label}</span>`).join('')}</div>` : ''}
             ${(visitedBadge || popularBadge) ? `<div class="card-tags">${popularBadge}${visitedBadge}</div>` : ''}
+            ${strengths.length ? `<div class="card-strengths">${strengthHtml}</div>` : ''}
             ${supportingCopy && !supportingIsDuplicate ? `<p class="card-supporting">${escapeHtml(supportingCopy)}</p>` : ''}
             ${(trustChip || quickFacts.length) ? `<div class="card-trust">
                 ${trustChip ? `<span class="trust-chip ${trustChip.tone === 'positive' ? 'is-positive' : 'is-neutral'}">${escapeHtml(trustChip.label)}</span>` : ''}

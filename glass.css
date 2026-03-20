@@ -162,6 +162,9 @@
   white-space: nowrap;
 }
 
+.card-strengths { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0 0; }
+.card-strength { font-size: 0.7rem; padding: 2px 8px; background: rgba(74, 122, 74, 0.08); color: #4A7A4A; border-radius: 6px; font-weight: 500; }
+
 .card-badge-visited {
   font-size: 0.65rem;
   padding: 1px 6px;
@@ -976,6 +979,31 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .week-picks-newsletter {
+    display: block;
+    margin-top: 10px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #D47756;
+    text-decoration: none;
+    background: rgba(212, 119, 86, 0.06);
+    border-radius: 8px;
+    text-align: center;
+    transition: background 0.2s;
+  }
+  .week-picks-newsletter:hover,
+  .week-picks-newsletter:active {
+    background: rgba(212, 119, 86, 0.12);
+  }
+  .newsletter-arrow {
+    display: inline-block;
+    margin-left: 4px;
+    transition: transform 0.2s;
+  }
+  .week-picks-newsletter:hover .newsletter-arrow {
+    transform: translateX(3px);
   }
 
   /* 5-day forecast strip */

@@ -5,11 +5,21 @@ import { isFavorite } from './favorites.js';
 import { fetchJsonWithRetry, normalizeLocationRow } from './data.js';
 import { getSterkePunten } from './tags.js';
 import { markVisited } from './visited.js';
+import { getPrefs, setPrefs, hasCompletedOnboarding } from './prefs.js';
 
 export function openLocSheet(locationId) {
     const loc = state.allLocations.find(l => l.id === locationId);
     if (!loc) return;
     markVisited(locationId);
+
+    // Track location views for onboarding trigger
+    const viewCount = parseInt(localStorage.getItem('pp_loc_views') || '0', 10) + 1;
+    localStorage.setItem('pp_loc_views', String(viewCount));
+
+    // Show onboarding prompt after 2nd location view (if not already completed)
+    if (viewCount === 2 && !hasCompletedOnboarding()) {
+        setTimeout(() => showAgeOnboarding(), 1500); // delay so user sees location first
+    }
     state.activeLocSheet = locationId;
 
     const isFav = isFavorite(loc.id);
@@ -332,5 +342,53 @@ export function initSheetGestures() {
         if (!overlay.contains(e.target) && e.target.id !== 'map-search-pill' && !e.target.closest('.map-search-pill')) {
             window._pp_modules?.closeMapFilters?.();
         }
+    });
+}
+
+function showAgeOnboarding() {
+    // Don't show if already completed or if the element already exists
+    if (hasCompletedOnboarding() || document.getElementById('age-onboarding')) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'age-onboarding';
+    overlay.className = 'age-onboarding';
+    overlay.innerHTML = `
+        <div class="age-onboarding-card">
+            <p class="age-onboarding-title">Hoe oud is je kind?</p>
+            <p class="age-onboarding-subtitle">Dan filteren we op leeftijd</p>
+            <div class="age-onboarding-options">
+                <button class="age-onboarding-btn" data-age="dreumes">0-2 jaar<br><span>Dreumes</span></button>
+                <button class="age-onboarding-btn" data-age="peuter">2-4 jaar<br><span>Peuter</span></button>
+                <button class="age-onboarding-btn" data-age="kleuter">4-6 jaar<br><span>Kleuter</span></button>
+            </div>
+            <button class="age-onboarding-skip">Overslaan</button>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    // Animate in
+    requestAnimationFrame(() => overlay.classList.add('visible'));
+
+    // Handle age selection
+    overlay.querySelectorAll('.age-onboarding-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const age = btn.dataset.age;
+            setPrefs({ childAges: [age], onboardingComplete: true });
+            overlay.classList.remove('visible');
+            setTimeout(() => overlay.remove(), 300);
+
+            // Pre-select the matching age filter chip
+            const ageMap = { dreumes: 'dreumesproof', peuter: 'peuterproof' };
+            if (ageMap[age]) {
+                window.togglePreset?.(ageMap[age]);
+            }
+        });
+    });
+
+    // Skip button
+    overlay.querySelector('.age-onboarding-skip').addEventListener('click', () => {
+        setPrefs({ onboardingComplete: true });
+        overlay.classList.remove('visible');
+        setTimeout(() => overlay.remove(), 300);
     });
 }

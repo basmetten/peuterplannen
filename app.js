@@ -28,7 +28,7 @@ window._pp_modules = {
     showLocationInSheet, hideLocationPreview,
     updateHash,
     renderDiscovery: async () => {
-        const region = state.userLocation?.name || state.allLocations[0]?.region;
+        const region = state.userLocation?.name || state.allLocations[0]?.region || 'jouw buurt';
         const picks = getThisWeekPicks(state.allLocations, region);
         renderWeekPicks(picks, document.getElementById('sheet-week-picks'));
 
@@ -248,6 +248,19 @@ if ('serviceWorker' in navigator) {
 // Init plan view + restore saved preferences
 initPlan();
 initPlanFromPrefs();
+
+// Restore age filter from prefs
+try {
+    const prefs = getPrefs();
+    if (prefs.childAges?.length && prefs.onboardingComplete) {
+        const ageMap = { dreumes: 'dreumesproof', peuter: 'peuterproof' };
+        const preset = ageMap[prefs.childAges[0]];
+        if (preset && !state.activePreset) {
+            // Delay to let initial load complete
+            setTimeout(() => togglePreset(preset), 500);
+        }
+    }
+} catch(e) {}
 
 // Clear all saved preferences
 function clearAllPrefs() {
