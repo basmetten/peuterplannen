@@ -283,7 +283,7 @@ export function renderSheetList(locations, travelTimes = {}) {
         const visitedLabel = isVisited(loc.id) ? `<span class="compact-card-visited">Bezocht</span>` : '';
 
         return `<div class="compact-card" data-id="${loc.id}">
-            <img class="compact-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" style="background:${photoColor}"
+            <img class="compact-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async" style="background:${photoColor}"
                  onerror="this.src='${escapeHtml(categoryImg)}'">
             <div class="compact-card-body">
                 <div class="compact-card-name">${escapeHtml(loc.name)}</div>

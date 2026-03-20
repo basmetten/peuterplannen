@@ -83,13 +83,19 @@
 }
 .photo-container img {
   opacity: 0;
-  transition: opacity var(--wg-duration-snap) var(--wg-ease-standard);
+  transition: opacity var(--wg-duration-snap) var(--wg-ease-standard),
+              filter 0.3s ease,
+              transform 0.3s ease;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: blur(8px);
+  transform: scale(1.02); /* prevent blur edge artifacts */
 }
 .photo-container img.loaded {
   opacity: 1;
+  filter: none;
+  transform: scale(1);
 }
 .photo-container .photo-fallback-icon {
   position: absolute;
@@ -333,6 +339,7 @@
               right var(--wg-duration-snap) var(--wg-ease-spring),
               bottom var(--wg-duration-snap) var(--wg-ease-spring),
               border-radius var(--wg-duration-snap) var(--wg-ease-spring);
+  /* will-change: transform — remove if this causes memory issues on low-end devices */
   will-change: transform;
   height: 100dvh;
   overflow: hidden;
@@ -593,6 +600,8 @@
   margin: 0 -4px;
   padding-left: 4px;
   padding-right: 4px;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 72px;
 }
 .compact-card:active {
   background: rgba(212, 119, 86, 0.04);

@@ -117,7 +117,7 @@ export function openLocSheet(locationId) {
     content.innerHTML = `
         <!-- TIER 1: Hero + essentials + actions -->
         <div class="sheet-hero-photo${!photoSrc ? ' sheet-hero--category' : ''}" style="--photo-color: ${photoColor}">
-            <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}"
+            <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" decoding="async"
                  onload="this.classList.add('loaded')"
                  onerror="if(this.dataset.retried){this.parentElement.classList.add('sheet-hero--fallback')}else{this.dataset.retried='1';this.src='${escapeHtml(fallbackSrc || categoryImg)}'}">
         </div>

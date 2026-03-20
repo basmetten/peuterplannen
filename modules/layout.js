@@ -248,7 +248,7 @@ function renderMobileList() {
         const imgSrc = photoSrc || categoryImg;
 
         return `<div class="compact-card" style="padding: 12px 16px;" data-id="${loc.id}">
-            <img class="compact-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name || '')}" loading="lazy" style="width:72px;height:72px"
+            <img class="compact-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name || '')}" loading="lazy" decoding="async" style="width:72px;height:72px"
                  onerror="this.src='${escapeHtml(categoryImg)}'">
             <div class="compact-card-body">
                 <div class="compact-card-name">${escapeHtml(loc.name || '')}</div>

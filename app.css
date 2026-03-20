@@ -800,7 +800,8 @@
         /* Floating pill bottom nav */
         .bottom-nav { position: fixed; bottom: max(16px, env(safe-area-inset-bottom, 16px)); left: 50%; transform: translateX(-50%); background: var(--wg-glass-surface); backdrop-filter: var(--wg-blur-heavy); -webkit-backdrop-filter: var(--wg-blur-heavy); border-radius: var(--pp-radius-pill); padding: 6px; display: flex; align-items: center; z-index: 100; box-shadow: var(--pp-shadow-popover); border: 1px solid rgba(var(--pp-surface-rgb), 0.48); }
         @supports not (backdrop-filter: blur(1px)) { .bottom-nav { background: var(--wg-glass-solid); } }
-        .nav-indicator { position: absolute; background: var(--pp-primary); border-radius: var(--pp-radius-pill); top: 6px; bottom: 6px; left: 6px; width: 60px; z-index: 0; pointer-events: none; transition: left 0.38s var(--wg-ease-bounce), width 0.38s var(--wg-ease-bounce); }
+        /* will-change: transform — remove if this causes memory issues on low-end devices */
+        .nav-indicator { position: absolute; background: var(--pp-primary); border-radius: var(--pp-radius-pill); top: 6px; bottom: 6px; left: 6px; width: 60px; z-index: 0; pointer-events: none; transition: left 0.38s var(--wg-ease-bounce), width 0.38s var(--wg-ease-bounce); will-change: transform; }
         .nav-indicator.no-transition { transition: none !important; }
         .bnav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 18px; font-size: var(--pp-text-xs); font-weight: 600; color: var(--pp-text-muted); transition: color 0.2s; background: none; border: none; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; position: relative; z-index: 1; min-height: 48px; border-radius: var(--pp-radius-pill); }
         .bnav-item.active { color: var(--pp-text-inverse); }
