@@ -43,8 +43,6 @@ export function initSheet() {
 
             // Activate search mode
             sheetEl.classList.add('search-active');
-            const filterChips = document.getElementById('sheet-filter-chips');
-            if (filterChips) filterChips.classList.add('active');
             if (currentState === 'peek') setSheetState('half');
 
             // Focus the input after transition

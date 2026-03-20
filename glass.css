@@ -1077,9 +1077,9 @@
   }
 
 
-  /* Sheet filter chips — shown inline when search pill tapped */
+  /* Sheet filter chips — always visible in half/full, hidden in peek */
   .sheet-filter-chips {
-    display: none;
+    display: flex;
     flex-wrap: nowrap;
     gap: 6px;
     padding: 8px 0;
@@ -1089,9 +1089,6 @@
     mask-image: linear-gradient(to right, transparent, black 8px, black calc(100% - 24px), transparent);
   }
   .sheet-filter-chips::-webkit-scrollbar { display: none; }
-  .sheet-filter-chips.active {
-    display: flex;
-  }
   .sheet-filter-chip {
     padding: 6px 14px;
     border-radius: var(--wg-radius-chip);
