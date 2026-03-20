@@ -55,3 +55,11 @@ batch_*.json
 .scripts/calculate_city_distances.js
 .audit/
 supabase/.temp/
+
+# Debug/test artifacts
+qt-*.png
+quality-test-*.png
+test-*.png
+verify-*.png
+photo-*-log.json
+mockup-*.html
