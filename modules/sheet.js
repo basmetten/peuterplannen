@@ -286,6 +286,11 @@ function renderDetailView(loc, regionSlug) {
     const safeWebsite = safeUrl(loc.website);
     const highlight = cleanToddlerHighlight(loc.toddler_highlight || '');
     const regionName = loc.region || '';
+    const { imgSrc, categoryImg, photoColor, photoSrc } = getPhotoData(loc);
+    const isFav = isFavorite(loc.id);
+    const favStyle = isFav ? 'fill: #D4775A; stroke: #D4775A;' : '';
+    const v2 = computePeuterScoreV2(loc, {});
+    const psScore = Math.round(v2.total / 10);
 
     let ageText = '';
     if (loc.min_age != null && loc.max_age != null) ageText = loc.min_age + '–' + loc.max_age + ' jaar';
@@ -309,8 +314,18 @@ function renderDetailView(loc, regionSlug) {
     const waText = encodeURIComponent(loc.name + ' — Peuteruitje in ' + regionName + ' ' + shareUrl);
 
     let html = '';
-    html += '<a href="/app.html" class="detail-back" onclick="event.preventDefault(); if (history.length > 1) { history.back(); } else { location.href=\'/app.html\'; }"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Terug</a>';
-    html += '<div class="detail-header"><span class="detail-type-badge">' + escapeHtml(typeLabel) + '</span><h1>' + escapeHtml(loc.name) + '</h1>';
+    // Hero photo
+    html += '<div class="detail-hero" style="--photo-color: ' + photoColor + '">';
+    html += '<img src="' + escapeHtml(imgSrc) + '" alt="' + escapeHtml(loc.name) + '" loading="eager"';
+    if (!photoSrc) html += ' class="detail-hero-fallback"';
+    html += ' onerror="this.src=\'' + escapeHtml(categoryImg) + '\'">';
+    html += '<a href="/app.html" class="detail-back" onclick="event.preventDefault(); if (history.length > 1) { history.back(); } else { location.href=\'/app.html\'; }"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></a>';
+    html += '<button class="detail-fav" onclick="toggleFavorite(' + loc.id + ', this)" aria-label="' + (isFav ? 'Verwijder favoriet' : 'Opslaan') + '"><svg viewBox="0 0 24 24" style="' + favStyle + '"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>';
+    html += '</div>';
+    // Header with name, type, score
+    html += '<div class="detail-header">';
+    html += '<div class="detail-header-top"><span class="detail-type-badge">' + escapeHtml(typeLabel) + '</span><span class="detail-score">' + psScore + '/10</span></div>';
+    html += '<h1>' + escapeHtml(loc.name) + '</h1>';
     if (regionName) html += '<a href="/app.html?regio=' + encodeURIComponent(regionName) + '" class="detail-region-link">in ' + escapeHtml(regionName) + '</a>';
     html += '</div>';
     if (loc.description) html += '<p class="detail-description">' + escapeHtml(loc.description) + '</p>';
