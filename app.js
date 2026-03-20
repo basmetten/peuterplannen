@@ -12,32 +12,25 @@ import { generatePlan, selectPlanDate, selectPlanOption, changeKidsCount, update
 import { initSheet, initSheetTabs, renderSheetList, updateSheetMeta, setSheetState, showLocationInSheet, hideLocationPreview } from './modules/sheet-engine.js';
 import { getPrefs, clearPrefs } from './modules/prefs.js';
 import { getThisWeekPicks, fetch5DayForecast, renderWeekPicks, renderForecastStrip } from './modules/discovery.js';
+import bus from './modules/bus.js';
 
 // === Deep Linking: hash helper ===
 function updateHash(hash) {
     history.replaceState(null, '', hash ? '#' + hash : location.pathname + location.search);
 }
 
-// === Cross-module function registry (breaks circular deps) ===
-window._pp_modules = {
-    renderCards, updateMapMarkers, highlightMarker, openLocSheet, closeLocSheet,
-    closeMapFilters, shareLocation, showGpsStatus, switchView, moveNavIndicator,
-    syncDesktopModeSwitch, setDisplayMode, updatePlanLocationChip, updateFilterCount,
-    loadLocations, trackEvent, buildDetailUrl, updateUserLocationOnMap,
-    renderSheetList, updateSheetMeta, setSheetState,
-    showLocationInSheet, hideLocationPreview,
-    updateHash,
-    renderDiscovery: async () => {
-        const region = state.userLocation?.name || state.allLocations[0]?.region || 'jouw buurt';
-        const picks = getThisWeekPicks(state.allLocations, region);
-        renderWeekPicks(picks, document.getElementById('sheet-week-picks'));
+// === Bus listeners for app-level functions ===
+bus.on('hash:update', updateHash);
+bus.on('discovery:render', async () => {
+    const region = state.userLocation?.name || state.allLocations[0]?.region || 'jouw buurt';
+    const picks = getThisWeekPicks(state.allLocations, region);
+    renderWeekPicks(picks, document.getElementById('sheet-week-picks'));
 
-        const lat = state.userLocation?.lat || 52.37;
-        const lng = state.userLocation?.lng || 4.90;
-        const forecast = await fetch5DayForecast(lat, lng);
-        renderForecastStrip(forecast, document.getElementById('sheet-forecast'));
-    },
-};
+    const lat = state.userLocation?.lat || 52.37;
+    const lng = state.userLocation?.lng || 4.90;
+    const forecast = await fetch5DayForecast(lat, lng);
+    renderForecastStrip(forecast, document.getElementById('sheet-forecast'));
+});
 
 // === Expose all HTML onclick-referenced functions on window ===
 Object.assign(window, {
@@ -225,8 +218,8 @@ function parseHash() {
                     return slug === locSlug;
                 });
                 if (loc) {
-                    window._pp_modules?.showLocationInSheet?.(loc);
-                    window._pp_modules?.highlightMarker?.(loc.id);
+                    bus.emit('sheet:showlocation', loc);
+                    bus.emit('map:highlight', loc.id);
                 }
             }
         }, 1500); // wait for map + data load

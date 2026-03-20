@@ -3,6 +3,7 @@ import { escapeHtml, calculateDistance } from './utils.js';
 import { computePeuterScore } from './scoring.js';
 import { fetchAllPages } from './data.js';
 import { getPrefs, setPrefs } from './prefs.js';
+import bus from './bus.js';
 
 // Plan engine (v2 algorithm) — graceful fallback if not yet available
 let planEngine = null;
@@ -540,3 +541,6 @@ export function initPlan() {
     renderAgeSliders();
     renderPlanPreview();
 }
+
+// Bus listeners
+bus.on('plan:chipupdate', updatePlanLocationChip);

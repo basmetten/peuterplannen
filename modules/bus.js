@@ -1,7 +1,7 @@
-const bus = {
-  _events: {},
-  on(event, fn) { (this._events[event] ||= []).push(fn); },
-  off(event, fn) { this._events[event] = (this._events[event] || []).filter(f => f !== fn); },
-  emit(event, data) { (this._events[event] || []).forEach(fn => fn(data)); }
+const listeners = {};
+export const bus = {
+  on(event, fn) { (listeners[event] ??= []).push(fn); },
+  off(event, fn) { listeners[event] = listeners[event]?.filter(f => f !== fn); },
+  emit(event, ...args) { listeners[event]?.forEach(fn => fn(...args)); }
 };
 export default bus;

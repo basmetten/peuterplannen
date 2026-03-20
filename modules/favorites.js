@@ -1,5 +1,6 @@
 import { state } from './state.js';
-import { trackEvent, ppToast } from './utils.js';
+import { trackEvent, ppToast, buildDetailUrl } from './utils.js';
+import bus from './bus.js';
 
 export function getFavorites() {
     try { return JSON.parse(localStorage.getItem('peuterplannen_favorites') || '[]'); } catch { return []; }
@@ -27,11 +28,8 @@ export function toggleFavorite(locationId, btn) {
     if (btn) { btn.classList.add('heart-pop'); setTimeout(() => btn.classList.remove('heart-pop'), 400); }
     ppToast(action === 'add' ? 'Opgeslagen in favorieten' : 'Verwijderd uit favorieten', 'success', 2000);
     if (state.activeTag === 'favorites') {
-        const { renderCards } = window._pp_modules || {};
-        if (renderCards) {
-            const filtered = state.allLocations.filter(item => getFavorites().includes(item.id));
-            renderCards(filtered, {});
-        }
+        const filtered = state.allLocations.filter(item => getFavorites().includes(item.id));
+        bus.emit('cards:render', filtered, {});
     } else {
         if (btn) {
             const isFav = getFavorites().includes(locationId);
@@ -83,8 +81,7 @@ export async function shareShortlist() {
     try {
         if (navigator.share) { await navigator.share({ title, text, url }); return; }
         await navigator.clipboard.writeText(url);
-        const { showGpsStatus } = window._pp_modules || {};
-        if (showGpsStatus) showGpsStatus('Shortlistlink gekopieerd', '');
+        bus.emit('gps:status', 'Shortlistlink gekopieerd', '');
     } catch (error) {
         window.open(`https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`, '_blank');
     }
@@ -92,8 +89,7 @@ export async function shareShortlist() {
 
 export function showShortlist() {
     if (state.sharedShortlistIds.length > 0) {
-        const { loadLocations } = window._pp_modules || {};
-        if (loadLocations) loadLocations();
+        bus.emit('data:reload');
         return;
     }
     window.toggleTag('favorites');
@@ -104,9 +100,8 @@ export function clearShortlist() {
     try { localStorage.removeItem('peuterplannen_favorites'); } catch (error) {}
     if (state.activeTag === 'favorites') state.activeTag = 'all';
     updateShortlistBar();
-    const { updateFilterCount, loadLocations } = window._pp_modules || {};
-    if (updateFilterCount) updateFilterCount();
-    if (loadLocations) loadLocations();
+    bus.emit('filters:countupdate');
+    bus.emit('data:reload');
 }
 
 export function clearSharedShortlist() {
@@ -116,24 +111,21 @@ export function clearSharedShortlist() {
     window.history.replaceState({}, '', url.toString());
     document.getElementById('clear-shared-shortlist').style.display = 'none';
     updateShortlistBar();
-    const { updateFilterCount, loadLocations } = window._pp_modules || {};
-    if (updateFilterCount) updateFilterCount();
-    if (loadLocations) loadLocations();
+    bus.emit('filters:countupdate');
+    bus.emit('data:reload');
 }
 
 export function toggleFavoriteFromSheet(locationId, btn) {
     toggleFavorite(locationId, btn);
     if (state.activeLocSheet === locationId) {
-        const { openLocSheet } = window._pp_modules || {};
-        if (openLocSheet) openLocSheet(locationId);
+        bus.emit('sheet:open', locationId);
     }
 }
 
 export function shareLocation(itemOrName, region = '') {
     const item = typeof itemOrName === 'object' ? itemOrName : null;
     const name = item ? item.name : itemOrName;
-    const { buildDetailUrl } = window._pp_modules || {};
-    const detailUrl = item && buildDetailUrl ? buildDetailUrl(item) : null;
+    const detailUrl = item ? buildDetailUrl(item) : null;
     const shortlistUrl = item ? buildShortlistUrl([item.id]) : '';
     const url = detailUrl ? `${window.location.origin}${detailUrl}` : (shortlistUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + (region ? ", " + region : ""))}`);
     const text = `Bekijk ${name} op PeuterPlannen: ${url}`;
@@ -141,3 +133,6 @@ export function shareLocation(itemOrName, region = '') {
     if (navigator.share) { navigator.share({ title: name, text: text, url: url }); }
     else { window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'); }
 }
+
+// Bus listeners
+bus.on('location:share', shareLocation);

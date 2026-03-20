@@ -3,9 +3,7 @@ import { escapeHtml, calculateTravelTimes, loadGoogleMaps, trackEvent } from './
 import { computePeuterScore, matchesPreset, matchesPresetDistance } from './scoring.js';
 import { getFavorites } from './favorites.js';
 import { setPrefs } from './prefs.js';
-
-// Late-bound cross-module refs (set by app.js to avoid circular imports)
-const call = (name, ...args) => window._pp_modules?.[name]?.(...args);
+import bus from './bus.js';
 
 let currentAbort = null;
 let autoRetryInterval = null;
@@ -161,8 +159,8 @@ function applyActiveSort() {
 export function applySort(val) {
     state.activeSort = val;
     applyActiveSort();
-    call('renderCards', state.allLocations, state.lastTravelTimes);
-    call('renderSheetList', state.allLocations, state.lastTravelTimes);
+    bus.emit('cards:render', state.allLocations, state.lastTravelTimes);
+    bus.emit('sheet:renderlist', state.allLocations, state.lastTravelTimes);
 }
 
 export function updateResultsCount(count) {
@@ -233,7 +231,7 @@ export async function loadLocations() {
                 const suggestHTML = suggestions.length ? '<ul style="text-align:left;margin:12px auto;max-width:280px;padding-left:20px;">' + suggestions.map(s => '<li>' + s + '</li>').join('') + '</ul>' : '';
                 container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>' + suggestHTML + '<button class="gps-onboarding-btn" onclick="resetAllFilters()" style="margin-top:12px;">Alle filters wissen</button></div>';
             }
-            call('updateMapMarkers', []); updateResultsCount(0); return;
+            bus.emit('map:update', []); updateResultsCount(0); return;
         }
 
         if (state.userLocation) {
@@ -249,21 +247,21 @@ export async function loadLocations() {
             }
             applyActiveSort();
             loader.classList.add('hidden');
-            call('renderCards', state.allLocations, travelTimes);
-            call('renderSheetList', state.allLocations, travelTimes);
-            call('updateSheetMeta');
-            call('renderDiscovery');
-            call('updateMapMarkers', state.allLocations); updateResultsCount(state.allLocations.length);
+            bus.emit('cards:render', state.allLocations, travelTimes);
+            bus.emit('sheet:renderlist', state.allLocations, travelTimes);
+            bus.emit('sheet:updatemeta');
+            bus.emit('discovery:render');
+            bus.emit('map:update', state.allLocations); updateResultsCount(state.allLocations.length);
         } else {
             state.lastTravelTimes = {};
             state.allLocations.sort((a, b) => (a.distance_from_city_center_km || 999) - (b.distance_from_city_center_km || 999));
             applyActiveSort();
             loader.classList.add('hidden');
-            call('renderCards', state.allLocations, {});
-            call('renderSheetList', state.allLocations, {});
-            call('updateSheetMeta');
-            call('renderDiscovery');
-            call('updateMapMarkers', state.allLocations); updateResultsCount(state.allLocations.length);
+            bus.emit('cards:render', state.allLocations, {});
+            bus.emit('sheet:renderlist', state.allLocations, {});
+            bus.emit('sheet:updatemeta');
+            bus.emit('discovery:render');
+            bus.emit('map:update', state.allLocations); updateResultsCount(state.allLocations.length);
         }
         if (!usingCachedData) { error.classList.add('hidden'); stopAutoRetry(); }
     } catch (e) {
@@ -316,7 +314,7 @@ export async function checkWeather() {
 
 // === Location search ===
 export async function initAutocomplete() {
-    try { await loadGoogleMaps(state); } catch(e) { console.warn('Google Maps unavailable:', e); call('showGpsStatus', 'Google Maps niet beschikbaar', 'error'); return; }
+    try { await loadGoogleMaps(state); } catch(e) { console.warn('Google Maps unavailable:', e); bus.emit('gps:status', 'Google Maps niet beschikbaar', 'error'); return; }
     const input = document.getElementById('location-input');
     state.autocomplete = new google.maps.places.Autocomplete(input, {
         types: ['geocode'], componentRestrictions: { country: 'nl' }, fields: ['geometry', 'formatted_address', 'name']
@@ -330,9 +328,9 @@ export async function initAutocomplete() {
             if (popularElAc) popularElAc.classList.add('hidden');
             document.getElementById('app-container')?.classList.add('has-location');
             document.getElementById('gps-btn')?.classList.remove('gps-active');
-            call('updatePlanLocationChip');
+            bus.emit('plan:chipupdate');
             trackEvent('search', { query_type: 'places' });
-            loadLocations(); call('updateUserLocationOnMap');
+            loadLocations(); bus.emit('map:userlocation');
         }
     });
 }
@@ -358,10 +356,10 @@ export async function getCurrentLocation() {
             setTimeout(() => statusEl.classList.add('hidden'), 2000);
             document.getElementById('app-container')?.classList.add('has-location');
             document.getElementById('gps-btn')?.classList.add('gps-active');
-            call('updatePlanLocationChip');
+            bus.emit('plan:chipupdate');
             trackEvent('search', { query_type: 'gps' });
-            loadLocations(); call('updateUserLocationOnMap');
-        } catch (err) { input.value = 'Mijn locatie'; showGpsStatus('Locatie gevonden', ''); setTimeout(() => statusEl.classList.add('hidden'), 2000); document.getElementById('app-container')?.classList.add('has-location'); document.getElementById('gps-btn')?.classList.add('gps-active'); call('updatePlanLocationChip'); trackEvent('search', { query_type: 'gps' }); loadLocations(); call('updateUserLocationOnMap'); }
+            loadLocations(); bus.emit('map:userlocation');
+        } catch (err) { input.value = 'Mijn locatie'; showGpsStatus('Locatie gevonden', ''); setTimeout(() => statusEl.classList.add('hidden'), 2000); document.getElementById('app-container')?.classList.add('has-location'); document.getElementById('gps-btn')?.classList.add('gps-active'); bus.emit('plan:chipupdate'); trackEvent('search', { query_type: 'gps' }); loadLocations(); bus.emit('map:userlocation'); }
     }, (err) => { let msg = 'Locatie niet beschikbaar'; if (err.code === 1) msg = 'Toestemming geweigerd'; if (err.code === 2) msg = 'Locatie niet gevonden'; if (err.code === 3) msg = 'Timeout'; showGpsStatus(msg, 'error'); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
 }
 
@@ -388,8 +386,8 @@ export async function updateLocation() {
         showGpsStatus(`Zoeken bij ${input}...`, 'active');
         document.getElementById('app-container')?.classList.add('has-location');
         document.getElementById('gps-btn')?.classList.remove('gps-active');
-        call('updatePlanLocationChip');
-        loadLocations(); call('updateUserLocationOnMap');
+        bus.emit('plan:chipupdate');
+        loadLocations(); bus.emit('map:userlocation');
     } catch (err) { showGpsStatus('Locatie niet gevonden', 'error'); }
 }
 
@@ -412,8 +410,8 @@ export async function setCity(cityName) {
         showGpsStatus(`Zoeken bij ${cityName}...`, 'active');
         document.getElementById('app-container')?.classList.add('has-location');
         document.getElementById('gps-btn')?.classList.remove('gps-active');
-        call('updatePlanLocationChip');
-        loadLocations(); call('updateUserLocationOnMap');
+        bus.emit('plan:chipupdate');
+        loadLocations(); bus.emit('map:userlocation');
     } catch (err) { showGpsStatus('Locatie niet gevonden', 'error'); }
 }
 
@@ -422,5 +420,9 @@ export function updateLocationFromMap() {
     const mainInput = document.getElementById('location-input');
     if (mapInput && mainInput) mainInput.value = mapInput.value;
     updateLocation();
-    call('closeMapFilters');
+    bus.emit('filters:closemap');
 }
+
+// Bus listeners
+bus.on('data:reload', () => loadLocations());
+bus.on('gps:status', showGpsStatus);

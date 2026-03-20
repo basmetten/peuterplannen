@@ -4,6 +4,7 @@ import { computePeuterScore, computePeuterScoreV2, getTopStrengths, getCardDecis
 import { isFavorite } from './favorites.js';
 import { getTopTags, getWeatherBadge } from './tags.js';
 import { isVisited } from './visited.js';
+import bus from './bus.js';
 
 let batchLocations = [];
 let batchTravelTimes = {};
@@ -133,8 +134,8 @@ function appendBatch() {
         card.className = 'loc-card reveal';
         card.style.animationDelay = `${Math.min(batchIdx * 0.04, 0.2)}s`;
         if (window.innerWidth >= DESKTOP_WIDTH && item.lat && item.lng) {
-            card.addEventListener('mouseenter', () => window._pp_modules?.highlightMarker?.(item.id));
-            card.addEventListener('mouseleave', () => window._pp_modules?.highlightMarker?.(null));
+            card.addEventListener('mouseenter', () => bus.emit('map:highlight', item.id));
+            card.addEventListener('mouseleave', () => bus.emit('map:highlight', null));
         }
         card.innerHTML = `
             ${cardImgHTML}
@@ -184,7 +185,7 @@ function appendBatch() {
         container.appendChild(card);
         const shareButton = card.querySelector('.btn-share');
         if (shareButton) {
-            shareButton.addEventListener('click', () => window._pp_modules?.shareLocation?.(item));
+            shareButton.addEventListener('click', () => bus.emit('location:share', item));
         }
     }
 
@@ -204,3 +205,6 @@ function appendBatch() {
         batchSentinelObserver.observe(sentinel);
     }
 }
+
+// Bus listeners
+bus.on('cards:render', renderCards);

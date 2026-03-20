@@ -1,5 +1,6 @@
 import { state } from './state.js';
 import { computePeuterScore } from './scoring.js';
+import bus from './bus.js';
 
 const SEASONAL_TYPES = {
     0: ['museum', 'indoor'],      // jan - indoor focus
@@ -116,7 +117,7 @@ export function renderWeekPicks(picks, containerEl) {
     containerEl.querySelectorAll('.week-pick-card').forEach(card => {
         card.addEventListener('click', () => {
             const id = parseInt(card.dataset.id, 10);
-            window._pp_modules?.showLocationInSheet?.(
+            bus.emit('sheet:showlocation',
                 state.allLocations.find(l => l.id === id)
             );
         });

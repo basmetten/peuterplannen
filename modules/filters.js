@@ -1,6 +1,7 @@
 import { state, DESKTOP_WIDTH, TYPE_LABELS, PRESET_LABELS } from './state.js';
 import { trackEvent } from './utils.js';
-import { loadLocations } from './data.js';
+import { loadLocations, showGpsStatus } from './data.js';
+import bus from './bus.js';
 
 export function syncChipAria() {
     document.querySelectorAll('.chip').forEach((chip) => {
@@ -129,8 +130,7 @@ export function togglePreset(preset, evt) {
     evt?.preventDefault();
     if (preset === 'short-drive' && !state.userLocation) {
         document.getElementById('location-input')?.focus();
-        const { showGpsStatus } = window._pp_modules || {};
-        if (showGpsStatus) showGpsStatus('Vul eerst een stad of gebruik je locatie voor een korte-rit filter', 'error');
+        showGpsStatus('Vul eerst een stad of gebruik je locatie voor een korte-rit filter', 'error');
         return;
     }
     state.activePreset = state.activePreset === preset ? null : preset;
@@ -181,8 +181,7 @@ function toggleTagBase(tag, evt) {
 
 // Extended toggleTag with nav sync
 export function toggleTag(tag, evt) {
-    const { setDisplayMode, moveNavIndicator, syncDesktopModeSwitch } = window._pp_modules || {};
-    if (state.currentDisplayMode === 'map' && setDisplayMode) setDisplayMode('list');
+    if (state.currentDisplayMode === 'map') bus.emit('map:displaymode', 'list');
     document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
     if (tag === 'favorites') {
         document.getElementById('tab-favorites')?.classList.add('active');
@@ -191,8 +190,8 @@ export function toggleTag(tag, evt) {
         document.getElementById('tab-home')?.classList.add('active');
         state.currentView = 'home';
     }
-    if (moveNavIndicator) moveNavIndicator();
-    if (syncDesktopModeSwitch) syncDesktopModeSwitch('home');
+    bus.emit('nav:indicator');
+    bus.emit('nav:syncdesktop', 'home');
     toggleTagBase(tag, evt);
 }
 
@@ -334,3 +333,7 @@ function updateMapMoreBadge() {
     if (count > 0) { badge.textContent = count; badge.style.display = ''; }
     else { badge.style.display = 'none'; }
 }
+
+// Bus listeners
+bus.on('filters:countupdate', updateFilterCount);
+bus.on('filters:closemap', closeMapFilters);

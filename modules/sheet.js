@@ -1,11 +1,12 @@
 import { state, SB_KEY, TYPE_LABELS, WEATHER_LABELS, WEATHER_ICONS, SB_URL, FULL_LOCATION_SELECT, CATEGORY_IMAGES, TYPE_PHOTO_COLORS } from './state.js';
-import { escapeHtml, safeUrl, cleanToddlerHighlight, calculateDistance, buildDetailUrl } from './utils.js';
+import { escapeHtml, safeUrl, cleanToddlerHighlight, calculateDistance, buildDetailUrl, trackEvent } from './utils.js';
 import { getTrustBullets, getPracticalBullets, computePeuterScoreV2 } from './scoring.js';
 import { isFavorite } from './favorites.js';
 import { fetchJsonWithRetry, normalizeLocationRow } from './data.js';
 import { getSterkePunten } from './tags.js';
 import { markVisited } from './visited.js';
 import { getPrefs, setPrefs, hasCompletedOnboarding } from './prefs.js';
+import bus from './bus.js';
 
 export function openLocSheet(locationId) {
     const loc = state.allLocations.find(l => l.id === locationId);
@@ -190,7 +191,7 @@ export function openLocSheet(locationId) {
     `;
     const shareButton = content.querySelector('.btn-share');
     if (shareButton) {
-        shareButton.addEventListener('click', () => window._pp_modules?.shareLocation?.(loc));
+        shareButton.addEventListener('click', () => bus.emit('location:share', loc));
     }
 
     const overlay = document.getElementById('loc-overlay');
@@ -247,7 +248,7 @@ export function closeInfoPanel() {
         state.currentView = 'home';
         document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
         document.getElementById('tab-home').classList.add('active');
-        window._pp_modules?.moveNavIndicator?.();
+        bus.emit('nav:indicator');
     }
 }
 
@@ -278,7 +279,7 @@ export async function showLocationDetail(regionSlug, locSlug) {
         if (!Array.isArray(data) || data.length === 0) throw new Error('Locatie niet gevonden');
 
         const loc = normalizeLocationRow(data[0]);
-        window._pp_modules?.trackEvent?.('detail_view', { location_id: locationId });
+        trackEvent('detail_view', { location_id: locationId });
         renderDetailView(loc, regionSlug);
     } catch (err) {
         console.error('Detail view error:', err);
@@ -400,7 +401,7 @@ export function initSheetGestures() {
         const overlay = document.getElementById('map-filters-overlay');
         if (!overlay || !overlay.classList.contains('open')) return;
         if (!overlay.contains(e.target) && e.target.id !== 'map-search-pill' && !e.target.closest('.map-search-pill')) {
-            window._pp_modules?.closeMapFilters?.();
+            bus.emit('filters:closemap');
         }
     });
 }
@@ -452,3 +453,7 @@ function showAgeOnboarding() {
         setTimeout(() => overlay.remove(), 300);
     });
 }
+
+// Bus listeners
+bus.on('sheet:open', openLocSheet);
+bus.on('sheet:close', closeLocSheet);

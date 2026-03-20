@@ -5,6 +5,7 @@ import { updateFilterCount, updateMapPillBadge } from './filters.js';
 import { loadLocations } from './data.js';
 import { trackEvent, escapeHtml } from './utils.js';
 import { computePeuterScore } from './scoring.js';
+import bus from './bus.js';
 
 let isListMode = false;
 
@@ -82,7 +83,7 @@ function switchViewCore(view) {
                 state.activeAgeGroup = null; state.activeRadius = null;
                 updateFilterCount();
                 loadLocations();
-                window._pp_modules?.setSheetState?.('peek');
+                bus.emit('sheet:setstate', 'peek');
                 if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), 50);
                 break;
             case 'map':
@@ -94,13 +95,13 @@ function switchViewCore(view) {
                     setTimeout(() => state.mapInstance.resize(), 50);
                     fitMapToMarkers();
                 }
-                window._pp_modules?.setSheetState?.('peek');
+                bus.emit('sheet:setstate', 'peek');
                 updateMapPillBadge();
                 break;
             case 'favorites':
                 state.activeTag = 'favorites'; state.activeWeather = null;
                 loadLocations();
-                window._pp_modules?.setSheetState?.('half');
+                bus.emit('sheet:setstate', 'half');
                 break;
             case 'info':
                 openInfoPanel();
@@ -167,10 +168,10 @@ export function switchView(view) {
         document.querySelectorAll('.bnav-item').forEach(i => i.classList.remove('active'));
         document.getElementById('tab-plan')?.classList.add('active');
         state.currentView = 'plan';
-        window._pp_modules?.updatePlanLocationChip?.();
+        bus.emit('plan:chipupdate');
         syncDesktopModeSwitch('plan');
         moveNavIndicator();
-        window._pp_modules?.updateHash?.('plan');
+        bus.emit('hash:update', 'plan');
 
         // Mode transition animation
         if (isDesktop && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !document.body.classList.contains('plan-mode')) {
@@ -195,7 +196,7 @@ export function switchView(view) {
 
     switchViewCore(view);
     syncDesktopModeSwitch('home');
-    window._pp_modules?.updateHash?.('');
+    bus.emit('hash:update', '');
 }
 
 // === Map/List toggle ===
@@ -221,14 +222,14 @@ export function toggleMapList() {
         listView?.classList.add('active');
         if (sheet) sheet.style.display = 'none';
         renderMobileList();
-        window._pp_modules?.updateHash?.('list');
+        bus.emit('hash:update', 'list');
     } else {
         // Show map + sheet, hide list
         listView?.classList.remove('active');
         if (sheet) sheet.style.display = '';
         // Resize map in case it needs updating
         if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), 50);
-        window._pp_modules?.updateHash?.('');
+        bus.emit('hash:update', '');
     }
 }
 
@@ -264,7 +265,12 @@ function renderMobileList() {
     content.querySelectorAll('.compact-card').forEach(card => {
         card.addEventListener('click', () => {
             const id = parseInt(card.dataset.id, 10);
-            window._pp_modules?.openLocSheet?.(id);
+            bus.emit('sheet:open', id);
         });
     });
 }
+
+// Bus listeners
+bus.on('view:switch', switchView);
+bus.on('nav:indicator', moveNavIndicator);
+bus.on('nav:syncdesktop', syncDesktopModeSwitch);

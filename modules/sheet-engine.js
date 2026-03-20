@@ -1,5 +1,6 @@
 import { state, DESKTOP_WIDTH, CATEGORY_IMAGES, TYPE_PHOTO_COLORS, TYPE_LABELS } from './state.js';
 import { escapeHtml } from './utils.js';
+import bus from './bus.js';
 import { computePeuterScore } from './scoring.js';
 import { getTopTags } from './tags.js';
 import { isVisited } from './visited.js';
@@ -300,7 +301,7 @@ export function renderSheetList(locations, travelTimes = {}) {
     listEl.querySelectorAll('.compact-card').forEach(card => {
         card.addEventListener('click', () => {
             const id = parseInt(card.dataset.id, 10);
-            window._pp_modules?.openLocSheet?.(id);
+            bus.emit('sheet:open', id);
         });
     });
 }
@@ -343,7 +344,7 @@ export function showLocationInSheet(loc) {
     // "Meer info" opens the full location detail
     document.getElementById('sheet-preview-meer')?.addEventListener('click', () => {
         hideLocationPreview();
-        window._pp_modules?.openLocSheet?.(loc.id);
+        bus.emit('sheet:open', loc.id);
     });
 }
 
@@ -367,20 +368,20 @@ export function initSheetTabs() {
             tab.classList.add('active');
 
             if (tabName === 'plan') {
-                window._pp_modules?.switchView?.('plan');
+                bus.emit('view:switch', 'plan');
                 return;
             }
 
             if (tabName === 'opgeslagen') {
                 // Switch to favorites and re-render sheet list
                 state.activeTag = 'favorites';
-                window._pp_modules?.loadLocations?.();
+                bus.emit('data:reload');
                 setSheetState('half');
             } else {
                 // Ontdek - reset to all
                 if (state.activeTag === 'favorites') {
                     state.activeTag = 'all';
-                    window._pp_modules?.loadLocations?.();
+                    bus.emit('data:reload');
                 }
                 setSheetState('half');
             }
@@ -415,7 +416,7 @@ function showSuggestions(matches) {
             const id = parseInt(el.dataset.id, 10);
             const loc = state.allLocations.find(l => l.id === id);
             if (loc) {
-                window._pp_modules?.showLocationInSheet?.(loc);
+                bus.emit('sheet:showlocation', loc);
                 cancelSearch();
             }
         });
@@ -447,7 +448,7 @@ function initSheetFilterChips() {
             // Apply filter
             state.activeTag = filter;
             state.activeWeather = null;
-            window._pp_modules?.loadLocations?.();
+            bus.emit('data:reload');
         });
     });
 }
@@ -464,3 +465,10 @@ export function updateSheetMeta() {
     }
     countEl.textContent = `${state.allLocations.length} locaties`;
 }
+
+// Bus listeners
+bus.on('sheet:setstate', setSheetState);
+bus.on('sheet:showlocation', showLocationInSheet);
+bus.on('sheet:hidepreview', hideLocationPreview);
+bus.on('sheet:renderlist', renderSheetList);
+bus.on('sheet:updatemeta', updateSheetMeta);

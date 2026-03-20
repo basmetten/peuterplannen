@@ -1,4 +1,5 @@
 import { state, DESKTOP_WIDTH } from './state.js';
+import bus from './bus.js';
 
 export function loadMapLibre() {
     if (state.mapLibreReady) return Promise.resolve();
@@ -109,7 +110,7 @@ export function initMap() {
                 // Find the full location object for the preview
                 const loc = state.allLocations.find(l => l.id === props.id);
                 if (loc) {
-                    window._pp_modules?.showLocationInSheet?.(loc);
+                    bus.emit('sheet:showlocation', loc);
                     highlightMarker(props.id);
 
                     // Center marker in upper portion of viewport (above the half-sheet)
@@ -129,10 +130,10 @@ export function initMap() {
                         .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
                     const center = state.mapInstance.getCenter();
                     const zoom = Math.round(state.mapInstance.getZoom());
-                    window._pp_modules?.updateHash?.(`@${center.lat.toFixed(2)},${center.lng.toFixed(2)},${zoom}z/loc/${slug}`);
+                    bus.emit('hash:update', `@${center.lat.toFixed(2)},${center.lng.toFixed(2)},${zoom}z/loc/${slug}`);
                 }
             } else {
-                window._pp_modules?.openLocSheet?.(props.id);
+                bus.emit('sheet:open', props.id);
             }
         });
 
@@ -141,12 +142,12 @@ export function initMap() {
             if (features.length === 0) {
                 const isMobile = window.innerWidth < DESKTOP_WIDTH;
                 if (isMobile) {
-                    window._pp_modules?.hideLocationPreview?.();
-                    window._pp_modules?.setSheetState?.('peek');
+                    bus.emit('sheet:hidepreview');
+                    bus.emit('sheet:setstate', 'peek');
                     highlightMarker(null);
-                    window._pp_modules?.updateHash?.('');
+                    bus.emit('hash:update', '');
                 } else {
-                    window._pp_modules?.closeLocSheet?.();
+                    bus.emit('sheet:close');
                 }
             }
         });
@@ -259,7 +260,7 @@ export function setDisplayMode(mode) {
                 console.warn('Map unavailable:', err);
                 const mapTab = document.getElementById('tab-map');
                 if (mapTab) mapTab.style.display = 'none';
-                if (!isDesktop) window._pp_modules?.switchView?.('home');
+                if (!isDesktop) bus.emit('view:switch', 'home');
             });
         } else {
             state.mapInstance.resize();
@@ -269,6 +270,12 @@ export function setDisplayMode(mode) {
         resultsContainer.classList.remove('map-active');
         loader.classList.remove('map-active');
         mapContainer.classList.add('hidden');
-        window._pp_modules?.closeLocSheet?.();
+        bus.emit('sheet:close');
     }
 }
+
+// Bus listeners
+bus.on('map:update', updateMapMarkers);
+bus.on('map:userlocation', updateUserLocationOnMap);
+bus.on('map:highlight', highlightMarker);
+bus.on('map:displaymode', setDisplayMode);
