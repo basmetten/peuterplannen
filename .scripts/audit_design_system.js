@@ -31,14 +31,14 @@ console.log('\n=== Design System Audit ===\n');
 // 1. Font file count
 const fontDir = path.join(__dirname, '..', 'fonts');
 const woff2Files = fs.readdirSync(fontDir).filter(f => f.endsWith('.woff2'));
-if (woff2Files.length === 3) {
-  pass(`Font files: ${woff2Files.length} WOFF2 files (expected 3)`);
+if (woff2Files.length >= 3 && woff2Files.length <= 4) {
+  pass(`Font files: ${woff2Files.length} WOFF2 files`);
 } else {
-  error(`Font files: ${woff2Files.length} WOFF2 files (expected 3): ${woff2Files.join(', ')}`);
+  error(`Font files: ${woff2Files.length} WOFF2 files (expected 3-4): ${woff2Files.join(', ')}`);
 }
 
 // 2. No hardcoded legacy font references in CSS/JS
-const legacyFontPattern = /Familjen Grotesk|Plus Jakarta Sans/gi;
+const legacyFontPattern = /Familjen Grotesk/gi;
 const srcFiles = [];
 function collectFiles(dir, exts) {
   if (!fs.existsSync(dir)) return;
@@ -63,7 +63,7 @@ for (const f of srcFiles) {
   }
 }
 if (legacyFontHits === 0) {
-  pass('No legacy font references (Familjen Grotesk / Plus Jakarta Sans)');
+  pass('No legacy font references (Familjen Grotesk)');
 }
 
 // 3. pp-interactions.js is referenced in generated HTML
@@ -108,12 +108,12 @@ for (const p of samplePages) {
 for (const p of samplePages) {
   if (fs.existsSync(p)) {
     const html = fs.readFileSync(p, 'utf8');
-    const hasfraunces = html.includes('fraunces-var.woff2');
-    const hasDmSans = html.includes('dm-sans-var.woff2');
-    if (hasfraunces && hasDmSans) {
-      pass('Variable font preloads present (Fraunces + DM Sans)');
+    const hasNewsreader = html.includes('newsreader-var.woff2');
+    const hasJakarta = html.includes('plus-jakarta-sans-var.woff2');
+    if (hasNewsreader && hasJakarta) {
+      pass('Variable font preloads present (Newsreader + Plus Jakarta Sans)');
     } else {
-      warn(`Missing font preloads: Fraunces=${hasfraunces}, DM Sans=${hasDmSans}`);
+      warn(`Missing font preloads: Newsreader=${hasNewsreader}, Plus Jakarta Sans=${hasJakarta}`);
     }
     break;
   }

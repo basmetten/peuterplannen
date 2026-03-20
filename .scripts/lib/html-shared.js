@@ -220,8 +220,8 @@ function headCommon(extra = '') {
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
   <link rel="preload" href="/design-system.css" as="style">
   <link rel="preload" href="/style.min.css" as="style">
-  <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/plus-jakarta-sans-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/fonts.css">
   <link rel="stylesheet" href="${dsHref}">
   <link rel="stylesheet" href="${styleHref}">
