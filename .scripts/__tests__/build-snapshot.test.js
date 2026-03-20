@@ -22,6 +22,8 @@ function collectHashes() {
         walk(fullPath);
       } else if (entry.name.endsWith('.html')) {
         const relPath = path.relative(ROOT, fullPath);
+        // Skip untracked/generated files
+        if (relPath.startsWith('.scripts/output/') || relPath === 'mockup-mobile.html') continue;
         hashes[relPath] = hashFile(fullPath);
       }
     }
