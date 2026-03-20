@@ -204,16 +204,7 @@ nav.floating-nav .nav-mobile.open {
   pointer-events: auto;
 }
 
-nav.floating-nav .nav-mobile.open::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: rgba(var(--pp-primary-rgb), 0.18);
-  backdrop-filter: blur(6px) saturate(140%);
-  -webkit-backdrop-filter: blur(6px) saturate(140%);
-  z-index: -1;
-  pointer-events: auto;
-}
+/* Backdrop overlay is now a separate element (.nav-backdrop), managed by JS */
 
 nav.floating-nav .nav-mobile-link {
   display: block;
@@ -307,11 +298,11 @@ nav.floating-nav .nav-cta:hover {
     top: calc(100% + 10px);
     left: 8px;
     right: 8px;
-    background: var(--wg-glass-panel, rgba(250, 247, 242, 0.85));
+    background: rgba(250, 247, 242, 0.92);
     backdrop-filter: blur(24px) saturate(140%);
     -webkit-backdrop-filter: blur(24px) saturate(140%);
     border: none;
-    border-radius: var(--pp-radius-lg, 24px);
+    border-radius: 20px;
     padding: 10px 12px 12px;
     flex-direction: column;
     gap: 2px;
@@ -320,6 +311,9 @@ nav.floating-nav .nav-cta:hover {
     transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
     box-shadow: 0 8px 32px rgba(27, 28, 27, 0.12);
+    overflow: hidden;
+    /* Force Safari to clip backdrop-filter to border-radius */
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
   }
 
   nav.floating-nav .nav-mobile.open {
@@ -328,15 +322,19 @@ nav.floating-nav .nav-cta:hover {
     pointer-events: auto;
   }
 
-  /* Dropdown overlay backdrop */
-  nav.floating-nav .nav-mobile.open::before {
-    content: '';
+  /* Dropdown overlay backdrop — separate element, not clipped by dropdown overflow:hidden */
+  nav.floating-nav .nav-backdrop {
+    display: none;
     position: fixed;
     inset: 0;
-    background: rgba(var(--pp-primary-rgb, 212, 119, 90), 0.18);
+    background: rgba(var(--pp-primary-rgb, 212, 119, 90), 0.12);
     backdrop-filter: blur(6px) saturate(140%);
     -webkit-backdrop-filter: blur(6px) saturate(140%);
     z-index: -1;
+    pointer-events: none;
+  }
+  nav.floating-nav .nav-backdrop.open {
+    display: block;
     pointer-events: auto;
   }
 

@@ -25,11 +25,18 @@
     }
     burger.setAttribute('aria-controls', mobile.id);
 
+    // Create separate backdrop overlay (not inside dropdown, so overflow:hidden doesn't clip it)
+    var backdrop = document.createElement('div');
+    backdrop.className = 'nav-backdrop';
+    backdrop.setAttribute('aria-hidden', 'true');
+    nav.appendChild(backdrop);
+
     function closeMobile() {
       mobile.classList.remove('open');
       mobile.setAttribute('aria-hidden', 'true');
       burger.classList.remove('open');
       burger.setAttribute('aria-expanded', 'false');
+      backdrop.classList.remove('open');
       document.body.style.overflow = '';
     }
 
@@ -39,12 +46,15 @@
       mobile.setAttribute('aria-hidden', String(!open));
       burger.classList.toggle('open', open);
       burger.setAttribute('aria-expanded', String(open));
+      backdrop.classList.toggle('open', open);
       document.body.style.overflow = open ? 'hidden' : '';
     });
 
     mobile.querySelectorAll('a').forEach(function (a) {
       a.addEventListener('click', closeMobile);
     });
+
+    backdrop.addEventListener('click', closeMobile);
 
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeMobile();
