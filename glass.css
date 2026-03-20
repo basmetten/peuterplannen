@@ -13,7 +13,7 @@
 
   --glass-bg:        rgba(250, 247, 242, 0.78);
   --glass-blur:      8px;
-  --glass-border:    1px solid var(--pp-white-soft);
+  /* --glass-border removed: no-border design direction */
   --glass-shadow:    0 4px 16px var(--pp-shadow-warm);
 
   --spring-curve:    cubic-bezier(0.32, 0.72, 0, 1);
@@ -24,7 +24,6 @@
   background: var(--wg-glass-panel);
   backdrop-filter: var(--wg-blur-panel);
   -webkit-backdrop-filter: var(--wg-blur-panel);
-  border-top: var(--wg-border-strong);
   box-shadow: var(--wg-shadow-panel);
   border-radius: var(--wg-radius-sheet) var(--wg-radius-sheet) 0 0;
 }
@@ -33,7 +32,6 @@
   background: var(--wg-glass-chip);
   backdrop-filter: var(--wg-blur-control);
   -webkit-backdrop-filter: var(--wg-blur-control);
-  border: var(--wg-border-soft);
   box-shadow: var(--wg-shadow-chip);
   border-radius: var(--wg-radius-chip);
   padding: 6px 14px;
@@ -51,19 +49,17 @@
   background: var(--wg-glass-control);
   backdrop-filter: var(--wg-blur-control);
   -webkit-backdrop-filter: var(--wg-blur-control);
-  border: var(--wg-border-mid);
   box-shadow: var(--wg-shadow-control);
   border-radius: var(--wg-radius-pill);
   padding: 10px 16px;
 }
 
 .loc-card-glass {
-  background: var(--wg-glass-chip);
-  backdrop-filter: var(--wg-blur-control);
-  -webkit-backdrop-filter: var(--wg-blur-control);
-  border: var(--wg-border-soft);
+  background: rgba(252, 249, 247, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   box-shadow: var(--wg-shadow-control);
-  border-radius: var(--wg-radius-card);
+  border-radius: 1.5rem;
 }
 
 .glass-text-over-map {
@@ -127,7 +123,6 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border: 0.5px solid rgba(255, 255, 255, 0.25);
   pointer-events: none;
 }
 .sheet-hero-photo img {
@@ -232,13 +227,11 @@
 .weather-badge--rain {
   background: rgba(76, 175, 80, 0.12);
   color: #2E7D32;
-  border: 1px solid rgba(76, 175, 80, 0.25);
 }
 
 .weather-badge--sun {
   background: rgba(255, 193, 7, 0.1);
   color: #F57F17;
-  border: 1px solid rgba(255, 193, 7, 0.2);
 }
 
 /* Sterke punten — warm highlight card with glass treatment */
@@ -249,7 +242,6 @@
   border-radius: var(--wg-radius-card, 12px);
   padding: 14px 16px;
   margin: 14px 0;
-  border: 1px solid rgba(74, 122, 74, 0.12);
   box-shadow: 0 1px 4px rgba(74, 122, 74, 0.05);
   position: relative;
   overflow: hidden;
@@ -266,7 +258,7 @@
 }
 
 .sterke-punten h3 {
-  font-family: var(--pp-font-heading, 'Fraunces', Georgia, serif);
+  font-family: var(--pp-font-heading, 'Newsreader', Georgia, serif);
   font-size: 0.9rem;
   font-weight: 650;
   color: #3A5D3A;
@@ -303,7 +295,6 @@
   gap: 8px;
   background: rgba(255, 252, 249, 0.65);
   border-radius: var(--wg-radius-card, 12px);
-  border: 1px solid rgba(212, 119, 86, 0.08);
   margin: 6px 0;
 }
 
@@ -321,7 +312,6 @@
   margin: 10px 0;
   background: rgba(255, 252, 249, 0.65);
   border-radius: var(--wg-radius-card, 12px);
-  border: 1px solid rgba(212, 119, 86, 0.08);
   overflow: hidden;
 }
 .score-breakdown-toggle {
@@ -411,16 +401,11 @@
   background: rgba(255, 252, 249, 0.82);
   backdrop-filter: blur(24px) saturate(150%);
   -webkit-backdrop-filter: blur(24px) saturate(150%);
-  border-top: 0.5px solid rgba(255, 255, 255, 0.6);
   box-shadow: 0 -4px 32px rgba(80, 50, 30, 0.12),
               0 -1px 6px rgba(80, 50, 30, 0.06),
               inset 0 0.5px 0 rgba(255, 255, 255, 0.5);
   transform: translateY(100%);
-  transition: transform var(--wg-duration-snap) var(--wg-ease-spring),
-              left var(--wg-duration-snap) var(--wg-ease-spring),
-              right var(--wg-duration-snap) var(--wg-ease-spring),
-              bottom var(--wg-duration-snap) var(--wg-ease-spring),
-              border-radius var(--wg-duration-snap) var(--wg-ease-spring);
+  /* No CSS transition — positioning is JS-driven (spring physics) */
   will-change: transform;
   height: 100dvh;
   overflow: hidden;
@@ -437,35 +422,8 @@
   .sheet-overlay { display: none !important; }
 }
 
-/* Peek: floating card — search pill + preset chips + tabs */
-.bottom-sheet[data-state="peek"] {
-  transform: translateY(calc(100% - 280px));
-  left: 8px; right: 8px; bottom: 8px;
-  border-radius: 20px 20px 16px 16px;
-}
-/* In peek: hide filter chips, meta, and forecast — only pill + presets + tabs visible */
-.bottom-sheet[data-state="peek"] .sheet-filter-chips,
-.bottom-sheet[data-state="peek"] .sheet-meta,
-.bottom-sheet[data-state="peek"] #sheet-forecast {
-  display: none !important;
-}
-/* Half: still floating but tighter to edges */
-.bottom-sheet[data-state="half"] {
-  transform: translateY(45%);
-  left: 4px; right: 4px; bottom: 0;
-  border-radius: 20px 20px 0 0;
-}
-/* Full: fills entire screen, no float, no radius */
-.bottom-sheet[data-state="full"] {
-  transform: translateY(env(safe-area-inset-top, 0px));
-  left: 0; right: 0; bottom: 0;
-  border-radius: 0;
-}
-.bottom-sheet[data-state="hidden"] {
-  transform: translateY(100%);
-  left: 8px; right: 8px; bottom: 8px;
-  border-radius: var(--wg-radius-sheet);
-}
+/* State positioning & child visibility is now JS-driven (sheet-engine.js morphs).
+   data-state attribute is still set for external code that reads it. */
 
 
 /* Drag handle — Apple Maps style: thin, centered, subtle */
@@ -528,7 +486,7 @@
 .sheet-preset {
   flex-shrink: 0;
   padding: 9px 16px;
-  border: 1px solid rgba(180, 140, 120, 0.16);
+  border: none;
   border-radius: 100px;
   background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(8px);
@@ -542,7 +500,7 @@
   cursor: pointer;
   white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
-  transition: background 0.15s ease, border-color 0.15s ease,
+  transition: background 0.15s ease,
               color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
 }
 .sheet-preset:active {
@@ -565,7 +523,7 @@
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px) saturate(140%);
   -webkit-backdrop-filter: blur(12px) saturate(140%);
-  border: 1px solid rgba(200, 170, 150, 0.18);
+  border: none;
   border-radius: 14px;
   box-shadow: 0 1px 4px rgba(80, 50, 30, 0.06),
               0 4px 16px rgba(80, 50, 30, 0.04),
@@ -603,7 +561,6 @@
 .bottom-sheet.search-active .sheet-search-pill {
   border-radius: var(--wg-radius-card);
   background: var(--wg-surface);
-  border: var(--wg-border-warm-mid);
   box-shadow: 0 2px 8px rgba(60,40,20,0.10), 0 2px 16px rgba(60,40,20,0.06);
 }
 
@@ -666,7 +623,6 @@
   backdrop-filter: var(--wg-blur-panel);
   -webkit-backdrop-filter: var(--wg-blur-panel);
   border-radius: var(--wg-radius-card);
-  border: var(--wg-border-soft);
   box-shadow: 0 4px 16px rgba(60,40,20,0.12);
   overflow: hidden;
   z-index: 10;
@@ -726,12 +682,8 @@
   letter-spacing: -0.01em;
 }
 
-/* Sheet list - compact cards */
+/* Sheet list - compact cards (visibility controlled by JS morphs) */
 .sheet-list {
-  display: none;
-}
-.bottom-sheet[data-state="half"] .sheet-list,
-.bottom-sheet[data-state="full"] .sheet-list {
   display: block;
 }
 
@@ -936,24 +888,13 @@
     pointer-events: auto;
   }
 
-  /* Sheet sits above map */
+  /* Sheet sits above map — bottom is controlled by JS morphs */
   .pp-mobile-map .bottom-sheet {
     z-index: 1000;
-    bottom: env(safe-area-inset-bottom, 0px);
-  }
-  .pp-mobile-map .bottom-sheet[data-state="half"] {
-    bottom: 0;
-  }
-  .pp-mobile-map .bottom-sheet[data-state="full"] {
-    bottom: 0;
   }
 
-  /* Recenter button — reposition for mobile (header hidden) */
-  .pp-mobile-map .map-recenter {
-    top: calc(12px + env(safe-area-inset-top, 0px));
-    bottom: auto;
-    z-index: 999;
-  }
+  /* Old map-recenter replaced by .map-controls */
+  .pp-mobile-map .map-recenter { display: none; }
 
   /* Hide old map search pill — replaced by sheet search pill */
   .pp-mobile-map .map-search-pill {
@@ -1109,7 +1050,7 @@
     background: var(--wg-glass-nav);
     backdrop-filter: var(--wg-blur-heavy);
     -webkit-backdrop-filter: var(--wg-blur-heavy);
-    border: var(--wg-border-mid);
+    border: none;
     border-radius: var(--wg-radius-pill);
     box-shadow: var(--wg-shadow-float);
     cursor: pointer;
@@ -1200,11 +1141,7 @@
     padding-bottom: calc(env(safe-area-inset-bottom, 8px) + 8px);
   }
 
-  /* Allow touch scrolling in sheet content when half/full */
-  .bottom-sheet[data-state="half"] .sheet-content,
-  .bottom-sheet[data-state="full"] .sheet-content {
-    touch-action: pan-y;
-  }
+  /* Touch scrolling is controlled by JS morphs (sheet-engine.js) */
 
 
   /* Sheet filter chips — glass pills, shown in half/full */
@@ -1223,7 +1160,7 @@
   .sheet-filter-chip {
     padding: 9px 16px;
     border-radius: 100px;
-    border: 1px solid rgba(180, 140, 120, 0.16);
+    border: none;
     background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -1257,8 +1194,6 @@
   /* "Meer" button in filter chip row */
   .sheet-filter-more {
     background: rgba(245, 240, 235, 0.60);
-    border-style: dashed;
-    border-color: rgba(180, 140, 120, 0.22);
     position: relative;
   }
   .filter-more-badge {
@@ -1312,7 +1247,7 @@
   .filter-modal-options { display: flex; flex-wrap: wrap; gap: 8px; }
   .filter-modal-chip {
     padding: 8px 16px; border-radius: 20px;
-    border: 1px solid rgba(60,60,67,0.18);
+    border: 1px solid transparent;
     background: transparent; font-size: 0.85rem; font-weight: 600;
     font-family: inherit; color: var(--pp-text);
     cursor: pointer; -webkit-tap-highlight-color: transparent;
@@ -1331,12 +1266,8 @@
   }
   .filter-modal-apply:active { background: var(--pp-primary-dark); }
 
-  /* Week picks - only visible in half/full state */
-  #sheet-week-picks { display: none; }
-  .bottom-sheet[data-state="half"] #sheet-week-picks,
-  .bottom-sheet[data-state="full"] #sheet-week-picks {
-    display: block;
-  }
+  /* Week picks - visibility controlled by JS morphs */
+  #sheet-week-picks { display: block; }
 
   /* Week picks - "Deze week in [stad]" */
   .week-picks {
@@ -1440,8 +1371,63 @@
 
 @media (min-width: 680px) {
   .map-list-toggle { display: none !important; }
+  .map-controls { display: none !important; }
   .mobile-list-view { display: none !important; }
 }
+
+/* ============================================
+   Map Controls — Apple Maps double toggle
+   ============================================ */
+.map-controls {
+  position: fixed;
+  top: calc(12px + env(safe-area-inset-top, 0px));
+  right: 12px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 252, 249, 0.78);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(80, 50, 30, 0.10),
+              0 1px 3px rgba(80, 50, 30, 0.06),
+              inset 0 0.5px 0 rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+}
+.map-controls-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background 0.15s;
+}
+.map-controls-btn:active {
+  background: rgba(140, 110, 100, 0.10);
+}
+.map-controls-btn svg {
+  width: 19px;
+  height: 19px;
+  stroke: rgba(92, 68, 51, 0.65);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.map-controls-divider {
+  height: 0.5px;
+  margin: 0 10px;
+  background: rgba(140, 110, 100, 0.15);
+}
+/* Toggle icon switching */
+.map-controls-btn .toggle-icon-map { display: none; }
+.map-controls-btn.is-list .toggle-icon-list { display: none; }
+.map-controls-btn.is-list .toggle-icon-map { display: block; }
 
 /* ============================================
    Location Sheet — 3-tier progressive disclosure
@@ -1473,7 +1459,6 @@
   padding: 4px 10px;
   border-radius: var(--wg-radius-chip, 20px);
   background: rgba(250, 247, 242, 0.70);
-  border: 1px solid rgba(212, 119, 86, 0.10);
 }
 .detail-fact strong {
   color: var(--wg-primary, #D4775A);
@@ -1497,7 +1482,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   text-decoration: none;
-  border: 1px solid rgba(212, 119, 86, 0.14);
+  border: none;
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -1568,7 +1553,6 @@
   flex-direction: column;
   gap: 4px;
   border-radius: var(--wg-radius-card, 12px);
-  border: 1px solid rgba(255, 255, 255, 0.45);
   box-shadow: 0 1px 6px rgba(80, 50, 30, 0.06),
               inset 0 0.5px 0 rgba(255, 255, 255, 0.5);
   transition: transform var(--wg-duration-fast, 100ms) var(--wg-ease-standard, ease),
@@ -1620,7 +1604,6 @@
 .sheet-detail-more {
   margin: 16px 0 8px;
   border-radius: var(--wg-radius-card, 12px);
-  border: 1px solid rgba(212, 119, 86, 0.10);
   background: rgba(255, 252, 249, 0.60);
   overflow: hidden;
 }

@@ -1,52 +1,52 @@
 /* fonts.css — PeuterPlannen web fonts (variable, WOFF2) */
 
-/* Fraunces — Headings (variable: weight 100-900, SOFT 0-100, WONK 0-1, opsz 9-144) */
+/* Newsreader — Headings (variable: weight 200-800, opsz 6-72) */
 @font-face {
-  font-family: 'Fraunces';
+  font-family: 'Newsreader';
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 200 800;
   font-display: swap;
-  src: url('/fonts/fraunces-var.woff2') format('woff2');
+  src: url('/fonts/newsreader-var.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
                  U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
                  U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* Fraunces Fallback — prevent layout shift during font-swap */
+/* Newsreader Fallback — prevent layout shift during font-swap */
 @font-face {
-  font-family: 'Fraunces Fallback';
+  font-family: 'Newsreader Fallback';
   src: local('Georgia');
-  size-adjust: 105%;
+  size-adjust: 97%;
   ascent-override: 95%;
   descent-override: 22%;
   line-gap-override: 0%;
 }
 
-/* DM Sans — Body + UI (variable: weight 100-1000, italic, optical size) */
+/* Plus Jakarta Sans — Body + UI (variable: weight 200-800) */
 @font-face {
-  font-family: 'DM Sans';
+  font-family: 'Plus Jakarta Sans';
   font-style: normal;
-  font-weight: 100 1000;
+  font-weight: 200 800;
   font-display: swap;
-  src: url('/fonts/dm-sans-var.woff2') format('woff2');
+  src: url('/fonts/plus-jakarta-sans-var.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
                  U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
                  U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'DM Sans';
+  font-family: 'Plus Jakarta Sans';
   font-style: italic;
-  font-weight: 100 1000;
+  font-weight: 200 800;
   font-display: swap;
-  src: url('/fonts/dm-sans-var.woff2') format('woff2');
+  src: url('/fonts/plus-jakarta-sans-var-italic.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
                  U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
                  U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* DM Sans Fallback — prevent layout shift during font-swap */
+/* Plus Jakarta Sans Fallback — prevent layout shift during font-swap */
 @font-face {
-  font-family: 'DM Sans Fallback';
+  font-family: 'Plus Jakarta Sans Fallback';
   src: local('Arial');
   size-adjust: 106%;
   ascent-override: 92%;

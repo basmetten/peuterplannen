@@ -13,8 +13,8 @@
   --pp-nav-border: rgba(var(--pp-primary-rgb), 0.18);
   --pp-nav-shadow: 0 10px 32px rgba(var(--pp-text-rgb), 0.12), inset 0 1px 0 rgba(var(--pp-surface-rgb), 0.8);
   --pp-nav-shadow-scrolled: 0 8px 30px rgba(var(--pp-text-rgb), 0.16), inset 0 1px 0 rgba(var(--pp-surface-rgb), 0.9);
-  --pp-nav-mobile-bg: rgba(var(--pp-bg-rgb), 1.0);
-  --pp-nav-mobile-shadow: 0 12px 28px rgba(var(--pp-text-rgb), 0.12);
+  --pp-nav-mobile-bg: var(--wg-glass-panel, rgba(250, 247, 242, 0.85));
+  --pp-nav-mobile-shadow: 0 8px 32px rgba(27, 28, 27, 0.12);
 }
 
 nav.floating-nav[aria-label="Hoofdnavigatie"] {
@@ -28,7 +28,7 @@ nav.floating-nav[aria-label="Hoofdnavigatie"] {
   background: var(--pp-nav-bg);
   backdrop-filter: blur(16px) saturate(160%);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
-  border: 1px solid var(--pp-nav-border);
+  border: none;
   border-radius: var(--pp-nav-radius);
   box-shadow: var(--pp-nav-shadow);
   transition: top 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
@@ -130,10 +130,10 @@ nav.floating-nav .nav-link.active::after {
 }
 
 nav.floating-nav .nav-cta {
-  background: var(--pp-primary);
+  background: linear-gradient(135deg, var(--pp-primary), var(--pp-primary-dark));
   color: var(--pp-text-inverse);
   padding: 10px 20px;
-  border-radius: var(--pp-radius-sm);
+  border-radius: var(--pp-radius-lg);
   text-decoration: none;
   font-weight: 600;
   font-size: var(--pp-text-sm);
@@ -184,10 +184,10 @@ nav.floating-nav .nav-mobile {
   left: 8px;
   right: 8px;
   background: var(--pp-nav-mobile-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(var(--pp-primary-rgb), 0.15);
-  border-radius: var(--pp-radius-md);
+  backdrop-filter: var(--wg-blur-heavy, blur(24px) saturate(140%));
+  -webkit-backdrop-filter: var(--wg-blur-heavy, blur(24px) saturate(140%));
+  border: none;
+  border-radius: var(--pp-radius-lg, 24px);
   padding: 10px 12px 12px;
   flex-direction: column;
   gap: 2px;
@@ -243,7 +243,11 @@ nav.floating-nav .nav-mobile-cta {
 nav.floating-nav .nav-mobile-secondary {
   margin-top: 8px;
   padding-top: 10px;
-  border-top: 1px solid rgba(var(--pp-text-rgb), 0.08);
+  border-top: 1px solid transparent;
+  background-image: linear-gradient(rgba(var(--pp-text-rgb, 27, 28, 27), 0.06), rgba(var(--pp-text-rgb, 27, 28, 27), 0.06));
+  background-size: calc(100% - 32px) 1px;
+  background-position: center top;
+  background-repeat: no-repeat;
 }
 nav.floating-nav .nav-mobile-secondary .nav-mobile-link {
   font-size: var(--pp-text-sm);
@@ -259,12 +263,11 @@ nav.floating-nav[aria-label="Hoofdnavigatie"] {
   left: 50%;
   right: auto;
   transform: translateX(-50%);
-  border-bottom: none;
 }
 
 /* Also ensure the desktop CTA gets coral, not dark (style.css `.nav-cta` override) */
 nav.floating-nav .nav-cta {
-  background: var(--pp-primary, #D4775A);
+  background: linear-gradient(135deg, var(--pp-primary, #D4775A), var(--pp-primary-dark, #C06A4E));
   color: var(--pp-text-inverse, #fff);
 }
 nav.floating-nav .nav-cta:hover {
@@ -309,9 +312,9 @@ nav.floating-nav .nav-cta:hover {
 
   /* Override unlayered style.css .nav-cta dark bg with coral primary */
   nav.floating-nav .nav-mobile-cta.nav-cta {
-    background: var(--pp-primary, #D4775A);
+    background: linear-gradient(135deg, var(--pp-primary, #D4775A), var(--pp-primary-dark, #C06A4E));
     color: var(--pp-text-inverse, #fff);
-    border-radius: var(--pp-radius-sm, 12px);
+    border-radius: var(--pp-radius-lg, 24px);
     padding: 14px 20px;
     font-weight: 600;
   }

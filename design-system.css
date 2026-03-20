@@ -63,7 +63,7 @@
   --pp-primary-rgb: 212, 119, 90;
   --pp-secondary-rgb: 107, 149, 144;
   --pp-accent-rgb: 232, 184, 112;
-  --pp-bg-rgb: 250, 247, 242;
+  --pp-bg-rgb: 252, 249, 247;
   --pp-surface-rgb: 255, 255, 255;
   --pp-hero-blog-glow-rgb: 250, 212, 160;
 
@@ -93,13 +93,18 @@
   --pp-info-bg: var(--pp-semantic-info-bg);
 
   /* === Surfaces === */
-  --pp-bg: #FAF7F2;
+  --pp-bg: #fcf9f7;
   --pp-bg-warm: #FFF5EB;
   --pp-bg-cream: #FFF5EB;
   --pp-bg-muted: #f0e8dc;
   --pp-surface: #FFFFFF;
   --pp-surface-hover: #FEFCF9;
   --pp-surface-neutral: #f0f0f0;
+  --pp-surface-container-low: #f6f3f1;
+  --pp-surface-container-highest: #e5e2e0;
+  --pp-surface-tint: rgba(212, 119, 90, 0.18);
+  --pp-secondary-container: #ebe1d8;
+  --pp-outline-variant: rgba(27, 28, 27, 0.12);
   --pp-border: rgba(212, 119, 90, 0.15);
   --pp-border-strong: rgba(212, 119, 90, 0.3);
 
@@ -129,9 +134,9 @@
   --pp-text-inverse: #FFFFFF;
 
   /* === Typography — Fonts === */
-  --pp-font-heading: 'Fraunces', 'Fraunces Fallback', Georgia, serif;
-  --pp-font-ui: 'DM Sans', 'DM Sans Fallback', -apple-system, sans-serif;
-  --pp-font-body: 'DM Sans', 'DM Sans Fallback', -apple-system, sans-serif;
+  --pp-font-heading: 'Newsreader', 'Newsreader Fallback', Georgia, serif;
+  --pp-font-ui: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', -apple-system, sans-serif;
+  --pp-font-body: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', -apple-system, sans-serif;
   --pp-font-accent: 'Instrument Serif', Georgia, 'Times New Roman', serif;
 
   /* === Typography — Fluid Scale (Minor Third 1.2, base 16px) === */
@@ -155,25 +160,25 @@
   --pp-space-4xl: 96px;
   --pp-space-5xl: 128px;
 
-  /* === Shadows (generic) === */
-  --pp-shadow-sm: 0 1px 3px rgba(45, 41, 38, 0.08);
-  --pp-shadow-md: 0 4px 12px rgba(45, 41, 38, 0.10);
-  --pp-shadow-lg: 0 8px 30px rgba(45, 41, 38, 0.12);
-  --pp-shadow-hover: 0 12px 40px rgba(45, 41, 38, 0.15);
+  /* === Shadows (ambient single-layer) === */
+  --pp-shadow-sm: 0 1px 3px rgba(27, 28, 27, 0.06);
+  --pp-shadow-md: 0 4px 12px rgba(27, 28, 27, 0.08);
+  --pp-shadow-lg: 0 8px 30px rgba(27, 28, 27, 0.10);
+  --pp-shadow-hover: 0 12px 40px rgba(27, 28, 27, 0.12);
 
   /* === Shadows (context-differentiated) === */
-  --pp-shadow-card:      0 2px 8px rgba(45, 41, 38, 0.06), 0 1px 3px rgba(45, 41, 38, 0.04);
-  --pp-shadow-card-hover: 0 12px 32px rgba(45, 41, 38, 0.10), 0 4px 12px rgba(45, 41, 38, 0.05);
-  --pp-shadow-popover:   0 16px 48px rgba(45, 41, 38, 0.16), 0 4px 16px rgba(45, 41, 38, 0.08);
-  --pp-shadow-modal:     0 24px 64px rgba(45, 41, 38, 0.20), 0 8px 24px rgba(45, 41, 38, 0.10);
-  --pp-shadow-nav:       0 1px 4px rgba(45, 41, 38, 0.06);
-  --pp-shadow-inset:     inset 0 2px 4px rgba(45, 41, 38, 0.08);
+  --pp-shadow-card:      0 2px 8px rgba(27, 28, 27, 0.06);
+  --pp-shadow-card-hover: 0 12px 32px rgba(27, 28, 27, 0.10);
+  --pp-shadow-popover:   0 16px 48px rgba(27, 28, 27, 0.14);
+  --pp-shadow-modal:     0 24px 64px rgba(27, 28, 27, 0.18);
+  --pp-shadow-nav:       0 1px 4px rgba(27, 28, 27, 0.06);
+  --pp-shadow-inset:     inset 0 2px 4px rgba(27, 28, 27, 0.06);
 
   /* === Borders === */
-  --pp-radius-xs: 8px;
-  --pp-radius-sm: 12px;
-  --pp-radius-md: 16px;
-  --pp-radius-lg: 22px;
+  --pp-radius-xs: 10px;
+  --pp-radius-sm: 16px;
+  --pp-radius-md: 20px;
+  --pp-radius-lg: 24px;
   --pp-radius-xl: 28px;
   --pp-radius-pill: 999px;
 
@@ -226,7 +231,6 @@ h1, .pp-h1 {
   font-weight: 750;
   letter-spacing: -0.035em;
   line-height: 1.08;
-  font-variation-settings: 'SOFT' 50, 'WONK' 1;
 }
 
 h2, .pp-h2 {
@@ -234,7 +238,6 @@ h2, .pp-h2 {
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1.12;
-  font-variation-settings: 'SOFT' 40, 'WONK' 1;
 }
 
 h3, .pp-h3 {
@@ -242,7 +245,6 @@ h3, .pp-h3 {
   font-weight: 650;
   letter-spacing: -0.02em;
   line-height: 1.18;
-  font-variation-settings: 'SOFT' 30, 'WONK' 1;
 }
 
 h4, .pp-h4 {
@@ -364,30 +366,15 @@ p, li {
   border-radius: var(--pp-radius-sm);
   padding: var(--pp-space-lg);
   box-shadow: var(--pp-shadow-card);
-  border: 1px solid var(--pp-border);
-  transition: transform var(--pp-transition), box-shadow var(--pp-transition), border-color var(--pp-transition);
+  border: 1px solid transparent;
+  transition: transform var(--pp-transition), box-shadow var(--pp-transition);
   position: relative;
   overflow: hidden;
 }
 .pp-location-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--pp-shadow-card-hover);
-  border-color: var(--pp-primary-200);
 }
-.pp-location-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--pp-primary), var(--pp-accent));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-  border-radius: var(--pp-radius-sm) var(--pp-radius-sm) 0 0;
-}
-.pp-location-card:hover::before { transform: scaleX(1); }
 
 /* === Motion — shared keyframes === */
 @keyframes pp-fade-up {
@@ -654,14 +641,14 @@ p, li {
   --wg-border-divider:   1px solid rgba(212, 119, 86, 0.08);
   --wg-border-top-sheet: 0.5px solid rgba(212, 119, 86, 0.10);
 
-  /* --- Shadows --- */
-  --wg-shadow-sheet:   0 -2px 20px rgba(100, 60, 40, 0.10), 0 0 0 0.5px rgba(255,255,255,0.5) inset;
-  --wg-shadow-panel:   0 -4px 24px rgba(212, 119, 86, 0.15);
-  --wg-shadow-control: 0 2px 12px rgba(212, 119, 86, 0.08);
-  --wg-shadow-chip:    0 2px 8px rgba(212, 119, 86, 0.06);
-  --wg-shadow-nav:     0 -1px 12px rgba(100, 60, 40, 0.06);
-  --wg-shadow-float:   0 2px 12px rgba(100, 60, 40, 0.12);
-  --wg-shadow-header:  0 1px 8px rgba(100, 60, 40, 0.08);
+  /* --- Shadows (ambient, neutral base) --- */
+  --wg-shadow-sheet:   0 -2px 20px rgba(27, 28, 27, 0.08);
+  --wg-shadow-panel:   0 -4px 24px rgba(27, 28, 27, 0.10);
+  --wg-shadow-control: 0 2px 12px rgba(27, 28, 27, 0.06);
+  --wg-shadow-chip:    0 2px 8px rgba(27, 28, 27, 0.05);
+  --wg-shadow-nav:     0 -1px 12px rgba(27, 28, 27, 0.06);
+  --wg-shadow-float:   0 2px 12px rgba(27, 28, 27, 0.10);
+  --wg-shadow-header:  0 1px 8px rgba(27, 28, 27, 0.06);
 
   /* --- Text Colors (warm browns) --- */
   --wg-text-primary:     #3A2F2C;
