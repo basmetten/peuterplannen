@@ -10,7 +10,7 @@ import { CATEGORY_IMAGES, TYPE_PHOTO_COLORS, TYPE_LABELS } from './state.js';
 import { escapeHtml } from './utils.js';
 import { computePeuterScore } from './scoring.js';
 import { getTopTags } from './tags.js';
-import { isVisited } from './visited.js';
+import { isFavorite } from './favorites.js';
 
 // === Shared photo data ===
 
@@ -60,20 +60,15 @@ export function renderCardPhoto(loc) {
  * @returns {string} HTML string
  */
 export function renderCompactCard(loc, opts = {}) {
-    const { showTags = true, showVisited = true, travelTimes, extraStyle, imgStyle } = opts;
+    const { travelTimes, extraStyle, imgStyle } = opts;
     const { imgSrc, categoryImg, photoColor } = getPhotoData(loc);
-    const ps = computePeuterScore(loc);
     const typeLabel = TYPE_LABELS[loc.type] || loc.type;
+    const isFav = isFavorite(loc.id);
+    const favStyle = isFav ? 'fill: #D4775A; stroke: #D4775A;' : '';
 
     // Distance/region
     const travelInfo = travelTimes ? travelTimes[loc.id] : null;
     const distance = travelInfo ? travelInfo.duration : (loc.region || '');
-
-    // Tags
-    const tags = showTags ? getTopTags(loc).slice(0, 2) : [];
-
-    // Visited badge
-    const visitedLabel = showVisited && isVisited(loc.id) ? `<span class="compact-card-visited">Bezocht</span>` : '';
 
     const styleAttr = extraStyle ? ` style="${extraStyle}"` : '';
     const imgStyleAttr = imgStyle ? ` style="${imgStyle};background:${photoColor}"` : ` style="background:${photoColor}"`;
@@ -82,11 +77,15 @@ export function renderCompactCard(loc, opts = {}) {
             <img class="compact-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async"${imgStyleAttr}
                  onerror="this.src='${escapeHtml(categoryImg)}'">
             <div class="compact-card-body">
-                <div class="compact-card-name">${escapeHtml(loc.name)}</div>
-                <div class="compact-card-meta">${escapeHtml(typeLabel)}${distance ? ' \u00b7 ' + escapeHtml(String(distance)) : ''} ${visitedLabel}</div>
-                ${tags.length ? `<div class="compact-card-tags">${tags.map(t => `<span class="card-tag">${t.icon} ${t.label}</span>`).join('')}</div>` : ''}
+                <div class="compact-card-header">
+                    <span class="compact-card-name">${escapeHtml(loc.name)}</span>
+                    ${distance ? `<span class="compact-card-distance">${escapeHtml(String(distance))}</span>` : ''}
+                </div>
+                <div class="compact-card-meta">${escapeHtml(typeLabel)}</div>
             </div>
-            <div class="compact-card-score">${ps}\u2605</div>
+            <button class="compact-card-fav" onclick="event.stopPropagation();toggleFavorite(${loc.id}, this)" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan'}">
+                <svg viewBox="0 0 24 24" style="${favStyle}"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
         </div>`;
 }
 

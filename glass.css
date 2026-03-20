@@ -652,7 +652,7 @@
   background: rgba(212, 119, 86, 0.04);
 }
 .compact-card-img {
-  width: 64px; height: 64px;
+  width: 60px; height: 60px;
   border-radius: 10px;
   object-fit: cover;
   flex-shrink: 0;
@@ -666,6 +666,11 @@
   justify-content: center;
   gap: 2px;
 }
+.compact-card-header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
 .compact-card-name {
   font-size: 0.9rem;
   font-weight: 600;
@@ -673,26 +678,33 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
+}
+.compact-card-distance {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--wg-text-muted);
+  white-space: nowrap;
 }
 .compact-card-meta {
   font-size: 0.75rem;
   color: var(--wg-text-muted);
 }
-.compact-card-tags {
-  display: flex;
-  gap: 4px;
-  margin-top: 2px;
-}
-.compact-card-tags .card-tag {
-  font-size: 0.65rem;
-  padding: 1px 6px;
-}
-.compact-card-score {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #4A7A4A;
+.compact-card-fav {
   flex-shrink: 0;
   align-self: center;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none; cursor: pointer;
+  border-radius: 50%;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s;
+}
+.compact-card-fav:active { background: rgba(212,119,86,0.08); }
+.compact-card-fav svg {
+  width: 18px; height: 18px;
+  stroke: #9B8688; stroke-width: 2; fill: none;
 }
 
 /* Sheet overlay */
