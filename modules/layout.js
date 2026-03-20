@@ -197,16 +197,20 @@ export function toggleMapList() {
     newBtn?.classList.toggle('is-list', isListMode);
     if (label) label.textContent = isListMode ? 'Kaart' : 'Lijst';
 
+    const controls = document.getElementById('map-controls');
+
     if (isListMode) {
-        // Show list, hide sheet
+        // Show list, hide sheet, keep controls above list view
         listView?.classList.add('active');
         if (sheet) sheet.style.display = 'none';
+        if (controls) controls.style.zIndex = '1001';
         renderMobileList();
         bus.emit('hash:update', 'list');
     } else {
-        // Show map + sheet, hide list
+        // Show map + sheet, hide list, restore controls z-index
         listView?.classList.remove('active');
         if (sheet) sheet.style.display = '';
+        if (controls) controls.style.zIndex = '';
         // Resize map in case it needs updating
         if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), 50);
         bus.emit('hash:update', '');
@@ -227,10 +231,11 @@ function renderMobileList() {
 
     content.innerHTML = html;
 
-    // Click handlers
+    // Click handlers — exit list mode, then open location
     content.querySelectorAll('.compact-card').forEach(card => {
         card.addEventListener('click', () => {
             const id = parseInt(card.dataset.id, 10);
+            if (isListMode) toggleMapList(); // back to map view first
             bus.emit('sheet:open', id);
         });
     });

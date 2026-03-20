@@ -1092,7 +1092,7 @@
     background: #FFFCF9;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 60px 0 calc(56px + env(safe-area-inset-bottom, 0px) + 16px);
+    padding: 60px 16px calc(56px + env(safe-area-inset-bottom, 0px) + 16px);
   }
   .mobile-list-view.active {
     display: block;
