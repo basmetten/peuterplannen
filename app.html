@@ -781,8 +781,10 @@
     </nav>
 
     <script type="module">
-      import { animate, spring } from 'https://esm.sh/motion@11/mini';
-      window._motionMini = { animate, spring };
+      import { animate } from 'https://esm.sh/motion@11/mini';
+      // spring is a type option within animate(), not a separate export:
+      // animate(el, { transform: '...' }, { type: 'spring', stiffness: 300, damping: 30 })
+      window._motionMini = { animate };
     </script>
     <script type="module" src="app.js"></script>
 
