@@ -1,4 +1,4 @@
-import { state, SB_KEY, TYPE_LABELS, WEATHER_LABELS, WEATHER_ICONS, SB_URL, FULL_LOCATION_SELECT, CATEGORY_IMAGES, TYPE_PHOTO_COLORS } from './state.js';
+import { state, SB_KEY, TYPE_LABELS, WEATHER_LABELS, WEATHER_ICONS, SB_URL, FULL_LOCATION_SELECT } from './state.js';
 import { escapeHtml, safeUrl, cleanToddlerHighlight, calculateDistance, buildDetailUrl, trackEvent } from './utils.js';
 import { getTrustBullets, getPracticalBullets, computePeuterScoreV2 } from './scoring.js';
 import { isFavorite } from './favorites.js';
@@ -6,6 +6,7 @@ import { fetchJsonWithRetry, normalizeLocationRow } from './data.js';
 import { getSterkePunten } from './tags.js';
 import { markVisited } from './visited.js';
 import { getPrefs, setPrefs, hasCompletedOnboarding } from './prefs.js';
+import { getPhotoData } from './templates.js';
 import bus from './bus.js';
 
 export function openLocSheet(locationId) {
@@ -43,11 +44,7 @@ export function openLocSheet(locationId) {
     const practicalBullets = getPracticalBullets(loc);
     const sterkePunten = getSterkePunten(loc);
 
-    const photoSrc = loc.photo_url || loc.owner_photo_url;
-    const categoryImg = CATEGORY_IMAGES[loc.type] || CATEGORY_IMAGES.play;
-    const imgSrc = photoSrc || categoryImg;
-    const photoColor = TYPE_PHOTO_COLORS[loc.type] || '#E8D5C4';
-    const fallbackSrc = photoSrc ? categoryImg : '';
+    const { photoSrc, categoryImg, imgSrc, photoColor, fallbackSrc } = getPhotoData(loc);
 
     // Score breakdown + total score (single v2 call)
     let scoreBreakdownHtml = '';

@@ -1,10 +1,10 @@
-import { state, DESKTOP_WIDTH, TYPE_LABELS, CATEGORY_IMAGES } from './state.js';
+import { state, DESKTOP_WIDTH } from './state.js';
 import { closeLocSheet, closeInfoPanel, openInfoPanel } from './sheet.js';
 import { setDisplayMode, fitMapToMarkers } from './map.js';
 import { updateFilterCount, updateMapPillBadge } from './filters.js';
 import { loadLocations } from './data.js';
-import { trackEvent, escapeHtml } from './utils.js';
-import { computePeuterScore } from './scoring.js';
+import { trackEvent } from './utils.js';
+import { renderCompactCard } from './templates.js';
 import bus from './bus.js';
 
 let isListMode = false;
@@ -44,114 +44,105 @@ export function syncDesktopModeSwitch(mode = 'home') {
     });
 }
 
-// Core switch logic (without plan integration)
+// --- Shared helpers ---
+
+/** Reset all filters to defaults */
+function resetFilters() {
+    state.activeTag = 'all';
+    state.activeWeather = null;
+    state.activeFacilities = { coffee: false, diaper: false, alcohol: false };
+    state.activeAgeGroup = null;
+    state.activeRadius = null;
+}
+
+/** Mark the given tab active in the bottom nav and slide the indicator */
+function markNavActive(view) {
+    document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
+    const tab = document.getElementById('tab-' + view);
+    if (tab) tab.classList.add('active');
+    moveNavIndicator();
+}
+
+// --- View switching per viewport ---
+//
+// View effects by viewport:
+//
+//   Desktop (>= DESKTOP_WIDTH):
+//     home      → reset filters, reload cards in sidebar
+//     favorites → set tag to 'favorites', reload cards
+//     info      → open info panel overlay
+//     map       → (no-op, map is always visible on desktop)
+//
+//   Mobile (< DESKTOP_WIDTH, sheet-based):
+//     home      → reset filters, reload cards, sheet → peek, resize map
+//     map       → full-screen map, sheet → peek, show pill badge
+//     favorites → set tag, reload cards, sheet → half
+//     info      → open info panel overlay
+
+/** Desktop view switching — sidebar + always-visible map */
+function switchViewDesktop(view) {
+    if (view === 'favorites') {
+        state.activeTag = 'favorites';
+        loadLocations();
+    } else if (view === 'info') {
+        openInfoPanel();
+    } else if (view === 'home') {
+        resetFilters();
+        document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
+        document.querySelector('.chip').classList.add('active');
+        updateFilterCount();
+        loadLocations();
+    }
+}
+
+/** Mobile view switching — map + bottom sheet states */
+function switchViewMobile(view) {
+    state.currentView = view;
+
+    switch (view) {
+        case 'home':
+            resetFilters();
+            updateFilterCount();
+            loadLocations();
+            bus.emit('sheet:setstate', 'peek');
+            if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), 50);
+            break;
+        case 'map':
+            trackEvent('map_view');
+            document.body.classList.add('map-view-active');
+            if (!state.mapInstance) {
+                setDisplayMode('map');
+            } else {
+                setTimeout(() => state.mapInstance.resize(), 50);
+                fitMapToMarkers();
+            }
+            bus.emit('sheet:setstate', 'peek');
+            updateMapPillBadge();
+            break;
+        case 'favorites':
+            state.activeTag = 'favorites';
+            state.activeWeather = null;
+            loadLocations();
+            bus.emit('sheet:setstate', 'half');
+            break;
+        case 'info':
+            openInfoPanel();
+            break;
+    }
+}
+
+/** Core dispatcher: cleanup shared state, then delegate to viewport-specific handler */
 function switchViewCore(view) {
     const isDesktop = window.innerWidth >= DESKTOP_WIDTH;
     closeLocSheet();
     if (view !== 'info') closeInfoPanel();
     if (view !== 'map') document.body.classList.remove('map-view-active');
-
-    document.querySelectorAll('.bnav-item').forEach(item => item.classList.remove('active'));
-    const tab = document.getElementById('tab-' + view);
-    if (tab) tab.classList.add('active');
-    moveNavIndicator();
+    markNavActive(view);
 
     if (isDesktop) {
-        if (view === 'favorites') { state.activeTag = 'favorites'; loadLocations(); }
-        else if (view === 'info') { openInfoPanel(); }
-        else if (view === 'home') {
-            state.activeTag = 'all'; state.activeWeather = null;
-            state.activeFacilities = { coffee: false, diaper: false, alcohol: false };
-            state.activeAgeGroup = null; state.activeRadius = null;
-            document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
-            document.querySelector('.chip').classList.add('active');
-            updateFilterCount(); loadLocations();
-        }
-        syncDesktopModeSwitch('home');
-        return;
-    }
-
-    state.currentView = view;
-
-    // Mobile: use sheet states instead of DOM manipulation
-    const isMobileMap = document.documentElement.classList.contains('pp-mobile-map');
-    if (isMobileMap) {
-        switch(view) {
-            case 'home':
-                state.activeTag = 'all'; state.activeWeather = null;
-                state.activeFacilities = { coffee: false, diaper: false, alcohol: false };
-                state.activeAgeGroup = null; state.activeRadius = null;
-                updateFilterCount();
-                loadLocations();
-                bus.emit('sheet:setstate', 'peek');
-                if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), 50);
-                break;
-            case 'map':
-                trackEvent('map_view');
-                document.body.classList.add('map-view-active');
-                if (!state.mapInstance) {
-                    setDisplayMode('map');
-                } else {
-                    setTimeout(() => state.mapInstance.resize(), 50);
-                    fitMapToMarkers();
-                }
-                bus.emit('sheet:setstate', 'peek');
-                updateMapPillBadge();
-                break;
-            case 'favorites':
-                state.activeTag = 'favorites'; state.activeWeather = null;
-                loadLocations();
-                bus.emit('sheet:setstate', 'half');
-                break;
-            case 'info':
-                openInfoPanel();
-                break;
-        }
-        return;
-    }
-
-    // Desktop/legacy mobile: original DOM-based switching
-    if (view !== 'map' && state.currentDisplayMode === 'map') setDisplayMode('list');
-
-    switch(view) {
-        case 'home':
-            state.activeTag = 'all'; state.activeWeather = null;
-            state.activeFacilities = { coffee: false, diaper: false, alcohol: false };
-            document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
-            document.querySelector('.chip')?.classList.add('active');
-            updateFilterCount();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            const results = document.getElementById('results-container');
-            if (results) {
-                results.classList.add('view-enter');
-                setTimeout(() => results.classList.remove('view-enter'), 200);
-            }
-            loadLocations();
-            break;
-        case 'map':
-            trackEvent('map_view');
-            setDisplayMode('map');
-            document.body.classList.add('map-view-active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), 50);
-            updateMapPillBadge();
-            break;
-        case 'favorites':
-            state.activeTag = 'favorites'; state.activeWeather = null;
-            document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
-            const favChip = Array.from(document.querySelectorAll('.chip')).find(ch => ch.textContent === 'Favorieten');
-            if (favChip) favChip.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            const resultsF = document.getElementById('results-container');
-            if (resultsF) {
-                resultsF.classList.add('view-enter');
-                setTimeout(() => resultsF.classList.remove('view-enter'), 200);
-            }
-            loadLocations();
-            break;
-        case 'info':
-            openInfoPanel();
-            break;
+        switchViewDesktop(view);
+    } else {
+        switchViewMobile(view);
     }
 }
 
@@ -241,23 +232,9 @@ function renderMobileList() {
     const locations = state.allLocations;
     if (countEl) countEl.textContent = locations.length + ' locaties';
 
-    const html = locations.slice(0, 50).map(loc => {
-        const ps = computePeuterScore(loc) || '';
-        const typeLabel = TYPE_LABELS[loc.type] || loc.type;
-        const photoSrc = loc.photo_url || loc.owner_photo_url;
-        const categoryImg = CATEGORY_IMAGES[loc.type] || CATEGORY_IMAGES.play;
-        const imgSrc = photoSrc || categoryImg;
-
-        return `<div class="compact-card" style="padding: 12px 16px;" data-id="${loc.id}">
-            <img class="compact-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name || '')}" loading="lazy" decoding="async" style="width:72px;height:72px"
-                 onerror="this.src='${escapeHtml(categoryImg)}'">
-            <div class="compact-card-body">
-                <div class="compact-card-name">${escapeHtml(loc.name || '')}</div>
-                <div class="compact-card-meta">${escapeHtml(typeLabel)}${loc.region ? ' \u00b7 ' + escapeHtml(loc.region) : ''}</div>
-            </div>
-            <div class="compact-card-score">${ps}\u2605</div>
-        </div>`;
-    }).join('');
+    const html = locations.slice(0, 50).map(loc =>
+        renderCompactCard(loc, { showTags: false, showVisited: false, extraStyle: 'padding: 12px 16px;', imgStyle: 'width:72px;height:72px' })
+    ).join('');
 
     content.innerHTML = html;
 

@@ -1,9 +1,7 @@
-import { state, DESKTOP_WIDTH, CATEGORY_IMAGES, TYPE_PHOTO_COLORS, TYPE_LABELS } from './state.js';
+import { state, DESKTOP_WIDTH, TYPE_LABELS } from './state.js';
 import { escapeHtml } from './utils.js';
 import bus from './bus.js';
-import { computePeuterScore } from './scoring.js';
-import { getTopTags } from './tags.js';
-import { isVisited } from './visited.js';
+import { renderCompactCard, renderSheetPreview } from './templates.js';
 
 // Sheet state machine
 const STATES = ['hidden', 'peek', 'half', 'full'];
@@ -270,30 +268,9 @@ export function renderSheetList(locations, travelTimes = {}) {
         return;
     }
 
-    const html = locations.slice(0, 30).map(loc => {
-        const tags = getTopTags(loc).slice(0, 2);
-        const ps = computePeuterScore(loc);
-        const typeLabel = TYPE_LABELS[loc.type] || loc.type;
-        const travelInfo = travelTimes[loc.id];
-        const distance = travelInfo ? travelInfo.duration : (loc.region || '');
-        const photoSrc = loc.photo_url || loc.owner_photo_url;
-        const categoryImg = CATEGORY_IMAGES[loc.type] || CATEGORY_IMAGES.play;
-        const imgSrc = photoSrc || categoryImg;
-        const photoColor = TYPE_PHOTO_COLORS[loc.type] || '#E8D5C4';
-
-        const visitedLabel = isVisited(loc.id) ? `<span class="compact-card-visited">Bezocht</span>` : '';
-
-        return `<div class="compact-card" data-id="${loc.id}">
-            <img class="compact-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async" style="background:${photoColor}"
-                 onerror="this.src='${escapeHtml(categoryImg)}'">
-            <div class="compact-card-body">
-                <div class="compact-card-name">${escapeHtml(loc.name)}</div>
-                <div class="compact-card-meta">${escapeHtml(typeLabel)}${distance ? ' \u00b7 ' + escapeHtml(String(distance)) : ''} ${visitedLabel}</div>
-                ${tags.length ? `<div class="compact-card-tags">${tags.map(t => `<span class="card-tag">${t.icon} ${t.label}</span>`).join('')}</div>` : ''}
-            </div>
-            <div class="compact-card-score">${ps}\u2605</div>
-        </div>`;
-    }).join('');
+    const html = locations.slice(0, 30).map(loc =>
+        renderCompactCard(loc, { travelTimes })
+    ).join('');
 
     listEl.innerHTML = html;
 
@@ -312,31 +289,7 @@ export function showLocationInSheet(loc) {
     const previewEl = document.getElementById('sheet-loc-preview');
     if (!previewEl) return;
 
-    const tags = getTopTags(loc).slice(0, 2);
-    const ps = computePeuterScore(loc);
-    const typeLabel = TYPE_LABELS[loc.type] || loc.type;
-    const photoSrc = loc.photo_url || loc.owner_photo_url;
-    const categoryImg = CATEGORY_IMAGES[loc.type] || CATEGORY_IMAGES.play;
-    const imgSrc = photoSrc || categoryImg;
-    const photoColor = TYPE_PHOTO_COLORS[loc.type] || '#E8D5C4';
-    const distance = loc.region || '';
-
-    previewEl.innerHTML = `
-        <div class="sheet-preview-card">
-            <img class="sheet-preview-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" style="background:${photoColor}"
-                 onerror="this.src='${escapeHtml(categoryImg)}'">
-            <div class="sheet-preview-body">
-                <div class="sheet-preview-name">${escapeHtml(loc.name)}</div>
-                <div class="sheet-preview-meta">${escapeHtml(typeLabel)}${distance ? ' \u00b7 ' + escapeHtml(String(distance)) : ''}</div>
-                ${tags.length ? `<div class="sheet-preview-tags">${tags.map(t => `<span class="card-tag">${t.icon} ${t.label}</span>`).join('')}</div>` : ''}
-            </div>
-            <div class="sheet-preview-score">${ps}\u2605</div>
-        </div>
-        <div class="sheet-preview-actions">
-            <button class="sheet-preview-btn sheet-preview-btn-primary" id="sheet-preview-meer">Meer info</button>
-            <button class="sheet-preview-btn sheet-preview-btn-secondary" id="sheet-preview-route"
-                onclick="window.open('https://maps.apple.com/?daddr=${loc.lat},${loc.lng}','_blank')">Route</button>
-        </div>`;
+    previewEl.innerHTML = renderSheetPreview(loc);
 
     sheetEl.classList.add('has-preview');
     setSheetState('half');

@@ -1,9 +1,10 @@
-import { state, DESKTOP_WIDTH, TYPE_LABELS, WEATHER_LABELS, WEATHER_ICONS, CATEGORY_IMAGES, TYPE_PHOTO_COLORS, PROMO_ITEMS, ADSENSE_PUB_ID, ADSENSE_SLOT_ID, ADSENSE_EVERY_N, BATCH_SIZE } from './state.js';
+import { state, DESKTOP_WIDTH, TYPE_LABELS, WEATHER_LABELS, WEATHER_ICONS, PROMO_ITEMS, ADSENSE_PUB_ID, ADSENSE_SLOT_ID, ADSENSE_EVERY_N, BATCH_SIZE } from './state.js';
 import { escapeHtml, safeUrl, getCardSupportingCopy, isNearDuplicateCopy, buildDetailUrl, buildMapsUrl } from './utils.js';
 import { computePeuterScore, computePeuterScoreV2, getTopStrengths, getCardDecisionSentence, getCompactTrustChip, getCardQuickFacts } from './scoring.js';
 import { isFavorite } from './favorites.js';
 import { getTopTags, getWeatherBadge } from './tags.js';
 import { isVisited } from './visited.js';
+import { renderCardPhoto } from './templates.js';
 import bus from './bus.js';
 
 let batchLocations = [];
@@ -118,17 +119,7 @@ function appendBatch() {
         const weatherBadge = getWeatherBadge(item);
         const supportingIsDuplicate = supportingCopy && decisionSentence && isNearDuplicateCopy(supportingCopy, decisionSentence);
 
-        const photoSrc = item.photo_url || item.owner_photo_url;
-        const categoryImg = CATEGORY_IMAGES[item.type] || CATEGORY_IMAGES.play;
-        const imgSrc = photoSrc || categoryImg;
-        const photoColor = TYPE_PHOTO_COLORS[item.type] || '#E8D5C4';
-        const fallbackSrc = photoSrc ? categoryImg : '';
-        const cardImgHTML = `<div class="loc-img photo-container${!photoSrc ? ' loc-img--category' : ''}" style="--photo-color: ${photoColor}">
-                <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async" width="400" height="267"
-                     onload="this.classList.add('loaded')"
-                     onerror="if(this.dataset.retried){this.closest('.loc-img').classList.add('loc-img--fallback')}else{this.dataset.retried='1';this.src='${escapeHtml(fallbackSrc || categoryImg)}'}">
-                <span class="loc-type-badge">${escapeHtml(typeLabel)}</span>
-              </div>`;
+        const cardImgHTML = renderCardPhoto(item);
 
         const card = document.createElement('article');
         card.className = 'loc-card reveal';
