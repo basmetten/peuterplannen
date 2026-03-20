@@ -178,11 +178,15 @@ export function switchView(view) {
 // === Map/List toggle ===
 
 export function initMapListToggle() {
-    // Wire both old and new toggle buttons
     const oldBtn = document.getElementById('map-list-toggle');
     const newBtn = document.getElementById('map-view-toggle');
+    const gpsBtn = document.getElementById('map-gps-btn');
     if (oldBtn) oldBtn.addEventListener('click', toggleMapList);
     if (newBtn) newBtn.addEventListener('click', toggleMapList);
+    // GPS button — use JS listener (onclick can fail in stacking contexts)
+    if (gpsBtn) gpsBtn.addEventListener('click', () => {
+        if (typeof getCurrentLocation === 'function') getCurrentLocation();
+    });
 }
 
 export function toggleMapList() {
@@ -220,13 +224,38 @@ export function toggleMapList() {
 function renderMobileList() {
     const content = document.getElementById('mobile-list-content');
     const countEl = document.getElementById('list-view-count');
+    const chipContainer = document.getElementById('list-filter-chips');
     if (!content) return;
 
     const locations = state.allLocations;
     if (countEl) countEl.textContent = locations.length + ' locaties';
 
+    // Render filter chips (Funda-style)
+    if (chipContainer) {
+        const types = [
+            { key: 'all', label: 'Alles' },
+            { key: 'play', label: 'Speeltuin' },
+            { key: 'farm', label: 'Boerderij' },
+            { key: 'nature', label: 'Natuur' },
+            { key: 'museum', label: 'Museum' },
+            { key: 'horeca', label: 'Horeca' },
+            { key: 'swim', label: 'Zwemmen' }
+        ];
+        chipContainer.innerHTML = types.map(t =>
+            `<button class="list-chip${state.activeTag === t.key || (t.key === 'all' && state.activeTag === 'all') ? ' active' : ''}" data-filter="${t.key}">${t.label}</button>`
+        ).join('');
+        chipContainer.querySelectorAll('.list-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                state.activeTag = chip.dataset.filter;
+                state.activeWeather = null;
+                bus.emit('data:reload');
+                setTimeout(renderMobileList, 100);
+            });
+        });
+    }
+
     const html = locations.slice(0, 50).map(loc =>
-        renderCompactCard(loc, { showTags: false, showVisited: false, extraStyle: 'padding: 12px 16px;', imgStyle: 'width:72px;height:72px' })
+        renderCompactCard(loc, { showTags: true, showVisited: false })
     ).join('');
 
     content.innerHTML = html;
@@ -235,7 +264,7 @@ function renderMobileList() {
     content.querySelectorAll('.compact-card').forEach(card => {
         card.addEventListener('click', () => {
             const id = parseInt(card.dataset.id, 10);
-            if (isListMode) toggleMapList(); // back to map view first
+            if (isListMode) toggleMapList();
             bus.emit('sheet:open', id);
         });
     });

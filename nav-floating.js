@@ -67,6 +67,20 @@
     });
   }
 
+  // Fix: always close mobile menu on page restore from bfcache
+  // (body overflow:hidden + backdrop can persist after back-navigation)
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+      document.body.style.overflow = '';
+      var bd = document.querySelector('.nav-backdrop');
+      if (bd) bd.classList.remove('open');
+      var mob = document.querySelector('.nav-mobile');
+      if (mob) { mob.classList.remove('open'); mob.setAttribute('aria-hidden', 'true'); }
+      var bur = document.querySelector('.nav-burger');
+      if (bur) { bur.classList.remove('open'); bur.setAttribute('aria-expanded', 'false'); }
+    }
+  });
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
       initNav(document.querySelector('nav.floating-nav[aria-label="Hoofdnavigatie"]') || document.querySelector('nav[aria-label="Hoofdnavigatie"]'));

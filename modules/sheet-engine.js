@@ -194,6 +194,22 @@ function setMorphOpacity(el, opacity) {
     if (!el) return;
     el.style.opacity = opacity;
     el.style.pointerEvents = opacity > 0.3 ? 'auto' : 'none';
+    // Collapse hidden elements so they don't take layout space (fixes peek whitespace)
+    if (opacity < 0.01) {
+        el.style.maxHeight = '0';
+        el.style.overflow = 'hidden';
+        el.style.marginTop = '0';
+        el.style.marginBottom = '0';
+        el.style.paddingTop = '0';
+        el.style.paddingBottom = '0';
+    } else {
+        el.style.maxHeight = '';
+        el.style.overflow = '';
+        el.style.marginTop = '';
+        el.style.marginBottom = '';
+        el.style.paddingTop = '';
+        el.style.paddingBottom = '';
+    }
 }
 
 /* ===================================================
