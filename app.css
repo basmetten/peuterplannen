@@ -1,3 +1,5 @@
+@layer layout {
+
         /* Tokens are defined in design-system.css — loaded before this file */
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -1655,3 +1657,5 @@
     background: none; border: none; color: var(--pp-text-muted);
     font-size: 0.8rem; cursor: pointer; padding: 8px 16px;
 }
+
+} /* end @layer layout */

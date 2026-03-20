@@ -1,3 +1,5 @@
+@layer overrides {
+
 /* Shared floating navigation for public pages */
 
 :root {
@@ -279,3 +281,5 @@ nav.floating-nav .nav-mobile-secondary .nav-mobile-link {
     transition: none !important;
   }
 }
+
+} /* end @layer overrides */

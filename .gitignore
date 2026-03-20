@@ -33,6 +33,10 @@ node_modules/
 
 # Build artifacts / pipeline output
 output/
+app.bundle.js
+app.bundle.js.map
+app.bundle.css
+app.bundle.css.map
 
 # Data files
 all_locations_for_verification.json
@@ -61,5 +65,12 @@ qt-*.png
 quality-test-*.png
 test-*.png
 verify-*.png
+qa-*.png
+setup-test-screenshot.png
 photo-*-log.json
 mockup-*.html
+
+# BackstopJS (test outputs — reference images cached in CI)
+backstop_data/bitmaps_test/
+backstop_data/html_report/
+backstop_data/ci_report/

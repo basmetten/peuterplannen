@@ -105,6 +105,10 @@ jobs:
         if: steps.gate.outputs.run_build == 'true'
         run: npm ci
 
+      - name: Bundle JS and CSS
+        if: steps.gate.outputs.run_build == 'true'
+        run: npm run bundle
+
       - name: Run tests
         if: steps.gate.outputs.run_build == 'true'
         run: npm test

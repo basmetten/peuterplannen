@@ -31,7 +31,8 @@
     "ops:check-calendar": "node .scripts/ops/check-editorial-calendar.js",
     "ops:seo-health": "node .scripts/ops/seo-health-check.js",
     "audit:tokens": "node .scripts/audit_design_tokens.js",
-    "audit:tokens:strict": "node .scripts/audit_design_tokens.js --strict"
+    "audit:tokens:strict": "node .scripts/audit_design_tokens.js --strict",
+    "bundle": "node esbuild.config.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
@@ -45,6 +46,7 @@
     "undici": "^7.22.0"
   },
   "devDependencies": {
+    "esbuild": "^0.27.4",
     "puppeteer": "^24.37.5",
     "wrangler": "^4.70.0"
   }

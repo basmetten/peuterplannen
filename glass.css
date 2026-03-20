@@ -1,3 +1,5 @@
+@layer components {
+
 /* PeuterPlannen — Liquid Glass Design Tokens
    Warm glass UI over map. Apple Maps as reference, but warmer. */
 
@@ -1370,3 +1372,5 @@
   white-space: nowrap !important;
   border: 0 !important;
 }
+
+} /* end @layer components */
