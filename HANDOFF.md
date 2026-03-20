@@ -16,11 +16,11 @@
 - **Fase 5:** Performance (content-visibility, blur-up, preconnect, will-change, decoding=async)
 - Framework beslissing: Vanilla JS + motion/mini (geen Svelte)
 
-### B3 Foto Quality Check: DRAAIT OP ACHTERGROND
-- Script evalueert alle 1000+ foto's met Gemini 3 Flash
-- Score 1-2 foto's worden automatisch verwijderd uit Supabase
-- ~53% fail rate tot nu toe (logos, schilderijen, screenshots)
-- Duurt ~2 uur totaal (7s rate limit per Gemini call)
+### B3 Foto Quality Check: 450/1000 GEDAAN
+- 90 foto's succesvol gescoord + DB geüpdatet
+- 62 slechte foto's geïdentificeerd (score 1-2: logos, schilderijen, screenshots)
+- 298 Gemini API errors (rate limit) — moeten opnieuw
+- Herstart volgende sessie: `OFFSET=450 GEMINI_API_KEY=... node .scripts/pipeline/quality-check-photos.js`
 
 ## Huidige staat
 
