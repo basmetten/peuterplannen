@@ -151,20 +151,36 @@ export function initMap() {
 
         updateMapMarkers(state.allLocations);
         updateUserLocationOnMap();
+        // Flush any data that arrived before map was ready
+        flushPendingMarkers();
     });
 }
 
+// Queue for data arriving before map is ready
+let pendingMarkerData = null;
+
 export function updateMapMarkers(locations) {
-    if (!state.mapInstance || !state.mapLoaded) return;
+    if (!state.mapInstance || !state.mapLoaded) {
+        // Queue data — will be applied when map fires 'load'
+        pendingMarkerData = locations;
+        return;
+    }
+    pendingMarkerData = null;
     const source = state.mapInstance.getSource('locations');
     if (source) source.setData(buildGeoJSON(locations));
 
     const noResults = document.getElementById('map-no-results');
     const hasResults = locations.filter(l => l.lat && l.lng).length > 0;
-    noResults.classList.toggle('hidden', hasResults);
+    if (noResults) noResults.classList.toggle('hidden', hasResults);
 
     const isDesktopSplit = window.innerWidth >= DESKTOP_WIDTH;
     if ((state.currentDisplayMode === 'map' || isDesktopSplit) && hasResults) fitMapToMarkers();
+}
+
+export function flushPendingMarkers() {
+    if (pendingMarkerData) {
+        updateMapMarkers(pendingMarkerData);
+    }
 }
 
 export function fitMapToMarkers() {

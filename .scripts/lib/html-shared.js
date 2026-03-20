@@ -239,6 +239,8 @@ function rewriteAssetVersions(filePath) {
   const replacements = [
     [/\/design-system\.css(?:\?v=[^"]*)?/g, `/design-system.css?v=${ASSET_VERSION}`],
     [/\/style\.min\.css(?:\?v=[^"]*)?/g, `/style.min.css?v=${ASSET_VERSION}`],
+    [/\/glass\.css(?:\?v=[^"]*)?/g, `/glass.css?v=${ASSET_VERSION}`],
+    [/\/app\.min\.css(?:\?v=[^"]*)?/g, `/app.min.css?v=${ASSET_VERSION}`],
     [/\/nav-floating\.css(?:\?v=[^"]*)?/g, `/nav-floating.css?v=${ASSET_VERSION}`],
     [/\/nav-floating\.js(?:\?v=[^"]*)?/g, `/nav-floating.js?v=${ASSET_VERSION}`],
     [/\/admin\/portal-shell\.css(?:\?v=[^"]*)?/g, `/admin/portal-shell.css?v=${ASSET_VERSION}`],

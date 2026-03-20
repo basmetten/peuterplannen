@@ -70,20 +70,61 @@ function switchViewCore(view) {
         return;
     }
 
-    if (view !== 'map' && state.currentDisplayMode === 'map') setDisplayMode('list');
     state.currentView = view;
+
+    // Mobile: use sheet states instead of DOM manipulation
+    const isMobileMap = document.documentElement.classList.contains('pp-mobile-map');
+    if (isMobileMap) {
+        switch(view) {
+            case 'home':
+                state.activeTag = 'all'; state.activeWeather = null;
+                state.activeFacilities = { coffee: false, diaper: false, alcohol: false };
+                state.activeAgeGroup = null; state.activeRadius = null;
+                updateFilterCount();
+                loadLocations();
+                window._pp_modules?.setSheetState?.('peek');
+                if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), 50);
+                break;
+            case 'map':
+                trackEvent('map_view');
+                document.body.classList.add('map-view-active');
+                if (!state.mapInstance) {
+                    setDisplayMode('map');
+                } else {
+                    setTimeout(() => state.mapInstance.resize(), 50);
+                    fitMapToMarkers();
+                }
+                window._pp_modules?.setSheetState?.('peek');
+                updateMapPillBadge();
+                break;
+            case 'favorites':
+                state.activeTag = 'favorites'; state.activeWeather = null;
+                loadLocations();
+                window._pp_modules?.setSheetState?.('half');
+                break;
+            case 'info':
+                openInfoPanel();
+                break;
+        }
+        return;
+    }
+
+    // Desktop/legacy mobile: original DOM-based switching
+    if (view !== 'map' && state.currentDisplayMode === 'map') setDisplayMode('list');
 
     switch(view) {
         case 'home':
             state.activeTag = 'all'; state.activeWeather = null;
             state.activeFacilities = { coffee: false, diaper: false, alcohol: false };
             document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
-            document.querySelector('.chip').classList.add('active');
+            document.querySelector('.chip')?.classList.add('active');
             updateFilterCount();
             window.scrollTo({ top: 0, behavior: 'smooth' });
             const results = document.getElementById('results-container');
-            results.classList.add('view-enter');
-            setTimeout(() => results.classList.remove('view-enter'), 200);
+            if (results) {
+                results.classList.add('view-enter');
+                setTimeout(() => results.classList.remove('view-enter'), 200);
+            }
             loadLocations();
             break;
         case 'map':
@@ -101,8 +142,10 @@ function switchViewCore(view) {
             if (favChip) favChip.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             const resultsF = document.getElementById('results-container');
-            resultsF.classList.add('view-enter');
-            setTimeout(() => resultsF.classList.remove('view-enter'), 200);
+            if (resultsF) {
+                resultsF.classList.add('view-enter');
+                setTimeout(() => resultsF.classList.remove('view-enter'), 200);
+            }
             loadLocations();
             break;
         case 'info':

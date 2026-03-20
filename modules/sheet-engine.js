@@ -32,13 +32,18 @@ export function initSheet() {
     contentEl.addEventListener('touchmove', onContentTouchMove, { passive: false });
     contentEl.addEventListener('touchend', onContentTouchEnd, { passive: true });
 
-    // Search pill opens half state
+    // Search pill toggles filter chips and opens half state
     const searchPill = document.getElementById('sheet-search-pill');
     if (searchPill) {
         searchPill.addEventListener('click', () => {
+            const filterChips = document.getElementById('sheet-filter-chips');
+            if (filterChips) filterChips.classList.toggle('active');
             if (currentState === 'peek') setSheetState('half');
         });
     }
+
+    // Filter chip handlers
+    initSheetFilterChips();
 
     // Overlay click closes to peek
     const overlay = document.getElementById('sheet-overlay');
@@ -121,8 +126,7 @@ function onTouchEnd() {
     if (currentState === 'peek') {
         if (deltaY < -60 || (deltaY < 0 && velocity > VELOCITY_THRESHOLD))
             newState = 'half';
-        else if (deltaY > 40)
-            newState = 'hidden';
+        // No peek→hidden: sheet must never disappear via drag
     } else if (currentState === 'half') {
         if (deltaY < -80 || (deltaY < 0 && velocity > VELOCITY_THRESHOLD))
             newState = 'full';
@@ -307,6 +311,24 @@ export function initSheetTabs() {
                 }
                 setSheetState('half');
             }
+        });
+    });
+}
+
+// Initialize filter chips in the sheet
+function initSheetFilterChips() {
+    const container = document.getElementById('sheet-filter-chips');
+    if (!container) return;
+    container.querySelectorAll('.sheet-filter-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            const filter = chip.dataset.filter;
+            // Update active state
+            container.querySelectorAll('.sheet-filter-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            // Apply filter
+            state.activeTag = filter;
+            state.activeWeather = null;
+            window._pp_modules?.loadLocations?.();
         });
     });
 }

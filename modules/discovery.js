@@ -61,7 +61,7 @@ export function getThisWeekPicks(locations, region) {
 export async function fetch5DayForecast(lat, lng) {
     try {
         const res = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max&timezone=Europe/Amsterdam&forecast_days=5`
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max&timezone=Europe/Amsterdam&forecast_days=2`
         );
         if (!res.ok) return null;
         const data = await res.json();

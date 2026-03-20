@@ -550,8 +550,8 @@
   html.pp-mobile-map body {
     overflow: hidden !important;
     height: 100dvh !important;
-    position: fixed !important;
     width: 100% !important;
+    /* No position:fixed — breaks iOS Safari scroll in sheet content */
   }
   /* Map fills entire viewport as background */
   .pp-mobile-map .map-container {
@@ -630,6 +630,7 @@
     padding-bottom: env(safe-area-inset-bottom, 0px);
     display: flex;
     justify-content: space-around;
+    pointer-events: auto;
   }
 
   /* Sheet needs to sit above map but below bottom-nav */
@@ -765,7 +766,7 @@
   .map-list-toggle {
     position: fixed;
     right: 16px;
-    bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 190px + 16px);
+    bottom: calc(270px + env(safe-area-inset-bottom, 0px));
     z-index: 1001;
     display: flex;
     align-items: center;
@@ -863,6 +864,45 @@
   /* Safe area for sheet content bottom */
   .pp-mobile-map .sheet-content {
     padding-bottom: calc(env(safe-area-inset-bottom, 8px) + 8px);
+  }
+
+  /* Allow touch scrolling in sheet content when half/full */
+  .bottom-sheet[data-state="half"] .sheet-content,
+  .bottom-sheet[data-state="full"] .sheet-content {
+    touch-action: pan-y;
+  }
+
+  /* Hide forecast in peek state — too much space */
+  .bottom-sheet[data-state="peek"] #sheet-forecast {
+    display: none;
+  }
+
+  /* Sheet filter chips — shown inline when search pill tapped */
+  .sheet-filter-chips {
+    display: none;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 0;
+  }
+  .sheet-filter-chips.active {
+    display: flex;
+  }
+  .sheet-filter-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(212, 119, 86, 0.15);
+    background: rgba(245, 240, 235, 0.65);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--pp-brown-dark, #5C4433);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    font-family: inherit;
+  }
+  .sheet-filter-chip.active {
+    background: #D47756;
+    color: white;
+    border-color: transparent;
   }
 
   /* Week picks - only visible in half/full state */
