@@ -178,19 +178,23 @@ export function switchView(view) {
 // === Map/List toggle ===
 
 export function initMapListToggle() {
-    const btn = document.getElementById('map-list-toggle');
-    if (!btn) return;
-    btn.addEventListener('click', toggleMapList);
+    // Wire both old and new toggle buttons
+    const oldBtn = document.getElementById('map-list-toggle');
+    const newBtn = document.getElementById('map-view-toggle');
+    if (oldBtn) oldBtn.addEventListener('click', toggleMapList);
+    if (newBtn) newBtn.addEventListener('click', toggleMapList);
 }
 
 export function toggleMapList() {
     isListMode = !isListMode;
     const btn = document.getElementById('map-list-toggle');
+    const newBtn = document.getElementById('map-view-toggle');
     const label = btn?.querySelector('.toggle-label');
     const listView = document.getElementById('mobile-list-view');
     const sheet = document.getElementById('bottom-sheet');
 
     btn?.classList.toggle('is-list', isListMode);
+    newBtn?.classList.toggle('is-list', isListMode);
     if (label) label.textContent = isListMode ? 'Kaart' : 'Lijst';
 
     if (isListMode) {
