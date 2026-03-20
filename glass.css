@@ -1040,3 +1040,167 @@
   .map-list-toggle { display: none !important; }
   .mobile-list-view { display: none !important; }
 }
+
+/* ============================================
+   Location Sheet — 3-tier progressive disclosure
+   ============================================ */
+
+/* Sheet detail header (pills + fav) */
+.sheet-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* Detail quick facts */
+.detail-quick-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 0;
+}
+.detail-fact {
+  font-size: var(--wg-text-sm, 0.875rem);
+  color: var(--wg-text-muted);
+}
+.detail-fact strong {
+  color: var(--wg-accent, #D4775A);
+  font-weight: 600;
+}
+
+/* Detail actions — Route is primary */
+.sheet-detail-actions {
+  display: flex;
+  gap: 8px;
+  padding: 12px 0;
+  flex-wrap: wrap;
+}
+.sheet-detail-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: var(--wg-radius-card);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: var(--wg-border-warm);
+  background: var(--wg-surface);
+  color: var(--wg-text-primary);
+  cursor: pointer;
+  transition: var(--wg-duration-fast) var(--wg-ease-standard);
+  font-family: inherit;
+}
+.sheet-detail-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sheet-detail-btn:active {
+  transform: scale(0.97);
+}
+.sheet-detail-btn-primary {
+  background: var(--wg-primary, #D4775A);
+  color: var(--wg-text-inverse, #fff);
+  border-color: transparent;
+}
+.sheet-detail-btn-icon {
+  padding: 10px;
+}
+
+/* Pill price */
+.pill-price {
+  font-weight: 600;
+}
+
+/* Detail info grid */
+.sheet-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--wg-border-divider, rgba(92, 68, 51, 0.08));
+  border-radius: var(--wg-radius-card);
+  overflow: hidden;
+  margin: 12px 0;
+}
+.sheet-info-cell {
+  background: var(--wg-surface-warm, #FAF5EF);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sheet-info-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--wg-text-placeholder, rgba(92, 68, 51, 0.4));
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.sheet-info-value {
+  font-size: 0.85rem;
+  color: var(--wg-text-primary);
+}
+
+/* Meer details toggle (Tier 3) */
+.sheet-detail-more {
+  margin: 12px 0;
+}
+.sheet-detail-more-toggle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--wg-primary, #D4775A);
+  cursor: pointer;
+  padding: 8px 0;
+  list-style: none;
+}
+.sheet-detail-more-toggle::-webkit-details-marker {
+  display: none;
+}
+.sheet-detail-more-toggle::before {
+  content: '\25B8  ';
+  transition: transform var(--wg-duration-fast);
+}
+.sheet-detail-more[open] .sheet-detail-more-toggle::before {
+  content: '\25BE  ';
+}
+.sheet-detail-description {
+  font-size: 0.85rem;
+  color: var(--wg-text-body);
+  line-height: 1.5;
+  margin: 8px 0;
+}
+
+/* Trust list inside Tier 3 */
+.sheet-trust-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+}
+.sheet-trust-list li {
+  font-size: 0.8rem;
+  color: var(--wg-text-muted);
+  padding: 3px 0;
+  line-height: 1.4;
+}
+.sheet-trust-list li::before {
+  content: '✓ ';
+  color: #4A7A4A;
+  font-weight: 600;
+}
+
+/* Score breakdown wrapper inside Tier 3 */
+.sheet-score-breakdown-wrap .score-breakdown {
+  margin: 8px 0;
+}
+.sheet-score-breakdown-wrap .score-breakdown-toggle {
+  display: none;
+}
+.sheet-score-breakdown-wrap .score-breakdown-bars {
+  display: block;
+}
