@@ -7,7 +7,7 @@ import { toggleTag, toggleWeather, toggleFacility, toggleAge, toggleRadius, togg
 import { renderCards } from './modules/cards.js';
 import { loadMapLibre, initMap, updateMapMarkers, fitMapToMarkers, updateUserLocationOnMap, highlightMarker, setDisplayMode } from './modules/map.js';
 import { openLocSheet, closeLocSheet, openInfoPanel, closeInfoPanel, showLocationDetail, initSheetGestures } from './modules/sheet.js';
-import { switchView, applyLayout, syncDesktopModeSwitch, initMapListToggle } from './modules/layout.js';
+import { switchView, applyLayout, syncDesktopModeSwitch, initMapListToggle, initPanelCollapse } from './modules/layout.js';
 import { generatePlan, selectPlanDate, selectPlanOption, changeKidsCount, updateChildAge, sharePlan, sharePlanWhatsApp, updatePlanLocationChip, renderAgeSliders, renderPlanPreview, initPlan, initPlanFromPrefs, handleSwapPlanSlot } from './modules/plan.js';
 import { initSheet, initSheetTabs, renderSheetList, updateSheetMeta, setSheetState, showLocationInSheet, hideLocationPreview } from './modules/sheet-engine.js';
 import { getPrefs, clearPrefs } from './modules/prefs.js';
@@ -105,6 +105,7 @@ initSheet();
 initSheetTabs();
 // Initialize map/list toggle button
 initMapListToggle();
+initPanelCollapse();
 
 // Search input handlers
 document.getElementById('location-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') updateLocation(); });

@@ -331,9 +331,7 @@
 .bottom-sheet {
   position: fixed;
   z-index: 1000;
-  background: var(--wg-glass-sheet);
-  backdrop-filter: var(--wg-blur-heavy);
-  -webkit-backdrop-filter: var(--wg-blur-heavy);
+  background: #FFFCF9;
   box-shadow: var(--wg-shadow-sheet);
   transform: translateY(100%);
   transition: transform var(--wg-duration-snap) var(--wg-ease-spring),
@@ -735,9 +733,21 @@
 /* High-contrast mode for bottom sheet */
 @media (prefers-contrast: more) {
   .bottom-sheet {
-    backdrop-filter: none;
     background: #FFFCF9;
     border: 2px solid var(--pp-brown-dark, #5C4433);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .sheet-search-pill,
+  .sheet-preset,
+  .sheet-filter-chip,
+  .scan-type-badge,
+  .scan-fav,
+  .detail-back,
+  .detail-fav {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: #FFFCF9 !important;
   }
 }
 

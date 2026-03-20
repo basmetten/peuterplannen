@@ -109,6 +109,7 @@ function renderScanCard(item, travelInfo, batchIdx) {
 
     const card = document.createElement('article');
     card.className = 'loc-card scan-card reveal';
+    card.dataset.locId = item.id;
     card.style.animationDelay = `${Math.min(batchIdx * 0.04, 0.2)}s`;
 
     // Desktop hover → map highlight
@@ -149,5 +150,13 @@ function renderScanCard(item, travelInfo, batchIdx) {
     return card;
 }
 
+// Scroll card into view when map marker clicked (desktop)
+function scrollToCard(locationId) {
+    if (window.innerWidth < DESKTOP_WIDTH) return;
+    const card = document.querySelector(`.scan-card[data-loc-id="${locationId}"]`);
+    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
 // Bus listeners
 bus.on('cards:render', renderCards);
+bus.on('sheet:open', scrollToCard);

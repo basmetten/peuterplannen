@@ -232,6 +232,27 @@ function renderMobileList() {
     });
 }
 
+// === Panel collapse (desktop) ===
+
+export function initPanelCollapse() {
+    const btn = document.getElementById('panel-collapse-btn');
+    const panel = document.getElementById('list-view');
+    if (!btn || !panel) return;
+
+    // Restore state
+    if (localStorage.getItem('pp-panel-collapsed') === '1') {
+        panel.classList.add('collapsed');
+    }
+
+    btn.addEventListener('click', () => {
+        panel.classList.toggle('collapsed');
+        const collapsed = panel.classList.contains('collapsed');
+        localStorage.setItem('pp-panel-collapsed', collapsed ? '1' : '0');
+        // Resize map after transition
+        if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), 350);
+    });
+}
+
 // Bus listeners
 bus.on('view:switch', switchView);
 bus.on('nav:syncdesktop', syncDesktopModeSwitch);
