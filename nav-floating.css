@@ -251,24 +251,70 @@ nav.floating-nav .nav-mobile-secondary .nav-mobile-link {
   padding: 10px 16px;
 }
 
+} /* end @layer overrides */
+
+/* Fix: style.css has unlayered `nav { left:0; right:0; border-bottom:... }`
+   that overrides the layered floating-nav centering. Re-declare outside @layer. */
+nav.floating-nav[aria-label="Hoofdnavigatie"] {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  border-bottom: none;
+}
+
+/* Also ensure the desktop CTA gets coral, not dark (style.css `.nav-cta` override) */
+nav.floating-nav .nav-cta {
+  background: var(--pp-primary, #D4775A);
+  color: var(--pp-text-inverse, #fff);
+}
+nav.floating-nav .nav-cta:hover {
+  background: var(--pp-primary-dark, #C06A4E);
+}
+
+/* Mobile nav — outside @layer so these override unlayered style.css rules.
+   style.css has an unlayered `nav { left:0; right:0 }` that conflicts with
+   the layered floating-nav centering. We must re-declare positioning here. */
 @media (max-width: 768px) {
   nav.floating-nav[aria-label="Hoofdnavigatie"] {
+    position: fixed;
     top: 10px;
-    width: calc(100% - 16px);
-    border-radius: var(--pp-nav-radius-mobile);
+    left: 8px;
+    right: 8px;
+    width: auto;
+    transform: none;
+    border-radius: var(--pp-nav-radius-mobile, 20px);
+    z-index: 120;
   }
 
   nav.floating-nav[aria-label="Hoofdnavigatie"].scrolled { top: 8px; }
 
   nav.floating-nav .nav-inner,
   nav.floating-nav .nav-container {
-    padding: 12px 14px;
-    min-height: 58px;
+    padding: 10px 14px;
+    min-height: 52px;
   }
 
   nav.floating-nav .nav-links { display: none; }
   nav.floating-nav .nav-burger { display: flex; }
   nav.floating-nav .nav-mobile { display: flex; }
+
+  nav.floating-nav .nav-logo-svg {
+    width: 34px;
+    height: 34px;
+  }
+
+  nav.floating-nav .logo-text {
+    font-size: 13px;
+  }
+
+  /* Override unlayered style.css .nav-cta dark bg with coral primary */
+  nav.floating-nav .nav-mobile-cta.nav-cta {
+    background: var(--pp-primary, #D4775A);
+    color: var(--pp-text-inverse, #fff);
+    border-radius: var(--pp-radius-sm, 12px);
+    padding: 14px 20px;
+    font-weight: 600;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -281,5 +327,3 @@ nav.floating-nav .nav-mobile-secondary .nav-mobile-link {
     transition: none !important;
   }
 }
-
-} /* end @layer overrides */
