@@ -1,0 +1,946 @@
+/* PeuterPlannen — Liquid Glass Design Tokens
+   Warm glass UI over map. Apple Maps as reference, but warmer. */
+
+:root {
+  --pp-cream:        #FFF8E1;
+  --pp-terracotta:   #D47756;
+  --pp-brown-dark:   #5C4433;
+  --pp-brown-muted:  #8B7355;
+  --pp-white-soft:   rgba(255, 255, 255, 0.4);
+  --pp-shadow-warm:  rgba(212, 119, 86, 0.12);
+
+  --glass-bg:        rgba(250, 247, 242, 0.78);
+  --glass-blur:      8px;
+  --glass-border:    1px solid var(--pp-white-soft);
+  --glass-shadow:    0 4px 16px var(--pp-shadow-warm);
+
+  --spring-curve:    cubic-bezier(0.32, 0.72, 0, 1);
+  --snap-duration:   300ms;
+}
+
+.bottom-sheet-glass {
+  background: rgba(250, 247, 242, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 -4px 24px rgba(212, 119, 86, 0.15);
+  border-radius: 16px 16px 0 0;
+}
+
+.filter-chip-glass {
+  background: rgba(250, 247, 242, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 2px 8px rgba(212, 119, 86, 0.06);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: var(--pp-brown-dark);
+}
+
+.filter-chip-glass.active {
+  background: var(--pp-terracotta);
+  color: white;
+  border-color: transparent;
+}
+
+.search-pill-glass {
+  background: rgba(250, 247, 242, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 12px rgba(212, 119, 86, 0.08);
+  border-radius: 24px;
+  padding: 10px 16px;
+}
+
+.loc-card-glass {
+  background: rgba(250, 247, 242, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 12px rgba(212, 119, 86, 0.08);
+  border-radius: 12px;
+}
+
+.glass-text-over-map {
+  text-shadow: 0 0 8px rgba(255, 248, 240, 0.8);
+}
+
+.sheet-dragging .bottom-sheet-glass {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(250, 247, 242, 0.95);
+  transition: none;
+}
+
+/* Photo fallback: color placeholder + fade-in */
+.photo-container {
+  position: relative;
+  overflow: hidden;
+  background: var(--photo-color, #E8D5C4);
+}
+.photo-container img {
+  opacity: 0;
+  transition: opacity 300ms ease;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-container img.loaded {
+  opacity: 1;
+}
+.photo-container .photo-fallback-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(92, 68, 51, 0.3);
+  font-size: 2rem;
+  pointer-events: none;
+}
+
+/* Sheet hero photo */
+.sheet-hero-photo {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  background: var(--photo-color, #E8D5C4);
+}
+.sheet-hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.sheet-hero-photo img.loaded {
+  opacity: 1;
+}
+.sheet-hero--fallback {
+  background: linear-gradient(135deg, var(--photo-color, #E8D5C4) 0%, rgba(92, 68, 51, 0.08) 100%);
+}
+.sheet-hero--fallback img { display: none; }
+
+@supports not (backdrop-filter: blur(1px)) {
+  .bottom-sheet-glass, .filter-chip-glass,
+  .search-pill-glass, .loc-card-glass {
+    background: rgba(250, 247, 242, 0.95);
+  }
+}
+
+@media (prefers-contrast: more) {
+  .bottom-sheet-glass, .filter-chip-glass,
+  .search-pill-glass, .loc-card-glass {
+    backdrop-filter: none;
+    background: var(--pp-cream);
+    border: 2px solid var(--pp-brown-dark);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.card-tag {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: rgba(212, 119, 86, 0.08);
+  color: #6B5A54;
+  white-space: nowrap;
+}
+
+.card-badge-visited {
+  font-size: 0.65rem;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: rgba(92, 68, 51, 0.06);
+  color: #8B7355;
+}
+.card-badge-popular {
+  font-size: 0.65rem;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: rgba(212, 119, 86, 0.08);
+  color: #D47756;
+  font-weight: 600;
+}
+.compact-card-visited {
+  font-size: 0.6rem;
+  color: #8B7355;
+  opacity: 0.6;
+}
+
+.pill-weather-badge {
+  font-weight: 600;
+  font-size: 0.7rem;
+}
+
+.weather-badge--rain {
+  background: rgba(76, 175, 80, 0.12);
+  color: #2E7D32;
+  border: 1px solid rgba(76, 175, 80, 0.25);
+}
+
+.weather-badge--sun {
+  background: rgba(255, 193, 7, 0.1);
+  color: #F57F17;
+  border: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+.sterke-punten {
+  background: rgba(107, 149, 144, 0.06);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin: 10px 0;
+}
+
+.sterke-punten h3 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4A5D5A;
+  margin: 0 0 6px;
+}
+
+.sterke-punten ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sterke-punten li {
+  font-size: 0.8rem;
+  color: #5A6B68;
+  padding: 3px 0;
+  line-height: 1.4;
+}
+
+.drukte-indicator {
+  font-size: 0.8rem;
+  color: #6B5A54;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.drukte-indicator .drukte-icon {
+  font-size: 1rem;
+}
+
+.drukte-indicator .drukte-text {
+  color: #5A6B68;
+}
+
+/* Score breakdown - "Waarom deze score?" */
+.score-breakdown {
+  margin: 10px 0;
+}
+.score-breakdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+  background: none;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #5C4433;
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.score-breakdown-toggle svg {
+  width: 14px; height: 14px;
+  stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  transition: transform 200ms ease;
+}
+.score-breakdown.open .score-breakdown-toggle svg {
+  transform: rotate(180deg);
+}
+.score-breakdown-bars {
+  display: none;
+  padding: 8px 0;
+}
+.score-breakdown.open .score-breakdown-bars {
+  display: block;
+}
+.score-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+.score-bar-label {
+  width: 110px;
+  font-size: 0.7rem;
+  color: #6B5A54;
+  flex-shrink: 0;
+}
+.score-bar-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(212, 119, 86, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 400ms ease;
+}
+.score-bar-fill--strong { background: #4A7A4A; }
+.score-bar-fill--good { background: #D47756; }
+.score-bar-fill--basic { background: #8B7355; }
+.score-bar-value {
+  width: 30px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #5C4433;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   Bottom Sheet — 4-state mobile browse sheet
+   ============================================ */
+.bottom-sheet {
+  position: fixed;
+  z-index: 1000;
+  background: rgba(255, 252, 249, 0.94);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  box-shadow: 0 -2px 20px rgba(100, 60, 40, 0.10), 0 0 0 0.5px rgba(255,255,255,0.5) inset;
+  transform: translateY(100%);
+  transition: transform 300ms cubic-bezier(0.32, 0.72, 0, 1),
+              left 300ms cubic-bezier(0.32, 0.72, 0, 1),
+              right 300ms cubic-bezier(0.32, 0.72, 0, 1),
+              bottom 300ms cubic-bezier(0.32, 0.72, 0, 1),
+              border-radius 300ms cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: transform;
+  height: 100dvh;
+  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: none;
+  /* Floating card defaults (peek/half) */
+  left: 8px; right: 8px; bottom: 8px;
+  border-radius: 16px;
+}
+
+/* Only active on mobile */
+@media (min-width: 680px) {
+  .bottom-sheet { display: none !important; }
+  .sheet-overlay { display: none !important; }
+}
+
+/* Peek: floating card, small, fully rounded */
+.bottom-sheet[data-state="peek"] {
+  transform: translateY(calc(100% - 190px));
+  left: 8px; right: 8px; bottom: 8px;
+  border-radius: 16px;
+}
+/* Half: still floating but tighter to edges */
+.bottom-sheet[data-state="half"] {
+  transform: translateY(45%);
+  left: 4px; right: 4px; bottom: 0;
+  border-radius: 14px 14px 0 0;
+}
+/* Full: fills entire screen, no float, no radius */
+.bottom-sheet[data-state="full"] {
+  transform: translateY(env(safe-area-inset-top, 0px));
+  left: 0; right: 0; bottom: 0;
+  border-radius: 0;
+}
+.bottom-sheet[data-state="hidden"] {
+  transform: translateY(100%);
+  left: 8px; right: 8px; bottom: 8px;
+  border-radius: 16px;
+}
+
+/* Drag handle */
+.sheet-drag-handle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0 6px;
+  cursor: grab;
+}
+.sheet-handle-bar {
+  width: 40px;
+  height: 5px;
+  border-radius: 2.5px;
+  background: rgba(160, 130, 120, 0.35);
+  transition: width 150ms ease, background 150ms ease;
+}
+.sheet-drag-handle:active .sheet-handle-bar {
+  width: 44px;
+  background: rgba(160, 130, 120, 0.5);
+}
+
+/* Sheet content */
+.sheet-content {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  max-height: calc(100dvh - 44px);
+  padding: 0 16px env(safe-area-inset-bottom, 8px);
+}
+
+/* Safari touch fixes */
+.sheet-drag-handle,
+.sheet-search-pill,
+.compact-card {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Peek section */
+.sheet-peek {
+  padding-bottom: 8px;
+}
+.sheet-search-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(245, 240, 235, 0.65);
+  border: 1px solid rgba(212, 119, 86, 0.12);
+  border-radius: 24px;
+  font-size: 0.9rem;
+  color: #9B8688;
+  cursor: pointer;
+  transition: background 200ms ease, box-shadow 200ms ease;
+}
+.sheet-search-pill:active {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 8px rgba(212, 119, 86, 0.12);
+}
+.sheet-search-pill svg {
+  width: 18px; height: 18px;
+  stroke: #7A6B6D; fill: none; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
+}
+.sheet-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 4px 0;
+  font-size: 0.8rem;
+  color: #6B5A54;
+}
+
+/* Sheet list - compact cards */
+.sheet-list {
+  display: none;
+}
+.bottom-sheet[data-state="half"] .sheet-list,
+.bottom-sheet[data-state="full"] .sheet-list {
+  display: block;
+}
+
+/* Compact card for sheet list */
+.compact-card {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(212, 119, 86, 0.08);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.compact-card:active {
+  background: rgba(212, 119, 86, 0.04);
+}
+.compact-card-img {
+  width: 64px; height: 64px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #E8D5C4;
+}
+.compact-card-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+.compact-card-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #3A2F2C;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.compact-card-meta {
+  font-size: 0.75rem;
+  color: #6B5A54;
+}
+.compact-card-tags {
+  display: flex;
+  gap: 4px;
+  margin-top: 2px;
+}
+.compact-card-tags .card-tag {
+  font-size: 0.65rem;
+  padding: 1px 6px;
+}
+.compact-card-score {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4A7A4A;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+/* Sheet overlay */
+.sheet-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  transition: opacity 200ms ease;
+}
+.sheet-overlay.active {
+  display: block;
+}
+
+/* Detail in sheet (future use) */
+.sheet-detail {
+  display: none;
+}
+
+/* Backdrop-filter fallback for bottom sheet */
+@supports not (backdrop-filter: blur(1px)) {
+  .bottom-sheet {
+    background: rgba(255, 252, 249, 0.98);
+  }
+}
+
+/* High-contrast mode for bottom sheet */
+@media (prefers-contrast: more) {
+  .bottom-sheet {
+    backdrop-filter: none;
+    background: #FFFCF9;
+    border: 2px solid var(--pp-brown-dark, #5C4433);
+  }
+}
+
+/* ===== MOBILE MAP-FIRST LAYOUT (Apple Maps paradigm) ===== */
+/* Map is always the background. Everything floats on top. */
+@media (max-width: 679px) {
+  /* Lock viewport: no scrolling, only fixed layers visible */
+  html.pp-mobile-map,
+  html.pp-mobile-map body {
+    overflow: hidden !important;
+    height: 100dvh !important;
+    position: fixed !important;
+    width: 100% !important;
+  }
+  /* Map fills entire viewport as background */
+  .pp-mobile-map .map-container {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    display: block !important;
+    height: 100dvh !important;
+    width: 100vw !important;
+    max-height: none !important;
+    min-height: unset !important;
+    border-top: none !important;
+  }
+  .pp-mobile-map .map-container .map-canvas {
+    height: 100% !important;
+    width: 100% !important;
+  }
+
+  /* Hide list-view on mobile (replaced by bottom sheet) */
+  .pp-mobile-map #list-view {
+    display: none !important;
+  }
+
+  /* Hide old search section, it's in the sheet now */
+  .pp-mobile-map .search-section,
+  .pp-mobile-map .decision-stage,
+  .pp-mobile-map .results-toolbar,
+  .pp-mobile-map .results-utilities {
+    display: none !important;
+  }
+
+  /* App wrapper: collapse, don't take space — map is the background */
+  .pp-mobile-map .app-wrapper {
+    position: fixed !important;
+    inset: 0 !important;
+    pointer-events: none;
+    z-index: 2;
+    background: transparent !important;
+    overflow: hidden !important;
+  }
+  /* Let map container inside app-wrapper receive pointer events */
+  .pp-mobile-map .app-wrapper .map-container {
+    pointer-events: auto;
+  }
+
+  /* Hide the hero/intro banner on mobile map mode */
+  .pp-mobile-map .app-hero,
+  .pp-mobile-map [role="banner"]:not(.site-header):not(nav) {
+    display: none !important;
+  }
+
+  /* Top nav bar: glass floating effect */
+  .pp-mobile-map .site-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(255, 252, 249, 0.85) !important;
+    backdrop-filter: blur(16px) saturate(1.3);
+    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    box-shadow: 0 1px 8px rgba(100, 60, 40, 0.08);
+    pointer-events: auto;
+  }
+
+  /* Bottom nav: glass floating, sits above sheet */
+  .pp-mobile-map .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 1001;
+    transform: none;
+    border-radius: 0;
+    background: rgba(255, 252, 249, 0.88) !important;
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border-top: 0.5px solid rgba(212, 119, 86, 0.1);
+    box-shadow: 0 -1px 12px rgba(100, 60, 40, 0.06);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    display: flex;
+    justify-content: space-around;
+  }
+
+  /* Sheet needs to sit above map but below bottom-nav */
+  .pp-mobile-map .bottom-sheet {
+    z-index: 1000;
+    /* Account for bottom nav height (~56px + safe area) */
+    bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 8px);
+  }
+  .pp-mobile-map .bottom-sheet[data-state="half"] {
+    bottom: 0;
+  }
+  .pp-mobile-map .bottom-sheet[data-state="full"] {
+    bottom: 0;
+  }
+
+  /* Hide map recenter button (will be repositioned) */
+  .pp-mobile-map .map-recenter {
+    bottom: calc(56px + 170px);
+    z-index: 999;
+  }
+
+  /* Hide old map search pill — replaced by sheet search pill */
+  .pp-mobile-map .map-search-pill {
+    display: none !important;
+  }
+
+  /* Hide all non-map content on mobile */
+  .pp-mobile-map .newsletter-section,
+  .pp-mobile-map .about-disclosure,
+  .pp-mobile-map .map-no-results,
+  .pp-mobile-map .map-filters-overlay {
+    display: none !important;
+  }
+
+  /* Location preview in sheet */
+  .sheet-loc-preview {
+    display: none;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(212, 119, 86, 0.1);
+  }
+  .bottom-sheet.has-preview .sheet-loc-preview { display: block; }
+  .bottom-sheet.has-preview .sheet-list { display: none; }
+  .bottom-sheet.has-preview #sheet-week-picks { display: none; }
+
+  .sheet-preview-card {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .sheet-preview-img {
+    width: 72px; height: 72px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #E8D5C4;
+  }
+  .sheet-preview-body { flex: 1; min-width: 0; }
+  .sheet-preview-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3A2F2C;
+    margin-bottom: 2px;
+  }
+  .sheet-preview-meta {
+    font-size: 0.8rem;
+    color: #6B5A54;
+    margin-bottom: 4px;
+  }
+  .sheet-preview-tags {
+    display: flex; gap: 4px;
+  }
+  .sheet-preview-tags .card-tag {
+    font-size: 0.7rem; padding: 2px 6px;
+  }
+  .sheet-preview-score {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #4A7A4A;
+    flex-shrink: 0;
+  }
+  .sheet-preview-actions {
+    margin-top: 10px;
+    display: flex; gap: 8px;
+  }
+  .sheet-preview-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sheet-preview-btn-primary {
+    background: #D47756;
+    color: white;
+  }
+  .sheet-preview-btn-secondary {
+    background: rgba(212, 119, 86, 0.08);
+    color: #5C4433;
+  }
+
+  /* Sheet navigation tabs */
+  .sheet-tabs {
+    display: flex;
+    gap: 6px;
+    padding: 10px 0 4px;
+  }
+  .sheet-tab {
+    flex: 1;
+    padding: 8px 0;
+    border: none;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 200ms ease, color 200ms ease;
+    background: transparent;
+    color: #8B7355;
+  }
+  .sheet-tab.active {
+    background: #D47756;
+    color: white;
+  }
+  .sheet-tab:not(.active):active {
+    background: rgba(212, 119, 86, 0.08);
+  }
+
+  /* Map/List toggle button */
+  .map-list-toggle {
+    position: fixed;
+    right: 16px;
+    bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 190px + 16px);
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: rgba(255, 252, 249, 0.88);
+    backdrop-filter: blur(16px) saturate(1.3);
+    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 24px;
+    box-shadow: 0 2px 12px rgba(100, 60, 40, 0.12);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #5C4433;
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+  .map-list-toggle:active {
+    transform: scale(0.95);
+  }
+  .map-list-toggle svg {
+    width: 18px; height: 18px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  }
+  /* Default: show list icon, hide map icon */
+  .map-list-toggle .toggle-icon-map { display: none; }
+
+  /* When in list mode: show map icon, hide list icon */
+  .map-list-toggle.is-list .toggle-icon-list { display: none; }
+  .map-list-toggle.is-list .toggle-icon-map { display: block; }
+
+  /* Hide toggle on sheet half/full state */
+  .pp-mobile-map .bottom-sheet[data-state="half"] ~ .map-list-toggle,
+  .pp-mobile-map .bottom-sheet[data-state="full"] ~ .map-list-toggle {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Full-screen list view */
+  .mobile-list-view {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 998;
+    background: #FFFCF9;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 60px 0 calc(56px + env(safe-area-inset-bottom, 0px) + 16px);
+  }
+  .mobile-list-view.active {
+    display: block;
+  }
+  .mobile-list-view .list-header {
+    position: sticky;
+    top: 0;
+    padding: 12px 16px;
+    background: rgba(255, 252, 249, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(212, 119, 86, 0.08);
+    z-index: 1;
+  }
+  .mobile-list-view .list-header-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #3A2F2C;
+  }
+  .mobile-list-view .list-header-count {
+    font-size: 0.8rem;
+    color: #6B5A54;
+  }
+
+  /* Prevent iOS bounce on fixed layout */
+  .pp-mobile-map {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Safe area for sheet content bottom */
+  .pp-mobile-map .sheet-content {
+    padding-bottom: calc(env(safe-area-inset-bottom, 8px) + 8px);
+  }
+
+  /* Week picks - only visible in half/full state */
+  #sheet-week-picks { display: none; }
+  .bottom-sheet[data-state="half"] #sheet-week-picks,
+  .bottom-sheet[data-state="full"] #sheet-week-picks {
+    display: block;
+  }
+
+  /* Week picks - "Deze week in [stad]" */
+  .week-picks {
+    padding: 8px 0 12px;
+    border-bottom: 1px solid rgba(212, 119, 86, 0.08);
+  }
+  .week-picks-header {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #5C4433;
+    padding: 0 0 8px;
+  }
+  .week-picks-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+  .week-picks-scroll::-webkit-scrollbar { display: none; }
+  .week-pick-card {
+    flex-shrink: 0;
+    width: 110px;
+    scroll-snap-align: start;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .week-pick-photo {
+    width: 110px;
+    height: 80px;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    background-color: #E8D5C4;
+  }
+  .week-pick-name {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #3A2F2C;
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* 5-day forecast strip */
+  .forecast-strip {
+    padding: 6px 0;
+  }
+  .forecast-days {
+    display: flex;
+    justify-content: space-between;
+  }
+  .forecast-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+  }
+  .forecast-day-name {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #8B7355;
+    text-transform: uppercase;
+  }
+  .forecast-day-icon { font-size: 1rem; }
+  .forecast-day-temp {
+    font-size: 0.7rem;
+    color: #5C4433;
+  }
+  .forecast-day.is-sun .forecast-day-name { color: #D4775A; }
+  .forecast-day.is-rain .forecast-day-name { color: #5B9EC4; }
+  .forecast-tip {
+    font-size: 0.7rem;
+    color: #4A7A4A;
+    font-weight: 500;
+    text-align: center;
+    padding: 6px 0 0;
+  }
+}
+
+@media (min-width: 680px) {
+  .map-list-toggle { display: none !important; }
+  .mobile-list-view { display: none !important; }
+}
