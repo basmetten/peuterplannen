@@ -187,6 +187,11 @@ function onContentTouchEnd() {
 export function renderSheetList(locations, travelTimes = {}) {
     if (!listEl) return;
 
+    if (locations.length === 0) {
+        listEl.innerHTML = '<div style="text-align:center;padding:32px 16px;color:#8B7355;"><p style="font-size:0.9rem;font-weight:600;">Nog geen favorieten</p><p style="font-size:0.8rem;margin-top:4px;">Tik op het hartje bij een locatie om deze hier te bewaren.</p></div>';
+        return;
+    }
+
     const html = locations.slice(0, 30).map(loc => {
         const tags = getTopTags(loc).slice(0, 2);
         const ps = computePeuterScore(loc);

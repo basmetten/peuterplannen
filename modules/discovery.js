@@ -113,10 +113,6 @@ export function renderWeekPicks(picks, containerEl) {
 export function renderForecastStrip(forecast, containerEl) {
     if (!forecast || !containerEl) return;
 
-    // Find the best day
-    const bestDay = forecast.find(d => d.isSun) || forecast.find(d => !d.isRain);
-    const bestLabel = bestDay ? `${bestDay.day} wordt ${bestDay.isSun ? 'zonnig' : 'droog'}!` : '';
-
     containerEl.innerHTML = `
         <div class="forecast-strip">
             <div class="forecast-days">
@@ -126,6 +122,5 @@ export function renderForecastStrip(forecast, containerEl) {
                     <span class="forecast-day-temp">${d.temp}\u00b0</span>
                 </div>`).join('')}
             </div>
-            ${bestLabel ? `<div class="forecast-tip">${bestLabel}</div>` : ''}
         </div>`;
 }

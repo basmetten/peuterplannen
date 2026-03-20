@@ -130,6 +130,12 @@ export function openLocSheet(locationId) {
     sheet.classList.add('open');
     sheet.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+
+    // Hide bottom sheet and toggle to prevent overlap
+    const bottomSheet = document.getElementById('bottom-sheet');
+    if (bottomSheet) bottomSheet.style.display = 'none';
+    const toggleBtn = document.getElementById('map-list-toggle');
+    if (toggleBtn) toggleBtn.style.display = 'none';
 }
 
 export function closeLocSheet() {
@@ -141,6 +147,12 @@ export function closeLocSheet() {
     sheet.classList.remove('open');
     sheet.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+
+    // Restore bottom sheet and toggle
+    const bottomSheet = document.getElementById('bottom-sheet');
+    if (bottomSheet) bottomSheet.style.display = '';
+    const toggleBtn = document.getElementById('map-list-toggle');
+    if (toggleBtn) toggleBtn.style.display = '';
 }
 
 export function openInfoPanel() {

@@ -1141,7 +1141,22 @@
           flex-direction: column;
           align-items: center;
           position: relative;
-          height: 100%;
+          min-height: 100%;
+        }
+
+        /* Vertical connector line behind the dot */
+        .tl-stop .tl-line::after {
+          content: '';
+          position: absolute;
+          top: 28px;
+          bottom: 0;
+          width: 2px;
+          background: rgba(212, 119, 86, 0.2);
+        }
+
+        /* Don't extend line below last stop */
+        .tl-stop:last-of-type .tl-line::after {
+          display: none;
         }
 
         .tl-dot {
@@ -1474,6 +1489,7 @@
           gap: 10px;
         }
         html.pp-desktop .card-quickfacts { gap: 10px; }
+        html.pp-desktop:has(body.plan-mode) { overflow: auto !important; height: auto !important; position: static !important; }
         html.pp-desktop body.plan-mode { overflow: auto !important; }
         html.pp-desktop body.plan-mode .app-wrapper { display: none !important; }
         html.pp-desktop body.plan-mode #plan-view { display: block !important; }
@@ -1482,7 +1498,7 @@
         html.pp-desktop body.plan-mode .plan-side { position: sticky !important; top: 116px !important; }
 
         @media (max-width: 679px) {
-          .plan-view { width: min(100%, 760px); margin-top: 92px; padding-bottom: calc(260px + var(--pp-safe-bottom)); }
+          .plan-view { width: min(100%, 760px); margin-top: 92px; padding-bottom: calc(260px + var(--pp-safe-bottom)); overflow-y: auto; }
           .plan-stage { border-radius: var(--pp-radius-lg); padding: 20px 18px; }
           .plan-view-header h2 { font-size: clamp(32px, 9vw, 52px); max-width: none; }
           .plan-view-header p { font-size: var(--pp-text-sm); }

@@ -443,8 +443,9 @@ async function generateAINarrative(plan, weather, dayLabel) {
             }
         );
 
-        if (!resp.ok) throw new Error('Gemini API error');
         const data = await resp.json();
+        console.warn('AI narrative response:', resp.status, data);
+        if (!resp.ok) throw new Error(`Gemini API error ${resp.status}`);
         const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
         if (text) {
             aiEl.textContent = text.trim();
