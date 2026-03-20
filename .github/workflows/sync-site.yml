@@ -179,6 +179,24 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx wrangler deploy
 
+      - name: Purge Cloudflare cache
+        if: steps.gate.outputs.run_build == 'true'
+        env:
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+        run: |
+          if [[ -z "${CLOUDFLARE_ZONE_ID:-}" ]]; then
+            echo "CLOUDFLARE_ZONE_ID not set, skipping cache purge"
+            exit 0
+          fi
+          curl -sS -f -X POST \
+            "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/purge_cache" \
+            -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" \
+            -H "X-Auth-Key: ${CLOUDFLARE_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{"purge_everything":true}'
+
       - name: Mark publish state clean
         if: steps.gate.outputs.run_build == 'true'
         env:
