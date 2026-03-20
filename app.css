@@ -1630,27 +1630,27 @@
 }
 .age-onboarding.visible { opacity: 1; }
 .age-onboarding-card {
-    background: #FFFBF7; border-radius: 20px; padding: 28px 24px;
+    background: var(--pp-bg); border-radius: 20px; padding: 28px 24px;
     max-width: 320px; width: calc(100% - 48px);
     text-align: center;
     box-shadow: 0 20px 60px rgba(0,0,0,0.15);
     transform: translateY(20px); transition: transform 0.3s ease;
 }
 .age-onboarding.visible .age-onboarding-card { transform: translateY(0); }
-.age-onboarding-title { font-size: 1.15rem; font-weight: 700; color: #3D2C2C; margin: 0 0 4px; }
-.age-onboarding-subtitle { font-size: 0.85rem; color: #8B7A74; margin: 0 0 20px; }
+.age-onboarding-title { font-size: 1.15rem; font-weight: 700; color: var(--pp-text); margin: 0 0 4px; }
+.age-onboarding-subtitle { font-size: 0.85rem; color: var(--pp-text-muted); margin: 0 0 20px; }
 .age-onboarding-options { display: flex; gap: 10px; margin-bottom: 16px; }
 .age-onboarding-btn {
     flex: 1; padding: 14px 8px; border-radius: 14px;
-    border: 2px solid rgba(212,119,86,0.2); background: white;
-    font-size: 0.85rem; font-weight: 600; color: #3D2C2C;
+    border: 2px solid rgba(var(--pp-primary-rgb),0.2); background: var(--pp-surface);
+    font-size: 0.85rem; font-weight: 600; color: var(--pp-text);
     cursor: pointer; transition: all 0.2s;
 }
-.age-onboarding-btn span { font-weight: 400; font-size: 0.75rem; color: #8B7A74; }
+.age-onboarding-btn span { font-weight: 400; font-size: 0.75rem; color: var(--pp-text-muted); }
 .age-onboarding-btn:active, .age-onboarding-btn:hover {
-    border-color: #D47756; background: rgba(212,119,86,0.06);
+    border-color: var(--pp-primary); background: rgba(var(--pp-primary-rgb),0.06);
 }
 .age-onboarding-skip {
-    background: none; border: none; color: #8B7A74;
+    background: none; border: none; color: var(--pp-text-muted);
     font-size: 0.8rem; cursor: pointer; padding: 8px 16px;
 }
