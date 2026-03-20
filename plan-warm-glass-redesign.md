@@ -1,8 +1,8 @@
-# PeuterPlannen — Warm Glass Redesign: Apple Maps-niveau UX
+# PeuterPlannen — Warm Glass Redesign
 
 **Status:** PLAN — wacht op goedkeuring Bas
 **Datum:** 20 maart 2026
-**Scope:** Volledige frontend redesign van de PeuterPlannen webapp
+**Scope:** Frontend redesign van app.html (statische SEO-pagina's niet beïnvloed)
 **Ambitie:** Apple Maps webapp kwaliteitsniveau, maar dan warm en uitnodigend
 
 ---
@@ -23,58 +23,62 @@ PeuterPlannen moet aanvoelen als een **warme, premium kaart-app** die ouders ver
 
 ## 2. Framework-beslissing
 
-### Huidige staat: Vanilla HTML/CSS/JS (ES modules)
-- **Sterk:** Geen build step, snelle eerste load, eenvoudig te deployen
-- **Zwak:** State management is handmatig (window._pp_modules), geen reactief systeem, animaties zijn ad-hoc, component hergebruik is beperkt
+### Aanbeveling: Vanilla JS + motion/mini (geen build step)
 
-### Aanbeveling: **Svelte 5** (met SvelteKit voor routing)
+De huidige vanilla stack is een **concurrentievoordeel**, niet een beperking. Geen build step = snelste mogelijk deploy, geen tooling-onderhoud, directe debugging. We bouwen hierop voort.
 
-| Criterium | Vanilla | Svelte 5 | React | Solid |
-|-----------|---------|----------|-------|-------|
-| Bundle size | 0kb framework | ~2kb runtime | ~40kb | ~7kb |
-| Animatie | Handmatig | `svelte/motion` + `spring()` ingebouwd | Framer Motion (18kb) | Custom |
-| Reactivity | Handmatig | Runes (`$state`, `$derived`) | useState/useEffect | Signals |
-| Performance | Snelst initial | Snelst na initial (compiled) | Virtueel DOM overhead | Snel, complexer |
-| Leercurve voor Bas | N/A | Laag (lijkt op HTML) | Hoog (JSX, hooks) | Medium |
-| Spring animations | Eigen code | `spring()` native | Framer Motion nodig | Eigen code |
-| Transitie-effort | N/A | Medium (component-migratie) | Hoog (complete rewrite) | Medium-hoog |
+**Toevoegingen:**
+- **motion/mini** (2.3kb) via CDN — geen npm, geen build step:
+  ```html
+  <script type="module">
+    import { animate, spring } from 'https://esm.sh/motion/mini';
+  </script>
+  ```
+- **CSS `linear()` timing function** voor spring curves in pure CSS animaties
+- **Simpele reactive store** (~20 regels) om geleidelijk `window._pp_modules` te vervangen:
+  ```js
+  // store.js — tiny reactive store, replaces window._pp_modules over time
+  function createStore(initial) {
+    let state = { ...initial };
+    const listeners = new Set();
+    return {
+      get: (key) => state[key],
+      set: (key, val) => { state[key] = val; listeners.forEach(fn => fn(key, val)); },
+      subscribe: (fn) => { listeners.add(fn); return () => listeners.delete(fn); }
+    };
+  }
+  export const store = createStore({ sheet: 'peek', view: 'discover', filters: [] });
+  ```
 
-**Waarom Svelte 5:**
-- `spring()` en `tweened()` zijn first-class — exact wat we nodig hebben voor Apple Maps-feel
-- Compiled framework: geen runtime overhead, sneller dan React
-- Template syntax lijkt op HTML — laagste leercurve voor een non-technical founder
-- `svelte/transition` voor enter/exit animaties zonder extra libraries
-- Runes (`$state`) maken reactieve state simpel
-- SvelteKit geeft ons SSR + routing + progressive enhancement gratis
-- `motion/mini` (2.3kb) als aanvulling voor complexe spring physics
-
-**Migratiestrategie:** Incrementeel. Niet alles in één keer herschrijven. Begin met de shell (bottom sheet + map), migreer dan component voor component.
-
-### Alternatief als Svelte te ver gaat: **Vanilla + motion/mini**
-Als de framework-switch te groot voelt, kunnen we 80% van het doel bereiken met:
-- `motion/mini` (2.3kb) voor spring animations
-- CSS `linear()` timing function voor spring curves
-- Betere state management via een simpele reactive store
-- Web Components voor herbruikbare elementen
+**Waarom geen framework:**
+- Zero build step is sneller dan elke framework pipeline
+- Geen dependency upgrades, geen breaking changes, geen toolchain debugging
+- `motion/mini` geeft ons spring physics zonder framework overhead
+- Web Components voor eventueel herbruikbare elementen
+- De huidige codebase is 100% vanilla — migratie zou weken kosten zonder UX-winst
 
 ---
 
 ## 3. Design System: Warm Glass Tokens
 
-### 3.1 Kleuren (gebaseerd op Apple Maps, warm getint)
+> `warm-glass-tokens.css` is **additief** — het vervangt `design-system.css` niet maar bouwt erop voort. Alle tokens zijn CSS custom properties, gestructureerd zodat toekomstige dark mode alleen waarden hoeft te overriden.
+
+### 3.1 Kleuren (warm getint, matcht bestaand --pp-bg)
 
 ```css
 :root {
-  /* Glass surfaces — warm tinted */
-  --wg-glass-light: rgba(255, 248, 240, 0.78);      /* panels, sidebar */
-  --wg-glass-medium: rgba(255, 248, 240, 0.60);      /* bottom sheet */
-  --wg-glass-heavy: rgba(255, 248, 240, 0.92);       /* search bar, controls */
-  --wg-glass-overlay: rgba(255, 248, 240, 0.95);     /* full sheet, modals */
+  /* Glass surfaces — warm tinted, matching --pp-bg (#FAF7F2) */
+  --wg-glass-light: rgba(250, 247, 242, 0.78);      /* panels, sidebar */
+  --wg-glass-medium: rgba(250, 247, 242, 0.60);      /* bottom sheet */
+  --wg-glass-heavy: rgba(250, 247, 242, 0.92);       /* search bar, controls */
+  --wg-glass-overlay: rgba(250, 247, 242, 0.95);     /* full sheet, modals */
 
-  /* Blur levels (exact Apple Maps values) */
-  --wg-blur-panel: blur(50px) saturate(150%);         /* large surfaces */
-  --wg-blur-control: blur(15px) saturate(150%);       /* small controls */
+  /* Blur levels — conservative, test on real iPhone before increasing */
+  --wg-blur-panel: blur(20px) saturate(150%);         /* large surfaces */
+  --wg-blur-control: blur(10px) saturate(150%);       /* small controls */
   --wg-blur-overlay: blur(20px) saturate(120%);       /* modals, overlays */
+  /* NOTE: disable backdrop-filter during drag gestures (existing pattern in glass.css)
+     to prevent jank on lower-end iOS devices */
 
   /* Borders (Apple Maps: extremely subtle) */
   --wg-border-subtle: 1px solid rgba(180, 140, 110, 0.12);
@@ -88,12 +92,12 @@ Als de framework-switch te groot voelt, kunnen we 80% van het doel bereiken met:
 
   /* Text — warm grays (niet Apple's koude grays) */
   --wg-text: #2D2926;
-  --wg-text-secondary: rgba(60, 45, 38, 0.60);       /* Apple: rgba(60,60,67,0.6) maar warm */
+  --wg-text-secondary: rgba(60, 45, 38, 0.60);
   --wg-text-tertiary: rgba(60, 45, 38, 0.30);
   --wg-text-inverse: #FFFBF7;
 
   /* Backgrounds */
-  --wg-bg: #FAF7F2;
+  --wg-bg: #FAF7F2;               /* identical to --pp-bg */
   --wg-surface: #FFFFFF;
   --wg-surface-warm: #FFFBF7;
 
@@ -101,26 +105,35 @@ Als de framework-switch te groot voelt, kunnen we 80% van het doel bereiken met:
   --wg-shadow-raised: 0 2px 4px rgba(60, 40, 20, 0.08), 0 2px 12px rgba(60, 40, 20, 0.04);
   --wg-shadow-elevated: 0 2px 8px rgba(60, 40, 20, 0.10), 0 2px 16px rgba(60, 40, 20, 0.06);
   --wg-shadow-floating: 0 2px 8px rgba(60, 40, 20, 0.12), 0 8px 24px rgba(60, 40, 20, 0.08);
+
+  /* === Dark mode prep: override these in @media (prefers-color-scheme: dark) later === */
 }
 ```
 
 ### 3.2 Typografie
 
+Behoud de bestaande **Fraunces + DM Sans** font stack en fluid `clamp()` schaal uit `design-system.css`. We voegen alleen line-height tokens toe:
+
 ```css
 :root {
-  /* Font stack — system fonts, Apple-inspired hierarchy */
-  --wg-font: -apple-system, "SF Pro", "Helvetica Neue", sans-serif;
-  --wg-font-display: -apple-system, "SF Pro Display", "Helvetica Neue", sans-serif;
+  /* Font stack — keep existing Fraunces + DM Sans */
+  --wg-font: var(--pp-font-ui);         /* 'DM Sans', fallbacks */
+  --wg-font-display: var(--pp-font-heading);  /* 'Fraunces', fallbacks */
 
-  /* Scale (Apple Maps: 11px → 36px) */
-  --wg-text-micro: 0.6875rem;    /* 11px — legal, timestamps */
-  --wg-text-xs: 0.75rem;         /* 12px — labels, badges */
-  --wg-text-sm: 0.875rem;        /* 14px — secondary content */
-  --wg-text-base: 1rem;          /* 16px — body */
-  --wg-text-lg: 1.125rem;        /* 18px — emphasis, default body on Apple */
-  --wg-text-xl: 1.25rem;         /* 20px — section headers */
-  --wg-text-2xl: 1.375rem;       /* 22px — place title */
-  --wg-text-3xl: 1.75rem;        /* 28px — hero title */
+  /* Fluid type scale — reference existing design-system.css clamp() values */
+  --wg-text-xs:   var(--pp-text-xs);     /* clamp(0.75rem, ...) */
+  --wg-text-sm:   var(--pp-text-sm);     /* clamp(0.8125rem, ...) */
+  --wg-text-base: var(--pp-text-base);   /* clamp(0.9375rem, ...) */
+  --wg-text-lg:   var(--pp-text-lg);     /* clamp(1.0625rem, ...) */
+  --wg-text-xl:   var(--pp-text-xl);     /* clamp(1.25rem, ...) */
+  --wg-text-2xl:  var(--pp-text-2xl);    /* clamp(1.5rem, ...) */
+  --wg-text-3xl:  var(--pp-text-3xl);    /* clamp(2rem, ...) */
+
+  /* Line heights */
+  --wg-leading-tight: 1.2;    /* headings */
+  --wg-leading-normal: 1.5;   /* body text */
+  --wg-leading-relaxed: 1.65; /* long-form content */
+  --wg-leading-none: 1;       /* single-line labels */
 
   /* Weights */
   --wg-weight-normal: 400;
@@ -128,7 +141,7 @@ Als de framework-switch te groot voelt, kunnen we 80% van het doel bereiken met:
   --wg-weight-semibold: 600;
   --wg-weight-bold: 700;
 
-  /* Letter spacing (Apple: slightly negative for headings) */
+  /* Letter spacing */
   --wg-tracking-tight: -0.3px;
   --wg-tracking-normal: 0;
   --wg-tracking-wide: 0.2px;
@@ -152,7 +165,7 @@ Als de framework-switch te groot voelt, kunnen we 80% van het doel bereiken met:
 }
 ```
 
-### 3.4 Radii (Apple Maps exacte waarden)
+### 3.4 Radii (Apple Maps waarden)
 
 ```css
 :root {
@@ -171,11 +184,11 @@ Als de framework-switch te groot voelt, kunnen we 80% van het doel bereiken met:
 :root {
   /* Durations */
   --wg-duration-fast: 100ms;
-  --wg-duration-normal: 150ms;    /* Apple Maps desktop standaard */
-  --wg-duration-slow: 300ms;      /* Apple Maps mobile standaard */
-  --wg-duration-sheet: 400ms;     /* bottom sheet transitions */
+  --wg-duration-normal: 150ms;
+  --wg-duration-slow: 300ms;
+  --wg-duration-sheet: 400ms;
 
-  /* Easing curves (exact Apple) */
+  /* Easing curves */
   --wg-ease-default: cubic-bezier(0.12, 0.55, 0.19, 1);
   --wg-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);      /* overshoot */
   --wg-ease-heavy-in: cubic-bezier(0.03, 0, 0.31, 1);
@@ -188,92 +201,110 @@ Als de framework-switch te groot voelt, kunnen we 80% van het doel bereiken met:
 
 ## 4. Component Redesign
 
-### 4.1 Bottom Sheet (PRIORITEIT 1 — het hart van de app)
+### 4.0 Component Inventory
 
-**Huidige problemen:**
-- Peek state te minimaal (alleen pill + weer)
-- Geen echte rubber-banding bij over-drag
-- Content scrollt niet native (geen scroll-snap)
-- Bounce animatie is nagebouwd, niet echt spring-based
+Alle bestaande UI-componenten met disposities:
 
-**Apple Maps aanpak:**
-- 3 detents: peek (~15vh), half (~50vh), full (~92vh)
-- Sheet "drijft" met afgeronde hoeken bij peek/half, gaat edge-to-edge bij full
-- Content scrollt pas als sheet volledig open is
-- Velocity-based snapping met spring physics
+| Component | Dispositie | Opmerkingen |
+|-----------|-----------|-------------|
+| Bottom sheet (incl. tabs) | **Polish** | Huidige engine werkt, spring animations + glass toevoegen |
+| Search pill / bar | **Redesign** | Apple Maps expanderende zoekbalk |
+| Filter chips | **Polish** | Betere :active states, scroll indicator |
+| Location detail panel | **Redesign** | 3-tier progressive disclosure |
+| Location cards (lijst) | **Polish** | Glass treatment, betere spacing |
+| Map markers + clusters | **Polish** | Grotere size-variatie, spring bounce |
+| Bottom navigation (5 tabs) | **Polish** | Houd 5 tabs inclusief Info, glass background |
+| Desktop sidebar | **Polish** | Glass panel, 440px |
+| Cookie banner | **Keep** | Wettelijk vereist, minimale styling update |
+| Offline banner | **Keep** | Functioneel, glass treatment toevoegen |
+| GPS onboarding modal | **Polish** | Glass overlay styling |
+| Shortlist bar | **Polish** | Glass treatment |
+| Weather banner | **Polish** | Integreer in sheet peek state |
+| Decision stage presets | **Polish** | Compacter op desktop |
+| Newsletter form | **Keep** | Minimale styling update |
+| Sort dropdown | **Polish** | Glass dropdown styling |
+| Active filters bar | **Polish** | Consistente chips styling |
+| Info panel / tab | **Keep** | Blijft in bottom nav — verwijderen is discoverability regressie |
+| Plan wizard | **Polish** | Glass overlay styling |
+| App mode switch | **Keep** | Eventueel subtielere styling |
+| Toast system | **Polish** | Glass treatment |
+| Map filters overlay | **Redesign** | Integreer met vernieuwde filter chips |
+| Shared shortlist | **Keep** | Minimale styling update |
+| Lijst FAB | **Remove** | Bottom nav tabs vervullen deze functie |
+| Top navbar (mobile) | **Remove** | 60px ruimtewinst, logo subtiel in sheet header |
 
-**Nieuw design:**
+### 4.1 Bottom Sheet (polish, geen engine rewrite)
+
+De huidige sheet engine **werkt** — een volledige rewrite is te risicovol en te tijdrovend. We polishen wat er is:
+
+**Toevoegingen:**
+- Spring physics via `motion/mini` voor snap-animaties
+- Glass background met warm tint tokens
+- Verfijnde rubber-band effect bij over-drag
+- `will-change: transform` op sheet element
+- Floating met rounded corners bij peek/half, edge-to-edge bij full
+
+**Bestaand behouden:**
+- 3-detent systeem (peek/half/full)
+- Gesture tracking en velocity-based snapping
+- Content scroll lock mechanisme
+
+**Sheet tabs vs. bottom nav overlap:** Sheet tabs (Ontdek/Kaart/Opgeslagen/Plan/Info) en bottom nav zijn dubbele navigatie. Oplossing: bottom nav is de primaire navigatie, sheet tabs worden content-tabs binnen elke view (bijv. "Lijst" / "Week picks" / "In de buurt" binnen Ontdek).
 
 ```
 PEEK (140px):
 ┌─────────────────────────┐
 │     ─── (drag handle)   │
-│  🔍 Zoek een uitje...   │ ← glasmorfisme pill
-│  ☁️ 12° · 2138 uitjes   │
+│  Zoek een uitje...      │  glass pill
+│  12° · 2138 uitjes      │
 └─────────────────────────┘
-  ↑ floating, radius: 20px, margin: 8px
+  floating, radius: 20px, margin: 8px
 
 HALF (~50vh):
 ┌─────────────────────────┐
 │     ─── (drag handle)   │
-│  🔍 Zoek een uitje...   │
-│  ☁️ 12° · 2138 uitjes   │
-│                         │
-│  [Alles][Speeltuin]...  │ ← filter chips
+│  Zoek een uitje...      │
+│  [Alles][Speeltuin]...  │  filter chips
 │                         │
 │  ── Deze week ────────  │
-│  [📸 Nijntje][📸 NEMO]  │ ← horizontale scroll
+│  [Nijntje Museum][NEMO] │  horizontale scroll
 │                         │
 │  ── In de buurt ──────  │
-│  📍 Museum Speelklok    │
-│  📍 Dignita Hoftuin     │
-│  📍 Het Groot Melkhuis  │
+│  Museum Speelklok       │
+│  Dignita Hoftuin        │
 └─────────────────────────┘
-  ↑ floating, radius: 20px top, margin: 8px sides
+  floating, radius: 20px top, margin: 8px sides
 
 FULL (~92vh):
 ┌─────────────────────────┐
 │     ─── (drag handle)   │
-│  🔍 Zoek een uitje...   │
+│  Zoek een uitje...      │
 │  [Alles][Speeltuin]...  │
 │                         │
-│  ── scrollable list ──  │ ← nu pas scrollbaar
-│  📍 Museum Speelklok    │
-│  📍 Dignita Hoftuin     │
+│  ── scrollable list ──  │  nu pas scrollbaar
+│  Museum Speelklok       │
+│  Dignita Hoftuin        │
 │  ... 2136 meer          │
-│                         │
-│                         │
-│                         │
-│                         │
 └─────────────────────────┘
-  ↑ edge-to-edge, radius: 20px top only
+  edge-to-edge, radius: 20px top only
 ```
-
-**Implementatie:**
-- CSS scroll-snap op een container met onzichtbare snap-punten (draait op compositor thread)
-- Spring physics via `motion/mini` of Svelte `spring()`
-- `will-change: transform` op sheet element
-- Gesture: `touchstart` → track finger → `touchend` → bereken velocity → spring naar dichtstbijzijnde detent
-- Rubber-band effect: als je voorbij peek/full draggt, voelt het als een elastiek
 
 ### 4.2 Glasmorfisme Oppervlakken
 
-**Huidige staat:** `background: rgba(255,248,240,0.78)` met `backdrop-filter: blur(20px)` — al redelijk goed maar niet consistent toegepast.
-
-**Nieuw:** Elk UI-element dat boven de kaart drijft krijgt glass treatment:
+Elk UI-element dat boven de kaart drijft krijgt glass treatment:
 
 | Element | Glass level | Blur | Achtergrond |
 |---------|-------------|------|-------------|
-| Bottom sheet | medium | 50px | rgba(255,248,240, 0.78) |
-| Search pill | heavy | 15px | rgba(255,248,240, 0.92) |
-| Map controls (zoom, recenter) | heavy | 15px | rgba(255,248,240, 0.80) |
-| Filter chips container | light | 50px | rgba(255,248,240, 0.60) |
-| Location preview card | heavy | 15px | rgba(255,248,240, 0.92) |
-| Bottom nav | heavy | 50px | rgba(255,248,240, 0.85) |
-| Desktop sidebar | heavy | 50px | rgba(255,248,240, 0.85) |
-| Modals/overlays | overlay | 20px | rgba(255,248,240, 0.95) |
+| Bottom sheet | medium | 20px | rgba(250,247,242, 0.78) |
+| Search pill | heavy | 10px | rgba(250,247,242, 0.92) |
+| Map controls (zoom, recenter) | heavy | 10px | rgba(250,247,242, 0.80) |
+| Filter chips container | light | 20px | rgba(250,247,242, 0.60) |
+| Location preview card | heavy | 10px | rgba(250,247,242, 0.92) |
+| Bottom nav | heavy | 20px | rgba(250,247,242, 0.85) |
+| Desktop sidebar | heavy | 20px | rgba(250,247,242, 0.85) |
+| Modals/overlays | overlay | 20px | rgba(250,247,242, 0.95) |
 
-### 4.3 Zoekervaring (PRIORITEIT 2)
+### 4.3 Zoekervaring
 
 **Huidig:** Pill met "Zoek & filter..." → tik → sheet gaat naar half met filter chips.
 
@@ -285,39 +316,39 @@ FULL (~92vh):
 4. **Cancel:** "Annuleren" tekst-knop rechts (Apple Maps patroon). Tik → terug naar pill.
 
 ```
-Idle:      [🔍 Zoek een uitje...          ]
-Focus:     [🔍 amsterda|                  ] [Annuleer]
+Idle:      [Zoek een uitje...              ]
+Focus:     [amsterda|                      ] [Annuleer]
            ┌──────────────────────────────┐
-           │ 📍 Amsterdam                  │
-           │ 📍 Amstelpark Amsterdam       │
-           │ 📍 ARTIS Amsterdam            │
+           │ Amsterdam                     │
+           │ Amstelpark Amsterdam          │
+           │ ARTIS Amsterdam               │
            └──────────────────────────────┘
 ```
 
-### 4.4 Locatie Detail (PRIORITEIT 3)
+### 4.4 Locatie Detail (progressive disclosure)
 
-**Huidig probleem:** 12+ secties, overweldigend. Score breakdown, trust section, logistics grid — te veel.
+**Huidig probleem:** 12+ secties, overweldigend.
 
 **Nieuw: 3-tier progressive disclosure (Apple Maps style)**
 
 ```
 TIER 1 — Direct zichtbaar:
 ┌─────────────────────────────────┐
-│ [📸 Hero foto — vol breedte]    │
+│ [Hero foto — vol breedte]       │
 │                                 │
-│ Museum Speelklok                │ ← 22px bold
-│ Museum · Utrecht · 2-12 jaar    │ ← 14px secondary
-│ ⭐ 9.2 · ☕ Koffie · 🚻 Verschonen │
+│ Museum Speelklok                │  22px bold
+│ Museum · Utrecht · 2-12 jaar   │  14px secondary
+│ 9.2 · Koffie · Verschonen      │
 │                                 │
-│ [🧭 Route]  [🌐 Website]  [↗ Deel] │
+│ [Route]  [Website]  [Deel]     │
 └─────────────────────────────────┘
 
 TIER 2 — Na kort scrollen:
 ┌─────────────────────────────────┐
-│ Waarom goed voor peuters        │ ← 20px semibold
-│ ✓ Muziekinstrumenten op         │
+│ Waarom goed voor peuters        │  20px semibold
+│ - Muziekinstrumenten op         │
 │   kruiphoogte                   │
-│ ✓ Verschoontafel aanwezig       │
+│ - Verschoontafel aanwezig       │
 │                                 │
 │ Handig om te weten              │
 │ ┌───────────┬────────────────┐  │
@@ -329,15 +360,14 @@ TIER 2 — Na kort scrollen:
 
 TIER 3 — Achter "Meer details" toggle:
 ┌─────────────────────────────────┐
-│ ▸ Score breakdown               │
-│ ▸ Verificatie & betrouwbaarheid │
-│ ▸ Volledige beschrijving        │
+│ > Score breakdown               │
+│ > Verificatie & betrouwbaarheid │
+│ > Volledige beschrijving        │
 └─────────────────────────────────┘
 ```
 
 ### 4.5 Kaartinteractie
 
-**Verbeteringen:**
 - Markers: koraal cirkels met witte rand, geselecteerde marker krijgt `scale(1.3)` + spring bounce
 - Clusters: grotere size-variatie (Apple Maps schaalt dramatischer)
 - FlyTo: `duration: 800ms` met `ease-default` curve
@@ -347,63 +377,47 @@ TIER 3 — Achter "Meer details" toggle:
 ### 4.6 Bottom Navigation
 
 **Huidig:** 5 tabs (Ontdek, Kaart, Favorieten, Plan, Info)
-
-**Nieuw:** 4 tabs + Info wordt overlay
+**Nieuw:** Houd 5 tabs, hernoemd.
 
 ```
-┌────────────────────────────────┐
-│  🏠        🗺️       ❤️       📅  │
-│ Ontdek   Kaart  Opgeslagen  Plan│
-└────────────────────────────────┘
+┌──────────────────────────────────┐
+│  Ontdek   Kaart  Opgeslagen  Plan  Info │
+└──────────────────────────────────┘
 ```
 
-- **Ontdek** = standaard view (kaart + sheet met lijst)
-- **Kaart** = fullscreen kaart, sheet verborgen
-- **Opgeslagen** = favorieten lijst
-- **Plan** = dagplanner
-- **Info** → verplaatst naar gear icon in header of long-press op logo
-
-Wijzigingen:
+- **Info tab blijft** — verwijderen is een discoverability regressie (gebruikers verwachten het daar)
 - Filled icons voor actieve tab (Apple Maps patroon)
 - Glasmorfisme achtergrond op de nav bar
 - Indicator-pill animatie behouden (is al goed)
-- "Favorieten" hernoemd naar "Opgeslagen" (vermijdt verwarring met filter chip)
+- "Favorieten" hernoemd naar "Opgeslagen"
 
 ### 4.7 Desktop Layout
 
-**Huidig probleem:** Geen achtergrond op sidebar, content onleesbaar over drukke kaart.
-
-**Nieuw:**
 ```
 ┌────────────────────┬──────────────────────────────┐
 │ Glass sidebar      │                              │
-│ (440px, blur:50px) │         MAP                  │
+│ (440px, blur:20px) │         MAP                  │
 │                    │                              │
-│ 🔍 Zoek...         │                              │
+│ Zoek...            │                              │
 │                    │                              │
 │ [Presets]          │     [zoom] [recenter]        │
 │                    │     (glass controls)         │
 │ ── Resultaten ──   │                              │
 │ [Card] [Card]      │                              │
 │ [Card] [Card]      │                              │
-│ [Card] [Card]      │                              │
-│                    │                              │
 └────────────────────┴──────────────────────────────┘
 ```
 
-- Sidebar: `backdrop-filter: blur(50px) saturate(150%)`, warm glass achtergrond
-- Breedte: 440px (was 400px)
-- Cards in 1-kolom lijst (niet grid — Apple Maps toont ook lijst)
-- Hover op card → marker highlight op kaart (al geïmplementeerd)
-- Click op card → detail panel schuift in van rechts (overlay op kaart)
+- Sidebar: `backdrop-filter: blur(20px) saturate(150%)`, warm glass achtergrond
+- Breedte: 440px
+- Cards in 1-kolom lijst
+- Hover op card → marker highlight op kaart
+- Click op card → detail panel schuift in van rechts
 
-### 4.8 Lijst-toggle Verwijderen
+### 4.8 Verwijderingen
 
-De "Lijst" FAB wordt verwijderd. De bottom nav tabs (Ontdek/Kaart) vervullen deze functie al. Dit bespaart visual clutter en een conflicterend UI-element.
-
-### 4.9 Top Navbar op Mobile Verbergen
-
-Op mobile app view: de "Peuter Plannen" navbar verbergen. Die 60px verticale ruimte is waardevol. De bottom nav biedt al navigatie. Het logo kan subtiel in de sheet header.
+- **Lijst FAB** — bottom nav tabs vervullen deze functie
+- **Top navbar op mobile** — 60px ruimtewinst, logo subtiel in sheet header
 
 ---
 
@@ -411,23 +425,25 @@ Op mobile app view: de "Peuter Plannen" navbar verbergen. Die 60px verticale rui
 
 ### 5.1 Spring Parameters
 
-| Animatie | Stiffness | Damping | Mass | Bibliotheek |
-|----------|-----------|---------|------|-------------|
-| Sheet snap | 300 | 30 | 1 | motion/mini of Svelte spring |
+| Animatie | Stiffness | Damping | Mass | Via |
+|----------|-----------|---------|------|----|
+| Sheet snap | 300 | 30 | 1 | motion/mini |
 | Sheet bounce (overshoot) | 200 | 15 | 1 | motion/mini |
 | Marker select | 400 | 20 | 0.8 | CSS spring() |
-| Tab indicator slide | 250 | 25 | 1 | Svelte spring |
+| Tab indicator slide | 250 | 25 | 1 | motion/mini |
 | Card press feedback | 500 | 35 | 1 | CSS :active |
-| Modal enter | 200 | 20 | 1 | Svelte transition |
+| Modal enter | 200 | 20 | 1 | motion/mini |
 
 ### 5.2 Gesture Handling
 
 ```
 Touch start → track position
 Touch move  → update transform (requestAnimationFrame)
+              disable backdrop-filter during drag (prevent jank)
 Touch end   → calculate velocity (dx / dt)
               if velocity > threshold → spring to next detent
               else → spring to nearest detent
+              re-enable backdrop-filter after settle
 
 Rubber-band: if dragging past bounds,
   displacement = offset * (1 - 1 / (offset * 0.005 + 1))
@@ -444,22 +460,69 @@ Rubber-band: if dragging past bounds,
 | Search expand | 300ms | ease-default | width, border-radius |
 | Tab switch | 300ms | ease-spring | left (indicator) |
 | Glass opacity | 150ms | linear | opacity |
-| Map flyTo | 800ms | ease-default | — (MapLibre) |
+| Map flyTo | 800ms | ease-default | (MapLibre) |
 | Location preview enter | 300ms | ease-spring | transform, opacity |
 
 ---
 
-## 6. Performance Strategie
+## 6. Accessibility
 
-### 6.1 Kritieke optimalisaties
+### 6.1 Focus Management
+- **Focus trap** voor full sheet state — Tab/Shift+Tab cyclet binnen de sheet
+- **Focus restoration** — als sheet sluit, focus terug naar trigger element
+
+### 6.2 Keyboard Support
+- Arrow Up/Down voor sheet detent changes
+- Escape sluit full sheet naar half
+- Enter/Space op sheet items voor activering
+
+### 6.3 Screen Reader
+- `aria-live="polite"` announcements bij sheet state changes ("Zoekresultaten geopend", "Detail gesloten")
+- Alle bestaande ARIA attributen behouden en uitbreiden
+- `role="dialog"` op full sheet state
+
+### 6.4 Visuele Toegankelijkheid
+- **Contrast ratio verificatie** voor alle nieuwe glass tokens tegen WCAG AA (4.5:1 tekst, 3:1 UI)
+- Alle glasmorfisme oppervlakken moeten leesbare tekst garanderen ongeacht kaart-achtergrond
+- **Reduced motion fallbacks** voor alle spring animaties:
+  ```css
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.15s !important; }
+  }
+  ```
+
+### 6.5 Touch Targets
+- **Minimum 44x44px** voor alle interactieve elementen (Apple HIG)
+- Audit bestaande controls: drag handle, filter chips, nav items, map controls
+- Vergroot waar nodig met `padding` of `min-height/min-width`
+
+---
+
+## 7. Scope & Constraints
+
+1. **Scope: app.html only** — statische SEO-pagina's (locatie-/stad-pagina's) worden niet beïnvloed
+2. **warm-glass-tokens.css is additief** — vervangt design-system.css niet, bouwt erop voort
+3. **Service worker (sw.js)** moet worden bijgewerkt met nieuwe CSS bestanden in de cache-lijst
+4. **Dark mode expliciet deferred** — maar alle tokens zijn CSS custom properties zodat dark mode later alleen waarden overridet
+5. **Feature branch vereist:** `redesign/warm-glass` — nooit merge naar main zonder volledige QA pass
+6. **Sheet engine rewrite deferred** — te risicovol, huidige engine werkt. Polish only.
+7. **Geen build step** — alle dependencies via CDN (esm.sh), geen npm/bundler
+
+---
+
+## 8. Performance Strategie
+
+### 8.1 Kritieke optimalisaties
 - **Compositor-thread animaties:** Alleen `transform` en `opacity` animeren (nooit `height`, `top`, `left`)
 - **will-change:** Op sheet element, tab indicator, en kaart controls
 - **Content visibility:** `content-visibility: auto` op off-screen cards
 - **Virtual scrolling:** Lijst toont max 20 cards, lazy-load bij scroll
 - **Image lazy loading:** `loading="lazy"` + `decoding="async"` + blur-up placeholder
 - **Preconnect:** MapLibre tiles, Supabase, fonts
+- **Disable backdrop-filter during gestures** — re-enable after animation settles
 
-### 6.2 Lighthouse targets
+### 8.2 Lighthouse targets
+
 | Metric | Huidig (geschat) | Target |
 |--------|-------------------|--------|
 | Performance | ~65 | 90+ |
@@ -470,178 +533,180 @@ Rubber-band: if dragging past bounds,
 
 ---
 
-## 7. Test Strategie
+## 9. Test Strategie
 
-### 7.1 Visuele QA (elke PR)
-- **`/visual-qa` skill** (migratie naar `.claude/skills/visual-qa/SKILL.md`)
-  - `context: fork` voor geïsoleerde browser sessie
-  - Vision mode voor MapLibre canvas testing
-  - Gemini 3 Flash als primaire visuele analyzer
-  - Screenshots op 390px (mobile) + 1280px (desktop)
-  - Test alle sheet states, tabs, filter interacties
+### 9.1 Visuele QA (elke fase)
+- `/visual-qa` op 390px (mobile) + 1280px (desktop)
+- Test alle sheet states, tabs, filter interacties
+- Gemini 3 Flash als primaire visuele analyzer
 
-### 7.2 Visuele Regressie (geautomatiseerd)
-- Playwright `toHaveScreenshot()` voor 8 critical states:
-  1. Mobile peek state
-  2. Mobile half state met week picks
-  3. Mobile full state met lijst
-  4. Mobile location detail
-  5. Mobile onboarding modal
-  6. Desktop sidebar + map
-  7. Desktop card grid
-  8. Desktop location detail panel
-- Baselines in `.playwright-snapshots/`
-- `/snapshot-baseline` skill voor updates na intentionele UI changes
+### 9.2 Visuele Regressie (geautomatiseerd)
+Playwright `toHaveScreenshot()` voor 8 critical states:
+1. Mobile peek state
+2. Mobile half state met week picks
+3. Mobile full state met lijst
+4. Mobile location detail
+5. Mobile onboarding modal
+6. Desktop sidebar + map
+7. Desktop card grid
+8. Desktop location detail panel
 
-### 7.3 Functionele Tests
-- Sheet gesture tests (drag up/down, velocity snap, rubber-band)
-- Filter interactie (chip toggle, preset select, reset)
-- Zoek flow (focus, type, select suggestion, cancel)
-- Location detail (open, scroll, score breakdown toggle, route link)
-- Onboarding flow (2 views → modal → select → preset active)
-- Offline detection (banner, retry)
-- Deep links (hash navigation, URL params)
+### 9.3 QA Checklist — 8 Critical Flows (must pass per fase)
 
-### 7.4 Performance Tests
-- `/perf-check` skill: Lighthouse CI op elke deploy
-- Core Web Vitals budgets in `lighthouserc.json`
-- MapLibre tile loading benchmarks
-- Sheet animation FPS monitoring (>55fps target)
+Elke fase moet deze 8 flows doorstaan voordat de fase als klaar wordt beschouwd:
 
-### 7.5 Multi-Model Visuele Verificatie
-- **Gemini 3 Flash:** Primair — spatial reasoning, layout bugs, overflow detectie
-- **Claude Vision:** Secundair — design consistency, brand adherence check
-- **PostToolUse hook:** Automatische reminder bij CSS/HTML wijzigingen
+1. **Sheet drag cycle:** peek → half → full → half → peek (smooth, no jank)
+2. **Search flow:** tap pill → type → select suggestion → resultaat zichtbaar
+3. **Filter flow:** select chip → resultaten updaten → reset → originele staat
+4. **Location detail:** tap card → detail opent → scroll → route link werkt → terug
+5. **Map interaction:** pan, zoom, tap marker → preview, recenter button
+6. **Navigation:** alle nav tabs doorlopen → juiste view per tab
+7. **Offline:** airplane mode → offline banner → reconnect → data laadt
+8. **Desktop responsive:** resize 390px → 768px → 1280px → geen layout breaks
+
+### 9.4 Performance Criteria
+- **60fps** tijdens sheet drag (gemeten via Chrome DevTools Performance panel)
+- **Sheet snap animatie < 400ms** van start tot settle
+- Lighthouse scores gemeten na elke fase
 
 ---
 
-## 8. Implementatie Fasen
+## 10. Implementatie Fasen
 
-### Fase 0: Voorbereiding (1 sessie)
-- [ ] Design tokens file (`warm-glass-tokens.css`) schrijven
-- [ ] `motion/mini` installeren (of Svelte setup)
+> **Branch:** `redesign/warm-glass`
+> **Tag per fase:** `v0.phase-1`, `v0.phase-2`, etc.
+> **Sessie-schattingen zijn conservatief** — beter onder- dan overschatten.
+
+### Fase 0: Voorbereiding (1-2 sessies)
+- [ ] Feature branch `redesign/warm-glass` aanmaken
+- [ ] Design tokens file (`warm-glass-tokens.css`) schrijven op basis van sectie 3
+- [ ] `motion/mini` via esm.sh CDN toevoegen aan app.html
+- [ ] Reactive store (`store.js`) opzetten
 - [ ] Playwright visual regression baselines vastleggen
-- [ ] `/visual-qa` migreren naar skills format
+- [ ] Service worker cache-lijst updaten voor nieuwe bestanden
 - [ ] Apple Maps screenshots opruimen uit repo root
 
-### Fase 1: Bottom Sheet Rewrite (2-3 sessies)
-**Het hart van de app. Dit moet perfect zijn.**
-- [ ] Nieuwe sheet engine met spring physics
-- [ ] 3-detent systeem (peek/half/full) met velocity-based snapping
-- [ ] Rubber-band effect bij over-drag
-- [ ] Content scroll lock (pas scrollen bij full state)
-- [ ] Glass background met warm tint
-- [ ] Floating met rounded corners bij peek/half, edge-to-edge bij full
-- [ ] Drag handle redesign (groter, meer contrast)
-- [ ] QA: sheet feel test op echte iPhone (Safari)
+**QA:** Baselines kloppen, app laadt zonder fouten, motion/mini importeert correct.
 
-### Fase 2: Glass Design System (1-2 sessies)
-- [ ] Alle oppervlakken → glass treatment (blur + tint + border)
+### Fase 1: Design Tokens + Glass Polish (2-4 sessies)
+**Glass treatment op alle oppervlakken + desktop sidebar**
+- [ ] Alle oppervlakken → glass treatment (blur + tint + border) conform sectie 4.2
 - [ ] Consistente shadows (dual-layer Apple patroon)
-- [ ] Typography migratie naar nieuwe schaal
+- [ ] Typography tokens koppelen aan bestaande clamp() schaal
 - [ ] Spacing migratie naar 4px grid
 - [ ] Border-radius consistentie
 - [ ] Kleurvariabelen migratie
-- [ ] Desktop sidebar glass background
-- [ ] Bottom nav glass background
-- [ ] QA: visuele regressie tests
+- [ ] Bottom sheet glass polish (spring snap via motion/mini, geen engine rewrite)
+- [ ] Desktop sidebar glass panel (440px, blur:20px)
+- [ ] Bottom nav glass background + filled active icons
+- [ ] Top navbar verbergen op mobile
+- [ ] Reduced motion fallbacks
+- [ ] Contrast ratio verificatie
 
-### Fase 3: Zoek & Filter Redesign (1-2 sessies)
+**QA:** 8 critical flows + Lighthouse baseline meting.
+**Tag:** `v0.phase-1`
+
+### Fase 2: Location Detail Redesign (2-4 sessies)
+- [ ] 3-tier progressive disclosure implementeren
+- [ ] Hero foto vol breedte met gradient overlay
+- [ ] Compacte info-grid (type, weer, parkeren, drukte)
+- [ ] "Meer details" expandable sections
+- [ ] Verwijder dubbele beschrijvingen
+- [ ] Route knop fix (target="_blank", Google Maps primary)
+- [ ] Accessibility: focus trap, ARIA labels
+- [ ] Desktop: detail panel schuift in van rechts
+
+**QA:** 8 critical flows + detail view specifiek op mobile + desktop.
+**Tag:** `v0.phase-2`
+
+### Fase 3: Map & Navigation Polish (2-4 sessies)
+- [ ] Marker redesign (grotere size-variatie clusters)
+- [ ] Geselecteerde marker spring bounce via motion/mini
+- [ ] FlyTo duration 800ms
+- [ ] Recenter FAB: 44x44 cirkel, glass achtergrond, alleen icoon
+- [ ] Tab indicator spring animatie verbeteren
+- [ ] Touch target audit (44px minimum) op alle controls
+- [ ] Keyboard sheet controls (arrow keys, escape)
+- [ ] Screen reader announcements voor sheet state changes
+- [ ] Lijst FAB verwijderen
+
+**QA:** 8 critical flows + map interaction specifiek.
+**Tag:** `v0.phase-3`
+
+### Fase 4: Search Redesign (2-4 sessies)
 - [ ] Search pill → expanderende zoekbalk animatie
 - [ ] Live suggesties dropdown (locatienamen + steden)
 - [ ] "Annuleren" knop bij focus
 - [ ] Recent searches in localStorage
 - [ ] Filter chips polish (betere :active states, scroll indicator)
-- [ ] Verwijder "Lijst" FAB
-- [ ] QA: zoek flow van start tot resultaat
+- [ ] Focus management en keyboard navigatie in suggesties
+- [ ] Map filters overlay integreren met vernieuwde chips
 
-### Fase 4: Location Detail Redesign (1-2 sessies)
-- [ ] 3-tier progressive disclosure
-- [ ] Hero foto vol breedte met gradient overlay
-- [ ] Compacte info-grid (type, weer, parkeren, drukte)
-- [ ] "Meer details" expandable sections
-- [ ] Verwijder dubbele beschrijvingen
-- [ ] Prijs-indicator naar pills row
-- [ ] Route knop fix (target="_blank", Google Maps primary)
-- [ ] QA: detail view op mobile + desktop
+**QA:** 8 critical flows + zoek flow van start tot resultaat.
+**Tag:** `v0.phase-4`
 
-### Fase 5: Kaart & Navigation Polish (1 sessie)
-- [ ] Marker redesign (grotere size-variatie clusters)
-- [ ] Geselecteerde marker spring bounce
-- [ ] FlyTo duration 800ms
-- [ ] Recenter FAB: alleen icoon, glass achtergrond
-- [ ] Bottom nav: 4 tabs, filled active icons
-- [ ] Top navbar verbergen op mobile
-- [ ] Tab indicator spring animatie verbeteren
-- [ ] QA: map interactie + navigatie flow
-
-### Fase 6: Desktop Layout (1 sessie)
-- [ ] Sidebar glass panel (440px, blur:50px)
-- [ ] Cards in 1-kolom lijst format
-- [ ] Location detail als overlay panel van rechts
-- [ ] Preset area compact of collapsible
-- [ ] Cards boven de fold zichtbaar
-- [ ] QA: desktop-specifieke flows
-
-### Fase 7: Performance & Polish (1 sessie)
+### Fase 5: Performance & Final QA (2-4 sessies)
 - [ ] Virtual scrolling voor kaartlijst
 - [ ] `content-visibility: auto` op off-screen elementen
 - [ ] Image blur-up placeholders
 - [ ] Preconnect hints
-- [ ] Lighthouse CI setup
-- [ ] Animator FPS monitoring
-- [ ] Final QA pass: alle states, alle viewports, multi-model verificatie
+- [ ] Lighthouse CI meting vs targets
+- [ ] 60fps verificatie tijdens sheet drag
+- [ ] Sheet snap < 400ms verificatie
+- [ ] Volledige visuele regressie pass (alle 8 Playwright states)
+- [ ] Multi-device test: echte iPhone Safari, Android Chrome
+- [ ] Final /visual-qa pass op alle viewports
 
-### Fase 8: Framework Migratie (optioneel, 3-5 sessies)
-**Alleen als Fase 1-7 aantoont dat vanilla niet genoeg is.**
-- [ ] Svelte 5 + SvelteKit setup
-- [ ] Component-voor-component migratie
-- [ ] State management naar Svelte stores
-- [ ] Animaties naar svelte/motion
-- [ ] Route via SvelteKit
-- [ ] Volledige QA regressie suite
+**QA:** Alle 8 critical flows + Lighthouse 90+ + 60fps drag + visual regression pass.
+**Tag:** `v0.phase-5` → klaar voor merge naar main.
 
 ---
 
-## 9. Parallellisatie
+## 11. Parallellisatie
 
-### Fase 1-2 kunnen deels parallel:
-```
-Agent 1: Sheet engine rewrite (JS)
-Agent 2: Glass design tokens + CSS variables
-Agent 3: Visual regression baselines
-Na alle agents: /visual-qa verificatie
-```
+**Belangrijk:** `glass.css` en gerelateerde CSS bestanden zijn monolitisch. Meerdere agents die dezelfde bestanden bewerken leidt tot merge conflicts en subtiele regressies. **Sequential is veiliger dan parallel voor CSS werk.**
 
-### Fase 3-5 kunnen deels parallel:
-```
-Agent 1: Search redesign (JS + CSS)
-Agent 2: Location detail redesign (JS + CSS)
-Agent 3: Map + navigation polish (CSS + minor JS)
-Na alle agents: /visual-qa verificatie
-```
+### Wat WEL parallel kan:
+- Research + prototyping (bijv. motion/mini spring parameters testen) terwijl een andere agent Playwright baselines maakt
+- Lighthouse audits draaien terwijl er aan een andere fase wordt gewerkt
+- Visuele QA met Gemini terwijl code wordt geschreven
+
+### Wat NIET parallel moet:
+- Twee agents die glass.css bewerken
+- CSS tokens wijzigen terwijl componenten die tokens gebruiken worden aangepast
+- Sheet polish en search redesign tegelijk (overlappende CSS selectors)
 
 ---
 
-## 10. Risico's & Mitigatie
+## 12. Risico's & Mitigatie
 
 | Risico | Impact | Mitigatie |
 |--------|--------|-----------|
-| Sheet rewrite breekt bestaande functionaliteit | Hoog | Feature branch + uitgebreide QA voor merge |
-| backdrop-filter performance op low-end devices | Medium | Fallback: solid background als `matchMedia('(prefers-reduced-motion)')` |
-| Svelte migratie duurt langer dan verwacht | Medium | Fase 8 is optioneel — vanilla + motion/mini is fallback |
+| Glass polish breekt bestaande styling | Hoog | Feature branch + 8 critical flows QA per fase |
+| backdrop-filter performance op low-end devices | Medium | Lagere blur waarden (20px/10px) + disable tijdens drag + fallback bij reduced-motion |
 | Apple Maps update verandert hun design | Laag | We bouwen op principes, niet op exacte kopie |
 | Safari bugs met backdrop-filter | Medium | Test op echte iOS Safari, graceful degradation |
+| motion/mini CDN downtime | Laag | Fallback CSS animations, CDN is esm.sh (zeer betrouwbaar) |
 
 ---
 
-## 11. Succes Criteria
+## 13. Success Criteria
 
 De redesign is geslaagd als:
-1. **UX audit score:** 6/10 → 9/10
-2. **Lighthouse Performance:** 65 → 90+
-3. **Sheet interactie:** Voelt native op iPhone Safari
-4. **Eerste impressie:** Nieuwe gebruiker snapt in <3 seconden wat de app doet
-5. **Glass effect:** Consistent warm glasmorfisme op ALLE oppervlakken
-6. **Detail view:** Max 3 secties zichtbaar zonder scrollen (was 12+)
-7. **Bas-test:** "Dit voelt als een echte app, niet als een website"
+
+### Meetbare criteria
+1. **Lighthouse Performance:** 65 → 90+
+2. **Sheet drag:** 60fps gemeten in Chrome DevTools Performance panel
+3. **Sheet snap animatie:** < 400ms van trigger tot settle
+4. **Visual regression:** 8/8 Playwright screenshot states passing
+5. **Lighthouse per fase:** score mag niet dalen t.o.v. vorige fase
+
+### Kwalitatieve criteria
+6. **UX audit score:** 6/10 → 9/10
+7. **Glass effect:** Consistent warm glasmorfisme op ALLE oppervlakken boven de kaart
+8. **Detail view:** Max 3 secties zichtbaar zonder scrollen (was 12+)
+9. **Eerste impressie:** Nieuwe gebruiker snapt in < 3 seconden wat de app doet
+
+### Eindtest
+10. **Real-device test:** Voelt vloeiend en native op iPhone Safari + Android Chrome
+11. **Bas-test (bonus):** "Dit voelt als een echte app, niet als een website"
