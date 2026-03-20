@@ -25,11 +25,11 @@
     }
     burger.setAttribute('aria-controls', mobile.id);
 
-    // Create separate backdrop overlay (not inside dropdown, so overflow:hidden doesn't clip it)
+    // Create separate backdrop overlay on body (not inside nav, so it doesn't bleed through the glass)
     var backdrop = document.createElement('div');
     backdrop.className = 'nav-backdrop';
     backdrop.setAttribute('aria-hidden', 'true');
-    nav.appendChild(backdrop);
+    document.body.appendChild(backdrop);
 
     function closeMobile() {
       mobile.classList.remove('open');
