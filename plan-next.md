@@ -1,6 +1,6 @@
 # PeuterPlannen — Groot Plan: Apple Maps Polish + Photo Quality + Testing
 
-**Status:** IN UITVOERING — Sessie 1 + 3 klaar, Sessie 2 (foto's) TODO
+**Status:** BIJNA KLAAR — Sessie 1 + 3 klaar, Sessie 2 code klaar + scraping draait
 **Datum:** 20 maart 2026
 **Context:** UX revamp (10 fasen) is in ~4 uur uitgevoerd. Fase 1-3 klaar, 4-5 grotendeels. Dit plan pakt de drie grootste gaps aan: (A) de UX voelt nog niet genoeg als Apple Maps, (B) foto's zijn te laag kwalitatief, (C) testen is niet grondig genoeg.
 
@@ -178,9 +178,9 @@
 | ~~C1~~ | ~~QA slash command~~ | ✅ DONE | `.claude/commands/visual-qa.md` |
 | ~~Sessie 1~~ | ~~A1-A5: Apple Maps polish~~ | ✅ DONE | `glass.css`, `sheet-engine.js`, `app.css`, `map.js` |
 | ~~Sessie 1~~ | ~~C2: QA run na polish~~ | ✅ DONE | Gemini Flash verified |
-| **Sessie 2** | B1: Google Places gap-fill | TODO | `.scripts/pipeline/fetch-photos.js` |
-| **Sessie 2** | B3: Gemini kwaliteitsfilter | TODO | nieuw script |
-| **Sessie 2** | B4: photo_quality kolom + scoring | TODO | migration + `discovery.js` + `scoring.js` |
+| ~~Sessie 2~~ | ~~B1: Browser scraping (was Google Places)~~ | ✅ DONE | `.scripts/pipeline/scrape-website-photos.js` |
+| ~~Sessie 2~~ | ~~B3: Gemini kwaliteitsfilter~~ | ✅ DONE | `.scripts/pipeline/quality-check-photos.js` |
+| ~~Sessie 2~~ | ~~B4: photo_quality kolom + scoring~~ | ✅ DONE | migration + `discovery.js` + `state.js` |
 | ~~Sessie 3~~ | ~~D1: Personalisatie onboarding~~ | ✅ DONE | `prefs.js`, `sheet.js`, `app.js`, `app.css` |
 | ~~Sessie 3~~ | ~~D2: Discovery aansluiten~~ | ✅ DONE | `discovery.js`, `app.js`, `glass.css` |
 | ~~Sessie 3~~ | ~~D3: Score breakdown~~ | ✅ DONE | `scoring.js`, `cards.js`, `glass.css` |
