@@ -1,4 +1,4 @@
-const CACHE_NAME = 'peuterplannen-v5';
+const CACHE_NAME = 'peuterplannen-v6';
 const STATIC_ASSETS = [
   '/',
   '/app.html',
@@ -48,28 +48,30 @@ self.addEventListener('fetch', (event) => {
   const path = url.pathname;
   if (!STATIC_ASSETS.includes(path)) return;
 
+  // Cache key without query string (assets use ?v= cache busters)
+  const cacheKey = url.origin + url.pathname;
+
   // Skip navigate requests to avoid caching redirects
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request).then(response => {
-        // Only cache non-redirected, OK responses
         if (response.ok && !response.redirected) {
           const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          caches.open(CACHE_NAME).then(cache => cache.put(cacheKey, clone));
         }
         return response;
-      }).catch(() => caches.match(event.request))
+      }).catch(() => caches.match(cacheKey))
     );
     return;
   }
 
   // Sub-resources: stale-while-revalidate
   event.respondWith(
-    caches.match(event.request).then(cached => {
+    caches.match(cacheKey).then(cached => {
       const fetched = fetch(event.request).then(response => {
         if (response.ok && !response.redirected) {
           const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          caches.open(CACHE_NAME).then(cache => cache.put(cacheKey, clone));
         }
         return response;
       }).catch(() => cached);
