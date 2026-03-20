@@ -74,6 +74,7 @@ export function initSheet() {
 
     // Filter chip handlers
     initSheetFilterChips();
+    initFilterModal();
 
     // Overlay click closes to peek
     const overlay = document.getElementById('sheet-overlay');
@@ -422,6 +423,106 @@ export function updateSheetMeta() {
         weatherEl.textContent = `${icon} ${state.currentTemp}\u00b0`;
     }
     countEl.textContent = `${state.allLocations.length} locaties`;
+}
+
+// === Filter Modal ===
+
+function initFilterModal() {
+    const btn = document.getElementById('sheet-filter-more-btn');
+    const modal = document.getElementById('filter-modal');
+    const overlay = document.getElementById('filter-modal-overlay');
+    const closeBtn = document.getElementById('filter-modal-close');
+    const applyBtn = document.getElementById('filter-modal-apply');
+    if (!btn || !modal) return;
+
+    function openModal() {
+        syncModalChips();
+        updateModalCount();
+        modal.classList.add('open');
+        overlay.classList.add('open');
+    }
+
+    function closeModal() {
+        modal.classList.remove('open');
+        overlay.classList.remove('open');
+    }
+
+    btn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+
+    applyBtn.addEventListener('click', () => {
+        bus.emit('data:reload');
+        closeModal();
+    });
+
+    // Chip toggle logic
+    modal.querySelectorAll('.filter-modal-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            const action = chip.dataset.action;
+            const value = chip.dataset.value;
+
+            if (action === 'weather') {
+                state.activeWeather = state.activeWeather === value ? null : value;
+            } else if (action === 'age') {
+                state.activeAgeGroup = state.activeAgeGroup === value ? null : value;
+            } else if (action === 'facility') {
+                state.activeFacilities[value] = !state.activeFacilities[value];
+            } else if (action === 'radius') {
+                const num = parseInt(value, 10);
+                state.activeRadius = state.activeRadius === num ? null : num;
+            }
+
+            syncModalChips();
+            updateModalCount();
+            updateMoreBadge();
+        });
+    });
+
+    // Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    });
+
+    // Sync on data reload
+    bus.on('data:reload', () => updateMoreBadge());
+    updateMoreBadge();
+}
+
+function syncModalChips() {
+    const modal = document.getElementById('filter-modal');
+    if (!modal) return;
+    modal.querySelectorAll('.filter-modal-chip').forEach(chip => {
+        const action = chip.dataset.action;
+        const value = chip.dataset.value;
+        let active = false;
+        if (action === 'weather') active = state.activeWeather === value;
+        else if (action === 'age') active = state.activeAgeGroup === value;
+        else if (action === 'facility') active = !!state.activeFacilities[value];
+        else if (action === 'radius') active = state.activeRadius === parseInt(value, 10);
+        chip.classList.toggle('active', active);
+    });
+}
+
+function updateModalCount() {
+    const applyBtn = document.getElementById('filter-modal-apply');
+    if (!applyBtn) return;
+    // Count matching locations with current filter state
+    const count = state.allLocations.length;
+    applyBtn.textContent = `Toon ${count} resultaten`;
+}
+
+function updateMoreBadge() {
+    const badge = document.getElementById('filter-more-badge');
+    if (!badge) return;
+    let count = 0;
+    if (state.activeWeather) count++;
+    if (state.activeAgeGroup) count++;
+    if (state.activeFacilities.coffee) count++;
+    if (state.activeFacilities.diaper) count++;
+    if (state.activeRadius) count++;
+    badge.textContent = count > 0 ? count : '';
+    badge.classList.toggle('has-count', count > 0);
 }
 
 // Bus listeners

@@ -1113,6 +1113,82 @@
     border-color: transparent;
   }
 
+  /* "Meer" button in filter chip row */
+  .sheet-filter-more {
+    background: var(--wg-glass-control);
+    border-style: dashed;
+    position: relative;
+  }
+  .filter-more-badge {
+    display: none;
+    position: absolute; top: -4px; right: -4px;
+    min-width: 16px; height: 16px; padding: 0 4px;
+    border-radius: 8px; background: var(--pp-primary); color: white;
+    font-size: 10px; font-weight: 700; line-height: 16px; text-align: center;
+  }
+  .filter-more-badge.has-count { display: inline-block; }
+
+  /* Filter modal */
+  .filter-modal-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(0,0,0,0.3);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .filter-modal-overlay.open { opacity: 1; pointer-events: auto; }
+  .filter-modal {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 2001;
+    background: #FFFCF9;
+    border-radius: 16px 16px 0 0;
+    max-height: 70vh; overflow-y: auto;
+    transform: translateY(100%);
+    transition: transform var(--wg-duration-snap) var(--wg-ease-spring);
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+  .filter-modal.open { transform: translateY(0); }
+  .filter-modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 20px 8px;
+    position: sticky; top: 0; background: #FFFCF9; z-index: 1;
+  }
+  .filter-modal-header h3 {
+    font-family: var(--pp-font-heading); font-size: 1.1rem; font-weight: 700;
+    color: var(--pp-text); margin: 0;
+  }
+  .filter-modal-close {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    background: none; border: none; font-size: 1.5rem;
+    color: var(--pp-text-muted); cursor: pointer;
+  }
+  .filter-modal-body { padding: 0 20px; }
+  .filter-modal-group { margin-bottom: 16px; }
+  .filter-modal-label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--pp-text-muted); margin-bottom: 8px;
+  }
+  .filter-modal-options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filter-modal-chip {
+    padding: 8px 16px; border-radius: 20px;
+    border: 1px solid rgba(60,60,67,0.18);
+    background: transparent; font-size: 0.85rem; font-weight: 600;
+    font-family: inherit; color: var(--pp-text);
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .filter-modal-chip:active { transform: scale(0.96); }
+  .filter-modal-chip.active {
+    background: var(--pp-primary); border-color: var(--pp-primary); color: white;
+  }
+  .filter-modal-apply {
+    display: block; width: calc(100% - 40px); margin: 12px 20px 16px;
+    padding: 14px; border: none; border-radius: 12px;
+    background: var(--pp-primary); color: white;
+    font-size: 1rem; font-weight: 700; font-family: inherit;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .filter-modal-apply:active { background: var(--pp-primary-dark); }
+
   /* Week picks - only visible in half/full state */
   #sheet-week-picks { display: none; }
   .bottom-sheet[data-state="half"] #sheet-week-picks,

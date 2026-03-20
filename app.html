@@ -733,6 +733,7 @@
                     <button class="sheet-filter-chip" data-filter="horeca">Horeca</button>
                     <button class="sheet-filter-chip" data-filter="swim">Zwemmen</button>
                     <button class="sheet-filter-chip" data-filter="favorites">Favorieten</button>
+                    <button class="sheet-filter-chip sheet-filter-more" id="sheet-filter-more-btn">Meer <span class="filter-more-badge" id="filter-more-badge"></span></button>
                 </div>
                 <div class="sheet-tabs" id="sheet-tabs">
                     <button class="sheet-tab active" data-tab="ontdek">Ontdek</button>
@@ -769,6 +770,47 @@
 
 
     <!-- Screen reader announcements for sheet state changes -->
+    <!-- Filter modal (slide-up) -->
+    <div class="filter-modal-overlay" id="filter-modal-overlay"></div>
+    <div class="filter-modal" id="filter-modal" aria-modal="true" role="dialog">
+        <div class="filter-modal-header">
+            <h3>Meer filters</h3>
+            <button class="filter-modal-close" id="filter-modal-close">&times;</button>
+        </div>
+        <div class="filter-modal-body">
+            <div class="filter-modal-group">
+                <div class="filter-modal-label">Weer</div>
+                <div class="filter-modal-options">
+                    <button class="filter-modal-chip" data-action="weather" data-value="indoor">Binnen</button>
+                    <button class="filter-modal-chip" data-action="weather" data-value="outdoor">Buiten</button>
+                </div>
+            </div>
+            <div class="filter-modal-group">
+                <div class="filter-modal-label">Leeftijd</div>
+                <div class="filter-modal-options">
+                    <button class="filter-modal-chip" data-action="age" data-value="dreumes">Dreumes (0-2)</button>
+                    <button class="filter-modal-chip" data-action="age" data-value="peuter">Peuter (2-5)</button>
+                </div>
+            </div>
+            <div class="filter-modal-group">
+                <div class="filter-modal-label">Faciliteiten</div>
+                <div class="filter-modal-options">
+                    <button class="filter-modal-chip" data-action="facility" data-value="coffee">Koffie</button>
+                    <button class="filter-modal-chip" data-action="facility" data-value="diaper">Verschonen</button>
+                </div>
+            </div>
+            <div class="filter-modal-group">
+                <div class="filter-modal-label">Afstand</div>
+                <div class="filter-modal-options">
+                    <button class="filter-modal-chip" data-action="radius" data-value="5">5 km</button>
+                    <button class="filter-modal-chip" data-action="radius" data-value="10">10 km</button>
+                    <button class="filter-modal-chip" data-action="radius" data-value="25">25 km</button>
+                </div>
+            </div>
+        </div>
+        <button class="filter-modal-apply" id="filter-modal-apply">Toon resultaten</button>
+    </div>
+
     <div id="sr-announcer" class="sr-only" aria-live="polite" role="status"></div>
 
     <script type="module">
