@@ -42,9 +42,9 @@ const RULES = [
   },
   {
     name: 'unprefixed-alias',
-    pattern: /var\(--(?!pp-)[a-z][a-z-]*\)/g,
-    message: 'Unprefixed CSS variable — gebruik var(--pp-*)',
-    allowList: [/design-system\.css/],
+    pattern: /var\(--(?!pp-|wg-)[a-z][a-z-]*\)/g,
+    message: 'Unprefixed CSS variable — gebruik var(--pp-*) of var(--wg-*)',
+    allowList: [/design-system\.css/, /warm-glass-tokens\.css/],
     maxViolations: 0,
   },
   {
