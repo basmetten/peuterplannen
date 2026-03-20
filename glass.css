@@ -437,6 +437,125 @@
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 2px 8px rgba(212, 119, 86, 0.12);
 }
+/* Search area wrapper — relative for suggestions dropdown */
+.sheet-search-area {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Search pill → expanded search bar transition */
+.bottom-sheet .sheet-search-pill {
+  transition: all var(--wg-duration-snap) var(--wg-ease-smooth);
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.bottom-sheet.search-active .sheet-search-pill {
+  border-radius: var(--wg-radius-card);
+  background: var(--wg-surface);
+  border: var(--wg-border-warm-mid);
+  box-shadow: 0 2px 8px rgba(60,40,20,0.10), 0 2px 16px rgba(60,40,20,0.06);
+}
+
+/* Hidden search input inside the pill */
+.sheet-search-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  padding: 0 16px 0 40px;
+  font-size: 0.9rem;
+  color: var(--wg-text-primary);
+  outline: none;
+  opacity: 0;
+  pointer-events: none;
+  font-family: inherit;
+}
+.bottom-sheet.search-active .sheet-search-input {
+  opacity: 1;
+  pointer-events: auto;
+}
+.bottom-sheet.search-active .sheet-search-pill .pill-text {
+  opacity: 0;
+  transition: opacity var(--wg-duration-fast);
+}
+
+/* Cancel button */
+.sheet-search-cancel {
+  display: none;
+  margin-left: 8px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--wg-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.bottom-sheet.search-active .sheet-search-cancel {
+  display: block;
+}
+
+/* Search suggestions dropdown */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: rgba(255, 252, 249, 0.96);
+  backdrop-filter: var(--wg-blur-panel);
+  -webkit-backdrop-filter: var(--wg-blur-panel);
+  border-radius: var(--wg-radius-card);
+  border: var(--wg-border-soft);
+  box-shadow: 0 4px 16px rgba(60,40,20,0.12);
+  overflow: hidden;
+  z-index: 10;
+}
+.search-suggestion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background var(--wg-duration-fast);
+  border-bottom: var(--wg-border-divider);
+  -webkit-tap-highlight-color: transparent;
+}
+.search-suggestion:last-child {
+  border-bottom: none;
+}
+.search-suggestion:active {
+  background: var(--wg-tag-bg);
+}
+.suggestion-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.suggestion-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--wg-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.suggestion-meta {
+  font-size: 0.75rem;
+  color: var(--wg-text-muted);
+  margin-left: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 .sheet-search-pill svg {
   width: 18px; height: 18px;
   stroke: #7A6B6D; fill: none; stroke-width: 2;
@@ -559,6 +678,13 @@
 /* ===== MOBILE MAP-FIRST LAYOUT (Apple Maps paradigm) ===== */
 /* Map is always the background. Everything floats on top. */
 @media (max-width: 679px) {
+  /* Hide map-list-toggle FAB — replaced by bottom nav */
+  .map-list-toggle { display: none !important; }
+
+  /* Hide top navbar on mobile — bottom nav provides navigation, reclaim ~60px */
+  .pp-mobile-map .app-context-strip,
+  .pp-mobile-map nav.floating-nav { display: none !important; }
+
   /* Lock viewport: no scrolling, only fixed layers visible */
   html.pp-mobile-map,
   html.pp-mobile-map body {
@@ -660,9 +786,10 @@
     bottom: 0;
   }
 
-  /* Hide map recenter button (will be repositioned) */
+  /* Recenter button — reposition for mobile (header hidden) */
   .pp-mobile-map .map-recenter {
-    bottom: calc(56px + 120px);
+    top: calc(12px + env(safe-area-inset-top, 0px));
+    bottom: auto;
     z-index: 999;
   }
 
@@ -900,10 +1027,15 @@
   /* Sheet filter chips — shown inline when search pill tapped */
   .sheet-filter-chips {
     display: none;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 6px;
     padding: 8px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8px, black calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to right, transparent, black 8px, black calc(100% - 24px), transparent);
   }
+  .sheet-filter-chips::-webkit-scrollbar { display: none; }
   .sheet-filter-chips.active {
     display: flex;
   }
@@ -918,6 +1050,8 @@
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     font-family: inherit;
+    flex-shrink: 0;
+    white-space: nowrap;
     transition: transform var(--wg-duration-fast) var(--wg-ease-standard), background var(--wg-duration-ui) var(--wg-ease-standard), color var(--wg-duration-ui) var(--wg-ease-standard);
   }
   .sheet-filter-chip:active {
@@ -1203,4 +1337,27 @@
 }
 .sheet-score-breakdown-wrap .score-breakdown-bars {
   display: block;
+}
+
+/* Marker selection pulse — subtle ring animation on map container */
+@keyframes markerPulseRing {
+  0% { box-shadow: inset 0 0 0 0 rgba(212, 119, 86, 0.15); }
+  50% { box-shadow: inset 0 0 0 3px rgba(212, 119, 86, 0.08); }
+  100% { box-shadow: inset 0 0 0 0 rgba(212, 119, 86, 0); }
+}
+.marker-pulse {
+  animation: markerPulseRing 600ms ease-out;
+}
+
+/* Screen reader only — visually hidden but accessible */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }

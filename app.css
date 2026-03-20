@@ -800,12 +800,12 @@
         /* Floating pill bottom nav */
         .bottom-nav { position: fixed; bottom: max(16px, env(safe-area-inset-bottom, 16px)); left: 50%; transform: translateX(-50%); background: var(--wg-glass-surface); backdrop-filter: var(--wg-blur-heavy); -webkit-backdrop-filter: var(--wg-blur-heavy); border-radius: var(--pp-radius-pill); padding: 6px; display: flex; align-items: center; z-index: 100; box-shadow: var(--pp-shadow-popover); border: 1px solid rgba(var(--pp-surface-rgb), 0.48); }
         @supports not (backdrop-filter: blur(1px)) { .bottom-nav { background: var(--wg-glass-solid); } }
-        .nav-indicator { position: absolute; background: var(--pp-primary); border-radius: var(--pp-radius-pill); top: 6px; bottom: 6px; left: 6px; width: 60px; z-index: 0; pointer-events: none; transition: left 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.38s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .nav-indicator { position: absolute; background: var(--pp-primary); border-radius: var(--pp-radius-pill); top: 6px; bottom: 6px; left: 6px; width: 60px; z-index: 0; pointer-events: none; transition: left 0.38s var(--wg-ease-bounce), width 0.38s var(--wg-ease-bounce); }
         .nav-indicator.no-transition { transition: none !important; }
         .bnav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 18px; font-size: var(--pp-text-xs); font-weight: 600; color: var(--pp-text-muted); transition: color 0.2s; background: none; border: none; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; position: relative; z-index: 1; min-height: 48px; border-radius: var(--pp-radius-pill); }
         .bnav-item.active { color: var(--pp-text-inverse); }
-        .bnav-item svg { width: var(--pp-icon-sm); height: var(--pp-icon-sm); stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .bnav-item.active svg { transform: scale(1.1); }
+        .bnav-item svg { width: var(--pp-icon-sm); height: var(--pp-icon-sm); stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1), fill 0.2s; }
+        .bnav-item.active svg { transform: scale(1.1); fill: currentColor; }
         .bnav-icon-wrap { position: relative; display: inline-flex; }
         .fav-badge { position: absolute; top: -4px; right: -8px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: var(--pp-primary); color: var(--pp-surface); font-size: 10px; font-weight: 700; line-height: 16px; text-align: center; pointer-events: none; }
         @media (min-width: 680px) { .bottom-nav { display: none; } body { padding-bottom: 0; } }
@@ -872,7 +872,7 @@
         /* Map container */
         .map-container { width: 100%; height: calc(100vh - 240px); min-height: 400px; max-height: 700px; position: relative; border-top: 1px solid rgba(var(--pp-primary-rgb), 0.1); }
         .map-canvas { width: 100%; height: 100%; }
-        .map-recenter { position: absolute; top: 60px; right: 12px; width: 44px; height: 44px; background: var(--pp-surface); border: none; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; z-index: 2; touch-action: manipulation; }
+        .map-recenter { position: absolute; top: 60px; right: 12px; width: 44px; height: 44px; background: var(--wg-glass-heavy, rgba(250,247,242,0.92)); backdrop-filter: var(--wg-blur-control); -webkit-backdrop-filter: var(--wg-blur-control); border: var(--wg-border-mid); border-radius: 50%; box-shadow: var(--wg-shadow-control); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; z-index: 2; touch-action: manipulation; }
         .map-recenter:active { transform: scale(0.94); }
         @keyframes fabPulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
         .fab-pulse { animation: fabPulse 600ms ease; }

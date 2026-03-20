@@ -707,9 +707,13 @@
         <div class="sheet-content" id="sheet-content">
             <!-- Peek content: search pill + weather + count -->
             <div class="sheet-peek" id="sheet-peek">
-                <div class="sheet-search-pill" id="sheet-search-pill">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                    <span>Zoek &amp; filter...</span>
+                <div class="sheet-search-area" id="sheet-search-area">
+                    <div class="sheet-search-pill" id="sheet-search-pill">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        <span class="pill-text">Zoek &amp; filter...</span>
+                        <input type="text" class="sheet-search-input" id="sheet-search-input" placeholder="Zoek een uitje of plaats..." autocomplete="off">
+                    </div>
+                    <button class="sheet-search-cancel" id="sheet-search-cancel">Annuleren</button>
                 </div>
                 <div class="sheet-meta" id="sheet-meta">
                     <span class="sheet-weather" id="sheet-weather"></span>
@@ -779,6 +783,9 @@
             <span>Info</span>
         </button>
     </nav>
+
+    <!-- Screen reader announcements for sheet state changes -->
+    <div id="sr-announcer" class="sr-only" aria-live="polite" role="status"></div>
 
     <script type="module">
       import { animate } from 'https://esm.sh/motion@11/mini';
