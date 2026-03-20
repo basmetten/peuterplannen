@@ -61,7 +61,14 @@ export function initMap() {
             filter: ['has', 'point_count'],
             paint: {
                 'circle-color': '#D4775A',
-                'circle-radius': ['step', ['get', 'point_count'], 18, 10, 24, 50, 32],
+                'circle-radius': [
+                    'step', ['get', 'point_count'],
+                    15,      // default (small clusters)
+                    10, 18,  // 10+ locations
+                    50, 22,  // 50+ locations
+                    100, 28, // 100+ locations
+                    200, 34  // 200+ locations
+                ],
                 'circle-stroke-width': 2, 'circle-stroke-color': '#ffffff'
             }
         });
@@ -90,7 +97,7 @@ export function initMap() {
             const features = state.mapInstance.queryRenderedFeatures(e.point, { layers: ['clusters'] });
             const clusterId = features[0].properties.cluster_id;
             state.mapInstance.getSource('locations').getClusterExpansionZoom(clusterId).then(zoom => {
-                state.mapInstance.easeTo({ center: features[0].geometry.coordinates, zoom: zoom, duration: 600 });
+                state.mapInstance.flyTo({ center: features[0].geometry.coordinates, zoom: zoom, duration: 800 });
             });
         });
 
@@ -215,12 +222,22 @@ export function highlightMarker(id) {
     if (!state.mapInstance) return;
     try {
         state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', [
-            'case', ['==', ['get', 'id'], id ?? -1], 16, 9
+            'case', ['==', ['get', 'id'], id ?? -1], 18, 9
         ]);
         state.mapInstance.setPaintProperty('unclustered-point', 'circle-stroke-width', [
             'case', ['==', ['get', 'id'], id ?? -1], 3.5, 2.5
         ]);
     } catch(e) {}
+
+    // Pulse animation on map container for visual feedback
+    if (id != null) {
+        const mapEl = document.getElementById('map-container');
+        if (mapEl) {
+            mapEl.classList.remove('marker-pulse');
+            void mapEl.offsetWidth; // force reflow
+            mapEl.classList.add('marker-pulse');
+        }
+    }
 }
 
 export function setDisplayMode(mode) {

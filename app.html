@@ -89,7 +89,9 @@
 <!-- END:JSONLD_APP -->
 
     <!-- Preconnect & DNS Prefetch -->
-    <link rel="preconnect" href="https://piujsvgbfflrrvauzsxe.supabase.co">
+    <link rel="preconnect" href="https://piujsvgbfflrrvauzsxe.supabase.co" crossorigin>
+    <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="dns-prefetch" href="https://maps.googleapis.com">
     <link rel="dns-prefetch" href="https://tiles.openfreemap.org">
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.css" />
@@ -99,6 +101,7 @@
     <link rel="preload" href="/fonts/dm-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
     <link rel="stylesheet" href="/design-system.css?v=202603200616">
+    <link rel="stylesheet" href="/warm-glass-tokens.css">
     <link rel="stylesheet" href="/glass.css?v=202603200616">
     <link rel="stylesheet" href="/app.min.css?v=202603200616">
     <link rel="stylesheet" href="/nav-floating.min.css?v=202603181034">
@@ -706,9 +709,13 @@
         <div class="sheet-content" id="sheet-content">
             <!-- Peek content: search pill + weather + count -->
             <div class="sheet-peek" id="sheet-peek">
-                <div class="sheet-search-pill" id="sheet-search-pill">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                    <span>Zoek &amp; filter...</span>
+                <div class="sheet-search-area" id="sheet-search-area">
+                    <div class="sheet-search-pill" id="sheet-search-pill">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        <span class="pill-text">Zoek &amp; filter...</span>
+                        <input type="text" class="sheet-search-input" id="sheet-search-input" placeholder="Zoek een uitje of plaats..." autocomplete="off">
+                    </div>
+                    <button class="sheet-search-cancel" id="sheet-search-cancel">Annuleren</button>
                 </div>
                 <div class="sheet-meta" id="sheet-meta">
                     <span class="sheet-weather" id="sheet-weather"></span>
@@ -779,6 +786,15 @@
         </button>
     </nav>
 
+    <!-- Screen reader announcements for sheet state changes -->
+    <div id="sr-announcer" class="sr-only" aria-live="polite" role="status"></div>
+
+    <script type="module">
+      import { animate } from 'https://esm.sh/motion@11/mini';
+      // spring is a type option within animate(), not a separate export:
+      // animate(el, { transform: '...' }, { type: 'spring', stiffness: 300, damping: 30 })
+      window._motionMini = { animate };
+    </script>
     <script type="module" src="app.js"></script>
 
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>

@@ -196,7 +196,7 @@ function renderTimelineV2(planStops, napBlock, context) {
   <div class="tl-time">${stop.slotTime}</div>
   <div class="tl-line"><div class="tl-dot"></div></div>
   <div class="tl-card">
-    ${photo ? `<img class="tl-photo" src="${escapeHtml(photo)}" alt="${escapeHtml(loc.name)}" loading="lazy">` : `<div class="tl-photo tl-photo-placeholder"></div>`}
+    ${photo ? `<img class="tl-photo" src="${escapeHtml(photo)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async">` : `<div class="tl-photo tl-photo-placeholder"></div>`}
     <div class="tl-info">
       <div class="tl-name">${escapeHtml(loc.name)}</div>
       <div class="tl-meta">${escapeHtml(metaParts)}</div>

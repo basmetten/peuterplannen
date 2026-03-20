@@ -1,6 +1,6 @@
 import { state, SB_KEY, TYPE_LABELS, WEATHER_LABELS, WEATHER_ICONS, SB_URL, FULL_LOCATION_SELECT, CATEGORY_IMAGES, TYPE_PHOTO_COLORS } from './state.js';
-import { escapeHtml, safeUrl, cleanToddlerHighlight, calculateDistance, buildDetailUrl, buildMapsUrl, loadGoogleMaps } from './utils.js';
-import { computePeuterScore, getCardReasons, getTrustChips, getTrustBullets, getPracticalBullets, computePeuterScoreV2 } from './scoring.js';
+import { escapeHtml, safeUrl, cleanToddlerHighlight, calculateDistance, buildDetailUrl } from './utils.js';
+import { getTrustBullets, getPracticalBullets, computePeuterScoreV2 } from './scoring.js';
 import { isFavorite } from './favorites.js';
 import { fetchJsonWithRetry, normalizeLocationRow } from './data.js';
 import { getSterkePunten } from './tags.js';
@@ -38,17 +38,9 @@ export function openLocSheet(locationId) {
     }
 
     const ageInfo = (loc.min_age !== null && loc.max_age !== null) ? `<span class="age-range">${loc.min_age}-${loc.max_age} jaar</span>` : '';
-    const highlight = loc.toddler_highlight ? `<p class="card-highlight">${escapeHtml(loc.toddler_highlight)}</p>` : '';
-    const trustChips = getTrustChips(loc);
     const trustBullets = getTrustBullets(loc);
     const practicalBullets = getPracticalBullets(loc);
     const sterkePunten = getSterkePunten(loc);
-
-    const facilities = [];
-    if (loc.coffee) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>Koffie</span>');
-    if (loc.diaper) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5z"/><path d="M6 9.01V9"/></svg>Verschonen</span>');
-    if (loc.alcohol) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 3h10v9a5 5 0 0 1-10 0V3z"/></svg>Alcohol</span>');
-    const reasons = getCardReasons(loc, state.userLocation && loc.lat && loc.lng ? { distanceKm: calculateDistance(state.userLocation.lat, state.userLocation.lng, loc.lat, loc.lng), distance: distancePill.replace(/<[^>]+>/g, '') } : null);
 
     const photoSrc = loc.photo_url || loc.owner_photo_url;
     const categoryImg = CATEGORY_IMAGES[loc.type] || CATEGORY_IMAGES.play;
@@ -56,12 +48,14 @@ export function openLocSheet(locationId) {
     const photoColor = TYPE_PHOTO_COLORS[loc.type] || '#E8D5C4';
     const fallbackSrc = photoSrc ? categoryImg : '';
 
-    // Score breakdown
+    // Score breakdown + total score (single v2 call)
     let scoreBreakdownHtml = '';
+    let totalScore = null;
     try {
         if (typeof computePeuterScoreV2 === 'function') {
             const weather = state.isRaining ? 'rain' : state.isSunny ? 'sun' : null;
             const v2 = computePeuterScoreV2(loc, { weather, dayOfWeek: new Date().getDay() });
+            totalScore = v2.total;
             const dims = Object.values(v2.dimensions);
             const barsHtml = dims.map(d => {
                 const pct = d.score * 10;
@@ -83,50 +77,116 @@ export function openLocSheet(locationId) {
         }
     } catch(e) { /* v2 not available yet */ }
 
+    // Price pill
+    const priceLabels = { free: 'Gratis', low: '€', mid: '€€', high: '€€€' };
+    const pricePill = loc.price_band && priceLabels[loc.price_band] ? `<span class="pill pill-price">${priceLabels[loc.price_band]}</span>` : '';
+
+    // Deduplicate description vs highlight: show only the longer one
+    const descText = loc.description || '';
+    const hlText = loc.toddler_highlight || '';
+    let longerDescription = '';
+    if (descText && hlText) {
+        const descNorm = descText.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const hlNorm = hlText.toLowerCase().replace(/[^a-z0-9]/g, '');
+        // If one contains the other, keep the longer; otherwise keep both but only show longer in Tier 3
+        if (descNorm.includes(hlNorm) || hlNorm.includes(descNorm)) {
+            longerDescription = descText.length >= hlText.length ? descText : hlText;
+        } else {
+            longerDescription = descText.length >= hlText.length ? descText : hlText;
+        }
+    } else {
+        longerDescription = descText || hlText;
+    }
+
+    // Google Maps route URL
+    const googleMapsUrl = (loc.lat && loc.lng) ? `https://www.google.com/maps/dir/?api=1&destination=${loc.lat},${loc.lng}` : '';
+    const detailUrl = buildDetailUrl(loc);
+
+    // Practical bullets as info grid cells
+    const practicalCells = practicalBullets.map(b => {
+        const colonIdx = b.indexOf(':');
+        if (colonIdx > 0 && colonIdx < 30) {
+            const label = b.substring(0, colonIdx).trim();
+            const value = b.substring(colonIdx + 1).trim().replace(/\.$/, '');
+            return { label, value };
+        }
+        return { label: 'Info', value: b.replace(/\.$/, '') };
+    });
+
     const content = document.getElementById('loc-sheet-content');
     content.innerHTML = `
+        <!-- TIER 1: Hero + essentials + actions -->
         <div class="sheet-hero-photo${!photoSrc ? ' sheet-hero--category' : ''}" style="--photo-color: ${photoColor}">
-            <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}"
+            <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" decoding="async"
                  onload="this.classList.add('loaded')"
                  onerror="if(this.dataset.retried){this.parentElement.classList.add('sheet-hero--fallback')}else{this.dataset.retried='1';this.src='${escapeHtml(fallbackSrc || categoryImg)}'}">
         </div>
-        <div class="card-top">
+
+        <div class="sheet-detail-header">
             <div class="card-pills">
                 <span class="pill pill-type">${typeLabel}</span>
                 ${weatherLabel ? `<span class="pill pill-weather">${weatherIcon}${weatherLabel}</span>` : ''}
                 ${distancePill}
+                ${pricePill}
             </div>
             <button class="card-fav" onclick="toggleFavoriteFromSheet(${loc.id}, this)" data-tooltip="${isFav ? 'Verwijder favoriet' : 'Opslaan'}" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
                 <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </button>
         </div>
+
         ${ageInfo}
         <h2 class="card-name">${escapeHtml(loc.name)}</h2>
+
+        <div class="detail-quick-facts">
+            ${totalScore !== null ? `<span class="detail-fact"><strong>${totalScore}</strong>★</span>` : ''}
+            ${loc.coffee ? '<span class="detail-fact">☕ Koffie</span>' : ''}
+            ${loc.diaper ? '<span class="detail-fact">🚻 Verschonen</span>' : ''}
+            ${loc.alcohol ? '<span class="detail-fact">🍷 Alcohol</span>' : ''}
+        </div>
+
+        <div class="sheet-detail-actions">
+            ${googleMapsUrl ? `<a href="${googleMapsUrl}" target="_blank" rel="noopener" class="sheet-detail-btn sheet-detail-btn-primary">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg> Route
+            </a>` : ''}
+            ${safeUrl(loc.website) ? `<a href="${safeUrl(loc.website)}" target="_blank" rel="noopener" class="sheet-detail-btn">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Website
+            </a>` : ''}
+            <button class="sheet-detail-btn sheet-detail-btn-icon btn-share" data-tooltip="Delen" aria-label="Deel ${escapeHtml(loc.name)}">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            </button>
+            ${detailUrl ? `<a href="${detailUrl}" class="sheet-detail-btn">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg> Meer info
+            </a>` : ''}
+        </div>
+
+        <!-- TIER 2: Why it's good + practical info -->
         ${sterkePunten.length ? `<div class="sterke-punten"><h3>Waarom goed voor peuters</h3><ul>${sterkePunten.map(p => `<li>✓ ${escapeHtml(p)}</li>`).join('')}</ul></div>` : ''}
-        ${scoreBreakdownHtml}
-        <p class="card-desc">${escapeHtml(loc.description || '')}</p>
-        ${highlight}
-        ${trustChips.length ? `<div class="card-trust">${trustChips.map((chip) => `<span class="trust-chip ${chip.tone === 'positive' ? 'is-positive' : 'is-neutral'}">${escapeHtml(chip.label)}</span>`).join('')}</div>` : ''}
-        <div class="card-decision">
-            <span class="card-decision-label">Waarom dit nu logisch voelt</span>
-            <strong class="card-decision-title">${escapeHtml(reasons.headline)}</strong>
-            <p class="card-decision-copy">${escapeHtml(reasons.primary)}</p>
-        </div>
-        <div class="card-subreasons">
-            ${reasons.secondary.map((reason) => `<div class="card-subreason"><span class="card-subreason-label">${escapeHtml(reason.label)}</span><span class="card-subreason-value">${escapeHtml(reason.value)}</span></div>`).join('')}
-        </div>
-        ${(trustBullets.length || practicalBullets.length) ? `<div class="sheet-trust">
-            ${trustBullets.length ? `<section class="sheet-trust-card"><h3>Waarom we dit vertrouwen</h3><ul>${trustBullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join('')}</ul></section>` : ''}
-            ${practicalBullets.length ? `<section class="sheet-trust-card"><h3>Handig om vooraf te weten</h3><ul>${practicalBullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join('')}</ul></section>` : ''}
+
+        ${(weatherLabel || loc.crowd_pattern || practicalCells.length) ? `<div class="sheet-info-grid">
+            ${weatherLabel ? `<div class="sheet-info-cell">
+                <span class="sheet-info-label">Weer</span>
+                <span class="sheet-info-value">${weatherIcon} ${escapeHtml(weatherLabel)}</span>
+            </div>` : ''}
+            ${loc.crowd_pattern ? `<div class="sheet-info-cell">
+                <span class="sheet-info-label">Drukte</span>
+                <span class="sheet-info-value">${escapeHtml(loc.crowd_pattern)}</span>
+            </div>` : ''}
+            ${practicalCells.map(c => `<div class="sheet-info-cell">
+                <span class="sheet-info-label">${escapeHtml(c.label)}</span>
+                <span class="sheet-info-value">${escapeHtml(c.value)}</span>
+            </div>`).join('')}
         </div>` : ''}
-        ${loc.crowd_pattern ? `<div class="drukte-indicator"><span class="drukte-icon">📊</span> <span class="drukte-text">${escapeHtml(loc.crowd_pattern)}</span></div>` : ''}
-        ${facilities.length ? `<div class="card-facilities">${facilities.join('')}</div>` : ''}
-        <div class="card-actions">
-            ${buildDetailUrl(loc) ? `<a href="${buildDetailUrl(loc)}" class="btn btn-detail"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg> Meer info</a>` : ''}
-            <a href="${buildMapsUrl(loc)}" target="_blank" rel="noopener" class="btn btn-maps"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Route</a>
-            ${safeUrl(loc.website) ? `<a href="${safeUrl(loc.website)}" target="_blank" rel="noopener" class="btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
-            <button class="btn btn-share" data-tooltip="Delen" aria-label="Deel ${escapeHtml(loc.name)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>
-        </div>
+
+        <!-- TIER 3: Behind toggle -->
+        <details class="sheet-detail-more">
+            <summary class="sheet-detail-more-toggle">Meer details</summary>
+
+            ${scoreBreakdownHtml ? `<div class="sheet-score-breakdown-wrap">${scoreBreakdownHtml}</div>` : ''}
+
+            ${longerDescription ? `<p class="sheet-detail-description">${escapeHtml(longerDescription)}</p>` : ''}
+
+            ${trustBullets.length ? `<ul class="sheet-trust-list">${trustBullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>` : ''}
+        </details>
     `;
     const shareButton = content.querySelector('.btn-share');
     if (shareButton) {

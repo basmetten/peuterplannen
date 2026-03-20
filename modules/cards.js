@@ -123,7 +123,7 @@ function appendBatch() {
         const photoColor = TYPE_PHOTO_COLORS[item.type] || '#E8D5C4';
         const fallbackSrc = photoSrc ? categoryImg : '';
         const cardImgHTML = `<div class="loc-img photo-container${!photoSrc ? ' loc-img--category' : ''}" style="--photo-color: ${photoColor}">
-                <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(item.name)}" loading="lazy" width="400" height="267"
+                <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async" width="400" height="267"
                      onload="this.classList.add('loaded')"
                      onerror="if(this.dataset.retried){this.closest('.loc-img').classList.add('loc-img--fallback')}else{this.dataset.retried='1';this.src='${escapeHtml(fallbackSrc || categoryImg)}'}">
                 <span class="loc-type-badge">${escapeHtml(typeLabel)}</span>

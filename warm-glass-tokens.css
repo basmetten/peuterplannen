@@ -1,0 +1,156 @@
+/**
+ * warm-glass-tokens.css
+ * PeuterPlannen — Warm Glass Design Tokens
+ *
+ * ADDITIVE: builds on design-system.css, does not replace it.
+ * All tokens are CSS custom properties so dark mode can override values later.
+ * Token names match actual usage in glass.css and app.css for easy migration.
+ */
+
+:root {
+
+  /* ─── Glass Surfaces ─────────────────────────────────────────────────────── */
+  /* Ordered by opacity: lightest → most opaque */
+
+  --wg-glass-chip:     rgba(250, 247, 242, 0.72);   /* filter chips, preset chips */
+  --wg-glass-control:  rgba(250, 247, 242, 0.78);   /* search pill, map controls */
+  --wg-glass-surface:  rgba(245, 240, 235, 0.82);   /* bottom nav pill */
+  --wg-glass-panel:    rgba(250, 247, 242, 0.85);   /* info panel, loc sheet, sidebar */
+  --wg-glass-nav:      rgba(255, 252, 249, 0.88);   /* bottom nav, list toggle */
+  --wg-glass-sheet:    rgba(255, 252, 249, 0.94);   /* main bottom sheet */
+  --wg-glass-solid:    rgba(250, 247, 242, 0.95);   /* no-backdrop fallback, drag state */
+  --wg-glass-opaque:   rgba(255, 255, 255, 0.96);   /* filter overlay, high-contrast */
+
+
+  /* ─── Blur Levels ────────────────────────────────────────────────────────── */
+  /* Conservative values — test on real iPhone before increasing.
+     IMPORTANT: disable backdrop-filter during drag gestures (glass.css pattern) */
+
+  --wg-blur-heavy:   blur(24px) saturate(140%);   /* sheet, bottom nav */
+  --wg-blur-panel:   blur(14px);                   /* info/loc panels */
+  --wg-blur-control: blur(10px);                   /* pills, chips, search */
+  --wg-blur-light:   blur(6px);                    /* preset chips, weather */
+  --wg-blur-overlay: blur(4px);                    /* modal overlays */
+
+
+  /* ─── Borders ────────────────────────────────────────────────────────────── */
+
+  --wg-border-strong:    1px solid rgba(255, 255, 255, 0.45);
+  --wg-border-mid:       1px solid rgba(255, 255, 255, 0.40);
+  --wg-border-soft:      1px solid rgba(255, 255, 255, 0.35);
+  --wg-border-warm:      1px solid rgba(212, 119, 86, 0.12);
+  --wg-border-warm-mid:  1px solid rgba(212, 119, 86, 0.15);
+  --wg-border-divider:   1px solid rgba(212, 119, 86, 0.08);
+  --wg-border-top-sheet: 0.5px solid rgba(212, 119, 86, 0.10);
+
+
+  /* ─── Shadows ────────────────────────────────────────────────────────────── */
+  /* Dual-layer pattern inspired by Apple Maps */
+
+  --wg-shadow-sheet:   0 -2px 20px rgba(100, 60, 40, 0.10), 0 0 0 0.5px rgba(255,255,255,0.5) inset;
+  --wg-shadow-panel:   0 -4px 24px rgba(212, 119, 86, 0.15);
+  --wg-shadow-control: 0 2px 12px rgba(212, 119, 86, 0.08);
+  --wg-shadow-chip:    0 2px 8px rgba(212, 119, 86, 0.06);
+  --wg-shadow-nav:     0 -1px 12px rgba(100, 60, 40, 0.06);
+  --wg-shadow-float:   0 2px 12px rgba(100, 60, 40, 0.12);
+  --wg-shadow-header:  0 1px 8px rgba(100, 60, 40, 0.08);
+
+
+  /* ─── Text Colors (warm browns) ──────────────────────────────────────────── */
+
+  --wg-text-primary:     #3A2F2C;
+  --wg-text-body:        #5C4433;
+  --wg-text-muted:       #6B5A54;
+  --wg-text-faint:       #8B7355;
+  --wg-text-placeholder: #9B8688;
+  --wg-text-inverse:     #FFFBF7;
+
+
+  /* ─── Brand Colors ───────────────────────────────────────────────────────── */
+
+  --wg-primary:       #D47756;
+  --wg-primary-light: #E8956F;
+  --wg-primary-dark:  #B85E3D;
+  --wg-accent:        #4A7A4A;
+
+
+  /* ─── Backgrounds ────────────────────────────────────────────────────────── */
+
+  --wg-bg:           #FAF7F2;
+  --wg-surface:      #FFFFFF;
+  --wg-surface-warm: #FFFBF7;
+  --wg-tag-bg:       rgba(212, 119, 86, 0.08);
+
+
+  /* ─── Radii ──────────────────────────────────────────────────────────────── */
+
+  --wg-radius-tag:    8px;
+  --wg-radius-card:   12px;
+  --wg-radius-sheet:  16px;
+  --wg-radius-chip:   20px;
+  --wg-radius-pill:   24px;
+  --wg-radius-circle: 50%;
+
+
+  /* ─── Spacing (Apple 4px grid) ───────────────────────────────────────────── */
+
+  --wg-sp-2:  2px;
+  --wg-sp-4:  4px;
+  --wg-sp-8:  8px;
+  --wg-sp-12: 12px;
+  --wg-sp-16: 16px;
+  --wg-sp-20: 20px;
+  --wg-sp-24: 24px;
+  --wg-sp-32: 32px;
+  --wg-sp-48: 48px;
+  --wg-sp-64: 64px;
+
+
+  /* ─── Typography ─────────────────────────────────────────────────────────── */
+  /* Keep existing Fraunces + DM Sans + fluid clamp() from design-system.css */
+
+  --wg-font:         var(--pp-font-ui);
+  --wg-font-display: var(--pp-font-heading);
+
+  --wg-leading-tight:   1.2;
+  --wg-leading-normal:  1.5;
+  --wg-leading-relaxed: 1.65;
+  --wg-leading-none:    1;
+
+  --wg-weight-normal:   400;
+  --wg-weight-medium:   500;
+  --wg-weight-semibold: 600;
+  --wg-weight-bold:     700;
+
+  --wg-tracking-tight:  -0.3px;
+  --wg-tracking-normal:  0;
+  --wg-tracking-wide:    0.2px;
+
+
+  /* ─── Transitions ────────────────────────────────────────────────────────── */
+
+  --wg-duration-fast:   100ms;
+  --wg-duration-ui:     200ms;
+  --wg-duration-snap:   300ms;
+  --wg-duration-sheet:  400ms;
+
+  --wg-ease-spring:   cubic-bezier(0.32, 0.72, 0, 1);
+  --wg-ease-smooth:   cubic-bezier(0.22, 1, 0.36, 1);
+  --wg-ease-bounce:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --wg-ease-standard: ease;
+
+
+  /* ─── Handle ─────────────────────────────────────────────────────────────── */
+
+  --wg-handle-color: rgba(160, 130, 120, 0.35);
+
+  /* === Dark mode prep: override these in @media (prefers-color-scheme: dark) later === */
+}
+
+/* ─── Reduced motion fallbacks ──────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.15s !important;
+  }
+}

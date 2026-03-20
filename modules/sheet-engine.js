@@ -32,13 +32,46 @@ export function initSheet() {
     contentEl.addEventListener('touchmove', onContentTouchMove, { passive: false });
     contentEl.addEventListener('touchend', onContentTouchEnd, { passive: true });
 
-    // Search pill toggles filter chips and opens half state
+    // Search pill: tap to expand into search bar
     const searchPill = document.getElementById('sheet-search-pill');
-    if (searchPill) {
-        searchPill.addEventListener('click', () => {
+    const searchInput = document.getElementById('sheet-search-input');
+    const searchCancel = document.getElementById('sheet-search-cancel');
+
+    if (searchPill && searchInput) {
+        searchPill.addEventListener('click', (e) => {
+            // If already in search mode, don't re-trigger
+            if (sheetEl.classList.contains('search-active')) return;
+
+            // Activate search mode
+            sheetEl.classList.add('search-active');
             const filterChips = document.getElementById('sheet-filter-chips');
-            if (filterChips) filterChips.classList.toggle('active');
+            if (filterChips) filterChips.classList.add('active');
             if (currentState === 'peek') setSheetState('half');
+
+            // Focus the input after transition
+            requestAnimationFrame(() => searchInput.focus());
+        });
+
+        // Live search suggestions
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (query.length < 2) { hideSuggestions(); return; }
+
+            const matches = state.allLocations
+                .filter(l => l.name.toLowerCase().includes(query))
+                .slice(0, 6);
+
+            showSuggestions(matches);
+        });
+
+        // Prevent pill click from also triggering on input tap
+        searchInput.addEventListener('click', (e) => e.stopPropagation());
+    }
+
+    if (searchCancel) {
+        searchCancel.addEventListener('click', (e) => {
+            e.stopPropagation();
+            cancelSearch();
         });
     }
 
@@ -50,6 +83,19 @@ export function initSheet() {
     if (overlay) {
         overlay.addEventListener('click', () => setSheetState('half'));
     }
+
+    // Keyboard: Escape cancels search or closes full state
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (sheetEl?.classList.contains('search-active')) {
+                cancelSearch();
+                e.preventDefault();
+            } else if (currentState === 'full') {
+                setSheetState('half');
+                e.preventDefault();
+            }
+        }
+    });
 
     // Start in peek state
     setSheetState('peek');
@@ -75,6 +121,13 @@ export function setSheetState(newState) {
 
     // Restore full transition (transform + floating card properties)
     sheetEl.style.transition = '';
+
+    // Screen reader announcement
+    const announcer = document.getElementById('sr-announcer');
+    if (announcer) {
+        const labels = { peek: 'Zoekpaneel geminimaliseerd', half: 'Zoekresultaten geopend', full: 'Volledig scherm geopend', hidden: 'Paneel gesloten' };
+        announcer.textContent = labels[newState] || '';
+    }
 }
 
 export function getSheetState() {
@@ -230,7 +283,7 @@ export function renderSheetList(locations, travelTimes = {}) {
         const visitedLabel = isVisited(loc.id) ? `<span class="compact-card-visited">Bezocht</span>` : '';
 
         return `<div class="compact-card" data-id="${loc.id}">
-            <img class="compact-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" style="background:${photoColor}"
+            <img class="compact-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async" style="background:${photoColor}"
                  onerror="this.src='${escapeHtml(categoryImg)}'">
             <div class="compact-card-body">
                 <div class="compact-card-name">${escapeHtml(loc.name)}</div>
@@ -333,6 +386,52 @@ export function initSheetTabs() {
             }
         });
     });
+}
+
+// === Search helpers ===
+
+function showSuggestions(matches) {
+    let container = document.getElementById('search-suggestions');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'search-suggestions';
+        container.className = 'search-suggestions';
+        document.getElementById('sheet-search-area')?.appendChild(container);
+    }
+
+    if (!matches.length) { container.innerHTML = ''; return; }
+
+    container.innerHTML = matches.map(loc => {
+        const typeLabel = TYPE_LABELS[loc.type] || loc.type;
+        return `<div class="search-suggestion" data-id="${loc.id}">
+            <span class="suggestion-icon">\uD83D\uDCCD</span>
+            <span class="suggestion-name">${escapeHtml(loc.name)}</span>
+            <span class="suggestion-meta">${escapeHtml(typeLabel)}${loc.region ? ' \u00b7 ' + escapeHtml(loc.region) : ''}</span>
+        </div>`;
+    }).join('');
+
+    container.querySelectorAll('.search-suggestion').forEach(el => {
+        el.addEventListener('click', () => {
+            const id = parseInt(el.dataset.id, 10);
+            const loc = state.allLocations.find(l => l.id === id);
+            if (loc) {
+                window._pp_modules?.showLocationInSheet?.(loc);
+                cancelSearch();
+            }
+        });
+    });
+}
+
+function hideSuggestions() {
+    const container = document.getElementById('search-suggestions');
+    if (container) container.innerHTML = '';
+}
+
+function cancelSearch() {
+    sheetEl?.classList.remove('search-active');
+    const input = sheetEl?.querySelector('.sheet-search-input');
+    if (input) { input.value = ''; input.blur(); }
+    hideSuggestions();
 }
 
 // Initialize filter chips in the sheet
