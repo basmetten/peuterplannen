@@ -28,8 +28,8 @@ export const TYPE_COLORS = {
 };
 export const LUNCH_PLAY_PATTERN = /(speelhoek|speelruimte|speeltuin|terras|kinderstoel|lunchen|pannenkoek|pannenkoeken|boerderij|restaurant|cafe|café)/i;
 
-export const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,food_fit,play_corner_quality,noise_level,crowd_pattern,time_of_day_fit,price_band';
-export const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,food_fit,play_corner_quality,noise_level,crowd_pattern,time_of_day_fit,price_band';
+export const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_quality,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,food_fit,play_corner_quality,noise_level,crowd_pattern,time_of_day_fit,price_band';
+export const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_quality,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,food_fit,play_corner_quality,noise_level,crowd_pattern,time_of_day_fit,price_band';
 
 export const LOCATIONS_CACHE_KEY = 'pp_locations_cache_v4';
 export const LOCATIONS_CACHE_TTL_MS = 1000 * 60 * 60 * 12;

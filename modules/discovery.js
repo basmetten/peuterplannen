@@ -27,6 +27,13 @@ export function getThisWeekPicks(locations, region) {
 
     if (candidates.length < 10) candidates = locations; // fallback
 
+    // Prefer locations with good photos for week picks
+    candidates = candidates.filter(l =>
+        (l.photo_url || l.owner_photo_url) && (l.photo_quality === undefined || l.photo_quality >= 3)
+    );
+    if (candidates.length < 10) candidates = locations.filter(l => l.photo_url || l.owner_photo_url);
+    if (candidates.length < 5) candidates = locations; // ultimate fallback
+
     // Score candidates
     const scored = candidates.map(loc => {
         let score = computePeuterScore(loc) * 10;
@@ -38,8 +45,11 @@ export function getThisWeekPicks(locations, region) {
         if (state.isRaining && ['indoor', 'hybrid', 'both'].includes(loc.weather)) score += 20;
         if (state.isSunny && ['outdoor', 'both'].includes(loc.weather)) score += 15;
 
-        // Photo bonus (better cards with photos)
-        if (loc.photo_url || loc.owner_photo_url) score += 5;
+        // Photo quality weighted bonus (was flat +5)
+        if (loc.photo_url || loc.owner_photo_url) {
+            const pq = loc.photo_quality || 3; // default 3 if not evaluated yet
+            score += Math.round(pq * 1.5); // 1→1.5, 3→4.5, 5→7.5
+        }
 
         return { loc, score };
     }).sort((a, b) => b.score - a.score);
