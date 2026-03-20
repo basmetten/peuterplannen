@@ -121,6 +121,7 @@ function onTouchEnd() {
     const velocity = Math.abs(deltaY) / elapsed; // px/ms
     const VELOCITY_THRESHOLD = 0.5;
 
+    const previousState = currentState;
     let newState = currentState;
 
     if (currentState === 'peek') {
@@ -140,15 +141,34 @@ function onTouchEnd() {
     // Reset inline transform and let CSS handle it
     sheetEl.style.transform = '';
     setSheetState(newState);
+
+    // Rubber-band bounce after snap (only on actual state change via touch)
+    if (newState !== previousState) {
+        bounceSheet(newState);
+    }
 }
 
 function getStateOffset(st) {
     const vh = window.innerHeight;
     if (st === 'hidden') return vh;
-    if (st === 'peek') return vh - 190;
+    if (st === 'peek') return vh - 140;
     if (st === 'half') return vh * 0.45;
     if (st === 'full') return 0;
     return vh;
+}
+
+// Rubber-band micro-bounce after sheet snaps to new state
+function bounceSheet(targetState) {
+    if (!sheetEl || !sheetEl.animate) return;
+    // Wait for CSS transition to complete, then overshoot bounce
+    setTimeout(() => {
+        const bounce = targetState === 'full' ? 6 : -6;
+        sheetEl.animate([
+            { translate: '0 0' },
+            { translate: `0 ${bounce}px` },
+            { translate: '0 0' }
+        ], { duration: 200, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' });
+    }, 310);
 }
 
 // Content touch handling (for drag-down from scrolled content)

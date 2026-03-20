@@ -348,9 +348,14 @@
 
 /* Peek: floating card, small, fully rounded */
 .bottom-sheet[data-state="peek"] {
-  transform: translateY(calc(100% - 190px));
+  transform: translateY(calc(100% - 140px));
   left: 8px; right: 8px; bottom: 8px;
   border-radius: 16px;
+}
+/* Hide tabs and filter chips in peek — only pill + meta visible */
+.bottom-sheet[data-state="peek"] .sheet-tabs,
+.bottom-sheet[data-state="peek"] .sheet-filter-chips {
+  display: none !important;
 }
 /* Half: still floating but tighter to edges */
 .bottom-sheet[data-state="half"] {
@@ -369,6 +374,7 @@
   left: 8px; right: 8px; bottom: 8px;
   border-radius: 16px;
 }
+
 
 /* Drag handle */
 .sheet-drag-handle {
@@ -438,7 +444,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 4px 0;
+  padding: 10px 4px 0;
   font-size: 0.8rem;
   color: #6B5A54;
 }
@@ -460,6 +466,11 @@
   border-bottom: 1px solid rgba(212, 119, 86, 0.08);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  transition: background 100ms ease;
+  border-radius: 8px;
+  margin: 0 -4px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 .compact-card:active {
   background: rgba(212, 119, 86, 0.04);
@@ -648,7 +659,7 @@
 
   /* Hide map recenter button (will be repositioned) */
   .pp-mobile-map .map-recenter {
-    bottom: calc(56px + 170px);
+    bottom: calc(56px + 120px);
     z-index: 999;
   }
 
@@ -681,8 +692,8 @@
     align-items: center;
   }
   .sheet-preview-img {
-    width: 72px; height: 72px;
-    border-radius: 12px;
+    width: 100px; height: 70px;
+    border-radius: 10px;
     object-fit: cover;
     flex-shrink: 0;
     background: #E8D5C4;
@@ -706,10 +717,12 @@
     font-size: 0.7rem; padding: 2px 6px;
   }
   .sheet-preview-score {
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: #4A7A4A;
     flex-shrink: 0;
+    min-width: 32px;
+    text-align: center;
   }
   .sheet-preview-actions {
     margin-top: 10px;
@@ -718,12 +731,16 @@
   .sheet-preview-btn {
     flex: 1;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 12px;
     border: none;
     font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+    transition: transform 100ms ease;
+  }
+  .sheet-preview-btn:active {
+    transform: scale(0.97);
   }
   .sheet-preview-btn-primary {
     background: #D47756;
@@ -766,7 +783,7 @@
   .map-list-toggle {
     position: fixed;
     right: 16px;
-    bottom: calc(270px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(220px + env(safe-area-inset-bottom, 0px));
     z-index: 1001;
     display: flex;
     align-items: center;
@@ -898,6 +915,10 @@
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     font-family: inherit;
+    transition: transform 100ms ease, background 200ms ease, color 200ms ease;
+  }
+  .sheet-filter-chip:active {
+    transform: scale(0.95);
   }
   .sheet-filter-chip.active {
     background: #D47756;

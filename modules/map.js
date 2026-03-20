@@ -90,7 +90,7 @@ export function initMap() {
             const features = state.mapInstance.queryRenderedFeatures(e.point, { layers: ['clusters'] });
             const clusterId = features[0].properties.cluster_id;
             state.mapInstance.getSource('locations').getClusterExpansionZoom(clusterId).then(zoom => {
-                state.mapInstance.easeTo({ center: features[0].geometry.coordinates, zoom: zoom });
+                state.mapInstance.easeTo({ center: features[0].geometry.coordinates, zoom: zoom, duration: 600 });
             });
         });
 
@@ -215,10 +215,10 @@ export function highlightMarker(id) {
     if (!state.mapInstance) return;
     try {
         state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', [
-            'case', ['==', ['get', 'id'], id ?? -1], 14, 9
+            'case', ['==', ['get', 'id'], id ?? -1], 16, 9
         ]);
         state.mapInstance.setPaintProperty('unclustered-point', 'circle-stroke-width', [
-            'case', ['==', ['get', 'id'], id ?? -1], 3, 2
+            'case', ['==', ['get', 'id'], id ?? -1], 3.5, 2.5
         ]);
     } catch(e) {}
 }

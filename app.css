@@ -872,8 +872,10 @@
         /* Map container */
         .map-container { width: 100%; height: calc(100vh - 240px); min-height: 400px; max-height: 700px; position: relative; border-top: 1px solid rgba(var(--pp-primary-rgb), 0.1); }
         .map-canvas { width: 100%; height: 100%; }
-        .map-recenter { position: absolute; top: 60px; right: 12px; width: 40px; height: 40px; background: var(--pp-surface); border: none; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; z-index: 2; touch-action: manipulation; }
+        .map-recenter { position: absolute; top: 60px; right: 12px; width: 44px; height: 44px; background: var(--pp-surface); border: none; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; z-index: 2; touch-action: manipulation; }
         .map-recenter:active { transform: scale(0.94); }
+        @keyframes fabPulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
+        .fab-pulse { animation: fabPulse 600ms ease; }
         .map-recenter svg { width: var(--pp-icon-sm); height: var(--pp-icon-sm); stroke: var(--pp-text-secondary); fill: none; stroke-width: 2; }
         .map-container.hidden { display: none; }
 
