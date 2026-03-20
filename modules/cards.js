@@ -1,10 +1,8 @@
-import { state, DESKTOP_WIDTH, TYPE_LABELS, WEATHER_LABELS, WEATHER_ICONS, PROMO_ITEMS, ADSENSE_PUB_ID, ADSENSE_SLOT_ID, ADSENSE_EVERY_N, BATCH_SIZE } from './state.js';
-import { escapeHtml, safeUrl, getCardSupportingCopy, isNearDuplicateCopy, buildDetailUrl, buildMapsUrl } from './utils.js';
-import { computePeuterScore, computePeuterScoreV2, getTopStrengths, getCardDecisionSentence, getCompactTrustChip, getCardQuickFacts } from './scoring.js';
+import { state, DESKTOP_WIDTH, TYPE_LABELS, PROMO_ITEMS, ADSENSE_PUB_ID, ADSENSE_SLOT_ID, ADSENSE_EVERY_N, BATCH_SIZE } from './state.js';
+import { escapeHtml, buildDetailUrl } from './utils.js';
 import { isFavorite } from './favorites.js';
-import { getTopTags, getWeatherBadge } from './tags.js';
-import { isVisited } from './visited.js';
-import { renderCardPhoto } from './templates.js';
+import { getCardDecisionSentence } from './scoring.js';
+import { getPhotoData } from './templates.js';
 import bus from './bus.js';
 
 let batchLocations = [];
@@ -12,30 +10,12 @@ let batchTravelTimes = {};
 let batchPromoIndex = 0;
 let batchRenderedCount = 0;
 let batchSentinelObserver = null;
-let batchPopularIds = new Set();
-
-function getPopularIds(locations) {
-    const byRegion = {};
-    locations.forEach(loc => {
-        const r = loc.region || 'onbekend';
-        if (!byRegion[r]) byRegion[r] = [];
-        byRegion[r].push(loc);
-    });
-    const popular = new Set();
-    Object.values(byRegion).forEach(group => {
-        const sorted = [...group].sort((a, b) => computePeuterScore(b) - computePeuterScore(a));
-        const top10pct = Math.max(1, Math.ceil(sorted.length * 0.1));
-        sorted.slice(0, top10pct).forEach(loc => popular.add(loc.id));
-    });
-    return popular;
-}
 
 export function renderCards(locations, travelTimes = {}) {
     batchLocations = locations;
     batchTravelTimes = travelTimes;
     batchRenderedCount = 0;
     batchPromoIndex = 0;
-    batchPopularIds = getPopularIds(locations);
     if (batchSentinelObserver) { batchSentinelObserver.disconnect(); batchSentinelObserver = null; }
     const container = document.getElementById('results-container');
     container.innerHTML = '';
@@ -51,6 +31,8 @@ function appendBatch() {
 
     for (let index = start; index < end; index++) {
         const batchIdx = index - start;
+
+        // Promo insertion every 6th card
         if ((index + 1) % 6 === 0) {
             const promo = PROMO_ITEMS[batchPromoIndex % PROMO_ITEMS.length];
             batchPromoIndex++;
@@ -67,6 +49,8 @@ function appendBatch() {
             `;
             container.appendChild(adCard);
         }
+
+        // AdSense insertion
         if (ADSENSE_PUB_ID && ADSENSE_SLOT_ID && index > 0 && index % ADSENSE_EVERY_N === 0) {
             const ael = document.createElement('article');
             ael.className = 'loc-card adsense-card';
@@ -74,110 +58,11 @@ function appendBatch() {
             container.appendChild(ael);
             try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
         }
+
         const item = batchLocations[index];
         const travelInfo = batchTravelTimes[item.id];
-        const isFav = isFavorite(item.id);
-        const favStyle = isFav ? 'fill: #D4775A; stroke: #D4775A;' : 'fill: none; stroke: #9B8688;';
-        const typeLabel = TYPE_LABELS[item.type] || item.type;
-        const weatherLabel = WEATHER_LABELS[item.weather] || '';
-        const weatherIcon = WEATHER_ICONS[item.weather] || '';
-
-        let distancePill = '';
-        if (state.userLocation && travelInfo) {
-            distancePill = `<span class="pill pill-distance">${travelInfo.duration}</span>`;
-        } else if (item.region) {
-            distancePill = `<span class="pill pill-region">${item.region}</span>`;
-        }
-
-        const ps = computePeuterScore(item);
-        const psBase = ps - (item.is_featured && item.featured_until && new Date(item.featured_until) > new Date() ? 5 : 0);
-        const psColor = psBase >= 7 ? '#4A7A4A' : psBase >= 4 ? '#C07830' : '#9E9E9E';
-        const psBadge = `<span class="peuterscore" style="background:${psColor}18;color:${psColor};border:1px solid ${psColor}30" data-tooltip="Peuterscore: ${psBase}/10">${psBase}★</span>`;
-        const weather = state.isRaining ? 'rain' : state.isSunny ? 'sun' : null;
-        const v2Result = computePeuterScoreV2(item, { weather, dayOfWeek: new Date().getDay() });
-        const strengths = getTopStrengths(v2Result, { weather });
-        const strengthHtml = strengths.slice(0, 2).map(s =>
-            `<span class="card-strength">${escapeHtml(s.label)}</span>`
-        ).join('');
-        const isFeaturedNow = item.is_featured && item.featured_until && new Date(item.featured_until) > new Date();
-        const featuredBadge = isFeaturedNow ? `<span class="badge-featured">★ Aanbevolen</span>` : '';
-        const verifiedBadge = item.owner_verified ? `<span class="badge-verified" data-tooltip="Geverifieerd door eigenaar">✓</span>` : '';
-        const visitedBadge = isVisited(item.id) ? `<span class="card-badge-visited">Bezocht</span>` : '';
-        const popularBadge = batchPopularIds.has(item.id) ? `<span class="card-badge-popular">Populair in ${escapeHtml(item.region || 'jouw regio')}</span>` : '';
-
-        const ageInfo = (item.min_age !== null && item.max_age !== null) ? `<span class="age-range">${item.min_age}-${item.max_age} jaar</span>` : '';
-        const supportingCopy = getCardSupportingCopy(item);
-
-        const facilities = [];
-        if (item.coffee) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>Koffie</span>');
-        if (item.diaper) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5z"/><path d="M6 9.01V9"/></svg>Verschonen</span>');
-        if (item.alcohol) facilities.push('<span class="facility"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 3h10v9a5 5 0 0 1-10 0V3z"/></svg>Alcohol</span>');
-        const decisionSentence = getCardDecisionSentence(item, travelInfo);
-        const trustChip = getCompactTrustChip(item);
-        const quickFacts = getCardQuickFacts(item, travelInfo);
-        const tags = getTopTags(item);
-        const weatherBadge = getWeatherBadge(item);
-        const supportingIsDuplicate = supportingCopy && decisionSentence && isNearDuplicateCopy(supportingCopy, decisionSentence);
-
-        const cardImgHTML = renderCardPhoto(item);
-
-        const card = document.createElement('article');
-        card.className = 'loc-card reveal';
-        card.style.animationDelay = `${Math.min(batchIdx * 0.04, 0.2)}s`;
-        if (window.innerWidth >= DESKTOP_WIDTH && item.lat && item.lng) {
-            card.addEventListener('mouseenter', () => bus.emit('map:highlight', item.id));
-            card.addEventListener('mouseleave', () => bus.emit('map:highlight', null));
-        }
-        card.innerHTML = `
-            ${cardImgHTML}
-            <div class="card-top">
-                <div class="card-pills">
-                    ${featuredBadge}
-                    <span class="pill pill-type">${typeLabel}</span>
-                    ${weatherLabel ? `<span class="pill pill-weather">${weatherIcon}${weatherLabel}</span>` : ''}
-                    ${distancePill}
-                    ${psBadge}
-                    ${weatherBadge ? `<span class="pill pill-weather-badge ${weatherBadge.className}">${weatherBadge.label}</span>` : ''}
-                </div>
-                <button class="card-fav" onclick="toggleFavorite(${item.id}, this)" data-tooltip="${isFav ? 'Verwijder favoriet' : 'Opslaan'}" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
-                    <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                </button>
-            </div>
-            ${ageInfo}
-            <h2 class="card-name">${escapeHtml(item.name)}${verifiedBadge}</h2>
-            ${tags.length ? `<div class="card-tags">${tags.map(t => `<span class="card-tag">${t.icon} ${t.label}</span>`).join('')}</div>` : ''}
-            ${(visitedBadge || popularBadge) ? `<div class="card-tags">${popularBadge}${visitedBadge}</div>` : ''}
-            ${strengths.length ? `<div class="card-strengths">${strengthHtml}</div>` : ''}
-            ${supportingCopy && !supportingIsDuplicate ? `<p class="card-supporting">${escapeHtml(supportingCopy)}</p>` : ''}
-            ${(trustChip || quickFacts.length) ? `<div class="card-trust">
-                ${trustChip ? `<span class="trust-chip ${trustChip.tone === 'positive' ? 'is-positive' : 'is-neutral'}">${escapeHtml(trustChip.label)}</span>` : ''}
-                ${quickFacts.map((fact) => `<span class="quickfact-chip">${escapeHtml(fact)}</span>`).join('')}
-            </div>` : ''}
-            <div class="card-decision-row">
-                <span class="card-decision-kicker">Beste match nu</span>
-                <p class="card-decision-copy">${escapeHtml(decisionSentence)}</p>
-            </div>
-            ${facilities.length ? `<div class="card-facilities">${facilities.join('')}</div>` : ''}
-            <div class="card-actions">
-                ${buildDetailUrl(item) ? `<a href="${buildDetailUrl(item)}" class="btn btn-detail">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-                    Meer info
-                </a>` : ''}
-                <a href="${buildMapsUrl(item)}" target="_blank" rel="noopener" class="btn btn-maps">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                    Route
-                </a>
-                ${safeUrl(item.website) ? `<a href="${safeUrl(item.website)}" target="_blank" rel="noopener" class="btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
-                <button class="btn btn-share" data-tooltip="Delen" aria-label="Deel ${escapeHtml(item.name)}">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-                </button>
-            </div>
-        `;
+        const card = renderScanCard(item, travelInfo, batchIdx);
         container.appendChild(card);
-        const shareButton = card.querySelector('.btn-share');
-        if (shareButton) {
-            shareButton.addEventListener('click', () => bus.emit('location:share', item));
-        }
     }
 
     batchRenderedCount = end;
@@ -195,6 +80,73 @@ function appendBatch() {
         }, { rootMargin: '0px 0px 150px 0px' });
         batchSentinelObserver.observe(sentinel);
     }
+}
+
+/**
+ * Renders a scan card with 5 elements:
+ * 1. Photo (full-width, 3:2, type badge overlay)
+ * 2. Heart (save button, floating on photo)
+ * 3. Name + distance (one row)
+ * 4. One-liner (decision sentence, 1 line max)
+ * 5. Type badge (on photo)
+ */
+function renderScanCard(item, travelInfo, batchIdx) {
+    const { imgSrc, categoryImg, photoColor, photoSrc } = getPhotoData(item);
+    const typeLabel = TYPE_LABELS[item.type] || item.type;
+    const isFav = isFavorite(item.id);
+    const favStyle = isFav ? 'fill: #D4775A; stroke: #D4775A;' : '';
+
+    // Distance
+    let distance = '';
+    if (state.userLocation && travelInfo) {
+        distance = travelInfo.duration;
+    } else if (item.region) {
+        distance = item.region;
+    }
+
+    // One-liner: decision sentence or toddler highlight
+    const oneLiner = getCardDecisionSentence(item, travelInfo) || item.toddler_highlight || '';
+
+    const card = document.createElement('article');
+    card.className = 'loc-card scan-card reveal';
+    card.style.animationDelay = `${Math.min(batchIdx * 0.04, 0.2)}s`;
+
+    // Desktop hover → map highlight
+    if (window.innerWidth >= DESKTOP_WIDTH && item.lat && item.lng) {
+        card.addEventListener('mouseenter', () => bus.emit('map:highlight', item.id));
+        card.addEventListener('mouseleave', () => bus.emit('map:highlight', null));
+    }
+
+    // Click → detail view
+    const detailUrl = buildDetailUrl(item);
+    if (detailUrl) {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.card-fav')) return;
+            window.location.href = detailUrl;
+        });
+    }
+
+    card.innerHTML = `
+        <div class="scan-photo${!photoSrc ? ' scan-photo--category' : ''}" style="--photo-color: ${photoColor}">
+            <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async" width="400" height="267"
+                 onload="this.classList.add('loaded')"
+                 onerror="if(this.dataset.retried){this.closest('.scan-photo').classList.add('scan-photo--fallback')}else{this.dataset.retried='1';this.src='${escapeHtml(categoryImg)}'}">
+            <span class="scan-type-badge">${escapeHtml(typeLabel)}</span>
+            <button class="card-fav scan-fav" onclick="toggleFavorite(${item.id}, this)" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
+                <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+        </div>
+        <div class="scan-body">
+            <div class="scan-header">
+                <h2 class="scan-name">${escapeHtml(item.name)}</h2>
+                ${distance ? `<span class="scan-distance">${escapeHtml(String(distance))}</span>` : ''}
+            </div>
+            ${oneLiner ? `<p class="scan-oneliner">${escapeHtml(oneLiner)}</p>` : ''}
+        </div>
+    `;
+
+    return card;
 }
 
 // Bus listeners

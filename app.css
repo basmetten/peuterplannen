@@ -686,6 +686,62 @@
             .loc-card:hover::before { transform: scaleX(1); }
         }
 
+        /* Scan card — minimal 5-element card */
+        .scan-card { padding: 0; overflow: hidden; }
+        .scan-photo {
+          position: relative;
+          aspect-ratio: 3 / 2;
+          overflow: hidden;
+          background: var(--photo-color, var(--pp-bg));
+        }
+        .scan-photo img {
+          width: 100%; height: 100%; object-fit: cover;
+          opacity: 0; transition: opacity 0.3s ease;
+        }
+        .scan-photo img.loaded { opacity: 1; }
+        .scan-photo--category img { opacity: 0.7; }
+        .scan-photo--category img.loaded { opacity: 0.7; }
+        .scan-photo--fallback img { display: none; }
+        .scan-type-badge {
+          position: absolute; bottom: 8px; left: 8px;
+          background: rgba(255,252,249,0.88); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+          padding: 3px 10px; border-radius: 10px;
+          font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+          color: var(--pp-text);
+        }
+        .scan-fav {
+          position: absolute; top: 8px; right: 8px;
+          width: 44px; height: 44px;
+          display: flex; align-items: center; justify-content: center;
+          background: rgba(255,255,255,0.7); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+          border: none; border-radius: 50%; cursor: pointer;
+          -webkit-tap-highlight-color: transparent;
+          transition: transform 0.15s ease;
+        }
+        .scan-fav:active { transform: scale(0.9); }
+        .scan-fav svg { width: 20px; height: 20px; stroke: #9B8688; stroke-width: 2; fill: none; }
+        .scan-body { padding: 12px 14px 14px; }
+        .scan-header { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+        .scan-name {
+          font-family: var(--pp-font-heading); font-size: 1.05rem; font-weight: 700;
+          color: var(--pp-text); line-height: 1.3; margin: 0;
+          white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+        }
+        .scan-distance {
+          flex-shrink: 0;
+          font-size: 0.8rem; font-weight: 600;
+          color: var(--pp-text-muted); white-space: nowrap;
+        }
+        .scan-oneliner {
+          margin: 4px 0 0; font-size: 0.82rem; line-height: 1.4;
+          color: var(--pp-text-secondary);
+          white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        @media (hover: hover) {
+            .scan-card:hover .scan-photo img.loaded { transform: scale(1.03); transition: transform 0.3s ease; }
+            .scan-card:hover { transform: translateY(-2px); box-shadow: var(--pp-shadow-hover); }
+        }
+
         .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
         .card-pills { display: flex; gap: 6px; flex-wrap: wrap; }
         .pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: var(--pp-radius-xs); font-size: var(--pp-text-xs); font-weight: 600; letter-spacing: 0.02em; }
