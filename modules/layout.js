@@ -4,7 +4,10 @@ import { setDisplayMode, fitMapToMarkers } from './map.js';
 import { updateFilterCount, updateMapPillBadge } from './filters.js';
 import { loadLocations } from './data.js';
 import { trackEvent } from './utils.js';
-import { renderCompactCard } from './templates.js';
+import { renderCompactCard, getPhotoData } from './templates.js';
+import { computePeuterScore } from './scoring.js';
+import { isFavorite } from './favorites.js';
+import { escapeHtml } from './utils.js';
 import bus from './bus.js';
 
 let isListMode = false;
@@ -254,14 +257,51 @@ function renderMobileList() {
         });
     }
 
-    const html = locations.slice(0, 50).map(loc =>
-        renderCompactCard(loc, { showTags: true, showVisited: false })
-    ).join('');
+    const TYPE_LABELS = { play: 'Speeltuin', farm: 'Boerderij', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', swim: 'Zwemmen', pancake: 'Pannenkoeken' };
+    const WEATHER_LABELS = { indoor: 'Binnen', outdoor: 'Buiten', both: 'Binnen & buiten', hybrid: 'Binnen & buiten' };
+
+    const html = locations.slice(0, 60).map(loc => {
+        const { imgSrc, categoryImg, photoColor } = getPhotoData(loc);
+        const score = computePeuterScore(loc);
+        const typeLabel = TYPE_LABELS[loc.type] || loc.type;
+        const weatherLabel = WEATHER_LABELS[loc.weather] || '';
+        const isFav = isFavorite(loc.id);
+        const favStyle = isFav ? 'fill:#D4775A;stroke:#D4775A;' : '';
+
+        // Quick info pills
+        const pills = [];
+        if (weatherLabel) pills.push(weatherLabel);
+        if (loc.coffee) pills.push('Koffie');
+        if (loc.diaper) pills.push('Verschonen');
+        const pillsHtml = pills.map(p => `<span class="list-card-pill">${escapeHtml(p)}</span>`).join('');
+
+        const highlight = loc.toddler_highlight ? `<div class="list-card-highlight">${escapeHtml(loc.toddler_highlight)}</div>` : '';
+
+        return `<div class="list-card" data-id="${loc.id}">
+            <img class="list-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async"
+                 style="background:${photoColor}" onerror="this.src='${escapeHtml(categoryImg)}'">
+            <div class="list-card-body">
+                <div class="list-card-top">
+                    <span class="list-card-type">${escapeHtml(typeLabel)}</span>
+                    ${loc.region ? `<span class="list-card-region">${escapeHtml(loc.region)}</span>` : ''}
+                </div>
+                <div class="list-card-name">${escapeHtml(loc.name)}</div>
+                ${highlight}
+                <div class="list-card-pills">${pillsHtml}</div>
+            </div>
+            <div class="list-card-side">
+                <div class="list-card-score">${score}</div>
+                <button class="list-card-fav" onclick="event.stopPropagation();toggleFavorite(${loc.id},this)" aria-label="${isFav ? 'Verwijder' : 'Bewaar'}">
+                    <svg viewBox="0 0 24 24" style="${favStyle}"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </button>
+            </div>
+        </div>`;
+    }).join('');
 
     content.innerHTML = html;
 
     // Click handlers — exit list mode, then open location
-    content.querySelectorAll('.compact-card').forEach(card => {
+    content.querySelectorAll('.list-card').forEach(card => {
         card.addEventListener('click', () => {
             const id = parseInt(card.dataset.id, 10);
             if (isListMode) toggleMapList();
