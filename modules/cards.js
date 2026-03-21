@@ -110,6 +110,7 @@ function renderScanCard(item, travelInfo, batchIdx) {
     const card = document.createElement('article');
     card.className = 'loc-card scan-card reveal';
     card.dataset.locId = item.id;
+    card.setAttribute('aria-label', item.name);
     card.style.animationDelay = `${Math.min(batchIdx * 0.04, 0.2)}s`;
 
     // Desktop hover → map highlight

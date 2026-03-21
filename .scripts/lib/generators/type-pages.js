@@ -160,6 +160,7 @@ ${headCommon()}
   <meta name="description" content="${escapeHtml(pageDescription)}">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://peuterplannen.nl/${page.slug}.html">
+  <meta property="og:site_name" content="PeuterPlannen">
   <meta property="og:title" content="${escapeHtml(pageTitle)}">
   <meta property="og:description" content="${escapeHtml(pageDescription)}">
   <meta property="og:url" content="https://peuterplannen.nl/${page.slug}.html">

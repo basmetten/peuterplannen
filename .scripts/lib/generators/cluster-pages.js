@@ -103,6 +103,7 @@ ${headCommon()}
   <meta name="description" content="${escapeHtml(clusterDescription)}">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://peuterplannen.nl/${cluster.slug}.html">
+  <meta property="og:site_name" content="PeuterPlannen">
   <meta property="og:title" content="${escapeHtml(clusterTitle)}">
   <meta property="og:description" content="${escapeHtml(clusterDescription)}">
   <meta property="og:url" content="https://peuterplannen.nl/${cluster.slug}.html">

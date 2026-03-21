@@ -27,6 +27,7 @@ ${headCommon()}
   <meta name="description" content="${escapeHtml(description)}">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://peuterplannen.nl/${slug}/">
+  <meta property="og:site_name" content="PeuterPlannen">
   <meta property="og:title" content="${escapeHtml(title)}">
   <meta property="og:description" content="${escapeHtml(description)}">
   <meta property="og:url" content="https://peuterplannen.nl/${slug}/">

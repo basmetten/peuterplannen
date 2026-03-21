@@ -82,7 +82,7 @@ h1 .accent, h2 .accent, h3 .accent {
 
 /* Blog TOC */
 .blog-toc {
-  max-width: 840px;
+  max-width: 680px;
   margin: 0 auto 24px;
   border: none;
   border-radius: var(--pp-radius-sm);
@@ -732,20 +732,21 @@ footer a:hover { color: rgba(var(--pp-surface-rgb),0.85); }
 .blog-card .blog-tag { background: var(--pp-primary-light); color: var(--pp-primary-dark); font-size: var(--pp-text-xs); padding: 3px 10px; border-radius: var(--pp-radius-lg); font-weight: 500; }
 
 /* Blog hero image */
-.blog-hero-img { max-width: 1100px; margin: 80px auto 0; padding: 0 24px; }
-.blog-hero-img img { width: 100%; height: auto; border-radius: var(--pp-radius-md); max-height: 400px; object-fit: cover; }
+.blog-hero-img { max-width: 760px; margin: 80px auto 0; padding: 0 24px; }
+.blog-hero-img img { width: 100%; height: auto; border-radius: 12px; max-height: 400px; object-fit: cover; box-shadow: 0 2px 16px rgba(0,0,0,0.1); }
 
 /* Blog post content */
-.blog-content { max-width: 720px; margin: 0 auto; }
-.blog-content h2 { font-size: var(--pp-text-2xl); color: var(--pp-text); margin: 48px 0 16px; padding-top: 32px; border-top: 2px solid var(--pp-outline-variant); font-weight: 700; letter-spacing: -0.05em; line-height: 1.02; }
-.blog-content h3 { font-size: var(--pp-text-xl); color: var(--pp-text); margin: 28px 0 12px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.06; }
-.blog-content p { font-size: var(--pp-text-base); line-height: 1.85; margin-bottom: 18px; }
-.blog-content ul, .blog-content ol { margin: 0 0 18px 24px; font-size: var(--pp-text-base); line-height: 1.85; }
-.blog-content li { margin-bottom: 6px; }
-.blog-content a { color: var(--pp-primary); }
+.blog-content { max-width: 680px; margin: 0 auto; }
+.blog-content h2 { font-size: var(--pp-text-2xl); color: var(--pp-text); margin: 2em 0 16px; border-left: 3px solid #D4775A; padding-left: 12px; font-weight: 700; letter-spacing: -0.05em; line-height: 1.1; }
+.blog-content h3 { font-size: var(--pp-text-xl); color: var(--pp-text); margin: 1.5em 0 12px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.15; }
+.blog-content p { font-size: var(--pp-text-base); line-height: 1.75; margin-bottom: 1.5em; }
+.blog-content ul, .blog-content ol { margin: 0 0 1.5em 24px; font-size: var(--pp-text-base); line-height: 1.6; }
+.blog-content li { margin-bottom: 8px; }
+.blog-content a { color: #D4775A; text-decoration: none; }
 .blog-content a:hover { text-decoration: underline; }
 .blog-content strong { color: var(--pp-text); }
-.blog-meta { font-size: var(--pp-text-sm); color: var(--pp-text-muted); margin-bottom: 32px; font-family: var(--pp-font-ui); }
+.blog-content img { width: 100%; height: auto; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin: 1.5em 0; }
+.blog-meta { font-size: var(--pp-text-sm); color: var(--pp-text-muted); margin-bottom: 32px; font-family: var(--pp-font-ui); max-width: 680px; margin-left: auto; margin-right: auto; }
 .blog-share { display: flex; gap: 12px; margin: 32px 0; flex-wrap: wrap; }
 .share-btn { padding: var(--pp-space-sm) var(--pp-space-md); border-radius: var(--pp-radius-lg); font-size: var(--pp-text-sm); font-weight: 600; text-decoration: none; cursor: pointer; border: none; font-family: inherit; }
 .share-whatsapp { background: var(--pp-brand-whatsapp); color: white; }
@@ -959,12 +960,15 @@ ins.adsbygoogle:empty { display: none !important; }
 
 /* === Blog article blockquotes === */
 .blog-content blockquote {
-  font-size: 1.2rem;
-  color: var(--pp-primary-600);
-  border-left: 4px solid var(--pp-outline-variant);
+  font-size: 1.1rem;
+  color: var(--pp-text-secondary);
+  border-left: 3px solid #D4775A;
+  background: rgba(212,119,86,0.05);
   padding: 16px 24px;
-  margin: 32px 0;
+  margin: 1.5em 0;
   font-style: italic;
+  border-radius: 0 8px 8px 0;
+  line-height: 1.75;
 }
 
 /* === Checkmark list styling === */
@@ -1184,10 +1188,158 @@ ins.adsbygoogle:empty { display: none !important; }
   .editorial-body li {
     font-size: var(--pp-text-base);
   }
+  /* Blog reading experience — mobile minimum */
+  .blog-content p,
+  .blog-content li {
+    font-size: max(17px, var(--pp-text-base));
+  }
+  .blog-content { padding: 0 4px; }
 }
 @media (max-width: 480px) {
   .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
   .footer-links-row { gap: 12px; }
   .hero { padding: 88px 16px 36px; }
   .hero p { font-size: var(--pp-text-sm); }
+}
+
+/* ============================================================
+   Homepage Visual Polish
+   Additive rules for index.html — hero, cards, sections, footer
+   ============================================================ */
+
+/* --- Hero section enhancements --- */
+.hero-image-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(45,42,38,0.3) 100%);
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.hero-content h1 {
+  text-shadow: 0 1px 2px rgba(45,42,38,0.06);
+}
+
+.hero-cta-primary {
+  padding: 18px 40px;
+  box-shadow: 0 4px 16px rgba(212,119,90,0.3);
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-cta-primary:hover {
+  transform: scale(1.03) translateY(-1px);
+  box-shadow: 0 8px 28px rgba(212,119,90,0.4);
+}
+
+/* --- Section spacing --- */
+.cities-section {
+  padding: 80px 24px;
+}
+
+.blog-preview-section {
+  padding: 80px 24px;
+}
+
+/* --- City/type cards hover polish --- */
+.city-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.city-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--pp-shadow-card-hover);
+}
+
+/* --- Blog preview cards --- */
+.blog-preview-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.blog-preview-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--pp-shadow-card-hover);
+}
+
+/* --- Quick result cards --- */
+.quick-result-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.quick-result-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--pp-shadow-card-hover);
+}
+
+/* --- Entrance animation --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero entrance */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-content {
+    animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .hero-visual {
+    animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+  }
+}
+
+/* --- Footer polish --- */
+footer {
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-brand strong {
+  font-size: var(--pp-text-lg);
+  letter-spacing: -0.01em;
+}
+.footer-bottom {
+  font-size: var(--pp-text-xs);
+  letter-spacing: 0.02em;
+  color: rgba(255,255,255,0.4);
+}
+
+/* --- Newsletter section polish --- */
+.newsletter-signup {
+  box-shadow: 0 8px 32px rgba(212,119,90,0.15);
+}
+.newsletter-signup button {
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.newsletter-signup button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* --- Mobile homepage (390px) --- */
+@media (max-width: 768px) {
+  .cities-section {
+    padding: 48px 20px;
+  }
+
+  .blog-preview-section {
+    padding: 48px 20px;
+  }
+
+  .newsletter-signup {
+    margin: 32px 20px;
+    padding: 28px 20px;
+  }
+
+  .section-title {
+    font-size: var(--pp-text-2xl);
+  }
+
+  .section-sub {
+    font-size: var(--pp-text-sm);
+  }
+
+  .quick-results-section {
+    padding: 24px 20px 0;
+  }
 }

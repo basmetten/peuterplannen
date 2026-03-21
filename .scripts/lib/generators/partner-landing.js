@@ -46,6 +46,7 @@ ${headCommon()}
   <meta name="description" content="Beheer je locatie op PeuterPlannen. Claim je profiel, update je informatie en bereik meer gezinnen met kinderen in jouw regio.">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://peuterplannen.nl/voor-bedrijven/">
+  <meta property="og:site_name" content="PeuterPlannen">
   <meta property="og:title" content="Voor bedrijven \u2014 PeuterPlannen">
   <meta property="og:description" content="Beheer je locatie op PeuterPlannen. Claim je profiel, update je informatie en bereik meer gezinnen met kinderen in jouw regio.">
   <meta property="og:url" content="https://peuterplannen.nl/voor-bedrijven/">

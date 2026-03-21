@@ -1,7 +1,7 @@
 {
   "name": "PeuterPlannen",
   "short_name": "PeuterPlannen",
-  "description": "Vind kindvriendelijke uitjes bij jou in de buurt. 2138 geverifieerde locaties in heel Nederland.",
+  "description": "Ontdek de leukste uitjes voor peuters in heel Nederland",
   "start_url": "/app.html",
   "display": "standalone",
   "background_color": "#FAF7F2",
@@ -10,7 +10,8 @@
   "lang": "nl",
   "categories": [
     "lifestyle",
-    "kids"
+    "family",
+    "travel"
   ],
   "icons": [
     {
@@ -36,6 +37,23 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Amsterdam",
+      "url": "/app.html?city=amsterdam",
+      "icons": [{"src": "/icons/icon-192.png", "sizes": "192x192"}]
+    },
+    {
+      "name": "Rotterdam",
+      "url": "/app.html?city=rotterdam",
+      "icons": [{"src": "/icons/icon-192.png", "sizes": "192x192"}]
+    },
+    {
+      "name": "Utrecht",
+      "url": "/app.html?city=utrecht",
+      "icons": [{"src": "/icons/icon-192.png", "sizes": "192x192"}]
     }
   ]
 }

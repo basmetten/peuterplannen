@@ -422,6 +422,10 @@ function announceState(name) {
         };
         el.textContent = labels[name] || '';
     }
+    // Update aria-expanded on bottom sheet
+    if (sheetEl) {
+        sheetEl.setAttribute('aria-expanded', (name === 'half' || name === 'full') ? 'true' : 'false');
+    }
 }
 
 /* ===================================================
@@ -502,8 +506,12 @@ function initSheetFilterChips() {
     container.querySelectorAll('.sheet-filter-chip').forEach(chip => {
         chip.addEventListener('click', () => {
             const filter = chip.dataset.filter;
-            container.querySelectorAll('.sheet-filter-chip').forEach(c => c.classList.remove('active'));
+            container.querySelectorAll('.sheet-filter-chip').forEach(c => {
+                c.classList.remove('active');
+                c.setAttribute('aria-pressed', 'false');
+            });
             chip.classList.add('active');
+            chip.setAttribute('aria-pressed', 'true');
             state.activeTag = filter;
             state.activeWeather = null;
             bus.emit('data:reload');
@@ -565,6 +573,7 @@ function syncModalChips() {
         else if (action === 'facility') active = !!state.activeFacilities[value];
         else if (action === 'radius')   active = state.activeRadius === parseInt(value, 10);
         chip.classList.toggle('active', active);
+        chip.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
 }
 
@@ -634,8 +643,12 @@ export function initSheetTabs() {
     document.querySelectorAll('.sheet-tab').forEach(tab => {
         tab.addEventListener('click', () => {
             const name = tab.dataset.tab;
-            document.querySelectorAll('.sheet-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.sheet-tab').forEach(t => {
+                t.classList.remove('active');
+                t.setAttribute('aria-selected', 'false');
+            });
             tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
             if (name === 'plan') { bus.emit('view:switch', 'plan'); return; }
             if (name === 'info') { bus.emit('view:switch', 'info'); return; }
             if (name === 'bewaard') {

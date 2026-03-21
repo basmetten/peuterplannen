@@ -435,6 +435,14 @@ function shareNative() {
 </script>`;
   const detailTitle = `${titleBase} — ${typeLabel.toLowerCase()} voor peuters in ${region.name} | PeuterPlannen`;
 
+  // Use location-specific hero image for og:image when available
+  const hasHeroImage = fs.existsSync(path.join(ROOT, 'images', 'locations', region.slug, loc.locSlug, 'hero.webp'));
+  const ogImage = hasHeroImage
+    ? `https://peuterplannen.nl/images/locations/${region.slug}/${loc.locSlug}/hero.jpg`
+    : (TYPE_OG_IMAGE[loc.type] || DEFAULT_OG);
+  const ogImageWidth = hasHeroImage ? '800' : '1200';
+  const ogImageHeight = hasHeroImage ? '533' : '630';
+
   return `<!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -443,14 +451,15 @@ ${headCommon(`\n  <link rel="preconnect" href="https://tiles.openfreemap.org" cr
   <meta name="description" content="${escapeHtml(metaDesc)}">
   <meta name="robots" content="${loc.seoRobots || 'index,follow'}">
   <link rel="canonical" href="${fullUrl}">
+  <meta property="og:site_name" content="PeuterPlannen">
   <meta property="og:title" content="${escapeHtml(detailTitle)}">
   <meta property="og:description" content="${escapeHtml(metaDesc)}">
   <meta property="og:url" content="${fullUrl}">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="nl_NL">
-  <meta property="og:image" content="${TYPE_OG_IMAGE[loc.type] || DEFAULT_OG}">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+  <meta property="og:image" content="${ogImage}">
+  <meta property="og:image:width" content="${ogImageWidth}">
+  <meta property="og:image:height" content="${ogImageHeight}">
   <meta property="og:image:alt" content="${escapeHtml(titleBase)} — peuteruitje in ${escapeHtml(region.name)}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="${escapeHtml(detailTitle)}">

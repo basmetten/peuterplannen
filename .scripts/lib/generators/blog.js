@@ -141,6 +141,7 @@ ${headCommon()}
   <meta name="description" content="${escapeHtml(postDescription)}">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://peuterplannen.nl/blog/${p.slug}/">
+  <meta property="og:site_name" content="PeuterPlannen">
   <meta property="og:title" content="${escapeHtml(postTitle)}">
   <meta property="og:description" content="${escapeHtml(postDescription)}">
   <meta property="og:url" content="https://peuterplannen.nl/blog/${p.slug}/">
@@ -274,6 +275,7 @@ ${headCommon()}
   <meta name="description" content="${escapeHtml(blogIndexDescription)}">
   <link rel="canonical" href="https://peuterplannen.nl/blog/">
   <link rel="alternate" type="application/rss+xml" title="PeuterPlannen Blog" href="https://peuterplannen.nl/blog/feed.xml">
+  <meta property="og:site_name" content="PeuterPlannen">
   <meta property="og:title" content="${escapeHtml(blogIndexTitle)}">
   <meta property="og:description" content="${escapeHtml(blogIndexDescription)}">
   <meta property="og:url" content="https://peuterplannen.nl/blog/">

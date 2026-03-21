@@ -73,7 +73,7 @@ export function renderCompactCard(loc, opts = {}) {
     const styleAttr = extraStyle ? ` style="${extraStyle}"` : '';
     const imgStyleAttr = imgStyle ? ` style="${imgStyle};background:${photoColor}"` : ` style="background:${photoColor}"`;
 
-    return `<div class="compact-card"${styleAttr} data-id="${loc.id}">
+    return `<div class="compact-card" role="listitem"${styleAttr} data-id="${loc.id}">
             <img class="compact-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async"${imgStyleAttr}
                  onerror="this.src='${escapeHtml(categoryImg)}'">
             <div class="compact-card-body">
