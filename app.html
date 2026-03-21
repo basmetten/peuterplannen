@@ -100,7 +100,7 @@
     <link rel="preload" href="/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/plus-jakarta-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/app.bundle.css?v=20260321b">
+    <link rel="stylesheet" href="/app.bundle.css?v=20260321c">
     <script src="/nav-floating.js?v=202603200616" defer></script>
 
 </head>
@@ -190,6 +190,26 @@
             <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
         </div>
     </nav>
+
+    <div class="app-topbar" id="app-topbar">
+        <a href="/" class="app-topbar-logo" aria-label="Home">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>
+        </a>
+        <div class="app-topbar-info">
+            <span class="app-topbar-title">Locaties</span>
+            <span class="app-topbar-count" id="app-topbar-count"></span>
+        </div>
+        <button class="app-topbar-burger" id="app-topbar-burger" aria-label="Menu openen" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="app-topbar-menu" id="app-topbar-menu" aria-hidden="true">
+            <a href="/">Home</a>
+            <a href="/ontdekken/">Ontdekken</a>
+            <a href="/about.html">Over</a>
+            <a href="/blog/">Inspiratie</a>
+            <a href="/contact.html">Contact</a>
+        </div>
+    </div>
 
     <header class="app-context-strip">
         <div class="app-context-copy">

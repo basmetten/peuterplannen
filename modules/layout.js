@@ -237,6 +237,8 @@ function renderMobileList() {
 
     const locations = state.allLocations;
     if (countEl) countEl.textContent = locations.length + ' locaties';
+    const topbarCount = document.getElementById('app-topbar-count');
+    if (topbarCount) topbarCount.textContent = locations.length + ' locaties';
 
     // Render filter chips (Funda-style)
     if (chipContainer) {
@@ -347,7 +349,57 @@ export function initPanelCollapse() {
     });
 }
 
+// App topbar (mobile)
+function initAppTopbar() {
+    const burger = document.getElementById('app-topbar-burger');
+    const menu = document.getElementById('app-topbar-menu');
+    if (!burger || !menu) return;
+
+    burger.addEventListener('click', () => {
+        const open = burger.classList.toggle('open');
+        menu.classList.toggle('open', open);
+        burger.setAttribute('aria-expanded', String(open));
+        menu.setAttribute('aria-hidden', String(!open));
+    });
+
+    menu.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') {
+            burger.classList.remove('open');
+            menu.classList.remove('open');
+            burger.setAttribute('aria-expanded', 'false');
+            menu.setAttribute('aria-hidden', 'true');
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!burger.classList.contains('open')) return;
+        if (!e.target.closest('.app-topbar')) {
+            burger.classList.remove('open');
+            menu.classList.remove('open');
+            burger.setAttribute('aria-expanded', 'false');
+            menu.setAttribute('aria-hidden', 'true');
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && burger.classList.contains('open')) {
+            burger.classList.remove('open');
+            menu.classList.remove('open');
+            burger.setAttribute('aria-expanded', 'false');
+            menu.setAttribute('aria-hidden', 'true');
+        }
+    });
+}
+
+initAppTopbar();
+
 // Bus listeners
 bus.on('view:switch', switchView);
 bus.on('nav:syncdesktop', syncDesktopModeSwitch);
-bus.on('sheet:renderlist', () => { if (isListMode) renderMobileList(); });
+bus.on('sheet:renderlist', () => {
+    if (isListMode) renderMobileList();
+    const topbarCount = document.getElementById('app-topbar-count');
+    if (topbarCount && state.allLocations.length) {
+        topbarCount.textContent = state.allLocations.length + ' locaties';
+    }
+});
