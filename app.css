@@ -737,8 +737,9 @@
           color: var(--pp-text-muted); white-space: nowrap;
         }
         .scan-oneliner {
-          margin: 4px 0 0; font-size: 0.82rem; line-height: 1.4;
+          margin: 4px 0 0; font-size: 0.88rem; line-height: 1.4;
           color: var(--pp-text-secondary);
+          font-family: var(--pp-font-accent); font-style: italic;
           white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         @media (hover: hover) {
@@ -819,7 +820,7 @@
         .card-fav svg { width: var(--pp-icon-md); height: var(--pp-icon-md); stroke-width: 2; transition: all 0.2s; }
 
         .card-name { font-family: var(--pp-font-heading); font-size: var(--pp-text-lg); font-weight: 700; color: var(--pp-text); margin-bottom: 6px; line-height: 1.3; }
-        .card-desc { font-size: var(--pp-text-sm); color: var(--pp-text-secondary); margin-bottom: 14px; line-height: 1.6; }
+        .card-desc { font-size: var(--pp-text-sm); color: var(--pp-text-secondary); margin-bottom: 14px; line-height: 1.6; font-family: var(--pp-font-accent); font-style: italic; }
 
         .card-facilities { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
         .facility { display: flex; align-items: center; gap: 4px; font-size: var(--pp-text-xs); color: var(--pp-text-muted); font-weight: 500; }
@@ -943,7 +944,7 @@
         .loc-sheet-content .card-decision { margin-bottom: 12px; padding: 12px var(--pp-space-md); border-radius: var(--pp-radius-md); background: linear-gradient(135deg, rgba(var(--pp-primary-rgb), 0.12), rgba(255,248,243,0.96)); border: none; }
         .loc-sheet-content .card-decision-label { display: block; margin-bottom: 6px; font-size: var(--pp-text-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pp-primary-dark); }
         .loc-sheet-content .card-decision-title { display: block; margin-bottom: 4px; font-family: var(--pp-font-heading); font-size: var(--pp-text-lg); line-height: 1.08; color: var(--pp-text); }
-        .loc-sheet-content .card-decision-copy { display: block; color: var(--pp-text-secondary); font-size: var(--pp-text-sm); line-height: 1.55; font-weight: 500; }
+        .loc-sheet-content .card-decision-copy { display: block; color: var(--pp-text-secondary); font-size: var(--pp-text-sm); line-height: 1.55; font-weight: 500; font-family: var(--pp-font-accent); font-style: italic; }
         .loc-sheet-content .card-subreasons { display: grid; gap: 8px; margin-bottom: 14px; }
         .loc-sheet-content .card-subreason { padding: 10px 12px; border-radius: var(--pp-radius-sm); background: rgba(255, 248, 243, 0.92); border: none; }
         .loc-sheet-content .card-subreason-label { display: block; margin-bottom: 4px; font-size: var(--pp-text-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pp-text-muted); }
@@ -1534,6 +1535,12 @@
         }
         html.pp-desktop .app-nav-toggle .app-mode-chip:hover:not(.active) { background: rgba(var(--pp-text-rgb), 0.08) !important; color: var(--pp-text) !important; }
 
+        /* Center floating nav over map area (right of 400px sidebar) */
+        html.pp-desktop nav.floating-nav[aria-label="Hoofdnavigatie"] {
+          left: calc(50% + 200px) !important;
+          width: min(800px, calc(100% - 400px - 40px)) !important;
+        }
+
         /* Push map controls away from floating panel */
         html.pp-desktop .maplibregl-ctrl-top-left { left: 416px !important; }
         html.pp-desktop .maplibregl-ctrl-bottom-left { left: 416px !important; }
@@ -1763,3 +1770,33 @@
 }
 
 } /* end @layer layout */
+
+/* ===================================================
+   ACCESSIBILITY — Focus-visible enhancements
+   =================================================== */
+
+.chip:focus-visible,
+.preset-chip:focus-visible,
+.sheet-preset:focus-visible,
+.sheet-filter-chip:focus-visible,
+.filter-modal-chip:focus-visible,
+.sheet-tab:focus-visible,
+.plan-chip:focus-visible,
+.city-chip:focus-visible,
+.list-chip:focus-visible,
+.compact-card:focus-visible,
+.scan-card:focus-visible,
+.map-controls-btn:focus-visible,
+.map-list-toggle:focus-visible,
+.app-mode-chip:focus-visible {
+    outline: 2px solid #D4775A;
+    outline-offset: 2px;
+}
+
+.card-fav:focus-visible,
+.compact-card-fav:focus-visible,
+.list-card-fav:focus-visible {
+    outline: 2px solid #D4775A;
+    outline-offset: 2px;
+    border-radius: 50%;
+}

@@ -40,7 +40,9 @@ function syncSheetTabs(view) {
     const tabMap = { home: 'ontdek', favorites: 'bewaard', plan: 'plan' };
     const tabName = tabMap[view] || 'ontdek';
     document.querySelectorAll('.sheet-tab').forEach(t => {
-        t.classList.toggle('active', t.dataset.tab === tabName);
+        const isActive = t.dataset.tab === tabName;
+        t.classList.toggle('active', isActive);
+        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
     });
 }
 
@@ -355,39 +357,48 @@ function initAppTopbar() {
     const menu = document.getElementById('app-topbar-menu');
     if (!burger || !menu) return;
 
+    // Create backdrop element (matches nav-floating pattern)
+    const backdrop = document.createElement('div');
+    backdrop.className = 'app-topbar-backdrop';
+    document.body.appendChild(backdrop);
+
+    function openMenu() {
+        burger.classList.add('open');
+        menu.classList.add('open');
+        backdrop.classList.add('open');
+        burger.setAttribute('aria-expanded', 'true');
+        menu.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+        burger.classList.remove('open');
+        menu.classList.remove('open');
+        backdrop.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+
     burger.addEventListener('click', () => {
-        const open = burger.classList.toggle('open');
-        menu.classList.toggle('open', open);
-        burger.setAttribute('aria-expanded', String(open));
-        menu.setAttribute('aria-hidden', String(!open));
+        burger.classList.contains('open') ? closeMenu() : openMenu();
     });
 
     menu.addEventListener('click', (e) => {
-        if (e.target.tagName === 'A') {
-            burger.classList.remove('open');
-            menu.classList.remove('open');
-            burger.setAttribute('aria-expanded', 'false');
-            menu.setAttribute('aria-hidden', 'true');
-        }
+        if (e.target.tagName === 'A') closeMenu();
     });
+
+    backdrop.addEventListener('click', closeMenu);
 
     document.addEventListener('click', (e) => {
         if (!burger.classList.contains('open')) return;
-        if (!e.target.closest('.app-topbar')) {
-            burger.classList.remove('open');
-            menu.classList.remove('open');
-            burger.setAttribute('aria-expanded', 'false');
-            menu.setAttribute('aria-hidden', 'true');
+        if (!e.target.closest('.app-topbar') && !e.target.closest('.app-topbar-backdrop')) {
+            closeMenu();
         }
     });
 
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && burger.classList.contains('open')) {
-            burger.classList.remove('open');
-            menu.classList.remove('open');
-            burger.setAttribute('aria-expanded', 'false');
-            menu.setAttribute('aria-hidden', 'true');
-        }
+        if (e.key === 'Escape' && burger.classList.contains('open')) closeMenu();
     });
 }
 
