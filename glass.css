@@ -814,9 +814,16 @@
   /* Hide map-list-toggle FAB — replaced by bottom nav */
   .map-list-toggle { display: none !important; }
 
-  /* Hide top navbar on mobile — bottom nav provides navigation, reclaim ~60px */
-  .pp-mobile-map .app-context-strip,
-  .pp-mobile-map nav.floating-nav { display: none !important; }
+  /* Hide top navbar on mobile — app-topbar replaces it */
+  .app-context-strip,
+  nav.floating-nav { display: none !important; }
+
+  /* Shared topbar dimensions — referenced by map-controls, filter-chips, list-view */
+  :root {
+    --pp-app-topbar-height: 52px;
+    --pp-app-topbar-top: max(10px, env(safe-area-inset-top, 0px));
+    --pp-app-topbar-clearance: calc(var(--pp-app-topbar-height) + var(--pp-app-topbar-top) + 10px);
+  }
 
   /* Lock viewport: no scrolling, only fixed layers visible */
   html.pp-mobile-map,
@@ -1585,48 +1592,50 @@
      ============================================ */
   .app-topbar {
     position: fixed;
-    top: 0; left: 0; right: 0;
-    height: calc(44px + env(safe-area-inset-top, 0px));
-    padding-top: env(safe-area-inset-top, 0px);
+    top: var(--pp-app-topbar-top);
+    left: 8px;
+    right: 8px;
+    min-height: var(--pp-app-topbar-height);
     display: flex;
     align-items: center;
     gap: 10px;
-    padding-left: 14px;
-    padding-right: 6px;
-    background: rgba(255, 252, 249, 0.82);
-    backdrop-filter: blur(20px) saturate(150%);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-    box-shadow: 0 1px 8px rgba(80, 50, 30, 0.08),
-                inset 0 -0.5px 0 rgba(80, 50, 30, 0.06);
+    padding: 10px 14px;
+    background: var(--pp-nav-mobile-bg, rgba(250, 247, 242, 0.92));
+    backdrop-filter: var(--wg-blur-heavy, blur(24px) saturate(140%));
+    -webkit-backdrop-filter: var(--wg-blur-heavy, blur(24px) saturate(140%));
+    border-radius: var(--pp-nav-radius-mobile, 20px);
+    box-shadow: var(--pp-nav-mobile-shadow, 0 8px 32px rgba(27, 28, 27, 0.12));
     z-index: 1100;
   }
   .app-topbar-logo {
     flex-shrink: 0;
-    width: 28px; height: 28px;
+    width: 34px; height: 34px;
     display: block;
   }
   .app-topbar-logo svg {
-    width: 28px; height: 28px;
-    border-radius: 6px;
+    width: 34px; height: 34px;
+    border-radius: 8px;
   }
   .app-topbar-info {
     flex: 1;
     min-width: 0;
     display: flex;
-    align-items: baseline;
-    gap: 8px;
+    flex-direction: column;
+    gap: 1px;
   }
   .app-topbar-title {
     font-family: var(--pp-font-heading, 'Newsreader', Georgia, serif);
-    font-size: 1.1rem;
+    font-size: var(--pp-text-base, 1rem);
     font-weight: 700;
     color: var(--wg-text-primary, #3A2F2C);
     letter-spacing: -0.01em;
+    line-height: 1.2;
   }
   .app-topbar-count {
-    font-size: 0.78rem;
+    font-size: var(--pp-text-xs, 0.75rem);
     font-weight: 500;
     color: var(--wg-text-muted, #8B7355);
+    line-height: 1.2;
   }
 
   /* Burger button */
@@ -1640,13 +1649,18 @@
     gap: 5px;
     background: none;
     border: none;
+    border-radius: var(--pp-radius-xs, 8px);
     cursor: pointer;
     padding: 0;
     -webkit-tap-highlight-color: transparent;
+    transition: background 0.2s;
+  }
+  .app-topbar-burger:hover {
+    background: var(--pp-primary-light, #FDF1ED);
   }
   .app-topbar-burger span {
     display: block;
-    width: 20px; height: 2px;
+    width: 22px; height: 2px;
     background: var(--wg-text-primary, #3A2F2C);
     border-radius: 1px;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -1662,25 +1676,25 @@
     transform: translateY(-7px) rotate(-45deg);
   }
 
-  /* Dropdown menu */
+  /* Dropdown menu — matches nav-mobile styling */
   .app-topbar-menu {
     position: absolute;
-    top: calc(100% + 6px);
-    left: 12px; right: 12px;
-    background: rgba(255, 252, 249, 0.92);
-    backdrop-filter: blur(24px) saturate(150%);
-    -webkit-backdrop-filter: blur(24px) saturate(150%);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(80, 50, 30, 0.12),
-                0 2px 8px rgba(80, 50, 30, 0.06),
-                inset 0 0.5px 0 rgba(255, 255, 255, 0.6);
-    padding: 8px 0;
+    top: calc(100% + 10px);
+    left: 8px; right: 8px;
+    background: var(--pp-nav-mobile-bg, rgba(250, 247, 242, 0.92));
+    backdrop-filter: var(--wg-blur-heavy, blur(24px) saturate(140%));
+    -webkit-backdrop-filter: var(--wg-blur-heavy, blur(24px) saturate(140%));
+    border-radius: var(--pp-nav-radius-mobile, 20px);
+    box-shadow: var(--pp-nav-mobile-shadow, 0 8px 32px rgba(27, 28, 27, 0.12));
+    padding: 10px 12px 12px;
     opacity: 0;
     transform: translateY(-6px);
     pointer-events: none;
     transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
                 transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1101;
+    overflow: hidden;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
   }
   .app-topbar-menu.open {
     opacity: 1;
@@ -1689,21 +1703,41 @@
   }
   .app-topbar-menu a {
     display: block;
-    padding: 12px 20px;
+    padding: 13px 16px;
     font-family: var(--pp-font-body, system-ui, sans-serif);
-    font-size: 0.95rem;
+    font-size: var(--pp-text-base, 1rem);
     font-weight: 500;
-    color: var(--wg-text-primary, #3A2F2C);
+    color: var(--pp-text, #2D2926);
     text-decoration: none;
-    transition: background 0.15s ease;
+    border-radius: var(--pp-radius-sm, 16px);
+    transition: background 0.15s ease, color 0.15s ease;
   }
+  .app-topbar-menu a:hover,
   .app-topbar-menu a:active {
-    background: rgba(212, 119, 90, 0.08);
+    background: var(--pp-primary-light, #FDF1ED);
+    color: var(--pp-primary, #D4775A);
+    font-weight: 600;
+  }
+
+  /* Backdrop overlay — matches nav-backdrop */
+  .app-topbar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(var(--pp-primary-rgb, 212, 119, 90), 0.12);
+    backdrop-filter: blur(6px) saturate(140%);
+    -webkit-backdrop-filter: blur(6px) saturate(140%);
+    z-index: 1099;
+    pointer-events: none;
+  }
+  .app-topbar-backdrop.open {
+    display: block;
+    pointer-events: auto;
   }
 
   /* Adjust map-controls to clear topbar */
   .map-controls {
-    top: calc(44px + env(safe-area-inset-top, 0px) + 10px) !important;
+    top: var(--pp-app-topbar-clearance) !important;
   }
 
   /* Hide list-header — topbar replaces it */
@@ -1713,12 +1747,12 @@
 
   /* Adjust list-view padding for topbar */
   .mobile-list-view {
-    padding-top: calc(44px + env(safe-area-inset-top, 0px)) !important;
+    padding-top: var(--pp-app-topbar-clearance) !important;
   }
 
   /* Filter chips stick below topbar */
   .list-filter-chips {
-    top: calc(44px + env(safe-area-inset-top, 0px)) !important;
+    top: var(--pp-app-topbar-clearance) !important;
   }
 }
 

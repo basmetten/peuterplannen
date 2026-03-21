@@ -349,45 +349,49 @@ export function initPanelCollapse() {
     });
 }
 
-// App topbar (mobile)
+// App topbar (mobile) — floating pill with backdrop overlay
 function initAppTopbar() {
     const burger = document.getElementById('app-topbar-burger');
     const menu = document.getElementById('app-topbar-menu');
     if (!burger || !menu) return;
+
+    // Create backdrop overlay (matching nav-floating.js pattern)
+    const backdrop = document.createElement('div');
+    backdrop.className = 'app-topbar-backdrop';
+    backdrop.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(backdrop);
+
+    function closeMenu() {
+        burger.classList.remove('open');
+        menu.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        backdrop.classList.remove('open');
+        document.body.style.overflow = '';
+    }
 
     burger.addEventListener('click', () => {
         const open = burger.classList.toggle('open');
         menu.classList.toggle('open', open);
         burger.setAttribute('aria-expanded', String(open));
         menu.setAttribute('aria-hidden', String(!open));
+        backdrop.classList.toggle('open', open);
+        document.body.style.overflow = open ? 'hidden' : '';
     });
 
     menu.addEventListener('click', (e) => {
-        if (e.target.tagName === 'A') {
-            burger.classList.remove('open');
-            menu.classList.remove('open');
-            burger.setAttribute('aria-expanded', 'false');
-            menu.setAttribute('aria-hidden', 'true');
-        }
+        if (e.target.tagName === 'A') closeMenu();
     });
+
+    backdrop.addEventListener('click', closeMenu);
 
     document.addEventListener('click', (e) => {
         if (!burger.classList.contains('open')) return;
-        if (!e.target.closest('.app-topbar')) {
-            burger.classList.remove('open');
-            menu.classList.remove('open');
-            burger.setAttribute('aria-expanded', 'false');
-            menu.setAttribute('aria-hidden', 'true');
-        }
+        if (!e.target.closest('.app-topbar')) closeMenu();
     });
 
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && burger.classList.contains('open')) {
-            burger.classList.remove('open');
-            menu.classList.remove('open');
-            burger.setAttribute('aria-expanded', 'false');
-            menu.setAttribute('aria-hidden', 'true');
-        }
+        if (e.key === 'Escape' && burger.classList.contains('open')) closeMenu();
     });
 }
 
