@@ -49,7 +49,7 @@ function computeRestPoints() {
     const vh = window.innerHeight;
     restPoints = {
         hidden: vh + 20,
-        peek:   vh - 280,
+        peek:   vh - 160,  // compact peek: handle + search + presets only
         half:   Math.round(vh * 0.45),
         full:   getSafeAreaTop()
     };
@@ -75,6 +75,7 @@ export function initSheet() {
 
     // Cache morph targets
     morphEls.filterChips = document.getElementById('sheet-filter-chips');
+    morphEls.tabs        = document.getElementById('sheet-tabs');
     morphEls.meta        = document.querySelector('.sheet-meta');
     morphEls.forecast    = document.getElementById('sheet-forecast');
     morphEls.weekPicks   = document.getElementById('sheet-week-picks');
@@ -169,12 +170,13 @@ function applyMorphs(y) {
     sheetEl.style.right  = insetLR + 'px';
     sheetEl.style.bottom = insetBot + 'px';
 
-    // --- Child morphs (staggered fade-in) ---
-    setMorphOpacity(morphEls.filterChips, clamp((p1 - 0.10) / 0.50));
-    setMorphOpacity(morphEls.meta,        clamp((p1 - 0.15) / 0.40));
-    setMorphOpacity(morphEls.forecast,    clamp((p1 - 0.25) / 0.50));
-    setMorphOpacity(morphEls.weekPicks,   clamp((p1 - 0.20) / 0.50));
-    setMorphOpacity(morphEls.list,        clamp((p1 - 0.15) / 0.60));
+    // --- Child morphs (staggered fade-in as sheet rises) ---
+    setMorphOpacity(morphEls.tabs,        clamp((p1 - 0.02) / 0.20)); // tabs appear very early
+    setMorphOpacity(morphEls.filterChips, clamp((p1 - 0.08) / 0.40));
+    setMorphOpacity(morphEls.meta,        clamp((p1 - 0.12) / 0.35));
+    setMorphOpacity(morphEls.forecast,    clamp((p1 - 0.20) / 0.45));
+    setMorphOpacity(morphEls.weekPicks,   clamp((p1 - 0.18) / 0.45));
+    setMorphOpacity(morphEls.list,        clamp((p1 - 0.12) / 0.50));
 
     // --- Content scroll ---
     const canScroll = p1 > 0.35;
