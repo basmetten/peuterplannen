@@ -211,7 +211,12 @@ export function toggleMapList() {
         listView?.classList.add('active');
         if (sheet) sheet.style.display = 'none';
         if (controls) controls.style.zIndex = '1001';
-        renderMobileList();
+        // If data hasn't loaded yet, trigger fetch; bus listener will render when ready
+        if (state.allLocations.length === 0) {
+            loadLocations();
+        } else {
+            renderMobileList();
+        }
         bus.emit('hash:update', 'list');
     } else {
         // Show map + sheet, hide list, restore controls z-index
@@ -252,9 +257,19 @@ function renderMobileList() {
                 state.activeTag = chip.dataset.filter;
                 state.activeWeather = null;
                 bus.emit('data:reload');
-                setTimeout(renderMobileList, 100);
             });
         });
+    }
+
+    // Empty state
+    if (locations.length === 0) {
+        content.innerHTML = `<div class="list-empty-state">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(140,110,100,0.35)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <div class="list-empty-title">Geen locaties gevonden</div>
+            <div class="list-empty-sub">Probeer een ander filter of bekijk alle locaties</div>
+            <button class="list-empty-btn" onclick="document.querySelector('.list-chip[data-filter=all]')?.click()">Toon alles</button>
+        </div>`;
+        return;
     }
 
     const TYPE_LABELS = { play: 'Speeltuin', farm: 'Boerderij', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', swim: 'Zwemmen', pancake: 'Pannenkoeken' };
@@ -263,6 +278,7 @@ function renderMobileList() {
     const html = locations.slice(0, 60).map(loc => {
         const { imgSrc, categoryImg, photoColor } = getPhotoData(loc);
         const score = computePeuterScore(loc);
+        const scoreClass = score >= 8 ? 'score-high' : score >= 5 ? 'score-mid' : 'score-low';
         const typeLabel = TYPE_LABELS[loc.type] || loc.type;
         const weatherLabel = WEATHER_LABELS[loc.weather] || '';
         const isFav = isFavorite(loc.id);
@@ -290,7 +306,7 @@ function renderMobileList() {
                 <div class="list-card-pills">${pillsHtml}</div>
             </div>
             <div class="list-card-side">
-                <div class="list-card-score">${score}</div>
+                <div class="list-card-score ${scoreClass}">${score}</div>
                 <button class="list-card-fav" onclick="event.stopPropagation();toggleFavorite(${loc.id},this)" aria-label="${isFav ? 'Verwijder' : 'Bewaar'}">
                     <svg viewBox="0 0 24 24" style="${favStyle}"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 </button>
@@ -334,3 +350,4 @@ export function initPanelCollapse() {
 // Bus listeners
 bus.on('view:switch', switchView);
 bus.on('nav:syncdesktop', syncDesktopModeSwitch);
+bus.on('sheet:renderlist', () => { if (isListMode) renderMobileList(); });
