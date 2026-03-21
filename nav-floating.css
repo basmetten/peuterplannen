@@ -11,10 +11,10 @@
   --pp-nav-bg: rgba(var(--pp-bg-rgb), 0.86);
   --pp-nav-bg-scrolled: rgba(var(--pp-bg-rgb), 0.96);
   --pp-nav-border: rgba(var(--pp-primary-rgb), 0.18);
-  --pp-nav-shadow: 0 10px 32px rgba(var(--pp-text-rgb), 0.12), inset 0 1px 0 rgba(var(--pp-surface-rgb), 0.8);
-  --pp-nav-shadow-scrolled: 0 8px 30px rgba(var(--pp-text-rgb), 0.16), inset 0 1px 0 rgba(var(--pp-surface-rgb), 0.9);
-  --pp-nav-mobile-bg: var(--wg-glass-panel, rgba(250, 247, 242, 0.85));
-  --pp-nav-mobile-shadow: 0 8px 32px rgba(27, 28, 27, 0.12);
+  --pp-nav-shadow: 0 8px 24px rgba(45, 41, 38, 0.08), 0 2px 8px rgba(45, 41, 38, 0.04), inset 0 1px 0 rgba(var(--pp-surface-rgb), 0.8);
+  --pp-nav-shadow-scrolled: 0 6px 20px rgba(45, 41, 38, 0.12), 0 2px 6px rgba(45, 41, 38, 0.05), inset 0 1px 0 rgba(var(--pp-surface-rgb), 0.9);
+  --pp-nav-mobile-bg: var(--wg-glass-panel, rgba(252, 249, 247, 0.90));
+  --pp-nav-mobile-shadow: 0 8px 24px rgba(45, 41, 38, 0.10);
 }
 
 nav.floating-nav[aria-label="Hoofdnavigatie"] {
@@ -150,32 +150,38 @@ nav.floating-nav .nav-burger {
   display: none;
   flex-direction: column;
   justify-content: center;
-  gap: 5px;
+  gap: 4px;
   cursor: pointer;
   background: none;
   border: none;
-  padding: 8px;
+  padding: 10px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: var(--pp-radius-xs);
-  transition: background 0.2s;
+  transition: background 0.2s ease;
 }
 
 nav.floating-nav .nav-burger:hover {
   background: var(--pp-primary-light);
 }
 
+nav.floating-nav .nav-burger:active {
+  background: rgba(var(--pp-primary-rgb), 0.12);
+}
+
 nav.floating-nav .nav-burger span {
   display: block;
-  width: 22px;
+  width: 20px;
   height: 2px;
   background: var(--pp-text);
-  border-radius: 2px;
-  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+  border-radius: 1px;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
   transform-origin: center;
 }
 
-nav.floating-nav .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+nav.floating-nav .nav-burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
 nav.floating-nav .nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-nav.floating-nav .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+nav.floating-nav .nav-burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
 nav.floating-nav .nav-mobile {
   display: none;
@@ -295,22 +301,22 @@ nav.floating-nav .nav-cta:hover {
   nav.floating-nav .nav-mobile {
     display: flex;
     position: absolute;
-    top: calc(100% + 10px);
-    left: 8px;
-    right: 8px;
-    background: rgba(250, 247, 242, 0.92);
-    backdrop-filter: blur(24px) saturate(140%);
-    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    top: calc(100% + 8px);
+    left: 12px;
+    right: 12px;
+    background: rgba(252, 249, 247, 0.94);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
     border: none;
-    border-radius: 20px;
-    padding: 10px 12px 12px;
+    border-radius: var(--pp-nav-radius-mobile, 20px);
+    padding: 8px;
     flex-direction: column;
     gap: 2px;
     opacity: 0;
-    transform: translateY(-6px);
-    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(-8px) scale(0.98);
+    transition: opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1), transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
     pointer-events: none;
-    box-shadow: 0 8px 32px rgba(27, 28, 27, 0.12);
+    box-shadow: 0 8px 24px rgba(45, 41, 38, 0.10), 0 2px 8px rgba(45, 41, 38, 0.04);
     overflow: hidden;
     /* Force Safari to clip backdrop-filter to border-radius */
     -webkit-mask-image: -webkit-radial-gradient(white, black);
@@ -318,7 +324,7 @@ nav.floating-nav .nav-cta:hover {
 
   nav.floating-nav .nav-mobile.open {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     pointer-events: auto;
   }
 
@@ -341,12 +347,12 @@ nav.floating-nav .nav-cta:hover {
   /* Dropdown menu links */
   nav.floating-nav .nav-mobile-link {
     display: block;
-    padding: 13px 16px;
+    padding: 14px 16px;
     color: var(--pp-text, #2D2926);
     text-decoration: none;
     font-size: var(--pp-text-base, 1rem);
     font-weight: 500;
-    border-radius: var(--pp-radius-sm, 16px);
+    border-radius: var(--pp-radius-xs, 10px);
     transition: background 0.15s ease, color 0.15s ease;
   }
 
@@ -360,7 +366,7 @@ nav.floating-nav .nav-cta:hover {
   /* CTA in dropdown */
   nav.floating-nav .nav-mobile-cta {
     display: block;
-    margin-top: 10px;
+    margin-top: 8px;
     text-align: center;
   }
 

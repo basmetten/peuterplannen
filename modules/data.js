@@ -23,6 +23,17 @@ function stopAutoRetry() {
     if (autoRetryInterval) { clearInterval(autoRetryInterval); autoRetryInterval = null; }
 }
 
+/** Fade out skeleton cards, then hide the loader */
+function fadeOutLoader(loader) {
+    const skeletons = loader.querySelector('.skeleton-cards');
+    if (skeletons) {
+        skeletons.classList.add('is-hiding');
+        setTimeout(() => loader.classList.add('hidden'), 300);
+    } else {
+        loader.classList.add('hidden');
+    }
+}
+
 // === IndexedDB Cache ===
 function openLocationsCacheDb() {
     return new Promise((resolve, reject) => {
@@ -221,7 +232,7 @@ export async function loadLocations() {
         if (state.allLocations.length === 0) {
             loader.classList.add('hidden');
             if (state.activeTag === 'favorites') {
-                container.innerHTML = '<div class="favorites-empty"><svg viewBox="0 0 24 24" style="width:48px;height:48px;stroke:#D4775A;fill:none;stroke-width:1.5;margin-bottom:16px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><strong>Nog geen favorieten</strong><p>Tik op het hartje bij een locatie om deze hier te bewaren.</p></div>';
+                container.innerHTML = '<div class="favorites-empty"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><strong>Nog geen favorieten</strong><p>Tik op het hartje bij een locatie om \u2019m hier te bewaren. Zo houd je de leukste plekken bij de hand.</p><button class="fav-empty-cta" onclick="document.querySelector(\'.sheet-tab[data-tab=ontdek], .chip\')?.click();if(typeof switchView===\'function\')switchView(\'home\')">Ontdek locaties</button></div>';
             } else {
                 const suggestions = [];
                 if (state.activePreset) suggestions.push('Probeer een andere situatie');
@@ -231,7 +242,7 @@ export async function loadLocations() {
                 const suggestHTML = suggestions.length ? '<ul style="text-align:left;margin:12px auto;max-width:280px;padding-left:20px;">' + suggestions.map(s => '<li>' + s + '</li>').join('') + '</ul>' : '';
                 container.innerHTML = '<div class="no-results"><strong>Geen locaties gevonden</strong>' + suggestHTML + '<button class="gps-onboarding-btn" onclick="resetAllFilters()" style="margin-top:12px;">Alle filters wissen</button></div>';
             }
-            bus.emit('map:update', []); updateResultsCount(0); return;
+            bus.emit('map:update', []); bus.emit('sheet:renderlist', [], {}); updateResultsCount(0); return;
         }
 
         if (state.userLocation) {
@@ -246,7 +257,7 @@ export async function loadLocations() {
                 });
             }
             applyActiveSort();
-            loader.classList.add('hidden');
+            fadeOutLoader(loader);
             bus.emit('cards:render', state.allLocations, travelTimes);
             bus.emit('sheet:renderlist', state.allLocations, travelTimes);
             bus.emit('sheet:updatemeta');
@@ -256,7 +267,7 @@ export async function loadLocations() {
             state.lastTravelTimes = {};
             state.allLocations.sort((a, b) => (a.distance_from_city_center_km || 999) - (b.distance_from_city_center_km || 999));
             applyActiveSort();
-            loader.classList.add('hidden');
+            fadeOutLoader(loader);
             bus.emit('cards:render', state.allLocations, {});
             bus.emit('sheet:renderlist', state.allLocations, {});
             bus.emit('sheet:updatemeta');

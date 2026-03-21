@@ -105,7 +105,7 @@
     <link rel="preload" href="/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/plus-jakarta-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/app.bundle.css?v=20260321c">
+    <link rel="stylesheet" href="/app.bundle.css?v=20260322a">
     <script src="/nav-floating.js?v=202603200616" defer></script>
 
 </head>
@@ -323,13 +323,13 @@
                 <button class="chip active" onclick="toggleTag('all', event)" aria-selected="true">Alles</button>
                 <button class="chip" onclick="toggleTag('favorites', event)" aria-selected="false">Favorieten</button>
                 <span class="chip-label">Type:</span>
-                <button class="chip" onclick="toggleTag('play', event)" aria-selected="false">Speeltuin</button>
-                <button class="chip" onclick="toggleTag('farm', event)" aria-selected="false">Boerderij</button>
-                <button class="chip" onclick="toggleTag('nature', event)" aria-selected="false">Natuur</button>
-                <button class="chip" onclick="toggleTag('museum', event)" aria-selected="false">Museum</button>
-                <button class="chip" onclick="toggleTag('swim', event)" aria-selected="false">Zwemmen</button>
-                <button class="chip" onclick="toggleTag('pancake', event)" aria-selected="false">Pannenkoeken</button>
-                <button class="chip" onclick="toggleTag('horeca', event)" aria-selected="false">Horeca</button>
+                <button class="chip" data-type="play" onclick="toggleTag('play', event)" aria-selected="false">Speeltuin</button>
+                <button class="chip" data-type="farm" onclick="toggleTag('farm', event)" aria-selected="false">Boerderij</button>
+                <button class="chip" data-type="nature" onclick="toggleTag('nature', event)" aria-selected="false">Natuur</button>
+                <button class="chip" data-type="museum" onclick="toggleTag('museum', event)" aria-selected="false">Museum</button>
+                <button class="chip" data-type="swim" onclick="toggleTag('swim', event)" aria-selected="false">Zwemmen</button>
+                <button class="chip" data-type="pancake" onclick="toggleTag('pancake', event)" aria-selected="false">Pannenkoeken</button>
+                <button class="chip" data-type="horeca" onclick="toggleTag('horeca', event)" aria-selected="false">Horeca</button>
                 <span class="chip-label">Weer:</span>
                 <button class="chip" onclick="toggleWeather('indoor', event)" aria-selected="false">Binnen</button>
                 <button class="chip" onclick="toggleWeather('outdoor', event)" aria-selected="false">Buiten</button>
@@ -387,9 +387,9 @@
         <div id="results-container" class="results-list" role="feed" aria-label="Locaties"></div>
         <div id="loader" class="loader" role="status" aria-label="Laden">
             <div class="skeleton-cards">
-                <article class="loc-card skeleton-card"><div class="loc-img pp-skeleton pp-skeleton-img"></div><div class="card-body"><div class="pp-skeleton pp-skeleton-title"></div><div class="pp-skeleton pp-skeleton-text"></div><div class="pp-skeleton pp-skeleton-text"></div></div></article>
-                <article class="loc-card skeleton-card"><div class="loc-img pp-skeleton pp-skeleton-img"></div><div class="card-body"><div class="pp-skeleton pp-skeleton-title"></div><div class="pp-skeleton pp-skeleton-text"></div><div class="pp-skeleton pp-skeleton-text"></div></div></article>
-                <article class="loc-card skeleton-card"><div class="loc-img pp-skeleton pp-skeleton-img"></div><div class="card-body"><div class="pp-skeleton pp-skeleton-title"></div><div class="pp-skeleton pp-skeleton-text"></div><div class="pp-skeleton pp-skeleton-text"></div></div></article>
+                <article class="loc-card scan-card skeleton-card"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-header"><div class="skel-title skeleton"></div><div class="skel-distance skeleton"></div></div><div class="skel-oneliner skeleton"></div></div></article>
+                <article class="loc-card scan-card skeleton-card"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-header"><div class="skel-title skeleton"></div><div class="skel-distance skeleton"></div></div><div class="skel-oneliner skeleton"></div></div></article>
+                <article class="loc-card scan-card skeleton-card"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-header"><div class="skel-title skeleton"></div><div class="skel-distance skeleton"></div></div><div class="skel-oneliner skeleton"></div></div></article>
             </div>
         </div>
         <div id="error" class="error-msg hidden" role="alert"></div>
@@ -578,7 +578,7 @@
                 </div>
             </div>
 
-            <button class="plan-generate-btn" id="plan-gen-btn" onclick="generatePlan()">✨ Maak mijn dagplan</button>
+            <button class="plan-generate-btn" id="plan-gen-btn" onclick="generatePlan()">Maak mijn dagplan</button>
         </div>
         </div>
         </div>
@@ -694,8 +694,6 @@
                 <p>PeuterPlannen combineert actuele weerdata, jouw locatie en de leeftijd van je kinderen om de meest geschikte uitjes naar boven te halen. Alle 2138 locaties zijn handmatig geverifieerd — niet gegenereerd door een chatbot.</p>
             </div>
 
-            <button class="btn btn-detail" onclick="clearAllPrefs()" style="width:100%;margin-bottom:20px;">Wis mijn voorkeuren</button>
-
             <div class="info-links">
                 <a href="about.html" class="info-link">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
@@ -709,6 +707,14 @@
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
                     <div>Homepage<br><span>Bekijk alle steden en categorieën</span></div>
                 </a>
+            </div>
+
+            <div class="info-prefs-section">
+                <button class="info-clear-btn" onclick="clearAllPrefs()">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    Wis mijn voorkeuren
+                </button>
+                <p class="info-version">PeuterPlannen v2.4 &middot; 2138 locaties &middot; 22 regio's</p>
             </div>
         </div>
     </div>
@@ -772,12 +778,12 @@
                 <!-- Inline filter chips (shown when search expanded) -->
                 <div class="sheet-filter-chips" id="sheet-filter-chips" role="toolbar" aria-label="Filter op type">
                     <button class="sheet-filter-chip active" data-filter="all" aria-pressed="true">Alles</button>
-                    <button class="sheet-filter-chip" data-filter="play" aria-pressed="false">Speeltuin</button>
-                    <button class="sheet-filter-chip" data-filter="farm" aria-pressed="false">Boerderij</button>
-                    <button class="sheet-filter-chip" data-filter="nature" aria-pressed="false">Natuur</button>
-                    <button class="sheet-filter-chip" data-filter="museum" aria-pressed="false">Museum</button>
-                    <button class="sheet-filter-chip" data-filter="horeca" aria-pressed="false">Horeca</button>
-                    <button class="sheet-filter-chip" data-filter="swim" aria-pressed="false">Zwemmen</button>
+                    <button class="sheet-filter-chip" data-filter="play" data-type="play" aria-pressed="false">Speeltuin</button>
+                    <button class="sheet-filter-chip" data-filter="farm" data-type="farm" aria-pressed="false">Boerderij</button>
+                    <button class="sheet-filter-chip" data-filter="nature" data-type="nature" aria-pressed="false">Natuur</button>
+                    <button class="sheet-filter-chip" data-filter="museum" data-type="museum" aria-pressed="false">Museum</button>
+                    <button class="sheet-filter-chip" data-filter="horeca" data-type="horeca" aria-pressed="false">Horeca</button>
+                    <button class="sheet-filter-chip" data-filter="swim" data-type="swim" aria-pressed="false">Zwemmen</button>
                     <button class="sheet-filter-chip" data-filter="favorites" aria-pressed="false">Favorieten</button>
                     <button class="sheet-filter-chip sheet-filter-more" id="sheet-filter-more-btn" aria-label="Meer filters">Meer <span class="filter-more-badge" id="filter-more-badge"></span></button>
                 </div>
@@ -865,7 +871,7 @@
       // animate(el, { transform: '...' }, { type: 'spring', stiffness: 300, damping: 30 })
       window._motionMini = { animate };
     </script>
-    <script type="module" src="app.bundle.js?v=20260321b"></script>
+    <script type="module" src="app.bundle.js?v=20260322a"></script>
 
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>

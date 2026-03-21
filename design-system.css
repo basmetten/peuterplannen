@@ -99,12 +99,12 @@
   --pp-bg-muted: #f0e8dc;
   --pp-surface: #FFFFFF;
   --pp-surface-hover: #FEFCF9;
-  --pp-surface-neutral: #f0f0f0;
+  --pp-surface-neutral: #ede8e4;
   --pp-surface-container-low: #f6f3f1;
   --pp-surface-container-highest: #e5e2e0;
   --pp-surface-tint: rgba(212, 119, 90, 0.18);
   --pp-secondary-container: #ebe1d8;
-  --pp-outline-variant: rgba(27, 28, 27, 0.12);
+  --pp-outline-variant: rgba(212, 119, 86, 0.10);
   --pp-border: rgba(212, 119, 90, 0.15);
   --pp-border-strong: rgba(212, 119, 90, 0.3);
 
@@ -321,9 +321,9 @@ p, li {
   color: var(--pp-text);
 }
 .loc-img.pp-skeleton {
-  background: linear-gradient(110deg, var(--pp-bg) 30%, var(--pp-bg-warm) 50%, var(--pp-bg) 70%);
-  background-size: 200% 100%;
-  animation: pp-shimmer 1.5s ease-in-out infinite;
+  background: linear-gradient(90deg, var(--pp-primary-50) 0%, rgba(212, 119, 90, 0.06) 40%, var(--pp-primary-50) 80%);
+  background-size: 300% 100%;
+  animation: pp-shimmer 1.8s ease-in-out infinite;
 }
 .loc-img--fallback {
   background: linear-gradient(135deg, var(--pp-bg-warm) 0%, var(--pp-primary-50) 100%);
@@ -337,6 +337,7 @@ p, li {
   width: var(--pp-icon-xl);
   height: var(--pp-icon-xl);
   opacity: 0.4;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23B35D42' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
 /* === Location Hero Image === */

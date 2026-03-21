@@ -64,20 +64,28 @@ export function initMap() {
                 'circle-color': '#D4775A',
                 'circle-radius': [
                     'step', ['get', 'point_count'],
-                    15,      // default (small clusters)
-                    10, 18,  // 10+ locations
-                    50, 22,  // 50+ locations
-                    100, 28, // 100+ locations
-                    200, 34  // 200+ locations
+                    14,      // default (small clusters)
+                    10, 16,  // 10+ locations
+                    50, 19,  // 50+ locations
+                    100, 22, // 100+ locations
+                    200, 26  // 200+ locations
                 ],
-                'circle-stroke-width': 2, 'circle-stroke-color': '#ffffff'
+                'circle-opacity': 0.92,
+                'circle-stroke-width': 2.5, 'circle-stroke-color': '#ffffff'
             }
         });
 
         state.mapInstance.addLayer({
             id: 'cluster-count', type: 'symbol', source: 'locations',
             filter: ['has', 'point_count'],
-            layout: { 'text-field': '{point_count_abbreviated}', 'text-size': 13, 'text-font': ['Noto Sans Regular'] },
+            layout: {
+                'text-field': '{point_count_abbreviated}',
+                'text-size': [
+                    'step', ['get', 'point_count'],
+                    12, 10, 12, 50, 13, 100, 14
+                ],
+                'text-font': ['Noto Sans Bold']
+            },
             paint: { 'text-color': '#ffffff' }
         });
 
@@ -86,11 +94,14 @@ export function initMap() {
             filter: ['!', ['has', 'point_count']],
             paint: {
                 'circle-color': ['match', ['get', 'type'],
-                    'play', '#6B9590', 'farm', '#8B7355', 'nature', '#4A7A76',
-                    'horeca', '#D4775A', 'museum', '#8B6688', 'swim', '#5B9EC4', 'pancake', '#E8B870',
+                    'play', '#52B788', 'farm', '#8B6F47', 'nature', '#2D6A4F',
+                    'horeca', '#E76F51', 'museum', '#7B2D8B', 'swim', '#2196F3', 'pancake', '#E9C46A',
                     '#D4775A'
                 ],
-                'circle-radius': 9, 'circle-stroke-width': 2.5, 'circle-stroke-color': '#ffffff'
+                'circle-radius': 10,
+                'circle-stroke-width': 2.5,
+                'circle-stroke-color': '#ffffff',
+                'circle-opacity': 0.9
             }
         });
 
@@ -223,10 +234,13 @@ export function highlightMarker(id) {
     if (!state.mapInstance) return;
     try {
         state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', [
-            'case', ['==', ['get', 'id'], id ?? -1], 18, 9
+            'case', ['==', ['get', 'id'], id ?? -1], 16, 10
         ]);
         state.mapInstance.setPaintProperty('unclustered-point', 'circle-stroke-width', [
-            'case', ['==', ['get', 'id'], id ?? -1], 3.5, 2.5
+            'case', ['==', ['get', 'id'], id ?? -1], 3, 2.5
+        ]);
+        state.mapInstance.setPaintProperty('unclustered-point', 'circle-stroke-color', [
+            'case', ['==', ['get', 'id'], id ?? -1], '#D4775A', '#ffffff'
         ]);
     } catch(e) {}
 

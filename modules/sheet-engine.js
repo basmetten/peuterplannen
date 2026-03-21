@@ -160,7 +160,7 @@ function applyMorphs(y) {
     const p2 = clamp((halfY - y) / (halfY - fullY));
 
     // --- Sheet geometry ---
-    const rTop = lerp(lerp(20, 14, p1), 0, p2);
+    const rTop = lerp(16, 0, p2);
     const rBot = lerp(16, 0, p1);
     sheetEl.style.borderRadius = `${rTop}px ${rTop}px ${rBot}px ${rBot}px`;
 
@@ -601,8 +601,18 @@ function updateMoreBadge() {
 
 export function renderSheetList(locations, travelTimes = {}) {
     if (!listEl) return;
+
+    // Hide discovery content (week picks, forecast) when viewing favorites
+    const isFavoritesView = state.activeTag === 'favorites';
+    if (morphEls.weekPicks) morphEls.weekPicks.style.display = isFavoritesView ? 'none' : '';
+    if (morphEls.forecast) morphEls.forecast.style.display = isFavoritesView ? 'none' : '';
+
     if (locations.length === 0) {
-        listEl.innerHTML = '<div style="text-align:center;padding:32px 16px;color:#8B7355;"><p style="font-size:0.9rem;font-weight:600;">Nog geen favorieten</p><p style="font-size:0.8rem;margin-top:4px;">Tik op het hartje bij een locatie om deze hier te bewaren.</p></div>';
+        if (isFavoritesView) {
+            listEl.innerHTML = '<div class="favorites-empty"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><strong>Nog geen favorieten</strong><p>Tik op het hartje bij een locatie om \u2019m hier te bewaren. Zo houd je de leukste plekken bij de hand.</p></div>';
+        } else {
+            listEl.innerHTML = '<div style="text-align:center;padding:32px 16px;color:var(--pp-text-muted);"><p style="font-size:0.9rem;font-weight:600;">Geen locaties gevonden</p><p style="font-size:0.8rem;margin-top:4px;">Pas je filters aan voor meer resultaten.</p></div>';
+        }
         return;
     }
     listEl.innerHTML = locations.slice(0, 30).map(loc => renderCompactCard(loc, { travelTimes })).join('');
