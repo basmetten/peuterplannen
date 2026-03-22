@@ -351,59 +351,6 @@ export function initPanelCollapse() {
     });
 }
 
-// App topbar (mobile)
-function initAppTopbar() {
-    const burger = document.getElementById('app-topbar-burger');
-    const menu = document.getElementById('app-topbar-menu');
-    if (!burger || !menu) return;
-
-    // Create backdrop element (matches nav-floating pattern)
-    const backdrop = document.createElement('div');
-    backdrop.className = 'app-topbar-backdrop';
-    document.body.appendChild(backdrop);
-
-    function openMenu() {
-        burger.classList.add('open');
-        menu.classList.add('open');
-        backdrop.classList.add('open');
-        burger.setAttribute('aria-expanded', 'true');
-        menu.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeMenu() {
-        burger.classList.remove('open');
-        menu.classList.remove('open');
-        backdrop.classList.remove('open');
-        burger.setAttribute('aria-expanded', 'false');
-        menu.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-    }
-
-    burger.addEventListener('click', () => {
-        burger.classList.contains('open') ? closeMenu() : openMenu();
-    });
-
-    menu.addEventListener('click', (e) => {
-        if (e.target.tagName === 'A') closeMenu();
-    });
-
-    backdrop.addEventListener('click', closeMenu);
-
-    document.addEventListener('click', (e) => {
-        if (!burger.classList.contains('open')) return;
-        if (!e.target.closest('.app-topbar') && !e.target.closest('.app-topbar-backdrop')) {
-            closeMenu();
-        }
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && burger.classList.contains('open')) closeMenu();
-    });
-}
-
-initAppTopbar();
-
 // Bus listeners
 bus.on('view:switch', switchView);
 bus.on('nav:syncdesktop', syncDesktopModeSwitch);

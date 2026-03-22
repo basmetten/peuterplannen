@@ -879,9 +879,8 @@
   /* Hide map-list-toggle FAB — replaced by bottom nav */
   .map-list-toggle { display: none !important; }
 
-  /* Hide top navbar on mobile — bottom nav provides navigation, reclaim ~60px */
-  .pp-mobile-map .app-context-strip,
-  .pp-mobile-map nav.floating-nav { display: none !important; }
+  /* Hide context strip on mobile map — floating nav stays visible */
+  .pp-mobile-map .app-context-strip { display: none !important; }
 
   /* Lock viewport: no scrolling, only fixed layers visible */
   html.pp-mobile-map,
@@ -1702,54 +1701,15 @@
   .forecast-day.is-rain .forecast-day-name { color: #5B9EC4; }
 
   /* ============================================
-     App Topbar — mobile-only glass header
-     Visually matched with nav-floating.css
+     Floating nav overrides for app page
+     Elevate z-index above bottom sheet (z-1000)
      ============================================ */
-  .app-topbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: calc(56px + env(safe-area-inset-top, 0px));
-    padding: env(safe-area-inset-top, 0px) 18px 0 18px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--pp-nav-bg, rgba(252, 249, 247, 0.86));
-    backdrop-filter: blur(16px) saturate(160%);
-    -webkit-backdrop-filter: blur(16px) saturate(160%);
-    box-shadow: 0 8px 24px rgba(212, 119, 86, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    z-index: 1100;
-  }
+  body.pp-app nav.floating-nav { z-index: 1100 !important; }
+  body.pp-app .nav-backdrop { z-index: 1099 !important; }
 
-  /* Logo — icon + stacked text */
-  .app-topbar-logo {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-  }
-  .app-topbar-logo svg {
-    width: 36px; height: 36px;
-    border-radius: var(--pp-radius-xs, 10px);
-    flex-shrink: 0;
-  }
-  .app-topbar-logo-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.2;
-    font-size: var(--pp-text-sm);
-  }
-  .app-topbar-logo-top {
-    font-weight: 700;
-    color: var(--pp-text);
-  }
-  .app-topbar-logo-bottom {
-    font-weight: 800;
-    color: var(--pp-primary);
-  }
-
-  /* Count — flex spacer pushes it between logo and burger */
-  .app-topbar-count {
+  /* Count badge — visible only on app page */
+  .nav-count {
+    display: none;
     flex: 1;
     text-align: right;
     font-size: var(--pp-text-sm);
@@ -1757,152 +1717,26 @@
     color: var(--pp-text-secondary);
     letter-spacing: -0.01em;
   }
+  body.pp-app .nav-count { display: block; }
 
-  /* Burger button — matched with nav-floating */
-  .app-topbar-burger {
-    flex-shrink: 0;
-    width: 44px; height: 44px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 8px;
-    border-radius: var(--pp-radius-xs, 10px);
-    transition: background var(--wg-duration-ui) var(--wg-ease-standard);
-    -webkit-tap-highlight-color: transparent;
-  }
-  .app-topbar-burger:hover {
-    background: var(--pp-primary-light);
-  }
-  .app-topbar-burger:active {
-    background: rgba(var(--pp-primary-rgb, 212, 119, 90), 0.12);
-  }
-  .app-topbar-burger span {
-    display: block;
-    width: 20px; height: 2px;
-    background: var(--pp-text);
-    border-radius: 1px;
-    transition: transform var(--wg-duration-snap) var(--wg-ease-smooth),
-                opacity var(--wg-duration-ui) var(--wg-ease-standard);
-    transform-origin: center;
-  }
-  .app-topbar-burger.open span:nth-child(1) {
-    transform: translateY(6px) rotate(45deg);
-  }
-  .app-topbar-burger.open span:nth-child(2) {
-    opacity: 0; transform: scaleX(0);
-  }
-  .app-topbar-burger.open span:nth-child(3) {
-    transform: translateY(-6px) rotate(-45deg);
-  }
-
-  /* Backdrop overlay — matches .nav-backdrop */
-  .app-topbar-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(var(--pp-primary-rgb, 212, 119, 90), 0.12);
-    backdrop-filter: blur(6px) saturate(140%);
-    -webkit-backdrop-filter: blur(6px) saturate(140%);
-    z-index: 1099;
-    pointer-events: none;
-  }
-  .app-topbar-backdrop.open {
-    display: block;
-    pointer-events: auto;
-  }
-
-  /* Dropdown menu — identical to nav-floating .nav-mobile */
-  .app-topbar-menu {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 12px; right: 12px;
-    background: rgba(252, 249, 247, 0.94);
-    backdrop-filter: blur(24px) saturate(150%);
-    -webkit-backdrop-filter: blur(24px) saturate(150%);
-    border: none;
-    border-radius: var(--pp-radius-md, 20px);
-    box-shadow: 0 8px 24px rgba(45, 41, 38, 0.10), 0 2px 8px rgba(45, 41, 38, 0.04);
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    opacity: 0;
-    transform: translateY(-8px) scale(0.98);
-    pointer-events: none;
-    transition: opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1), transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
-    overflow: hidden;
-    -webkit-mask-image: -webkit-radial-gradient(white, black);
-    z-index: 1101;
-  }
-  .app-topbar-menu.open {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    pointer-events: auto;
-  }
-
-  /* Dropdown links — identical to nav-floating .nav-mobile-link */
-  .app-topbar-menu-link {
-    display: block;
-    padding: 14px 16px;
-    color: var(--pp-text, #2D2926);
-    text-decoration: none;
-    font-size: var(--pp-text-base, 1rem);
-    font-weight: 500;
-    border-radius: var(--pp-radius-xs, 10px);
-    transition: background 0.15s ease, color 0.15s ease;
-  }
-  .app-topbar-menu-link:first-child {
-    color: var(--pp-primary);
-    font-weight: 600;
-  }
-  .app-topbar-menu-link:hover,
-  .app-topbar-menu-link:active {
-    background: var(--pp-primary-light, #FDF1ED);
-    color: var(--pp-primary, #D4775A);
-    font-weight: 600;
-  }
-
-  /* CTA button — identical to nav-floating .nav-mobile-cta.nav-cta */
-  .app-topbar-menu-cta {
-    display: block;
-    margin-top: 8px;
-    padding: 14px 20px;
-    text-align: center;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: var(--pp-text-base, 1rem);
-    background: linear-gradient(135deg, var(--pp-primary, #D4775A), var(--pp-primary-dark, #C06A4E));
-    color: var(--pp-text-inverse, #fff);
-    border-radius: var(--pp-radius-lg, 24px);
-    transition: background 0.15s ease, color 0.15s ease;
-  }
-  .app-topbar-menu-cta:hover {
-    background: linear-gradient(135deg, var(--pp-primary-dark), var(--pp-primary-700));
-  }
-
-  /* Adjust map-controls to clear topbar */
+  /* Adjust map-controls to clear floating nav */
   .map-controls {
-    top: calc(56px + env(safe-area-inset-top, 0px) + 8px) !important;
+    top: calc(72px + env(safe-area-inset-top, 0px)) !important;
   }
 
-  /* Hide list-header — topbar replaces it */
+  /* Hide list-header — floating nav replaces it */
   .mobile-list-view .list-header {
     display: none;
   }
 
-  /* Adjust list-view padding for topbar */
+  /* Adjust list-view padding for floating nav */
   .mobile-list-view {
-    padding-top: calc(56px + env(safe-area-inset-top, 0px)) !important;
+    padding-top: calc(72px + env(safe-area-inset-top, 0px)) !important;
   }
 
-  /* Filter chips stick below topbar */
+  /* Filter chips stick below floating nav */
   .list-filter-chips {
-    top: calc(56px + env(safe-area-inset-top, 0px)) !important;
+    top: calc(72px + env(safe-area-inset-top, 0px)) !important;
   }
 }
 
@@ -1910,7 +1744,6 @@
   .map-list-toggle { display: none !important; }
   .map-controls { display: none !important; }
   .mobile-list-view { display: none !important; }
-  .app-topbar { display: none !important; }
 }
 
 /* ============================================
