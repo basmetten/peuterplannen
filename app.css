@@ -1945,8 +1945,6 @@
     font-size: var(--pp-text-xs); cursor: pointer; padding: 8px 16px;
 }
 
-} /* end @layer layout */
-
 /* ===================================================
    ACCESSIBILITY — Focus-visible enhancements
    =================================================== */
@@ -1989,3 +1987,5 @@
     outline-offset: 2px;
     border-radius: var(--pp-radius-xs, 10px);
 }
+
+/* end @layer layout */
