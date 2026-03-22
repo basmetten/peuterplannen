@@ -46,7 +46,7 @@ test.describe('Compact card structure', () => {
     ]);
     expect(s['width']).toBe('56px');
     expect(s['height']).toBe('56px');
-    expect(s['border-radius']).toBe('10px');
+    expect(s['border-radius']).toBe('12px');
     expect(s['object-fit']).toBe('cover');
   });
 
