@@ -599,6 +599,11 @@ function updateMoreBadge() {
    SHEET LIST RENDERING
    =================================================== */
 
+let _sheetLocations = [];
+let _renderedCount = 0;
+let _travelTimes = {};
+const BATCH = 30;
+
 export function renderSheetList(locations, travelTimes = {}) {
     if (!listEl) return;
 
@@ -615,10 +620,43 @@ export function renderSheetList(locations, travelTimes = {}) {
         }
         return;
     }
-    listEl.innerHTML = locations.slice(0, 30).map(loc => renderCompactCard(loc, { travelTimes })).join('');
-    listEl.querySelectorAll('.compact-card').forEach(card => {
+
+    // Reset and render first batch with lazy loading
+    _sheetLocations = locations;
+    _renderedCount = 0;
+    _travelTimes = travelTimes;
+    listEl.innerHTML = '';
+    _loadMoreCards();
+    _setupLazyObserver();
+}
+
+function _loadMoreCards() {
+    const batch = _sheetLocations.slice(_renderedCount, _renderedCount + BATCH);
+    if (!batch.length) return false;
+    const html = batch.map(loc => renderCompactCard(loc, { travelTimes: _travelTimes })).join('');
+    listEl.insertAdjacentHTML('beforeend', html);
+    listEl.querySelectorAll('.compact-card:not([data-bound])').forEach(card => {
+        card.dataset.bound = '1';
         card.addEventListener('click', () => bus.emit('sheet:open', parseInt(card.dataset.id, 10)));
     });
+    _renderedCount += batch.length;
+    return _renderedCount < _sheetLocations.length;
+}
+
+let _lazyObserver = null;
+function _setupLazyObserver() {
+    if (_lazyObserver) _lazyObserver.disconnect();
+    const sentinel = document.createElement('div');
+    sentinel.className = 'sheet-list-sentinel';
+    listEl.appendChild(sentinel);
+    _lazyObserver = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+            sentinel.remove();
+            if (_loadMoreCards()) listEl.appendChild(sentinel);
+            else _lazyObserver.disconnect();
+        }
+    }, { root: listEl.closest('.sheet-content') || null, threshold: 0.1 });
+    _lazyObserver.observe(sentinel);
 }
 
 /* ===================================================

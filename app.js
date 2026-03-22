@@ -192,11 +192,6 @@ function parseHash() {
         if (parts[1]) {
             setTimeout(() => setCity(parts[1]), 500);
         }
-        // Toggle to list mode if available
-        const toggleBtn = document.getElementById('map-list-toggle');
-        if (toggleBtn && !toggleBtn.classList.contains('is-list')) {
-            setTimeout(() => toggleBtn.click(), 800);
-        }
         return;
     }
 

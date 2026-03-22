@@ -1957,11 +1957,9 @@
 .sheet-tab:focus-visible,
 .plan-chip:focus-visible,
 .city-chip:focus-visible,
-.list-chip:focus-visible,
 .compact-card:focus-visible,
 .scan-card:focus-visible,
 .map-controls-btn:focus-visible,
-.map-list-toggle:focus-visible,
 .app-mode-chip:focus-visible,
 .icon-btn:focus-visible,
 .filter-panel-toggle:focus-visible,
@@ -1974,8 +1972,7 @@
 }
 
 .card-fav:focus-visible,
-.compact-card-fav:focus-visible,
-.list-card-fav:focus-visible {
+.compact-card-fav:focus-visible {
     outline: 2px solid #D4775A;
     outline-offset: 2px;
     border-radius: 50%;

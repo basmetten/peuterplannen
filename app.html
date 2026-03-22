@@ -711,21 +711,6 @@
         <button class="map-controls-btn" id="map-gps-btn" aria-label="Mijn locatie">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg>
         </button>
-        <div class="map-controls-divider"></div>
-        <button class="map-controls-btn" id="map-view-toggle" aria-label="Wissel kaart en lijst">
-            <svg class="toggle-icon-list" viewBox="0 0 24 24" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-            <svg class="toggle-icon-map" viewBox="0 0 24 24" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
-        </button>
-    </div>
-
-    <!-- Mobile full-screen list view -->
-    <div id="mobile-list-view" class="mobile-list-view">
-        <div class="list-header">
-            <div class="list-header-title">Locaties</div>
-            <div class="list-header-count" id="list-view-count"></div>
-        </div>
-        <div class="list-filter-chips" id="list-filter-chips"></div>
-        <div id="mobile-list-content"></div>
     </div>
 
     <!-- Bottom Sheet (mobile map/browse) -->
@@ -792,14 +777,6 @@
             <div class="sheet-detail" id="sheet-detail"></div>
         </div>
     </div>
-
-    <!-- Map/List toggle -->
-    <button id="map-list-toggle" class="map-list-toggle" aria-label="Wissel tussen kaart en lijst">
-        <svg class="toggle-icon-list" viewBox="0 0 24 24" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        <svg class="toggle-icon-map" viewBox="0 0 24 24" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
-        <span class="toggle-label">Lijst</span>
-    </button>
-
 
     <!-- Screen reader announcements for sheet state changes -->
     <!-- Filter modal (slide-up) -->

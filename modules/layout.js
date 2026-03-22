@@ -2,15 +2,8 @@ import { state, DESKTOP_WIDTH } from './state.js';
 import { closeLocSheet, closeInfoPanel, openInfoPanel } from './sheet.js';
 import { setDisplayMode, fitMapToMarkers } from './map.js';
 import { updateFilterCount, updateMapPillBadge } from './filters.js';
-import { loadLocations } from './data.js';
 import { trackEvent } from './utils.js';
-import { renderCompactCard, getPhotoData } from './templates.js';
-import { computePeuterScore } from './scoring.js';
-import { isFavorite } from './favorites.js';
-import { escapeHtml } from './utils.js';
 import bus from './bus.js';
-
-let isListMode = false;
 
 export function applyLayout() {
     const isDesktop = window.innerWidth >= DESKTOP_WIDTH;
@@ -180,153 +173,12 @@ export function switchView(view) {
     bus.emit('hash:update', '');
 }
 
-// === Map/List toggle ===
+// === GPS button ===
 
 export function initMapListToggle() {
-    const oldBtn = document.getElementById('map-list-toggle');
-    const newBtn = document.getElementById('map-view-toggle');
     const gpsBtn = document.getElementById('map-gps-btn');
-    if (oldBtn) oldBtn.addEventListener('click', toggleMapList);
-    if (newBtn) newBtn.addEventListener('click', toggleMapList);
-    // GPS button — use JS listener (onclick can fail in stacking contexts)
     if (gpsBtn) gpsBtn.addEventListener('click', () => {
         if (typeof getCurrentLocation === 'function') getCurrentLocation();
-    });
-}
-
-export function toggleMapList() {
-    isListMode = !isListMode;
-    const btn = document.getElementById('map-list-toggle');
-    const newBtn = document.getElementById('map-view-toggle');
-    const label = btn?.querySelector('.toggle-label');
-    const listView = document.getElementById('mobile-list-view');
-    const sheet = document.getElementById('bottom-sheet');
-
-    btn?.classList.toggle('is-list', isListMode);
-    newBtn?.classList.toggle('is-list', isListMode);
-    if (label) label.textContent = isListMode ? 'Kaart' : 'Lijst';
-
-    const controls = document.getElementById('map-controls');
-
-    if (isListMode) {
-        // Show list, hide sheet, keep controls above list view
-        listView?.classList.add('active');
-        if (sheet) sheet.style.display = 'none';
-        if (controls) controls.style.zIndex = '1001';
-        // If data hasn't loaded yet, trigger fetch; bus listener will render when ready
-        if (state.allLocations.length === 0) {
-            loadLocations();
-        } else {
-            renderMobileList();
-        }
-        bus.emit('hash:update', 'list');
-    } else {
-        // Show map + sheet, hide list, restore controls z-index
-        listView?.classList.remove('active');
-        if (sheet) sheet.style.display = '';
-        if (controls) controls.style.zIndex = '';
-        // Resize map in case it needs updating
-        if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), 50);
-        bus.emit('hash:update', '');
-    }
-}
-
-function renderMobileList() {
-    const content = document.getElementById('mobile-list-content');
-    const countEl = document.getElementById('list-view-count');
-    const chipContainer = document.getElementById('list-filter-chips');
-    if (!content) return;
-
-    const locations = state.allLocations;
-    if (countEl) countEl.textContent = locations.length + ' locaties';
-    const topbarCount = document.getElementById('app-topbar-count');
-    if (topbarCount) topbarCount.textContent = locations.length + ' locaties';
-
-    // Render filter chips (Funda-style)
-    if (chipContainer) {
-        const types = [
-            { key: 'all', label: 'Alles' },
-            { key: 'play', label: 'Speeltuin' },
-            { key: 'farm', label: 'Boerderij' },
-            { key: 'nature', label: 'Natuur' },
-            { key: 'museum', label: 'Museum' },
-            { key: 'horeca', label: 'Horeca' },
-            { key: 'swim', label: 'Zwemmen' }
-        ];
-        chipContainer.innerHTML = types.map(t =>
-            `<button class="list-chip${state.activeTag === t.key || (t.key === 'all' && state.activeTag === 'all') ? ' active' : ''}" data-filter="${t.key}">${t.label}</button>`
-        ).join('');
-        chipContainer.querySelectorAll('.list-chip').forEach(chip => {
-            chip.addEventListener('click', () => {
-                state.activeTag = chip.dataset.filter;
-                state.activeWeather = null;
-                bus.emit('data:reload');
-            });
-        });
-    }
-
-    // Empty state
-    if (locations.length === 0) {
-        content.innerHTML = `<div class="list-empty-state">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(140,110,100,0.35)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <div class="list-empty-title">Geen locaties gevonden</div>
-            <div class="list-empty-sub">Probeer een ander filter of bekijk alle locaties</div>
-            <button class="list-empty-btn" onclick="document.querySelector('.list-chip[data-filter=all]')?.click()">Toon alles</button>
-        </div>`;
-        return;
-    }
-
-    const TYPE_LABELS = { play: 'Speeltuin', farm: 'Boerderij', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', swim: 'Zwemmen', pancake: 'Pannenkoeken' };
-    const WEATHER_LABELS = { indoor: 'Binnen', outdoor: 'Buiten', both: 'Binnen & buiten', hybrid: 'Binnen & buiten' };
-
-    const html = locations.slice(0, 60).map(loc => {
-        const { imgSrc, categoryImg, photoColor } = getPhotoData(loc);
-        const score = computePeuterScore(loc);
-        const scoreClass = score >= 8 ? 'score-high' : score >= 5 ? 'score-mid' : 'score-low';
-        const typeLabel = TYPE_LABELS[loc.type] || loc.type;
-        const weatherLabel = WEATHER_LABELS[loc.weather] || '';
-        const isFav = isFavorite(loc.id);
-        const favStyle = isFav ? 'fill:#D4775A;stroke:#D4775A;' : '';
-
-        // Quick info pills
-        const pills = [];
-        if (weatherLabel) pills.push(weatherLabel);
-        if (loc.coffee) pills.push('Koffie');
-        if (loc.diaper) pills.push('Verschonen');
-        const pillsHtml = pills.map(p => `<span class="list-card-pill">${escapeHtml(p)}</span>`).join('');
-
-        const highlight = loc.toddler_highlight ? `<div class="list-card-highlight">${escapeHtml(loc.toddler_highlight)}</div>` : '';
-
-        return `<div class="list-card" data-id="${loc.id}">
-            <img class="list-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async"
-                 style="background:${photoColor}" onerror="this.src='${escapeHtml(categoryImg)}'">
-            <div class="list-card-body">
-                <div class="list-card-top">
-                    <span class="list-card-type">${escapeHtml(typeLabel)}</span>
-                    ${loc.region ? `<span class="list-card-region">${escapeHtml(loc.region)}</span>` : ''}
-                </div>
-                <div class="list-card-name">${escapeHtml(loc.name)}</div>
-                ${highlight}
-                <div class="list-card-pills">${pillsHtml}</div>
-            </div>
-            <div class="list-card-side">
-                <div class="list-card-score ${scoreClass}">${score}</div>
-                <button class="list-card-fav" onclick="event.stopPropagation();toggleFavorite(${loc.id},this)" aria-label="${isFav ? 'Verwijder' : 'Bewaar'}">
-                    <svg viewBox="0 0 24 24" style="${favStyle}"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                </button>
-            </div>
-        </div>`;
-    }).join('');
-
-    content.innerHTML = html;
-
-    // Click handlers — exit list mode, then open location
-    content.querySelectorAll('.list-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const id = parseInt(card.dataset.id, 10);
-            if (isListMode) toggleMapList();
-            bus.emit('sheet:open', id);
-        });
     });
 }
 
@@ -355,7 +207,6 @@ export function initPanelCollapse() {
 bus.on('view:switch', switchView);
 bus.on('nav:syncdesktop', syncDesktopModeSwitch);
 bus.on('sheet:renderlist', () => {
-    if (isListMode) renderMobileList();
     const topbarCount = document.getElementById('app-topbar-count');
     if (topbarCount && state.allLocations.length) {
         topbarCount.textContent = state.allLocations.length + ' locaties';
