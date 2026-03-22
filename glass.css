@@ -1412,13 +1412,13 @@
   .filter-modal-overlay.open { opacity: 1; pointer-events: auto; }
   .filter-modal {
     position: fixed; bottom: 0; left: 0; right: 0; z-index: 2001;
-    background: rgba(255, 252, 249, 0.96);
-    backdrop-filter: blur(20px) saturate(1.2);
-    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    background: rgba(255, 252, 249, 0.95);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
     border-radius: 20px 20px 0 0;
     max-height: 70vh; overflow-y: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
     transform: translateY(100%);
-    transition: transform var(--wg-duration-snap) var(--wg-ease-spring);
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
     padding-bottom: env(safe-area-inset-bottom, 16px);
   }
   .filter-modal::-webkit-scrollbar { display: none; }
@@ -1426,7 +1426,7 @@
   .filter-modal-header {
     display: flex; justify-content: space-between; align-items: center;
     padding: 16px 20px 8px;
-    position: sticky; top: 0; background: rgba(255, 252, 249, 0.96); z-index: 1;
+    position: sticky; top: 0; background: rgba(255, 252, 249, 0.95); z-index: 1;
   }
   .filter-modal-header h3 {
     font-family: var(--pp-font-heading); font-size: var(--pp-text-lg); font-weight: 700;
