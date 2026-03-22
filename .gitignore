@@ -31,11 +31,14 @@ USER.md
 # Dependencies
 node_modules/
 
+# Playwright test results (snapshots are committed, results are not)
+test-results/
+playwright-report/
+blob-report/
+
 # Build artifacts / pipeline output
 output/
-app.bundle.js
 app.bundle.js.map
-app.bundle.css
 app.bundle.css.map
 
 # Data files
