@@ -21,11 +21,13 @@
 }
 
 .bottom-sheet-glass {
-  background: var(--wg-glass-panel);
-  backdrop-filter: var(--wg-blur-panel);
-  -webkit-backdrop-filter: var(--wg-blur-panel);
-  box-shadow: var(--wg-shadow-panel);
-  border-radius: var(--wg-radius-sheet) var(--wg-radius-sheet) 0 0;
+  background: rgba(255, 252, 249, 0.82);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border-top: 0.5px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.06),
+              0 -1px 4px rgba(0, 0, 0, 0.02);
+  border-radius: 16px 16px 0 0;
 }
 
 .filter-chip-glass {
@@ -404,22 +406,23 @@
 .bottom-sheet {
   position: fixed;
   z-index: 1000;
-  background: #FFFCF9;
-  backdrop-filter: blur(24px) saturate(150%);
-  -webkit-backdrop-filter: blur(24px) saturate(150%);
-  box-shadow: 0 -2px 20px rgba(212, 119, 86, 0.08),
-              0 -1px 4px rgba(212, 119, 86, 0.03),
-              inset 0 0.5px 0 rgba(255, 255, 255, 0.5);
-  transform: translateY(100%);
+  background: rgba(255, 252, 249, 0.82);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border-top: 0.5px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.06),
+              0 -1px 4px rgba(0, 0, 0, 0.02);
+  transform: translateY(100%) translateZ(0);
   /* No CSS transition — positioning is JS-driven (spring physics) */
   will-change: transform;
+  contain: layout;
   height: 100dvh;
   overflow: hidden;
   touch-action: none;
   overscroll-behavior: none;
   /* Floating card defaults (peek/half) */
   left: 8px; right: 8px; bottom: 8px;
-  border-radius: 16px 16px 16px 16px;
+  border-radius: 16px;
 }
 
 /* Only active on mobile */
@@ -431,6 +434,10 @@
 /* State positioning & child visibility is now JS-driven (sheet-engine.js morphs).
    data-state attribute is still set for external code that reads it. */
 
+/* Peek state: lighter shadow than half/full */
+.bottom-sheet[data-state="peek"] {
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.04);
+}
 
 /* Drag handle — Apple Maps style: thin, centered, subtle */
 .sheet-drag-handle {
@@ -460,10 +467,12 @@
 .sheet-content {
   overflow-y: auto;
   overscroll-behavior: contain;
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   max-height: calc(100dvh - 44px);
   padding: 0 18px env(safe-area-inset-bottom, 8px);
+  contain: layout style;
 }
 .sheet-content::-webkit-scrollbar { display: none; }
 
@@ -488,12 +497,13 @@
   padding: 8px 0 8px;
   overflow-x: auto;
   overflow-y: hidden;
+  overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  scroll-snap-type: x proximity;
-  mask-image: linear-gradient(to right, black calc(100% - 28px), transparent);
-  -webkit-mask-image: linear-gradient(to right, black calc(100% - 28px), transparent);
+  scroll-snap-type: x mandatory;
+  mask-image: linear-gradient(to right, transparent, black 8px, black calc(100% - 28px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8px, black calc(100% - 28px), transparent);
 }
 .sheet-presets::-webkit-scrollbar { display: none; }
 .sheet-preset {
@@ -515,13 +525,17 @@
   cursor: pointer;
   white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
-  transition: background var(--wg-duration-fast) var(--wg-ease-standard),
-              color var(--wg-duration-fast) var(--wg-ease-standard), transform var(--wg-duration-fast) var(--wg-ease-standard), box-shadow var(--wg-duration-fast) var(--wg-ease-standard), border-color var(--wg-duration-fast) var(--wg-ease-standard);
+  transition: background 200ms var(--wg-ease-spring),
+              color 200ms var(--wg-ease-spring),
+              transform var(--wg-duration-fast) var(--wg-ease-spring),
+              box-shadow 200ms var(--wg-ease-spring),
+              border-color 200ms var(--wg-ease-spring);
 }
 .sheet-preset:active {
   background: rgba(255, 255, 255, 0.85);
-  transform: scale(0.96);
+  transform: scale(0.95);
   box-shadow: 0 1px 4px rgba(212, 119, 86, 0.07);
+  transition: transform 100ms var(--wg-ease-spring);
 }
 @media (hover: hover) {
   .sheet-preset:hover {
@@ -535,6 +549,15 @@
   color: white;
   box-shadow: 0 2px 8px rgba(212, 119, 86, 0.25),
               inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  animation: chip-activate 250ms var(--wg-ease-spring);
+}
+/* Checkmark scales in when preset activates */
+.sheet-preset.active::before {
+  content: '\2713';
+  display: inline-block;
+  margin-right: 4px;
+  font-size: 0.85em;
+  animation: check-pop 300ms var(--wg-ease-bounce);
 }
 .sheet-search-pill {
   display: flex;
@@ -706,6 +729,7 @@
 .sheet-list {
   display: block;
   padding-top: 2px;
+  contain: layout;
 }
 .sheet-list-sentinel {
   height: 1px;
@@ -725,6 +749,7 @@
   margin: 0 -6px;
   content-visibility: auto;
   contain-intrinsic-size: auto 76px;
+  contain: layout style;
 }
 .compact-card:active {
   background: rgba(212, 119, 86, 0.05);
@@ -736,6 +761,13 @@
   flex-shrink: 0;
   background: #EDE0D4;
   box-shadow: 0 1px 3px rgba(212, 119, 86, 0.05);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  image-rendering: auto;
+  content-visibility: auto;
+}
+.compact-card-img.loaded {
+  opacity: 1;
 }
 .compact-card-body {
   flex: 1;
@@ -838,9 +870,11 @@
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(27, 28, 27, 0.3);
+  background: rgba(0, 0, 0, 0.15);
   z-index: 999;
   transition: opacity var(--wg-duration-ui) var(--wg-ease-standard);
+  will-change: opacity;
+  transform: translateZ(0);
 }
 .sheet-overlay.active {
   display: block;
@@ -998,6 +1032,11 @@
     flex-shrink: 0;
     background: #EDE0D4;
     box-shadow: 0 2px 6px rgba(212, 119, 86, 0.07);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .sheet-preview-img.loaded {
+    opacity: 1;
   }
   .sheet-preview-body { flex: 1; min-width: 0; }
   .sheet-preview-name {
@@ -1440,13 +1479,12 @@
   z-index: 999;
   display: flex;
   flex-direction: column;
-  background: rgba(255, 252, 249, 0.78);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  border-radius: 14px;
-  box-shadow: 0 2px 12px rgba(212, 119, 86, 0.08),
-              0 1px 3px rgba(212, 119, 86, 0.05),
-              inset 0 0.5px 0 rgba(255, 255, 255, 0.5);
+  background: rgba(255, 252, 249, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08),
+              0 1px 2px rgba(0, 0, 0, 0.04);
   overflow: hidden;
 }
 .map-controls-btn {
@@ -1460,13 +1498,19 @@
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  transition: background var(--wg-duration-fast) var(--wg-ease-standard);
+  transform: scale(1);
+  transition: background var(--wg-duration-fast) var(--wg-ease-standard),
+              transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: transform;
 }
 .map-controls-btn:hover {
   background: rgba(140, 110, 100, 0.06);
 }
 .map-controls-btn:active {
+  transform: scale(0.9);
   background: rgba(140, 110, 100, 0.10);
+  transition: background var(--wg-duration-fast) var(--wg-ease-standard),
+              transform 100ms ease-out;
 }
 .map-controls-btn svg {
   width: 20px;
@@ -1476,7 +1520,9 @@
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition: stroke var(--wg-duration-fast) var(--wg-ease-standard), opacity var(--wg-duration-fast) var(--wg-ease-standard);
+  transition: stroke var(--wg-duration-fast) var(--wg-ease-standard),
+              fill var(--wg-duration-fast) var(--wg-ease-standard),
+              opacity var(--wg-duration-fast) var(--wg-ease-standard);
 }
 /* GPS button gets coral tint */
 #map-gps-btn svg {
@@ -1484,6 +1530,20 @@
   opacity: 0.8;
 }
 #map-gps-btn:hover svg { opacity: 1; }
+
+/* Active GPS tracking state — solid coral icon with radar pulse */
+@keyframes gps-pulse {
+  0%   { box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 0 rgba(212,119,86,0.4); }
+  100% { box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 8px rgba(212,119,86,0); }
+}
+.map-controls-btn.tracking svg {
+  stroke: #D4775A;
+  fill: #D4775A;
+  opacity: 1;
+}
+.map-controls-btn.tracking {
+  animation: gps-pulse 2s cubic-bezier(0.32, 0.72, 0, 1) infinite;
+}
 
 /* ============================================
    Location Sheet — 3-tier progressive disclosure
