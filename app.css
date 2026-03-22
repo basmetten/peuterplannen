@@ -1091,19 +1091,7 @@
             .btn-share { min-width: 40px; padding: 12px; }
         }
 
-        /* User location dot */
-        .user-location-dot {
-            width: 16px; height: 16px;
-            background: #4285F4;
-            border: 2.5px solid white;
-            border-radius: 50%;
-            box-shadow: 0 0 0 4px rgba(66, 133, 244, 0.2), 0 1px 4px rgba(27, 28, 27, 0.12);
-            animation: userLocationPulse 2.5s ease-in-out infinite;
-        }
-        @keyframes userLocationPulse {
-            0%, 100% { box-shadow: 0 0 0 4px rgba(66, 133, 244, 0.2), 0 1px 4px rgba(27, 28, 27, 0.12); }
-            50% { box-shadow: 0 0 0 8px rgba(66, 133, 244, 0.08), 0 1px 4px rgba(27, 28, 27, 0.12); }
-        }
+        /* User location dot — styles moved to glass.css (Apple Maps pulsing beacon) */
 
         /* Map active hides list */
         #results-container.map-active { display: none !important; }

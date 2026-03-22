@@ -41,7 +41,7 @@ export function initMap() {
         zoom: 7,
         attributionControl: true,
         pixelRatio: Math.min(devicePixelRatio, 2),
-        fadeDuration: 0,
+        fadeDuration: 300,
         pitchWithRotate: false,
         dragRotate: false,
     });
@@ -70,8 +70,12 @@ export function initMap() {
                     100, 22, // 100+ locations
                     200, 26  // 200+ locations
                 ],
+                'circle-radius-transition': { duration: 350, delay: 0 },
                 'circle-opacity': 0.92,
-                'circle-stroke-width': 2.5, 'circle-stroke-color': '#ffffff'
+                'circle-opacity-transition': { duration: 300, delay: 0 },
+                'circle-stroke-width': 2.5,
+                'circle-stroke-width-transition': { duration: 300, delay: 0 },
+                'circle-stroke-color': '#ffffff'
             }
         });
 
@@ -99,9 +103,13 @@ export function initMap() {
                     '#D4775A'
                 ],
                 'circle-radius': 10,
+                'circle-radius-transition': { duration: 250, delay: 0 },
                 'circle-stroke-width': 2.5,
+                'circle-stroke-width-transition': { duration: 250, delay: 0 },
                 'circle-stroke-color': '#ffffff',
-                'circle-opacity': 0.9
+                'circle-stroke-color-transition': { duration: 200, delay: 0 },
+                'circle-opacity': 0.9,
+                'circle-opacity-transition': { duration: 300, delay: 0 }
             }
         });
 
@@ -232,10 +240,23 @@ export function updateUserLocationOnMap() {
 
 export function highlightMarker(id) {
     if (!state.mapInstance) return;
+    const selecting = id != null;
     try {
-        state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', [
-            'case', ['==', ['get', 'id'], id ?? -1], 16, 10
-        ]);
+        if (selecting) {
+            // Bounce effect: briefly overshoot to 18px then settle at 15px
+            state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', [
+                'case', ['==', ['get', 'id'], id], 18, 10
+            ]);
+            setTimeout(() => {
+                try {
+                    state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', [
+                        'case', ['==', ['get', 'id'], id], 15, 10
+                    ]);
+                } catch(e) {}
+            }, 180);
+        } else {
+            state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', 10);
+        }
         state.mapInstance.setPaintProperty('unclustered-point', 'circle-stroke-width', [
             'case', ['==', ['get', 'id'], id ?? -1], 3, 2.5
         ]);
@@ -245,11 +266,11 @@ export function highlightMarker(id) {
     } catch(e) {}
 
     // Pulse animation on map container for visual feedback
-    if (id != null) {
+    if (selecting) {
         const mapEl = document.getElementById('map-container');
         if (mapEl) {
             mapEl.classList.remove('marker-pulse');
-            void mapEl.offsetWidth; // force reflow
+            void mapEl.offsetWidth;
             mapEl.classList.add('marker-pulse');
         }
     }
