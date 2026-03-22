@@ -748,10 +748,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 8px 2px 2px;
-  font-size: var(--pp-text-xs);
+  font-size: 11px;
   font-weight: 500;
-  color: var(--pp-text-muted);
-  letter-spacing: -0.01em;
+  color: rgba(140, 110, 100, 0.6);
+  letter-spacing: 0.02em;
 }
 
 /* Sheet list - compact cards (visibility controlled by JS morphs) */
@@ -1560,7 +1560,8 @@
 
   /* 5-day forecast strip */
   .forecast-strip {
-    padding: 8px 0;
+    border-top: 0.5px solid rgba(140, 110, 100, 0.06);
+    padding: 10px 0 6px;
   }
   .forecast-days {
     display: flex;
@@ -1572,16 +1573,21 @@
     align-items: center;
     gap: 2px;
     flex: 1;
+    padding: 4px 0;
+    border-radius: 8px;
+    transition: background 150ms ease;
   }
   .forecast-day-name {
-    font-size: var(--pp-text-xs);
+    font-size: 10px;
     font-weight: 600;
     color: var(--wg-text-faint);
     text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
   .forecast-day-icon { font-size: var(--pp-text-base); }
   .forecast-day-temp {
-    font-size: var(--pp-text-xs);
+    font-size: 11px;
+    font-weight: 500;
     color: var(--wg-text-body);
   }
   .forecast-day.is-sun .forecast-day-name { color: var(--pp-primary); }
