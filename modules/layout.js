@@ -5,6 +5,11 @@ import { updateFilterCount, updateMapPillBadge } from './filters.js';
 import { trackEvent } from './utils.js';
 import bus from './bus.js';
 
+// --- Constants ---
+const MAP_RESIZE_DELAY_MS = 50;
+const MODE_ANIMATION_DURATION_MS = 440;
+const PANEL_COLLAPSE_RESIZE_MS = 350;
+
 export function applyLayout() {
     const isDesktop = window.innerWidth >= DESKTOP_WIDTH;
     document.documentElement.classList.toggle('pp-desktop', isDesktop);
@@ -13,7 +18,7 @@ export function applyLayout() {
     if (mc) mc.classList.remove('hidden');
     // On mobile: ensure map fills viewport after layout change
     if (!isDesktop && state.mapInstance) {
-        setTimeout(() => state.mapInstance.resize(), 50);
+        setTimeout(() => state.mapInstance.resize(), MAP_RESIZE_DELAY_MS);
     }
 }
 
@@ -90,7 +95,7 @@ function switchViewMobile(view) {
             updateFilterCount();
             loadLocations();
             bus.emit('sheet:setstate', 'peek');
-            if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), 50);
+            if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), MAP_RESIZE_DELAY_MS);
             break;
         case 'map':
             trackEvent('map_view');
@@ -98,7 +103,7 @@ function switchViewMobile(view) {
             if (!state.mapInstance) {
                 setDisplayMode('map');
             } else {
-                setTimeout(() => state.mapInstance.resize(), 50);
+                setTimeout(() => state.mapInstance.resize(), MAP_RESIZE_DELAY_MS);
                 fitMapToMarkers();
             }
             bus.emit('sheet:setstate', 'peek');
@@ -152,7 +157,7 @@ export function switchView(view) {
         if (isDesktop && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !document.body.classList.contains('plan-mode')) {
             document.body.dataset.modeDirection = 'to-plan';
             document.body.classList.add('app-mode-animating');
-            window.setTimeout(() => { document.body.classList.remove('app-mode-animating'); delete document.body.dataset.modeDirection; }, 440);
+            window.setTimeout(() => { document.body.classList.remove('app-mode-animating'); delete document.body.dataset.modeDirection; }, MODE_ANIMATION_DURATION_MS);
         }
         return;
     }
@@ -166,7 +171,7 @@ export function switchView(view) {
     if (wasInPlan && isDesktop && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         document.body.dataset.modeDirection = 'to-home';
         document.body.classList.add('app-mode-animating');
-        window.setTimeout(() => { document.body.classList.remove('app-mode-animating'); delete document.body.dataset.modeDirection; }, 440);
+        window.setTimeout(() => { document.body.classList.remove('app-mode-animating'); delete document.body.dataset.modeDirection; }, MODE_ANIMATION_DURATION_MS);
     }
 
     switchViewCore(view);
@@ -200,7 +205,7 @@ export function initPanelCollapse() {
         const collapsed = panel.classList.contains('collapsed');
         localStorage.setItem('pp-panel-collapsed', collapsed ? '1' : '0');
         // Resize map after transition
-        if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), 350);
+        if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), PANEL_COLLAPSE_RESIZE_MS);
     });
 }
 

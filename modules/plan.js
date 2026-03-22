@@ -5,6 +5,17 @@ import { fetchAllPages } from './data.js';
 import { getPrefs, setPrefs } from './prefs.js';
 import bus from './bus.js';
 
+// --- Constants ---
+const MAX_KIDS_COUNT = 4;
+const GEOLOCATION_TIMEOUT_MS = 6000;
+const GEOLOCATION_MAX_AGE_MS = 300000;
+const LEGACY_DISTANCE_PENALTY = 0.1;
+const NEAR_LUNCH_MAX_KM = 20;
+const OV_EXTRA_MINUTES = 10;
+const FALLBACK_LAT = 52.37;
+const FALLBACK_LNG = 4.90;
+const SHARE_COPY_FEEDBACK_MS = 2000;
+
 // Plan engine (v2 algorithm) — graceful fallback if not yet available
 let planEngine = null;
 try {
@@ -100,7 +111,7 @@ export function selectPlanOption(btn, group) {
 }
 
 export function changeKidsCount(delta) {
-    const next = Math.max(1, Math.min(4, planState.kidsCount + delta));
+    const next = Math.max(1, Math.min(MAX_KIDS_COUNT, planState.kidsCount + delta));
     planState.kidsCount = next;
     document.getElementById('kids-count-val').textContent = next;
     while (planState.childAges.length < next) planState.childAges.push(2);
@@ -144,13 +155,13 @@ function isOutdoorSuitable(code, temp) {
 function estimateTravelTime(distKm, transport) {
     const speed = SPEED_KMH[transport] ?? 50;
     const mins = Math.round((distKm / speed) * 60);
-    return transport === 'ov' ? mins + 10 : mins;
+    return transport === 'ov' ? mins + OV_EXTRA_MINUTES : mins;
 }
 
 function findNearLunch(candidates, anchor) {
     return candidates.filter(l =>
         l.id !== anchor.id && (l.type === 'horeca' || l.type === 'pancake') &&
-        anchor.lat && anchor.lng && l.lat && l.lng && calculateDistance(anchor.lat, anchor.lng, l.lat, l.lng) < 20
+        anchor.lat && anchor.lng && l.lat && l.lng && calculateDistance(anchor.lat, anchor.lng, l.lat, l.lng) < NEAR_LUNCH_MAX_KM
     ).sort((a, b) => calculateDistance(anchor.lat, anchor.lng, a.lat, a.lng) - calculateDistance(anchor.lat, anchor.lng, b.lat, b.lng))[0] ?? null;
 }
 
@@ -174,8 +185,8 @@ function getTypeLabel(type) {
 
 function formatTravelInfo(minutes, transport) {
     const emoji = TRANSPORT_EMOJI[transport] || '🚗';
-    const travelMin = Math.max(0, minutes - 10); // subtract buffer for display
-    const bufferMin = 10;
+    const travelMin = Math.max(0, minutes - OV_EXTRA_MINUTES); // subtract buffer for display
+    const bufferMin = OV_EXTRA_MINUTES;
     return `${emoji} ${travelMin} min ${transport === 'ov' ? 'reizen' : transport === 'auto' ? 'rijden' : 'fietsen'} + ${bufferMin} min buffer`;
 }
 
@@ -256,7 +267,7 @@ export async function generatePlan() {
             await new Promise((resolve) => {
                 navigator.geolocation.getCurrentPosition(
                     (pos) => { state.userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude, name: 'Mijn locatie' }; document.getElementById('gps-btn')?.classList.add('gps-active'); updatePlanLocationChip(); resolve(); },
-                    () => resolve(), { enableHighAccuracy: false, timeout: 6000, maximumAge: 300000 }
+                    () => resolve(), { enableHighAccuracy: false, timeout: GEOLOCATION_TIMEOUT_MS, maximumAge: GEOLOCATION_MAX_AGE_MS }
                 );
             });
         } catch {}
@@ -267,8 +278,8 @@ export async function generatePlan() {
     try {
         setPrefs({ childAges: planState.childAges, transport: planState.transport });
 
-        const lat = state.userLocation ? state.userLocation.lat : 52.37;
-        const lng = state.userLocation ? state.userLocation.lng : 4.90;
+        const lat = state.userLocation ? state.userLocation.lat : FALLBACK_LAT;
+        const lng = state.userLocation ? state.userLocation.lng : FALLBACK_LNG;
         const dateStr = getPlanDate(planState.date);
         const radiusKm = TRANSPORT_RADIUS[planState.transport];
         const forecast = await fetchDayForecast(dateStr, lat, lng);
@@ -351,7 +362,7 @@ export async function generatePlan() {
         // ── Legacy fallback (no plan-engine.js) ──
         const scored = candidates.map(loc => {
             const dist = calculateDistance(lat, lng, loc.lat, loc.lng);
-            return { ...loc, _planScore: computePeuterScore(loc) - (dist * 0.1), _distKm: dist };
+            return { ...loc, _planScore: computePeuterScore(loc) - (dist * LEGACY_DISTANCE_PENALTY), _distKm: dist };
         }).sort((a, b) => b._planScore - a._planScore);
 
         if (!scored.length) {
@@ -516,14 +527,14 @@ function buildShareText() {
 export function sharePlan() {
     const text = buildShareText();
     if (!text) return;
-    if (navigator.share) { navigator.share({ title: 'Mijn dag met de peuters', text }).catch(() => {}); }
+    if (navigator.share) { navigator.share({ title: 'Mijn dag met de peuters', text }).catch(e => { console.warn('[plan:sharePlan] Share failed:', e.message); }); }
     else {
         const shareBtn = document.querySelector('.plan-actions .btn');
         navigator.clipboard?.writeText(text).then(() => {
             if (!shareBtn) return;
             const orig = shareBtn.innerHTML;
             shareBtn.textContent = '✓ Gekopieerd';
-            setTimeout(() => { shareBtn.innerHTML = orig; }, 2000);
+            setTimeout(() => { shareBtn.innerHTML = orig; }, SHARE_COPY_FEEDBACK_MS);
         }).catch(() => window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank'));
     }
 }

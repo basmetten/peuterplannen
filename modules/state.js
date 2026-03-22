@@ -26,8 +26,6 @@ export const TYPE_COLORS = {
     play: '#6B9590', farm: '#8B7355', nature: '#4A7A76', horeca: '#D4775A',
     museum: '#8B6688', swim: '#5B9EC4', pancake: '#E8B870'
 };
-export const LUNCH_PLAY_PATTERN = /(speelhoek|speelruimte|speeltuin|terras|kinderstoel|lunchen|pannenkoek|pannenkoeken|boerderij|restaurant|cafe|café)/i;
-
 export const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_quality,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,food_fit,play_corner_quality,noise_level,crowd_pattern,time_of_day_fit,price_band';
 export const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_quality,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,food_fit,play_corner_quality,noise_level,crowd_pattern,time_of_day_fit,price_band';
 

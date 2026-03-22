@@ -14,6 +14,14 @@ export const TODDLER_TRAVEL_FACTOR = 1.5;
 export const TRANSITION_BUFFER_MIN = 10;
 
 const SPEED_KMH = { fiets: 15, auto: 40, ov: 25, bakfiets: 12 };
+const OV_EXTRA_MINUTES = 10;
+const EARTH_RADIUS_KM = 6371;
+const DEFAULT_TRAVEL_MIN = 30;
+const DEFAULT_SPEED_KMH = 40;
+const MIN_SLOT_SCORE = 30;
+const MATCH_SCORE_TOP = 75;
+const MATCH_SCORE_GOOD = 50;
+const SERENDIPITY_MAX = 5;
 
 // ─── Plan Templates ──────────────────────────────────────────────────────────
 
@@ -58,7 +66,7 @@ export const PLAN_TEMPLATES = {
 // ─── Private Helpers ─────────────────────────────────────────────────────────
 
 function haversineDistance(lat1, lng1, lat2, lng2) {
-  const R = 6371;
+  const R = EARTH_RADIUS_KM;
   const dLat = (lat2 - lat1) * Math.PI / 180;
   const dLng = (lng2 - lng1) * Math.PI / 180;
   const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -68,11 +76,11 @@ function haversineDistance(lat1, lng1, lat2, lng2) {
 }
 
 function estimateTravelMinutes(location, fromPoint, transport) {
-  if (!location.lat || !location.lng || !fromPoint?.lat || !fromPoint?.lng) return 30;
+  if (!location.lat || !location.lng || !fromPoint?.lat || !fromPoint?.lng) return DEFAULT_TRAVEL_MIN;
   const distKm = haversineDistance(fromPoint.lat, fromPoint.lng, location.lat, location.lng);
-  const speed = SPEED_KMH[transport] || 40;
+  const speed = SPEED_KMH[transport] || DEFAULT_SPEED_KMH;
   const mins = Math.round((distKm / speed) * 60);
-  return transport === 'ov' ? mins + 10 : mins;
+  return transport === 'ov' ? mins + OV_EXTRA_MINUTES : mins;
 }
 
 function estimateEnergy(location) {
@@ -166,7 +174,7 @@ export function scorePlanLocation(location, context) {
   else if (Math.abs(energyToNum(targetEnergy) - energyToNum(locEnergy)) === 1) score += 5;
 
   // DIMENSION 8: Serendipity (0-5 points)
-  score += Math.random() * 5;
+  score += Math.random() * SERENDIPITY_MAX;
 
   return Math.min(100, Math.max(0, Math.round(score)));
 }
@@ -209,7 +217,7 @@ export function selectLocations(templateKey, candidates, context) {
 
     scored.sort((a, b) => b.score - a.score);
 
-    const best = scored.find(s => s.score >= 30);
+    const best = scored.find(s => s.score >= MIN_SLOT_SCORE);
     if (best) {
       plan.push({
         location: best.location,
@@ -217,8 +225,8 @@ export function selectLocations(templateKey, candidates, context) {
         slotDuration: slot.duration,
         slotLabel: slot.label,
         matchScore: best.score,
-        matchLabel: best.score >= 75 ? 'Top keuze' : best.score >= 50 ? 'Goede optie' : 'Leuk alternatief',
-        matchTone: best.score >= 75 ? 'top' : best.score >= 50 ? 'good' : 'alt'
+        matchLabel: best.score >= MATCH_SCORE_TOP ? 'Top keuze' : best.score >= MATCH_SCORE_GOOD ? 'Goede optie' : 'Leuk alternatief',
+        matchTone: best.score >= MATCH_SCORE_TOP ? 'top' : best.score >= MATCH_SCORE_GOOD ? 'good' : 'alt'
       });
 
       // Remove from candidates (no repeats)
@@ -283,8 +291,8 @@ export function swapPlanSlot(plan, slotIndex, candidates, context) {
     ...newPlan[slotIndex],
     location: best.location,
     matchScore: best.score,
-    matchLabel: best.score >= 75 ? 'Top keuze' : best.score >= 50 ? 'Goede optie' : 'Leuk alternatief',
-    matchTone: best.score >= 75 ? 'top' : best.score >= 50 ? 'good' : 'alt'
+    matchLabel: best.score >= MATCH_SCORE_TOP ? 'Top keuze' : best.score >= MATCH_SCORE_GOOD ? 'Goede optie' : 'Leuk alternatief',
+    matchTone: best.score >= MATCH_SCORE_TOP ? 'top' : best.score >= MATCH_SCORE_GOOD ? 'good' : 'alt'
   };
 
   return newPlan;

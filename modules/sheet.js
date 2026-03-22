@@ -1,4 +1,4 @@
-import { state, SB_KEY, TYPE_LABELS, WEATHER_LABELS, WEATHER_ICONS, SB_URL, FULL_LOCATION_SELECT } from './state.js';
+import { state, SB_KEY, DESKTOP_WIDTH, TYPE_LABELS, WEATHER_LABELS, WEATHER_ICONS, SB_URL, FULL_LOCATION_SELECT } from './state.js';
 import { escapeHtml, safeUrl, cleanToddlerHighlight, calculateDistance, buildDetailUrl, trackEvent } from './utils.js';
 import { getTrustBullets, getPracticalBullets, computePeuterScoreV2 } from './scoring.js';
 import { isFavorite } from './favorites.js';
@@ -9,6 +9,13 @@ import { getPrefs, setPrefs, hasCompletedOnboarding } from './prefs.js';
 import { getPhotoData } from './templates.js';
 import bus from './bus.js';
 
+// --- Constants ---
+const ONBOARDING_VIEW_THRESHOLD = 2;
+const ONBOARDING_DELAY_MS = 1500;
+const ONBOARDING_REMOVE_MS = 300;
+const DISTANCE_TO_MINUTES_FACTOR = 1.3;
+const SWIPE_DOWN_THRESHOLD_PX = 80;
+
 export function openLocSheet(locationId) {
     const loc = state.allLocations.find(l => l.id === locationId);
     if (!loc) return;
@@ -18,14 +25,14 @@ export function openLocSheet(locationId) {
     const viewCount = parseInt(localStorage.getItem('pp_loc_views') || '0', 10) + 1;
     localStorage.setItem('pp_loc_views', String(viewCount));
 
-    // Show onboarding prompt after 2nd location view (if not already completed)
-    if (viewCount === 2 && !hasCompletedOnboarding()) {
-        setTimeout(() => showAgeOnboarding(), 1500); // delay so user sees location first
+    // Show onboarding prompt after Nth location view (if not already completed)
+    if (viewCount === ONBOARDING_VIEW_THRESHOLD && !hasCompletedOnboarding()) {
+        setTimeout(() => showAgeOnboarding(), ONBOARDING_DELAY_MS); // delay so user sees location first
     }
     state.activeLocSheet = locationId;
 
     // Mobile: use in-sheet detail instead of overlay
-    if (window.innerWidth < 680) {
+    if (window.innerWidth < DESKTOP_WIDTH) {
         bus.emit('sheet:opendetail', locationId);
         return;
     }
@@ -39,7 +46,7 @@ export function openLocSheet(locationId) {
     let distancePill = '';
     if (state.userLocation && loc.lat && loc.lng) {
         const dist = calculateDistance(state.userLocation.lat, state.userLocation.lng, loc.lat, loc.lng);
-        const mins = Math.round(dist * 1.3);
+        const mins = Math.round(dist * DISTANCE_TO_MINUTES_FACTOR);
         distancePill = `<span class="pill pill-distance">${mins < 60 ? mins + ' min' : Math.floor(mins/60) + 'u ' + (mins%60) + 'm'}</span>`;
     } else if (loc.region) {
         distancePill = `<span class="pill pill-region">${loc.region}</span>`;
@@ -187,7 +194,7 @@ export function openLocSheet(locationId) {
         </div>` : ''}
 
         <!-- TIER 3: Behind toggle -->
-        <details class="sheet-detail-more">
+        <details class="sheet-detail-more" aria-label="Meer details over ${escapeHtml(loc.name)}">
             <summary class="sheet-detail-more-toggle">Meer details</summary>
 
             ${scoreBreakdownHtml ? `<div class="sheet-score-breakdown-wrap">${scoreBreakdownHtml}</div>` : ''}
@@ -358,7 +365,7 @@ function renderDetailView(loc, regionSlug) {
     html += '<div class="detail-actions">';
     if (loc.lat && loc.lng) html += '<a href="https://www.google.com/maps/dir/?api=1&destination=' + loc.lat + ',' + loc.lng + '" target="_blank" rel="noopener" class="detail-btn-route"><svg viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg> Route plannen</a>';
     html += '<div class="detail-share"><a href="https://wa.me/?text=' + waText + '" target="_blank" rel="noopener" class="detail-share-wa">WhatsApp</a>';
-    if (typeof navigator !== 'undefined' && navigator.share) html += '<button class="detail-share-native" onclick="navigator.share({title:\'' + shareTitle.replace(/'/g, "\\'") + '\',url:\'' + shareUrl + '\'}).catch(function(){})">Delen</button>';
+    if (typeof navigator !== 'undefined' && navigator.share) html += '<button class="detail-share-native" onclick="navigator.share({title:\'' + shareTitle.replace(/'/g, "\\'") + '\',url:\'' + shareUrl + '\'}).catch(function(e){console.warn(\x27[sheet:share] Share failed:\x27,e.message)})">Delen</button>';
     html += '</div></div>';
 
     if (loc.lat && loc.lng) {
@@ -396,7 +403,7 @@ export function initSheetGestures() {
     infoPanel.addEventListener('touchstart', (e) => { infoStartY = e.touches[0].clientY; }, { passive: true });
     infoPanel.addEventListener('touchmove', (e) => {
         const deltaY = e.touches[0].clientY - infoStartY;
-        if (deltaY > 80 && infoPanel.scrollTop === 0) closeInfoPanel();
+        if (deltaY > SWIPE_DOWN_THRESHOLD_PX && infoPanel.scrollTop === 0) closeInfoPanel();
     }, { passive: true });
 
     // Swipe-down to close loc sheet
@@ -405,7 +412,7 @@ export function initSheetGestures() {
     locSheet.addEventListener('touchstart', (e) => { locStartY = e.touches[0].clientY; }, { passive: true });
     locSheet.addEventListener('touchmove', (e) => {
         const deltaY = e.touches[0].clientY - locStartY;
-        if (deltaY > 80 && locSheet.scrollTop === 0) closeLocSheet();
+        if (deltaY > SWIPE_DOWN_THRESHOLD_PX && locSheet.scrollTop === 0) closeLocSheet();
     }, { passive: true });
 
     // ESC to close panels
@@ -456,7 +463,7 @@ function showAgeOnboarding() {
             const age = btn.dataset.age;
             setPrefs({ childAges: [age], onboardingComplete: true });
             overlay.classList.remove('visible');
-            setTimeout(() => overlay.remove(), 300);
+            setTimeout(() => overlay.remove(), ONBOARDING_REMOVE_MS);
 
             // Pre-select the matching age filter chip
             const ageMap = { dreumes: 'dreumesproof', peuter: 'peuterproof' };

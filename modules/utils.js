@@ -1,5 +1,14 @@
 import { SB_KEY, SB_EVENTS_URL } from './state.js';
 
+// --- Constants ---
+const EARTH_RADIUS_KM = 6371;
+const DISTANCE_TO_MINUTES_FACTOR = 1.3;
+const DEFAULT_TOAST_DURATION_MS = 2000;
+const TOAST_HIDE_TIMEOUT_MS = 400;
+const NEAR_DUPLICATE_MIN_LENGTH = 28;
+const WORD_OVERLAP_THRESHOLD = 0.72;
+const MAX_HIGHLIGHT_LENGTH = 120;
+
 // === Security Helpers ===
 export function escapeHtml(str) {
     if (!str) return '';
@@ -39,12 +48,12 @@ export function isNearDuplicateCopy(a, b) {
     const bb = comparableText(b);
     if (!aa || !bb) return false;
     if (aa === bb) return true;
-    if (aa.length > 28 && bb.includes(aa)) return true;
-    if (bb.length > 28 && aa.includes(bb)) return true;
+    if (aa.length > NEAR_DUPLICATE_MIN_LENGTH && bb.includes(aa)) return true;
+    if (bb.length > NEAR_DUPLICATE_MIN_LENGTH && aa.includes(bb)) return true;
     const aWords = aa.split(' ').filter(Boolean);
     const bWords = bb.split(' ').filter(Boolean);
     const overlap = aWords.filter((word) => bWords.includes(word)).length;
-    const threshold = Math.min(aWords.length, bWords.length) * 0.72;
+    const threshold = Math.min(aWords.length, bWords.length) * WORD_OVERLAP_THRESHOLD;
     return overlap >= threshold;
 }
 
@@ -54,13 +63,13 @@ export function getCardSupportingCopy(item) {
     if (description && highlight && isNearDuplicateCopy(description, highlight)) {
         return highlight.length < description.length ? highlight : description;
     }
-    if (highlight && highlight.length <= 120) return highlight;
+    if (highlight && highlight.length <= MAX_HIGHLIGHT_LENGTH) return highlight;
     return description || highlight || '';
 }
 
 // === Distance ===
 export function calculateDistance(lat1, lng1, lat2, lng2) {
-    const R = 6371, dLat = (lat2 - lat1) * Math.PI / 180, dLng = (lng2 - lng1) * Math.PI / 180;
+    const R = EARTH_RADIUS_KM, dLat = (lat2 - lat1) * Math.PI / 180, dLng = (lng2 - lng1) * Math.PI / 180;
     const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng/2) * Math.sin(dLng/2);
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
@@ -71,7 +80,7 @@ export function calculateTravelTimes(userLocation, destinations) {
     destinations.forEach(dest => {
         if (dest.lat && dest.lng) {
             const dist = calculateDistance(userLocation.lat, userLocation.lng, dest.lat, dest.lng);
-            const mins = Math.round(dist * 1.3);
+            const mins = Math.round(dist * DISTANCE_TO_MINUTES_FACTOR);
             results[dest.id] = { duration: mins < 60 ? `${mins} min` : `${Math.floor(mins/60)}u ${mins%60}m`, durationValue: mins * 60, distance: dist < 1 ? `${Math.round(dist*1000)}m` : `${dist.toFixed(1)} km`, distanceKm: dist };
         }
     });
@@ -84,11 +93,11 @@ export function slugify(text) {
 
 // === Toast ===
 export function ppToast(msg, type, duration) {
-    type = type || 'default'; duration = duration || 2000;
+    type = type || 'default'; duration = duration || DEFAULT_TOAST_DURATION_MS;
     let zone = document.querySelector('.pp-toast-zone');
     if (!zone) { zone = document.createElement('div'); zone.className = 'pp-toast-zone'; zone.setAttribute('aria-live', 'polite'); document.body.append(zone); }
     const t = document.createElement('div'); t.className = 'pp-toast pp-toast-' + type; t.textContent = msg; t.setAttribute('role', 'status'); zone.append(t);
-    setTimeout(function() { t.classList.add('is-hiding'); t.addEventListener('transitionend', function() { t.remove(); }, { once: true }); setTimeout(function() { t.remove(); }, 400); }, duration);
+    setTimeout(function() { t.classList.add('is-hiding'); t.addEventListener('transitionend', function() { t.remove(); }, { once: true }); setTimeout(function() { t.remove(); }, TOAST_HIDE_TIMEOUT_MS); }, duration);
 }
 
 // === Tracking ===
@@ -100,7 +109,7 @@ export function trackEvent(type, data) {
             body: JSON.stringify({ event_type: type, event_data: data || {}, page_path: location.pathname }),
             keepalive: true
         });
-    } catch(e) {}
+    } catch(e) { console.warn('[utils:trackEvent] Event tracking failed:', e.message); }
 }
 
 // === URL helpers ===

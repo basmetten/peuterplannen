@@ -9,6 +9,39 @@ import { renderCompactCard, renderSheetPreview, getPhotoData } from './templates
    UI morphing. Apple Maps web reference architecture.
    =================================================== */
 
+// --- Constants ---
+const PEEK_HEIGHT_PX = 160;
+const HALF_RATIO = 0.55;
+const SCROLL_DEBOUNCE_MS = 150;
+const RESIZE_DEBOUNCE_MS = 100;
+const SUPPRESS_DETECT_MS = 400;
+
+// Morph thresholds: [startProgress, fadeRange] for staggered element fade-in
+const MORPH_TABS_START = 0.55;
+const MORPH_TABS_RANGE = 0.30;
+const MORPH_FILTER_CHIPS_START = 0.45;
+const MORPH_FILTER_CHIPS_RANGE = 0.35;
+const MORPH_META_START = 0.12;
+const MORPH_META_RANGE = 0.35;
+const MORPH_FORECAST_START = 0.20;
+const MORPH_FORECAST_RANGE = 0.45;
+const MORPH_WEEK_PICKS_START = 0.18;
+const MORPH_WEEK_PICKS_RANGE = 0.45;
+const MORPH_LIST_START = 0.12;
+const MORPH_LIST_RANGE = 0.50;
+
+const CONTENT_SCROLL_THRESHOLD = 0.85;
+const OVERLAY_MAX_OPACITY = 0.3;
+const OPACITY_HIDDEN_THRESHOLD = 0.01;
+const OVERLAY_DISPLAY_THRESHOLD = 0.01;
+const OVERLAY_POINTER_THRESHOLD = 0.05;
+const MORPH_POINTER_THRESHOLD = 0.3;
+
+const SHEET_LIST_BATCH = 30;
+const LAZY_OBSERVER_THRESHOLD = 0.1;
+const SEARCH_MIN_CHARS = 2;
+const SEARCH_MAX_SUGGESTIONS = 6;
+
 // --- DOM ---
 let hostEl, sheetEl, contentEl, listEl, dragHandle;
 let snapPeekEl, snapHalfEl;
@@ -33,8 +66,8 @@ function computeSnapPositions() {
     if (!hostEl) return;
     const vh = window.innerHeight;
 
-    const peekHeight = 160;
-    const halfHeight = Math.round(vh * 0.55);
+    const peekHeight = PEEK_HEIGHT_PX;
+    const halfHeight = Math.round(vh * HALF_RATIO);
 
     // Total spacer space before the sheet (sheet is 100dvh, so maxScroll = totalSpacer)
     const totalSpacer = 2 * vh - peekHeight;
@@ -98,7 +131,7 @@ export function initSheet() {
     let scrollTimer;
     hostEl.addEventListener('scroll', () => {
         clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(detectStateFromScroll, 150);
+        scrollTimer = setTimeout(detectStateFromScroll, SCROLL_DEBOUNCE_MS);
     }, { passive: true });
 
     // Search
@@ -128,7 +161,7 @@ export function initSheet() {
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(computeSnapPositions, 100);
+        resizeTimer = setTimeout(computeSnapPositions, RESIZE_DEBOUNCE_MS);
     });
 
     // Start in peek
@@ -155,16 +188,16 @@ function applyMorphs(scrollTop) {
     const p2raw = clamp((scrollTop - halfPos) / ((fullPos - halfPos) || 1));
     const p2 = easeOut(p2raw);
 
-    // Child morphs (staggered fade-in, same thresholds as original)
-    setMorphOpacity(morphEls.tabs,        clamp((p1 - 0.55) / 0.30));
-    setMorphOpacity(morphEls.filterChips, clamp((p1 - 0.45) / 0.35));
-    setMorphOpacity(morphEls.meta,        clamp((p1 - 0.12) / 0.35));
-    setMorphOpacity(morphEls.forecast,    clamp((p1 - 0.20) / 0.45));
-    setMorphOpacity(morphEls.weekPicks,   clamp((p1 - 0.18) / 0.45));
-    setMorphOpacity(morphEls.list,        clamp((p1 - 0.12) / 0.50));
+    // Child morphs (staggered fade-in)
+    setMorphOpacity(morphEls.tabs,        clamp((p1 - MORPH_TABS_START) / MORPH_TABS_RANGE));
+    setMorphOpacity(morphEls.filterChips, clamp((p1 - MORPH_FILTER_CHIPS_START) / MORPH_FILTER_CHIPS_RANGE));
+    setMorphOpacity(morphEls.meta,        clamp((p1 - MORPH_META_START) / MORPH_META_RANGE));
+    setMorphOpacity(morphEls.forecast,    clamp((p1 - MORPH_FORECAST_START) / MORPH_FORECAST_RANGE));
+    setMorphOpacity(morphEls.weekPicks,   clamp((p1 - MORPH_WEEK_PICKS_START) / MORPH_WEEK_PICKS_RANGE));
+    setMorphOpacity(morphEls.list,        clamp((p1 - MORPH_LIST_START) / MORPH_LIST_RANGE));
 
     // Content scroll: only allow when near half or above
-    const canScroll = p1raw > 0.85;
+    const canScroll = p1raw > CONTENT_SCROLL_THRESHOLD;
     if (canScroll !== lastCanScroll) {
         lastCanScroll = canScroll;
         contentEl.style.overflowY = canScroll ? 'auto' : 'hidden';
@@ -173,16 +206,16 @@ function applyMorphs(scrollTop) {
 
     // Overlay (dims background toward full)
     if (morphEls.overlay) {
-        const o = p2 * 0.3;
+        const o = p2 * OVERLAY_MAX_OPACITY;
         morphEls.overlay.style.opacity = o;
-        morphEls.overlay.style.display = o > 0.01 ? 'block' : 'none';
-        morphEls.overlay.style.pointerEvents = o > 0.05 ? 'auto' : 'none';
+        morphEls.overlay.style.display = o > OVERLAY_DISPLAY_THRESHOLD ? 'block' : 'none';
+        morphEls.overlay.style.pointerEvents = o > OVERLAY_POINTER_THRESHOLD ? 'auto' : 'none';
     }
 }
 
 function setMorphOpacity(el, opacity) {
     if (!el) return;
-    if (opacity < 0.01) {
+    if (opacity < OPACITY_HIDDEN_THRESHOLD) {
         if (!el.classList.contains('morph-hidden')) {
             el.classList.add('morph-hidden');
             el.style.opacity = '';
@@ -192,7 +225,7 @@ function setMorphOpacity(el, opacity) {
             el.classList.remove('morph-hidden');
         }
         el.style.opacity = opacity;
-        el.style.pointerEvents = opacity > 0.3 ? 'auto' : 'none';
+        el.style.pointerEvents = opacity > MORPH_POINTER_THRESHOLD ? 'auto' : 'none';
     }
 }
 
@@ -237,7 +270,7 @@ export function setSheetState(newState) {
     // Suppress scroll-based state detection briefly so it doesn't override the
     // programmatic state. Scroll-snap can cause a re-snap that triggers
     // detectStateFromScroll with a different scrollTop under heavy CPU load.
-    suppressDetect = Date.now() + 400;
+    suppressDetect = Date.now() + SUPPRESS_DETECT_MS;
 
     // Use instant scroll for programmatic state changes to guarantee reliability.
     // CSS transitions on the sheet handle visual smoothness (border-radius, margin).
@@ -285,8 +318,8 @@ function initSearchPill() {
         });
         input.addEventListener('input', (e) => {
             const q = e.target.value.toLowerCase().trim();
-            if (q.length < 2) { hideSuggestions(); return; }
-            showSuggestions(state.allLocations.filter(l => l.name.toLowerCase().includes(q)).slice(0, 6));
+            if (q.length < SEARCH_MIN_CHARS) { hideSuggestions(); return; }
+            showSuggestions(state.allLocations.filter(l => l.name.toLowerCase().includes(q)).slice(0, SEARCH_MAX_SUGGESTIONS));
         });
         input.addEventListener('click', (e) => e.stopPropagation());
     }
@@ -441,7 +474,6 @@ function updateMoreBadge() {
 let _sheetLocations = [];
 let _renderedCount = 0;
 let _travelTimes = {};
-const BATCH = 30;
 
 export function renderSheetList(locations, travelTimes = {}) {
     if (!listEl) return;
@@ -470,7 +502,7 @@ export function renderSheetList(locations, travelTimes = {}) {
 }
 
 function _loadMoreCards() {
-    const batch = _sheetLocations.slice(_renderedCount, _renderedCount + BATCH);
+    const batch = _sheetLocations.slice(_renderedCount, _renderedCount + SHEET_LIST_BATCH);
     if (!batch.length) return false;
     const html = batch.map(loc => renderCompactCard(loc, { travelTimes: _travelTimes })).join('');
     listEl.insertAdjacentHTML('beforeend', html);
@@ -499,7 +531,7 @@ function _setupLazyObserver() {
             if (_loadMoreCards()) listEl.appendChild(sentinel);
             else _lazyObserver.disconnect();
         }
-    }, { root: listEl.closest('.sheet-content') || null, threshold: 0.1 });
+    }, { root: listEl.closest('.sheet-content') || null, threshold: LAZY_OBSERVER_THRESHOLD });
     _lazyObserver.observe(sentinel);
 }
 

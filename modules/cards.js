@@ -5,6 +5,12 @@ import { getCardDecisionSentence } from './scoring.js';
 import { getPhotoData } from './templates.js';
 import bus from './bus.js';
 
+// --- Constants ---
+const PROMO_EVERY_N = 6;
+const CARD_ANIM_DELAY_INCREMENT = 0.04;
+const CARD_ANIM_DELAY_MAX = 0.2;
+const SENTINEL_ROOT_MARGIN_PX = 150;
+
 let batchLocations = [];
 let batchTravelTimes = {};
 let batchPromoIndex = 0;
@@ -34,13 +40,13 @@ function appendBatch() {
     for (let index = start; index < end; index++) {
         const batchIdx = index - start;
 
-        // Promo insertion every 6th card
-        if ((index + 1) % 6 === 0) {
+        // Promo insertion every Nth card
+        if ((index + 1) % PROMO_EVERY_N === 0) {
             const promo = PROMO_ITEMS[batchPromoIndex % PROMO_ITEMS.length];
             batchPromoIndex++;
             const adCard = document.createElement('article');
             adCard.className = 'loc-card promo-banner' + (promo.donation ? ' promo-donation' : '') + ' reveal';
-            adCard.style.animationDelay = `${Math.min(batchIdx * 0.04, 0.2)}s`;
+            adCard.style.animationDelay = `${Math.min(batchIdx * CARD_ANIM_DELAY_INCREMENT, CARD_ANIM_DELAY_MAX)}s`;
             adCard.innerHTML = `
                 <div class="promo-icon"><svg viewBox="0 0 24 24" aria-hidden="true">${promo.icon}</svg></div>
                 <div class="promo-body">
@@ -58,12 +64,14 @@ function appendBatch() {
             ael.className = 'loc-card adsense-card';
             ael.innerHTML = `<span class="ad-label">Advertentie</span><ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-6t+ed+2i-1n-4w" data-ad-client="${ADSENSE_PUB_ID}" data-ad-slot="${ADSENSE_SLOT_ID}"></ins>`;
             container.appendChild(ael);
-            try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
+            try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) { console.warn('[cards:renderBatch] AdSense push failed:', e.message); }
         }
 
         const item = batchLocations[index];
         const travelInfo = batchTravelTimes[item.id];
         const card = renderScanCard(item, travelInfo, batchIdx);
+        card.setAttribute('aria-posinset', String(index + 1));
+        card.setAttribute('aria-setsize', String(batchLocations.length));
         container.appendChild(card);
     }
 
@@ -79,7 +87,7 @@ function appendBatch() {
                 batchSentinelObserver = null;
                 appendBatch();
             }
-        }, { rootMargin: '0px 0px 150px 0px' });
+        }, { rootMargin: `0px 0px ${SENTINEL_ROOT_MARGIN_PX}px 0px` });
         batchSentinelObserver.observe(sentinel);
     }
 }
@@ -113,7 +121,7 @@ function renderScanCard(item, travelInfo, batchIdx) {
     card.className = 'loc-card scan-card reveal';
     card.dataset.locId = item.id;
     card.setAttribute('aria-label', item.name);
-    card.style.animationDelay = `${Math.min(batchIdx * 0.04, 0.2)}s`;
+    card.style.animationDelay = `${Math.min(batchIdx * CARD_ANIM_DELAY_INCREMENT, CARD_ANIM_DELAY_MAX)}s`;
 
     // Desktop hover → map highlight
     if (window.innerWidth >= DESKTOP_WIDTH && item.lat && item.lng) {

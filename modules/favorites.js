@@ -22,7 +22,7 @@ export function toggleFavorite(locationId, btn) {
     const action = index > -1 ? 'remove' : 'add';
     if (index > -1) favorites.splice(index, 1); else favorites.push(locationId);
     trackEvent('favorite_toggle', { action: action });
-    try { localStorage.setItem('peuterplannen_favorites', JSON.stringify(favorites)); } catch(e) {}
+    try { localStorage.setItem('peuterplannen_favorites', JSON.stringify(favorites)); } catch(e) { console.warn('[favorites:toggleFavorite] localStorage save failed:', e.message); }
     updateShortlistBar();
     updateFavBadge();
     if (btn) { btn.classList.add('heart-pop'); setTimeout(() => btn.classList.remove('heart-pop'), 400); }
@@ -97,7 +97,7 @@ export function showShortlist() {
 
 export function clearShortlist() {
     if (state.sharedShortlistIds.length > 0) { clearSharedShortlist(); return; }
-    try { localStorage.removeItem('peuterplannen_favorites'); } catch (error) {}
+    try { localStorage.removeItem('peuterplannen_favorites'); } catch (error) { console.warn('[favorites:clearShortlist] localStorage remove failed:', error.message); }
     if (state.activeTag === 'favorites') state.activeTag = 'all';
     updateShortlistBar();
     bus.emit('filters:countupdate');

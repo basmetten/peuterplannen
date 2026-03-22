@@ -181,7 +181,7 @@ if (state.locatieParam) {
             if (popularEl) popularEl.classList.add('hidden');
             updateLocation();
         }
-    } catch(e) {}
+    } catch(e) { console.warn('[app:init] Restore saved city failed:', e.message); }
     updateShortlistBar(); updateFavBadge(); updateFilterCount(); syncFilterPanelForViewport();
     loadLocations(); checkWeather();
 }
@@ -200,7 +200,7 @@ updateOfflineStatus();
 
 // Load MapLibre — on mobile: init immediately (map is always visible background)
 // On desktop: also init immediately (side-by-side layout)
-loadMapLibre().then(() => initMap()).catch(() => {});
+loadMapLibre().then(() => initMap()).catch(e => { console.warn('[app:init] MapLibre load/init failed:', e.message); });
 
 // View transitions
 document.getElementById('results-container').addEventListener('click', (e) => {
@@ -297,12 +297,12 @@ try {
             setTimeout(() => togglePreset(preset), 500);
         }
     }
-} catch(e) {}
+} catch(e) { console.warn('[app:init] Restore age filter from prefs failed:', e.message); }
 
 // Clear all saved preferences
 function clearAllPrefs() {
     clearPrefs();
-    try { localStorage.removeItem('pp-last-city'); } catch(e) {}
+    try { localStorage.removeItem('pp-last-city'); } catch(e) { console.warn('[app:clearAllPrefs] localStorage remove failed:', e.message); }
     location.reload();
 }
 window.clearAllPrefs = clearAllPrefs;

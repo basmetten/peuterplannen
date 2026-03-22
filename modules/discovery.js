@@ -2,6 +2,19 @@ import { state } from './state.js';
 import { computePeuterScore } from './scoring.js';
 import bus from './bus.js';
 
+// --- Constants ---
+const WEEK_PICKS_COUNT = 5;
+const PHOTO_QUALITY_THRESHOLD = 3;
+const MIN_CANDIDATES_FALLBACK = 10;
+const MIN_CANDIDATES_ULTIMATE = 5;
+const FORECAST_DAYS = 5;
+const SEASONAL_BONUS = 15;
+const RAIN_INDOOR_BONUS = 20;
+const SUNNY_OUTDOOR_BONUS = 15;
+const PHOTO_QUALITY_MULTIPLIER = 1.5;
+const PEUTERSCORE_MULTIPLIER = 10;
+const DIVERSITY_MIN_PICKS = 3;
+
 const SEASONAL_TYPES = {
     0: ['museum', 'indoor'],      // jan - indoor focus
     1: ['museum', 'indoor'],      // feb
@@ -26,30 +39,30 @@ export function getThisWeekPicks(locations, region) {
         ? locations.filter(l => l.region === region)
         : locations;
 
-    if (candidates.length < 10) candidates = locations; // fallback
+    if (candidates.length < MIN_CANDIDATES_FALLBACK) candidates = locations; // fallback
 
     // Prefer locations with good photos for week picks
     candidates = candidates.filter(l =>
-        (l.photo_url || l.owner_photo_url) && (l.photo_quality === undefined || l.photo_quality >= 3)
+        (l.photo_url || l.owner_photo_url) && (l.photo_quality === undefined || l.photo_quality >= PHOTO_QUALITY_THRESHOLD)
     );
-    if (candidates.length < 10) candidates = locations.filter(l => l.photo_url || l.owner_photo_url);
-    if (candidates.length < 5) candidates = locations; // ultimate fallback
+    if (candidates.length < MIN_CANDIDATES_FALLBACK) candidates = locations.filter(l => l.photo_url || l.owner_photo_url);
+    if (candidates.length < MIN_CANDIDATES_ULTIMATE) candidates = locations; // ultimate fallback
 
     // Score candidates
     const scored = candidates.map(loc => {
-        let score = computePeuterScore(loc) * 10;
+        let score = computePeuterScore(loc) * PEUTERSCORE_MULTIPLIER;
 
         // Seasonal bonus
-        if (seasonalTypes.includes(loc.type)) score += 15;
+        if (seasonalTypes.includes(loc.type)) score += SEASONAL_BONUS;
 
         // Weather fit bonus
-        if (state.isRaining && ['indoor', 'hybrid', 'both'].includes(loc.weather)) score += 20;
-        if (state.isSunny && ['outdoor', 'both'].includes(loc.weather)) score += 15;
+        if (state.isRaining && ['indoor', 'hybrid', 'both'].includes(loc.weather)) score += RAIN_INDOOR_BONUS;
+        if (state.isSunny && ['outdoor', 'both'].includes(loc.weather)) score += SUNNY_OUTDOOR_BONUS;
 
-        // Photo quality weighted bonus (was flat +5)
+        // Photo quality weighted bonus
         if (loc.photo_url || loc.owner_photo_url) {
-            const pq = loc.photo_quality || 3; // default 3 if not evaluated yet
-            score += Math.round(pq * 1.5); // 1→1.5, 3→4.5, 5→7.5
+            const pq = loc.photo_quality || PHOTO_QUALITY_THRESHOLD; // default if not evaluated yet
+            score += Math.round(pq * PHOTO_QUALITY_MULTIPLIER);
         }
 
         return { loc, score };
@@ -59,8 +72,8 @@ export function getThisWeekPicks(locations, region) {
     const picks = [];
     const usedTypes = new Set();
     for (const { loc } of scored) {
-        if (picks.length >= 5) break;
-        if (!usedTypes.has(loc.type) || picks.length < 3) {
+        if (picks.length >= WEEK_PICKS_COUNT) break;
+        if (!usedTypes.has(loc.type) || picks.length < DIVERSITY_MIN_PICKS) {
             picks.push(loc);
             usedTypes.add(loc.type);
         }
@@ -72,7 +85,7 @@ export function getThisWeekPicks(locations, region) {
 export async function fetch5DayForecast(lat, lng) {
     try {
         const res = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max&timezone=Europe/Amsterdam&forecast_days=5`
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max&timezone=Europe/Amsterdam&forecast_days=${FORECAST_DAYS}`
         );
         if (!res.ok) return null;
         const data = await res.json();

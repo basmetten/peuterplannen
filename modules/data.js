@@ -5,6 +5,22 @@ import { getFavorites } from './favorites.js';
 import { setPrefs } from './prefs.js';
 import bus from './bus.js';
 
+// --- Constants ---
+const AUTO_RETRY_MAX = 3;
+const AUTO_RETRY_INTERVAL_MS = 30000;
+const SKELETON_FADEOUT_MS = 220;
+const DEFAULT_FETCH_RETRIES = 3;
+const RETRY_BACKOFF_BASE_MS = 500;
+const FETCH_PAGE_SIZE = 1000;
+const FETCH_TIMEOUT_MS = 10000;
+const FETCH_RETRY_DELAY_MS = 2000;
+const CACHE_MAX_ITEMS = 250;
+const FALLBACK_LAT = 52.37;
+const FALLBACK_LNG = 4.90;
+const GPS_STATUS_HIDE_DELAY_MS = 2000;
+const GEOLOCATION_TIMEOUT_MS = 10000;
+const GEOLOCATION_MAX_AGE_MS = 60000;
+
 let currentAbort = null;
 let autoRetryInterval = null;
 let autoRetryCount = 0;
@@ -14,21 +30,21 @@ function startAutoRetry() {
     autoRetryCount = 0;
     autoRetryInterval = setInterval(() => {
         autoRetryCount++;
-        if (autoRetryCount >= 3) { stopAutoRetry(); return; }
+        if (autoRetryCount >= AUTO_RETRY_MAX) { stopAutoRetry(); return; }
         loadLocations();
-    }, 30000);
+    }, AUTO_RETRY_INTERVAL_MS);
 }
 
 function stopAutoRetry() {
     if (autoRetryInterval) { clearInterval(autoRetryInterval); autoRetryInterval = null; }
 }
 
-/** Fade out skeleton cards, then hide the loader */
+/** Fade out skeleton cards over 200ms, then hide the loader */
 function fadeOutLoader(loader) {
     const skeletons = loader.querySelector('.skeleton-cards');
     if (skeletons) {
         skeletons.classList.add('is-hiding');
-        setTimeout(() => loader.classList.add('hidden'), 300);
+        setTimeout(() => loader.classList.add('hidden'), SKELETON_FADEOUT_MS);
     } else {
         loader.classList.add('hidden');
     }
@@ -67,7 +83,7 @@ async function readLocationsCache() {
 
 async function writeLocationsCache(items) {
     try {
-        const cachedItems = Array.isArray(items) ? items.slice(0, 250) : [];
+        const cachedItems = Array.isArray(items) ? items.slice(0, CACHE_MAX_ITEMS) : [];
         const payload = { savedAt: Date.now(), count: Array.isArray(items) ? items.length : 0, partial: Array.isArray(items) && items.length > cachedItems.length, items: cachedItems };
         const db = await openLocationsCacheDb();
         await new Promise((resolve, reject) => {
@@ -78,11 +94,11 @@ async function writeLocationsCache(items) {
             request.onerror = () => reject(request.error || new Error('Failed to write cache'));
         });
         db.close();
-    } catch (_) {}
+    } catch (_) { console.warn('[data:writeLocationsCache] Cache write failed:', _.message); }
 }
 
 // === Fetch helpers ===
-export async function fetchJsonWithRetry(url, opts, attempts = 3) {
+export async function fetchJsonWithRetry(url, opts, attempts = DEFAULT_FETCH_RETRIES) {
     let lastError = null;
     for (let attempt = 1; attempt <= attempts; attempt++) {
         try {
@@ -93,14 +109,14 @@ export async function fetchJsonWithRetry(url, opts, attempts = 3) {
             lastError = err;
             if (err?.name === 'AbortError') throw err;
             if (attempt === attempts) break;
-            await new Promise(resolve => setTimeout(resolve, attempt * 500));
+            await new Promise(resolve => setTimeout(resolve, attempt * RETRY_BACKOFF_BASE_MS));
         }
     }
     throw lastError || new Error('Unknown fetch failure');
 }
 
 export async function fetchAllPages(baseUrl, signal) {
-    const BATCH = 1000;
+    const BATCH = FETCH_PAGE_SIZE;
     const headers = { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" };
     let all = [], offset = 0;
     while (true) {
@@ -182,7 +198,7 @@ export function updateResultsCount(count) {
 export async function loadLocations() {
     if (currentAbort) currentAbort.abort();
     currentAbort = new AbortController();
-    const fetchTimeout = setTimeout(() => currentAbort.abort(), 10000);
+    const fetchTimeout = setTimeout(() => currentAbort.abort(), FETCH_TIMEOUT_MS);
     const container = document.getElementById('results-container'), loader = document.getElementById('loader'), error = document.getElementById('error');
     if (state.currentDisplayMode !== 'map') { container.innerHTML = ''; loader.classList.remove('hidden'); }
     error.classList.add('hidden');
@@ -195,7 +211,7 @@ export async function loadLocations() {
         } catch (fetchError) {
             if (fetchError?.name === 'AbortError') throw fetchError;
             try {
-                await new Promise(r => setTimeout(r, 2000));
+                await new Promise(r => setTimeout(r, FETCH_RETRY_DELAY_MS));
                 fetchedLocations = await fetchLocationsLive(currentAbort.signal);
                 await writeLocationsCache(fetchedLocations);
             } catch (retryError) {
@@ -286,8 +302,8 @@ export async function loadLocations() {
 // === Weather Banner ===
 export async function checkWeather() {
     try {
-        const lat = state.userLocation ? state.userLocation.lat : 52.37;
-        const lng = state.userLocation ? state.userLocation.lng : 4.90;
+        const lat = state.userLocation ? state.userLocation.lat : FALLBACK_LAT;
+        const lng = state.userLocation ? state.userLocation.lng : FALLBACK_LNG;
         const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=weather_code,temperature_2m`);
         if (!res.ok) return;
         const data = await res.json();
@@ -320,7 +336,7 @@ export async function checkWeather() {
                 <span class="weather-banner-arrow">›</span>
             </div>`;
         }
-    } catch(e) {}
+    } catch(e) { console.warn('[data:checkWeather] Weather fetch failed:', e.message); }
 }
 
 // === Location search ===
@@ -334,7 +350,7 @@ export async function initAutocomplete() {
         const place = state.autocomplete.getPlace();
         if (place.geometry) {
             state.userLocation = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), name: place.formatted_address || place.name };
-            try { localStorage.setItem('pp-last-city', state.userLocation.name); } catch(e) {}
+            try { localStorage.setItem('pp-last-city', state.userLocation.name); } catch(e) { console.warn('[data:initAutocomplete] localStorage save city failed:', e.message); }
             const popularElAc = document.getElementById('popular-cities');
             if (popularElAc) popularElAc.classList.add('hidden');
             document.getElementById('app-container')?.classList.add('has-location');
@@ -364,14 +380,14 @@ export async function getCurrentLocation() {
             state.userLocation.name = locality ? locality.long_name : result.formatted_address;
             input.value = state.userLocation.name;
             showGpsStatus(`Locatie: ${state.userLocation.name}`, '');
-            setTimeout(() => statusEl.classList.add('hidden'), 2000);
+            setTimeout(() => statusEl.classList.add('hidden'), GPS_STATUS_HIDE_DELAY_MS);
             document.getElementById('app-container')?.classList.add('has-location');
             document.getElementById('gps-btn')?.classList.add('gps-active');
             bus.emit('plan:chipupdate');
             trackEvent('search', { query_type: 'gps' });
             loadLocations(); bus.emit('map:userlocation');
         } catch (err) { input.value = 'Mijn locatie'; showGpsStatus('Locatie gevonden', ''); setTimeout(() => statusEl.classList.add('hidden'), 2000); document.getElementById('app-container')?.classList.add('has-location'); document.getElementById('gps-btn')?.classList.add('gps-active'); bus.emit('plan:chipupdate'); trackEvent('search', { query_type: 'gps' }); loadLocations(); bus.emit('map:userlocation'); }
-    }, (err) => { let msg = 'Locatie niet beschikbaar'; if (err.code === 1) msg = 'Toestemming geweigerd'; if (err.code === 2) msg = 'Locatie niet gevonden'; if (err.code === 3) msg = 'Timeout'; showGpsStatus(msg, 'error'); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+    }, (err) => { let msg = 'Locatie niet beschikbaar'; if (err.code === 1) msg = 'Toestemming geweigerd'; if (err.code === 2) msg = 'Locatie niet gevonden'; if (err.code === 3) msg = 'Timeout'; showGpsStatus(msg, 'error'); }, { enableHighAccuracy: true, timeout: GEOLOCATION_TIMEOUT_MS, maximumAge: GEOLOCATION_MAX_AGE_MS });
 }
 
 export function showGpsStatus(message, type) {
@@ -391,7 +407,7 @@ export async function updateLocation() {
             });
         });
         state.userLocation = { lat: result.geometry.location.lat(), lng: result.geometry.location.lng(), name: input };
-        try { localStorage.setItem('pp-last-city', input); } catch(e) {}
+        try { localStorage.setItem('pp-last-city', input); } catch(e) { console.warn('[data:geocodeAndSet] localStorage save city failed:', e.message); }
         const popularEl = document.getElementById('popular-cities');
         if (popularEl) popularEl.classList.add('hidden');
         showGpsStatus(`Zoeken bij ${input}...`, 'active');
@@ -407,7 +423,7 @@ export async function setCity(cityName) {
     if (input) input.value = cityName;
     const popularEl = document.getElementById('popular-cities');
     if (popularEl) popularEl.classList.add('hidden');
-    try { localStorage.setItem('pp-last-city', cityName); } catch(e) {}
+    try { localStorage.setItem('pp-last-city', cityName); } catch(e) { console.warn('[data:setCity] localStorage save city failed:', e.message); }
     setPrefs({ city: cityName });
     try { await loadGoogleMaps(state); } catch(e) { showGpsStatus('Google Maps niet beschikbaar', 'error'); return; }
     const geocoder = new google.maps.Geocoder();

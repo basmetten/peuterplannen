@@ -1,4 +1,4 @@
-import { state, LUNCH_PLAY_PATTERN } from './state.js';
+import { state } from './state.js';
 import { cleanToddlerHighlight } from './utils.js';
 
 export function computePeuterScore(loc) {

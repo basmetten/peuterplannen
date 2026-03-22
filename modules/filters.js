@@ -3,6 +3,13 @@ import { trackEvent } from './utils.js';
 import { loadLocations, showGpsStatus } from './data.js';
 import bus from './bus.js';
 
+/* Re-trigger a CSS animation by removing and re-adding it via reflow */
+function popAnimate(el) {
+    el.style.animation = 'none';
+    el.offsetHeight; // force reflow
+    el.style.animation = '';
+}
+
 export function syncChipAria() {
     document.querySelectorAll('.chip').forEach((chip) => {
         chip.setAttribute('aria-selected', chip.classList.contains('active') ? 'true' : 'false');
@@ -73,8 +80,14 @@ export function updateMapPillBadge() {
     if (state.activeAgeGroup) count++;
     if (state.activeRadius) count++;
     if (state.activePreset) count++;
-    if (count > 0) { badge.textContent = count + ' filter' + (count !== 1 ? 's' : ''); badge.style.display = ''; }
-    else { badge.style.display = 'none'; }
+    if (count > 0) {
+        const prev = badge.textContent;
+        badge.textContent = count + ' filter' + (count !== 1 ? 's' : '');
+        badge.style.display = '';
+        if (prev !== badge.textContent) popAnimate(badge);
+    } else {
+        badge.style.display = 'none';
+    }
 }
 
 export function updateFilterCount() {
@@ -96,6 +109,9 @@ export function updateFilterCount() {
     const summary = document.getElementById('filter-summary');
     const clearSharedBtn = document.getElementById('clear-shared-shortlist');
     if (clearSharedBtn) clearSharedBtn.style.display = state.sharedShortlistIds.length ? 'inline-flex' : 'none';
+    if (!label.hasAttribute('aria-live')) {
+        label.setAttribute('aria-live', 'polite');
+    }
     if (count > 0) {
         bar.style.display = 'flex';
         label.textContent = count + ' filter' + (count !== 1 ? 's' : '') + ' actief';
@@ -326,8 +342,14 @@ function updateMapMoreBadge() {
     if (state.activeFacilities.alcohol) count++;
     if (state.activeAgeGroup) count++;
     if (state.activeRadius) count++;
-    if (count > 0) { badge.textContent = count; badge.style.display = ''; }
-    else { badge.style.display = 'none'; }
+    if (count > 0) {
+        const prev = badge.textContent;
+        badge.textContent = count;
+        badge.style.display = '';
+        if (prev !== String(count)) popAnimate(badge);
+    } else {
+        badge.style.display = 'none';
+    }
 }
 
 // Bus listeners

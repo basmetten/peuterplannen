@@ -1,6 +1,30 @@
 import { state, DESKTOP_WIDTH } from './state.js';
 import bus from './bus.js';
 
+// --- Constants ---
+const NL_CENTER_LNG = 5.1;
+const NL_CENTER_LAT = 52.1;
+const INITIAL_ZOOM = 7;
+const MAP_FADE_DURATION = 300;
+const MAX_PIXEL_RATIO = 2;
+const CLUSTER_MAX_ZOOM = 13;
+const CLUSTER_RADIUS = 45;
+const CLUSTER_FLY_DURATION = 800;
+const MARKER_OFFSET_RATIO = 0.20;
+const MARKER_EASE_DURATION = 400;
+const SINGLE_LOC_ZOOM = 14;
+const FIT_BOUNDS_DURATION = 600;
+const FIT_BOUNDS_MAX_ZOOM = 15;
+const FIT_BOUNDS_PADDING = { top: 50, bottom: 60, left: 40, right: 40 };
+const MARKER_RADIUS_DEFAULT = 10;
+const MARKER_RADIUS_BOUNCE = 18;
+const MARKER_RADIUS_SELECTED = 15;
+const MARKER_BOUNCE_SETTLE_MS = 180;
+const MARKER_STROKE_WIDTH = 2.5;
+const MARKER_STROKE_WIDTH_SELECTED = 3;
+const POP_RING_CLEANUP_MS = 500;
+const MAP_RESIZE_DELAY_MS = 50;
+
 export function loadMapLibre() {
     if (state.mapLibreReady) return Promise.resolve();
     return new Promise((resolve, reject) => {
@@ -37,11 +61,11 @@ export function initMap() {
     state.mapInstance = new maplibregl.Map({
         container: container,
         style: 'https://tiles.openfreemap.org/styles/positron',
-        center: [5.1, 52.1],
-        zoom: 7,
+        center: [NL_CENTER_LNG, NL_CENTER_LAT],
+        zoom: INITIAL_ZOOM,
         attributionControl: true,
-        pixelRatio: Math.min(devicePixelRatio, 2),
-        fadeDuration: 300,
+        pixelRatio: Math.min(devicePixelRatio, MAX_PIXEL_RATIO),
+        fadeDuration: MAP_FADE_DURATION,
         pitchWithRotate: false,
         dragRotate: false,
     });
@@ -53,8 +77,8 @@ export function initMap() {
             type: 'geojson',
             data: buildGeoJSON(state.allLocations),
             cluster: true,
-            clusterMaxZoom: 13,
-            clusterRadius: 45
+            clusterMaxZoom: CLUSTER_MAX_ZOOM,
+            clusterRadius: CLUSTER_RADIUS
         });
 
         state.mapInstance.addLayer({
@@ -117,7 +141,7 @@ export function initMap() {
             const features = state.mapInstance.queryRenderedFeatures(e.point, { layers: ['clusters'] });
             const clusterId = features[0].properties.cluster_id;
             state.mapInstance.getSource('locations').getClusterExpansionZoom(clusterId).then(zoom => {
-                state.mapInstance.flyTo({ center: features[0].geometry.coordinates, zoom: zoom, duration: 800 });
+                state.mapInstance.flyTo({ center: features[0].geometry.coordinates, zoom: zoom, duration: CLUSTER_FLY_DURATION });
             });
         });
 
@@ -136,11 +160,11 @@ export function initMap() {
                     const coords = e.features[0].geometry.coordinates.slice();
                     const vh = window.innerHeight;
                     // Sheet at half = 55% of viewport, so place marker at ~25% from top
-                    const offsetY = vh * 0.20;
+                    const offsetY = vh * MARKER_OFFSET_RATIO;
                     state.mapInstance.easeTo({
                         center: coords,
                         offset: [0, -offsetY],
-                        duration: 400
+                        duration: MARKER_EASE_DURATION
                     });
 
                     // Deep linking: update hash with map position + location slug
@@ -216,14 +240,14 @@ export function fitMapToMarkers() {
     if (locs.length === 0) return;
 
     if (locs.length === 1) {
-        state.mapInstance.easeTo({ center: [locs[0].lng, locs[0].lat], zoom: 14, duration: 600 });
+        state.mapInstance.easeTo({ center: [locs[0].lng, locs[0].lat], zoom: SINGLE_LOC_ZOOM, duration: FIT_BOUNDS_DURATION });
         return;
     }
 
     const bounds = new maplibregl.LngLatBounds();
     locs.forEach(l => bounds.extend([l.lng, l.lat]));
     if (state.userLocation) bounds.extend([state.userLocation.lng, state.userLocation.lat]);
-    state.mapInstance.fitBounds(bounds, { padding: { top: 50, bottom: 60, left: 40, right: 40 }, duration: 600, maxZoom: 15 });
+    state.mapInstance.fitBounds(bounds, { padding: FIT_BOUNDS_PADDING, duration: FIT_BOUNDS_DURATION, maxZoom: FIT_BOUNDS_MAX_ZOOM });
 }
 
 export function updateUserLocationOnMap() {
@@ -243,27 +267,27 @@ export function highlightMarker(id) {
     const selecting = id != null;
     try {
         if (selecting) {
-            // Bounce effect: briefly overshoot to 18px then settle at 15px
+            // Bounce effect: briefly overshoot then settle
             state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', [
-                'case', ['==', ['get', 'id'], id], 18, 10
+                'case', ['==', ['get', 'id'], id], MARKER_RADIUS_BOUNCE, MARKER_RADIUS_DEFAULT
             ]);
             setTimeout(() => {
                 try {
                     state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', [
-                        'case', ['==', ['get', 'id'], id], 15, 10
+                        'case', ['==', ['get', 'id'], id], MARKER_RADIUS_SELECTED, MARKER_RADIUS_DEFAULT
                     ]);
-                } catch(e) {}
-            }, 180);
+                } catch(e) { console.warn('[map:highlightMarker] Bounce settle failed:', e.message); }
+            }, MARKER_BOUNCE_SETTLE_MS);
         } else {
-            state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', 10);
+            state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', MARKER_RADIUS_DEFAULT);
         }
         state.mapInstance.setPaintProperty('unclustered-point', 'circle-stroke-width', [
-            'case', ['==', ['get', 'id'], id ?? -1], 3, 2.5
+            'case', ['==', ['get', 'id'], id ?? -1], MARKER_STROKE_WIDTH_SELECTED, MARKER_STROKE_WIDTH
         ]);
         state.mapInstance.setPaintProperty('unclustered-point', 'circle-stroke-color', [
             'case', ['==', ['get', 'id'], id ?? -1], '#D4775A', '#ffffff'
         ]);
-    } catch(e) {}
+    } catch(e) { console.warn('[map:highlightMarker] Paint property update failed:', e.message); }
 
     // Pop-ring animation overlay on the selected marker
     if (selecting) {
@@ -291,7 +315,7 @@ function showPopRing(id) {
 
     ring.addEventListener('animationend', () => ring.remove(), { once: true });
     // Safety cleanup if animationend doesn't fire
-    setTimeout(() => { if (ring.parentNode) ring.remove(); }, 500);
+    setTimeout(() => { if (ring.parentNode) ring.remove(); }, POP_RING_CLEANUP_MS);
 }
 
 export function setDisplayMode(mode) {
