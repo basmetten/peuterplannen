@@ -437,20 +437,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 12px 0 8px;
+  padding: 8px 0 8px;
   cursor: grab;
 }
 .sheet-handle-bar {
   width: 36px;
-  height: 5px;
-  border-radius: 2.5px;
-  background: rgba(160, 130, 120, 0.35);
-  transition: width var(--wg-duration-fast) var(--wg-ease-standard),
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(140, 110, 100, 0.2);
+  transition: transform 0.45s var(--wg-ease-spring),
+              width 0.45s var(--wg-ease-spring),
               background var(--wg-duration-fast) var(--wg-ease-standard);
 }
-.sheet-drag-handle:active .sheet-handle-bar {
-  width: 40px;
-  background: rgba(160, 130, 120, 0.50);
+.sheet-drag-handle:active .sheet-handle-bar,
+.sheet-handle-bar.dragging {
+  width: 42px;
+  background: rgba(140, 110, 100, 0.4);
+  transform: scaleY(1.3);
 }
 
 /* Sheet content */

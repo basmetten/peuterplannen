@@ -33,12 +33,12 @@ let dragVelocity = 0;
 let contentDragActive = false;
 let contentStartY = 0;
 
-// --- Spring config ---
-const SPRING_K = 380;       // stiffness
-const SPRING_D = 30;        // damping
+// --- Spring config (tuned to match iOS Maps spring feel) ---
+const SPRING_K = 300;       // stiffness — slightly softer for natural overshoot
+const SPRING_D = 26;        // damping — underdamped for subtle bounce on fast flicks
 const SPRING_M = 1;         // mass
-const REST_EPS = 0.5;       // settle threshold (px)
-const VEL_EPS = 50;         // settle velocity threshold (px/s)
+const REST_EPS = 0.3;       // settle threshold (px) — tighter for clean snap
+const VEL_EPS = 30;         // settle velocity threshold (px/s) — tighter settle
 const FLICK_THRESHOLD = 0.4; // px/ms for directional snap
 
 /* ===================================================
@@ -144,7 +144,9 @@ export function initSheet() {
 
 function updatePosition(y) {
     sheetY = y;
-    sheetEl.style.transform = `translateY(${y}px)`;
+    // Round to 0.5px to prevent sub-pixel jitter while keeping smooth motion
+    const rounded = Math.round(y * 2) / 2;
+    sheetEl.style.transform = `translateY(${rounded}px)`;
     applyMorphs(y);
 }
 
@@ -224,6 +226,10 @@ function springTo(target, initVel = 0, onDone) {
     let vel = initVel * 1000; // px/ms → px/s
     let lastT = performance.now();
 
+    // Clamp velocity to prevent extreme overshoot on very fast flicks
+    const MAX_VEL = 3500; // px/s
+    vel = Math.max(-MAX_VEL, Math.min(MAX_VEL, vel));
+
     function tick(now) {
         const dt = Math.min((now - lastT) / 1000, 0.033);
         lastT = now;
@@ -234,7 +240,8 @@ function springTo(target, initVel = 0, onDone) {
         pos += vel * dt;
 
         if (Math.abs(dx) < REST_EPS && Math.abs(vel) < VEL_EPS) {
-            updatePosition(target);
+            // Snap to exact integer pixel — no sub-pixel jitter at rest
+            updatePosition(Math.round(target));
             animId = null;
             if (onDone) onDone();
             return;
@@ -262,6 +269,10 @@ function onDragStart(e) {
     lastTouchY      = t.clientY;
     lastTouchTime   = performance.now();
     dragVelocity    = 0;
+
+    // Subtle scale pulse on the drag handle bar
+    const bar = dragHandle?.querySelector('.sheet-handle-bar');
+    if (bar) bar.classList.add('dragging');
 
     // Performance: disable blur during drag
     sheetEl.style.backdropFilter        = 'none';
@@ -295,15 +306,21 @@ function onDragEnd() {
     if (!isDragging) return;
     isDragging = false;
 
+    // Release drag handle pulse
+    const bar = dragHandle?.querySelector('.sheet-handle-bar');
+    if (bar) bar.classList.remove('dragging');
+
     // Restore blur
     sheetEl.style.backdropFilter       = '';
     sheetEl.style.webkitBackdropFilter = '';
     sheetEl.style.background           = '';
 
-    // Find snap target & animate
+    // Find snap target & pass velocity for momentum-based overshoot
     const target = findSnapTarget(sheetY, dragVelocity);
     currentState = stateNameForY(target);
     sheetEl.dataset.state = currentState;
+    // Feed the drag velocity directly into springTo — the underdamped spring
+    // naturally produces overshoot-then-settle when initVel is significant
     springTo(target, dragVelocity, () => announceState(currentState));
 }
 
