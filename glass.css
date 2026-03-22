@@ -487,14 +487,14 @@
 
 /* Peek section */
 .sheet-peek {
-  padding-bottom: 4px;
+  padding-bottom: 2px;
 }
 
 /* Preset chips — glass pills, horizontal scroll in peek */
 .sheet-presets {
   display: flex;
   gap: 8px;
-  padding: 8px 0 8px;
+  padding: 4px 0 2px;
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
@@ -1221,10 +1221,10 @@
   .sheet-tabs {
     display: flex;
     gap: 2px;
-    padding: 4px;
+    padding: 3px;
     background: rgba(140, 110, 100, 0.08);
     border-radius: 12px;
-    margin: 4px 0;
+    margin: 2px 0;
     position: relative;
   }
   .sheet-tabs::after {
@@ -1331,8 +1331,8 @@
   .sheet-filter-chips {
     display: flex;
     flex-wrap: nowrap;
-    gap: 8px;
-    padding: 8px 0 8px;
+    gap: 6px;
+    padding: 4px 0;
     overflow-x: auto;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
@@ -1441,33 +1441,39 @@
   .filter-modal-body { padding: 0 20px; }
   .filter-modal-group { margin-bottom: 20px; }
   .filter-modal-label {
-    font-size: var(--pp-text-xs); font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.08em; color: var(--pp-text-muted); margin-bottom: 8px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--pp-text-muted); margin-bottom: 8px;
   }
   .filter-modal-options { display: flex; flex-wrap: wrap; gap: 8px; }
   .filter-modal-chip {
-    padding: 8px 16px; border-radius: var(--pp-radius-pill);
-    border: 1px solid rgba(var(--pp-primary-rgb), 0.10);
-    background: rgba(var(--pp-surface-rgb), 0.60); font-size: var(--pp-text-sm); font-weight: 600;
+    padding: 8px 16px; border-radius: 100px;
+    border: 1px solid rgba(var(--pp-primary-rgb), 0.12);
+    background: transparent; font-size: var(--pp-text-sm); font-weight: 600;
     font-family: inherit; color: var(--pp-text);
     cursor: pointer; -webkit-tap-highlight-color: transparent;
-    transition: background var(--wg-duration-fast) var(--wg-ease-standard), border-color var(--wg-duration-fast) var(--wg-ease-standard), color var(--wg-duration-fast) var(--wg-ease-standard), transform var(--wg-duration-fast) var(--wg-ease-standard);
+    transition: background 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+                border-color 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+                color 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+                transform 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+                box-shadow 0.2s cubic-bezier(0.32, 0.72, 0, 1);
   }
   .filter-modal-chip:active { transform: scale(0.97); }
   .filter-modal-chip.active {
     background: var(--pp-primary); border-color: transparent; color: white;
-    box-shadow: 0 2px 8px rgba(212, 119, 86, 0.20);
+    box-shadow: 0 2px 8px rgba(212, 119, 86, 0.25);
     font-weight: 700;
   }
   .filter-modal-chip:hover:not(.active) { background: rgba(var(--pp-primary-rgb), 0.08); border-color: rgba(var(--pp-primary-rgb), 0.18); }
   .filter-modal-apply {
     display: block; width: calc(100% - 40px); margin: 16px 20px 20px;
-    padding: 12px; border: none; border-radius: var(--pp-radius-pill);
+    padding: 16px; border: none; border-radius: 14px;
     background: var(--pp-primary); color: white;
-    font-size: var(--pp-text-base); font-weight: 700; font-family: inherit;
-    cursor: pointer; transition: background var(--wg-duration-ui) var(--wg-ease-standard);
+    font-size: var(--pp-text-base); font-weight: 650; font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(212, 119, 86, 0.18);
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
   }
-  .filter-modal-apply:active { background: var(--pp-primary-dark); }
+  .filter-modal-apply:active { background: var(--pp-primary-dark); transform: scale(0.98); box-shadow: 0 1px 4px rgba(212, 119, 86, 0.12); }
 
   /* Week picks - visibility controlled by JS morphs */
   #sheet-week-picks { display: block; }
@@ -2181,9 +2187,9 @@
 
   /* Tab bar container — segmented control padding */
   .sheet-tabs {
-    padding: 4px;
+    padding: 3px;
     gap: 2px;
-    margin: 4px 0;
+    margin: 2px 0;
   }
 
   /* Individual tabs — proper height */
@@ -2205,26 +2211,26 @@
     padding: 0 16px env(safe-area-inset-bottom, 8px);
   }
 
-  /* Sheet meta row */
+  /* Sheet meta row — minimal gap after tabs */
   .sheet-meta {
-    padding: 8px 2px 2px;
+    padding: 4px 2px 2px;
   }
 
   /* Sheet peek */
   .sheet-peek {
-    padding-bottom: 4px;
+    padding-bottom: 2px;
   }
 
   /* Preset container */
   .sheet-presets {
-    padding: 8px 0 8px;
+    padding: 4px 0 2px;
     gap: 8px;
   }
 
   /* Filter chips container */
   .sheet-filter-chips {
-    padding: 8px 0 8px;
-    gap: 8px;
+    padding: 4px 0;
+    gap: 6px;
   }
 
   /* Loc-sheet back button padding restore */
@@ -2314,21 +2320,21 @@
     padding: 0 20px 20px;
   }
 
-  /* ---- Sheet peek tightening ---- */
+  /* ---- Sheet peek tightening (Apple Maps density) ---- */
 
   .sheet-drag-handle {
     padding: 8px 0 4px;
   }
   .sheet-peek {
-    padding-bottom: 0;
+    padding-bottom: 2px;
   }
   .sheet-presets {
-    padding: 8px 0 4px;
+    padding: 4px 0 2px;
     gap: 8px;
   }
   .sheet-tabs {
-    padding: 4px;
-    gap: 4px;
+    padding: 3px;
+    gap: 2px;
     margin: 2px 0 0;
   }
   .sheet-tab {
