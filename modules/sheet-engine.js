@@ -1,7 +1,7 @@
 import { state, DESKTOP_WIDTH, TYPE_LABELS } from './state.js';
 import { escapeHtml } from './utils.js';
 import bus from './bus.js';
-import { renderCompactCard, renderSheetPreview } from './templates.js';
+import { renderCompactCard, renderSheetPreview, getPhotoData } from './templates.js';
 
 /* ===================================================
    SCROLL-SNAP SHEET ENGINE
@@ -114,7 +114,9 @@ export function initSheet() {
     // Keyboard
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            if (sheetEl?.classList.contains('search-active')) {
+            if (sheetEl?.classList.contains('show-detail')) {
+                hideDetailInSheet(); e.preventDefault();
+            } else if (sheetEl?.classList.contains('search-active')) {
                 cancelSearch(); e.preventDefault();
             } else if (currentState === 'full') {
                 setSheetState('half'); e.preventDefault();
@@ -154,8 +156,8 @@ function applyMorphs(scrollTop) {
     const p2 = easeOut(p2raw);
 
     // Child morphs (staggered fade-in, same thresholds as original)
-    setMorphOpacity(morphEls.tabs,        clamp((p1 - 0.02) / 0.20));
-    setMorphOpacity(morphEls.filterChips, clamp((p1 - 0.08) / 0.40));
+    setMorphOpacity(morphEls.tabs,        clamp((p1 - 0.55) / 0.30));
+    setMorphOpacity(morphEls.filterChips, clamp((p1 - 0.45) / 0.35));
     setMorphOpacity(morphEls.meta,        clamp((p1 - 0.12) / 0.35));
     setMorphOpacity(morphEls.forecast,    clamp((p1 - 0.20) / 0.45));
     setMorphOpacity(morphEls.weekPicks,   clamp((p1 - 0.18) / 0.45));
@@ -279,6 +281,7 @@ function initSearchPill() {
             sheetEl.classList.add('search-active');
             if (currentState === 'peek') setSheetState('half');
             requestAnimationFrame(() => input.focus());
+            if (typeof window.pushNavState === 'function') window.pushNavState('search');
         });
         input.addEventListener('input', (e) => {
             const q = e.target.value.toLowerCase().trim();
@@ -374,7 +377,7 @@ function initFilterModal() {
     const applyBtn = document.getElementById('filter-modal-apply');
     if (!btn || !modal) return;
 
-    const openModal  = () => { syncModalChips(); updateModalCount(); modal.classList.add('open'); overlay.classList.add('open'); };
+    const openModal  = () => { syncModalChips(); updateModalCount(); modal.classList.add('open'); overlay.classList.add('open'); if (typeof window.pushNavState === 'function') window.pushNavState('filter-modal'); };
     const closeModal = () => { modal.classList.remove('open'); overlay.classList.remove('open'); };
 
     btn.addEventListener('click', openModal);
@@ -531,6 +534,71 @@ export function hideLocationPreview() {
 }
 
 /* ===================================================
+   IN-SHEET LOCATION DETAIL (mobile only)
+   =================================================== */
+
+function renderInSheetDetail(loc) {
+    const photo = getPhotoData(loc);
+    const typeLbl = TYPE_LABELS[loc.type] || loc.type;
+    const googleMapsUrl = (loc.lat && loc.lng) ? `https://www.google.com/maps/dir/?api=1&destination=${loc.lat},${loc.lng}` : '';
+
+    return `
+        <button class="sheet-detail-back pp-btn-icon" aria-label="Terug">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="sheet-hero-wrap">
+            <div class="sheet-hero-photo" style="--photo-color: ${photo.photoColor || '#E8D5C4'}">
+                <img class="sheet-hero-img" src="${escapeHtml(photo.imgSrc || '')}" alt="${escapeHtml(loc.name)}" loading="lazy">
+            </div>
+        </div>
+        <div class="sheet-detail-insheet-header">
+            <h2 class="sheet-detail-insheet-name">${escapeHtml(loc.name)}</h2>
+            <span class="sheet-detail-insheet-type">${escapeHtml(typeLbl)}</span>
+            ${loc.region ? `<span class="sheet-detail-insheet-region">${escapeHtml(loc.region)}</span>` : ''}
+        </div>
+        <div class="sheet-detail-insheet-actions">
+            ${loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="pp-btn-secondary">Website</a>` : ''}
+            ${googleMapsUrl ? `<a href="${googleMapsUrl}" target="_blank" rel="noopener" class="pp-btn-primary">Route</a>` : ''}
+        </div>
+        ${loc.description ? `<p class="sheet-detail-insheet-desc">${escapeHtml(loc.description)}</p>` : ''}
+    `;
+}
+
+export function showDetailInSheet(locationId) {
+    if (!sheetEl) return;
+    const loc = state.allLocations.find(l => l.id === locationId);
+    if (!loc) return;
+
+    const detailEl = document.getElementById('sheet-detail');
+    if (!detailEl) return;
+
+    // Render detail content
+    detailEl.innerHTML = renderInSheetDetail(loc);
+
+    // Photo fade-in
+    const heroImg = detailEl.querySelector('.sheet-hero-img');
+    if (heroImg) {
+        if (heroImg.complete && heroImg.naturalWidth > 0) heroImg.classList.add('loaded');
+        else heroImg.addEventListener('load', () => heroImg.classList.add('loaded'), { once: true });
+    }
+
+    // Switch view
+    sheetEl.classList.add('show-detail');
+    setSheetState('full');
+
+    // Back button
+    detailEl.querySelector('.sheet-detail-back')?.addEventListener('click', hideDetailInSheet);
+}
+
+export function hideDetailInSheet() {
+    if (!sheetEl) return;
+    sheetEl.classList.remove('show-detail');
+    const detailEl = document.getElementById('sheet-detail');
+    if (detailEl) detailEl.innerHTML = '';
+    setSheetState('half');
+}
+
+/* ===================================================
    TABS
    =================================================== */
 
@@ -582,3 +650,4 @@ bus.on('sheet:showlocation', showLocationInSheet);
 bus.on('sheet:hidepreview', hideLocationPreview);
 bus.on('sheet:renderlist', renderSheetList);
 bus.on('sheet:updatemeta', updateSheetMeta);
+bus.on('sheet:opendetail', showDetailInSheet);

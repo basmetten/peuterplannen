@@ -265,15 +265,33 @@ export function highlightMarker(id) {
         ]);
     } catch(e) {}
 
-    // Pulse animation on map container for visual feedback
+    // Pop-ring animation overlay on the selected marker
     if (selecting) {
-        const mapEl = document.getElementById('map-container');
-        if (mapEl) {
-            mapEl.classList.remove('marker-pulse');
-            void mapEl.offsetWidth;
-            mapEl.classList.add('marker-pulse');
-        }
+        showPopRing(id);
     }
+}
+
+/** Show a temporary expanding ring at the marker's screen position */
+function showPopRing(id) {
+    if (!state.mapInstance) return;
+    // Find the feature's coordinates from the source data
+    const source = state.mapInstance.getSource('locations');
+    if (!source) return;
+    const loc = state.allLocations.find(l => l.id === id);
+    if (!loc || !loc.lng || !loc.lat) return;
+
+    const point = state.mapInstance.project([loc.lng, loc.lat]);
+    const container = state.mapInstance.getContainer();
+
+    const ring = document.createElement('div');
+    ring.className = 'marker-pop-ring';
+    ring.style.left = point.x + 'px';
+    ring.style.top = point.y + 'px';
+    container.appendChild(ring);
+
+    ring.addEventListener('animationend', () => ring.remove(), { once: true });
+    // Safety cleanup if animationend doesn't fire
+    setTimeout(() => { if (ring.parentNode) ring.remove(); }, 500);
 }
 
 export function setDisplayMode(mode) {

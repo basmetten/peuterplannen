@@ -101,6 +101,40 @@ curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-
 ```
 (GEMINI_API_KEY is set in the environment. Never commit it.)
 
+### Rule 7: Console error monitoring (CRITICAL)
+After ANY change to JS modules or app.html, check for JavaScript errors:
+```javascript
+// In Playwright tests or ad-hoc scripts, ALWAYS add:
+const errors = [];
+page.on('pageerror', e => errors.push(e.message));
+page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
+// At end of test: assert errors.length === 0
+```
+A broken import, failed Supabase call, or unhandled exception MUST cause a test failure. Never assume "page loaded = no errors".
+
+### Rule 8: Test data correctness, not just UI state
+When testing interactions, assert the RESULT, not just that "something happened":
+- **Search**: after typing, assert results appear AND contain matching text
+- **Filters**: after clicking a chip, assert displayed cards match the filter (e.g., all have the correct `data-type`)
+- **Detail view**: after navigating to `?locatie=X`, assert the location name, image, and key data actually loaded
+- **Cards**: assert cards contain real data (name, image src, type badge) — not just that card elements exist
+- **Map markers**: after map loads, assert markers/clusters are present (`document.querySelectorAll('.maplibregl-marker').length > 0`)
+
+### Rule 9: Test error and empty states
+Always consider what happens when things go wrong:
+- What if Supabase returns 0 results for a filter combination?
+- What if a network request fails?
+- What if favorites/visited localStorage is empty?
+Test these states — don't only test the happy path.
+
+### Rule 10: Run `npm run test:e2e` before reporting done
+After ANY change to CSS, JS, or HTML app files, the full e2e suite must pass:
+```bash
+cd /Users/basmetten/peuterplannen && npm run test:e2e
+```
+If a test fails, fix the code (not the test) unless the change was intentional. If the change is intentional, update baselines with `npm run test:e2e:update`.
+This is separate from visual verification — BOTH must happen.
+
 ---
 
 ## Testing protocol (IMPORTANT)

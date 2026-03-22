@@ -24,6 +24,12 @@ export function openLocSheet(locationId) {
     }
     state.activeLocSheet = locationId;
 
+    // Mobile: use in-sheet detail instead of overlay
+    if (window.innerWidth < 680) {
+        bus.emit('sheet:opendetail', locationId);
+        return;
+    }
+
     const isFav = isFavorite(loc.id);
     const favStyle = isFav ? 'fill: #D4775A; stroke: #D4775A;' : 'fill: none; stroke: #9B8688;';
     const typeLabel = TYPE_LABELS[loc.type] || loc.type;
@@ -211,6 +217,8 @@ export function openLocSheet(locationId) {
     // Hide scroll host (contains bottom sheet) to prevent overlap
     const scrollHost = document.getElementById('sheet-scroll-host');
     if (scrollHost) scrollHost.style.display = 'none';
+
+    if (typeof window.pushNavState === 'function') window.pushNavState('loc-sheet', { locationId });
 }
 
 export function closeLocSheet() {
@@ -236,6 +244,7 @@ export function openInfoPanel() {
     panel.classList.add('open');
     panel.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    if (typeof window.pushNavState === 'function') window.pushNavState('info');
 }
 
 export function closeInfoPanel() {

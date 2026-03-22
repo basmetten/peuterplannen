@@ -146,6 +146,7 @@ export function switchView(view) {
         bus.emit('plan:chipupdate');
         syncDesktopModeSwitch('plan');
         bus.emit('hash:update', 'plan');
+        if (typeof window.pushNavState === 'function') window.pushNavState('plan');
 
         // Mode transition animation
         if (isDesktop && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !document.body.classList.contains('plan-mode')) {

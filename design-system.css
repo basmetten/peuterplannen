@@ -725,3 +725,88 @@ p, li {
 }
 
 } /* end @layer tokens */
+
+/* ============================================
+   Button Type System — 5 standaard types
+   ============================================ */
+
+/* Type 1: Primary (filled action button) */
+.pp-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--pp-primary);
+  color: var(--pp-text-inverse);
+  border: none;
+  border-radius: var(--pp-radius-lg);
+  font-size: var(--pp-text-sm);
+  font-weight: 600;
+  font-family: var(--pp-font-ui);
+  cursor: pointer;
+  transition: background 200ms ease, transform 100ms ease;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+.pp-btn-primary:hover { background: var(--pp-primary-dark); }
+.pp-btn-primary:active { transform: scale(0.97); }
+.pp-btn-primary:focus-visible { outline: 2px solid var(--pp-primary); outline-offset: 2px; }
+
+/* Type 2: Secondary (outline/surface button) */
+.pp-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--pp-surface);
+  color: var(--pp-text);
+  border: 1.5px solid rgba(var(--pp-primary-rgb), 0.12);
+  border-radius: var(--pp-radius-lg);
+  font-size: var(--pp-text-sm);
+  font-weight: 600;
+  font-family: var(--pp-font-ui);
+  cursor: pointer;
+  transition: background 200ms ease, border-color 200ms ease, transform 100ms ease;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+.pp-btn-secondary:hover { border-color: rgba(var(--pp-primary-rgb), 0.25); background: var(--pp-primary-light); }
+.pp-btn-secondary:active { transform: scale(0.97); }
+.pp-btn-secondary:focus-visible { outline: 2px solid var(--pp-primary); outline-offset: 2px; }
+
+/* Type 3: Icon button (circular) */
+.pp-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 150ms ease, transform 100ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.pp-btn-icon:hover { background: rgba(var(--pp-primary-rgb), 0.06); }
+.pp-btn-icon:active { transform: scale(0.9); }
+.pp-btn-icon:focus-visible { outline: 2px solid var(--pp-primary); outline-offset: 2px; }
+
+/* Type 4: Text link button */
+.pp-btn-text {
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  color: var(--pp-primary);
+  font-size: var(--pp-text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.pp-btn-text:hover { color: var(--pp-primary-dark); }
+.pp-btn-text:active { transform: scale(0.97); }
+.pp-btn-text:focus-visible { outline: 2px solid var(--pp-primary); outline-offset: 2px; }

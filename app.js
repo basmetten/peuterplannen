@@ -14,6 +14,54 @@ import { getPrefs, clearPrefs } from './modules/prefs.js';
 import { getThisWeekPicks, fetch5DayForecast, renderWeekPicks, renderForecastStrip } from './modules/discovery.js';
 import bus from './modules/bus.js';
 
+// ── Browser History Management ──
+let _navGuard = false; // prevents pushNavState during popstate handling
+
+function pushNavState(type, data = {}) {
+    if (_navGuard) return;
+    history.pushState({ type, ...data }, '');
+}
+
+window.addEventListener('popstate', (e) => {
+    const s = e.state;
+    if (!s) return;
+
+    _navGuard = true;
+    try {
+        switch (s.type) {
+            case 'loc-sheet':
+                closeLocSheet();
+                break;
+            case 'search': {
+                const input = document.getElementById('sheet-search-input');
+                if (input) { input.value = ''; input.blur(); }
+                document.getElementById('bottom-sheet')?.classList.remove('search-active');
+                // Hide suggestions
+                const sug = document.getElementById('search-suggestions');
+                if (sug) sug.innerHTML = '';
+                break;
+            }
+            case 'filter-modal':
+                document.getElementById('filter-modal')?.classList.remove('open');
+                document.getElementById('filter-modal-overlay')?.classList.remove('open');
+                break;
+            case 'plan':
+                switchView('home');
+                break;
+            case 'info':
+                closeInfoPanel();
+                break;
+        }
+    } finally {
+        _navGuard = false;
+    }
+});
+
+window.pushNavState = pushNavState;
+
+// Mark initial state so popstate knows when we're at the base
+history.replaceState({ type: 'base' }, '');
+
 // === Deep Linking: hash helper ===
 function updateHash(hash) {
     history.replaceState(null, '', hash ? '#' + hash : location.pathname + location.search);

@@ -1312,7 +1312,7 @@
         .kids-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
         .kids-row-label { font-size: var(--pp-text-sm); color: var(--pp-text-secondary); }
         .kids-counter { display: flex; align-items: center; gap: 12px; }
-        .kids-counter button { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid transparent; background: none; color: var(--pp-text); font-size: var(--pp-text-base); font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform var(--wg-duration-fast) var(--wg-ease-standard), border-color var(--wg-duration-fast) var(--wg-ease-standard), color var(--wg-duration-fast) var(--wg-ease-standard); touch-action: manipulation; }
+        .kids-counter button { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid transparent; background: none; color: var(--pp-text); font-size: var(--pp-text-base); font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform var(--wg-duration-fast) var(--wg-ease-standard), border-color var(--wg-duration-fast) var(--wg-ease-standard), color var(--wg-duration-fast) var(--wg-ease-standard); touch-action: manipulation; }
         .kids-counter button:hover { border-color: var(--pp-primary); color: var(--pp-primary); }
         .kids-counter-val { font-size: var(--pp-text-lg); font-weight: 700; color: var(--pp-text); min-width: 24px; text-align: center; }
         .age-slider-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
@@ -1985,7 +1985,7 @@
 .age-onboarding-subtitle { font-size: var(--pp-text-sm); color: var(--pp-text-muted); margin: 0 0 20px; }
 .age-onboarding-options { display: flex; gap: 8px; margin-bottom: 16px; }
 .age-onboarding-btn {
-    flex: 1; padding: 12px 8px; border-radius: 14px;
+    flex: 1; padding: 12px 8px; border-radius: var(--pp-radius-sm);
     border: 2px solid transparent; background: var(--pp-surface);
     font-size: var(--pp-text-sm); font-weight: 600; color: var(--pp-text);
     cursor: pointer; transition: border-color var(--wg-duration-ui) var(--wg-ease-standard), background var(--wg-duration-ui) var(--wg-ease-standard), transform var(--wg-duration-fast) var(--wg-ease-standard);
@@ -2020,20 +2020,26 @@
 .preset-more:focus-visible,
 .gps-onboarding-btn:focus-visible,
 .panel-collapse-btn:focus-visible,
-.sheet-tab-gear:focus-visible {
-    outline: 2px solid #D4775A;
+.sheet-tab-gear:focus-visible,
+.detail-btn-route:focus-visible,
+.kids-counter button:focus-visible,
+.plan-generate-btn:focus-visible,
+.age-onboarding-btn:focus-visible,
+.sheet-preview-btn:focus-visible,
+.sheet-detail-btn:focus-visible {
+    outline: 2px solid var(--pp-primary);
     outline-offset: 2px;
 }
 
 .card-fav:focus-visible,
 .compact-card-fav:focus-visible {
-    outline: 2px solid #D4775A;
+    outline: 2px solid var(--pp-primary);
     outline-offset: 2px;
     border-radius: 50%;
 }
 
 .nav-burger:focus-visible {
-    outline: 2px solid #D4775A;
+    outline: 2px solid var(--pp-primary);
     outline-offset: 2px;
     border-radius: var(--pp-radius-xs, 10px);
 }

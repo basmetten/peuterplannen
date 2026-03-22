@@ -73,6 +73,16 @@ export function renderCompactCard(loc, opts = {}) {
     const styleAttr = extraStyle ? ` style="${extraStyle}"` : '';
     const imgStyleAttr = imgStyle ? ` style="${imgStyle};background:${photoColor}"` : ` style="background:${photoColor}"`;
 
+    // Score badge
+    const ps = computePeuterScore(loc);
+    const scoreBadge = ps ? `<span class="compact-card-score">${ps}</span>` : '';
+
+    // Facility icons
+    const facilities = [];
+    if (loc.coffee) facilities.push('\u2615');
+    if (loc.diaper) facilities.push('\ud83d\udebb');
+    const facilityHtml = facilities.length ? `<span class="compact-card-facilities">${facilities.join(' ')}</span>` : '';
+
     return `<div class="compact-card" role="listitem"${styleAttr} data-id="${loc.id}">
             <img class="compact-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async"${imgStyleAttr}
                  onerror="if(!this.dataset.retried){this.dataset.retried='1';this.classList.remove('loaded');this.onload=function(){this.classList.add('loaded')};this.src='${escapeHtml(categoryImg)}'}">
@@ -81,8 +91,9 @@ export function renderCompactCard(loc, opts = {}) {
                     <span class="compact-card-name">${escapeHtml(loc.name)}</span>
                     ${distance ? `<span class="compact-card-distance">${escapeHtml(String(distance))}</span>` : ''}
                 </div>
-                <div class="compact-card-meta">${escapeHtml(typeLabel)}</div>
+                <div class="compact-card-meta">${escapeHtml(typeLabel)}${facilityHtml}</div>
             </div>
+            ${scoreBadge}
             <button class="compact-card-fav" onclick="event.stopPropagation();toggleFavorite(${loc.id}, this)" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan'}">
                 <svg viewBox="0 0 24 24" style="${favStyle}"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </button>
