@@ -412,7 +412,7 @@
   border-top: 0.5px solid rgba(255, 255, 255, 0.6);
   box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.06),
               0 -1px 4px rgba(0, 0, 0, 0.02);
-  transform: translateY(100%) translateZ(0);
+  transform: translateY(100%);
   /* No CSS transition — positioning is JS-driven (spring physics) */
   will-change: transform;
   contain: layout;
@@ -830,19 +830,24 @@
   transition: stroke var(--wg-duration-fast) var(--wg-ease-standard), fill var(--wg-duration-fast) var(--wg-ease-standard);
 }
 
-/* Compact card loading skeleton */
+/* Compact card loading skeleton — Apple-style diagonal shimmer */
 .compact-card-skeleton {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 4px;
+  padding: 10px 16px;
 }
 .compact-card-skeleton .skel-img {
   width: 56px; height: 56px;
-  border-radius: 10px;
-  background: linear-gradient(110deg, #EDE0D4 30%, #F5EDE6 50%, #EDE0D4 70%);
+  border-radius: 12px;
+  background: linear-gradient(90deg,
+    rgba(140,110,100,0.06) 25%,
+    rgba(140,110,100,0.12) 50%,
+    rgba(140,110,100,0.06) 75%
+  );
   background-size: 200% 100%;
-  animation: skeleton-shimmer 1.4s ease infinite;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  will-change: background-position;
   flex-shrink: 0;
 }
 .compact-card-skeleton .skel-lines {
@@ -853,16 +858,34 @@
 }
 .compact-card-skeleton .skel-line {
   height: 12px;
-  border-radius: var(--wg-radius-tag);
-  background: linear-gradient(110deg, #EDE0D4 30%, #F5EDE6 50%, #EDE0D4 70%);
+  border-radius: 6px;
+  background: linear-gradient(90deg,
+    rgba(140,110,100,0.06) 25%,
+    rgba(140,110,100,0.12) 50%,
+    rgba(140,110,100,0.06) 75%
+  );
   background-size: 200% 100%;
-  animation: skeleton-shimmer 1.4s ease infinite;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  will-change: background-position;
 }
-.compact-card-skeleton .skel-line:first-child { width: 70%; height: 14px; }
+.compact-card-skeleton .skel-line:first-child { width: 60%; height: 14px; }
 .compact-card-skeleton .skel-line:last-child { width: 40%; }
+.compact-card-skeleton .skel-score {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(90deg,
+    rgba(140,110,100,0.06) 25%,
+    rgba(140,110,100,0.12) 50%,
+    rgba(140,110,100,0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  will-change: background-position;
+  flex-shrink: 0;
+}
 @keyframes skeleton-shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 /* Sheet overlay */

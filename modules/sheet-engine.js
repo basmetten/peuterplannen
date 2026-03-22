@@ -656,6 +656,11 @@ function _loadMoreCards() {
         card.dataset.bound = '1';
         card.addEventListener('click', () => bus.emit('sheet:open', parseInt(card.dataset.id, 10)));
     });
+    /* Fade in card images once loaded */
+    listEl.querySelectorAll('.compact-card-img:not(.loaded)').forEach(img => {
+        if (img.complete && img.naturalWidth > 0) img.classList.add('loaded');
+        else img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
+    });
     _renderedCount += batch.length;
     return _renderedCount < _sheetLocations.length;
 }
@@ -685,6 +690,12 @@ export function showLocationInSheet(loc) {
     const previewEl = document.getElementById('sheet-loc-preview');
     if (!previewEl) return;
     previewEl.innerHTML = renderSheetPreview(loc);
+    /* Fade in preview image once loaded */
+    const previewImg = previewEl.querySelector('.sheet-preview-img');
+    if (previewImg) {
+        if (previewImg.complete && previewImg.naturalWidth > 0) previewImg.classList.add('loaded');
+        else previewImg.addEventListener('load', () => previewImg.classList.add('loaded'), { once: true });
+    }
     sheetEl.classList.add('has-preview');
     setSheetState('half');
     document.getElementById('sheet-preview-meer')?.addEventListener('click', () => {
