@@ -1,0 +1,13 @@
+/* Injected during Playwright tests to stabilize screenshots */
+*, *::before, *::after {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
+/* Force images to be visible immediately (no lazy fade-in) */
+.scan-photo img,
+.compact-card-img,
+.sheet-preview-img {
+  opacity: 1 !important;
+}

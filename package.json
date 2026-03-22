@@ -32,7 +32,13 @@
     "ops:seo-health": "node .scripts/ops/seo-health-check.js",
     "audit:tokens": "node .scripts/audit_design_tokens.js",
     "audit:tokens:strict": "node .scripts/audit_design_tokens.js --strict",
-    "bundle": "node esbuild.config.mjs"
+    "bundle": "node esbuild.config.mjs",
+    "test:e2e": "npx playwright test",
+    "test:e2e:update": "npx playwright test --update-snapshots",
+    "test:e2e:functional": "npx playwright test tests/functional.spec.ts",
+    "test:e2e:visual": "npx playwright test tests/smoke.spec.ts",
+    "test:e2e:structural": "npx playwright test tests/structural.spec.ts",
+    "test:a11y": "npx playwright test tests/a11y.spec.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
@@ -46,6 +52,8 @@
     "undici": "^7.22.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.1",
+    "@playwright/test": "^1.58.2",
     "esbuild": "^0.27.4",
     "puppeteer": "^24.37.5",
     "wrangler": "^4.70.0"
