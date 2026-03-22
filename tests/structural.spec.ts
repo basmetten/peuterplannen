@@ -80,11 +80,29 @@ test.describe('Sheet structure', () => {
     await waitForApp(page);
 
     const s = await getStyles(page, '.bottom-sheet', [
-      'border-radius', 'position', 'z-index'
+      'border-radius', 'position'
+    ]);
+    expect(s['position']).toBe('relative');
+    expect(s['border-radius']).toBe('16px');
+
+    // Scroll host should be the fixed positioned container
+    const hostStyles = await getStyles(page, '.sheet-scroll-host', [
+      'position', 'z-index'
+    ]);
+    expect(hostStyles['position']).toBe('fixed');
+    expect(parseInt(hostStyles['z-index'])).toBeGreaterThanOrEqual(1000);
+  });
+
+  test('scroll-snap host has correct setup', async ({ page, isMobile }) => {
+    if (!isMobile) test.skip();
+    await waitForApp(page);
+
+    const s = await getStyles(page, '.sheet-scroll-host', [
+      'position', 'overflow-y', 'scroll-snap-type'
     ]);
     expect(s['position']).toBe('fixed');
-    expect(s['border-radius']).toBe('16px');
-    expect(parseInt(s['z-index'])).toBeGreaterThanOrEqual(1000);
+    expect(s['overflow-y']).toBe('scroll');
+    expect(s['scroll-snap-type']).toContain('mandatory');
   });
 
   test('sheet tabs have segmented control layout', async ({ page, isMobile }) => {

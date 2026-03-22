@@ -4,74 +4,75 @@ import bus from './bus.js';
 import { renderCompactCard, renderSheetPreview } from './templates.js';
 
 /* ===================================================
-   CONTINUOUS SHEET ENGINE
-   Fluid per-pixel positioning with spring physics
-   and progressive UI morphing. Apple Maps reference.
+   SCROLL-SNAP SHEET ENGINE
+   Native CSS scroll-snap positioning with progressive
+   UI morphing. Apple Maps web reference architecture.
    =================================================== */
 
-// --- Rest points (Y = px from viewport top to sheet top) ---
-let restPoints = {};
-
 // --- DOM ---
-let sheetEl, contentEl, listEl, dragHandle;
+let hostEl, sheetEl, contentEl, listEl, dragHandle;
+let snapPeekEl, snapHalfEl;
+let spacerHead, spacerMid, spacerTail;
 const morphEls = {};
 
-// --- Position state ---
-let sheetY = 0;
+// --- Snap positions (scrollTop values) ---
+let snapPositions = {};
 let currentState = 'hidden';
-let animId = null;
+let lastCanScroll = false;
+let suppressDetect = 0;  // timestamp-based guard against detectStateFromScroll overriding programmatic state
 
-// --- Drag state ---
-let isDragging = false;
-let dragStartY = 0;
-let dragStartSheetY = 0;
-let lastTouchY = 0;
-let lastTouchTime = 0;
-let dragVelocity = 0;
-
-// --- Content drag ---
-let contentDragActive = false;
-let contentStartY = 0;
-
-// --- Spring config (tuned to match iOS Maps spring feel) ---
-const SPRING_K = 300;       // stiffness — slightly softer for natural overshoot
-const SPRING_D = 26;        // damping — underdamped for subtle bounce on fast flicks
-const SPRING_M = 1;         // mass
-const REST_EPS = 0.3;       // settle threshold (px) — tighter for clean snap
-const VEL_EPS = 30;         // settle velocity threshold (px/s) — tighter settle
-const FLICK_THRESHOLD = 0.4; // px/ms for directional snap
+// --- Easing ---
+function clamp(v) { return Math.max(0, Math.min(1, v)); }
+function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
 /* ===================================================
    INIT
    =================================================== */
 
-function computeRestPoints() {
+function computeSnapPositions() {
+    if (!hostEl) return;
     const vh = window.innerHeight;
-    restPoints = {
-        hidden: vh + 20,
-        peek:   vh - 160,  // compact peek: handle + search + presets only
-        half:   Math.round(vh * 0.45),
-        full:   getSafeAreaTop()
-    };
-}
 
-function getSafeAreaTop() {
-    const el = document.createElement('div');
-    el.style.cssText = 'height:env(safe-area-inset-top,0px);position:fixed;top:0;visibility:hidden;pointer-events:none;';
-    document.body.appendChild(el);
-    const v = el.getBoundingClientRect().height || 0;
-    el.remove();
-    return v;
+    const peekHeight = 160;
+    const halfHeight = Math.round(vh * 0.55);
+
+    // Total spacer space before the sheet (sheet is 100dvh, so maxScroll = totalSpacer)
+    const totalSpacer = 2 * vh - peekHeight;
+    const maxScroll = totalSpacer;  // because sheet height = vh
+
+    // Desired scrollTop values for each state
+    const peekScroll = Math.max(0, maxScroll - vh + peekHeight);
+    const halfScroll = Math.max(0, maxScroll - vh + halfHeight);
+
+    snapPositions = {
+        hidden: 0,
+        peek: peekScroll,
+        half: halfScroll,
+        full: maxScroll
+    };
+
+    // Size the spacer segments so snap markers land at the right offsetTop.
+    // Layout: [spacerHead] [snap-peek] [spacerMid] [snap-half] [spacerTail] [sheet]
+    // snap markers have height: 0, so total spacer = head + mid + tail = totalSpacer
+    if (spacerHead) spacerHead.style.height = peekScroll + 'px';
+    if (spacerMid)  spacerMid.style.height  = (halfScroll - peekScroll) + 'px';
+    if (spacerTail) spacerTail.style.height  = (totalSpacer - halfScroll) + 'px';
 }
 
 export function initSheet() {
     if (window.innerWidth >= DESKTOP_WIDTH) return;
 
+    hostEl     = document.getElementById('sheet-scroll-host');
     sheetEl    = document.getElementById('bottom-sheet');
     contentEl  = document.getElementById('sheet-content');
     listEl     = document.getElementById('sheet-list');
     dragHandle = document.getElementById('sheet-drag-handle');
-    if (!sheetEl) return;
+    snapPeekEl = document.getElementById('snap-peek');
+    snapHalfEl = document.getElementById('snap-half');
+    spacerHead = document.getElementById('snap-spacer-head');
+    spacerMid  = document.getElementById('snap-spacer-mid');
+    spacerTail = document.getElementById('snap-spacer-tail');
+    if (!hostEl || !sheetEl) return;
 
     // Cache morph targets
     morphEls.filterChips = document.getElementById('sheet-filter-chips');
@@ -82,36 +83,35 @@ export function initSheet() {
     morphEls.overlay     = document.getElementById('sheet-overlay');
     morphEls.list        = listEl;
 
-    computeRestPoints();
+    computeSnapPositions();
 
-    // Kill CSS transitions — everything is JS-driven
-    sheetEl.style.transition = 'none';
+    // Scroll listener for continuous morphing (passive = compositor-friendly)
+    hostEl.addEventListener('scroll', onHostScroll, { passive: true });
 
-    // Set initial position (hidden, off-screen)
-    sheetY = restPoints.hidden;
-    sheetEl.style.transform = `translateY(${sheetY}px)`;
+    // State detection: prefer scrollsnapchange, fallback to scrollend, then debounce
+    if ('onscrollsnapchange' in window) {
+        hostEl.addEventListener('scrollsnapchange', detectStateFromScroll);
+    }
+    hostEl.addEventListener('scrollend', detectStateFromScroll);
 
-    // --- Drag handle touch ---
-    dragHandle.addEventListener('touchstart', onDragStart, { passive: true });
-    dragHandle.addEventListener('touchmove', onDragMove, { passive: false });
-    dragHandle.addEventListener('touchend', onDragEnd, { passive: true });
+    // Ultimate fallback for browsers without scrollend (Safari <16.4)
+    let scrollTimer;
+    hostEl.addEventListener('scroll', () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(detectStateFromScroll, 150);
+    }, { passive: true });
 
-    // --- Content area touch (drag-down from scroll top) ---
-    contentEl.addEventListener('touchstart', onContentStart, { passive: true });
-    contentEl.addEventListener('touchmove', onContentMove, { passive: false });
-    contentEl.addEventListener('touchend', onContentEnd, { passive: true });
-
-    // --- Search ---
+    // Search
     initSearchPill();
 
-    // --- Filters ---
+    // Filters
     initSheetFilterChips();
     initFilterModal();
 
-    // --- Overlay click ---
+    // Overlay click
     morphEls.overlay?.addEventListener('click', () => setSheetState('half'));
 
-    // --- Keyboard ---
+    // Keyboard
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             if (sheetEl?.classList.contains('search-active')) {
@@ -122,70 +122,54 @@ export function initSheet() {
         }
     });
 
-    // --- Resize ---
+    // Resize: recompute snap positions
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            computeRestPoints();
-            if (!isDragging && restPoints[currentState] != null) {
-                updatePosition(restPoints[currentState]);
-            }
-        }, 100);
+        resizeTimer = setTimeout(computeSnapPositions, 100);
     });
 
-    // Start in peek (springs up from hidden)
+    // Start in peek
     setSheetState('peek');
 }
 
 /* ===================================================
-   POSITION + MORPHING
+   SCROLL-DRIVEN MORPHING
    =================================================== */
 
-function updatePosition(y) {
-    sheetY = y;
-    // Round to 0.5px to prevent sub-pixel jitter while keeping smooth motion
-    const rounded = Math.round(y * 2) / 2;
-    sheetEl.style.transform = `translateY(${rounded}px)`;
-    applyMorphs(y);
+function onHostScroll() {
+    applyMorphs(hostEl.scrollTop);
 }
 
-function clamp(v) { return Math.max(0, Math.min(1, v)); }
-function lerp(a, b, t) { return a + (b - a) * t; }
+function applyMorphs(scrollTop) {
+    const { peek: peekPos, half: halfPos, full: fullPos } = snapPositions;
+    if (!peekPos && !halfPos && !fullPos) return;
 
-function applyMorphs(y) {
-    const { peek: peekY, half: halfY, full: fullY } = restPoints;
+    // p1: 0 at peek → 1 at half
+    const p1raw = clamp((scrollTop - peekPos) / ((halfPos - peekPos) || 1));
+    const p1 = easeOut(p1raw);
 
-    // p1: 0 at peek → 1 at half (sheet rising)
-    const p1 = clamp((peekY - y) / (peekY - halfY));
     // p2: 0 at half → 1 at full
-    const p2 = clamp((halfY - y) / (halfY - fullY));
+    const p2raw = clamp((scrollTop - halfPos) / ((fullPos - halfPos) || 1));
+    const p2 = easeOut(p2raw);
 
-    // --- Sheet geometry ---
-    const rTop = lerp(16, 0, p2);
-    const rBot = lerp(16, 0, p1);
-    sheetEl.style.borderRadius = `${rTop}px ${rTop}px ${rBot}px ${rBot}px`;
-
-    const insetLR  = lerp(8, 4, p1) * (1 - p2);
-    const insetBot = lerp(8, 0, p1);
-    sheetEl.style.left   = insetLR + 'px';
-    sheetEl.style.right  = insetLR + 'px';
-    sheetEl.style.bottom = insetBot + 'px';
-
-    // --- Child morphs (staggered fade-in as sheet rises) ---
-    setMorphOpacity(morphEls.tabs,        clamp((p1 - 0.02) / 0.20)); // tabs appear very early
+    // Child morphs (staggered fade-in, same thresholds as original)
+    setMorphOpacity(morphEls.tabs,        clamp((p1 - 0.02) / 0.20));
     setMorphOpacity(morphEls.filterChips, clamp((p1 - 0.08) / 0.40));
     setMorphOpacity(morphEls.meta,        clamp((p1 - 0.12) / 0.35));
     setMorphOpacity(morphEls.forecast,    clamp((p1 - 0.20) / 0.45));
     setMorphOpacity(morphEls.weekPicks,   clamp((p1 - 0.18) / 0.45));
     setMorphOpacity(morphEls.list,        clamp((p1 - 0.12) / 0.50));
 
-    // --- Content scroll ---
-    const canScroll = p1 > 0.35;
-    contentEl.style.overflowY  = canScroll ? 'auto' : 'hidden';
-    contentEl.style.touchAction = canScroll ? 'pan-y' : 'none';
+    // Content scroll: only allow when near half or above
+    const canScroll = p1raw > 0.85;
+    if (canScroll !== lastCanScroll) {
+        lastCanScroll = canScroll;
+        contentEl.style.overflowY = canScroll ? 'auto' : 'hidden';
+        contentEl.style.touchAction = canScroll ? 'pan-y' : 'none';
+    }
 
-    // --- Overlay (dims background toward full) ---
+    // Overlay (dims background toward full)
     if (morphEls.overlay) {
         const o = p2 * 0.3;
         morphEls.overlay.style.opacity = o;
@@ -196,232 +180,68 @@ function applyMorphs(y) {
 
 function setMorphOpacity(el, opacity) {
     if (!el) return;
-    el.style.opacity = opacity;
-    el.style.pointerEvents = opacity > 0.3 ? 'auto' : 'none';
-    // Collapse hidden elements so they don't take layout space (fixes peek whitespace)
     if (opacity < 0.01) {
-        el.style.maxHeight = '0';
-        el.style.overflow = 'hidden';
-        el.style.marginTop = '0';
-        el.style.marginBottom = '0';
-        el.style.paddingTop = '0';
-        el.style.paddingBottom = '0';
+        if (!el.classList.contains('morph-hidden')) {
+            el.classList.add('morph-hidden');
+            el.style.opacity = '';
+        }
     } else {
-        el.style.maxHeight = '';
-        el.style.overflow = '';
-        el.style.marginTop = '';
-        el.style.marginBottom = '';
-        el.style.paddingTop = '';
-        el.style.paddingBottom = '';
-    }
-}
-
-/* ===================================================
-   SPRING ANIMATION
-   =================================================== */
-
-function springTo(target, initVel = 0, onDone) {
-    cancelAnimationFrame(animId);
-    let pos = sheetY;
-    let vel = initVel * 1000; // px/ms → px/s
-    let lastT = performance.now();
-
-    // Clamp velocity to prevent extreme overshoot on very fast flicks
-    const MAX_VEL = 3500; // px/s
-    vel = Math.max(-MAX_VEL, Math.min(MAX_VEL, vel));
-
-    function tick(now) {
-        const dt = Math.min((now - lastT) / 1000, 0.033);
-        lastT = now;
-
-        const dx = pos - target;
-        const force = -SPRING_K * dx - SPRING_D * vel;
-        vel += (force / SPRING_M) * dt;
-        pos += vel * dt;
-
-        if (Math.abs(dx) < REST_EPS && Math.abs(vel) < VEL_EPS) {
-            // Snap to exact integer pixel — no sub-pixel jitter at rest
-            updatePosition(Math.round(target));
-            animId = null;
-            if (onDone) onDone();
-            return;
+        if (el.classList.contains('morph-hidden')) {
+            el.classList.remove('morph-hidden');
         }
-
-        updatePosition(pos);
-        animId = requestAnimationFrame(tick);
-    }
-
-    animId = requestAnimationFrame(tick);
-}
-
-/* ===================================================
-   DRAG HANDLING
-   =================================================== */
-
-function onDragStart(e) {
-    cancelAnimationFrame(animId);
-    animId = null;
-    isDragging = true;
-
-    const t = e.touches[0];
-    dragStartY      = t.clientY;
-    dragStartSheetY = sheetY;
-    lastTouchY      = t.clientY;
-    lastTouchTime   = performance.now();
-    dragVelocity    = 0;
-
-    // Subtle scale pulse on the drag handle bar
-    const bar = dragHandle?.querySelector('.sheet-handle-bar');
-    if (bar) bar.classList.add('dragging');
-
-    // Performance: disable blur during drag
-    sheetEl.style.backdropFilter        = 'none';
-    sheetEl.style.webkitBackdropFilter  = 'none';
-    sheetEl.style.background            = 'rgba(255, 252, 249, 0.97)';
-}
-
-function onDragMove(e) {
-    if (!isDragging) return;
-    e.preventDefault();
-
-    const t   = e.touches[0];
-    const now = performance.now();
-    const dt  = now - lastTouchTime;
-
-    // Smoothed velocity
-    if (dt > 0) {
-        const iv = (t.clientY - lastTouchY) / dt;
-        dragVelocity = dragVelocity * 0.65 + iv * 0.35;
-    }
-    lastTouchY    = t.clientY;
-    lastTouchTime = now;
-
-    // Apply position with rubber-banding at edges
-    let newY = dragStartSheetY + (t.clientY - dragStartY);
-    newY = rubberBand(newY);
-    updatePosition(newY);
-}
-
-function onDragEnd() {
-    if (!isDragging) return;
-    isDragging = false;
-
-    // Release drag handle pulse
-    const bar = dragHandle?.querySelector('.sheet-handle-bar');
-    if (bar) bar.classList.remove('dragging');
-
-    // Restore blur
-    sheetEl.style.backdropFilter       = '';
-    sheetEl.style.webkitBackdropFilter = '';
-    sheetEl.style.background           = '';
-
-    // Find snap target & pass velocity for momentum-based overshoot
-    const target = findSnapTarget(sheetY, dragVelocity);
-    currentState = stateNameForY(target);
-    sheetEl.dataset.state = currentState;
-    // Feed the drag velocity directly into springTo — the underdamped spring
-    // naturally produces overshoot-then-settle when initVel is significant
-    springTo(target, dragVelocity, () => announceState(currentState));
-}
-
-function rubberBand(y) {
-    const { full: fY, peek: pY } = restPoints;
-    if (y < fY) return fY - (fY - y) * 0.2;
-    if (y > pY) return pY + (y - pY) * 0.2;
-    return y;
-}
-
-function findSnapTarget(y, vel) {
-    const pts = [restPoints.full, restPoints.half, restPoints.peek];
-
-    // Strong flick: snap in direction
-    if (Math.abs(vel) > FLICK_THRESHOLD) {
-        if (vel < 0) { // flick up
-            for (const p of pts) if (p < y - 30) return p;
-        } else { // flick down
-            for (let i = pts.length - 1; i >= 0; i--) if (pts[i] > y + 30) return pts[i];
-        }
-    }
-
-    // Otherwise: nearest
-    let best = pts[0], dist = Infinity;
-    for (const p of pts) {
-        const d = Math.abs(y - p);
-        if (d < dist) { dist = d; best = p; }
-    }
-    return best;
-}
-
-function stateNameForY(y) {
-    let best = 'peek', dist = Infinity;
-    for (const n of ['peek', 'half', 'full']) {
-        const d = Math.abs(y - restPoints[n]);
-        if (d < dist) { dist = d; best = n; }
-    }
-    return best;
-}
-
-/* ===================================================
-   CONTENT DRAG (drag-down from scrolled content)
-   =================================================== */
-
-function onContentStart(e) {
-    contentStartY    = e.touches[0].clientY;
-    contentDragActive = false;
-}
-
-function onContentMove(e) {
-    if (currentState !== 'full' && currentState !== 'half') return;
-    if (contentEl.scrollTop > 0) return;
-
-    const dy = e.touches[0].clientY - contentStartY;
-    if (dy > 10 && !contentDragActive) {
-        contentDragActive = true;
-        // Bootstrap into main drag
-        dragStartY       = e.touches[0].clientY;
-        dragStartSheetY  = sheetY;
-        lastTouchY       = e.touches[0].clientY;
-        lastTouchTime    = performance.now();
-        dragVelocity     = 0;
-        isDragging       = true;
-        cancelAnimationFrame(animId);
-        animId = null;
-        sheetEl.style.backdropFilter       = 'none';
-        sheetEl.style.webkitBackdropFilter = 'none';
-        sheetEl.style.background           = 'rgba(255, 252, 249, 0.97)';
-    }
-    if (contentDragActive) {
-        e.preventDefault();
-        onDragMove(e);
-    }
-}
-
-function onContentEnd() {
-    if (contentDragActive) {
-        onDragEnd();
-        contentDragActive = false;
+        el.style.opacity = opacity;
+        el.style.pointerEvents = opacity > 0.3 ? 'auto' : 'none';
     }
 }
 
 /* ===================================================
-   PUBLIC API
+   STATE DETECTION + PUBLIC API
    =================================================== */
+
+function detectStateFromScroll() {
+    if (!hostEl || Date.now() < suppressDetect) return;
+    const scrollTop = hostEl.scrollTop;
+
+    let closest = 'peek';
+    let minDist = Infinity;
+    for (const [name, pos] of Object.entries(snapPositions)) {
+        if (name === 'hidden') continue;
+        const d = Math.abs(scrollTop - pos);
+        if (d < minDist) { minDist = d; closest = name; }
+    }
+
+    if (closest !== currentState) {
+        currentState = closest;
+        sheetEl.dataset.state = currentState;
+        announceState(currentState);
+    }
+}
 
 export function setSheetState(newState) {
-    if (!sheetEl || !['hidden', 'peek', 'half', 'full'].includes(newState)) return;
+    if (!hostEl || !['hidden', 'peek', 'half', 'full'].includes(newState)) return;
     currentState = newState;
     sheetEl.dataset.state = newState;
-    const target = restPoints[newState];
-    if (target == null) return;
 
     if (newState === 'hidden') {
-        cancelAnimationFrame(animId);
-        updatePosition(target);
+        hostEl.scrollTo({ top: 0, behavior: 'instant' });
+        applyMorphs(0);
         announceState(newState);
         return;
     }
 
-    springTo(target, 0, () => announceState(newState));
+    const target = snapPositions[newState];
+    if (target == null) return;
+
+    // Suppress scroll-based state detection briefly so it doesn't override the
+    // programmatic state. Scroll-snap can cause a re-snap that triggers
+    // detectStateFromScroll with a different scrollTop under heavy CPU load.
+    suppressDetect = Date.now() + 400;
+
+    // Use instant scroll for programmatic state changes to guarantee reliability.
+    // CSS transitions on the sheet handle visual smoothness (border-radius, margin).
+    hostEl.scrollTo({ top: target, behavior: 'instant' });
+    applyMorphs(target);
+    announceState(newState);
 }
 
 export function getSheetState() {
@@ -439,7 +259,6 @@ function announceState(name) {
         };
         el.textContent = labels[name] || '';
     }
-    // Update aria-expanded on bottom sheet
     if (sheetEl) {
         sheetEl.setAttribute('aria-expanded', (name === 'half' || name === 'full') ? 'true' : 'false');
     }
