@@ -170,12 +170,10 @@ async function processLocation(loc, regionSlugMap) {
     return { status: 'dry-run', name: loc.name, score, reason, wouldReject: isRejected };
   }
 
-  // Build update payload
+  // Build update payload — only update photo_quality
+  // Don't set photo_source='rejected' (CHECK constraint doesn't allow it)
+  // Low-quality photos are identified by photo_quality ≤ 2
   const updateData = { photo_quality: score };
-  if (isRejected) {
-    updateData.photo_url = null;
-    updateData.photo_source = 'rejected';
-  }
 
   try {
     await sbUpdate('locations', loc.id, updateData);
@@ -192,9 +190,11 @@ async function main() {
   console.log(`Batch: ${BATCH_LIMIT}, Offset: ${OFFSET}, Max RPD: ${GEMINI_MAX_RPD}`);
   console.log(`Rate limit: ${RATE_LIMIT_MS / 1000}s between calls\n`);
 
-  // Fetch locations with photos
+  // Fetch locations with photos that haven't been scored yet
+  const RESCORE = process.env.RESCORE === '1';
+  const qualityFilter = RESCORE ? '' : '&photo_quality=is.null';
   const locations = await sbFetch('locations',
-    `select=id,name,region,photo_url&photo_url=not.is.null&order=name&limit=${BATCH_LIMIT}&offset=${OFFSET}`
+    `select=id,name,region,photo_url&photo_url=not.is.null${qualityFilter}&order=name&limit=${BATCH_LIMIT}&offset=${OFFSET}`
   );
   console.log(`Found ${locations.length} locations with photos\n`);
   if (locations.length === 0) return;
