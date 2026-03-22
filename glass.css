@@ -2194,8 +2194,8 @@
 
   /* Individual tabs — proper height */
   .sheet-tab {
-    padding: 8px 0;
-    min-height: 36px;
+    padding: 10px 0;
+    min-height: 40px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2338,8 +2338,8 @@
     margin: 2px 0 0;
   }
   .sheet-tab {
-    padding: 8px 0;
-    min-height: 32px;
+    padding: 10px 0;
+    min-height: 40px;
   }
 
 } /* end @layer overrides */

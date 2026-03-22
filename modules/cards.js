@@ -19,6 +19,8 @@ export function renderCards(locations, travelTimes = {}) {
     if (batchSentinelObserver) { batchSentinelObserver.disconnect(); batchSentinelObserver = null; }
     const container = document.getElementById('results-container');
     container.innerHTML = '';
+    container.setAttribute('role', 'feed');
+    container.setAttribute('aria-label', 'Locaties');
     appendBatch();
 }
 

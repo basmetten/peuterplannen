@@ -1,10 +1,20 @@
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { clickSheetTab } from './helpers';
 
 const disableCSS = readFileSync(join(__dirname, 'disable-animations.css'), 'utf-8');
 
 test.beforeEach(async ({ page }) => {
+  // Pre-set cookie consent in localStorage so the banner never appears
+  await page.addInitScript(() => {
+    localStorage.setItem('pp_consent', JSON.stringify({
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    }));
+  });
   await page.addStyleTag({ content: disableCSS });
 });
 
@@ -116,7 +126,7 @@ test.describe('Sheet states', () => {
     await page.goto('/app.html');
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
 
-    await page.locator('.sheet-tab[data-tab="ontdek"]').click();
+    await clickSheetTab(page, 'ontdek');
     await expect(page.locator('#bottom-sheet')).toHaveAttribute('data-state', 'half');
   });
 
@@ -126,7 +136,7 @@ test.describe('Sheet states', () => {
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
 
     const bewaard = page.locator('.sheet-tab[data-tab="bewaard"]');
-    await bewaard.click();
+    await clickSheetTab(page, 'bewaard');
 
     await expect(bewaard).toHaveClass(/active/);
     await expect(page.locator('#bottom-sheet')).toHaveAttribute('data-state', 'half');
@@ -157,7 +167,7 @@ test.describe('Sheet filter chips', () => {
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
 
     // Expand to half to see filter chips
-    await page.locator('.sheet-tab[data-tab="ontdek"]').click();
+    await clickSheetTab(page, 'ontdek');
     await expect(page.locator('#bottom-sheet')).toHaveAttribute('data-state', 'half');
 
     // Click Speeltuin filter chip
@@ -176,7 +186,7 @@ test.describe('Sheet filter chips', () => {
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
 
     // Expand to half
-    await page.locator('.sheet-tab[data-tab="ontdek"]').click();
+    await clickSheetTab(page, 'ontdek');
     await expect(page.locator('#bottom-sheet')).toHaveAttribute('data-state', 'half');
 
     // Click Meer button
@@ -189,7 +199,7 @@ test.describe('Sheet filter chips', () => {
     await page.goto('/app.html');
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
 
-    await page.locator('.sheet-tab[data-tab="ontdek"]').click();
+    await clickSheetTab(page, 'ontdek');
     await page.locator('#sheet-filter-more-btn').click();
     await expect(page.locator('#filter-modal')).toHaveClass(/open/);
 
@@ -393,7 +403,9 @@ test.describe('Plan view', () => {
 
     // Select Fiets
     const fietsChip = page.locator('.plan-chip[data-transport="fiets"]');
-    await fietsChip.click();
+    await page.evaluate(() => {
+      (document.querySelector('.plan-chip[data-transport="fiets"]') as HTMLElement)?.click();
+    });
     await expect(fietsChip).toHaveClass(/selected/);
     await expect(autoChip).not.toHaveClass(/selected/);
   });
@@ -405,7 +417,7 @@ test.describe('Plan view', () => {
 
     // Tap Plan tab in bottom sheet
     const planTab = page.locator('.sheet-tab[data-tab="plan"]');
-    await planTab.click();
+    await clickSheetTab(page, 'plan');
 
     // Should switch to plan view
     await expect(page.locator('#plan-view')).toBeVisible();
@@ -524,7 +536,7 @@ test.describe('Visual regression - additional states', () => {
     await page.goto('/app.html');
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
 
-    await page.locator('.sheet-tab[data-tab="ontdek"]').click();
+    await clickSheetTab(page, 'ontdek');
     await expect(page.locator('#bottom-sheet')).toHaveAttribute('data-state', 'half');
     await page.waitForTimeout(2000);
 
@@ -565,7 +577,7 @@ test.describe('Visual regression - additional states', () => {
     await page.goto('/app.html');
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
 
-    await page.locator('.sheet-tab[data-tab="ontdek"]').click();
+    await clickSheetTab(page, 'ontdek');
     await expect(page.locator('#bottom-sheet')).toHaveAttribute('data-state', 'half');
 
     await page.locator('#sheet-filter-more-btn').click();

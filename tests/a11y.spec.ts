@@ -1,5 +1,18 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { clickSheetTab } from './helpers';
+
+test.beforeEach(async ({ page }) => {
+  // Pre-set cookie consent so the banner never appears
+  await page.addInitScript(() => {
+    localStorage.setItem('pp_consent', JSON.stringify({
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied'
+    }));
+  });
+});
 
 test.describe('Accessibility', () => {
   test('no critical or serious violations on app load', async ({ page }) => {
@@ -110,7 +123,7 @@ test.describe('Accessibility', () => {
     await expect(page.locator('#map')).toBeVisible({ timeout: 15000 });
 
     // Open half state
-    await page.getByRole('button', { name: 'Ontdek' }).click();
+    await clickSheetTab(page, 'ontdek');
     await expect(page.locator('.compact-card').first()).toBeVisible({ timeout: 10000 });
 
     const results = await new AxeBuilder({ page })

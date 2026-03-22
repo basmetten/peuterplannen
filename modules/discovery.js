@@ -96,7 +96,7 @@ export function renderWeekPicks(picks, containerEl) {
     const html = `
         <div class="week-picks">
             <div class="week-picks-header">Deze week in ${region}</div>
-            <div class="week-picks-scroll">
+            <div class="week-picks-scroll" tabindex="0" role="region" aria-label="Week picks">
                 ${picks.map(loc => {
                     const photo = loc.photo_url || loc.owner_photo_url || '';
                     const photoStyle = photo ? `background-image:url('${photo}')` : 'background:#E8D5C4';

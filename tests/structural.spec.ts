@@ -137,7 +137,7 @@ test.describe('Responsive layout', () => {
     await waitForApp(page);
 
     for (const text of ['Home', 'Ontdekken', 'Over', 'Inspiratie', 'Contact']) {
-      await expect(page.locator(`nav a:has-text("${text}")`)).toBeVisible();
+      await expect(page.locator(`nav a.nav-link:has-text("${text}")`)).toBeVisible();
     }
 
     // Mode toggle fully visible
