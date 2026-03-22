@@ -1,4 +1,4 @@
-import { state, SB_URL, TRANSPORT_RADIUS, SPEED_KMH, TRANSPORT_LABELS, TYPE_GROUPS, DESKTOP_WIDTH, CATEGORY_IMAGES } from './state.js';
+import { state, SB_URL, TRANSPORT_RADIUS, SPEED_KMH, TRANSPORT_LABELS, TYPE_GROUPS, DESKTOP_WIDTH, CATEGORY_IMAGES, RAIN_CODES } from './state.js';
 import { escapeHtml, calculateDistance } from './utils.js';
 import { computePeuterScore } from './scoring.js';
 import { fetchAllPages } from './data.js';
@@ -146,7 +146,6 @@ async function fetchDayForecast(dateStr, lat, lng) {
 }
 
 function isOutdoorSuitable(code, temp) {
-    const RAIN_CODES = new Set([51,53,55,56,57,61,63,65,66,67,80,81,82,83,84,85,86,95,96,99]);
     if (RAIN_CODES.has(code)) return false;
     if (code <= 3 && temp >= 10) return true;
     return 'marginal';

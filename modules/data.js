@@ -98,6 +98,14 @@ async function writeLocationsCache(items) {
 }
 
 // === Fetch helpers ===
+
+/**
+ * Fetch JSON from a URL with automatic retry and exponential backoff.
+ * @param {string} url - The URL to fetch
+ * @param {RequestInit} opts - Fetch options (headers, signal, etc.)
+ * @param {number} [attempts=3] - Maximum number of attempts
+ * @returns {Promise<any>} Parsed JSON response
+ */
 export async function fetchJsonWithRetry(url, opts, attempts = DEFAULT_FETCH_RETRIES) {
     let lastError = null;
     for (let attempt = 1; attempt <= attempts; attempt++) {
@@ -115,6 +123,12 @@ export async function fetchJsonWithRetry(url, opts, attempts = DEFAULT_FETCH_RET
     throw lastError || new Error('Unknown fetch failure');
 }
 
+/**
+ * Fetch all pages from a paginated Supabase REST endpoint.
+ * @param {string} baseUrl - Base URL with query params (without limit/offset)
+ * @param {AbortSignal} [signal] - Optional abort signal to cancel the request
+ * @returns {Promise<Array<Object>>} All rows concatenated across pages
+ */
 export async function fetchAllPages(baseUrl, signal) {
     const BATCH = FETCH_PAGE_SIZE;
     const headers = { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" };
@@ -132,6 +146,11 @@ export async function fetchAllPages(baseUrl, signal) {
     return all;
 }
 
+/**
+ * Normalize a raw Supabase location row by ensuring all optional fields default to null.
+ * @param {Object} row - Raw location row from Supabase
+ * @returns {Object} Location row with all optional fields guaranteed present
+ */
 export function normalizeLocationRow(row) {
     return {
         ...row,
@@ -183,6 +202,11 @@ function applyActiveSort() {
     else if (state.activeSort === 'az') state.allLocations.sort((a,b) => (a.name||'').localeCompare(b.name||'', 'nl'));
 }
 
+/**
+ * Set the active sort mode, re-sort locations, and re-render cards and sheet list.
+ * @param {string} val - Sort mode ('default', 'peuterscore', or 'az')
+ * @returns {void}
+ */
 export function applySort(val) {
     state.activeSort = val;
     applyActiveSort();
@@ -190,11 +214,20 @@ export function applySort(val) {
     bus.emit('sheet:renderlist', state.allLocations, state.lastTravelTimes);
 }
 
+/**
+ * Update the results count label in the DOM (e.g. "42 locaties").
+ * @param {number} count - Number of visible locations
+ * @returns {void}
+ */
 export function updateResultsCount(count) {
     const el = document.getElementById('results-count');
     if (el) el.textContent = count + ' locatie' + (count !== 1 ? 's' : '');
 }
 
+/**
+ * Fetch, filter, sort, and render all locations based on current state filters.
+ * @returns {Promise<void>}
+ */
 export async function loadLocations() {
     if (currentAbort) currentAbort.abort();
     currentAbort = new AbortController();
@@ -300,6 +333,11 @@ export async function loadLocations() {
 }
 
 // === Weather Banner ===
+
+/**
+ * Fetch current weather from Open-Meteo and render the weather banner in the DOM.
+ * @returns {Promise<void>}
+ */
 export async function checkWeather() {
     try {
         const lat = state.userLocation ? state.userLocation.lat : FALLBACK_LAT;
@@ -340,6 +378,11 @@ export async function checkWeather() {
 }
 
 // === Location search ===
+
+/**
+ * Initialize Google Maps Places Autocomplete on the location input field.
+ * @returns {Promise<void>}
+ */
 export async function initAutocomplete() {
     try { await loadGoogleMaps(state); } catch(e) { console.warn('Google Maps unavailable:', e); bus.emit('gps:status', 'Google Maps niet beschikbaar', 'error'); return; }
     const input = document.getElementById('location-input');
@@ -362,6 +405,10 @@ export async function initAutocomplete() {
     });
 }
 
+/**
+ * Request the user's GPS position, reverse-geocode it, and reload locations.
+ * @returns {Promise<void>}
+ */
 export async function getCurrentLocation() {
     const statusEl = document.getElementById('gps-status'), input = document.getElementById('location-input');
     if (!navigator.geolocation) { showGpsStatus('GPS niet beschikbaar', 'error'); return; }
@@ -390,12 +437,22 @@ export async function getCurrentLocation() {
     }, (err) => { let msg = 'Locatie niet beschikbaar'; if (err.code === 1) msg = 'Toestemming geweigerd'; if (err.code === 2) msg = 'Locatie niet gevonden'; if (err.code === 3) msg = 'Timeout'; showGpsStatus(msg, 'error'); }, { enableHighAccuracy: true, timeout: GEOLOCATION_TIMEOUT_MS, maximumAge: GEOLOCATION_MAX_AGE_MS });
 }
 
+/**
+ * Display a GPS status message (loading, error, active) in the status element.
+ * @param {string} message - Status text to display
+ * @param {string} type - CSS class suffix ('loading', 'error', 'active', or '')
+ * @returns {void}
+ */
 export function showGpsStatus(message, type) {
     const el = document.getElementById('gps-status');
     el.textContent = message;
     el.className = 'gps-status ' + type;
 }
 
+/**
+ * Geocode the text in the location input field and reload locations for that position.
+ * @returns {Promise<void>}
+ */
 export async function updateLocation() {
     const input = document.getElementById('location-input').value.trim(); if (!input) return;
     try { await loadGoogleMaps(state); } catch(e) { showGpsStatus('Google Maps niet beschikbaar', 'error'); return; }
@@ -418,6 +475,11 @@ export async function updateLocation() {
     } catch (err) { showGpsStatus('Locatie niet gevonden', 'error'); }
 }
 
+/**
+ * Set a city by name, geocode it, save to preferences, and reload locations.
+ * @param {string} cityName - Dutch city name to geocode (e.g. 'Amsterdam')
+ * @returns {Promise<void>}
+ */
 export async function setCity(cityName) {
     const input = document.getElementById('location-input');
     if (input) input.value = cityName;
@@ -442,6 +504,10 @@ export async function setCity(cityName) {
     } catch (err) { showGpsStatus('Locatie niet gevonden', 'error'); }
 }
 
+/**
+ * Copy the map filter overlay's location input to the main input and trigger a location update.
+ * @returns {void}
+ */
 export function updateLocationFromMap() {
     const mapInput = document.getElementById('map-location-input');
     const mainInput = document.getElementById('location-input');

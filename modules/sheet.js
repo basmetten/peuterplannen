@@ -1,5 +1,5 @@
 import { state, SB_KEY, DESKTOP_WIDTH, TYPE_LABELS, WEATHER_LABELS, WEATHER_ICONS, SB_URL, FULL_LOCATION_SELECT } from './state.js';
-import { escapeHtml, safeUrl, cleanToddlerHighlight, calculateDistance, buildDetailUrl, trackEvent } from './utils.js';
+import { escapeHtml, safeUrl, slugify, cleanToddlerHighlight, calculateDistance, buildDetailUrl, trackEvent } from './utils.js';
 import { getTrustBullets, getPracticalBullets, computePeuterScoreV2 } from './scoring.js';
 import { isFavorite } from './favorites.js';
 import { fetchJsonWithRetry, normalizeLocationRow } from './data.js';
@@ -330,7 +330,7 @@ function renderDetailView(loc, regionSlug) {
     if (loc.diaper) facilities.push('Luierruimte');
     if (loc.alcohol) facilities.push('Alcohol beschikbaar');
 
-    const shareUrl = 'https://peuterplannen.nl/app.html?locatie=' + encodeURIComponent(regionSlug + '/' + (loc.name || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''));
+    const shareUrl = 'https://peuterplannen.nl/app.html?locatie=' + encodeURIComponent(regionSlug + '/' + slugify(loc.name));
     const shareTitle = escapeHtml(loc.name) + ' — PeuterPlannen';
     const waText = encodeURIComponent(loc.name + ' — Peuteruitje in ' + regionName + ' ' + shareUrl);
 

@@ -1,6 +1,6 @@
 // PeuterPlannen App — ES Module Entry Point
 import { state, DESKTOP_WIDTH } from './modules/state.js';
-import { escapeHtml, trackEvent, buildDetailUrl } from './modules/utils.js';
+import { escapeHtml, slugify, trackEvent, buildDetailUrl } from './modules/utils.js';
 import { toggleFavorite, toggleFavoriteFromSheet, shareLocation, updateShortlistBar, updateFavBadge, shareShortlist, showShortlist, clearShortlist, clearSharedShortlist } from './modules/favorites.js';
 import { loadLocations, checkWeather, initAutocomplete, getCurrentLocation, updateLocation, setCity, updateLocationFromMap, applySort, showGpsStatus } from './modules/data.js';
 import { toggleTag, toggleWeather, toggleFacility, toggleAge, toggleRadius, togglePreset, toggleFilterPanel, resetAllFilters, updateFilterCount, syncFilterPanelForViewport, syncPresetAria, syncChipAria, openMapFilters, closeMapFilters, toggleMapMoreFilters, updateMapPillBadge } from './modules/filters.js';
@@ -255,12 +255,7 @@ function parseHash() {
                 });
             }
             if (locSlug) {
-                const loc = state.allLocations.find(l => {
-                    const slug = (l.name || '').toLowerCase()
-                        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-                        .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-                    return slug === locSlug;
-                });
+                const loc = state.allLocations.find(l => slugify(l.name) === locSlug);
                 if (loc) {
                     bus.emit('sheet:showlocation', loc);
                     bus.emit('map:highlight', loc.id);

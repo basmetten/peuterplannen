@@ -1,4 +1,4 @@
-import { state } from './state.js';
+import { state, RAIN_CODES } from './state.js';
 import { computePeuterScore } from './scoring.js';
 import bus from './bus.js';
 
@@ -95,9 +95,8 @@ export async function fetch5DayForecast(lat, lng) {
             const d = new Date(date + 'T12:00:00');
             const code = data.daily.weather_code[i];
             const temp = Math.round(data.daily.temperature_2m_max[i]);
-            const RAIN = new Set([51,53,55,56,57,61,63,65,66,67,80,81,82,83,84,85,86,95,96,99]);
-            const icon = RAIN.has(code) ? '\uD83C\uDF27\uFE0F' : code <= 3 ? '\u2600\uFE0F' : '\uD83C\uDF25\uFE0F';
-            return { day: days[d.getDay()], icon, temp, isRain: RAIN.has(code), isSun: code <= 3 };
+            const icon = RAIN_CODES.has(code) ? '\uD83C\uDF27\uFE0F' : code <= 3 ? '\u2600\uFE0F' : '\uD83C\uDF25\uFE0F';
+            return { day: days[d.getDay()], icon, temp, isRain: RAIN_CODES.has(code), isSun: code <= 3 };
         });
     } catch { return null; }
 }

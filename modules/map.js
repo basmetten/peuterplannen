@@ -1,4 +1,5 @@
 import { state, DESKTOP_WIDTH } from './state.js';
+import { slugify } from './utils.js';
 import bus from './bus.js';
 
 // --- Constants ---
@@ -168,9 +169,7 @@ export function initMap() {
                     });
 
                     // Deep linking: update hash with map position + location slug
-                    const slug = (loc.name || '').toLowerCase()
-                        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-                        .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                    const slug = slugify(loc.name);
                     const center = state.mapInstance.getCenter();
                     const zoom = Math.round(state.mapInstance.getZoom());
                     bus.emit('hash:update', `@${center.lat.toFixed(2)},${center.lng.toFixed(2)},${zoom}z/loc/${slug}`);

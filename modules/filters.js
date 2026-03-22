@@ -10,12 +10,20 @@ function popAnimate(el) {
     el.style.animation = '';
 }
 
+/**
+ * Sync aria-selected attributes on all filter chips to match their active CSS class.
+ * @returns {void}
+ */
 export function syncChipAria() {
     document.querySelectorAll('.chip').forEach((chip) => {
         chip.setAttribute('aria-selected', chip.classList.contains('active') ? 'true' : 'false');
     });
 }
 
+/**
+ * Sync aria-pressed and active class on all preset chips to match the active preset in state.
+ * @returns {void}
+ */
 export function syncPresetAria() {
     document.querySelectorAll('.preset-chip, .sheet-preset').forEach((chip) => {
         const active = chip.dataset.preset === state.activePreset;
@@ -24,6 +32,10 @@ export function syncPresetAria() {
     });
 }
 
+/**
+ * Count the number of active advanced filters (type, weather, facilities, age, radius).
+ * @returns {number} Number of active advanced filters
+ */
 export function getAdvancedFilterCount() {
     let count = 0;
     if (state.activeTag !== 'all' && state.activeTag !== 'favorites') count++;
@@ -49,6 +61,10 @@ function updateFilterPanelSummary(labels = [], count = 0) {
     meta.textContent = labels.join(' · ');
 }
 
+/**
+ * Expand or collapse the filter panel based on viewport width and active filter count.
+ * @returns {void}
+ */
 export function syncFilterPanelForViewport() {
     const panel = document.getElementById('filter-panel');
     const toggle = document.getElementById('filter-panel-toggle');
@@ -67,6 +83,10 @@ export function syncFilterPanelForViewport() {
     }
 }
 
+/**
+ * Update the filter badge on the map search pill to show the total active filter count.
+ * @returns {void}
+ */
 export function updateMapPillBadge() {
     const badge = document.getElementById('map-pill-badge');
     const pill = document.getElementById('map-search-pill');
@@ -90,6 +110,10 @@ export function updateMapPillBadge() {
     }
 }
 
+/**
+ * Recalculate all active filters, update the filter bar label/summary, and sync panel state.
+ * @returns {void}
+ */
 export function updateFilterCount() {
     let count = 0;
     const labels = [];
@@ -131,6 +155,11 @@ function collapseFilterPanelAfterSelection() {
     }
 }
 
+/**
+ * Toggle the advanced filter panel open or closed.
+ * @param {boolean|null} [forceOpen=null] - True to force open, false to force close, null to toggle
+ * @returns {void}
+ */
 export function toggleFilterPanel(forceOpen = null) {
     const panel = document.getElementById('filter-panel');
     const toggle = document.getElementById('filter-panel-toggle');
@@ -142,6 +171,12 @@ export function toggleFilterPanel(forceOpen = null) {
     toggle.setAttribute('aria-expanded', nextCollapsed ? 'false' : 'true');
 }
 
+/**
+ * Toggle a preset filter (e.g. 'rain', 'peuterproof') and reload locations.
+ * @param {string} preset - Preset key to toggle
+ * @param {Event} [evt] - Optional click event
+ * @returns {void}
+ */
 export function togglePreset(preset, evt) {
     evt?.preventDefault();
     if (preset === 'short-drive' && !state.userLocation) {
@@ -156,6 +191,12 @@ export function togglePreset(preset, evt) {
     loadLocations();
 }
 
+/**
+ * Toggle the weather filter ('indoor' or 'outdoor') and reload locations.
+ * @param {string} weather - Weather filter value ('indoor' or 'outdoor')
+ * @param {Event} [evt] - Optional click event
+ * @returns {void}
+ */
 export function toggleWeather(weather, evt) {
     trackEvent('filter', { weather: weather });
     if (state.activeWeather === weather) { state.activeWeather = null; } else { state.activeWeather = weather; }
@@ -195,7 +236,12 @@ function toggleTagBase(tag, evt) {
     loadLocations();
 }
 
-// Extended toggleTag with nav sync
+/**
+ * Toggle the location type filter, sync navigation, and reload locations.
+ * @param {string} tag - Type filter key ('all', 'play', 'farm', 'favorites', etc.)
+ * @param {Event} [evt] - Optional click event from the chip
+ * @returns {void}
+ */
 export function toggleTag(tag, evt) {
     if (state.currentDisplayMode === 'map') bus.emit('map:displaymode', 'list');
     if (tag === 'favorites') {
@@ -207,6 +253,12 @@ export function toggleTag(tag, evt) {
     toggleTagBase(tag, evt);
 }
 
+/**
+ * Toggle a facility filter (coffee, diaper, alcohol) and reload locations.
+ * @param {string} facility - Facility key ('coffee', 'diaper', or 'alcohol')
+ * @param {Event} [evt] - Optional click event
+ * @returns {void}
+ */
 export function toggleFacility(facility, evt) {
     state.activeFacilities[facility] = !state.activeFacilities[facility];
     if (evt && evt.target) {
@@ -219,6 +271,12 @@ export function toggleFacility(facility, evt) {
     loadLocations();
 }
 
+/**
+ * Toggle the age group filter ('dreumes' or 'peuter') and reload locations.
+ * @param {string} group - Age group key ('dreumes' or 'peuter')
+ * @param {Event} [evt] - Optional click event
+ * @returns {void}
+ */
 export function toggleAge(group, evt) {
     evt?.stopPropagation();
     state.activeAgeGroup = (state.activeAgeGroup === group) ? null : group;
@@ -232,6 +290,12 @@ export function toggleAge(group, evt) {
     loadLocations();
 }
 
+/**
+ * Toggle the radius filter to a specific km value and reload locations.
+ * @param {number} km - Radius in kilometers (e.g. 5, 10, 25)
+ * @param {Event} [evt] - Optional click event
+ * @returns {void}
+ */
 export function toggleRadius(km, evt) {
     evt?.stopPropagation();
     if (!state.userLocation) { document.getElementById('location-input')?.focus(); return; }
@@ -247,6 +311,10 @@ export function toggleRadius(km, evt) {
     loadLocations();
 }
 
+/**
+ * Reset all filters to their default values and reload locations.
+ * @returns {void}
+ */
 export function resetAllFilters() {
     state.activeTag = 'all';
     state.activeWeather = null;
@@ -268,6 +336,11 @@ export function resetAllFilters() {
 }
 
 // === Map filter overlay ===
+
+/**
+ * Open the map filter overlay and sync its chips to current filter state.
+ * @returns {void}
+ */
 export function openMapFilters() {
     const overlay = document.getElementById('map-filters-overlay');
     if (!overlay) return;
@@ -278,11 +351,19 @@ export function openMapFilters() {
     overlay.classList.add('open');
 }
 
+/**
+ * Close the map filter overlay.
+ * @returns {void}
+ */
 export function closeMapFilters() {
     const overlay = document.getElementById('map-filters-overlay');
     if (overlay) overlay.classList.remove('open');
 }
 
+/**
+ * Sync all chip active states in the map filter overlay to match current filter state.
+ * @returns {void}
+ */
 export function syncMapFilterChips() {
     const typeRow = document.getElementById('map-filter-type-chips');
     if (typeRow) {
@@ -323,6 +404,10 @@ export function syncMapFilterChips() {
     updateMapMoreBadge();
 }
 
+/**
+ * Toggle visibility of the extra filter section in the map filter overlay.
+ * @returns {void}
+ */
 export function toggleMapMoreFilters() {
     const extra = document.getElementById('map-filter-extra');
     const btn = document.getElementById('map-filter-more-btn');
