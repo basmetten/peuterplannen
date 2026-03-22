@@ -35,7 +35,7 @@
   function showBanner() {
     var style = document.createElement('style');
     style.textContent = [
-      '#pp-cb{position:fixed;bottom:80px;left:16px;right:16px;max-width:520px;',
+      '#pp-cb{position:fixed;bottom:174px;left:16px;right:16px;max-width:520px;',
       'background:rgba(250,247,242,0.97);backdrop-filter:blur(16px);',
       '-webkit-backdrop-filter:blur(16px);border:1px solid rgba(212,119,90,0.2);',
       'border-radius:16px;padding:16px 20px;',
