@@ -5,11 +5,25 @@
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         html { height: 100%; overflow-x: hidden; overscroll-behavior: none; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         ::selection { background: rgba(var(--pp-primary-rgb), 0.2); color: var(--pp-text); }
-        body { font-family: var(--pp-font-body); min-height: 100%; background: var(--pp-bg); color: var(--pp-text); line-height: 1.6; overflow-x: hidden; overscroll-behavior: none; -webkit-text-size-adjust: 100%; }
+        body { font-family: var(--pp-font-body); min-height: 100%; background: var(--pp-bg); color: var(--pp-text); line-height: 1.6; overflow-x: hidden; overscroll-behavior: none; -webkit-text-size-adjust: 100%; text-rendering: optimizeLegibility; }
         .skip-link { position: absolute; left: -9999px; top: 0; padding: 8px; background: var(--pp-primary); color: var(--pp-text-inverse); z-index: 300; font-size: var(--pp-text-sm); }
 
-        /* Skeleton loader — warm coral shimmer (brand), unified with design-system pp-shimmer */
-        .skeleton { background: linear-gradient(90deg, var(--pp-primary-50) 0%, rgba(212, 119, 90, 0.06) 40%, var(--pp-primary-50) 80%); background-size: 300% 100%; animation: pp-shimmer 1.8s ease-in-out infinite; border-radius: var(--pp-radius-sm); }
+        /* Skeleton loader — warm diagonal shimmer (Apple-style sweep) */
+        .skeleton {
+            background: linear-gradient(90deg,
+                rgba(140,110,100,0.06) 25%,
+                rgba(140,110,100,0.12) 50%,
+                rgba(140,110,100,0.06) 75%
+            );
+            background-size: 200% 100%;
+            animation: skeleton-sweep 1.8s ease-in-out infinite;
+            border-radius: var(--pp-radius-sm);
+            will-change: background-position;
+        }
+        @keyframes skeleton-sweep {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
 
         /* Animations */
         @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
@@ -479,8 +493,8 @@
         .icon-btn.primary:hover { background: var(--pp-primary-dark); box-shadow: 0 4px 12px rgba(var(--pp-primary-rgb), 0.3); }
         .icon-btn.primary svg { stroke: var(--pp-text-inverse); }
         .icon-btn.primary:active { background: var(--pp-primary-dark); transform: scale(0.95); box-shadow: 0 1px 4px rgba(var(--pp-primary-rgb), 0.2); }
-        .icon-btn.gps-active { background: #eff6ff; border-color: #3b82f6; }
-        .icon-btn.gps-active svg { stroke: #3b82f6; }
+        .icon-btn.gps-active { background: rgba(var(--pp-primary-rgb), 0.08); border-color: rgba(var(--pp-primary-rgb), 0.35); }
+        .icon-btn.gps-active svg { stroke: var(--pp-primary); }
 
         .plan-location-chip { display: flex; align-items: center; gap: 8px; font-size: var(--pp-text-sm); color: var(--pp-text-muted); margin-bottom: 16px; cursor: default; }
         .plan-location-chip svg { width: var(--pp-icon-xs); height: var(--pp-icon-xs); stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
@@ -818,7 +832,7 @@
         }
         @media (hover: hover) {
             .scan-card:hover .scan-photo img.loaded { transform: scale(1.04); }
-            .scan-card:hover { transform: translateY(-3px); box-shadow: var(--pp-shadow-card-hover); }
+            .scan-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(27, 28, 27, 0.08), 0 4px 16px rgba(212, 119, 86, 0.06); }
             .scan-card:hover .scan-fav { background: rgba(255,255,255,0.92); }
         }
 
@@ -915,7 +929,7 @@
         .hidden { display: none !important; }
         .loader { padding: 12px 0; }
         .loader::before { display: none; }
-        .skeleton-cards { display: flex; flex-direction: column; gap: 16px; }
+        .skeleton-cards { display: flex; flex-direction: column; gap: 0; }
         .skeleton-card { pointer-events: none; }
         .skeleton-card .card-body { padding: 16px; }
         .error-msg { text-align: center; padding: 40px; color: var(--pp-text-secondary); font-size: var(--pp-text-sm); background: var(--pp-semantic-warning-bg); border-radius: var(--pp-radius-md); margin: 20px 0; border: 1px solid var(--pp-semantic-warning-border); }
@@ -948,20 +962,53 @@
         .favorites-empty .fav-empty-cta:hover { background: var(--pp-primary-hover); }
 
 
-        /* Skeleton cards — match scan-card structure */
-        .skeleton-card { background: var(--pp-surface); border-radius: var(--pp-radius-sm); padding: 0; border: none; overflow: hidden; box-shadow: var(--pp-shadow-card); }
-        .skeleton-card .skel-photo { aspect-ratio: 3 / 2; border-radius: var(--pp-radius-sm) var(--pp-radius-sm) 0 0; }
-        .skeleton-card .skel-body { padding: 14px 16px 16px; }
-        .skeleton-card .skel-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 8px; }
-        .skeleton-card .skel-title { height: 18px; width: 60%; border-radius: var(--wg-radius-tag); margin: 0; }
-        .skeleton-card .skel-distance { height: 14px; width: 50px; border-radius: var(--wg-radius-tag); flex-shrink: 0; }
-        .skeleton-card .skel-oneliner { height: 14px; width: 85%; border-radius: var(--wg-radius-tag); }
-        .skel-line { height: 12px; margin-bottom: 8px; border-radius: var(--pp-radius-xs); }
-        .skel-pills { display: flex; gap: 8px; margin-bottom: 12px; }
-        .skel-pill { width: 60px; height: 24px; border-radius: var(--pp-radius-xs); }
+        /* Skeleton cards — match compact card layout */
+        .skeleton-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+        }
+        .skeleton-card .skel-img {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+        .skeleton-card .skel-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0;
+        }
+        .skeleton-card .skel-line-name {
+            height: 14px;
+            width: 60%;
+            border-radius: 6px;
+        }
+        .skeleton-card .skel-line-meta {
+            height: 11px;
+            width: 40%;
+            border-radius: 6px;
+        }
+        .skeleton-card .skel-score {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
         /* Smooth fade when skeleton is replaced by real content */
-        .skeleton-cards { transition: opacity var(--wg-duration-snap) var(--wg-ease-standard); }
-        .skeleton-cards.is-hiding { opacity: 0; }
+        .skeleton-cards {
+            transition: opacity 200ms ease-out;
+        }
+        .skeleton-cards.is-hiding {
+            opacity: 0;
+        }
 
         /* Google Autocomplete styling */
         .pac-container { background: var(--pp-surface) !important; border: none !important; border-radius: var(--pp-radius-sm) !important; box-shadow: var(--pp-shadow-lg) !important; font-family: inherit !important; margin-top: 8px !important; }
@@ -1600,21 +1647,22 @@
           overflow-x: hidden !important;
           padding: 90px 18px 24px !important;
           border-radius: 0 !important;
-          background: rgba(255, 244, 233, 0.80) !important;
-          backdrop-filter: blur(20px) saturate(140%) !important;
-          -webkit-backdrop-filter: blur(20px) saturate(140%) !important;
+          background: rgba(255, 252, 249, 0.85) !important;
+          backdrop-filter: blur(24px) saturate(160%) !important;
+          -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
           border-right: none !important;
-          box-shadow: 4px 0 28px rgba(80, 50, 30, 0.08),
-                      1px 0 0 rgba(212, 119, 86, 0.08),
-                      inset -1px 0 0 rgba(255, 255, 255, 0.35) !important;
+          box-shadow: 4px 0 28px rgba(80, 50, 30, 0.06),
+                      1px 0 12px rgba(0, 0, 0, 0.04),
+                      inset -1px 0 0 rgba(255, 255, 255, 0.4) !important;
           transition: transform var(--pp-transition-slow) !important;
+          scroll-behavior: smooth;
           scrollbar-width: thin;
-          scrollbar-color: rgba(212, 119, 86, 0.18) transparent;
+          scrollbar-color: rgba(140, 110, 100, 0.15) transparent;
         }
         html.pp-desktop #list-view::-webkit-scrollbar { width: 5px; }
         html.pp-desktop #list-view::-webkit-scrollbar-track { background: transparent; }
-        html.pp-desktop #list-view::-webkit-scrollbar-thumb { background: rgba(212, 119, 86, 0.18); border-radius: 3px; }
-        html.pp-desktop #list-view::-webkit-scrollbar-thumb:hover { background: rgba(212, 119, 86, 0.32); }
+        html.pp-desktop #list-view::-webkit-scrollbar-thumb { background: rgba(140, 110, 100, 0.15); border-radius: 3px; }
+        html.pp-desktop #list-view::-webkit-scrollbar-thumb:hover { background: rgba(140, 110, 100, 0.28); }
         html.pp-desktop #list-view.collapsed {
           transform: translateX(-100%) !important;
         }
@@ -1659,6 +1707,7 @@
         .app-nav-toggle { display: none; }
         html.pp-desktop .app-nav-toggle {
           display: flex !important;
+          width: auto !important;
           gap: 2px !important;
           padding: 4px !important;
           background: rgba(var(--pp-text-rgb), 0.06) !important;
@@ -1686,17 +1735,20 @@
         /* Center floating nav over map area (right of 400px sidebar) */
         html.pp-desktop nav.floating-nav[aria-label="Hoofdnavigatie"] {
           left: calc(50% + 200px) !important;
-          width: min(800px, calc(100% - 400px - 40px)) !important;
-          overflow: hidden !important;
+          width: min(860px, calc(100% - 400px - 40px)) !important;
+          overflow: visible !important;
         }
         html.pp-desktop nav.floating-nav .nav-inner {
           padding: 12px 16px !important;
-          gap: 8px !important;
+          gap: 6px !important;
         }
         html.pp-desktop nav.floating-nav .nav-link {
-          padding: 8px 8px !important;
+          padding: 8px 6px !important;
           font-size: var(--pp-text-sm) !important;
+          white-space: nowrap !important;
         }
+        /* Hide count in nav on desktop — sidebar already shows it, and it steals flex space */
+        html.pp-desktop .nav-count { display: none !important; }
 
         /* Push map controls away from floating panel */
         html.pp-desktop .maplibregl-ctrl-top-left { left: 416px !important; }

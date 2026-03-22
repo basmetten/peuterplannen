@@ -715,6 +715,15 @@ export function hideLocationPreview() {
    TABS
    =================================================== */
 
+function updateTabIndicator() {
+    const tabs = document.getElementById('sheet-tabs');
+    const activeTab = tabs?.querySelector('.sheet-tab.active');
+    if (tabs && activeTab) {
+        tabs.style.setProperty('--tab-left', activeTab.offsetLeft + 'px');
+        tabs.style.setProperty('--tab-width', activeTab.offsetWidth + 'px');
+    }
+}
+
 export function initSheetTabs() {
     document.querySelectorAll('.sheet-tab').forEach(tab => {
         tab.addEventListener('click', () => {
@@ -725,6 +734,7 @@ export function initSheetTabs() {
             });
             tab.classList.add('active');
             tab.setAttribute('aria-selected', 'true');
+            updateTabIndicator();
             if (name === 'plan') { bus.emit('view:switch', 'plan'); return; }
             if (name === 'info') { bus.emit('view:switch', 'info'); return; }
             if (name === 'bewaard') {
@@ -740,6 +750,8 @@ export function initSheetTabs() {
             }
         });
     });
+    // Set initial indicator position after layout is computed
+    requestAnimationFrame(() => updateTabIndicator());
 }
 
 /* ===================================================

@@ -75,7 +75,7 @@ export function renderCompactCard(loc, opts = {}) {
 
     return `<div class="compact-card" role="listitem"${styleAttr} data-id="${loc.id}">
             <img class="compact-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async"${imgStyleAttr}
-                 onerror="this.src='${escapeHtml(categoryImg)}'">
+                 onerror="if(!this.dataset.retried){this.dataset.retried='1';this.classList.remove('loaded');this.onload=function(){this.classList.add('loaded')};this.src='${escapeHtml(categoryImg)}'}">
             <div class="compact-card-body">
                 <div class="compact-card-header">
                     <span class="compact-card-name">${escapeHtml(loc.name)}</span>
@@ -106,8 +106,8 @@ export function renderSheetPreview(loc) {
 
     return `
         <div class="sheet-preview-card">
-            <img class="sheet-preview-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" style="background:${photoColor}"
-                 onerror="this.src='${escapeHtml(categoryImg)}'">
+            <img class="sheet-preview-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async" style="background:${photoColor}"
+                 onerror="if(!this.dataset.retried){this.dataset.retried='1';this.classList.remove('loaded');this.onload=function(){this.classList.add('loaded')};this.src='${escapeHtml(categoryImg)}'}">
             <div class="sheet-preview-body">
                 <div class="sheet-preview-name">${escapeHtml(loc.name)}</div>
                 <div class="sheet-preview-meta">${escapeHtml(typeLabel)}${distance ? ' \u00b7 ' + escapeHtml(String(distance)) : ''}</div>
