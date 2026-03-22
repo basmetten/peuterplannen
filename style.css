@@ -815,16 +815,9 @@ footer a:hover { color: rgba(var(--pp-surface-rgb),0.85); }
 .reveal.visible { animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
 @media (prefers-reduced-motion: reduce) { .reveal, .reveal.visible { animation: none; opacity: 1; } }
 
-/* Scroll-driven animations — replaces JS-based reveal in modern browsers */
-@supports (animation-timeline: scroll()) {
-  .reveal, .reveal.visible { animation: none !important; opacity: 1 !important; transform: none !important; }
-  :is(.loc-item, .blog-card, .type-section, .region-section,
-      .cta-block, .support-section, .faq-section) {
-    animation: fadeUp linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 30%;
-  }
-}
+/* Scroll-driven animations removed — caused stuttery scrolling on
+   non-app pages. The JS-based IntersectionObserver reveal (reveal.js)
+   is sufficient and performs better. */
 
 /* === Location hero badge === */
 .hero-location { padding: 100px 24px 44px; }
