@@ -208,9 +208,9 @@ export function openLocSheet(locationId) {
     sheet.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
 
-    // Hide bottom sheet to prevent overlap
-    const bottomSheet = document.getElementById('bottom-sheet');
-    if (bottomSheet) bottomSheet.style.display = 'none';
+    // Hide scroll host (contains bottom sheet) to prevent overlap
+    const scrollHost = document.getElementById('sheet-scroll-host');
+    if (scrollHost) scrollHost.style.display = 'none';
 }
 
 export function closeLocSheet() {
@@ -223,9 +223,9 @@ export function closeLocSheet() {
     sheet.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
 
-    // Restore bottom sheet
-    const bottomSheet = document.getElementById('bottom-sheet');
-    if (bottomSheet) bottomSheet.style.display = '';
+    // Restore scroll host (contains bottom sheet)
+    const scrollHost = document.getElementById('sheet-scroll-host');
+    if (scrollHost) scrollHost.style.display = '';
 }
 
 export function openInfoPanel() {

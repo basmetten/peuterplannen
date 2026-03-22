@@ -782,7 +782,7 @@
           position: absolute; bottom: 10px; left: 10px;
           background: rgba(255,252,249,0.85);
           backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-          padding: 4px 12px; border-radius: 10px;
+          padding: 4px 12px; border-radius: var(--pp-radius-xs);
           font-size: 0.6875rem; font-weight: 700; line-height: 1.3;
           letter-spacing: 0.05em; text-transform: uppercase;
           color: var(--pp-text);
@@ -958,7 +958,7 @@
         .favorites-empty svg { width: 56px; height: 56px; stroke: var(--pp-primary); fill: none; stroke-width: 1.2; margin-bottom: 16px; opacity: 0.7; }
         .favorites-empty strong { display: block; color: var(--pp-text); font-size: var(--pp-text-lg); font-family: var(--pp-font-heading); font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
         .favorites-empty p { margin: 0 auto; max-width: 280px; font-size: var(--pp-text-sm); line-height: 1.6; color: var(--pp-text-muted); }
-        .favorites-empty .fav-empty-cta { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; padding: 12px 20px; background: var(--pp-primary); color: var(--pp-text-inverse); border: none; border-radius: 100px; font-family: var(--pp-font-body); font-size: var(--pp-text-sm); font-weight: 600; cursor: pointer; transition: background 200ms ease, transform 100ms ease; }
+        .favorites-empty .fav-empty-cta { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; padding: 12px 20px; background: var(--pp-primary); color: var(--pp-text-inverse); border: none; border-radius: var(--pp-radius-pill); font-family: var(--pp-font-body); font-size: var(--pp-text-sm); font-weight: 600; cursor: pointer; transition: background 200ms ease, transform 100ms ease; }
         .favorites-empty .fav-empty-cta:active { transform: scale(0.97); }
         .favorites-empty .fav-empty-cta:hover { background: var(--pp-primary-hover); }
 
@@ -976,7 +976,7 @@
         .skeleton-card .skel-img {
             width: 56px;
             height: 56px;
-            border-radius: 12px;
+            border-radius: var(--pp-radius-xs);
             flex-shrink: 0;
         }
         .skeleton-card .skel-body {

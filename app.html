@@ -718,11 +718,19 @@
 
     <!-- Bottom Sheet (mobile map/browse) -->
     <div id="sheet-overlay" class="sheet-overlay" aria-hidden="true"></div>
-    <div id="bottom-sheet" class="bottom-sheet" role="dialog" aria-label="Locaties" aria-expanded="false" data-state="hidden">
-        <div class="sheet-drag-handle" id="sheet-drag-handle">
-            <div class="sheet-handle-bar"></div>
-        </div>
-        <div class="sheet-content" id="sheet-content">
+    <div id="sheet-scroll-host" class="sheet-scroll-host">
+        <!-- Scroll-snap spacer segments + detent points (heights set by JS) -->
+        <div class="sheet-snap-spacer" id="snap-spacer-head" aria-hidden="true"></div>
+        <div class="sheet-snap--peek" id="snap-peek" aria-hidden="true"></div>
+        <div class="sheet-snap-spacer-tail" id="snap-spacer-mid" aria-hidden="true"></div>
+        <div class="sheet-snap--half" id="snap-half" aria-hidden="true"></div>
+        <div class="sheet-snap-spacer-tail" id="snap-spacer-tail" aria-hidden="true"></div>
+
+        <div id="bottom-sheet" class="bottom-sheet" role="dialog" aria-label="Locaties" aria-expanded="false" data-state="hidden">
+            <div class="sheet-drag-handle" id="sheet-drag-handle">
+                <div class="sheet-handle-bar"></div>
+            </div>
+            <div class="sheet-content" id="sheet-content">
             <!-- Peek content: search pill + preset chips + tabs -->
             <div class="sheet-peek" id="sheet-peek">
                 <div class="sheet-search-area" id="sheet-search-area" role="search" aria-label="Zoek locaties">
@@ -779,6 +787,7 @@
             <!-- Full content: location detail -->
             <div class="sheet-detail" id="sheet-detail"></div>
         </div>
+    </div>
     </div>
 
     <!-- Screen reader announcements for sheet state changes -->

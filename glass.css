@@ -401,34 +401,91 @@
 }
 
 /* ============================================
+   Scroll-Snap Sheet Host
+   ============================================ */
+.sheet-scroll-host {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: contain;
+  pointer-events: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.sheet-scroll-host::-webkit-scrollbar { display: none; }
+
+.sheet-snap-spacer {
+  pointer-events: none;
+  /* Height set by JS to position snap markers correctly */
+}
+.sheet-snap--peek,
+.sheet-snap--half {
+  height: 0;
+  scroll-snap-align: start;
+  pointer-events: none;
+}
+.sheet-snap-spacer-tail {
+  pointer-events: none;
+  /* Height set by JS — fills gap between last snap marker and the sheet */
+}
+
+/* ============================================
    Bottom Sheet — 4-state mobile browse sheet
    ============================================ */
 .bottom-sheet {
-  position: fixed;
-  z-index: 1000;
+  position: relative;
+  z-index: auto;
   background: rgba(255, 252, 249, 0.82);
   backdrop-filter: blur(40px) saturate(180%);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   border-top: 0.5px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.06),
               0 -1px 4px rgba(0, 0, 0, 0.02);
-  transform: translateY(100%) translateZ(0);
-  /* No CSS transition — positioning is JS-driven (spring physics) */
-  will-change: transform;
-  contain: layout;
+  contain: layout style paint;
   height: 100dvh;
   overflow: hidden;
-  touch-action: none;
-  overscroll-behavior: none;
-  /* Floating card defaults (peek/half) */
-  left: 8px; right: 8px; bottom: 8px;
   border-radius: 16px;
+  pointer-events: auto;
+  scroll-snap-align: start;
+  margin: 0 8px;
+  transition: border-radius 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              margin 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* State-driven geometry (replaces per-frame JS animation) */
+.bottom-sheet[data-state="half"] {
+  border-radius: 16px 16px 8px 8px;
+  margin: 0 4px;
+}
+.bottom-sheet[data-state="full"] {
+  border-radius: 0;
+  margin: 0;
+}
+
+/* Morph hidden — class-based collapse (replaces 7 inline style writes per element) */
+.morph-hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 /* Only active on mobile */
 @media (min-width: 680px) {
+  .sheet-scroll-host { display: none !important; }
   .bottom-sheet { display: none !important; }
   .sheet-overlay { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet-scroll-host { scroll-behavior: auto; }
+  .bottom-sheet { transition: none; }
 }
 
 /* State positioning & child visibility is now JS-driven (sheet-engine.js morphs).
@@ -1006,6 +1063,8 @@
 /* Detail in sheet (future use) */
 .sheet-detail {
   display: none;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 400px;
 }
 
 /* Backdrop-filter fallback for bottom sheet */
