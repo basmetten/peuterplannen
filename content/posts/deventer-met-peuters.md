@@ -180,4 +180,4 @@ Deventer is kleiner en stiller dan Utrecht of Amsterdam, maar dat is juist het v
 
 ---
 
-Bekijk alle kindvriendelijke locaties in de regio via onze [Deventer-pagina](/deventer.html) — gefilterd op leeftijd, type en weer. Of lees meer over [speeltuinen met peuters](/blog/beste-speeltuinen-amsterdam-peuters/) voor algemene tips.
+Bekijk alle kindvriendelijke locaties in de regio via onze [Deventer-pagina](/app.html) — gefilterd op leeftijd, type en weer. Of lees meer over [speeltuinen met peuters](/blog/beste-speeltuinen-amsterdam-peuters/) voor algemene tips.

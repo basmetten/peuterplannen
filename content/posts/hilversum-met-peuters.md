@@ -167,4 +167,4 @@ Doordeweeks, in het voor- of najaar. Bossen op hun mooist, nergens druk. Winter 
 
 ---
 
-Bekijk alle kindvriendelijke locaties in de regio via onze [Hilversum-pagina](/hilversum.html) — gefilterd op leeftijd, type en weer. Of lees onze bredere gids over het [Gooi en de Vechtstreek met peuters](/blog/gooi-en-vechtstreek-met-peuters/) voor meer inspiratie in de omgeving.
+Bekijk alle kindvriendelijke locaties in de regio via onze [Hilversum-pagina](/app.html) — gefilterd op leeftijd, type en weer. Of lees onze bredere gids over het [Gooi en de Vechtstreek met peuters](/blog/gooi-en-vechtstreek-met-peuters/) voor meer inspiratie in de omgeving.

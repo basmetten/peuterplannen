@@ -23,7 +23,7 @@ De keerzijde: Alkmaar heeft geen grote publiekstrekker voor peuters. Geen Nijntj
 
 ## Het Kaasmuseum: klein maar verrassend leuk
 
-Het [Hollands Kaasmuseum](/alkmaar/hollands-kaasmuseum/) zit in het Waaggebouw, midden op het plein waar op vrijdagen de kaasmarkt plaatsvindt. Het is geen groot museum — reken op een halfuur tot drie kwartier — maar het is verrassend goed te doen met een peuter.
+Het [Hollands Kaasmuseum](/app.html) zit in het Waaggebouw, midden op het plein waar op vrijdagen de kaasmarkt plaatsvindt. Het is geen groot museum — reken op een halfuur tot drie kwartier — maar het is verrassend goed te doen met een peuter.
 
 Er is een sticker-speurtocht speciaal voor kinderen, gratis verkrijgbaar bij de kassa. Je kind krijgt een boekje en zoekt door het museum naar de juiste stickers. Voor een peuter van 3 is dat precies het soort opdracht dat werkt: zoeken, plakken, trots laten zien. Een jongere peuter pakt het boekje en scheurt de stickers er meteen af, maar dat is ook prima — die heeft genoeg aan de kaasvormen, de weegschaal en het uitzicht vanaf de bovenverdieping.
 
@@ -43,7 +43,7 @@ Het nadeel: het is druk. Op een zonnige vrijdag in juni is het Waagplein vol toe
 
 ## Kinderboerderij De Rekerhout: de stille favoriet
 
-Als je één ding doet in Alkmaar met een peuter, laat het [Kinderboerderij De Rekerhout](/alkmaar/kinderboerderij-de-rekerhout/) zijn. Het ligt in Park De Rekerhout in Alkmaar-Noord, iets buiten het centrum, en het is precies het soort plek waar een peuter de beste ochtend van de week heeft.
+Als je één ding doet in Alkmaar met een peuter, laat het [Kinderboerderij De Rekerhout](/app.html) zijn. Het ligt in Park De Rekerhout in Alkmaar-Noord, iets buiten het centrum, en het is precies het soort plek waar een peuter de beste ochtend van de week heeft.
 
 De kinderboerderij bestaat sinds 1982 en wordt gerund door een stichting. Er zijn geiten, kippen, konijnen, varkens — het standaard repertoire, maar dat is ook precies wat een peuter wil. Geen exotische dieren, geen educatieve praatjes die over hun hoofd gaan. Gewoon dieren aaien, in de modder staan, en af en toe gillen als een kip te dichtbij komt.
 
@@ -53,7 +53,7 @@ Het park eromheen heeft een kruidentuin en speeltoestellen. Je kunt er makkelijk
 
 ## Stedelijk Museum Alkmaar: kunst met een knipoog
 
-Het [Stedelijk Museum Alkmaar](/alkmaar/stedelijk-museum-alkmaar/) is geen voor de hand liggende keuze met een peuter, maar het verdient een vermelding. Het museum zit in een mooi pand in de binnenstad en heeft gratis toegang voor kinderen tot 18 jaar. Dat scheelt al.
+Het [Stedelijk Museum Alkmaar](/app.html) is geen voor de hand liggende keuze met een peuter, maar het verdient een vermelding. Het museum zit in een mooi pand in de binnenstad en heeft gratis toegang voor kinderen tot 18 jaar. Dat scheelt al.
 
 Wat het interessant maakt: er zijn speciale kinderactiviteiten. Een speurboekje, een digitale monsterworkshop, en in de schoolvakanties workshops in het atelier. Voor een peuter van 3 of ouder die van knutselen houdt, kan dat een leuk halfuurtje zijn. Verwacht geen uren vermaak — het is geen kindermuseum — maar als korte tussenstop in een dagprogramma werkt het prima.
 
@@ -77,13 +77,13 @@ Dit is de troef van Alkmaar als peuterstad. Bergen aan Zee ligt op twintig minut
 
 Een peuter op het strand — dat hoeft niet ingewikkeld te zijn. Een emmer, een schep, een gat graven. Schelpen zoeken. Dat is het programma, en het is goed voor minstens een uur.
 
-Er zijn strandtenten met terrassen, toiletten, en je kunt fatsoenlijk parkeren. In het dorp zit het [Zee Aquarium](/bergen-aan-zee/zee-aquarium/), een klein maar leuk aquarium waar kinderen onder de 3 gratis naar binnen. Er zijn aaibakken waar kinderen roggen kunnen aaien — dat alleen al is het bezoek waard. Reken op drie kwartier tot een uur. Volwassenen €16,95, kinderen 3-12 jaar €11,95.
+Er zijn strandtenten met terrassen, toiletten, en je kunt fatsoenlijk parkeren. In het dorp zit het [Zee Aquarium](/app.html), een klein maar leuk aquarium waar kinderen onder de 3 gratis naar binnen. Er zijn aaibakken waar kinderen roggen kunnen aaien — dat alleen al is het bezoek waard. Reken op drie kwartier tot een uur. Volwassenen €16,95, kinderen 3-12 jaar €11,95.
 
 **Tip:** combineer een ochtend in Alkmaar met een middag strand. Rijd na de lunch naar Bergen aan Zee, laat je peuter uitrazen op het strand, en rijd ontspannen terug. De route gaat door het Bergerbos — op zich al mooi om doorheen te rijden.
 
 ## Speelpark De Batavier: voor als je iets meer wilt
 
-Tussen Alkmaar en Bergen ligt [Speelpark De Batavier](/alkmaar/speelpark-de-batavier/), een ouderwets buitenspeelpark dat sinds 1932 bestaat. Het is geen Efteling — het is een speeltuin met bootjes, een midgetgolfbaan, trampolines, autorijden en een aparte peutertuin voor de allerkleinsten.
+Tussen Alkmaar en Bergen ligt [Speelpark De Batavier](/app.html), een ouderwets buitenspeelpark dat sinds 1932 bestaat. Het is geen Efteling — het is een speeltuin met bootjes, een midgetgolfbaan, trampolines, autorijden en een aparte peutertuin voor de allerkleinsten.
 
 Voor een peuter is de peutertuin het belangrijkst: aangepaste toestellen, zacht ondergrond, en een overzichtelijke ruimte waar je je kind even los kunt laten. De rest van het park is meer geschikt voor kinderen vanaf 4 of 5, maar een peuter van 3 vermaakt zich ook prima op de trampolines.
 
@@ -162,4 +162,4 @@ Ongeveer 20 minuten met de auto. Er is geen directe treinverbinding — je hebt 
 
 ---
 
-Bekijk alle kindvriendelijke locaties in de regio via onze [Alkmaar-pagina](/alkmaar.html) — gefilterd op leeftijd, type en weer. Of lees meer over [een dagje strand met een peuter](/blog/zomervakantie-met-peuter/) voor tips over strandbezoek met kleintjes.
+Bekijk alle kindvriendelijke locaties in de regio via onze [Alkmaar-pagina](/app.html) — gefilterd op leeftijd, type en weer. Of lees meer over [een dagje strand met een peuter](/blog/zomervakantie-met-peuter/) voor tips over strandbezoek met kleintjes.

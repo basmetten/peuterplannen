@@ -184,4 +184,4 @@ Maastricht heeft een mooier centrum en meer horeca, maar minder natuur en geen p
 
 ---
 
-Bekijk alle kindvriendelijke locaties in de regio via onze [Venlo-pagina](/venlo.html) — gefilterd op leeftijd, type en weer. Of lees meer over [pretparken met peuters](/blog/pretparken-peuter-nederland/) voor tips over Toverland en andere parken.
+Bekijk alle kindvriendelijke locaties in de regio via onze [Venlo-pagina](/app.html) — gefilterd op leeftijd, type en weer. Of lees meer over [pretparken met peuters](/blog/pretparken-peuter-nederland/) voor tips over Toverland en andere parken.
