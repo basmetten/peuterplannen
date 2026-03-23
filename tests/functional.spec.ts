@@ -241,25 +241,19 @@ test.describe('Navigation', () => {
     await expect(burger).toHaveAttribute('aria-expanded', 'false');
   });
 
-  test('desktop mode toggle switches to plan view', async ({ page, isMobile }) => {
+  test('desktop mode toggle navigates to plan page', async ({ page, isMobile }) => {
     if (isMobile) test.skip();
     await page.goto('/app.html');
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
 
-    // Click "Plan mijn dag" in the mode switch
+    // Click "Plan je dag ✨" link in the mode switch
     const planChip = page.locator('.app-mode-chip[data-mode-target="plan"]').first();
     await planChip.click();
 
-    // Body should gain plan-mode class
+    // Should navigate to plan.html
+    await page.waitForURL(/\/plan(\.html)?$/, { timeout: 15000, waitUntil: 'domcontentloaded' });
     await expect(page.locator('body')).toHaveClass(/plan-mode/);
-
-    // Plan view should be visible
     await expect(page.locator('#plan-view')).toBeVisible();
-
-    // Switch back
-    const homeChip = page.locator('.app-mode-chip[data-mode-target="home"]').first();
-    await homeChip.click();
-    await expect(page.locator('body')).not.toHaveClass(/plan-mode/);
   });
 
   test('404 page renders for non-existent path', async ({ page }) => {
@@ -371,14 +365,9 @@ test.describe('Desktop filter panel', () => {
    PLAN VIEW
    ───────────────────────────────────────────── */
 test.describe('Plan view', () => {
-  test('plan wizard renders all steps on desktop', async ({ page, isMobile }) => {
+  test('plan wizard renders all steps on plan page', async ({ page, isMobile }) => {
     if (isMobile) test.skip();
-    await page.goto('/app.html');
-    await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
-
-    // Switch to plan mode
-    await page.locator('.app-mode-chip[data-mode-target="plan"]').first().click();
-    await expect(page.locator('body')).toHaveClass(/plan-mode/);
+    await page.goto('/plan.html');
 
     // Verify all wizard steps are present
     await expect(page.locator('.plan-step-label', { hasText: 'Hoe oud is je peuter?' })).toBeVisible();
@@ -392,10 +381,7 @@ test.describe('Plan view', () => {
 
   test('plan transport selection works', async ({ page, isMobile }) => {
     if (isMobile) test.skip();
-    await page.goto('/app.html');
-    await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
-
-    await page.locator('.app-mode-chip[data-mode-target="plan"]').first().click();
+    await page.goto('/plan.html');
 
     // Auto should be selected by default
     const autoChip = page.locator('.plan-chip[data-transport="auto"]');
@@ -410,16 +396,20 @@ test.describe('Plan view', () => {
     await expect(autoChip).not.toHaveClass(/selected/);
   });
 
-  test('plan view accessible via mobile sheet tab', async ({ page, isMobile }) => {
-    if (!isMobile) test.skip();
+  test('plan page accessible via navbar link', async ({ page, isMobile }) => {
     await page.goto('/app.html');
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
 
-    // Tap Plan tab in bottom sheet
-    const planTab = page.locator('.sheet-tab[data-tab="plan"]');
-    await clickSheetTab(page, 'plan');
+    if (isMobile) {
+      // Open mobile menu and click Plan link
+      await page.locator('.nav-burger').click();
+      await page.locator('.nav-mobile-link', { hasText: 'Plan je dag' }).click();
+    } else {
+      // Click Plan link in desktop nav
+      await page.locator('a.nav-link', { hasText: 'Plan je dag' }).click();
+    }
 
-    // Should switch to plan view
+    await page.waitForURL(/\/plan(\.html)?$/, { timeout: 15000, waitUntil: 'domcontentloaded' });
     await expect(page.locator('#plan-view')).toBeVisible();
     await expect(page.locator('body')).toHaveClass(/plan-mode/);
   });
@@ -560,10 +550,7 @@ test.describe('Visual regression - additional states', () => {
 
   test('desktop plan view', async ({ page, isMobile }) => {
     if (isMobile) test.skip();
-    await page.goto('/app.html');
-    await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
-
-    await page.locator('.app-mode-chip[data-mode-target="plan"]').first().click();
+    await page.goto('/plan.html');
     await expect(page.locator('body')).toHaveClass(/plan-mode/);
     await page.waitForTimeout(1000);
 

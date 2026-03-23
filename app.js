@@ -46,7 +46,7 @@ window.addEventListener('popstate', (e) => {
                 document.getElementById('filter-modal-overlay')?.classList.remove('open');
                 break;
             case 'plan':
-                switchView('home');
+                window.location.href = '/plan.html';
                 break;
             case 'info':
                 closeInfoPanel();
@@ -230,7 +230,7 @@ function parseHash() {
     if (!hash) return;
 
     if (hash === 'plan') {
-        switchView('plan');
+        window.location.href = '/plan.html';
         return;
     }
 

@@ -35,7 +35,7 @@ export function syncDesktopModeSwitch(mode = 'home') {
 
 /** Sync the sheet tabs active state to match the current view */
 function syncSheetTabs(view) {
-    const tabMap = { home: 'ontdek', favorites: 'bewaard', plan: 'plan' };
+    const tabMap = { home: 'ontdek', favorites: 'bewaard' };
     const tabName = tabMap[view] || 'ontdek';
     document.querySelectorAll('.sheet-tab').forEach(t => {
         const isActive = t.dataset.tab === tabName;
@@ -143,36 +143,8 @@ export function switchView(view) {
     const appWrapper = document.querySelector('.app-wrapper');
 
     if (view === 'plan') {
-        const wasInPlanAlready = document.body.classList.contains('plan-mode');
-        document.body.classList.add('plan-mode');
-        if (appWrapper) appWrapper.classList.add('hidden');
-        if (planView) planView.classList.remove('hidden');
-        state.currentView = 'plan';
-        syncSheetTabs('plan');
-        bus.emit('plan:chipupdate');
-        syncDesktopModeSwitch('plan');
-        bus.emit('hash:update', 'plan');
-        if (typeof window.pushNavState === 'function') window.pushNavState('plan');
-
-        // Mode transition animation
-        if (isDesktop && !wasInPlanAlready && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            document.body.dataset.modeDirection = 'to-plan';
-            document.body.classList.add('app-mode-animating');
-            window.setTimeout(() => { document.body.classList.remove('app-mode-animating'); delete document.body.dataset.modeDirection; }, MODE_ANIMATION_DURATION_MS);
-        }
+        window.location.href = '/plan.html';
         return;
-    }
-
-    // Leaving plan mode
-    const wasInPlan = document.body.classList.contains('plan-mode');
-    document.body.classList.remove('plan-mode');
-    if (planView) planView.classList.add('hidden');
-    if (appWrapper) appWrapper.classList.remove('hidden');
-
-    if (wasInPlan && isDesktop && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.body.dataset.modeDirection = 'to-home';
-        document.body.classList.add('app-mode-animating');
-        window.setTimeout(() => { document.body.classList.remove('app-mode-animating'); delete document.body.dataset.modeDirection; }, MODE_ANIMATION_DURATION_MS);
     }
 
     switchViewCore(view);

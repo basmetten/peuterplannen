@@ -36,7 +36,6 @@ test.describe('App loads correctly', () => {
       // Sheet tabs visible (role="tab", not button)
       await expect(page.locator('.sheet-tab[data-tab="ontdek"]')).toBeVisible();
       await expect(page.locator('.sheet-tab[data-tab="bewaard"]')).toBeVisible();
-      await expect(page.locator('.sheet-tab[data-tab="plan"]')).toBeVisible();
     } else {
       // Desktop sidebar visible
       await expect(page.locator('#list-view')).toBeVisible();

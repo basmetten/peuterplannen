@@ -176,12 +176,13 @@
                 <a href="/about.html" class="nav-link">Over</a>
                 <a href="/blog/" class="nav-link">Inspiratie</a>
                 <a href="/contact.html" class="nav-link">Contact</a>
+                <a href="/plan.html" class="nav-link">Plan je dag ✨</a>
                 <a href="/app.html" class="nav-cta">Uitjes zoeken</a>
             </div>
             <span class="nav-count" id="app-topbar-count"></span>
             <div class="app-mode-switch compact app-nav-toggle" role="group" aria-label="App-modus">
                 <button type="button" class="app-mode-chip active" data-mode-target="home" onclick="switchView('home')">Ontdek locaties</button>
-                <button type="button" class="app-mode-chip" data-mode-target="plan" onclick="switchView('plan')">Plan mijn dag</button>
+                <a href="/plan.html" class="app-mode-chip" data-mode-target="plan">Plan je dag ✨</a>
             </div>
             <button class="nav-burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-mobile-menu">
                 <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
@@ -193,6 +194,7 @@
             <a href="/about.html" class="nav-mobile-link">Over</a>
             <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
             <a href="/contact.html" class="nav-mobile-link">Contact</a>
+            <a href="/plan.html" class="nav-mobile-link">Plan je dag ✨</a>
             <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
         </div>
     </nav>
@@ -205,7 +207,7 @@
         </div>
         <div class="app-mode-switch compact" role="group" aria-label="Desktop app-modus">
             <button type="button" class="app-mode-chip active" data-mode-target="home" onclick="switchView('home')">Ontdek locaties</button>
-            <button type="button" class="app-mode-chip" data-mode-target="plan" onclick="switchView('plan')">Plan mijn dag</button>
+            <a href="/plan.html" class="app-mode-chip" data-mode-target="plan">Plan je dag ✨</a>
             <a href="/ontdekken/" class="app-mode-chip app-mode-link">Per regio/thema</a>
         </div>
     </header>
@@ -477,11 +479,11 @@
         <div class="plan-main">
         <div class="plan-stage">
         <div class="app-mode-switch plan-mode-toolbar" role="group" aria-label="Desktop app-modus">
-            <button type="button" class="app-mode-chip" data-mode-target="home" onclick="switchView('home')">Ontdek locaties</button>
-            <button type="button" class="app-mode-chip active" data-mode-target="plan" onclick="switchView('plan')">Plan mijn dag</button>
+            <a href="/app.html" class="app-mode-chip" data-mode-target="home">Ontdek locaties</a>
+            <button type="button" class="app-mode-chip active" data-mode-target="plan">Plan je dag ✨</button>
         </div>
         <div class="plan-view-header">
-            <h2>Plan mijn dag</h2>
+            <h2>Plan je dag ✨</h2>
             <p>Vertel hoe je dag eruitziet. Wij bouwen een route.</p>
         </div>
         <div class="plan-location-chip" id="plan-location-chip">
@@ -561,7 +563,7 @@
                 </div>
             </div>
 
-            <button class="plan-generate-btn" id="plan-gen-btn" onclick="generatePlan()">Maak mijn dagplan</button>
+            <button class="plan-generate-btn" id="plan-gen-btn" onclick="generatePlan()">Maak mijn dagplan ✨</button>
         </div>
         </div>
         </div>
@@ -766,7 +768,6 @@
                 <div class="sheet-tabs" id="sheet-tabs" role="tablist" aria-label="Navigatie tabs">
                     <button class="sheet-tab active" data-tab="ontdek" role="tab" aria-selected="true">Ontdek</button>
                     <button class="sheet-tab" data-tab="bewaard" role="tab" aria-selected="false">Bewaard</button>
-                    <button class="sheet-tab" data-tab="plan" role="tab" aria-selected="false">Plan</button>
                     <button class="sheet-tab sheet-tab-gear" data-tab="info" role="tab" aria-selected="false" aria-label="Instellingen">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                     </button>

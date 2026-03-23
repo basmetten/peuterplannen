@@ -154,16 +154,16 @@ test.describe('Responsive layout', () => {
     if (isMobile) test.skip();
     await waitForApp(page);
 
-    for (const text of ['Home', 'Ontdekken', 'Over', 'Inspiratie', 'Contact']) {
+    for (const text of ['Home', 'Ontdekken', 'Over', 'Inspiratie', 'Contact', 'Plan je dag']) {
       await expect(page.locator(`nav a.nav-link:has-text("${text}")`)).toBeVisible();
     }
 
-    // Mode toggle fully visible
-    const planBtn = page.getByRole('button', { name: 'Plan mijn dag' });
-    await expect(planBtn).toBeVisible();
+    // Plan link in mode switch
+    const planLink = page.locator('a.app-mode-chip[data-mode-target="plan"]').first();
+    await expect(planLink).toBeVisible();
 
     // Verify it's not clipped - check bounding box is fully within viewport
-    const box = await planBtn.boundingBox();
+    const box = await planLink.boundingBox();
     expect(box).not.toBeNull();
     expect(box!.x + box!.width).toBeLessThan(1280);
   });

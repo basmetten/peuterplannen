@@ -654,7 +654,6 @@ export function initSheetTabs() {
             tab.classList.add('active');
             tab.setAttribute('aria-selected', 'true');
             updateTabIndicator();
-            if (name === 'plan') { bus.emit('view:switch', 'plan'); return; }
             if (name === 'info') { bus.emit('view:switch', 'info'); return; }
             if (name === 'bewaard') {
                 state.activeTag = 'favorites';
