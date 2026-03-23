@@ -12,7 +12,8 @@ import { renderCompactCard, renderSheetPreview, renderSheetScanCard, getPhotoDat
 // --- Constants ---
 const PEEK_HEIGHT_PX = 160;
 const HALF_RATIO = 0.55;
-const NAVBAR_HEIGHT_PX = 52;
+// Measured dynamically in computeSnapPositions()
+let navbarHeight = 52;
 const SCROLL_DEBOUNCE_MS = 150;
 const RESIZE_DEBOUNCE_MS = 100;
 const SUPPRESS_DETECT_MS = 400;
@@ -65,20 +66,33 @@ function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
 function computeSnapPositions() {
     if (!hostEl) return;
-    const vh = window.innerHeight;
-    const availableHeight = vh - NAVBAR_HEIGHT_PX;
 
+    // Dynamically measure the navbar so the sheet never overlaps it
+    const nav = document.querySelector('.floating-nav');
+    if (nav) {
+        // Use bottom edge + small buffer so the sheet never touches the navbar
+        navbarHeight = Math.ceil(nav.getBoundingClientRect().bottom) + 4;
+    }
+    // Ensure minimum — navbar is at least 74px on mobile (64px height + 10px top)
+    navbarHeight = Math.max(navbarHeight, 78);
+
+    // Clip scroll host below navbar — bulletproof: sheet physically can't go above it
+    hostEl.style.top = navbarHeight + 'px';
+
+    const hostHeight = window.innerHeight - navbarHeight;
     const peekHeight = PEEK_HEIGHT_PX;
-    const halfHeight = Math.round(availableHeight * HALF_RATIO);
+    const halfHeight = Math.round(hostHeight * HALF_RATIO);
 
-    // Sheet height matches available space below navbar
-    const sheetHeight = availableHeight;
-    const totalSpacer = vh + sheetHeight - peekHeight;
+    // Sheet fills the available space below navbar
+    const sheetHeight = hostHeight;
+    if (sheetEl) sheetEl.style.height = sheetHeight + 'px';
+
+    const totalSpacer = hostHeight + sheetHeight - peekHeight;
     const maxScroll = totalSpacer;
 
     // Desired scrollTop values for each state
-    const peekScroll = Math.max(0, maxScroll - vh + peekHeight);
-    const halfScroll = Math.max(0, maxScroll - vh + halfHeight);
+    const peekScroll = Math.max(0, maxScroll - hostHeight + peekHeight);
+    const halfScroll = Math.max(0, maxScroll - hostHeight + halfHeight);
 
     snapPositions = {
         hidden: 0,
@@ -86,9 +100,6 @@ function computeSnapPositions() {
         half: halfScroll,
         full: maxScroll
     };
-
-    // Set sheet height to available space below navbar
-    if (sheetEl) sheetEl.style.height = availableHeight + 'px';
 
     // Size the spacer segments so snap markers land at the right offsetTop.
     // Layout: [spacerHead] [snap-peek] [spacerMid] [snap-half] [spacerTail] [sheet]
@@ -171,6 +182,14 @@ export function initSheet() {
 
     // Start in peek
     setSheetState('peek');
+
+    // Re-measure after layout settles (nav may not have final position during init)
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            computeSnapPositions();
+            setSheetState(currentState);
+        });
+    });
 }
 
 /* ===================================================

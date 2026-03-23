@@ -445,7 +445,7 @@
   box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.06),
               0 -1px 4px rgba(0, 0, 0, 0.02);
   contain: layout style paint;
-  height: calc(100dvh - 52px);
+  height: 100dvh; /* Overridden by JS to fit below navbar */
   overflow: hidden;
   border-radius: 16px;
   pointer-events: auto;
@@ -531,7 +531,7 @@
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  max-height: calc(100dvh - 52px - 44px);
+  max-height: calc(100% - 44px);
   padding: 0 18px max(env(safe-area-inset-bottom, 16px), 16px);
   contain: layout style;
 }
