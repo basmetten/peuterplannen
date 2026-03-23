@@ -1,7 +1,7 @@
 // PeuterPlannen Service Worker v2
 // Separated caches with strategy per resource type
 
-const SHELL_CACHE = 'pp-shell-v2';
+const SHELL_CACHE = 'pp-shell-v3';
 const FONTS_CACHE = 'pp-fonts-v1';
 const IMAGES_CACHE = 'pp-images-v1';
 const TILES_CACHE = 'pp-tiles-v1';

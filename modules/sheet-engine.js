@@ -1,7 +1,7 @@
 import { state, DESKTOP_WIDTH, TYPE_LABELS } from './state.js';
 import { escapeHtml } from './utils.js';
 import bus from './bus.js';
-import { renderCompactCard, renderSheetPreview, getPhotoData } from './templates.js';
+import { renderCompactCard, renderSheetPreview, renderSheetScanCard, getPhotoData } from './templates.js';
 
 /* ===================================================
    SCROLL-SNAP SHEET ENGINE
@@ -12,6 +12,7 @@ import { renderCompactCard, renderSheetPreview, getPhotoData } from './templates
 // --- Constants ---
 const PEEK_HEIGHT_PX = 160;
 const HALF_RATIO = 0.55;
+const NAVBAR_HEIGHT_PX = 52;
 const SCROLL_DEBOUNCE_MS = 150;
 const RESIZE_DEBOUNCE_MS = 100;
 const SUPPRESS_DETECT_MS = 400;
@@ -65,13 +66,15 @@ function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 function computeSnapPositions() {
     if (!hostEl) return;
     const vh = window.innerHeight;
+    const availableHeight = vh - NAVBAR_HEIGHT_PX;
 
     const peekHeight = PEEK_HEIGHT_PX;
-    const halfHeight = Math.round(vh * HALF_RATIO);
+    const halfHeight = Math.round(availableHeight * HALF_RATIO);
 
-    // Total spacer space before the sheet (sheet is 100dvh, so maxScroll = totalSpacer)
-    const totalSpacer = 2 * vh - peekHeight;
-    const maxScroll = totalSpacer;  // because sheet height = vh
+    // Sheet height matches available space below navbar
+    const sheetHeight = availableHeight;
+    const totalSpacer = vh + sheetHeight - peekHeight;
+    const maxScroll = totalSpacer;
 
     // Desired scrollTop values for each state
     const peekScroll = Math.max(0, maxScroll - vh + peekHeight);
@@ -84,9 +87,11 @@ function computeSnapPositions() {
         full: maxScroll
     };
 
+    // Set sheet height to available space below navbar
+    if (sheetEl) sheetEl.style.height = availableHeight + 'px';
+
     // Size the spacer segments so snap markers land at the right offsetTop.
     // Layout: [spacerHead] [snap-peek] [spacerMid] [snap-half] [spacerTail] [sheet]
-    // snap markers have height: 0, so total spacer = head + mid + tail = totalSpacer
     if (spacerHead) spacerHead.style.height = peekScroll + 'px';
     if (spacerMid)  spacerMid.style.height  = (halfScroll - peekScroll) + 'px';
     if (spacerTail) spacerTail.style.height  = (totalSpacer - halfScroll) + 'px';
@@ -272,9 +277,8 @@ export function setSheetState(newState) {
     // detectStateFromScroll with a different scrollTop under heavy CPU load.
     suppressDetect = Date.now() + SUPPRESS_DETECT_MS;
 
-    // Use instant scroll for programmatic state changes to guarantee reliability.
-    // CSS transitions on the sheet handle visual smoothness (border-radius, margin).
-    hostEl.scrollTo({ top: target, behavior: 'instant' });
+    // Smooth scroll for natural bounce-back feel; CSS transitions handle border-radius/margin.
+    hostEl.scrollTo({ top: target, behavior: 'smooth' });
     applyMorphs(target);
     announceState(newState);
 }
@@ -504,14 +508,17 @@ export function renderSheetList(locations, travelTimes = {}) {
 function _loadMoreCards() {
     const batch = _sheetLocations.slice(_renderedCount, _renderedCount + SHEET_LIST_BATCH);
     if (!batch.length) return false;
-    const html = batch.map(loc => renderCompactCard(loc, { travelTimes: _travelTimes })).join('');
+    const html = batch.map(loc => renderSheetScanCard(loc, { travelTimes: _travelTimes })).join('');
     listEl.insertAdjacentHTML('beforeend', html);
-    listEl.querySelectorAll('.compact-card:not([data-bound])').forEach(card => {
+    listEl.querySelectorAll('.sheet-scan-card:not([data-bound])').forEach(card => {
         card.dataset.bound = '1';
-        card.addEventListener('click', () => bus.emit('sheet:open', parseInt(card.dataset.id, 10)));
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.scan-fav')) return;
+            bus.emit('sheet:open', parseInt(card.dataset.id, 10));
+        });
     });
     /* Fade in card images once loaded */
-    listEl.querySelectorAll('.compact-card-img:not(.loaded)').forEach(img => {
+    listEl.querySelectorAll('.scan-photo img:not(.loaded)').forEach(img => {
         if (img.complete && img.naturalWidth > 0) img.classList.add('loaded');
         else img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
     });

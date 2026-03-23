@@ -6,9 +6,9 @@
  * to fully extract here, but they use getPhotoData() for consistency.
  */
 
-import { CATEGORY_IMAGES, TYPE_PHOTO_COLORS, TYPE_LABELS } from './state.js';
+import { state, CATEGORY_IMAGES, TYPE_PHOTO_COLORS, TYPE_LABELS } from './state.js';
 import { escapeHtml } from './utils.js';
-import { computePeuterScore } from './scoring.js';
+import { computePeuterScore, getCardDecisionSentence } from './scoring.js';
 import { getTopTags } from './tags.js';
 import { isFavorite } from './favorites.js';
 
@@ -153,4 +153,55 @@ export function renderSheetPreview(loc) {
             <button class="sheet-preview-btn sheet-preview-btn-secondary" id="sheet-preview-route"
                 onclick="window.open('https://maps.apple.com/?daddr=${loc.lat},${loc.lng}','_blank')">Route</button>
         </div>`;
+}
+
+// === Sheet scan card (used by sheet-engine.js mobile list) ===
+
+/**
+ * Renders a scan-card-style card as an HTML string for the mobile sheet list.
+ * Same visual structure as the desktop scan cards in cards.js, but returns
+ * an HTML string (not a DOM element) and is adapted for the sheet context.
+ *
+ * @param {object} loc - Location object
+ * @param {object} [opts] - Options
+ * @param {object} [opts.travelTimes] - Travel time map { id: { duration } }
+ * @returns {string} HTML string
+ */
+export function renderSheetScanCard(loc, opts = {}) {
+    const { travelTimes } = opts;
+    const { imgSrc, categoryImg, photoColor, photoSrc } = getPhotoData(loc);
+    const typeLabel = TYPE_LABELS[loc.type] || loc.type;
+    const isFav = isFavorite(loc.id);
+    const favStyle = isFav ? 'fill: #D4775A; stroke: #D4775A;' : '';
+
+    // Distance
+    const travelInfo = travelTimes ? travelTimes[loc.id] : null;
+    let distance = '';
+    if (state.userLocation && travelInfo) {
+        distance = travelInfo.duration;
+    } else if (loc.region) {
+        distance = loc.region;
+    }
+
+    // One-liner: decision sentence or toddler highlight
+    const oneLiner = getCardDecisionSentence(loc, travelInfo) || loc.toddler_highlight || '';
+
+    return `<article class="scan-card sheet-scan-card" data-id="${loc.id}" role="listitem">
+        <div class="scan-photo${!photoSrc ? ' scan-photo--category' : ''}" style="--photo-color: ${photoColor}">
+            <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async"
+                 onload="this.classList.add('loaded')"
+                 onerror="if(this.dataset.retried){this.closest('.scan-photo').classList.add('scan-photo--fallback')}else{this.dataset.retried='1';this.src='${escapeHtml(categoryImg)}'}">
+            <span class="scan-type-badge">${escapeHtml(typeLabel)}</span>
+            <button class="card-fav scan-fav" onclick="event.stopPropagation();toggleFavorite(${loc.id}, this)" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
+                <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+        </div>
+        <div class="scan-body">
+            <div class="scan-header">
+                <h2 class="scan-name">${escapeHtml(loc.name)}</h2>
+                ${distance ? `<span class="scan-distance">${escapeHtml(String(distance))}</span>` : ''}
+            </div>
+            ${oneLiner ? `<p class="scan-oneliner">${escapeHtml(oneLiner)}</p>` : ''}
+        </div>
+    </article>`;
 }

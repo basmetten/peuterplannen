@@ -837,6 +837,67 @@
             .scan-card:hover .scan-fav { background: rgba(255,255,255,0.92); }
         }
 
+        /* ── Sheet scan cards (mobile list view) ── */
+        .sheet-list .sheet-scan-card {
+          border-radius: var(--pp-radius-sm);
+          margin: 0 0 12px;
+          box-shadow: 0 1px 6px rgba(61, 46, 42, 0.06), 0 0.5px 2px rgba(61, 46, 42, 0.03);
+          overflow: hidden;
+          background: rgba(255, 252, 249, 0.95);
+        }
+        .sheet-list .sheet-scan-card:active {
+          transform: scale(0.985);
+          transition: transform 100ms ease;
+        }
+        .sheet-list .scan-photo {
+          aspect-ratio: 16 / 9;
+        }
+        .sheet-list .scan-body {
+          padding: 10px 14px 12px;
+        }
+        .sheet-list .scan-name {
+          font-size: 15px;
+          font-weight: 650;
+          white-space: normal;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .sheet-list .scan-oneliner {
+          font-size: 13px;
+          margin-top: 3px;
+          -webkit-line-clamp: 1;
+        }
+        .sheet-list .scan-type-badge {
+          font-size: 10px;
+          padding: 3px 10px;
+          bottom: 8px;
+          left: 8px;
+        }
+        .sheet-list .scan-fav {
+          width: 34px;
+          height: 34px;
+          top: 8px;
+          right: 8px;
+        }
+        .sheet-list .scan-fav svg {
+          width: 16px;
+          height: 16px;
+        }
+        .sheet-list .scan-distance {
+          font-size: 12px;
+        }
+        @media (hover: hover) {
+            .sheet-list .sheet-scan-card:hover {
+              transform: translateY(-1px);
+              box-shadow: 0 3px 12px rgba(61, 46, 42, 0.08), 0 1px 4px rgba(61, 46, 42, 0.03);
+            }
+            .sheet-list .sheet-scan-card:hover .scan-photo img.loaded {
+              transform: scale(1.03);
+            }
+        }
+
         .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
         .card-pills { display: flex; gap: 8px; flex-wrap: wrap; }
         .pill { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: var(--pp-radius-xs); font-size: var(--pp-text-xs); font-weight: 600; letter-spacing: 0.02em; }
