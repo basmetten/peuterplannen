@@ -422,9 +422,20 @@
 }
 .sheet-snap--peek,
 .sheet-snap--half {
-  height: 0;
-  scroll-snap-align: start;
+  height: 1px;
+  margin-bottom: -1px;
   pointer-events: none;
+  position: relative;
+}
+.sheet-snap--peek::before,
+.sheet-snap--half::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  scroll-snap-align: start;
 }
 .sheet-snap-spacer-tail {
   pointer-events: none;
@@ -479,33 +490,26 @@
 /* iOS WebKit fix: WebKit bug #183870
    scroll containers with pointer-events:none don't propagate touch-scroll
    from pointer-events:auto children. The overflow-x:scroll + 1px pseudo-element
-   forces WebKit to re-classify scroll propagation correctly. */
+   on inner touch targets forces WebKit to re-classify scroll propagation. */
 @supports (-webkit-touch-callout: none) {
-  .bottom-sheet {
-    overflow: clip visible;
+  .sheet-content,
+  .sheet-drag-handle,
+  .sheet-peek {
     overflow-x: scroll;
     overscroll-behavior-x: none;
     scrollbar-width: none;
     touch-action: pan-y pinch-zoom;
   }
-  .bottom-sheet::-webkit-scrollbar { display: none; }
-  .bottom-sheet::after {
+  .sheet-content::-webkit-scrollbar,
+  .sheet-drag-handle::-webkit-scrollbar,
+  .sheet-peek::-webkit-scrollbar { display: none; }
+  .sheet-content::after,
+  .sheet-drag-handle::after,
+  .sheet-peek::after {
     display: block;
     box-sizing: content-box;
-    width: calc(100% + 1px);
-    height: 1px;
-    content: "";
-  }
-  .sheet-drag-handle {
-    overflow-x: scroll;
-    overscroll-behavior-x: none;
-    scrollbar-width: none;
-    touch-action: pan-y pinch-zoom;
-  }
-  .sheet-drag-handle::-webkit-scrollbar { display: none; }
-  .sheet-drag-handle::after {
-    display: block;
-    box-sizing: content-box;
+    padding: inherit;
+    padding-left: 0;
     width: calc(100% + 1px);
     height: 1px;
     content: "";
