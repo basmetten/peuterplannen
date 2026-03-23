@@ -233,19 +233,14 @@ export function initMapListToggle() {
                 // Fly to location
                 flyToUserLocation();
 
-                // Also trigger the full data flow (search bar, distance sort, etc.)
-                if (typeof window.getCurrentLocation === 'function') {
-                    // Don't call getCurrentLocation again — it re-requests GPS.
-                    // Instead, trigger data reload + distance recalc via bus.
-                    document.getElementById('app-container')?.classList.add('has-location');
-                    document.getElementById('gps-btn')?.classList.add('gps-active');
-                    bus.emit('plan:chipupdate');
-                    bus.emit('map:userlocation');
-                    trackEvent('search', { query_type: 'gps_map_btn' });
-
-                    // Trigger location reload for distances
-                    if (typeof window.loadLocations === 'function') window.loadLocations();
-                }
+                // Trigger distance sort + data reload via bus
+                state.activeSort = 'default'; // keep distance as primary sort
+                document.getElementById('app-container')?.classList.add('has-location');
+                document.getElementById('gps-btn')?.classList.add('gps-active');
+                bus.emit('plan:chipupdate');
+                bus.emit('map:userlocation');
+                bus.emit('data:reload');
+                trackEvent('search', { query_type: 'gps_map_btn' });
             },
             (err) => {
                 gpsBtn.classList.remove('gps-loading');
