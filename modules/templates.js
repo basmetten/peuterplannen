@@ -73,9 +73,10 @@ export function renderCompactCard(loc, opts = {}) {
     const styleAttr = extraStyle ? ` style="${extraStyle}"` : '';
     const imgStyleAttr = imgStyle ? ` style="${imgStyle};background:${photoColor}"` : ` style="background:${photoColor}"`;
 
-    // Score badge
+    // Score badge with tier classes
     const ps = computePeuterScore(loc);
-    const scoreBadge = ps ? `<span class="compact-card-score">\u2605 ${ps}</span>` : '';
+    const scoreClass = ps >= 8 ? ' score-high' : ps >= 7 ? ' score-mid' : '';
+    const scoreBadge = ps ? `<span class="compact-card-score${scoreClass}">\u2605 ${ps}</span>` : '';
 
     // Facility icons
     const facilities = [];
@@ -83,15 +84,36 @@ export function renderCompactCard(loc, opts = {}) {
     if (loc.diaper) facilities.push('\ud83d\udebb');
     const facilityHtml = facilities.length ? `<span class="compact-card-facilities">${facilities.join(' ')}</span>` : '';
 
+    // Weather suitability indicator
+    const weatherHtml = loc.weather === 'indoor' ? '<span class="compact-card-indoor" title="Binnen">\ud83c\udfe0</span>'
+        : (loc.weather === 'outdoor' ? '<span class="compact-card-outdoor" title="Buiten">\ud83c\udf3f</span>' : '');
+
+    // Region in meta line (shown when distance is travel time, so region isn't already shown there)
+    const regionHtml = loc.region && travelInfo
+        ? `<span class="compact-card-region-sep">\u00b7</span>${escapeHtml(loc.region)}`
+        : '';
+
+    // Distance pill with pin icon SVG
+    const pinSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+    const distanceHtml = distance ? `<span class="compact-card-distance">${pinSvg}${escapeHtml(String(distance))}</span>` : '';
+
+    // Opening status line (only if data is available)
+    const statusHtml = loc.always_open
+        ? '<div class="compact-card-status"><span class="status-open">Altijd open</span></div>'
+        : (loc.opening_hours
+            ? `<div class="compact-card-status"><span class="status-hours">${escapeHtml(loc.opening_hours)}</span></div>`
+            : '');
+
     return `<div class="compact-card" role="listitem"${styleAttr} data-id="${loc.id}">
             <img class="compact-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async"${imgStyleAttr}
                  onerror="if(!this.dataset.retried){this.dataset.retried='1';this.classList.remove('loaded');this.onload=function(){this.classList.add('loaded')};this.src='${escapeHtml(categoryImg)}'}">
             <div class="compact-card-body">
                 <div class="compact-card-header">
                     <span class="compact-card-name">${escapeHtml(loc.name)}</span>
-                    ${distance ? `<span class="compact-card-distance">${escapeHtml(String(distance))}</span>` : ''}
+                    ${distanceHtml}
                 </div>
-                <div class="compact-card-meta">${escapeHtml(typeLabel)}${facilityHtml}</div>
+                <div class="compact-card-meta">${escapeHtml(typeLabel)}${regionHtml}${weatherHtml}${facilityHtml}</div>
+                ${statusHtml}
             </div>
             ${scoreBadge}
             <button class="compact-card-fav" onclick="event.stopPropagation();toggleFavorite(${loc.id}, this)" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan'}">

@@ -1794,6 +1794,19 @@
           gap: 8px;
         }
         html.pp-desktop .card-quickfacts { gap: 8px; }
+
+        /* Desktop scan card refinements — tighter body padding + polished hover */
+        html.pp-desktop .scan-card {
+          border-radius: var(--pp-radius-md);
+          box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04), 0 0.5px 2px rgba(0, 0, 0, 0.02);
+        }
+        html.pp-desktop .scan-body {
+          padding: 12px 14px 14px;
+        }
+        html.pp-desktop .scan-oneliner {
+          -webkit-line-clamp: 2;
+        }
+
         html.pp-desktop:has(body.plan-mode) { overflow: auto !important; height: auto !important; position: static !important; }
         html.pp-desktop body.plan-mode { overflow: auto !important; }
         html.pp-desktop body.plan-mode .app-wrapper { display: none !important; }

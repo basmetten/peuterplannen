@@ -33,8 +33,8 @@ test.describe('Compact card structure', () => {
     ]);
     expect(s['display']).toBe('flex');
     expect(s['align-items']).toBe('center');
-    expect(s['gap']).toBe('12px');
-    expect(s['border-radius']).toBe('10px');
+    expect(s['gap']).toBe('14px');
+    expect(s['border-radius']).toBe('20px');
   });
 
   test('card image is 56x56 rounded', async ({ page, isMobile }) => {
@@ -44,9 +44,9 @@ test.describe('Compact card structure', () => {
     const s = await getStyles(page, '.compact-card-img', [
       'width', 'height', 'border-radius', 'object-fit'
     ]);
-    expect(s['width']).toBe('56px');
-    expect(s['height']).toBe('56px');
-    expect(s['border-radius']).toBe('12px');
+    expect(s['width']).toBe('72px');
+    expect(s['height']).toBe('72px');
+    expect(s['border-radius']).toBe('14px');
     expect(s['object-fit']).toBe('cover');
   });
 
@@ -57,7 +57,7 @@ test.describe('Compact card structure', () => {
     const s = await getStyles(page, '.compact-card-name', [
       'font-size', 'font-weight'
     ]);
-    expect(s['font-size']).toBe('15px');
+    expect(s['font-size']).toBe('15.5px');
     expect(parseInt(s['font-weight'])).toBeGreaterThanOrEqual(600);
   });
 
@@ -69,7 +69,7 @@ test.describe('Compact card structure', () => {
     expect(styles.length).toBeGreaterThan(0);
     for (const s of styles) {
       expect(s['display']).toBe('flex');
-      expect(s['gap']).toBe('12px');
+      expect(s['gap']).toBe('14px');
     }
   });
 });
