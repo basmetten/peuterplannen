@@ -1695,7 +1695,6 @@
           stroke: rgba(92, 68, 51, 0.5);
         }
         html.pp-desktop #list-view.collapsed .panel-collapse-btn svg { transform: rotate(180deg); }
-        }
 
         /* Hide only CTA on app page — nav links stay */
         html.pp-desktop .nav-cta { display: none !important; }
@@ -2044,4 +2043,4 @@
     border-radius: var(--pp-radius-xs, 10px);
 }
 
-/* end @layer layout */
+} /* end @layer layout */

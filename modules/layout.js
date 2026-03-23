@@ -143,6 +143,7 @@ export function switchView(view) {
     const appWrapper = document.querySelector('.app-wrapper');
 
     if (view === 'plan') {
+        const wasInPlanAlready = document.body.classList.contains('plan-mode');
         document.body.classList.add('plan-mode');
         if (appWrapper) appWrapper.classList.add('hidden');
         if (planView) planView.classList.remove('hidden');
@@ -154,7 +155,7 @@ export function switchView(view) {
         if (typeof window.pushNavState === 'function') window.pushNavState('plan');
 
         // Mode transition animation
-        if (isDesktop && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !document.body.classList.contains('plan-mode')) {
+        if (isDesktop && !wasInPlanAlready && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             document.body.dataset.modeDirection = 'to-plan';
             document.body.classList.add('app-mode-animating');
             window.setTimeout(() => { document.body.classList.remove('app-mode-animating'); delete document.body.dataset.modeDirection; }, MODE_ANIMATION_DURATION_MS);
