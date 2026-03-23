@@ -498,7 +498,7 @@ test.describe('Accessibility', () => {
     // Mobile sheet search input
     await expect(page.locator('#sheet-search-input')).toHaveAttribute(
       'aria-label',
-      'Zoek een uitje of plaats'
+      'Zoek locatie of regio'
     );
   });
 });

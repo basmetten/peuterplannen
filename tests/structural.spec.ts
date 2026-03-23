@@ -18,8 +18,8 @@ test.describe('Design tokens', () => {
     await page.waitForTimeout(300);
 
     const s = await getStyles(page, '.sheet-preset.active', ['background-color']);
-    // --pp-primary = #D4775A = rgb(212, 119, 90)
-    expect(s['background-color']).toMatch(/rgb\(212,\s*119,\s*90\)/);
+    // --pp-primary-dark = --pp-primary-600 = #B35D42 = rgb(179, 93, 66) — Apple Maps dark fill style
+    expect(s['background-color']).toMatch(/rgb\(179,\s*93,\s*66\)/);
   });
 });
 

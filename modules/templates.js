@@ -75,7 +75,7 @@ export function renderCompactCard(loc, opts = {}) {
 
     // Score badge
     const ps = computePeuterScore(loc);
-    const scoreBadge = ps ? `<span class="compact-card-score">${ps}</span>` : '';
+    const scoreBadge = ps ? `<span class="compact-card-score">\u2605 ${ps}</span>` : '';
 
     // Facility icons
     const facilities = [];
