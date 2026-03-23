@@ -476,6 +476,42 @@
   padding-bottom: 0 !important;
 }
 
+/* iOS WebKit fix: WebKit bug #183870
+   scroll containers with pointer-events:none don't propagate touch-scroll
+   from pointer-events:auto children. The overflow-x:scroll + 1px pseudo-element
+   forces WebKit to re-classify scroll propagation correctly. */
+@supports (-webkit-touch-callout: none) {
+  .bottom-sheet {
+    overflow: clip visible;
+    overflow-x: scroll;
+    overscroll-behavior-x: none;
+    scrollbar-width: none;
+    touch-action: pan-y pinch-zoom;
+  }
+  .bottom-sheet::-webkit-scrollbar { display: none; }
+  .bottom-sheet::after {
+    display: block;
+    box-sizing: content-box;
+    width: calc(100% + 1px);
+    height: 1px;
+    content: "";
+  }
+  .sheet-drag-handle {
+    overflow-x: scroll;
+    overscroll-behavior-x: none;
+    scrollbar-width: none;
+    touch-action: pan-y pinch-zoom;
+  }
+  .sheet-drag-handle::-webkit-scrollbar { display: none; }
+  .sheet-drag-handle::after {
+    display: block;
+    box-sizing: content-box;
+    width: calc(100% + 1px);
+    height: 1px;
+    content: "";
+  }
+}
+
 /* Only active on mobile */
 @media (min-width: 680px) {
   .sheet-scroll-host { display: none !important; }
