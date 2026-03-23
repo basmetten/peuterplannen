@@ -1,6 +1,6 @@
 import { state, DESKTOP_WIDTH } from './state.js';
 import { closeLocSheet, closeInfoPanel, openInfoPanel } from './sheet.js';
-import { setDisplayMode, fitMapToMarkers } from './map.js';
+import { setDisplayMode, fitMapToMarkers, updateUserLocationOnMap } from './map.js';
 import { updateFilterCount, updateMapPillBadge } from './filters.js';
 import { trackEvent } from './utils.js';
 import bus from './bus.js';
@@ -180,13 +180,119 @@ export function switchView(view) {
     bus.emit('hash:update', '');
 }
 
-// === GPS button ===
+// === GPS button — Apple Maps style fly-to + location tracking ===
+
+const GPS_FLY_ZOOM = 14;
+const GPS_FLY_DURATION = 1500;
+const GPS_TIMEOUT_MS = 10000;
+const GPS_MAX_AGE_MS = 60000;
+const GPS_ERROR_TOAST_MS = 3000;
 
 export function initMapListToggle() {
     const gpsBtn = document.getElementById('map-gps-btn');
-    if (gpsBtn) gpsBtn.addEventListener('click', () => {
-        if (typeof getCurrentLocation === 'function') getCurrentLocation();
+    if (!gpsBtn) return;
+
+    gpsBtn.addEventListener('click', () => {
+        // If already have location, just fly there
+        if (state.userLocation && gpsBtn.classList.contains('gps-active')) {
+            flyToUserLocation();
+            // Subtle tap feedback
+            gpsBtn.style.transform = 'scale(0.85)';
+            setTimeout(() => { gpsBtn.style.transform = ''; }, 150);
+            return;
+        }
+
+        // Start loading state
+        gpsBtn.classList.remove('gps-active');
+        gpsBtn.classList.add('gps-loading');
+
+        if (!navigator.geolocation) {
+            showGpsToast('GPS niet beschikbaar');
+            gpsBtn.classList.remove('gps-loading');
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                // Set user location in state
+                state.userLocation = {
+                    lat, lng,
+                    name: state.userLocation?.name || 'Mijn locatie'
+                };
+
+                // Update state classes
+                gpsBtn.classList.remove('gps-loading');
+                gpsBtn.classList.add('gps-active');
+
+                // Show blue user dot on map
+                updateUserLocationOnMap();
+
+                // Fly to location
+                flyToUserLocation();
+
+                // Also trigger the full data flow (search bar, distance sort, etc.)
+                if (typeof window.getCurrentLocation === 'function') {
+                    // Don't call getCurrentLocation again — it re-requests GPS.
+                    // Instead, trigger data reload + distance recalc via bus.
+                    document.getElementById('app-container')?.classList.add('has-location');
+                    document.getElementById('gps-btn')?.classList.add('gps-active');
+                    bus.emit('plan:chipupdate');
+                    bus.emit('map:userlocation');
+                    trackEvent('search', { query_type: 'gps_map_btn' });
+
+                    // Trigger location reload for distances
+                    if (typeof window.loadLocations === 'function') window.loadLocations();
+                }
+            },
+            (err) => {
+                gpsBtn.classList.remove('gps-loading');
+                let msg = 'Locatie niet beschikbaar';
+                if (err.code === 1) msg = 'Toestemming geweigerd';
+                if (err.code === 2) msg = 'Locatie niet gevonden';
+                if (err.code === 3) msg = 'Timeout';
+                showGpsToast(msg);
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: GPS_TIMEOUT_MS,
+                maximumAge: GPS_MAX_AGE_MS
+            }
+        );
     });
+}
+
+function flyToUserLocation() {
+    if (!state.mapInstance || !state.userLocation) return;
+    state.mapInstance.flyTo({
+        center: [state.userLocation.lng, state.userLocation.lat],
+        zoom: GPS_FLY_ZOOM,
+        duration: GPS_FLY_DURATION,
+        essential: true
+    });
+}
+
+function showGpsToast(message) {
+    // Reuse existing toast if available, otherwise create one
+    let toast = document.getElementById('gps-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'gps-toast';
+        toast.setAttribute('role', 'status');
+        toast.setAttribute('aria-live', 'polite');
+        toast.style.cssText = 'position:fixed;top:calc(60px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%) translateY(-10px);background:rgba(0,0,0,0.78);color:#fff;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;z-index:10000;backdrop-filter:blur(12px);opacity:0;transition:opacity 250ms ease,transform 250ms ease;pointer-events:none;white-space:nowrap;';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(-10px)';
+    }, GPS_ERROR_TOAST_MS);
 }
 
 // === Panel collapse (desktop) ===
@@ -209,6 +315,18 @@ export function initPanelCollapse() {
         if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), PANEL_COLLAPSE_RESIZE_MS);
     });
 }
+
+// Sync map GPS button when user location changes from any source
+bus.on('map:userlocation', () => {
+    const mapGpsBtn = document.getElementById('map-gps-btn');
+    if (!mapGpsBtn) return;
+    mapGpsBtn.classList.remove('gps-loading');
+    if (state.userLocation) {
+        mapGpsBtn.classList.add('gps-active');
+    } else {
+        mapGpsBtn.classList.remove('gps-active');
+    }
+});
 
 // Bus listeners
 bus.on('view:switch', switchView);
