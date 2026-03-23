@@ -409,7 +409,6 @@
   z-index: 1000;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
   overscroll-behavior-y: contain;
   pointer-events: none;
   scrollbar-width: none;
