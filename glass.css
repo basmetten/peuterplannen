@@ -1898,7 +1898,7 @@
     position: relative;
     max-height: 80px;
     overflow: hidden;
-    transition: max-height 420ms cubic-bezier(0.34, 1.2, 0.64, 1);
+    transition: max-height 480ms cubic-bezier(0.34, 1.2, 0.64, 1);
     margin-top: 4px;
   }
   .filter-more-container.expanded {
@@ -1913,12 +1913,13 @@
     background: linear-gradient(
       to bottom,
       transparent 0%,
-      transparent 15%,
-      rgba(255, 252, 249, 0.97) 70%
+      transparent 12%,
+      rgba(255, 252, 249, 0.92) 55%,
+      rgba(255, 252, 249, 0.97) 100%
     );
     pointer-events: none;
     opacity: 1;
-    transition: opacity 300ms ease-out;
+    transition: opacity 350ms ease-out;
     z-index: 2;
   }
   .filter-more-container.expanded .filter-more-veil {
@@ -1926,53 +1927,93 @@
     pointer-events: none;
   }
 
-  /* Floating pill toggle */
+  /* Floating pill toggle — polished with icon + subtle entrance animation */
+  @keyframes pill-float-in {
+    from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
   .filter-more-pill {
     position: absolute;
-    bottom: 4px;
+    bottom: 6px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 3;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 18px;
-    border-radius: 20px;
-    border: 1.5px solid rgba(var(--pp-primary-rgb), 0.18);
-    background: rgba(255, 252, 249, 0.92);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    padding: 9px 20px 9px 16px;
+    border-radius: 100px;
+    border: 1.5px solid rgba(var(--pp-primary-rgb), 0.20);
+    background: rgba(255, 252, 249, 0.94);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 650;
+    letter-spacing: 0.01em;
     color: var(--pp-primary);
     cursor: pointer;
     white-space: nowrap;
-    box-shadow: 0 2px 10px rgba(212, 119, 86, 0.10);
-    transition: transform 300ms cubic-bezier(0.34, 1.2, 0.64, 1),
+    box-shadow: 0 2px 12px rgba(212, 119, 86, 0.12), 0 0 0 0 rgba(212, 119, 86, 0);
+    transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1),
                 opacity 300ms ease-out,
-                background 200ms ease-out;
+                background 200ms ease-out,
+                box-shadow 250ms ease-out;
     -webkit-tap-highlight-color: transparent;
     font-family: inherit;
+    animation: pill-float-in 400ms cubic-bezier(0.34, 1.2, 0.64, 1) both;
+    animation-delay: 200ms;
+  }
+  .filter-more-pill svg {
+    width: 14px; height: 14px; flex-shrink: 0;
+    stroke: var(--pp-primary); fill: none;
+    stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+    transition: transform 200ms ease-out;
+  }
+  .filter-more-pill:hover {
+    box-shadow: 0 3px 14px rgba(212, 119, 86, 0.18), 0 0 0 3px rgba(212, 119, 86, 0.06);
+    background: rgba(255, 252, 249, 1);
   }
   .filter-more-pill:active {
-    transform: translateX(-50%) scale(0.95);
-    background: rgba(var(--pp-primary-rgb), 0.08);
+    transform: translateX(-50%) scale(0.93);
+    background: rgba(var(--pp-primary-rgb), 0.06);
+  }
+  .filter-more-pill:active svg {
+    transform: translateY(1px);
   }
   .filter-more-container.expanded .filter-more-pill {
     opacity: 0;
-    transform: translateX(-50%) translateY(8px);
+    transform: translateX(-50%) translateY(10px) scale(0.95);
     pointer-events: none;
   }
   .filter-more-pill-count {
-    opacity: 0.55;
-    font-weight: 500;
+    opacity: 0.50;
+    font-weight: 550;
+    font-size: 12px;
   }
 
-  /* "Minder" collapse link — appears after expand */
+  /* Staggered group reveal animation */
+  @keyframes filter-group-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .filter-more-content .filter-modal-group {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  .filter-more-container.expanded .filter-more-content .filter-modal-group {
+    animation: filter-group-in 350ms cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+  }
+  .filter-more-container.expanded .filter-more-content .filter-modal-group:nth-child(1) { animation-delay: 60ms; }
+  .filter-more-container.expanded .filter-more-content .filter-modal-group:nth-child(2) { animation-delay: 120ms; }
+  .filter-more-container.expanded .filter-more-content .filter-modal-group:nth-child(3) { animation-delay: 180ms; }
+  .filter-more-container.expanded .filter-more-content .filter-modal-group:nth-child(4) { animation-delay: 240ms; }
+  .filter-more-container.expanded .filter-more-content .filter-modal-group:nth-child(5) { animation-delay: 300ms; }
+
+  /* "Minder opties" collapse link — fades in after groups */
   .filter-more-collapse {
-    display: none;
+    display: block;
     width: 100%;
-    padding: 10px 0 4px;
+    padding: 12px 0 4px;
     background: none;
     border: none;
     font-size: 12px;
@@ -1983,10 +2024,18 @@
     text-align: center;
     letter-spacing: 0.02em;
     -webkit-tap-highlight-color: transparent;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 250ms ease-out, transform 250ms ease-out, color 200ms ease-out;
+    pointer-events: none;
   }
   .filter-more-container.expanded .filter-more-collapse {
-    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    transition-delay: 360ms;
   }
+  .filter-more-collapse:hover { color: var(--pp-primary-dark, #b5614a); }
 
   /* Footer with reset + apply */
   .filter-modal-footer {
