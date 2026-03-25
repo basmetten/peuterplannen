@@ -2031,9 +2031,9 @@
   }
   body.pp-app .nav-count { display: block; }
 
-  /* Adjust map-controls to clear floating nav + search cluster */
+  /* Adjust map-controls to clear floating nav */
   .map-controls {
-    top: calc(128px + env(safe-area-inset-top, 0px)) !important;
+    top: calc(80px + env(safe-area-inset-top, 0px)) !important;
   }
 }
 

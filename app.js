@@ -297,11 +297,10 @@ function clearAllPrefs() {
 }
 window.clearAllPrefs = clearAllPrefs;
 
-// Keyboard accessibility for map search cluster
-document.getElementById('map-search-cluster')?.addEventListener('keydown', (e) => {
+// Keyboard accessibility for sheet filter button
+document.getElementById('sheet-filter-btn')?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        if (e.target.closest('.map-filter-btn')) openMapFilterModal();
-        else openMapFilters();
+        openMapFilterModal();
     }
 });

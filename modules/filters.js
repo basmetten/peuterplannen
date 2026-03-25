@@ -89,8 +89,8 @@ export function syncFilterPanelForViewport() {
  * @returns {void}
  */
 export function updateMapFilterBadge() {
-    const badge = document.getElementById('map-filter-badge');
-    const btn = document.getElementById('map-filter-btn');
+    const badge = document.getElementById('sheet-filter-badge');
+    const btn = document.getElementById('sheet-filter-btn');
     if (!badge || !btn) return;
     let count = 0;
     if (state.activeWeather) count++;
