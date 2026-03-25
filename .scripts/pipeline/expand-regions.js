@@ -460,7 +460,7 @@ Score 1-5:
 Reply with ONLY the number (1-5), nothing else.`;
 
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -520,7 +520,7 @@ Schrijf warm en informatief. Focus op wat het leuk maakt voor jonge kinderen. Ge
 
   try {
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -827,6 +827,11 @@ async function main() {
   for (let i = 0; i < validatedLocations.length; i++) {
     validatedLocations[i] = deriveContextFields(validatedLocations[i]);
   }
+
+  // ─── SAVE ENRICHED DATA (so inserts can be retried without re-running phases 1-7) ───
+  const ENRICHED_FILE = path.join(OUTPUT_DIR, 'expand-regions-enriched.json');
+  fs.writeFileSync(ENRICHED_FILE, JSON.stringify(validatedLocations, null, 2));
+  log('info', `Saved ${validatedLocations.length} enriched locations to ${ENRICHED_FILE}`);
 
   // ─── PHASE 8: INSERT INTO DATABASE ───
   log('info', `─── Phase 8: Database Insert (${validatedLocations.length} locations) ───`);

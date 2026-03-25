@@ -362,7 +362,7 @@ async function scrapeWebsiteForSignals(website) {
 // ─── Gemini Flash normalization ─────────────────────────────────────
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-3-flash-preview';
 let _geminiFailCount = 0;
 
 async function normalizeWithGemini(loc, webSignals, googleDetails) {
