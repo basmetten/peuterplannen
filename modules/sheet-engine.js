@@ -1263,9 +1263,18 @@ bus.on('gps:error', ({ type, message }) => {
         <button class="gps-toast-close" aria-label="Sluiten">\u2715</button>
     `;
 
-    // Wire up action buttons (no inline onclick)
+    // Wire up action buttons — focus the CITY input (not the location name search)
     toast.querySelector('.gps-toast-action')?.addEventListener('click', () => {
-        document.getElementById('sheet-search-input')?.focus();
+        toast.remove();
+        // Focus the city/location input which triggers geocoding
+        const cityInput = document.getElementById('location-input');
+        if (cityInput) {
+            cityInput.focus();
+            cityInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        // Show popular cities as fallback options
+        const popular = document.getElementById('popular-cities');
+        if (popular) popular.classList.remove('hidden');
     });
     toast.querySelector('.gps-toast-close')?.addEventListener('click', () => {
         toast.remove();
