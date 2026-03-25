@@ -102,7 +102,7 @@ Per screenshot, check ZELF en via Gemini Flash:
 
 Gemini Flash check:
 ```bash
-curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$GEMINI_API_KEY" \
+curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=$GEMINI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"contents":[{"parts":[{"text":"Analyze this UI screenshot of a Dutch toddler activities app. Check for: layout issues, overflow, clipping, spacing problems, broken elements, text readability, touch target sizes, visual consistency. List any issues found."},{"inlineData":{"mimeType":"image/png","data":"'"$(base64 -i qa-desktop-full.png)"'"}}]}]}'
 ```

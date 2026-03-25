@@ -95,7 +95,7 @@ npm test
 ### Rule 6: Gemini second opinion
 For ambiguous visual issues, get a Gemini Flash second opinion:
 ```bash
-curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$GEMINI_API_KEY" \
+curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=$GEMINI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"contents":[{"parts":[{"text":"Analyze this screenshot for visual bugs: layout issues, overflow, clipping, spacing problems, broken elements. Be specific."},{"inlineData":{"mimeType":"image/png","data":"'"$(base64 -i screenshot.png)"'"}}]}]}'
 ```

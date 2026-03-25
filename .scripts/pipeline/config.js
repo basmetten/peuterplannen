@@ -3,6 +3,12 @@ const crypto = require('crypto');
 const DEFAULT_MODEL = 'claude-haiku-4-5-20251001';
 const SCORING_PROMPT_VERSION = 'v1';
 
+// Gemini models — single source of truth. Override via env vars if needed.
+const GEMINI_MODELS = {
+  vision: process.env.GEMINI_MODEL_VISION || 'gemini-3-flash-preview',
+  image: process.env.GEMINI_MODEL_IMAGE || 'gemini-3.1-flash-image-preview',
+};
+
 const REGIONS = {
   'Utrecht':             { osmName: 'Utrecht', adminLevel: 8 },
   'Amsterdam':           { osmName: 'Amsterdam', adminLevel: 8 },
@@ -354,6 +360,7 @@ async function mapLimit(items, limit, task) {
 
 module.exports = {
   DEFAULT_MODEL,
+  GEMINI_MODELS,
   SCORING_PROMPT_VERSION,
   REGIONS,
   KID_KEYWORDS,
