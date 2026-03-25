@@ -1,0 +1,2811 @@
+@layer components {
+
+/* PeuterPlannen — Liquid Glass Design Tokens
+   Warm glass UI over map. Apple Maps as reference, but warmer. */
+
+:root {
+  --pp-cream:        #FFF8E1;
+  --pp-terracotta:   #D47756;
+  --pp-brown-dark:   #5C4433;
+  --pp-brown-muted:  #8B7355;
+  --pp-white-soft:   rgba(255, 255, 255, 0.4);
+  --pp-shadow-warm:  rgba(212, 119, 86, 0.12);
+
+  --glass-bg:        rgba(250, 247, 242, 0.78);
+  --glass-blur:      8px;
+  /* --glass-border removed: no-border design direction */
+  --glass-shadow:    0 4px 16px var(--pp-shadow-warm);
+
+  --spring-curve:    cubic-bezier(0.32, 0.72, 0, 1);
+  --snap-duration:   300ms;
+}
+
+/* Photo fallback: color placeholder + fade-in */
+.photo-container {
+  position: relative;
+  overflow: hidden;
+  background: var(--photo-color, #E8D5C4);
+}
+.photo-container img {
+  opacity: 0;
+  transition: opacity var(--wg-duration-snap) var(--wg-ease-standard),
+              filter 0.3s ease,
+              transform 0.3s ease;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(8px);
+  transform: scale(1.02); /* prevent blur edge artifacts */
+}
+.photo-container img.loaded {
+  opacity: 1;
+  filter: none;
+  transform: scale(1);
+}
+.photo-container .photo-fallback-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(92, 68, 51, 0.3);
+  font-size: 2rem;
+  pointer-events: none;
+}
+
+/* Sheet hero photo — glass-framed image */
+.sheet-hero-photo {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 200px;
+  max-height: 260px;
+  border-radius: var(--wg-radius-card, 12px);
+  overflow: hidden;
+  margin-bottom: 16px;
+  background: var(--photo-color, #E8D5C4);
+  box-shadow: 0 2px 12px rgba(80, 50, 30, 0.10),
+              inset 0 0 0 0.5px rgba(255, 255, 255, 0.3);
+  position: relative;
+}
+.sheet-hero-photo::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(45, 41, 38, 0.18) 0%, transparent 100%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+.sheet-hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--wg-duration-snap, 300ms) var(--wg-ease-standard, ease);
+}
+.sheet-hero-photo img.loaded {
+  opacity: 1;
+}
+/* Category image fallback — styled silhouette */
+.sheet-hero--category {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg,
+    var(--photo-color, #E8D5C4) 0%,
+    rgba(212, 119, 86, 0.12) 100%);
+}
+.sheet-hero--category img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  opacity: 0.35;
+  filter: sepia(0.2);
+}
+.sheet-hero--category img.loaded {
+  opacity: 0.35;
+}
+.sheet-hero--fallback {
+  background: linear-gradient(135deg, var(--photo-color, #E8D5C4) 0%, rgba(92, 68, 51, 0.08) 100%);
+}
+.sheet-hero--fallback img { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+.weather-badge--rain {
+  background: rgba(76, 175, 80, 0.12);
+  color: #2E7D32;
+}
+
+.weather-badge--sun {
+  background: rgba(255, 193, 7, 0.1);
+  color: #F57F17;
+}
+
+/* Sterke punten — warm highlight card with glass treatment */
+.sterke-punten {
+  background: linear-gradient(135deg,
+    rgba(74, 122, 74, 0.06) 0%,
+    rgba(107, 149, 144, 0.08) 100%);
+  border-radius: var(--wg-radius-card, 12px);
+  padding: 12px 16px;
+  margin: 12px 0;
+  box-shadow: 0 1px 4px rgba(74, 122, 74, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+.sterke-punten::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, #4A7A4A, #6B9590);
+  border-radius: 3px 0 0 3px;
+}
+
+.sterke-punten h3 {
+  font-family: var(--pp-font-heading);
+  font-size: var(--pp-text-sm);
+  font-weight: 650;
+  color: #3A5D3A;
+  margin: 0 0 8px;
+  padding-left: 2px;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.sterke-punten ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sterke-punten li {
+  font-size: var(--pp-text-xs);
+  color: #3D5E3D;
+  padding: 4px 0;
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+/* Score breakdown - "Waarom deze score?" */
+.score-breakdown {
+  margin: 8px 0;
+  background: rgba(255, 252, 249, 0.65);
+  border-radius: var(--wg-radius-card, 12px);
+  overflow: hidden;
+}
+.score-breakdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  font-size: var(--pp-text-xs);
+  font-weight: 600;
+  color: var(--wg-text-body);
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  transition: background var(--wg-duration-fast, 100ms);
+}
+.score-breakdown-toggle:active {
+  background: rgba(212, 119, 86, 0.04);
+}
+.score-breakdown-toggle svg {
+  width: 14px; height: 14px;
+  stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  transition: transform var(--wg-duration-ui, 200ms) var(--wg-ease-smooth, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.score-breakdown.open .score-breakdown-toggle svg {
+  transform: rotate(180deg);
+}
+.score-breakdown-bars {
+  display: none;
+  padding: 8px 16px 12px;
+}
+.score-breakdown.open .score-breakdown-bars {
+  display: block;
+}
+.score-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+.score-bar-label {
+  width: 100px;
+  font-size: var(--pp-text-xs);
+  font-weight: 600;
+  color: var(--wg-text-muted);
+  flex-shrink: 0;
+}
+.score-bar-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(212, 119, 86, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.score-bar-value {
+  width: 32px;
+  font-size: var(--pp-text-xs);
+  font-weight: 700;
+  color: var(--wg-text-primary);
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   Scroll-Snap Sheet Host
+   ============================================ */
+.sheet-scroll-host {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: none;
+  pointer-events: none;
+  scrollbar-width: none;
+  touch-action: pan-y;
+}
+.sheet-scroll-host::-webkit-scrollbar { display: none; }
+
+.sheet-snap-spacer {
+  pointer-events: none;
+  /* Height set by JS to position snap markers correctly */
+}
+.sheet-snap--peek,
+.sheet-snap--half {
+  height: 1px;
+  margin-bottom: -1px;
+  pointer-events: none;
+  position: relative;
+}
+.sheet-snap--peek::before,
+.sheet-snap--half::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  scroll-snap-align: start;
+}
+.sheet-snap-spacer-tail {
+  pointer-events: none;
+  /* Height set by JS — fills gap between last snap marker and the sheet */
+}
+
+/* ============================================
+   Bottom Sheet — 4-state mobile browse sheet
+   ============================================ */
+.bottom-sheet {
+  position: relative;
+  z-index: auto;
+  /* Apple Maps pattern: solid background, no glass on sheet */
+  background: var(--wg-surface-warm, #FFFCF9);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.024);
+  contain: layout style paint;
+  height: 100dvh; /* Overridden by JS to fit below navbar */
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+  pointer-events: auto;
+  scroll-snap-align: start;
+  margin: 0 8px;
+  transition: border-radius 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              margin 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* State-driven geometry (replaces per-frame JS animation) */
+.bottom-sheet[data-state="half"] {
+  border-radius: 12px 12px 8px 8px;
+  margin: 0 4px;
+}
+.bottom-sheet[data-state="full"] {
+  border-radius: 0;
+  margin: 0;
+}
+
+/* Morph hidden — class-based collapse (replaces 7 inline style writes per element) */
+.morph-hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+
+/* Only active on mobile */
+@media (min-width: 680px) {
+  .sheet-scroll-host { display: none !important; }
+  .bottom-sheet { display: none !important; }
+  .sheet-overlay { display: none !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet-scroll-host { scroll-behavior: auto; }
+  .bottom-sheet { transition: none; }
+}
+
+/* State positioning & child visibility is now JS-driven (sheet-engine.js morphs).
+   data-state attribute is still set for external code that reads it. */
+
+/* Peek state: lighter shadow than half/full */
+.bottom-sheet[data-state="peek"] {
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.04);
+}
+
+/* Drag handle — Apple Maps style: visible grab indicator */
+.sheet-drag-handle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0 6px;
+  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
+}
+.sheet-handle-bar {
+  width: 36px;
+  height: 5px;
+  border-radius: 2.5px;
+  background: rgba(140, 110, 100, 0.28);
+  transition: transform 0.45s var(--wg-ease-spring),
+              width 0.45s var(--wg-ease-spring),
+              background var(--wg-duration-fast) var(--wg-ease-standard);
+}
+.sheet-drag-handle:active .sheet-handle-bar,
+.sheet-handle-bar.dragging {
+  width: 42px;
+  background: rgba(140, 110, 100, 0.5);
+  transform: scaleY(1.3);
+}
+
+/* Sheet content */
+.sheet-content {
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  max-height: calc(100% - 44px);
+  padding: 0 18px max(env(safe-area-inset-bottom, 16px), 16px);
+  contain: layout style;
+}
+.sheet-content::-webkit-scrollbar { display: none; }
+
+/* Safari touch fixes */
+.sheet-drag-handle,
+.sheet-search-pill,
+.compact-card {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Peek section */
+.sheet-peek {
+  padding-bottom: 2px;
+}
+
+/* Preset chips — glass pills, horizontal scroll in peek */
+.sheet-presets {
+  display: flex;
+  gap: 8px;
+  padding: 8px 0 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x pan-y;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 16px;
+  mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 28px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 28px), transparent);
+}
+.sheet-presets::-webkit-scrollbar { display: none; }
+.sheet-preset {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  padding: 8px 18px;
+  min-height: 40px;
+  border: 1px solid rgba(140, 110, 100, 0.12);
+  border-radius: var(--pp-radius-pill, 100px);
+  background: rgba(255, 252, 249, 0.9);
+  font-size: var(--pp-text-xs);
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--pp-text-secondary, var(--wg-text-body));
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 200ms ease,
+              color 200ms ease,
+              transform var(--wg-duration-fast) var(--wg-ease-spring),
+              box-shadow 200ms ease,
+              border-color 200ms ease;
+}
+.sheet-preset:active {
+  background: rgba(255, 255, 255, 0.95);
+  transform: scale(0.95);
+  transition: transform 80ms var(--wg-ease-spring);
+}
+@media (hover: hover) {
+  .sheet-preset:hover {
+    border-color: rgba(140, 110, 100, 0.25);
+    box-shadow: 0 2px 8px rgba(92, 68, 51, 0.08);
+    transform: translateY(-1px);
+  }
+}
+.sheet-preset.active {
+  background: var(--pp-primary-dark, #5C4433);
+  border-color: transparent;
+  color: var(--pp-text-inverse, white);
+  box-shadow: 0 2px 10px rgba(92, 68, 51, 0.25);
+  font-weight: 600;
+  animation: chip-activate 250ms var(--wg-ease-spring);
+}
+/* Checkmark scales in when preset activates */
+.sheet-preset.active::before {
+  content: '\2713';
+  display: inline-block;
+  margin-right: 4px;
+  font-size: 0.85em;
+  animation: check-pop 300ms var(--wg-ease-bounce);
+}
+.sheet-search-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(255, 250, 244, 0.92);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(212, 119, 86, 0.04),
+              0 2px 8px rgba(212, 119, 86, 0.025);
+  font-size: var(--pp-text-base);
+  font-weight: 450;
+  letter-spacing: -0.01em;
+  color: var(--pp-text-muted);
+  cursor: pointer;
+  transition: background var(--wg-duration-ui) var(--wg-ease-standard),
+              box-shadow var(--wg-duration-ui) var(--wg-ease-standard),
+              transform var(--wg-duration-fast) var(--wg-ease-standard);
+}
+.sheet-search-pill:active {
+  background: rgba(255, 250, 244, 1);
+  box-shadow: 0 1px 3px rgba(212, 119, 86, 0.05),
+              0 4px 12px rgba(212, 119, 86, 0.04);
+  transform: scale(0.985);
+}
+/* Search area wrapper — relative for suggestions dropdown */
+.sheet-search-area {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Search pill → expanded search bar transition */
+.bottom-sheet .sheet-search-pill {
+  transition: background var(--wg-duration-snap) var(--wg-ease-smooth), border-radius var(--wg-duration-snap) var(--wg-ease-smooth), box-shadow var(--wg-duration-snap) var(--wg-ease-smooth), transform var(--wg-duration-fast) var(--wg-ease-standard);
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.bottom-sheet.search-active .sheet-search-pill {
+  border-radius: var(--wg-radius-card);
+  background: var(--wg-surface);
+  box-shadow: 0 2px 8px rgba(212, 119, 86, 0.08), 0 2px 16px rgba(212, 119, 86, 0.05);
+}
+
+/* Hidden search input inside the pill */
+.sheet-search-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  padding: 0 16px 0 40px;
+  font-size: var(--pp-text-sm);
+  color: var(--wg-text-primary);
+  outline: none;
+  opacity: 0;
+  pointer-events: none;
+  font-family: inherit;
+}
+.bottom-sheet.search-active .sheet-search-input {
+  opacity: 1;
+  pointer-events: auto;
+}
+.bottom-sheet.search-active .sheet-search-pill .pill-text {
+  opacity: 0;
+  transition: opacity var(--wg-duration-fast);
+}
+
+/* Cancel button — slides in from right when search active */
+.sheet-search-cancel {
+  margin-left: 8px;
+  padding: 8px 12px;
+  font-size: var(--pp-text-sm);
+  font-weight: 500;
+  color: var(--wg-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+  opacity: 0;
+  transform: translateX(20px);
+  pointer-events: none;
+  transition: opacity 200ms cubic-bezier(0.32, 0.72, 0, 1) 50ms,
+              transform 250ms cubic-bezier(0.32, 0.72, 0, 1) 50ms;
+}
+.bottom-sheet.search-active .sheet-search-cancel {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+/* Hide presets when search is expanded — filter chips take over */
+.bottom-sheet.search-active .sheet-presets {
+  display: none;
+}
+
+/* Category chips — always visible (progressive disclosure: part of peek) */
+.sheet-filter-chips {
+  opacity: 1;
+  transform: none;
+  transition: opacity 200ms ease;
+}
+/* Filters chip button styling */
+.sheet-preset-filters {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(212, 119, 90, 0.08);
+  border-color: rgba(212, 119, 90, 0.18);
+  color: var(--pp-primary, #D4775A);
+  font-weight: 600;
+}
+.sheet-preset-filters svg {
+  flex-shrink: 0;
+}
+.sheet-preset-filters:active {
+  background: rgba(212, 119, 90, 0.15);
+}
+
+/* Search suggestions dropdown */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: rgba(255, 252, 249, 0.92);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border-radius: var(--wg-radius-card);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+  overflow: hidden;
+  z-index: 10;
+  opacity: 0;
+  transform: translateY(-4px) scale(0.98);
+  animation: dropdown-in 200ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+@keyframes dropdown-in {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.search-suggestion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 80ms ease, transform 200ms cubic-bezier(0.32, 0.72, 0, 1);
+  border-bottom: 0.5px solid rgba(140, 110, 100, 0.06);
+  -webkit-tap-highlight-color: transparent;
+}
+.search-suggestion:last-child {
+  border-bottom: none;
+}
+.search-suggestion:active {
+  background: rgba(212, 119, 86, 0.04);
+  transform: scale(0.99);
+}
+.suggestion-icon {
+  font-size: 18px;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+.suggestion-name {
+  font-size: var(--pp-text-sm);
+  font-weight: 500;
+  color: var(--wg-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.suggestion-meta {
+  font-size: var(--pp-text-xs);
+  color: var(--wg-text-muted);
+  margin-left: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.sheet-search-pill svg {
+  width: 16px; height: 16px;
+  stroke: rgba(160, 130, 120, 0.50);
+  fill: none; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
+}
+.sheet-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 20px 2px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(140, 110, 100, 0.6);
+  letter-spacing: 0.02em;
+}
+
+/* Result context line */
+.sheet-count {
+  font-size: var(--pp-text-sm, 0.8125rem);
+  font-weight: 550;
+  color: var(--pp-text-secondary, #8C6E64);
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+/* Sheet list - compact cards (visibility controlled by JS morphs) */
+.sheet-list {
+  display: block;
+  padding-top: 2px;
+  contain: layout;
+  touch-action: pan-y;
+}
+.sheet-list-sentinel {
+  height: 1px;
+}
+
+/* Sheet scan card refinements */
+.sheet-scan-card {
+  animation: cardSlideIn 300ms cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+.sheet-scan-card .scan-body {
+  padding: 10px 14px 12px;
+}
+
+.sheet-scan-card .scan-meta {
+  font-size: 12px;
+  color: var(--pp-text-muted, #B8A09C);
+  font-weight: 450;
+  margin-top: 1px;
+}
+
+.sheet-scan-card .scan-oneliner {
+  font-size: 12.5px;
+  color: var(--pp-text-secondary, #8C6E64);
+  font-style: italic;
+  font-family: var(--pp-font-accent, 'Instrument Serif', Georgia, serif);
+  margin-top: 4px;
+  line-height: 1.35;
+}
+
+/* Kenmerken tags on scan cards */
+.scan-kenmerken {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.scan-kenmerk {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 100px;
+  background: rgba(212, 119, 86, 0.07);
+  color: var(--pp-text-secondary, #8C6E64);
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+/* Compact card for sheet list */
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.compact-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: var(--pp-radius-md, 14px);
+  margin: 0;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 96px;
+  contain: layout style;
+  position: relative;
+  opacity: 0;
+  animation: cardFadeIn 350ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  background: transparent;
+  transition: background 180ms ease, box-shadow 180ms ease;
+}
+@media (hover: hover) {
+  .compact-card:hover {
+    background: rgba(var(--pp-primary-rgb), 0.035);
+  }
+}
+.compact-card:active {
+  background: rgba(var(--pp-primary-rgb), 0.06);
+  transform: scale(0.985);
+  transition: transform 80ms ease, background 80ms ease;
+}
+/* Divider: hairline inset past the image */
+.compact-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 100px;
+  right: 14px;
+  height: 0.5px;
+  background: rgba(140, 110, 100, 0.08);
+}
+.compact-card:last-child::after {
+  display: none;
+}
+
+/* --- Image: larger, warmer, more depth --- */
+.compact-card-img {
+  width: 72px; height: 72px;
+  border-radius: 14px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--pp-primary-50, #FDF1ED);
+  box-shadow:
+    inset 0 0 0 0.5px rgba(0, 0, 0, 0.06),
+    0 1px 4px rgba(61, 46, 42, 0.08),
+    0 0 0 0.5px rgba(61, 46, 42, 0.03);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  image-rendering: auto;
+  content-visibility: auto;
+}
+.compact-card-img.loaded {
+  opacity: 1;
+}
+
+/* --- Body --- */
+.compact-card-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+}
+.compact-card-header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.compact-card-name {
+  font-family: var(--pp-font-ui);
+  font-size: 15.5px;
+  font-weight: 650;
+  color: var(--pp-text, #3D2E2A);
+  line-height: 1.3;
+  min-width: 0;
+  letter-spacing: -0.02em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* --- Distance: subtle pill tag --- */
+.compact-card-distance {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--pp-text-muted, #8C7A72);
+  white-space: nowrap;
+  background: rgba(140, 110, 100, 0.06);
+  padding: 1px 7px;
+  border-radius: 20px;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+}
+
+/* --- Meta line (category + amenities) --- */
+.compact-card-meta {
+  font-size: var(--pp-text-xs, 0.8125rem);
+  line-height: 1.45;
+  color: var(--pp-text-tertiary, #A8968E);
+  font-family: var(--pp-font-accent);
+  font-style: italic;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Favorite button --- */
+.compact-card-fav {
+  flex-shrink: 0;
+  align-self: center;
+  width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none; cursor: pointer;
+  border-radius: 50%;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 150ms ease, transform 150ms ease;
+}
+@media (hover: hover) {
+  .compact-card-fav:hover {
+    background: rgba(var(--pp-primary-rgb), 0.06);
+  }
+}
+.compact-card-fav:active {
+  background: rgba(var(--pp-primary-rgb), 0.08);
+  transform: scale(0.88);
+}
+.compact-card-fav svg {
+  width: 19px; height: 19px;
+  stroke: #B8A09C; stroke-width: 1.8; fill: none;
+  transition: fill 200ms ease, stroke 200ms ease, transform 200ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.compact-card-fav:active svg {
+  transform: scale(0.82);
+}
+
+/* --- Score badge: rounded rect, warm tint --- */
+.compact-card-score {
+  flex-shrink: 0;
+  font-size: 13.5px;
+  font-weight: 750;
+  color: var(--pp-primary, #D4775A);
+  background: rgba(var(--pp-primary-rgb, 212, 119, 86), 0.09);
+  border-radius: 10px;
+  padding: 4px 9px;
+  min-width: 28px;
+  text-align: center;
+  align-self: center;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+/* --- Facility icons row --- */
+.compact-card-facilities {
+  font-size: 11px;
+  letter-spacing: 1px;
+  opacity: 0.5;
+  margin-top: 2px;
+  display: block;
+}
+
+/* Compact card loading skeleton — Apple-style diagonal shimmer */
+.compact-card-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+}
+.compact-card-skeleton .skel-img {
+  width: 72px; height: 72px;
+  border-radius: 14px;
+  background: linear-gradient(90deg,
+    rgba(140,110,100,0.06) 25%,
+    rgba(140,110,100,0.12) 50%,
+    rgba(140,110,100,0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  will-change: background-position;
+  flex-shrink: 0;
+}
+.compact-card-skeleton .skel-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.compact-card-skeleton .skel-line {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg,
+    rgba(140,110,100,0.06) 25%,
+    rgba(140,110,100,0.12) 50%,
+    rgba(140,110,100,0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  will-change: background-position;
+}
+.compact-card-skeleton .skel-line:first-child { width: 60%; height: 14px; }
+.compact-card-skeleton .skel-line:last-child { width: 40%; }
+.compact-card-skeleton .skel-score {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(90deg,
+    rgba(140,110,100,0.06) 25%,
+    rgba(140,110,100,0.12) 50%,
+    rgba(140,110,100,0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  will-change: background-position;
+  flex-shrink: 0;
+}
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* --- Enhanced compact-card elements --- */
+
+/* Status line (open/closed/hours) */
+.compact-card-status {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-top: 1px;
+}
+.compact-card-status .status-open {
+  color: #5A8A3E;
+}
+.compact-card-status .status-hours {
+  color: var(--pp-text-tertiary);
+}
+.compact-card-status .status-closed {
+  color: #B5453A;
+}
+
+/* Score badge variants */
+.compact-card-score.score-high {
+  background: rgba(var(--pp-primary-rgb, 212, 119, 86), 0.12);
+  color: var(--pp-primary-dark, #5C4433);
+  font-weight: 800;
+}
+.compact-card-score.score-mid {
+  background: rgba(var(--pp-primary-rgb, 212, 119, 86), 0.07);
+  color: var(--pp-text-muted, #8C7A72);
+}
+
+/* Distance pill pin icon */
+.compact-card-distance svg {
+  width: 11px;
+  height: 11px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  vertical-align: -1px;
+  margin-right: 2px;
+  opacity: 0.6;
+}
+
+/* Indoor / outdoor indicator */
+.compact-card-indoor,
+.compact-card-outdoor {
+  font-size: 11px;
+  margin-left: 2px;
+  opacity: 0.7;
+}
+
+/* Region separator dot in meta row */
+.compact-card-region-sep {
+  margin: 0 4px;
+  color: var(--pp-text-tertiary);
+  opacity: 0.5;
+}
+
+/* Generic skeleton loading — used for search results, card placeholders */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Chip / badge micro-interactions */
+@keyframes chip-activate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+@keyframes check-pop {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes badge-pop {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.skeleton-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+}
+.skeleton-img {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(140,110,100,0.06) 25%, rgba(140,110,100,0.12) 50%, rgba(140,110,100,0.06) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.skeleton-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.skeleton-line {
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, rgba(140,110,100,0.06) 25%, rgba(140,110,100,0.12) 50%, rgba(140,110,100,0.06) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+.skeleton-line:nth-child(1) { width: 65%; }
+.skeleton-line:nth-child(2) { width: 45%; animation-delay: 0.1s; }
+.skeleton-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(140,110,100,0.06) 25%, rgba(140,110,100,0.12) 50%, rgba(140,110,100,0.06) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  animation-delay: 0.2s;
+  flex-shrink: 0;
+}
+
+/* Sheet overlay */
+.sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.15) 100%);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  will-change: opacity;
+}
+.sheet-overlay[aria-hidden="false"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* In-sheet detail view (mobile) */
+.sheet-detail {
+  display: none;
+  padding: 0 18px 24px;
+}
+
+.bottom-sheet.show-detail .sheet-detail {
+  display: block;
+  animation: slideInRight 300ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+.bottom-sheet.show-detail .sheet-list,
+.bottom-sheet.show-detail .sheet-meta,
+.bottom-sheet.show-detail .sheet-loc-preview,
+.bottom-sheet.show-detail #sheet-forecast,
+.bottom-sheet.show-detail #sheet-week-picks,
+.bottom-sheet.show-detail .sheet-peek,
+.bottom-sheet.show-detail #sheet-filter-chips {
+  display: none;
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes cardSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes previewSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.sheet-detail-back {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 8px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--pp-text);
+  padding: 8px;
+  border-radius: 50%;
+  transition: background 0.15s;
+}
+
+.sheet-detail-back:active {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.sheet-detail-insheet-name {
+  font-size: var(--pp-text-xl, 1.25rem);
+  font-weight: 700;
+  color: var(--pp-text);
+  margin: 12px 0 4px;
+}
+
+.sheet-detail-insheet-type {
+  font-size: var(--pp-text-sm);
+  color: var(--pp-text-muted);
+  font-style: italic;
+}
+
+.sheet-detail-insheet-region {
+  font-size: var(--pp-text-sm);
+  color: var(--pp-text-muted);
+  margin-left: 8px;
+}
+
+.sheet-detail-insheet-actions {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.sheet-detail-insheet-actions .pp-btn-primary,
+.sheet-detail-insheet-actions .pp-btn-secondary {
+  flex: 1;
+  text-align: center;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: var(--pp-text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.sheet-detail-insheet-actions .pp-btn-primary {
+  background: var(--pp-primary, #D4775A);
+  color: #fff;
+}
+
+.sheet-detail-insheet-actions .pp-btn-secondary {
+  background: var(--pp-surface-secondary, #F0EBE5);
+  color: var(--pp-text);
+}
+
+.sheet-detail-insheet-actions .pp-btn-primary:active,
+.sheet-detail-insheet-actions .pp-btn-secondary:active {
+  opacity: 0.7;
+}
+
+.sheet-detail-insheet-desc {
+  font-size: var(--pp-text-sm);
+  color: var(--pp-text-secondary);
+  line-height: 1.6;
+  margin: 16px 0;
+}
+
+/* No backdrop-filter fallback needed: bottom sheet uses solid background */
+
+/* High-contrast mode for bottom sheet — already solid, just add border */
+@media (prefers-contrast: more) {
+  .bottom-sheet {
+    border: 2px solid var(--pp-brown-dark);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .sheet-search-pill,
+  .sheet-preset,
+  .sheet-filter-chip,
+  .scan-type-badge,
+  .scan-fav,
+  .detail-back,
+  .detail-fav {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: #FFFCF9 !important;
+  }
+}
+
+/* ===== MOBILE MAP-FIRST LAYOUT (Apple Maps paradigm) ===== */
+/* Map is always the background. Everything floats on top. */
+@media (max-width: 679px) {
+  /* Hide context strip on mobile map — floating nav stays visible */
+  .pp-mobile-map .app-context-strip { display: none !important; }
+
+  /* Lock viewport: no scrolling, only fixed layers visible */
+  html.pp-mobile-map,
+  html.pp-mobile-map body {
+    overflow: hidden !important;
+    height: 100dvh !important;
+    width: 100% !important;
+    /* No position:fixed — breaks iOS Safari scroll in sheet content */
+  }
+  /* Map fills entire viewport as background */
+  .pp-mobile-map .map-container {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    display: block !important;
+    height: 100dvh !important;
+    width: 100vw !important;
+    max-height: none !important;
+    min-height: unset !important;
+    border-top: none !important;
+  }
+  .pp-mobile-map .map-container .map-canvas {
+    height: 100% !important;
+    width: 100% !important;
+  }
+
+  /* Hide list-view on mobile (replaced by bottom sheet) */
+  .pp-mobile-map #list-view {
+    display: none !important;
+  }
+
+  /* Hide old search section, it's in the sheet now */
+  .pp-mobile-map .search-section,
+  .pp-mobile-map .decision-stage,
+  .pp-mobile-map .results-toolbar,
+  .pp-mobile-map .results-utilities {
+    display: none !important;
+  }
+
+  /* App wrapper: collapse, don't take space — map is the background */
+  .pp-mobile-map .app-wrapper {
+    position: fixed !important;
+    inset: 0 !important;
+    pointer-events: none;
+    z-index: 2;
+    background: transparent !important;
+    overflow: hidden !important;
+  }
+  /* Let map container inside app-wrapper receive pointer events */
+  .pp-mobile-map .app-wrapper .map-container {
+    pointer-events: auto;
+  }
+
+  /* Hide the hero/intro banner on mobile map mode */
+  .pp-mobile-map .app-hero,
+  .pp-mobile-map [role="banner"]:not(.site-header):not(nav) {
+    display: none !important;
+  }
+
+  /* Top nav bar: glass floating effect */
+  .pp-mobile-map .site-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--wg-glass-panel) !important;
+    backdrop-filter: var(--wg-blur-heavy);
+    -webkit-backdrop-filter: var(--wg-blur-heavy);
+    box-shadow: var(--wg-shadow-header);
+    pointer-events: auto;
+  }
+
+  /* Sheet sits above map — bottom is controlled by JS morphs */
+  .pp-mobile-map .bottom-sheet {
+    z-index: 1000;
+  }
+
+  /* Old map-recenter replaced by .map-controls */
+  .pp-mobile-map .map-recenter { display: none; }
+
+  /* Hide old map search pill — replaced by sheet search pill */
+  .pp-mobile-map .map-search-pill {
+    display: none !important;
+  }
+
+  /* Hide all non-map content on mobile */
+  .pp-mobile-map .newsletter-section,
+  .pp-mobile-map .about-disclosure,
+  .pp-mobile-map .map-no-results,
+  .pp-mobile-map .map-filters-overlay {
+    display: none !important;
+  }
+
+  /* Location preview in sheet */
+  .sheet-loc-preview {
+    display: none;
+    padding: 12px 0;
+    border-bottom: var(--wg-border-top-sheet);
+  }
+  .bottom-sheet.has-preview .sheet-loc-preview { display: block; }
+  .bottom-sheet.has-preview .sheet-list { display: none; }
+  .bottom-sheet.has-preview #sheet-week-picks { display: none; }
+
+  .sheet-preview-card {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .sheet-preview-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .sheet-preview-fav {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: var(--pp-text-muted);
+    transition: color 200ms, transform 200ms;
+  }
+  .sheet-preview-fav svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+  }
+  .sheet-preview-fav.active {
+    color: var(--pp-primary);
+  }
+  .sheet-preview-fav.active svg {
+    fill: var(--pp-primary);
+  }
+  .sheet-preview-fav:active {
+    transform: scale(1.2);
+  }
+  .sheet-preview-reasons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+  }
+  .preview-reason {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: rgba(212, 119, 90, 0.08);
+    color: var(--pp-text-secondary);
+    white-space: nowrap;
+  }
+  .sheet-preview-img {
+    width: 80px; height: 80px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #EDE0D4;
+    box-shadow: 0 2px 6px rgba(212, 119, 86, 0.07);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .sheet-preview-img.loaded {
+    opacity: 1;
+  }
+  .sheet-preview-body { flex: 1; min-width: 0; }
+  .sheet-preview-name {
+    font-family: var(--pp-font-ui);
+    font-size: var(--pp-text-base);
+    font-weight: 600;
+    color: var(--pp-text);
+    margin-bottom: 2px;
+    letter-spacing: -0.01em;
+  }
+  .sheet-preview-meta {
+    font-size: var(--pp-text-xs);
+    color: var(--pp-text-tertiary);
+    font-family: var(--pp-font-accent);
+    font-style: italic;
+    margin-bottom: 4px;
+  }
+  .sheet-preview-tags {
+    display: flex; gap: 4px;
+  }
+  .sheet-preview-score {
+    font-size: var(--pp-text-lg);
+    font-weight: 700;
+    color: #D4775A;
+    flex-shrink: 0;
+    min-width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(212, 119, 90, 0.08);
+    border-radius: 10px;
+  }
+  .sheet-preview-actions {
+    margin-top: 8px;
+    display: flex; gap: 8px;
+  }
+  .sheet-preview-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: var(--pp-radius-lg);
+    border: none;
+    font-size: var(--pp-text-sm);
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform var(--wg-duration-fast) var(--wg-ease-standard);
+  }
+  .sheet-preview-btn:active {
+    transform: scale(0.97);
+  }
+  .sheet-preview-btn-primary {
+    background: var(--pp-primary);
+    color: var(--pp-text-inverse);
+    box-shadow: 0 2px 8px rgba(var(--pp-primary-rgb), 0.2);
+  }
+  .sheet-preview-btn-secondary {
+    background: rgba(var(--pp-primary-rgb), 0.06);
+    color: var(--pp-text-secondary);
+  }
+
+  /* Dominant preview card for marker-tap state */
+  .sheet-preview-card--dominant {
+    display: block;
+  }
+
+  .sheet-preview-hero {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--photo-color, #EDE0D4);
+    margin-bottom: 12px;
+  }
+
+  .sheet-preview-img--wide {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .sheet-preview-img--wide.loaded {
+    opacity: 1;
+  }
+
+  .sheet-preview-type-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(0, 0, 0, 0.45);
+    color: white;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    letter-spacing: 0.01em;
+  }
+
+  .sheet-preview-reasons-section {
+    margin-top: 8px;
+  }
+
+  .sheet-preview-reasons-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--pp-text-muted, #B8A09C);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* Make preview fav button larger and more prominent in dominant mode */
+  .sheet-preview-card--dominant .sheet-preview-fav {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(212, 119, 86, 0.06);
+    transition: background 200ms ease, transform 200ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .sheet-preview-card--dominant .sheet-preview-fav:active {
+    transform: scale(1.15);
+  }
+
+  .sheet-preview-card--dominant .sheet-preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .sheet-preview-card--dominant .sheet-preview-name {
+    font-size: var(--pp-text-lg, 1.0625rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  /* Preview card entrance */
+  .sheet-loc-preview {
+    animation: previewSlideUp 350ms cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+
+  /* Detail enrichments (Fase 5) */
+  .sheet-detail-insheet-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .sheet-detail-fav {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: var(--pp-text-muted);
+    transition: color 200ms, transform 200ms;
+  }
+  .sheet-detail-fav svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+  }
+  .sheet-detail-fav.active {
+    color: var(--pp-primary);
+  }
+  .sheet-detail-fav.active svg {
+    fill: var(--pp-primary);
+  }
+  .sheet-detail-fav:active {
+    transform: scale(1.2);
+  }
+  .sheet-detail-reasons {
+    margin: 12px 0 8px;
+  }
+  .sheet-detail-reasons-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--pp-text-muted);
+    margin-bottom: 6px;
+  }
+  .sheet-detail-reasons-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .detail-reason-tag {
+    font-size: var(--pp-text-xs);
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: rgba(212, 119, 90, 0.08);
+    color: var(--pp-text-secondary);
+  }
+  .sheet-detail-facilities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 8px 0;
+  }
+  .detail-facility {
+    font-size: var(--pp-text-xs);
+    color: var(--pp-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .sheet-detail-practical {
+    margin: 8px 0 12px;
+  }
+  .detail-practical-item {
+    font-size: var(--pp-text-sm);
+    color: var(--pp-text-secondary);
+    line-height: 1.5;
+    margin: 2px 0;
+  }
+
+  /* Sheet navigation tabs — segmented control (kept for backwards compat) */
+  .sheet-tabs {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    background: rgba(140, 110, 100, 0.08);
+    border-radius: 12px;
+    margin: 2px 0;
+    position: relative;
+  }
+  .sheet-tabs::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: var(--tab-left, 0px);
+    width: var(--tab-width, 0px);
+    height: 2.5px;
+    background: var(--pp-primary);
+    border-radius: 2px;
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    pointer-events: none;
+  }
+  .sheet-tab {
+    flex: 1;
+    padding: 8px 0;
+    border: none;
+    border-radius: 10px;
+    font-size: var(--pp-text-xs);
+    font-weight: 600;
+    font-family: inherit;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background var(--wg-duration-snap) var(--wg-ease-spring),
+                color var(--wg-duration-ui) var(--wg-ease-standard),
+                box-shadow var(--wg-duration-snap) var(--wg-ease-spring),
+                transform var(--wg-duration-fast) var(--wg-ease-standard);
+    background: transparent;
+    color: var(--pp-text-muted);
+  }
+  .sheet-tab.active {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--pp-primary);
+    font-weight: 650;
+    box-shadow: 0 1px 4px rgba(212, 119, 86, 0.08),
+                0 0.5px 1px rgba(212, 119, 86, 0.05);
+  }
+  .sheet-tab:not(.active):hover {
+    background: rgba(140, 110, 100, 0.04);
+  }
+  .sheet-tab:not(.active):active {
+    background: rgba(140, 110, 100, 0.08);
+    transform: scale(0.97);
+  }
+  .sheet-tab-gear {
+    flex: 0 0 auto;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    -webkit-tap-highlight-color: transparent;
+    transition: background var(--wg-duration-fast) var(--wg-ease-standard), transform var(--wg-duration-fast) var(--wg-ease-standard);
+  }
+  .sheet-tab-gear:hover {
+    background: rgba(140, 110, 100, 0.06);
+  }
+  .sheet-tab-gear:active {
+    transform: scale(0.95);
+  }
+  .sheet-tab-gear svg {
+    display: block;
+    opacity: 0.45;
+  }
+  .sheet-tab-gear.active svg {
+    opacity: 1;
+    stroke: #D47756;
+  }
+
+
+  /* Unlock scroll when plan view is active */
+  html.pp-mobile-map:has(body.plan-mode),
+  html.pp-mobile-map body.plan-mode {
+    overflow: auto !important;
+    position: static !important;
+    height: auto !important;
+  }
+  /* Hide map elements in plan mode */
+  body.plan-mode .bottom-sheet,
+  body.plan-mode .sheet-overlay {
+    display: none !important;
+  }
+
+
+  /* Safe area for sheet content bottom */
+  .pp-mobile-map .sheet-content {
+    padding-bottom: calc(env(safe-area-inset-bottom, 12px) + 16px);
+  }
+
+  /* Touch scrolling is controlled by JS morphs (sheet-engine.js) */
+
+
+  /* Sheet filter chips — glass pills, shown in half/full */
+  .sheet-filter-chips {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 6px;
+    padding: 4px 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8px, black calc(100% - 28px), transparent);
+    mask-image: linear-gradient(to right, transparent, black 8px, black calc(100% - 28px), transparent);
+  }
+  .sheet-filter-chips::-webkit-scrollbar { display: none; }
+  .sheet-filter-chip {
+    scroll-snap-align: start;
+    padding: 8px 16px;
+    border-radius: var(--pp-radius-pill, 100px);
+    border: 1px solid rgba(140, 110, 100, 0.15);
+    background: rgba(255, 252, 249, 0.9);
+    font-size: var(--pp-text-xs);
+    font-weight: 500;
+    color: var(--pp-text-secondary, var(--wg-text-body));
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    font-family: inherit;
+    flex-shrink: 0;
+    white-space: nowrap;
+    transition: transform var(--wg-duration-fast) var(--wg-ease-standard),
+                background 200ms ease,
+                color 200ms ease,
+                border-color 200ms ease,
+                box-shadow var(--wg-duration-fast) var(--wg-ease-standard);
+  }
+  .sheet-filter-chip:active {
+    transform: scale(0.95);
+    background: rgba(255, 255, 255, 0.95);
+    transition-duration: 80ms;
+  }
+  .sheet-filter-chip.active {
+    background: var(--pp-primary-dark, #5C4433);
+    color: var(--pp-text-inverse, white);
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(92, 68, 51, 0.2);
+    font-weight: 600;
+    animation: chip-activate 250ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  /* Type-specific active colors for sheet chips */
+  .sheet-filter-chip.active[data-type="play"] { background: #3D8B66; border-color: transparent; box-shadow: 0 2px 10px rgba(61, 139, 102, 0.25); }
+  .sheet-filter-chip.active[data-type="farm"] { background: #6B5438; border-color: transparent; box-shadow: 0 2px 10px rgba(107, 84, 56, 0.25); }
+  .sheet-filter-chip.active[data-type="nature"] { background: #24553F; border-color: transparent; box-shadow: 0 2px 10px rgba(36, 85, 63, 0.25); }
+  .sheet-filter-chip.active[data-type="museum"] { background: #612470; border-color: transparent; box-shadow: 0 2px 10px rgba(97, 36, 112, 0.25); }
+  .sheet-filter-chip.active[data-type="swim"] { background: #1976D2; border-color: transparent; box-shadow: 0 2px 10px rgba(25, 118, 210, 0.25); }
+  .sheet-filter-chip.active[data-type="pancake"] { background: #9E7E1E; border-color: transparent; box-shadow: 0 2px 10px rgba(158, 126, 30, 0.25); }
+  .sheet-filter-chip.active[data-type="horeca"] { background: #C4593E; border-color: transparent; box-shadow: 0 2px 10px rgba(196, 89, 62, 0.25); }
+
+  /* "Meer" button in filter chip row */
+  .sheet-filter-more {
+    background: rgba(245, 240, 235, 0.60);
+    position: relative;
+  }
+  .filter-more-badge {
+    display: none;
+    position: absolute; top: -4px; right: -4px;
+    min-width: 16px; height: 16px; padding: 0 4px;
+    border-radius: 999px; background: var(--pp-primary); color: white;
+    font-size: var(--pp-text-xs); font-weight: 700; line-height: 16px; text-align: center;
+  }
+  .filter-more-badge.has-count {
+    display: inline-block;
+    animation: badge-pop 300ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  /* Filter modal */
+  .filter-modal-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(0, 0, 0, 0.2);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .filter-modal-overlay.open { opacity: 1; pointer-events: auto; }
+  .filter-modal {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 2001;
+    background: rgba(255, 252, 249, 0.95);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border-radius: 20px 20px 0 0;
+    max-height: 70vh; overflow-y: auto; scrollbar-width: none;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+  .filter-modal::-webkit-scrollbar { display: none; }
+  .filter-modal.open { transform: translateY(0); }
+  .filter-modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 20px 8px;
+    position: sticky; top: 0; background: rgba(255, 252, 249, 0.95); z-index: 1;
+  }
+  .filter-modal-header h3 {
+    font-family: var(--pp-font-heading); font-size: var(--pp-text-lg); font-weight: 700;
+    color: var(--pp-text); margin: 0;
+  }
+  .filter-modal-close {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    background: none; border: none; font-size: var(--pp-text-xl);
+    color: var(--pp-text-muted); cursor: pointer;
+  }
+  .filter-modal-body { padding: 0 20px; }
+  .filter-modal-group { margin-bottom: 20px; }
+  .filter-modal-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--pp-text-muted); margin-bottom: 8px;
+  }
+  .filter-modal-options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filter-modal-chip {
+    padding: 8px 16px; border-radius: 100px;
+    border: 1px solid rgba(var(--pp-primary-rgb), 0.12);
+    background: transparent; font-size: var(--pp-text-sm); font-weight: 600;
+    font-family: inherit; color: var(--pp-text);
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: background 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+                border-color 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+                color 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+                transform 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+                box-shadow 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .filter-modal-chip:active { transform: scale(0.97); }
+  .filter-modal-chip.active {
+    background: var(--pp-primary); border-color: transparent; color: white;
+    box-shadow: 0 2px 8px rgba(212, 119, 86, 0.25);
+    font-weight: 700;
+  }
+  .filter-modal-chip:hover:not(.active) { background: rgba(var(--pp-primary-rgb), 0.08); border-color: rgba(var(--pp-primary-rgb), 0.18); }
+  .filter-modal-apply {
+    display: block; width: calc(100% - 40px); margin: 16px 20px 20px;
+    padding: 16px; border: none; border-radius: 14px;
+    background: var(--pp-primary); color: white;
+    font-size: var(--pp-text-base); font-weight: 650; font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(212, 119, 86, 0.18);
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  }
+  .filter-modal-apply:active { background: var(--pp-primary-dark); transform: scale(0.98); box-shadow: 0 1px 4px rgba(212, 119, 86, 0.12); }
+
+  /* Week picks - visibility controlled by JS morphs */
+  #sheet-week-picks { display: block; }
+
+  /* Week picks - "Deze week in [stad]" */
+  .week-picks {
+    padding: 8px 0 12px;
+    border-bottom: var(--wg-border-divider);
+  }
+  .week-picks-header {
+    font-size: var(--pp-text-xs);
+    font-weight: 600;
+    color: var(--wg-text-body);
+    padding: 0 0 8px;
+  }
+  .week-picks-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
+    padding-bottom: 4px;
+  }
+  .week-picks-scroll::-webkit-scrollbar { display: none; }
+  .week-pick-card {
+    flex-shrink: 0;
+    width: 110px;
+    scroll-snap-align: start;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .week-pick-photo {
+    width: 110px;
+    height: 80px;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    background-color: #E8D5C4;
+  }
+  .week-pick-name {
+    font-size: var(--pp-text-xs);
+    font-weight: 500;
+    color: var(--wg-text-primary);
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .week-picks-newsletter {
+    display: block;
+    margin-top: 8px;
+    padding: 8px 12px;
+    font-size: var(--pp-text-xs);
+    font-weight: 500;
+    color: var(--pp-primary);
+    text-decoration: none;
+    background: rgba(212, 119, 86, 0.06);
+    border-radius: var(--wg-radius-tag);
+    text-align: center;
+    transition: background var(--wg-duration-ui) var(--wg-ease-standard);
+  }
+  .week-picks-newsletter:hover,
+  .week-picks-newsletter:active {
+    background: rgba(212, 119, 86, 0.12);
+  }
+  .newsletter-arrow {
+    display: inline-block;
+    margin-left: 4px;
+    transition: transform var(--wg-duration-ui) var(--wg-ease-smooth);
+  }
+  .week-picks-newsletter:hover .newsletter-arrow {
+    transform: translateX(3px);
+  }
+
+  /* 5-day forecast strip */
+  .forecast-strip {
+    border-top: 0.5px solid rgba(140, 110, 100, 0.06);
+    padding: 10px 0 6px;
+  }
+  .forecast-days {
+    display: flex;
+    justify-content: space-between;
+  }
+  .forecast-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+    padding: 4px 0;
+    border-radius: 8px;
+    transition: background 150ms ease;
+  }
+  .forecast-day-name {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--wg-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .forecast-day-icon { font-size: var(--pp-text-base); }
+  .forecast-day-temp {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--wg-text-body);
+  }
+  .forecast-day.is-sun .forecast-day-name { color: var(--pp-primary); }
+  .forecast-day.is-rain .forecast-day-name { color: #5B9EC4; }
+
+  /* ============================================
+     Floating nav overrides for app page
+     Elevate z-index above bottom sheet (z-1000)
+     ============================================ */
+  body.pp-app nav.floating-nav { z-index: 1100 !important; }
+  body.pp-app .nav-backdrop { z-index: 1099 !important; }
+
+  /* Count badge — visible only on app page */
+  .nav-count {
+    display: none;
+    flex: 1;
+    text-align: right;
+    font-size: var(--pp-text-sm);
+    font-weight: 600;
+    color: var(--pp-text-secondary);
+    letter-spacing: -0.01em;
+  }
+  body.pp-app .nav-count { display: block; }
+
+  /* Adjust map-controls to clear floating nav */
+  .map-controls {
+    top: calc(80px + env(safe-area-inset-top, 0px)) !important;
+  }
+}
+
+@media (min-width: 680px) {
+  .map-controls { display: none !important; }
+}
+
+/* ============================================
+   Map Controls — Apple Maps double toggle
+   ============================================ */
+.map-controls {
+  position: fixed;
+  top: calc(12px + env(safe-area-inset-top, 0px));
+  right: 12px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 252, 249, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08),
+              0 1px 2px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+.map-controls-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transform: scale(1);
+  transition: background var(--wg-duration-fast) var(--wg-ease-standard),
+              transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: transform;
+}
+.map-controls-btn:hover {
+  background: rgba(140, 110, 100, 0.06);
+}
+.map-controls-btn:active {
+  transform: scale(0.9);
+  background: rgba(140, 110, 100, 0.10);
+  transition: background var(--wg-duration-fast) var(--wg-ease-standard),
+              transform 100ms ease-out;
+}
+.map-controls-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: rgba(92, 68, 51, 0.65);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke var(--wg-duration-fast) var(--wg-ease-standard),
+              fill var(--wg-duration-fast) var(--wg-ease-standard),
+              opacity var(--wg-duration-fast) var(--wg-ease-standard);
+}
+/* GPS button — Apple Maps location arrow */
+#map-gps-btn svg {
+  stroke: none;
+  fill: rgba(92, 68, 51, 0.55);
+  opacity: 1;
+  transform: rotate(45deg);
+  transition: fill 250ms ease,
+              transform 400ms cubic-bezier(0.32, 0.72, 0, 1),
+              opacity 200ms ease;
+}
+#map-gps-btn:hover svg {
+  fill: rgba(92, 68, 51, 0.8);
+}
+
+/* Loading state — pulsing opacity while getting GPS fix */
+@keyframes gps-loading-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+#map-gps-btn.gps-loading svg {
+  fill: var(--pp-primary);
+}
+@media (prefers-reduced-motion: no-preference) {
+  #map-gps-btn.gps-loading svg {
+    animation: gps-loading-pulse 1.2s ease-in-out infinite;
+  }
+}
+
+/* Active/tracking state — solid blue arrow with radar pulse ring */
+@keyframes gps-active-pulse {
+  0%   { box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 0 rgba(0,122,255,0.35); }
+  100% { box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04), 0 0 0 8px rgba(0,122,255,0); }
+}
+#map-gps-btn.gps-active svg {
+  fill: #007AFF;
+  transform: rotate(45deg);
+}
+#map-gps-btn.gps-active:hover svg {
+  fill: #0066DD;
+}
+@media (prefers-reduced-motion: no-preference) {
+  #map-gps-btn.gps-active {
+    animation: gps-active-pulse 2s cubic-bezier(0.32, 0.72, 0, 1) infinite;
+  }
+}
+
+/* Legacy .tracking class compat */
+.map-controls-btn.tracking svg {
+  stroke: none;
+  fill: #007AFF;
+  opacity: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .map-controls-btn.tracking {
+    animation: gps-active-pulse 2s cubic-bezier(0.32, 0.72, 0, 1) infinite;
+  }
+}
+
+/* ============================================
+   Map Marker Animations — Apple Maps style
+   ============================================ */
+
+/* GPS user location dot — pulsing blue beacon */
+.user-location-dot {
+  width: 14px;
+  height: 14px;
+  background: #007AFF;
+  border: 2.5px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  position: relative;
+}
+.user-location-dot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(0, 122, 255, 0.25);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .user-location-dot::before {
+    animation: gpsBeaconPulse 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+}
+@keyframes gpsBeaconPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(3.14);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3.14);
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   Location Sheet — 3-tier progressive disclosure
+   ============================================ */
+
+/* Sheet detail header (pills + fav) */
+.sheet-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.sheet-detail-header .card-fav {
+  margin-top: 2px;
+}
+.sheet-detail-header .card-fav svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* Detail quick facts — warm glass pills */
+.detail-quick-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 0 8px;
+}
+.detail-fact {
+  font-size: var(--pp-text-xs);
+  font-weight: 500;
+  color: var(--wg-text-body);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--wg-radius-chip, 20px);
+  background: rgba(250, 247, 242, 0.70);
+}
+.detail-fact strong {
+  color: var(--pp-primary);
+  font-weight: 700;
+  font-size: var(--pp-text-sm);
+}
+
+/* Detail actions — Route is primary */
+.sheet-detail-actions {
+  display: flex;
+  gap: 8px;
+  padding: 8px 0 12px;
+  flex-wrap: wrap;
+}
+.sheet-detail-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: var(--pp-radius-lg);
+  font-size: var(--pp-text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--wg-text-primary);
+  cursor: pointer;
+  transition: transform var(--wg-duration-fast, 100ms) var(--wg-ease-standard, ease), background var(--wg-duration-fast, 100ms) var(--wg-ease-standard, ease), box-shadow var(--wg-duration-fast, 100ms) var(--wg-ease-standard, ease);
+  font-family: inherit;
+  box-shadow: 0 1px 4px rgba(212, 119, 86, 0.04),
+              inset 0 0.5px 0 rgba(255, 255, 255, 0.6);
+}
+.sheet-detail-btn svg {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sheet-detail-btn:active {
+  transform: scale(0.97);
+  background: rgba(255, 255, 255, 0.90);
+}
+.sheet-detail-btn-primary {
+  background: var(--pp-primary);
+  color: var(--wg-text-inverse);
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(212, 119, 86, 0.25),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+.sheet-detail-btn-primary:active {
+  background: var(--wg-primary-dark);
+}
+.sheet-detail-btn-icon {
+  padding: 12px;
+}
+
+/* Pill price */
+.pill-price {
+  font-weight: 600;
+  background: rgba(212, 119, 86, 0.08);
+  color: var(--wg-text-body);
+}
+
+/* ---- Tier 2 section header ---- */
+@keyframes pp-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.loc-sheet-content .sheet-info-grid,
+.loc-sheet-content .sterke-punten,
+.loc-sheet-content .sheet-detail-more {
+  animation: pp-fade-up var(--wg-duration-snap) var(--wg-ease-smooth) both;
+}
+
+/* Detail info grid — frosted glass cards */
+.sheet-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+  margin: 12px 0;
+}
+.sheet-info-cell {
+  background: rgba(255, 252, 249, 0.80);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: var(--wg-radius-card, 12px);
+  box-shadow: 0 1px 6px rgba(212, 119, 86, 0.05),
+              inset 0 0.5px 0 rgba(255, 255, 255, 0.5);
+  transition: transform var(--wg-duration-fast, 100ms) var(--wg-ease-standard, ease),
+              box-shadow var(--wg-duration-fast, 100ms) var(--wg-ease-standard, ease);
+}
+.sheet-info-cell:active {
+  transform: scale(0.98);
+}
+/* Weather icon inside info cells and pills — fix black silhouette */
+.weather-icon {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--pp-primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: -2px;
+  flex-shrink: 0;
+}
+.sheet-info-value .weather-icon {
+  width: 18px;
+  height: 18px;
+  vertical-align: -3px;
+  margin-right: 2px;
+}
+.pill-weather .weather-icon {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  vertical-align: -2px;
+}
+
+.sheet-info-label {
+  font-size: var(--pp-text-xs);
+  font-weight: 700;
+  color: var(--pp-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.sheet-info-value {
+  font-size: var(--pp-text-sm);
+  font-weight: 500;
+  color: var(--wg-text-primary);
+  line-height: 1.35;
+}
+
+/* Meer details toggle (Tier 3) — glass card treatment */
+.sheet-detail-more {
+  margin: 16px 0 8px;
+  border-radius: var(--wg-radius-card, 12px);
+  background: rgba(255, 252, 249, 0.60);
+  overflow: hidden;
+}
+.sheet-detail-more-toggle {
+  font-size: var(--pp-text-sm);
+  font-weight: 600;
+  color: var(--pp-primary);
+  cursor: pointer;
+  padding: 12px 16px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background var(--wg-duration-fast, 100ms);
+}
+.sheet-detail-more-toggle:active {
+  background: rgba(212, 119, 86, 0.06);
+}
+.sheet-detail-more-toggle::-webkit-details-marker {
+  display: none;
+}
+.sheet-detail-more-toggle::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23D47756' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
+  transition: transform var(--wg-duration-ui, 200ms) var(--wg-ease-smooth, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.sheet-detail-more[open] .sheet-detail-more-toggle::before {
+  transform: rotate(180deg);
+}
+
+/* Tier 3 inner content area */
+.sheet-detail-more > :not(summary) {
+  padding: 0 16px 12px;
+}
+.sheet-detail-description {
+  font-size: var(--pp-text-sm);
+  color: var(--wg-text-body);
+  line-height: 1.55;
+  margin: 4px 0 8px;
+}
+
+/* Trust list inside Tier 3 — styled checklist */
+.sheet-trust-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+}
+.sheet-trust-list li {
+  font-size: var(--pp-text-xs);
+  color: var(--wg-text-body);
+  padding: 4px 0;
+  line-height: 1.45;
+  border-bottom: 1px solid rgba(212, 119, 86, 0.06);
+}
+.sheet-trust-list li:last-child {
+  border-bottom: none;
+}
+.sheet-trust-list li::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  vertical-align: -3px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234A7A4A' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 11.08V12a10 10 0 1 1-5.93-9.14'/%3E%3Cpolyline points='22 4 12 14.01 9 11.01'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* Score breakdown wrapper inside Tier 3 — enhanced bars */
+.sheet-score-breakdown-wrap .score-breakdown {
+  margin: 8px 0;
+}
+.sheet-score-breakdown-wrap .score-breakdown-toggle {
+  display: none;
+}
+.sheet-score-breakdown-wrap .score-breakdown-bars {
+  display: block;
+}
+/* Refined score bars inside the sheet detail */
+.sheet-score-breakdown-wrap .score-bar-row {
+  padding: 4px 0;
+}
+.sheet-score-breakdown-wrap .score-bar-label {
+  font-size: var(--pp-text-xs);
+  font-weight: 600;
+  color: var(--wg-text-muted);
+  width: 100px;
+}
+.sheet-score-breakdown-wrap .score-bar-track {
+  height: 8px;
+  background: rgba(212, 119, 86, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.sheet-score-breakdown-wrap .score-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sheet-score-breakdown-wrap .score-bar-value {
+  font-size: var(--pp-text-xs);
+  font-weight: 700;
+  color: var(--wg-text-primary);
+}
+
+/* Marker pop animation — temporary overlay for click feedback */
+@keyframes markerPop {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+  40% { transform: translate(-50%, -50%) scale(1.6); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+}
+.marker-pop-ring {
+  position: absolute;
+  pointer-events: none;
+  z-index: 5;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2.5px solid var(--wg-accent, #D4775A);
+  animation: markerPop 400ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+/* Screen reader only — visually hidden but accessible */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* ============================================
+   Loc-sheet back button — floating glass circle
+   ============================================ */
+.sheet-hero-wrap {
+  position: relative;
+}
+.loc-sheet-back {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 252, 249, 0.82);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  box-shadow: 0 2px 8px rgba(212, 119, 86, 0.10),
+              0 1px 2px rgba(212, 119, 86, 0.05),
+              inset 0 0.5px 0 rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--wg-duration-fast, 100ms) var(--wg-ease-standard, ease),
+              background var(--wg-duration-fast, 100ms) var(--wg-ease-standard, ease);
+}
+.loc-sheet-back:active {
+  transform: scale(0.92);
+  background: rgba(255, 252, 249, 0.95);
+}
+.loc-sheet-back svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--pp-primary);
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ============================================
+   Plan view — mobile back navigation
+   ============================================ */
+.plan-mobile-nav {
+  display: none;
+}
+@media (max-width: 679px) {
+  .plan-mobile-nav {
+    display: flex;
+    align-items: center;
+    padding: 0 0 12px;
+  }
+  .plan-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px 12px 12px;
+    border: none;
+    border-radius: 100px;
+    background: rgba(255, 252, 249, 0.82);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    box-shadow: 0 2px 8px rgba(212, 119, 86, 0.08),
+                0 1px 2px rgba(212, 119, 86, 0.04),
+                inset 0 0.5px 0 rgba(255, 255, 255, 0.5);
+    font-family: inherit;
+    font-size: var(--pp-text-sm);
+    font-weight: 600;
+    color: var(--pp-primary);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform var(--wg-duration-fast, 100ms) ease,
+                background var(--wg-duration-fast, 100ms) ease;
+  }
+  .plan-back-btn:active {
+    transform: scale(0.95);
+    background: rgba(255, 252, 249, 0.95);
+  }
+  .plan-back-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+} /* end @layer components */
+
+/* ============================================================
+   Glass Overrides — higher-priority layer to beat global reset
+   The * { padding: 0 } in @layer layout strips padding from
+   all glass components. These overrides restore it.
+   ============================================================ */
+@layer overrides {
+
+  /* Search pill — proper Apple Maps-style floating bar */
+  .sheet-search-pill {
+    padding: 12px 16px;
+    gap: 8px;
+    min-height: 48px;
+  }
+
+  /* Preset chips — proper pill size with breathing room */
+  .sheet-preset {
+    padding: 8px 16px;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Filter chips — same treatment as presets */
+  .sheet-filter-chip {
+    scroll-snap-align: start;
+    padding: 8px 16px;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Tab bar container — segmented control padding */
+  .sheet-tabs {
+    padding: 3px;
+    gap: 2px;
+    margin: 2px 0;
+  }
+
+  /* Individual tabs — proper height */
+  .sheet-tab {
+    padding: 10px 0;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Drag handle */
+  .sheet-drag-handle {
+    padding: 12px 0 8px;
+  }
+
+  /* Sheet content */
+  .sheet-content {
+    padding: 0 16px env(safe-area-inset-bottom, 8px);
+  }
+
+  /* Sheet meta row — minimal gap after tabs */
+  .sheet-meta {
+    padding: 6px 20px 2px;
+  }
+
+  /* Sheet peek */
+  .sheet-peek {
+    padding-bottom: 2px;
+  }
+
+  /* Preset container */
+  .sheet-presets {
+    padding: 4px 0 2px;
+    gap: 8px;
+  }
+
+  /* Filter chips container */
+  .sheet-filter-chips {
+    padding: 4px 0;
+    gap: 6px;
+  }
+
+  /* Loc-sheet back button padding restore */
+  .loc-sheet-back {
+    padding: 0;
+  }
+
+  /* Plan back button padding restore */
+  .plan-back-btn {
+    padding: 12px 16px 12px 12px;
+  }
+
+  /* ---- Location detail sheet overrides ---- */
+
+  .sheet-info-cell {
+    padding: 12px 16px;
+    gap: 4px;
+  }
+
+  .sterke-punten {
+    padding: 12px 16px;
+    margin: 12px 0;
+  }
+  .sterke-punten h3 {
+    margin: 0 0 8px;
+  }
+  .sterke-punten li {
+    padding: 4px 0;
+  }
+
+  .sheet-detail-actions {
+    padding: 8px 0 12px;
+    gap: 8px;
+  }
+  .sheet-detail-btn {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+  .sheet-detail-btn-icon {
+    padding: 12px;
+  }
+
+  .sheet-detail-more-toggle {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+  .sheet-detail-more > :not(summary) {
+    padding: 0 16px 12px;
+  }
+
+  .detail-quick-facts {
+    padding: 8px 0 8px;
+    gap: 8px;
+  }
+  .detail-fact {
+    padding: 4px 12px;
+    gap: 4px;
+  }
+
+  .sheet-trust-list li {
+    padding: 4px 0;
+  }
+
+  .score-breakdown-toggle {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+  .score-breakdown-bars {
+    padding: 8px 16px 12px;
+  }
+  .score-bar-row {
+    padding: 4px 0;
+    gap: 8px;
+  }
+
+  .sheet-hero-photo {
+    margin-bottom: 12px;
+  }
+
+  .loc-sheet-content {
+    padding: 0 20px 20px;
+  }
+
+  /* ---- Sheet peek tightening (Apple Maps density) ---- */
+
+  .sheet-drag-handle {
+    padding: 8px 0 4px;
+  }
+  .sheet-peek {
+    padding-bottom: 2px;
+  }
+  .sheet-presets {
+    padding: 4px 0 2px;
+    gap: 8px;
+  }
+  .sheet-tabs {
+    padding: 3px;
+    gap: 2px;
+    margin: 2px 0 0;
+  }
+  .sheet-tab {
+    padding: 10px 0;
+    min-height: 40px;
+  }
+
+} /* end @layer overrides */

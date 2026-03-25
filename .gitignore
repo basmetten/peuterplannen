@@ -1,0 +1,83 @@
+# OS files
+.DS_Store
+*.bak
+
+# Secrets
+.supabase_env
+
+# Workspace state
+SCRATCH.md
+memory/
+peuterplannen/
+.openclaw/
+
+# Bot workspace files
+AGENTS.md
+BACKLOG.md
+BOOT.md
+HEARTBEAT.md
+IDENTITY.md
+SOUL.md
+TOOLS.md
+USER.md
+
+# Archive
+.archive/
+
+# Root-level one-off scripts
+/dedup_locations.js
+/fix_incomplete_locations.js
+/add_new_locations.js
+/verify_place_ids.js
+/alcohol_age_check.js
+/process_suggestions.js
+
+# Dependencies
+node_modules/
+
+# Playwright test results (snapshots are committed, results are not)
+test-results/
+playwright-report/
+blob-report/
+
+# Build artifacts / pipeline output
+output/
+app.bundle.js.map
+app.bundle.css.map
+
+# Data files
+all_locations_for_verification.json
+all_locations_raw.json
+batch_*.json
+
+# Scripts with secrets (keep generators!)
+.scripts/fetch_batch_full.js
+.scripts/inject_71_90.js
+.scripts/insert_batch_*.js
+.scripts/insert_museums.js
+.scripts/sync_supabase.py
+.scripts/manage_supabase.py
+.scripts/deep_audit.js
+.scripts/deep_verify.js
+.scripts/database.js
+.scripts/test_sql.js
+.scripts/check_table_structure.js
+.scripts/create_suggestions_table.js
+.scripts/calculate_city_distances.js
+.audit/
+supabase/.temp/
+
+# Debug/test artifacts
+qt-*.png
+quality-test-*.png
+test-*.png
+verify-*.png
+qa-*.png
+setup-test-screenshot.png
+photo-*-log.json
+mockup-*.html
+
+# BackstopJS (test outputs — reference images cached in CI)
+backstop_data/bitmaps_test/
+backstop_data/html_report/
+backstop_data/ci_report/

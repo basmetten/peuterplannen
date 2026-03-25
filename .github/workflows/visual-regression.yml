@@ -1,0 +1,167 @@
+name: Visual Regression Tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'app.html'
+      - 'app.css'
+      - 'app.js'
+      - 'app.min.css'
+      - 'design-system.css'
+      - 'glass.css'
+      - 'fonts.css'
+      - 'modules/**'
+      - 'index.html'
+      - 'backstop.json'
+
+concurrency:
+  group: visual-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  visual-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start local server
+        run: |
+          npx serve -l 8771 --no-clipboard . &
+          # Wait for server to be ready
+          for i in $(seq 1 30); do
+            if curl -s -o /dev/null -w "%{http_code}" http://localhost:8771/app.html | grep -q 200; then
+              echo "Server ready"
+              break
+            fi
+            sleep 1
+          done
+
+      - name: Install BackstopJS
+        run: npm install -g backstopjs@6.3.25
+
+      - name: Download baseline references
+        uses: actions/cache@v4
+        with:
+          path: backstop_data/bitmaps_reference
+          key: backstop-ref-${{ github.base_ref }}-${{ hashFiles('backstop.json') }}
+          restore-keys: |
+            backstop-ref-${{ github.base_ref }}-
+            backstop-ref-main-
+
+      - name: Create reference if none exists
+        run: |
+          if [ ! -d "backstop_data/bitmaps_reference" ] || [ -z "$(ls -A backstop_data/bitmaps_reference 2>/dev/null)" ]; then
+            echo "No baseline found — creating reference from current state"
+            backstop reference --config=backstop.json || true
+          fi
+
+      - name: Run BackstopJS tests
+        id: backstop
+        continue-on-error: true
+        run: |
+          backstop test --config=backstop.json 2>&1 | tee backstop-output.txt
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Parse results
+        if: always()
+        id: results
+        run: |
+          if [ -f "backstop_data/ci_report/xunit.xml" ]; then
+            total=$(grep -c 'testcase' backstop_data/ci_report/xunit.xml || echo "0")
+            failures=$(grep -c 'failure' backstop_data/ci_report/xunit.xml || echo "0")
+            passed=$((total - failures))
+            echo "total=$total" >> "$GITHUB_OUTPUT"
+            echo "passed=$passed" >> "$GITHUB_OUTPUT"
+            echo "failures=$failures" >> "$GITHUB_OUTPUT"
+          else
+            echo "total=0" >> "$GITHUB_OUTPUT"
+            echo "passed=0" >> "$GITHUB_OUTPUT"
+            echo "failures=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backstop-results
+          path: |
+            backstop_data/html_report/
+            backstop_data/bitmaps_test/
+            backstop_data/ci_report/
+          retention-days: 7
+
+      - name: Comment PR with results
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          total="${{ steps.results.outputs.total }}"
+          passed="${{ steps.results.outputs.passed }}"
+          failures="${{ steps.results.outputs.failures }}"
+
+          if [ "$failures" = "0" ] && [ "$total" != "0" ]; then
+            status="All $total visual tests passed"
+            emoji="white_check_mark"
+          elif [ "$total" = "0" ]; then
+            status="No visual tests were run (missing baseline?)"
+            emoji="warning"
+          else
+            status="$failures of $total visual tests failed"
+            emoji="x"
+          fi
+
+          body=$(cat <<EOF
+          ## :${emoji}: Visual Regression: ${status}
+
+          | Metric | Count |
+          |--------|-------|
+          | Total scenarios | ${total} |
+          | Passed | ${passed} |
+          | Failed | ${failures} |
+
+          **Viewports tested:** mobile (390x844), desktop (1280x800)
+
+          <details>
+          <summary>Scenarios tested</summary>
+
+          - App - Initial Load (Peek State)
+          - App - Sheet Half State
+          - App - Filter Active (Speeltuin)
+          - App - Map Tab
+          - Homepage
+          - Location Page
+
+          </details>
+
+          Download the \`backstop-results\` artifact for full HTML diff report.
+
+          ---
+          *Visual regression by BackstopJS*
+          EOF
+          )
+
+          pr_number="${{ github.event.pull_request.number }}"
+          gh pr comment "$pr_number" --body "$body"
+
+      - name: Fail if visual regressions detected
+        if: steps.backstop.outcome == 'failure'
+        run: |
+          echo "Visual regressions detected. Check the BackstopJS report artifact for details."
+          exit 1

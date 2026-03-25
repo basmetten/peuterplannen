@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partner portal - PeuterPlannen</title>
+  <meta name="description" content="Partnerportal voor PeuterPlannen: claim en beheer je locatiegegevens voor ouders met peuters en kleuters.">
+  <link rel="canonical" href="https://partner.peuterplannen.nl/">
+  <meta name="robots" content="noindex, nofollow">
+  <script src="/ga-init.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+  <script src="/consent.js" defer></script>
+  <link rel="icon" href="/partner/favicon.ico" sizes="any">
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="/design-system.css?v=202603200616">
+  <link rel="stylesheet" href="/partner/portal-shell.css?v=202603200616">
+  <style>
+    .partner-shell {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    .partner-auth {
+      max-width: 620px;
+      margin: 18px auto 0;
+    }
+
+    .partner-auth .portal-card,
+    .partner-auth .portal-hero {
+      border-radius: 24px;
+      padding: 28px;
+    }
+
+    .partner-auth-list {
+      margin-top: 12px;
+    }
+
+    .partner-auth-list strong {
+      display: block;
+      margin-bottom: 2px;
+      font-family: var(--pp-font-head);
+      font-size: 14px;
+    }
+
+    .partner-dashboard-top {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .partner-status-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .partner-status-box {
+      border: 1px solid rgba(35, 31, 26, 0.1);
+      background: rgba(255, 255, 255, 0.88);
+      border-radius: 14px;
+      padding: 12px;
+      color: var(--pp-text);
+    }
+
+    .partner-status-box b {
+      display: block;
+      font-family: var(--pp-font-head);
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .partner-status-box span {
+      color: var(--pp-text-muted);
+      font-size: 12px;
+    }
+
+    .partner-billing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .partner-plan-card {
+      border: 1px solid var(--pp-border);
+      border-radius: 16px;
+      padding: 16px;
+      background: #ffffff;
+    }
+
+    .partner-plan-card h3 {
+      margin: 0 0 8px;
+      font-family: var(--pp-font-head);
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .partner-plan-price {
+      font-family: var(--pp-font-head);
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+      margin: 0 0 10px;
+    }
+
+    .partner-plan-note {
+      font-size: 12px;
+      color: var(--pp-text-muted);
+    }
+
+    .partner-section-title {
+      margin: 0 0 10px;
+      font-family: var(--pp-font-head);
+      font-size: 18px;
+    }
+
+    .partner-divider {
+      height: 1px;
+      background: rgba(35, 31, 26, 0.1);
+      margin: 8px 0 4px;
+    }
+
+    @media (max-width: 780px) {
+      .partner-status-grid,
+      .partner-billing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .partner-auth .portal-card,
+      .partner-auth .portal-hero {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body class="portal-partner">
+  <a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
+
+  <nav class="portal-nav" aria-label="Hoofdnavigatie">
+    <div class="portal-nav-inner">
+      <a class="portal-nav-brand" href="/">
+        PeuterPlannen
+        <span class="portal-nav-pill">Partner</span>
+      </a>
+      <div class="portal-nav-right">
+        <span id="nav-user" class="portal-nav-user hidden"></span>
+        <button id="nav-logout" class="portal-btn portal-btn-secondary portal-btn-sm hidden" type="button">Uitloggen</button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main-content" class="portal-container">
+    <section id="screen-landing" class="partner-auth">
+      <article class="portal-hero">
+        <p class="portal-chip">Partner portal</p>
+        <h1 class="portal-title" style="margin-top:8px;">Beheer jouw locatie professioneel</h1>
+        <p style="margin:10px 0 0;color:rgba(255,255,255,0.84);max-width:60ch;">Claim je locatie, houd data actueel en beheer je Featured-abonnement direct vanuit je dashboard.</p>
+      </article>
+
+      <article class="portal-card">
+        <h2 class="partner-section-title">Inloggen met e-mail</h2>
+        <p class="portal-subtitle">Geen wachtwoord nodig. Je krijgt eerst een 6-cijferige code en daarnaast een fallback-link.</p>
+        <div class="partner-auth-list">
+          <ul class="portal-list">
+            <li class="portal-list-item"><div><strong>Snelle verificatie</strong><span>Inloggen in 2 stappen met eenmalige code.</span></div></li>
+            <li class="portal-list-item"><div><strong>Realtime updates</strong><span>Wijzigingen op je locatiegegevens direct opslaan.</span></div></li>
+            <li class="portal-list-item"><div><strong>Volledige controle</strong><span>Abonnement beheren via veilige Stripe self-service.</span></div></li>
+          </ul>
+        </div>
+
+        <div id="landing-alert" class="portal-alert-wrap" aria-live="assertive"></div>
+        <div class="portal-form-group">
+          <label class="portal-label" for="login-email">E-mailadres</label>
+          <input class="portal-input" type="email" id="login-email" placeholder="naam@bedrijf.nl" autocomplete="email">
+        </div>
+        <button id="send-otp-btn" class="portal-btn portal-btn-primary portal-btn-full" type="button">Doorgaan met e-mail</button>
+      </article>
+    </section>
+
+    <section id="screen-otp" class="partner-auth hidden">
+      <article class="portal-card">
+        <h1 class="portal-screen-title">Controleer je inbox</h1>
+        <p class="portal-subtitle">Inlogmail gestuurd naar <strong id="otp-email-display"></strong>. Vul de 6-cijferige code in. Werkt dat niet, gebruik dan de link uit dezelfde mail.</p>
+        <div id="otp-alert" class="portal-alert-wrap" aria-live="assertive"></div>
+        <div class="portal-form-group">
+          <label class="portal-label" for="otp-code">Inlogcode</label>
+          <input class="portal-input" type="text" id="otp-code" maxlength="6" autocomplete="one-time-code" inputmode="numeric" placeholder="000000">
+        </div>
+        <div class="portal-btn-row">
+          <button id="verify-otp-btn" class="portal-btn portal-btn-primary" type="button">Inloggen</button>
+          <button id="otp-back-btn" class="portal-btn portal-btn-secondary" type="button">Ander e-mailadres</button>
+        </div>
+      </article>
+    </section>
+
+    <section id="screen-dashboard" class="hidden partner-shell">
+      <h1 class="sr-only">PeuterPlannen partner dashboard</h1>
+
+      <article class="portal-hero partner-dashboard-top">
+        <div>
+          <p class="portal-chip">Locatiebeheer</p>
+          <h2 class="portal-title" style="margin-top:8px;">Alles voor jouw listing op een plek</h2>
+          <p style="margin:8px 0 0;color:rgba(255,255,255,0.84);max-width:60ch;">Werk je profiel bij, volg claimstatus en beheer je featured zichtbaarheid zonder supporttickets.</p>
+        </div>
+        <div class="partner-status-grid" aria-label="Korte statusoverzicht">
+          <div class="partner-status-box">
+            <b id="status-loc-name">Nog niet geclaimd</b>
+            <span>Gekoppelde locatie</span>
+          </div>
+          <div class="partner-status-box">
+            <b id="status-plan">Gratis</b>
+            <span>Abonnementsstatus</span>
+          </div>
+          <div class="partner-status-box">
+            <b id="status-updated">-</b>
+            <span>Laatst geupdate</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="portal-card portal-card-soft">
+        <div class="portal-tabs" role="tablist" aria-label="Partner onderdelen">
+          <button class="portal-tab active" id="tab-btn-mijn-locatie" data-tab-target="tab-mijn-locatie" role="tab" aria-selected="true" type="button">Mijn locatie</button>
+          <button class="portal-tab" id="tab-btn-billing" data-tab-target="tab-billing" role="tab" aria-selected="false" type="button">Abonnement</button>
+        </div>
+      </article>
+
+      <section id="tab-mijn-locatie" class="portal-card">
+        <h2 class="partner-section-title">Mijn locatie</h2>
+
+        <div id="claim-status-panel" class="hidden">
+          <div id="claim-status-msg" class="portal-alert portal-alert-info" role="status" aria-live="polite"></div>
+        </div>
+
+        <div id="no-location-panel" class="hidden">
+          <p class="portal-subtitle" style="margin-bottom:12px;">Nog geen locatie gekoppeld. Zoek je locatie en dien een claim in.</p>
+          <div id="claim-search-alert" class="portal-alert-wrap" aria-live="assertive"></div>
+          <div class="portal-row">
+            <div class="portal-form-group" style="margin-bottom:0;">
+              <label class="portal-label" for="loc-search-input">Zoek op locatienaam</label>
+              <input id="loc-search-input" class="portal-input" type="text" placeholder="Bijv. Jungle Cafe Eindhoven">
+            </div>
+            <div class="portal-btn-row" style="align-items:flex-end;">
+              <button id="loc-search-btn" class="portal-btn portal-btn-primary" type="button">Zoeken</button>
+            </div>
+          </div>
+          <div id="loc-search-results" style="margin-top:12px;"></div>
+        </div>
+
+        <div id="has-location-panel" class="hidden">
+          <div class="portal-heading-row">
+            <h3 id="edit-loc-name" class="portal-title" style="font-size:22px;">-</h3>
+          </div>
+          <div id="edit-alert" class="portal-alert-wrap" aria-live="polite"></div>
+
+          <div class="portal-form-group">
+            <label class="portal-label" for="edit-description">Beschrijving</label>
+            <textarea id="edit-description" class="portal-textarea" placeholder="Beschrijf je locatie voor ouders met peuters en kleuters..."></textarea>
+          </div>
+
+          <div class="portal-form-group">
+            <label class="portal-label" for="edit-toddler-highlight">Korte praktische samenvatting</label>
+            <textarea id="edit-toddler-highlight" class="portal-textarea" placeholder="Bijv. grote speelhoek, snelle lunch en veel schaduw bij warm weer."></textarea>
+          </div>
+
+          <div class="portal-row">
+            <div class="portal-form-group">
+              <label class="portal-label" for="edit-website">Website</label>
+              <input id="edit-website" class="portal-input" type="text" placeholder="https://...">
+            </div>
+            <div class="portal-form-group">
+              <label class="portal-label" for="edit-hours">Openingstijden</label>
+              <input id="edit-hours" class="portal-input" type="text" placeholder="Bijv. ma-vr 09:00-17:00">
+            </div>
+          </div>
+
+          <div class="portal-row">
+            <div class="portal-form-group">
+              <label class="portal-label" for="edit-locality">Wijk of plaatselijke context</label>
+              <input id="edit-locality" class="portal-input" type="text" placeholder="Bijv. Kralingen, Vondelpark, centrum">
+            </div>
+            <div class="portal-form-group">
+              <label class="portal-label" for="edit-food-fit">Eten / lunch-fit</label>
+              <input id="edit-food-fit" class="portal-input" type="text" placeholder="Bijv. snelle lunch, kindermenu, terras">
+            </div>
+          </div>
+
+          <div class="portal-form-group">
+            <label class="portal-label" for="edit-play-corner-quality">Speelhoek of speelkans</label>
+            <input id="edit-play-corner-quality" class="portal-input" type="text" placeholder="Bijv. speelhoek binnen, zandplek buiten, veel ruimte om te bewegen">
+          </div>
+
+          <div class="partner-divider"></div>
+
+          <h3 class="partner-section-title" style="font-size:16px;">Faciliteiten</h3>
+          <div class="portal-checkbox-row"><input type="checkbox" id="edit-coffee"><label for="edit-coffee">Koffie aanwezig</label></div>
+          <div class="portal-checkbox-row"><input type="checkbox" id="edit-diaper"><label for="edit-diaper">Verschoontafel aanwezig</label></div>
+          <div class="portal-checkbox-row"><input type="checkbox" id="edit-alcohol"><label for="edit-alcohol">Alcohol beschikbaar</label></div>
+
+          <div class="portal-row">
+            <div class="portal-form-group">
+              <label class="portal-label" for="edit-min-age">Minimumleeftijd</label>
+              <input id="edit-min-age" class="portal-input" type="number" min="0" max="18" placeholder="0">
+            </div>
+            <div class="portal-form-group">
+              <label class="portal-label" for="edit-max-age">Maximumleeftijd</label>
+              <input id="edit-max-age" class="portal-input" type="number" min="0" max="18" placeholder="6">
+            </div>
+          </div>
+
+          <div class="portal-form-group">
+            <label class="portal-label" for="edit-weather">Binnen of buiten</label>
+            <select id="edit-weather" class="portal-select">
+              <option value="indoor">Binnen</option>
+              <option value="outdoor">Buiten</option>
+              <option value="both">Binnen en buiten</option>
+            </select>
+          </div>
+
+          <div id="photo-upload-section">
+            <div class="partner-divider"></div>
+            <h3 class="partner-section-title" style="font-size:16px;">Foto uploaden</h3>
+            <p class="portal-subtitle" style="margin-bottom:8px;">Beschikbaar voor trial en featured listings.</p>
+            <div class="portal-form-group">
+              <label class="portal-label" for="edit-photo">Foto (JPG/PNG/WebP, max 5MB)</label>
+              <input id="edit-photo" class="portal-input" type="file" accept="image/jpeg,image/png,image/webp">
+            </div>
+          </div>
+
+          <div class="portal-btn-row">
+            <button id="save-btn" class="portal-btn portal-btn-primary" type="button">Wijzigingen ter review indienen</button>
+            <button id="reload-btn" class="portal-btn portal-btn-secondary" type="button">Herladen</button>
+          </div>
+
+          <div class="partner-divider"></div>
+          <h3 class="partner-section-title" style="font-size:16px;">Ingediende voorstellen</h3>
+          <p class="portal-subtitle" style="margin-bottom:10px;">Wijzigingen gaan eerst naar de redactie. Pas na review worden ze live zichtbaar op peuterplannen.nl.</p>
+          <div id="proposal-alert" class="portal-alert-wrap" aria-live="polite"></div>
+          <div class="portal-table-wrap">
+            <table class="portal-table" aria-label="Ingediende voorstellen">
+              <thead><tr><th>Datum</th><th>Veld</th><th>Waarde</th><th>Status</th><th>Notitie</th></tr></thead>
+              <tbody id="proposal-tbody"><tr><td colspan="5" class="portal-muted">Nog geen voorstellen geladen.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-billing" class="portal-card hidden">
+        <h2 class="partner-section-title">Abonnement</h2>
+        <p id="billing-current-plan" class="portal-subtitle" style="margin-bottom:10px;">Huidig plan: <strong>Gratis</strong></p>
+        <div id="billing-alert" class="portal-alert-wrap" aria-live="polite"></div>
+
+        <div class="partner-billing-grid" id="upgrade-section">
+          <article class="partner-plan-card">
+            <h3>Featured maand</h3>
+            <p class="partner-plan-price">EUR 11</p>
+            <p class="partner-plan-note">per maand, maandelijks opzegbaar</p>
+            <ul class="portal-list" style="margin-top:10px;">
+              <li class="portal-list-item"><div>Featured badge en hogere zichtbaarheid</div></li>
+              <li class="portal-list-item"><div>Owner verified badge</div></li>
+            </ul>
+            <button id="upgrade-monthly-btn" class="portal-btn portal-btn-accent portal-btn-full" type="button" style="margin-top:12px;">Start maandplan</button>
+          </article>
+
+          <article class="partner-plan-card">
+            <h3>Featured jaar</h3>
+            <p class="partner-plan-price">EUR 90</p>
+            <p class="partner-plan-note">per jaar, effectief 32% korting</p>
+            <ul class="portal-list" style="margin-top:10px;">
+              <li class="portal-list-item"><div>Zelfde features als maandplan</div></li>
+              <li class="portal-list-item"><div>Lagere prijs op jaarbasis</div></li>
+            </ul>
+            <button id="upgrade-yearly-btn" class="portal-btn portal-btn-secondary portal-btn-full" type="button" style="margin-top:12px;">Start jaarplan</button>
+          </article>
+        </div>
+
+        <div id="manage-section" class="portal-card portal-card-soft hidden" style="margin-top:12px;">
+          <h3 class="partner-section-title" style="font-size:16px;">Beheer of zeg op via Stripe</h3>
+          <p class="portal-subtitle" style="margin-bottom:10px;">Je kunt betaalmethode wijzigen, facturen bekijken of opzeggen via je Stripe klantportaal.</p>
+          <button id="manage-subscription-btn" class="portal-btn portal-btn-secondary" type="button">Open Stripe klantportaal</button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div id="confirm-modal" class="portal-modal" aria-hidden="true">
+    <div class="portal-modal-backdrop" data-close-modal="true"></div>
+    <div class="portal-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+      <h2 id="confirm-title" class="portal-modal-title" data-confirm-title>Bevestigen</h2>
+      <p class="portal-modal-text" data-confirm-text></p>
+      <div class="portal-modal-actions">
+        <button type="button" class="portal-btn portal-btn-secondary" data-confirm-cancel>Annuleren</button>
+        <button type="button" class="portal-btn portal-btn-primary" data-confirm-ok>Bevestigen</button>
+      </div>
+    </div>
+  </div>
+  <script src="/pp-interactions.js" defer></script>
+  <script src="/partner/portal-shell.js" defer></script>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SB_URL = 'https://piujsvgbfflrrvauzsxe.supabase.co';
+    const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpdWpzdmdiZmZscnJ2YXV6c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIwNDMxNzAsImV4cCI6MjA4NzYxOTE3MH0.5y3gqiPfVvpvfaDYA_PgqE-KTvuf6zgN6vGzqfUpeSo';
+    const EDGE_BASE = `${SB_URL}/functions/v1`;
+
+    const supabase = createClient(SB_URL, SB_ANON);
+
+    const state = {
+      currentUser: null,
+      venueOwner: null,
+      claimedLoc: null,
+      otpEmail: '',
+      bootstrapNonce: 0,
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      bindUI();
+      maybeHandleAuthCallback();
+      showScreen('landing');
+    });
+
+    function bindUI() {
+      document.getElementById('send-otp-btn').addEventListener('click', sendOtp);
+      document.getElementById('verify-otp-btn').addEventListener('click', verifyOtp);
+      document.getElementById('otp-back-btn').addEventListener('click', () => showScreen('landing'));
+      document.getElementById('nav-logout').addEventListener('click', handleLogout);
+      document.getElementById('otp-code').addEventListener('input', () => normalizeOtpField('otp-code'));
+
+      document.querySelectorAll('[data-tab-target]').forEach((btn) => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tabTarget));
+      });
+
+      document.getElementById('loc-search-btn').addEventListener('click', searchLocations);
+      document.getElementById('loc-search-results').addEventListener('click', onSearchResultsClick);
+
+      document.getElementById('save-btn').addEventListener('click', saveLocationEdits);
+      document.getElementById('reload-btn').addEventListener('click', loadLocationData);
+
+      document.getElementById('upgrade-monthly-btn').addEventListener('click', () => startCheckout('monthly'));
+      document.getElementById('upgrade-yearly-btn').addEventListener('click', () => startCheckout('yearly'));
+      document.getElementById('manage-subscription-btn').addEventListener('click', openBillingPortal);
+    }
+
+    function showScreen(id) {
+      ['landing', 'otp', 'dashboard'].forEach((screen) => {
+        document.getElementById(`screen-${screen}`).classList.toggle('hidden', screen !== id);
+      });
+    }
+
+    function normalizeOtpField(fieldId) {
+      const input = document.getElementById(fieldId);
+      const value = (input?.value || '').replace(/\D/g, '').slice(0, 6);
+      if (input) input.value = value;
+      return value;
+    }
+
+    function setSignedInChrome(email) {
+      document.getElementById('nav-user').textContent = email;
+      document.getElementById('nav-user').classList.remove('hidden');
+      document.getElementById('nav-logout').classList.remove('hidden');
+    }
+
+    function setSignedOutChrome() {
+      document.getElementById('nav-user').classList.add('hidden');
+      document.getElementById('nav-logout').classList.add('hidden');
+    }
+
+    function consumeBillingStatus() {
+      const params = new URLSearchParams(location.search);
+      const billing = params.get('billing');
+      if (!billing) return;
+      history.replaceState({}, '', location.pathname);
+      if (billing === 'success') {
+        trackEvent('partner_checkout_complete', { tier: 'featured' });
+        PortalShell.setAlert('billing-alert', 'Betaling geslaagd. Je plan wordt binnen enkele seconden actief.', 'success');
+      } else if (billing === 'canceled') {
+        PortalShell.setAlert('billing-alert', 'Checkout afgebroken. Geen wijzigingen doorgevoerd.', 'info');
+      }
+    }
+
+    function switchTab(tabId) {
+      ['tab-mijn-locatie', 'tab-billing'].forEach((id) => {
+        const section = document.getElementById(id);
+        const button = document.querySelector(`[data-tab-target="${id}"]`);
+        const active = id === tabId;
+        section.classList.toggle('hidden', !active);
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+    }
+
+    async function sendOtp() {
+      const email = document.getElementById('login-email').value.trim();
+      const button = document.getElementById('send-otp-btn');
+      PortalShell.setAlert('landing-alert', '', 'info');
+
+      if (!email) {
+        PortalShell.setAlert('landing-alert', 'Vul je e-mailadres in.', 'error', { assertive: true });
+        return;
+      }
+
+      trackEvent('partner_signup_start');
+      PortalShell.setButtonBusy(button, true, 'Versturen...', 'Doorgaan met e-mail');
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          shouldCreateUser: true,
+          emailRedirectTo: `${location.origin}${location.pathname}`,
+        },
+      });
+
+      if (error) {
+        PortalShell.setButtonBusy(button, false, null, 'Doorgaan met e-mail');
+        PortalShell.setAlert('landing-alert', `Inloggen mislukt: ${error.message}`, 'error', { assertive: true });
+        return;
+      }
+
+      state.otpEmail = email;
+      document.getElementById('otp-email-display').textContent = email;
+      document.getElementById('otp-code').value = '';
+      showScreen('otp');
+      startOtpCooldown(button, 60);
+      setTimeout(() => document.getElementById('otp-code').focus(), 60);
+    }
+
+    async function maybeHandleAuthCallback() {
+      const params = new URLSearchParams(location.search);
+      const tokenHash = params.get('token_hash');
+      const type = params.get('type');
+      const errorDescription = params.get('error_description');
+
+      if (errorDescription) {
+        PortalShell.setAlert('landing-alert', errorDescription, 'error', { assertive: true });
+      }
+
+      if (!tokenHash || !type) return;
+
+      try {
+        const { error } = await supabase.auth.verifyOtp({
+          type,
+          token_hash: tokenHash,
+        });
+        if (error) {
+          PortalShell.setAlert('landing-alert', 'De inloglink is ongeldig of verlopen. Vraag een nieuwe login aan.', 'error', { assertive: true });
+          return;
+        }
+      } finally {
+        history.replaceState({}, '', location.pathname);
+      }
+    }
+
+    function startOtpCooldown(button, seconds) {
+      let remaining = seconds;
+      button.disabled = true;
+      button.textContent = `Opnieuw sturen (${remaining}s)`;
+      const timer = setInterval(() => {
+        remaining -= 1;
+        if (remaining <= 0) {
+          clearInterval(timer);
+          button.disabled = false;
+          button.textContent = 'Doorgaan met e-mail';
+        } else {
+          button.textContent = `Opnieuw sturen (${remaining}s)`;
+        }
+      }, 1000);
+    }
+
+    async function verifyOtp() {
+      const token = normalizeOtpField('otp-code');
+      const button = document.getElementById('verify-otp-btn');
+      PortalShell.setAlert('otp-alert', '', 'info');
+
+      if (token.length !== 6) {
+        PortalShell.setAlert('otp-alert', 'Vul de 6-cijferige code in.', 'error', { assertive: true });
+        return;
+      }
+
+      PortalShell.setButtonBusy(button, true, 'Controleren...', 'Inloggen');
+      const { error } = await supabase.auth.verifyOtp({
+        email: state.otpEmail,
+        token,
+        type: 'email',
+      });
+      PortalShell.setButtonBusy(button, false, null, 'Inloggen');
+
+      if (error) {
+        PortalShell.setAlert('otp-alert', 'Ongeldige of verlopen code. Probeer opnieuw.', 'error', { assertive: true });
+      }
+    }
+
+    async function bootstrapDashboard() {
+      trackEvent('partner_signup_complete');
+      const bootstrapNonce = ++state.bootstrapNonce;
+      showScreen('dashboard');
+      switchTab('tab-mijn-locatie');
+      await loadOwnerData();
+      if (bootstrapNonce !== state.bootstrapNonce || !state.currentUser) return;
+      consumeBillingStatus();
+    }
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        state.currentUser = session.user;
+        setSignedInChrome(session.user.email);
+        Promise.resolve().then(() => bootstrapDashboard()).catch((error) => {
+          console.error('bootstrapDashboard failed', error);
+          PortalShell.setAlert('landing-alert', 'Portal laden mislukt. Vernieuw de pagina of log opnieuw in.', 'error', { assertive: true });
+        });
+      } else {
+        state.bootstrapNonce += 1;
+        state.currentUser = null;
+        state.venueOwner = null;
+        state.claimedLoc = null;
+        setSignedOutChrome();
+        showScreen('landing');
+      }
+    });
+
+    async function handleLogout() {
+      await supabase.auth.signOut();
+    }
+
+    async function loadOwnerData() {
+      const { data, error } = await supabase
+        .from('venue_owners')
+        .select('*')
+        .eq('user_id', state.currentUser.id)
+        .maybeSingle();
+
+      if (error) {
+        PortalShell.setAlert('landing-alert', `Profiel laden mislukt: ${error.message}`, 'error', { assertive: true });
+        return;
+      }
+
+      state.venueOwner = data || null;
+
+      if (!state.venueOwner?.location_id) {
+        await loadLatestClaimStatus();
+        document.getElementById('no-location-panel').classList.remove('hidden');
+        document.getElementById('has-location-panel').classList.add('hidden');
+      } else {
+        document.getElementById('no-location-panel').classList.add('hidden');
+        document.getElementById('has-location-panel').classList.remove('hidden');
+        await loadLocationData();
+      }
+
+      updateBillingUI();
+      refreshStatusBoxes();
+    }
+
+    async function loadLatestClaimStatus() {
+      const { data, error } = await supabase
+        .from('location_claim_requests')
+        .select('status, created_at')
+        .eq('user_id', state.currentUser.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) {
+        PortalShell.setAlert('claim-search-alert', `Claimstatus laden mislukt: ${error.message}`, 'error', { assertive: true });
+        return;
+      }
+
+      const panel = document.getElementById('claim-status-panel');
+      const msg = document.getElementById('claim-status-msg');
+      if (!data) {
+        panel.classList.add('hidden');
+        msg.textContent = '';
+        return;
+      }
+
+      panel.classList.remove('hidden');
+      if (data.status === 'pending') {
+        msg.textContent = 'Aanvraag ontvangen. We beoordelen je claim zo snel mogelijk.';
+      } else if (data.status === 'approved') {
+        msg.textContent = 'Claim goedgekeurd. Je kunt je locatie nu beheren.';
+      } else if (data.status === 'auto_rejected_duplicate') {
+        msg.textContent = 'Een andere claim op deze locatie is al goedgekeurd.';
+      } else {
+        msg.textContent = 'Claim afgewezen. Neem contact op als je denkt dat dit onjuist is.';
+      }
+    }
+
+    async function searchLocations() {
+      const query = document.getElementById('loc-search-input').value.trim();
+      const resultsEl = document.getElementById('loc-search-results');
+      PortalShell.setAlert('claim-search-alert', '', 'info');
+
+      if (!query) {
+        PortalShell.setAlert('claim-search-alert', 'Vul een locatienaam in om te zoeken.', 'error', { assertive: true });
+        return;
+      }
+
+      resultsEl.innerHTML = '<p class="portal-muted">Zoeken...</p>';
+
+      const { data, error } = await supabase
+        .from('locations')
+        .select('id, name, region, type')
+        .ilike('name', `%${query}%`)
+        .limit(10);
+
+      if (error) {
+        resultsEl.innerHTML = '<p class="portal-muted">Zoeken mislukt. Probeer opnieuw.</p>';
+        PortalShell.setAlert('claim-search-alert', `Zoeken mislukt: ${error.message}`, 'error', { assertive: true });
+        return;
+      }
+
+      if (!data?.length) {
+        resultsEl.innerHTML = '<div class="portal-empty-state"><strong>Geen locaties gevonden</strong>Probeer een andere naam of zoek op een bekendere vestigingsnaam.</div>';
+        return;
+      }
+
+      resultsEl.innerHTML = data.map((loc) => `
+        <div class="portal-result-row">
+          <div>
+            <div class="portal-result-name">${escapeHtml(loc.name)}</div>
+            <div class="portal-result-meta">${escapeHtml(loc.region || '')} · ${escapeHtml(loc.type || '')}</div>
+          </div>
+          <button type="button" class="portal-btn portal-btn-secondary portal-btn-sm"
+            data-claim-location-id="${loc.id}"
+            data-claim-location-name="${escapeAttr(loc.name)}">Claimen</button>
+        </div>
+      `).join('');
+    }
+
+    async function onSearchResultsClick(event) {
+      const button = event.target.closest('[data-claim-location-id]');
+      if (!button) return;
+
+      const locationId = Number(button.dataset.claimLocationId);
+      const locationName = button.dataset.claimLocationName || 'deze locatie';
+
+      const confirmed = await PortalShell.showConfirm({
+        title: 'Claim-aanvraag versturen?',
+        text: `We versturen een claim-aanvraag voor ${locationName}.`,
+        confirmLabel: 'Versturen',
+        trigger: button,
+      });
+
+      if (!confirmed) return;
+
+      trackEvent('partner_claim_start', { location_id: locationId });
+      PortalShell.setButtonBusy(button, true, 'Versturen...', 'Claimen');
+
+      try {
+        const since = new Date();
+        since.setDate(since.getDate() - 1);
+
+        const { count, error: countError } = await supabase
+          .from('location_claim_requests')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', state.currentUser.id)
+          .gte('created_at', since.toISOString());
+
+        if (countError) {
+          throw countError;
+        }
+
+        if ((count || 0) >= 3) {
+          PortalShell.setAlert('claim-search-alert', 'Je hebt al 3 aanvragen in 24 uur verstuurd. Probeer later opnieuw.', 'warn', { assertive: true });
+          return;
+        }
+
+        const { error } = await supabase
+          .from('location_claim_requests')
+          .insert({
+            user_id: state.currentUser.id,
+            location_id: locationId,
+            message: `Ik ben eigenaar van ${locationName} en wil deze locatie beheren via PeuterPlannen.`,
+          });
+
+        if (error) {
+          throw error;
+        }
+
+        document.getElementById('loc-search-results').innerHTML = '';
+        await loadLatestClaimStatus();
+        trackEvent('partner_claim_complete', { location_id: locationId });
+        PortalShell.setAlert('claim-search-alert', 'Claim-aanvraag verstuurd. We laten je weten zodra deze beoordeeld is.', 'success');
+      } catch (error) {
+        PortalShell.setAlert('claim-search-alert', `Claim mislukt: ${error.message}`, 'error', { assertive: true });
+      } finally {
+        PortalShell.setButtonBusy(button, false, null, 'Claimen');
+      }
+    }
+
+    async function loadLocationData() {
+      if (!state.venueOwner?.location_id) return;
+
+      const { data: location, error } = await supabase
+        .from('locations')
+        .select('*')
+        .eq('id', state.venueOwner.location_id)
+        .single();
+
+      if (error) {
+        PortalShell.setAlert('edit-alert', `Locatie laden mislukt: ${error.message}`, 'error', { assertive: true });
+        return;
+      }
+
+      if (!location) return;
+
+      state.claimedLoc = location;
+      document.getElementById('edit-loc-name').textContent = location.name || '-';
+      document.getElementById('edit-description').value = location.description || '';
+      document.getElementById('edit-toddler-highlight').value = location.toddler_highlight || '';
+      document.getElementById('edit-website').value = location.website || '';
+      document.getElementById('edit-hours').value = location.opening_hours || '';
+      document.getElementById('edit-locality').value = location.seo_primary_locality || '';
+      document.getElementById('edit-food-fit').value = location.food_fit || '';
+      document.getElementById('edit-play-corner-quality').value = location.play_corner_quality || '';
+      document.getElementById('edit-coffee').checked = !!location.coffee;
+      document.getElementById('edit-diaper').checked = !!location.diaper;
+      document.getElementById('edit-alcohol').checked = !!location.alcohol;
+      document.getElementById('edit-min-age').value = location.min_age ?? '';
+      document.getElementById('edit-max-age').value = location.max_age ?? '';
+      document.getElementById('edit-weather').value = location.weather || 'indoor';
+
+      const canUploadPhoto = ['featured', 'trial'].includes(state.venueOwner?.subscription_status || 'none');
+      document.getElementById('photo-upload-section').classList.toggle('hidden', !canUploadPhoto);
+
+      refreshStatusBoxes();
+      await loadObservationProposals();
+    }
+
+    function updateBillingUI() {
+      const status = safeSubscriptionStatus(state.venueOwner?.subscription_status);
+      const expires = state.venueOwner?.plan_expires_at;
+      const planLabel = {
+        none: 'Gratis',
+        trial: 'Trial',
+        featured: 'Featured',
+        past_due: 'Betaling mislukt',
+        canceled: 'Opgezegd',
+      }[status];
+
+      const planText = expires
+        ? `Huidig plan: ${planLabel} · Geldig tot ${fmtDate(expires)}`
+        : `Huidig plan: ${planLabel}`;
+      document.getElementById('billing-current-plan').textContent = planText;
+
+      const hasActive = ['featured', 'trial', 'past_due'].includes(status);
+      document.getElementById('upgrade-section').classList.toggle('hidden', hasActive);
+      document.getElementById('manage-section').classList.toggle('hidden', !hasActive);
+    }
+
+    function refreshStatusBoxes() {
+      const locName = state.claimedLoc?.name || 'Nog niet geclaimd';
+      const status = safeSubscriptionStatus(state.venueOwner?.subscription_status);
+      const planLabel = {
+        none: 'Gratis',
+        trial: 'Trial',
+        featured: 'Featured',
+        past_due: 'Past due',
+        canceled: 'Opgezegd',
+      }[status];
+      const updated = state.claimedLoc?.last_owner_update
+        ? fmtDateTime(state.claimedLoc.last_owner_update)
+        : 'Nog niet aangepast';
+
+      document.getElementById('status-loc-name').textContent = locName;
+      document.getElementById('status-plan').textContent = planLabel;
+      document.getElementById('status-updated').textContent = updated;
+    }
+
+    function statusLabel(status) {
+      return {
+        pending: 'In review',
+        approved: 'Goedgekeurd',
+        rejected: 'Afgewezen',
+        applied: 'Live',
+      }[status] || status || '-';
+    }
+
+    function formatObservationValue(value) {
+      if (value == null || value === '') return '-';
+      if (typeof value === 'boolean') return value ? 'Ja' : 'Nee';
+      return String(value);
+    }
+
+    async function loadObservationProposals() {
+      const tbody = document.getElementById('proposal-tbody');
+      if (!state.venueOwner?.location_id) {
+        tbody.innerHTML = '<tr><td colspan="5" class="portal-muted">Nog geen gekoppelde locatie.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = '<tr><td colspan="5" class="portal-muted">Voorstellen laden...</td></tr>';
+      PortalShell.setAlert('proposal-alert', '', 'info');
+
+      const { data, error } = await supabase
+        .from('location_observations')
+        .select('id, field_name, value_json, status, notes, created_at')
+        .eq('location_id', state.venueOwner.location_id)
+        .eq('source_type', 'partner')
+        .order('created_at', { ascending: false })
+        .limit(20);
+
+      if (error) {
+        tbody.innerHTML = '<tr><td colspan="5" class="portal-muted">Voorstellen laden mislukt.</td></tr>';
+        PortalShell.setAlert('proposal-alert', `Voorstellen laden mislukt: ${error.message}`, 'error', { assertive: true });
+        return;
+      }
+
+      if (!data?.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="portal-muted">Nog geen ingediende voorstellen.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = data.map((row) => `
+        <tr>
+          <td class="portal-muted">${fmtDateTime(row.created_at)}</td>
+          <td><span class="portal-inline-code">${escapeHtml(row.field_name || '-')}</span></td>
+          <td class="portal-truncate">${escapeHtml(formatObservationValue(row.value_json))}</td>
+          <td>${escapeHtml(statusLabel(row.status))}</td>
+          <td class="portal-truncate">${escapeHtml(row.notes || '-')}</td>
+        </tr>
+      `).join('');
+    }
+
+    async function saveLocationEdits() {
+      if (!state.claimedLoc) return;
+
+      const button = document.getElementById('save-btn');
+      PortalShell.setAlert('edit-alert', '', 'info');
+      PortalShell.setButtonBusy(button, true, 'Indienen...', 'Wijzigingen ter review indienen');
+
+      try {
+        const minAgeRaw = document.getElementById('edit-min-age').value.trim();
+        const maxAgeRaw = document.getElementById('edit-max-age').value.trim();
+        const minAge = minAgeRaw === '' ? null : Number(minAgeRaw);
+        const maxAge = maxAgeRaw === '' ? null : Number(maxAgeRaw);
+
+        if (minAge !== null && (Number.isNaN(minAge) || minAge < 0 || minAge > 18)) {
+          throw new Error('Minimumleeftijd moet tussen 0 en 18 liggen.');
+        }
+        if (maxAge !== null && (Number.isNaN(maxAge) || maxAge < 0 || maxAge > 18)) {
+          throw new Error('Maximumleeftijd moet tussen 0 en 18 liggen.');
+        }
+        if (minAge !== null && maxAge !== null && minAge > maxAge) {
+          throw new Error('Minimumleeftijd kan niet hoger zijn dan maximumleeftijd.');
+        }
+
+        const website = document.getElementById('edit-website').value.trim();
+        if (website) {
+          try {
+            const parsed = new URL(website);
+            if (!['http:', 'https:'].includes(parsed.protocol)) {
+              throw new Error('invalid_protocol');
+            }
+          } catch {
+            throw new Error('Website URL is ongeldig. Gebruik http(s)://...');
+          }
+        }
+
+        const proposedValues = {
+          description: document.getElementById('edit-description').value.trim() || null,
+          toddler_highlight: document.getElementById('edit-toddler-highlight').value.trim() || null,
+          website: website || null,
+          opening_hours: document.getElementById('edit-hours').value.trim() || null,
+          seo_primary_locality: document.getElementById('edit-locality').value.trim() || null,
+          food_fit: document.getElementById('edit-food-fit').value.trim() || null,
+          play_corner_quality: document.getElementById('edit-play-corner-quality').value.trim() || null,
+          coffee: document.getElementById('edit-coffee').checked,
+          diaper: document.getElementById('edit-diaper').checked,
+          alcohol: document.getElementById('edit-alcohol').checked,
+          min_age: minAge,
+          max_age: maxAge,
+          weather: document.getElementById('edit-weather').value,
+        };
+
+        const observations = Object.entries(proposedValues)
+          .filter(([field, value]) => JSON.stringify(state.claimedLoc[field] ?? null) !== JSON.stringify(value))
+          .map(([field_name, value_json]) => ({
+            field_name,
+            value_json,
+            notes: 'Voorgesteld via partnerportal',
+          }));
+
+        const file = document.getElementById('edit-photo').files?.[0];
+        if (file) {
+          const photoUrl = await uploadPhoto(state.claimedLoc.id, file);
+          observations.push({
+            field_name: 'owner_photo_url',
+            value_json: photoUrl,
+            notes: 'Nieuwe ownerfoto voorgesteld via partnerportal',
+          });
+        }
+
+        if (!observations.length) {
+          PortalShell.setAlert('edit-alert', 'Geen nieuwe wijzigingen om in te dienen.', 'info');
+          return;
+        }
+
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) throw new Error('Je sessie is verlopen. Log opnieuw in.');
+
+        const response = await fetch(`${EDGE_BASE}/submit-partner-observations`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: SB_ANON,
+            Authorization: `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({
+            location_id: state.claimedLoc.id,
+            observations,
+          }),
+        });
+
+        let payload = {};
+        try {
+          payload = await response.json();
+        } catch {
+          payload = {};
+        }
+
+        if (!response.ok) {
+          throw new Error(payload.error || 'Wijzigingen konden niet ter review worden ingestuurd.');
+        }
+
+        PortalShell.setAlert('edit-alert', `Voorstellen ingestuurd: ${payload.inserted || 0} nieuw, ${payload.updated || 0} bijgewerkt.`, 'success');
+        document.getElementById('edit-photo').value = '';
+        await loadObservationProposals();
+      } catch (error) {
+        PortalShell.setAlert('edit-alert', `Opslaan mislukt: ${error.message}`, 'error', { assertive: true });
+      } finally {
+        PortalShell.setButtonBusy(button, false, null, 'Wijzigingen ter review indienen');
+      }
+    }
+
+    async function uploadPhoto(locationId, file) {
+      const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+      if (!allowed.includes(file.type)) throw new Error('Alleen JPG, PNG of WebP is toegestaan.');
+      if (file.size > 5 * 1024 * 1024) throw new Error('Bestand te groot (max 5MB).');
+
+      const ext = file.name.split('.').pop();
+      const path = `${locationId}/owner-${Date.now()}.${ext}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('location-images')
+        .upload(path, file, { upsert: true, contentType: file.type });
+
+      if (uploadError) throw new Error(uploadError.message);
+
+      const { data } = supabase.storage.from('location-images').getPublicUrl(path);
+      return data.publicUrl;
+    }
+
+    async function startCheckout(interval) {
+      const buttonId = interval === 'monthly' ? 'upgrade-monthly-btn' : 'upgrade-yearly-btn';
+      const button = document.getElementById(buttonId);
+      PortalShell.setAlert('billing-alert', '', 'info');
+      PortalShell.setButtonBusy(button, true, 'Laden...', button.textContent);
+
+      trackEvent('partner_checkout_start', { tier: interval });
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) {
+          throw new Error('Je sessie is verlopen. Log opnieuw in.');
+        }
+
+        const response = await fetch(`${EDGE_BASE}/create-checkout-session`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: SB_ANON,
+            Authorization: `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({ plan_tier: 'featured', billing_interval: interval }),
+        });
+
+        const payload = await response.json();
+        if (!response.ok || !payload.url) {
+          throw new Error(payload.error || 'Checkout kon niet worden gestart.');
+        }
+
+        window.location.href = payload.url;
+      } catch (error) {
+        PortalShell.setAlert('billing-alert', `Checkout mislukt: ${error.message}`, 'error', { assertive: true });
+        PortalShell.setButtonBusy(button, false, null, interval === 'monthly' ? 'Start maandplan' : 'Start jaarplan');
+      }
+    }
+
+    async function openBillingPortal() {
+      const button = document.getElementById('manage-subscription-btn');
+      PortalShell.setAlert('billing-alert', '', 'info');
+      PortalShell.setButtonBusy(button, true, 'Openen...', 'Open Stripe klantportaal');
+
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) {
+          throw new Error('Je sessie is verlopen. Log opnieuw in.');
+        }
+
+        const response = await fetch(`${EDGE_BASE}/create-customer-portal-session`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: SB_ANON,
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        });
+
+        let payload = {};
+        try {
+          payload = await response.json();
+        } catch {
+          payload = {};
+        }
+
+        if (!response.ok || !payload.url) {
+          if (response.status === 404 || payload.code === 'NOT_FOUND') {
+            throw new Error('Het klantportaal is nog niet beschikbaar. Probeer het over enkele minuten opnieuw.');
+          }
+          throw new Error(payload.error || 'Klantportaal kon niet worden geopend.');
+        }
+
+        window.location.href = payload.url;
+      } catch (error) {
+        PortalShell.setButtonBusy(button, false, null, 'Open Stripe klantportaal');
+        PortalShell.setAlert('billing-alert', `Portal openen mislukt: ${error.message}`, 'error', { assertive: true });
+      }
+    }
+
+    function safeSubscriptionStatus(status) {
+      const allowed = ['none', 'trial', 'featured', 'past_due', 'canceled'];
+      return allowed.includes(status) ? status : 'none';
+    }
+
+    function fmtDate(iso) {
+      if (!iso) return '-';
+      return new Date(iso).toLocaleDateString('nl-NL', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      });
+    }
+
+    function fmtDateTime(iso) {
+      if (!iso) return '-';
+      return new Date(iso).toLocaleString('nl-NL', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    }
+
+    function trackEvent(name, params) {
+      if (typeof gtag === 'function') gtag('event', name, params);
+    }
+
+    function escapeHtml(value) {
+      return PortalShell.escapeHtml(value);
+    }
+
+    function escapeAttr(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+  </script>
+</body>
+</html>

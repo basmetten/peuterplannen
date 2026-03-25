@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <!-- Google tag (gtag.js) — Consent Mode v2 -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        analytics_storage: 'denied', ad_storage: 'denied',
+        ad_user_data: 'denied', ad_personalization: 'denied',
+        wait_for_update: 500
+      });
+      try { var _s = localStorage.getItem('pp_consent'); if (_s) gtag('consent', 'update', JSON.parse(_s)); } catch(e) {}
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+    <script>gtag('js', new Date()); gtag('config', 'G-46RW178B97');</script>
+    <script src="/consent.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <title>Over PeuterPlannen — Het verhaal</title>
+    <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
+    <meta property="og:image:width" content="1408">
+    <meta property="og:image:height" content="768">
+    <meta name="twitter:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
+    <!-- BEGIN:META_ABOUT -->
+    <meta name="description" content="PeuterPlannen helpt ouders met peuters de leukste uitjes te vinden in heel Nederland. 2138+ geverifieerde locaties in 22 regio's.">
+<!-- END:META_ABOUT -->
+    <link rel="canonical" href="https://peuterplannen.nl/about.html">
+    <meta name="theme-color" content="#D4775A">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <link rel="preload" href="/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/plus-jakarta-sans-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/design-system.css?v=202603200616">
+    <link rel="stylesheet" href="/style.min.css?v=202603200616">
+    <style>
+        /* Page-specific styles for about.html */
+        .content { max-width: 760px; margin: 0 auto; padding: 154px 24px 80px; }
+        .content h1 {
+            font-size: clamp(40px, 6vw, 66px);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            margin-bottom: 28px;
+            line-height: 0.96;
+            max-width: 12ch;
+            text-wrap: balance;
+        }
+        .content h2 {
+            font-size: clamp(30px, 3.2vw, 42px);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin: 56px 0 18px;
+            color: var(--pp-text);
+            line-height: 1.04;
+            text-wrap: balance;
+        }
+        .content p { margin-bottom: 20px; font-size: 17px; color: var(--pp-text-secondary); line-height: 1.8; }
+        .highlight { color: var(--pp-primary); font-weight: 600; }
+
+        .check-list { margin: 24px 0 32px; padding: 24px 28px; background: var(--pp-primary-light); border-radius: var(--pp-radius-sm); border-left: 4px solid var(--pp-primary); }
+        .check-list p { margin-bottom: 8px; font-size: 16px; color: var(--pp-text); }
+
+        .stats-row { display: flex; gap: 16px; margin: 32px 0; flex-wrap: wrap; }
+        .stat-card {
+            flex: 1; min-width: 140px; background: var(--pp-surface); border: 1px solid var(--pp-border);
+            border-radius: var(--pp-radius-sm); padding: 20px; text-align: center;
+            box-shadow: var(--pp-shadow-card); position: relative; overflow: hidden;
+            transition: all 0.25s ease;
+        }
+        .stat-card strong { display: block; font-size: 28px; font-weight: 800; color: var(--pp-primary); font-family: var(--pp-font-heading); }
+        .stat-card span { font-size: 14px; color: var(--pp-text-muted); }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--pp-primary), var(--pp-accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; }
+        .stat-card:hover::before { transform: scaleX(1); }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: var(--pp-shadow-card-hover); }
+
+        .cta-box { background: var(--pp-primary); border-radius: var(--pp-radius-md); padding: 36px 32px; text-align: center; margin-top: 48px; color: white; }
+        .cta-box h3 { font-size: clamp(28px, 3vw, 38px); line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 12px; }
+        .cta-box p { color: rgba(255,255,255,0.85); margin-bottom: 20px; }
+        .cta-box a { background: white; color: var(--pp-primary); padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; transition: background 0.2s; }
+        .cta-box a:hover { background: var(--pp-surface-hover); }
+
+        .support-about-section { background: linear-gradient(135deg, var(--pp-primary), var(--pp-primary-dark)); color: white; border-radius: var(--pp-radius-md); padding: 36px 32px; text-align: center; margin: 48px 0; box-shadow: var(--pp-shadow-lg); }
+        .support-about-inner { max-width: 480px; margin: 0 auto; }
+        .support-about-section h2 { font-size: clamp(30px, 3.2vw, 40px); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; color: white; margin-top: 0; line-height: 1.04; }
+        .support-about-section p { color: rgba(255,255,255,0.9); margin-bottom: 16px; font-size: 16px; }
+        .support-about-amounts { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .support-about-pill { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); border-radius: var(--pp-radius-pill); padding: 6px 16px; font-size: 14px; font-weight: 600; }
+        .support-about-pill-mid { background: white; color: var(--pp-primary-dark); border-color: white; }
+        .support-about-cta { background: white; color: var(--pp-primary-dark); padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; transition: transform 0.15s ease, background 0.15s ease; }
+        .support-about-cta:hover { background: var(--pp-surface-hover); transform: translateY(-1px); }
+        .support-about-subline { font-size: 14px; opacity: 0.75; margin-top: 16px; margin-bottom: 0; }
+        @media (max-width: 600px) { .support-about-section { padding: 28px 20px; } }
+
+        @media (max-width: 768px) {
+            .content { padding-top: 124px; }
+            .content h1 { font-size: clamp(34px, 10vw, 46px); line-height: 0.98; }
+            .content h2 { font-size: clamp(28px, 7vw, 34px); }
+            .stats-row { gap: 12px; }
+            .stat-card { min-width: 100px; padding: 16px; }
+        }
+    </style>
+    <link rel="stylesheet" href="/nav-floating.css?v=202603200616">
+    <script src="/nav-floating.js?v=202603200616" defer></script>
+    <script src="/pp-interactions.js" defer></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+    <meta name="theme-color" content="#D4775A">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
+    <nav aria-label="Hoofdnavigatie" class="floating-nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" class="nav-logo-svg" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>
+                <span class="logo-text"><span class="logo-top">Peuter</span><span class="logo-bottom">Plannen</span></span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/ontdekken/" class="nav-link">Ontdekken</a>
+                <a href="/about.html" class="nav-link">Over</a>
+                <a href="/blog/" class="nav-link">Inspiratie</a>
+                <a href="/contact.html" class="nav-link">Contact</a>
+                <a href="/app.html" class="nav-cta">Uitjes zoeken</a>
+            </div>
+            <button class="nav-burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-mobile-menu">
+              <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
+            <a href="/" class="nav-mobile-link">Home</a>
+            <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
+            <a href="/about.html" class="nav-mobile-link">Over</a>
+            <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
+            <a href="/contact.html" class="nav-mobile-link">Contact</a>
+            <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
+        </div>
+    </nav>
+
+    <div class="content" id="main-content">
+        <h1>Het verhaal achter <span class="highlight">PeuterPlannen</span></h1>
+
+        <p>PeuterPlannen is ontstaan uit frustratie. De frustratie dat je, als ouder van een peuter, constant aan het speuren bent naar plekken waar je kind zich kan uitleven en jij een bak koffie kan drinken zonder dat iemand je aankijkt alsof je een crimineel bent.</p>
+
+        <p>Je kent het wel: het is zondagochtend, je kind is om 6:30 wakker (want weekend is geen bestaand concept), en je moet ergens heen. Maar waar? Google Maps geeft je "kindvriendelijk" restaurants die in werkelijkheid een plastic stoeltje hebben en een speelhoek van 2 vierkante meter.</p>
+
+        <!-- BEGIN:STATS_ABOUT -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <strong>2138+</strong>
+                <span>Locaties</span>
+            </div>
+            <div class="stat-card">
+                <strong>22</strong>
+                <span>Regio's</span>
+            </div>
+            <div class="stat-card">
+                <strong>8</strong>
+                <span>Categorieën</span>
+            </div>
+        </div>
+<!-- END:STATS_ABOUT -->
+
+        <h2>Wat ik check</h2>
+        <p>Geen marketing-praatjes, geen "familievriendelijk" labels die niets zeggen. Per locatie kijk ik naar:</p>
+
+        <div class="check-list">
+            <p>&#10003; Is er een verschoonplek?</p>
+            <p>&#10003; Kan je er koffie (of een biertje) drinken terwijl je kind speelt?</p>
+            <p>&#10003; Is het geschikt voor een 2-jarige of alleen voor schoolkinderen?</p>
+            <p>&#10003; Is het binnen, buiten, of allebei?</p>
+        </div>
+
+        <h2>Hoe het werkt</h2>
+        <p>Nieuwe locaties worden gevonden via geautomatiseerde zoekopdrachten en daarna gecheckt via Google Places — bestaat het nog, is het open, en is het echt kindvriendelijk?</p>
+
+        <p>Ken jij een plek die ontbreekt? Stuur een suggestie via de app. Als het past, voeg ik het toe.</p>
+
+        <p>PeuterPlannen werkt per regio — niet losse steden. De regio Den Haag omvat naast de stad zelf ook Delft, Zoetermeer, Wassenaar en andere omliggende gemeenten. Zo vind je ook de pannenkoekenboerderij in Wassenaar als je zoekt op Den Haag.</p>
+
+        <h2>AI + menselijke verificatie</h2>
+        <p>Je kunt ChatGPT vragen wat je dit weekend kunt doen met je peuter. Wij hebben dat ook geprobeerd. Het antwoord is meestal vaag, soms verouderd, en mist precies de dingen die je écht wilt weten: heeft het een verschoontafel, is er koffie voor de ouder, is het geschikt voor een dreumes van anderhalf?</p>
+
+        <p>PeuterPlannen werkt anders. We gebruiken AI om nieuwe locaties te ontdekken en informatie te verzamelen — maar elke locatie wordt daarna handmatig geverifieerd. Is de website nog actief? Kloppen de openingstijden? Zijn er echte faciliteiten? Pas dan komt een locatie in de database.</p>
+
+        <p>Het resultaat: 2138 locaties waarover je kunt vertrouwen op de informatie. Gefilterd op leeftijd, weer, faciliteiten en afstand. Gesorteerd door een algoritme dat begrijpt wat een uitje goed maakt voor de allerkleinsten.</p>
+
+        <div class="check-list">
+            <p>&#10003; AI voor efficiënte ontdekking en slimme aanbevelingen</p>
+            <p>&#10003; Handmatige verificatie voor betrouwbaarheid</p>
+            <p>&#10003; Actuele weerdata voor relevante suggesties</p>
+            <p>&#10003; Geen ChatGPT-antwoorden — concrete, verifieerbare informatie</p>
+        </div>
+
+        <h2>Over de maker</h2>
+        <p>PeuterPlannen is gebouwd door een vader van twee peuters die simpelweg betere tooling wilde. Geen startup, geen VC-geld, geen groei-hack-strategie. Gewoon een tool die werkt.</p>
+
+        <!-- BEGIN:SUPPORT_ABOUT -->
+        <div class="support-about-section">
+            <div class="support-about-inner">
+                <h2>Steun PeuterPlannen</h2>
+                <p>Dit bouw ik in mijn vrije tijd, vanuit Utrecht. Geen team, geen investors, geen advertenties. Wat er binnenkomt gaat naar serverkosten (~€10/maand) en nieuwe functies. De rest doe ik erbij. 2138+ locaties beschikbaar, voor iedereen gratis.</p>
+                <div class="support-about-amounts">
+                    <span class="support-about-pill">€2</span>
+                    <span class="support-about-pill support-about-pill-mid">€5</span>
+                    <span class="support-about-pill">€10</span>
+                </div>
+                <a href="https://betaalverzoek.knab.nl/yfgrM-Z4gH54j9JO" target="_blank" rel="noopener" class="support-about-cta">Stuur een bijdrage via betaalverzoek</a>
+                <p class="support-about-subline">Elk bedrag is welkom.</p>
+            </div>
+        </div>
+<!-- END:SUPPORT_ABOUT -->
+
+        <h2 id="privacy">Privacy</h2>
+        <p>Geen kleine lettertjes, geen verborgen tracking, geen "we verkopen je data". Wel eerlijk zijn over wat er wél gebeurt.</p>
+
+        <div class="check-list">
+            <p>&#10003; We slaan <strong>geen persoonsgegevens</strong> op</p>
+            <p>&#10003; Favorieten worden lokaal in je browser opgeslagen — nooit op een server</p>
+            <p>&#10003; We gebruiken <strong>Google Analytics 4</strong> voor bezoekersstatistieken — alleen met jouw toestemming (je ziet de banner bij je eerste bezoek)</p>
+            <p>&#10003; Zonder toestemming worden géén analytische of advertentiecookies geplaatst</p>
+            <p>&#10003; We delen geen data met adverteerders of andere derden</p>
+            <p>&#10003; Locatiedata (als je die deelt) wordt alleen lokaal gebruikt om afstand te berekenen — nooit opgeslagen of doorgestuurd</p>
+        </div>
+
+        <p>Heb je vragen over privacy? Mail ons gerust op <a href="mailto:privacy@peuterplannen.nl" style="color: var(--pp-primary); font-weight: 600;">privacy@peuterplannen.nl</a>.</p>
+
+        <h2 id="contact">Contact</h2>
+        <p>We horen graag van je! Of het nu een vraag, suggestie, of gewoon een compliment is (die zijn ook welkom, hoor).</p>
+
+        <div class="check-list">
+            <p>&#9993; Bereikbaar via het <a href="contact.html" style="color: var(--pp-primary); font-weight: 600;">contactformulier</a></p>
+        </div>
+
+        <h3 style="font-size: 20px; margin: 32px 0 12px; color: var(--pp-text);">Locatie suggereren of fout melden</h3>
+        <p>Heb je een suggestie of opmerking? <a href="/contact.html" style="color: var(--pp-primary); font-weight: 600;">Neem contact op</a>.</p>
+
+        <div class="cta-box pp-reveal">
+            <h3>Probeer het zelf</h3>
+            <p>Ontdek de leukste uitjes bij jou in de buurt.</p>
+            <a href="app.html">Open de app</a>
+        </div>
+    </div>
+
+    <footer class="pp-reveal">
+      <div class="footer-inner">
+        <span class="footer-brand">PeuterPlannen</span>
+        <nav class="footer-links-row" aria-label="Footernavigatie">
+          <a href="/">Home</a>
+          <a href="/app.html">App</a>
+          <a href="/blog/">Inspiratie</a>
+          <a href="/contact.html">Contact</a>
+          <a href="/about.html">Over</a>
+          <a href="/voor-bedrijven/">Voor bedrijven</a>
+          <a href="/privacy/">Privacy</a>
+          <a href="/disclaimer/">Disclaimer</a>
+        </nav>
+      </div>
+      <p class="footer-copy">&copy; 2026 PeuterPlannen &mdash; Kindvriendelijke uitjes in Nederland</p>
+    </footer>
+<script src="/reveal.js"></script>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
+</body>
+</html>

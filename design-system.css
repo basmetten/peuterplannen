@@ -1,0 +1,813 @@
+/* ============================================================
+   PeuterPlannen Design System
+   Single source of truth for all design tokens & shared utilities.
+   Load this BEFORE any page-specific stylesheet.
+   ============================================================ */
+
+@layer tokens, components, layout, overrides;
+
+@layer tokens {
+
+:root {
+  /* === Colors — Primary Ramp (coral/terra) === */
+  --pp-primary-50:  #FDF1ED;
+  --pp-primary-75:  #f5e0da;
+  --pp-primary-100: #FBDDD2;
+  --pp-primary-200: #F5B8A4;
+  --pp-primary-300: #E8957A;
+  --pp-primary-400: #D4775A;
+  --pp-primary-500: #C46A4F;
+  --pp-primary-600: #B35D42;
+  --pp-primary-700: #8F4A35;
+  --pp-primary-800: #6B3828;
+  --pp-primary-900: #472518;
+
+  --pp-primary: var(--pp-primary-400);
+  --pp-primary-light: var(--pp-primary-50);
+  --pp-primary-dark: var(--pp-primary-600);
+  --pp-primary-hover: var(--pp-primary-500);
+
+  /* === Colors — Secondary Ramp (teal) === */
+  --pp-secondary-50:  #E8F2F0;
+  --pp-secondary-100: #C5DDD9;
+  --pp-secondary-200: #9CC5BF;
+  --pp-secondary-300: #7EB0A9;
+  --pp-secondary-400: #6B9590;
+  --pp-secondary-500: #5A8580;
+  --pp-secondary-600: #4A7A76;
+  --pp-secondary-700: #3A615D;
+  --pp-secondary-800: #2A4844;
+  --pp-secondary-900: #1A302C;
+
+  --pp-secondary: var(--pp-secondary-400);
+  --pp-secondary-light: var(--pp-secondary-50);
+  --pp-secondary-dark: var(--pp-secondary-600);
+
+  /* === Colors — Accent Ramp (gold) === */
+  --pp-accent-50:  #FEF6E8;
+  --pp-accent-100: #FCEACC;
+  --pp-accent-200: #F5D89D;
+  --pp-accent-300: #F0C87A;
+  --pp-accent-400: #E8B870;
+  --pp-accent-500: #D9A85E;
+  --pp-accent-600: #C49A52;
+  --pp-accent-700: #A07E3F;
+  --pp-accent-800: #7A5F2E;
+  --pp-accent-900: #53401F;
+
+  --pp-accent: var(--pp-accent-400);
+  --pp-accent-light: var(--pp-accent-50);
+  --pp-accent-dark: var(--pp-accent-600);
+
+  /* === RGB Channels (for rgba() patterns) === */
+  --pp-primary-rgb: 212, 119, 90;
+  --pp-secondary-rgb: 107, 149, 144;
+  --pp-accent-rgb: 232, 184, 112;
+  --pp-bg-rgb: 252, 249, 247;
+  --pp-surface-rgb: 255, 255, 255;
+  --pp-hero-blog-glow-rgb: 250, 212, 160;
+
+  /* === Colors — Semantic (purpose-driven) === */
+  --pp-semantic-success: #2D8B5E;
+  --pp-semantic-success-bg: #E8F5EF;
+  --pp-semantic-success-border: rgba(45, 139, 94, 0.25);
+
+  --pp-semantic-error: #C0392B;
+  --pp-semantic-error-bg: #FDEDED;
+  --pp-semantic-error-border: rgba(192, 57, 43, 0.25);
+
+  --pp-semantic-warning: #D4A017;
+  --pp-semantic-warning-bg: #FFF8E1;
+  --pp-semantic-warning-border: rgba(212, 160, 23, 0.25);
+
+  --pp-semantic-info: #2F586F;
+  --pp-semantic-info-bg: #EAF2F7;
+  --pp-semantic-info-border: rgba(47, 88, 111, 0.25);
+
+  /* Backward-compatible feedback aliases */
+  --pp-success: var(--pp-semantic-success);
+  --pp-success-bg: var(--pp-semantic-success-bg);
+  --pp-error: var(--pp-semantic-error);
+  --pp-error-bg: var(--pp-semantic-error-bg);
+  --pp-info: var(--pp-semantic-info);
+  --pp-info-bg: var(--pp-semantic-info-bg);
+
+  /* === Surfaces === */
+  --pp-bg: #fcf9f7;
+  --pp-bg-warm: #FFF5EB;
+  --pp-bg-cream: #FFF5EB;
+  --pp-bg-muted: #f0e8dc;
+  --pp-surface: #FFFFFF;
+  --pp-surface-hover: #FEFCF9;
+  --pp-surface-neutral: #ede8e4;
+  --pp-surface-container-low: #f6f3f1;
+  --pp-surface-container-highest: #e5e2e0;
+  --pp-surface-tint: rgba(212, 119, 90, 0.18);
+  --pp-secondary-container: #ebe1d8;
+  --pp-outline-variant: rgba(212, 119, 86, 0.10);
+  --pp-border: rgba(212, 119, 90, 0.15);
+  --pp-border-strong: rgba(212, 119, 90, 0.3);
+
+  /* === Extended Surfaces === */
+  --pp-surface-dark: #1e1c1a;
+  --pp-surface-dark-rgb: 30, 28, 26;
+
+  /* === Brand colors (external) === */
+  --pp-brand-whatsapp: #25D366;
+  --pp-brand-whatsapp-hover: #1ebe57;
+
+  /* === Facility badge colors (mapped to type colors where possible) === */
+  --pp-badge-coffee-bg: var(--pp-primary-50);
+  --pp-badge-coffee-text: var(--pp-primary-600);
+  --pp-badge-alcohol-bg: var(--pp-accent-50);
+  --pp-badge-alcohol-text: var(--pp-accent-800);
+  --pp-badge-diaper-bg: var(--pp-secondary-50);
+  --pp-badge-diaper-text: var(--pp-secondary-700);
+
+  /* === Text === */
+  --pp-text: #2D2926;
+  --pp-text-rgb: 45, 41, 38;
+  --pp-text-secondary: #5C4A48;
+  --pp-text-muted: #A39490;
+  --pp-text-tertiary: #756762;
+  --pp-text-pressed: #1a1714;
+  --pp-text-inverse: #FFFFFF;
+
+  /* === Typography — Fonts === */
+  --pp-font-heading: 'Newsreader', 'Newsreader Fallback', Georgia, serif;
+  --pp-font-ui: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', -apple-system, sans-serif;
+  --pp-font-body: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', -apple-system, sans-serif;
+  --pp-font-accent: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+
+  /* === Typography — Fluid Scale (Minor Third 1.2, base 16px) === */
+  --pp-text-xs:  clamp(0.75rem, 0.7rem + 0.2vw, 0.8125rem);
+  --pp-text-sm:  clamp(0.8125rem, 0.76rem + 0.25vw, 0.875rem);
+  --pp-text-base: clamp(0.9375rem, 0.88rem + 0.35vw, 1.0625rem);
+  --pp-text-lg:  clamp(1.0625rem, 0.95rem + 0.6vw, 1.25rem);
+  --pp-text-xl:  clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+  --pp-text-2xl: clamp(1.5rem, 1.1rem + 2vw, 2.5rem);
+  --pp-text-3xl: clamp(2rem, 1.2rem + 3.5vw, 3.5rem);
+  --pp-text-4xl: clamp(2.5rem, 1.2rem + 5vw, 4.5rem);
+
+  /* === Spacing (4-point grid) === */
+  --pp-space-xs: 4px;
+  --pp-space-sm: 8px;
+  --pp-space-md: 16px;
+  --pp-space-lg: 24px;
+  --pp-space-xl: 32px;
+  --pp-space-2xl: 48px;
+  --pp-space-3xl: 64px;
+  --pp-space-4xl: 96px;
+  --pp-space-5xl: 128px;
+
+  /* === Shadows (ambient single-layer) === */
+  --pp-shadow-sm: 0 1px 3px rgba(27, 28, 27, 0.06);
+  --pp-shadow-md: 0 4px 12px rgba(27, 28, 27, 0.08);
+  --pp-shadow-lg: 0 8px 30px rgba(27, 28, 27, 0.10);
+  --pp-shadow-hover: 0 12px 40px rgba(27, 28, 27, 0.12);
+
+  /* === Shadows (context-differentiated) === */
+  --pp-shadow-card:      0 2px 8px rgba(27, 28, 27, 0.06);
+  --pp-shadow-card-hover: 0 12px 32px rgba(27, 28, 27, 0.10);
+  --pp-shadow-popover:   0 16px 48px rgba(27, 28, 27, 0.14);
+  --pp-shadow-modal:     0 24px 64px rgba(27, 28, 27, 0.18);
+  --pp-shadow-nav:       0 1px 4px rgba(27, 28, 27, 0.06);
+  --pp-shadow-inset:     inset 0 2px 4px rgba(27, 28, 27, 0.06);
+
+  /* === Borders === */
+  --pp-radius-xs: 10px;
+  --pp-radius-sm: 16px;
+  --pp-radius-md: 20px;
+  --pp-radius-lg: 24px;
+  --pp-radius-xl: 28px;
+  --pp-radius-pill: 999px;
+
+  /* === Transitions === */
+  --pp-transition: 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  --pp-transition-slow: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* === Layout === */
+  --pp-max-width: 1200px;
+  --pp-content-width: 720px;
+  --pp-app-width: 540px;
+  --pp-safe-bottom: env(safe-area-inset-bottom, 20px);
+
+  /* === Icon sizes (matched to line-heights) === */
+  --pp-icon-xs: 16px;
+  --pp-icon-sm: 20px;
+  --pp-icon-md: 24px;
+  --pp-icon-lg: 32px;
+  --pp-icon-xl: 48px;
+
+  /* === Image & Card Image === */
+  --pp-img-aspect: 3 / 2;
+  --pp-img-radius: var(--pp-radius-sm) var(--pp-radius-sm) 0 0;
+  --pp-img-overlay-from: transparent;
+  --pp-img-overlay-to: rgba(var(--pp-text-rgb), 0.55);
+
+  /* === Map type colors (with bg variants) === */
+  --pp-type-play:      #52B788;  --pp-type-play-bg:      rgba(82, 183, 136, 0.10);
+  --pp-type-play-rgb:  82, 183, 136;
+  --pp-type-farm:      #8B6F47;  --pp-type-farm-bg:      rgba(139, 111, 71, 0.10);
+  --pp-type-nature:    #2D6A4F;  --pp-type-nature-bg:    rgba(45, 106, 79, 0.10);
+  --pp-type-museum:    #7B2D8B;  --pp-type-museum-bg:    rgba(123, 45, 139, 0.10);
+  --pp-type-culture:   #5B3F8B;  --pp-type-culture-bg:   rgba(91, 63, 139, 0.10);
+  --pp-type-swim:      #2196F3;  --pp-type-swim-bg:      rgba(33, 150, 243, 0.10);
+  --pp-type-pancake:   #E9C46A;  --pp-type-pancake-bg:   rgba(233, 196, 106, 0.12);
+  --pp-type-horeca:    #E76F51;  --pp-type-horeca-bg:    rgba(231, 111, 81, 0.10);
+
+}
+
+/* === Typography — Heading defaults === */
+h1, h2, h3, h4, h5, h6,
+.pp-heading {
+  font-family: var(--pp-font-heading);
+  font-optical-sizing: auto;
+  text-wrap: balance;
+}
+
+h1, .pp-h1 {
+  font-size: var(--pp-text-4xl);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+h2, .pp-h2 {
+  font-size: var(--pp-text-3xl);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+}
+
+h3, .pp-h3 {
+  font-size: var(--pp-text-2xl);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
+}
+
+h4, .pp-h4 {
+  font-size: var(--pp-text-xl);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.22;
+}
+
+h5, .pp-h5 {
+  font-size: var(--pp-text-lg);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+/* === Typography — Body text === */
+body {
+  font-family: var(--pp-font-body);
+  font-size: var(--pp-text-base);
+  line-height: 1.65;
+  font-optical-sizing: auto;
+}
+
+p, li {
+  text-wrap: pretty;
+  max-width: 65ch;
+}
+
+/* === Typography — Accent (editorial italic) === */
+.accent, .pp-accent {
+  font-family: var(--pp-font-accent);
+  font-style: italic;
+}
+
+/* === Content container === */
+.pp-container {
+  max-width: var(--pp-max-width);
+  margin-inline: auto;
+  padding-inline: var(--pp-space-md);
+}
+
+/* === Location Card Image === */
+.loc-img {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--pp-img-aspect);
+  border-radius: var(--pp-img-radius);
+  background: var(--pp-bg);
+}
+.loc-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--pp-transition-slow);
+}
+.loc-item:hover .loc-img img {
+  transform: scale(1.05);
+}
+.loc-img .loc-type-badge {
+  position: absolute;
+  bottom: var(--pp-space-sm);
+  left: var(--pp-space-sm);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: var(--pp-space-xs) var(--pp-space-sm);
+  border-radius: var(--pp-radius-xs);
+  font-family: var(--pp-font-ui);
+  font-size: var(--pp-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--pp-text);
+}
+.loc-img.pp-skeleton {
+  background: linear-gradient(90deg, var(--pp-primary-50) 0%, rgba(212, 119, 90, 0.06) 40%, var(--pp-primary-50) 80%);
+  background-size: 300% 100%;
+  animation: pp-shimmer 1.8s ease-in-out infinite;
+}
+.loc-img--fallback {
+  background: linear-gradient(135deg, var(--pp-bg-warm) 0%, var(--pp-primary-50) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loc-img--fallback img { display: none; }
+.loc-img--fallback::after {
+  content: '';
+  width: var(--pp-icon-xl);
+  height: var(--pp-icon-xl);
+  opacity: 0.4;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23B35D42' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* === Location Hero Image === */
+.hero-location-img {
+  position: relative;
+  width: 100%;
+  max-height: 400px;
+  overflow: hidden;
+}
+.hero-location-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-location-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to bottom, transparent, rgba(var(--pp-text-rgb), 0.55));
+}
+
+/* === Location card (reusable across city, type, and cluster pages) === */
+.pp-location-card {
+  background: var(--pp-surface);
+  border-radius: var(--pp-radius-sm);
+  padding: var(--pp-space-lg);
+  box-shadow: var(--pp-shadow-card);
+  border: 1px solid transparent;
+  transition: transform var(--pp-transition), box-shadow var(--pp-transition);
+  position: relative;
+  overflow: hidden;
+}
+.pp-location-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--pp-shadow-card-hover);
+}
+
+/* === Motion — shared keyframes === */
+@keyframes pp-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pp-scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes pp-slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pp-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Staggered fade-up for lists and grids */
+.pp-stagger > * {
+  opacity: 0;
+  animation: pp-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.pp-stagger > *:nth-child(1) { animation-delay: 0s; }
+.pp-stagger > *:nth-child(2) { animation-delay: 0.06s; }
+.pp-stagger > *:nth-child(3) { animation-delay: 0.12s; }
+.pp-stagger > *:nth-child(4) { animation-delay: 0.18s; }
+.pp-stagger > *:nth-child(5) { animation-delay: 0.24s; }
+.pp-stagger > *:nth-child(6) { animation-delay: 0.30s; }
+.pp-stagger > *:nth-child(n+7) { animation-delay: 0.36s; }
+
+/* === Toast notifications === */
+.pp-toast-zone {
+  position: fixed;
+  bottom: calc(var(--pp-safe-bottom) + var(--pp-space-md));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--pp-space-sm);
+  pointer-events: none;
+}
+.pp-toast {
+  background: var(--pp-text);
+  color: var(--pp-text-inverse);
+  padding: var(--pp-space-sm) var(--pp-space-md);
+  border-radius: var(--pp-radius-xs);
+  font-family: var(--pp-font-body);
+  font-size: var(--pp-text-sm);
+  font-weight: 500;
+  box-shadow: var(--pp-shadow-popover);
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--pp-space-sm);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@starting-style {
+  .pp-toast { opacity: 0; transform: translateY(12px); }
+}
+.pp-toast.is-hiding { opacity: 0; transform: translateY(-8px); }
+.pp-toast-success { background: var(--pp-semantic-success); }
+.pp-toast-error   { background: var(--pp-semantic-error); }
+.pp-toast-warning { background: var(--pp-semantic-warning); color: var(--pp-text); }
+
+/* === Copy button feedback === */
+.pp-copy-btn { position: relative; overflow: hidden; }
+.pp-copy-btn__label,
+.pp-copy-btn__done {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
+}
+.pp-copy-btn__done {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pp-semantic-success);
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(100%);
+}
+.pp-copy-btn.is-copied .pp-copy-btn__label { opacity: 0; transform: translateY(-100%); }
+.pp-copy-btn.is-copied .pp-copy-btn__done  { opacity: 1; transform: translateY(0); }
+
+/* === Skeleton loader (warm brand tint) === */
+.pp-skeleton {
+  background: linear-gradient(90deg, var(--pp-primary-50) 0%, rgba(212, 119, 90, 0.06) 40%, var(--pp-primary-50) 80%);
+  background-size: 300% 100%;
+  animation: pp-shimmer 1.8s ease-in-out infinite;
+  border-radius: var(--pp-radius-xs);
+}
+@keyframes pp-shimmer {
+  0%   { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+.pp-skeleton-text  { height: 14px; margin-bottom: var(--pp-space-sm); }
+.pp-skeleton-text:last-child { width: 65%; }
+.pp-skeleton-title { height: var(--pp-space-lg); width: 60%; margin-bottom: var(--pp-space-md); }
+.pp-skeleton-img   { aspect-ratio: 16/9; width: 100%; }
+.pp-skeleton-pill  { height: var(--pp-space-xl); width: 80px; border-radius: var(--pp-radius-pill); }
+
+/* === Scroll reveal system === */
+.pp-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.pp-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.pp-reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.pp-reveal-stagger.is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+.pp-reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0s; }
+.pp-reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.07s; }
+.pp-reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.14s; }
+.pp-reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.21s; }
+.pp-reveal-stagger.is-visible > *:nth-child(n+5) { transition-delay: 0.28s; }
+
+/* Named view transitions for hero images */
+.hero-location-img { view-transition-name: hero-img; }
+::view-transition-old(hero-img) { animation: vt-fade-out 120ms ease-in both; }
+::view-transition-new(hero-img) { animation: pp-fade-up 250ms cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: 60ms; }
+
+/* CSS modernization: selection colors */
+::selection { background: var(--pp-primary-200); color: var(--pp-primary-900); }
+
+/* Smooth scroll (with motion guard) */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* Focus-visible global */
+:focus-visible { outline: 2.5px solid var(--pp-primary); outline-offset: 3px; }
+:focus:not(:focus-visible) { outline: none; }
+
+/* === Interactive State Defaults ===
+   Applied to any element with a transition.
+   Individual selectors can override these patterns. */
+
+/* Active = slight scale down for tactile feel.
+   Excludes summary (FAQ accordion) — scale op summary voelt storend
+   bij open/close animatie. Excludes elements met eigen :active in app.css. */
+:where(a, button, [role="button"]):active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Focus-visible = brand-colored ring */
+:where(a, button, [role="button"], input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--pp-primary);
+  outline-offset: 2px;
+  border-radius: var(--pp-radius-xs);
+}
+
+/* Disabled = reduced opacity, no pointer events */
+:where(button, [role="button"], .btn, a.btn):disabled,
+:where(button, [role="button"], .btn, a.btn)[aria-disabled="true"] {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Accessibility: disable all motion for users who prefer reduced motion */
+/* === Tooltip === */
+[data-tooltip] { position: relative; }
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + var(--pp-space-sm));
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: var(--pp-space-xs) var(--pp-space-sm);
+  background: var(--pp-surface-dark);
+  color: var(--pp-text-inverse);
+  font-family: var(--pp-font-ui);
+  font-size: var(--pp-text-xs);
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  border-radius: var(--pp-radius-xs);
+  box-shadow: var(--pp-shadow-popover);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--pp-transition), transform var(--pp-transition);
+  z-index: 1000;
+}
+[data-tooltip]:hover::after,
+[data-tooltip]:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+[data-tooltip-pos="bottom"]::after {
+  bottom: auto;
+  top: calc(100% + var(--pp-space-sm));
+}
+[data-tooltip-pos="left"]::after {
+  bottom: auto;
+  left: auto;
+  right: calc(100% + var(--pp-space-sm));
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
+}
+[data-tooltip-pos="left"]:hover::after,
+[data-tooltip-pos="left"]:focus-visible::after {
+  transform: translateY(-50%) translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .pp-reveal, .pp-reveal-stagger > *,
+  .pp-stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .pp-skeleton { background-size: 100% 100% !important; }
+}
+
+/* ============================================================
+   Warm Glass Tokens (merged from warm-glass-tokens.css)
+   Additive layer for glass UI over map. Apple Maps-inspired.
+   ============================================================ */
+
+:root {
+
+  /* --- Glass Surfaces --- */
+  --wg-glass-chip:     rgba(250, 247, 242, 0.72);
+  --wg-glass-control:  rgba(250, 247, 242, 0.78);
+  --wg-glass-surface:  rgba(245, 240, 235, 0.82);
+  --wg-glass-panel:    rgba(250, 247, 242, 0.85);
+  --wg-glass-nav:      rgba(255, 252, 249, 0.88);
+  --wg-glass-sheet:    rgba(255, 252, 249, 0.94);
+  --wg-glass-solid:    rgba(250, 247, 242, 0.95);
+  --wg-glass-opaque:   rgba(255, 255, 255, 0.96);
+
+  /* --- Blur Levels --- */
+  --wg-blur-heavy:   blur(24px) saturate(140%);
+  --wg-blur-panel:   blur(14px);
+  --wg-blur-control: blur(10px);
+  --wg-blur-light:   blur(6px);
+  --wg-blur-overlay: blur(4px);
+
+  /* --- Borders --- */
+  --wg-border-strong:    1px solid rgba(255, 255, 255, 0.45);
+  --wg-border-mid:       1px solid rgba(255, 255, 255, 0.40);
+  --wg-border-soft:      1px solid rgba(255, 255, 255, 0.35);
+  --wg-border-warm:      1px solid rgba(212, 119, 86, 0.12);
+  --wg-border-warm-mid:  1px solid rgba(212, 119, 86, 0.15);
+  --wg-border-divider:   1px solid rgba(212, 119, 86, 0.08);
+  --wg-border-top-sheet: 0.5px solid rgba(212, 119, 86, 0.10);
+
+  /* --- Shadows (ambient, ultra-subtle — Apple Maps-matched) --- */
+  --wg-shadow-sheet:   0 -1px 8px rgba(0, 0, 0, 0.04);
+  --wg-shadow-panel:   0 -2px 12px rgba(0, 0, 0, 0.06);
+  --wg-shadow-control: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --wg-shadow-chip:    0 1px 5px rgba(0, 0, 0, 0.024);
+  --wg-shadow-nav:     0 -1px 6px rgba(0, 0, 0, 0.04);
+  --wg-shadow-float:   0 2px 8px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.04);
+  --wg-shadow-header:  0 1px 5px rgba(0, 0, 0, 0.024);
+
+  /* --- Text Colors (warm browns) --- */
+  --wg-text-primary:     #3A2F2C;
+  --wg-text-body:        #5C4433;
+  --wg-text-muted:       #6B5A54;
+  --wg-text-faint:       #8B7355;
+  --wg-text-placeholder: #9B8688;
+  --wg-text-inverse:     #FFFBF7;
+
+  /* --- Brand Colors (reference --pp-* where possible) --- */
+  --wg-primary:       #D47756;
+  --wg-primary-light: #E8956F;
+  --wg-primary-dark:  #B85E3D;
+  --wg-accent:        #4A7A4A;
+
+  /* --- Backgrounds (reference --pp-* where exact match) --- */
+  --wg-bg:           var(--pp-bg);
+  --wg-surface:      var(--pp-surface);
+  --wg-surface-warm: #FFFBF7;
+  --wg-tag-bg:       rgba(212, 119, 86, 0.08);
+
+  /* --- Radii --- */
+  --wg-radius-tag:    8px;
+  --wg-radius-card:   10px;
+  --wg-radius-sheet:  12px;
+  --wg-radius-chip:   16px;
+  --wg-radius-pill:   24px;
+  --wg-radius-circle: 50%;
+
+  /* --- Spacing (kept for reference, not used in source CSS) --- */
+  --wg-sp-2:  2px;
+  --wg-sp-4:  var(--pp-space-xs);
+  --wg-sp-8:  var(--pp-space-sm);
+  --wg-sp-12: 12px;
+  --wg-sp-16: var(--pp-space-md);
+  --wg-sp-20: 20px;
+  --wg-sp-24: var(--pp-space-lg);
+  --wg-sp-32: var(--pp-space-xl);
+  --wg-sp-48: var(--pp-space-2xl);
+  --wg-sp-64: var(--pp-space-3xl);
+
+  /* --- Typography --- */
+  --wg-font:         var(--pp-font-ui);
+  --wg-font-display: var(--pp-font-heading);
+
+  --wg-leading-tight:   1.2;
+  --wg-leading-normal:  1.5;
+  --wg-leading-relaxed: 1.65;
+  --wg-leading-none:    1;
+
+  --wg-weight-normal:   400;
+  --wg-weight-medium:   500;
+  --wg-weight-semibold: 600;
+  --wg-weight-bold:     700;
+
+  --wg-tracking-tight:  -0.3px;
+  --wg-tracking-normal:  0;
+  --wg-tracking-wide:    0.2px;
+
+  /* --- Transitions --- */
+  --wg-duration-fast:   100ms;
+  --wg-duration-ui:     200ms;
+  --wg-duration-snap:   300ms;
+  --wg-duration-sheet:  300ms;
+
+  --wg-ease-spring:   ease-in-out;
+  --wg-ease-smooth:   ease-out;
+  --wg-ease-bounce:   cubic-bezier(0.25, 0.1, 0.25, 1.3);
+  --wg-ease-standard: ease;
+  --wg-ease-popover:  cubic-bezier(0.25, 0.1, 0.25, 1.3);
+
+  /* --- Handle --- */
+  --wg-handle-color: rgba(160, 130, 120, 0.35);
+}
+
+} /* end @layer tokens */
+
+/* ============================================
+   Button Type System — 5 standaard types
+   ============================================ */
+
+/* Type 1: Primary (filled action button) */
+.pp-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--pp-primary);
+  color: var(--pp-text-inverse);
+  border: none;
+  border-radius: var(--pp-radius-lg);
+  font-size: var(--pp-text-sm);
+  font-weight: 600;
+  font-family: var(--pp-font-ui);
+  cursor: pointer;
+  transition: background 200ms ease, transform 100ms ease;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+.pp-btn-primary:hover { background: var(--pp-primary-dark); }
+.pp-btn-primary:active { transform: scale(0.97); }
+.pp-btn-primary:focus-visible { outline: 2px solid var(--pp-primary); outline-offset: 2px; }
+
+/* Type 2: Secondary (outline/surface button) */
+.pp-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--pp-surface);
+  color: var(--pp-text);
+  border: 1.5px solid rgba(var(--pp-primary-rgb), 0.12);
+  border-radius: var(--pp-radius-lg);
+  font-size: var(--pp-text-sm);
+  font-weight: 600;
+  font-family: var(--pp-font-ui);
+  cursor: pointer;
+  transition: background 200ms ease, border-color 200ms ease, transform 100ms ease;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+.pp-btn-secondary:hover { border-color: rgba(var(--pp-primary-rgb), 0.25); background: var(--pp-primary-light); }
+.pp-btn-secondary:active { transform: scale(0.97); }
+.pp-btn-secondary:focus-visible { outline: 2px solid var(--pp-primary); outline-offset: 2px; }
+
+/* Type 3: Icon button (circular) */
+.pp-btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 150ms ease, transform 100ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.pp-btn-icon:hover { background: rgba(var(--pp-primary-rgb), 0.06); }
+.pp-btn-icon:active { transform: scale(0.9); }
+.pp-btn-icon:focus-visible { outline: 2px solid var(--pp-primary); outline-offset: 2px; }
+
+/* Type 4: Text link button */
+.pp-btn-text {
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  color: var(--pp-primary);
+  font-size: var(--pp-text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 150ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.pp-btn-text:hover { color: var(--pp-primary-dark); }
+.pp-btn-text:active { transform: scale(0.97); }
+.pp-btn-text:focus-visible { outline: 2px solid var(--pp-primary); outline-offset: 2px; }

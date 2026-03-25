@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beheer je locatie — PeuterPlannen Partner Portal</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/design-system.css">
+    <link rel="stylesheet" href="/portal-shell.css">
+    <style>
+        /* Portal-specific styles not covered by portal-shell.css */
+
+        /* Plan cards (billing) */
+        .plan-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+        @media (max-width: 600px) { .plan-cards { grid-template-columns: 1fr; } }
+        .plan-card { border: 2px solid rgba(212,119,90,0.2); border-radius: var(--pp-radius); padding: 20px; text-align: center; transition: all 0.2s; }
+        .plan-card.current { border-color: var(--pp-primary); background: var(--pp-primary-light); }
+        .plan-card h4 { font-family: var(--pp-font-head); font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .plan-card .price { font-size: 26px; font-weight: 800; color: var(--pp-primary-dark); font-family: var(--pp-font-head); margin: 8px 0; }
+        .plan-card .price span { font-size: 14px; font-weight: 400; color: var(--pp-text-muted); }
+        .plan-card ul { list-style: none; font-size: 13px; color: var(--pp-text-secondary); margin: 12px 0; text-align: left; }
+        .plan-card ul li::before { content: '✓ '; color: var(--pp-success); font-weight: 700; }
+        .plan-card .btn { margin-top: 12px; font-size: 13px; padding: 10px 16px; width: 100%; }
+        .plan-featured { border-color: var(--pp-accent); background: linear-gradient(135deg, #FFFBF0, #FEF6E4); }
+        .plan-badge { font-size: 11px; font-weight: 700; background: var(--pp-accent); color: #6B4200; padding: 2px 10px; border-radius: 20px; margin-bottom: 8px; display: inline-block; }
+
+        /* Location search results */
+        .loc-result { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border: 1px solid rgba(212,119,90,0.15); border-radius: 10px; margin-bottom: 8px; background: var(--pp-surface); }
+        .loc-result-name { font-weight: 600; font-size: 15px; }
+        .loc-result-region { font-size: 13px; color: var(--pp-text-muted); }
+        .loc-result .btn { font-size: 12px; padding: 7px 14px; }
+
+        /* Edit form sections */
+        .edit-section { border-top: 1px solid rgba(212,119,90,0.12); margin-top: 20px; padding-top: 20px; }
+
+        /* Status badge */
+        .status-none, .status-canceled { background: #F0EDE8; color: #7A5E60; }
+        .status-trial { background: #EBF3F2; color: #2D6B60; }
+        .status-basis { background: var(--pp-primary-light); color: var(--pp-primary-dark); }
+        .status-featured { background: linear-gradient(135deg, #F6C34A22, #E8A82022); color: #6B4200; border: 1px solid #E8A82040; }
+        .status-past_due { background: var(--pp-error-bg); color: var(--pp-error); }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-logo"><span>Peuter</span>Plannen <span style="font-size:12px;background:var(--primary);color:white;padding:2px 8px;border-radius:6px;margin-left:6px;">Partner</span></a>
+    <div style="display:flex;align-items:center;gap:12px;">
+        <span id="nav-user" class="hidden"></span>
+        <button id="nav-logout" class="hidden">Uitloggen</button>
+    </div>
+</nav>
+
+<!-- ===================== SCREEN: LANDING ===================== -->
+<div id="screen-landing" class="container">
+    <div class="card" style="text-align:center;padding:48px 32px;">
+        <div style="font-size:48px;margin-bottom:16px;">🏠</div>
+        <h2 style="margin-bottom:12px;">Beheer je locatie op PeuterPlannen</h2>
+        <p>Sta je op PeuterPlannen? Claim je locatie, houd je gegevens actueel en bereik meer bezoekers met een Featured badge.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px;">
+            <button class="btn btn-primary" data-action="show-login">Inloggen</button>
+            <button class="btn btn-secondary" data-action="show-signup">Account aanmaken</button>
+        </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:4px;">
+        <div class="card" style="padding:20px;text-align:center;">
+            <div style="font-size:28px;margin-bottom:8px;">✏️</div>
+            <h3 style="margin-bottom:6px;">Bewerk je info</h3>
+            <p style="font-size:13px;margin:0;">Openingstijden, beschrijving, faciliteiten altijd up-to-date.</p>
+        </div>
+        <div class="card" style="padding:20px;text-align:center;">
+            <div style="font-size:28px;margin-bottom:8px;">✓</div>
+            <h3 style="margin-bottom:6px;">Geverifieerd badge</h3>
+            <p style="font-size:13px;margin:0;">Laat ouders weten dat jouw info klopt en vers is.</p>
+        </div>
+        <div class="card" style="padding:20px;text-align:center;">
+            <div style="font-size:28px;margin-bottom:8px;">★</div>
+            <h3 style="margin-bottom:6px;">Aanbevolen listing</h3>
+            <p style="font-size:13px;margin:0;">Bovenaan de zoekresultaten in jouw regio.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SCREEN: LOGIN ===================== -->
+<div id="screen-login" class="container hidden">
+    <div class="card">
+        <h2>Inloggen</h2>
+        <p>Log in met je PeuterPlannen Partner account.</p>
+        <div id="login-alert"></div>
+        <div class="form-group">
+            <label for="login-email">E-mailadres</label>
+            <input type="email" id="login-email" placeholder="jij@voorbeeld.nl" autocomplete="email">
+        </div>
+        <div class="form-group">
+            <label for="login-password">Wachtwoord</label>
+            <input type="password" id="login-password" placeholder="Je wachtwoord" autocomplete="current-password">
+        </div>
+        <button class="btn btn-primary btn-full" id="login-btn">Inloggen</button>
+        <p style="text-align:center;margin-top:16px;font-size:14px;">
+            Nog geen account? <a href="#" data-action="show-signup" style="color:var(--primary);font-weight:600;">Maak er een aan</a>
+        </p>
+    </div>
+</div>
+
+<!-- ===================== SCREEN: SIGNUP ===================== -->
+<div id="screen-signup" class="container hidden">
+    <div class="card">
+        <h2>Account aanmaken</h2>
+        <p>Maak een gratis account om je locatie te claimen en te beheren.</p>
+        <div id="signup-alert"></div>
+        <div class="form-group">
+            <label for="signup-name">Je naam</label>
+            <input type="text" id="signup-name" placeholder="Jan de Vries" autocomplete="name">
+        </div>
+        <div class="form-group">
+            <label for="signup-email">E-mailadres</label>
+            <input type="email" id="signup-email" placeholder="jij@voorbeeld.nl" autocomplete="email">
+        </div>
+        <div class="form-group">
+            <label for="signup-password">Wachtwoord</label>
+            <input type="password" id="signup-password" placeholder="Minimaal 8 tekens" autocomplete="new-password">
+        </div>
+        <button class="btn btn-primary btn-full" id="signup-btn">Account aanmaken</button>
+        <p style="text-align:center;margin-top:16px;font-size:14px;">
+            Al een account? <a href="#" data-action="show-login" style="color:var(--primary);font-weight:600;">Inloggen</a>
+        </p>
+    </div>
+</div>
+
+<!-- ===================== SCREEN: EMAIL VERIFICATION ===================== -->
+<div id="screen-verify" class="container hidden">
+    <div class="card" style="text-align:center;padding:40px;">
+        <div style="font-size:48px;margin-bottom:16px;">📬</div>
+        <h2>Bevestig je e-mail</h2>
+        <p>We hebben een verificatielink gestuurd naar <strong id="verify-email-display"></strong>. Klik op de link om door te gaan.</p>
+        <div class="alert alert-info" style="margin-top:16px;text-align:left;">Heb je geen mail ontvangen? Check je spam map, of stuur een nieuwe bevestigingsmail via de login-pagina.</div>
+    </div>
+</div>
+
+<!-- ===================== SCREEN: DASHBOARD ===================== -->
+<div id="screen-dashboard" class="container hidden">
+    <div class="portal-tabs">
+        <button class="portal-tab active" id="tab-btn-mijn-locatie">Mijn locatie</button>
+        <button class="portal-tab" id="tab-btn-billing">Abonnement</button>
+    </div>
+
+    <!-- === Tab: Mijn Locatie === -->
+    <div id="tab-mijn-locatie">
+        <!-- Sub-screen A: geen locatie geclaimd -->
+        <div id="no-location-panel">
+            <div class="card">
+                <h2>Zoek jouw locatie</h2>
+                <p>Staat jouw locatie al in onze database? Zoek het op en dien een claim in. We controleren je aanvraag en koppelen de locatie aan jouw account.</p>
+                <div class="form-group" style="display:flex;gap:8px;margin-bottom:12px;">
+                    <input type="text" id="loc-search-input" placeholder="Naam van je locatie..." style="flex:1;">
+                    <button class="btn btn-primary" id="search-btn">Zoeken</button>
+                </div>
+                <div id="loc-search-results"></div>
+            </div>
+
+            <div id="claim-status-panel" class="hidden">
+                <div class="alert alert-info" id="claim-status-msg"></div>
+            </div>
+        </div>
+
+        <!-- Sub-screen B: locatie geclaimd + actief abonnement -->
+        <div id="has-location-panel" class="hidden">
+            <div class="card">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                    <h2 style="margin:0;" id="edit-loc-name">—</h2>
+                    <span class="status-badge" id="edit-plan-badge">Gratis</span>
+                </div>
+                <div id="edit-alert"></div>
+
+                <div class="form-group">
+                    <label for="edit-description">Beschrijving</label>
+                    <textarea id="edit-description" placeholder="Beschrijf wat bezoekers kunnen verwachten..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-website">Website</label>
+                    <input type="text" id="edit-website" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label for="edit-hours">Openingstijden</label>
+                    <textarea id="edit-hours" placeholder="Ma–Vr 9:00–17:00, Za–Zo 10:00–18:00" style="min-height:60px;"></textarea>
+                </div>
+
+                <div class="edit-section">
+                    <h3>Faciliteiten</h3>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="edit-coffee"><label for="edit-coffee">Koffie aanwezig</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="edit-diaper"><label for="edit-diaper">Verschoontafel aanwezig</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="edit-alcohol"><label for="edit-alcohol">Alcohol beschikbaar</label>
+                    </div>
+                </div>
+
+                <div class="edit-section">
+                    <h3>Leeftijdsrange</h3>
+                    <div style="display:flex;gap:12px;">
+                        <div class="form-group" style="flex:1;margin:0;">
+                            <label for="edit-min-age">Minimumleeftijd (jaar)</label>
+                            <input type="text" id="edit-min-age" placeholder="0">
+                        </div>
+                        <div class="form-group" style="flex:1;margin:0;">
+                            <label for="edit-max-age">Maximumleeftijd (jaar)</label>
+                            <input type="text" id="edit-max-age" placeholder="6">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="edit-section">
+                    <h3>Type locatie</h3>
+                    <div class="form-group" style="margin:0;">
+                        <label for="edit-weather">Binnen / Buiten</label>
+                        <select id="edit-weather">
+                            <option value="indoor">Binnen</option>
+                            <option value="outdoor">Buiten</option>
+                            <option value="both">Beide</option>
+                            <option value="hybrid">Hybride (overdekt buiten)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Foto upload (alleen Basis+ plan) -->
+                <div class="edit-section" id="photo-upload-section" style="display:none;">
+                    <h3>Foto uploaden</h3>
+                    <p style="font-size:13px;margin-bottom:12px;">Upload een foto van je locatie (JPG/PNG/WebP, max 5MB). Alleen beschikbaar voor Basis en Featured abonnees.</p>
+                    <input type="file" id="edit-photo" accept="image/jpeg,image/png,image/webp" style="font-size:14px;">
+                    <div id="photo-preview" style="margin-top:12px;"></div>
+                </div>
+
+                <div style="display:flex;gap:10px;margin-top:24px;">
+                    <button class="btn btn-primary" id="save-btn">Wijzigingen opslaan</button>
+                    <button class="btn btn-secondary" id="cancel-edit-btn">Annuleren</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- === Tab: Billing === -->
+    <div id="tab-billing" class="hidden">
+        <div class="card">
+            <h2>Abonnement</h2>
+            <p id="billing-current-plan">Huidig plan wordt geladen…</p>
+
+            <div id="billing-alert"></div>
+
+            <div class="plan-cards">
+                <!-- Gratis -->
+                <div class="plan-card" id="plan-card-none">
+                    <h4>Gratis</h4>
+                    <div class="price">€0<span>/maand</span></div>
+                    <ul>
+                        <li>Account aanmaken</li>
+                        <li>Locatie claimen</li>
+                        <li>Website + beschrijving bewerken</li>
+                    </ul>
+                    <span style="font-size:12px;color:var(--text-muted);">Huidig plan</span>
+                </div>
+
+                <!-- Basis -->
+                <div class="plan-card" id="plan-card-basis">
+                    <h4>Basis</h4>
+                    <div class="price">€9,95<span>/maand</span></div>
+                    <ul>
+                        <li>Alle velden bewerken</li>
+                        <li>Geverifieerd ✓ badge</li>
+                        <li>Foto uploaden</li>
+                        <li>14 dagen gratis trial</li>
+                    </ul>
+                    <button class="btn btn-primary" id="upgrade-basis-btn">Upgrade naar Basis</button>
+                </div>
+
+                <!-- Featured -->
+                <div class="plan-card plan-featured" id="plan-card-featured">
+                    <span class="plan-badge">Meest populair</span>
+                    <h4>Featured</h4>
+                    <div class="price">€29,95<span>/maand</span></div>
+                    <ul>
+                        <li>Alles van Basis</li>
+                        <li>★ Aanbevolen badge</li>
+                        <li>Bovenaan zoekresultaten</li>
+                        <li>Statistieken (views, kliks)</li>
+                    </ul>
+                    <button class="btn btn-primary" id="upgrade-featured-btn">Kies Featured</button>
+                </div>
+            </div>
+
+            <div id="cancel-subscription-section" class="hidden" style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(212,119,90,0.12);">
+                <p style="font-size:14px;color:var(--text-muted);">Je kunt je abonnement op elk moment opzeggen. Je behoudt toegang tot je huidige plan tot het einde van de betaalperiode.</p>
+                <button class="btn btn-danger" id="cancel-sub-btn" style="margin-top:8px;font-size:13px;padding:8px 16px;">Abonnement opzeggen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="/portal/portal.js"></script>
+</body>
+</html>

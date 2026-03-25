@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <!-- Google tag (gtag.js) — Consent Mode v2 -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        analytics_storage: 'denied', ad_storage: 'denied',
+        ad_user_data: 'denied', ad_personalization: 'denied',
+        wait_for_update: 500
+      });
+      try { var _s = localStorage.getItem('pp_consent'); if (_s) gtag('consent', 'update', JSON.parse(_s)); } catch(e) {}
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-46RW178B97"></script>
+    <script>gtag('js', new Date()); gtag('config', 'G-46RW178B97');</script>
+    <script src="/consent.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <title>PeuterPlannen app — vind peuteruitjes op afstand, type en weer</title>
+    <meta name="description" content="Gebruik de PeuterPlannen app om 2138 kindvriendelijke uitjes te vinden op afstand, type, leeftijd en weer. Met regiogidsen, planning en gecheckte locaties in Nederland.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://peuterplannen.nl/app.html">
+
+    <!-- PWA & Mobile -->
+    <meta name="view-transition" content="same-origin">
+    <meta name="theme-color" content="#D4775A">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="PeuterPlannen">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://peuterplannen.nl/app.html">
+    <meta property="og:title" content="PeuterPlannen app — vind peuteruitjes op afstand, type en weer">
+    <meta property="og:description" content="Gebruik de PeuterPlannen app om 2138 kindvriendelijke uitjes te vinden op afstand, type, leeftijd en weer. Met regiogidsen, planning en gecheckte locaties in Nederland.">
+    <meta property="og:site_name" content="PeuterPlannen">
+    <meta property="og:locale" content="nl_NL">
+    <meta property="og:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
+    <meta property="og:image:alt" content="PeuterPlannen - Ontdek de leukste uitjes met peuters en kleuters in Nederland">
+    <meta property="og:image:width" content="1408">
+    <meta property="og:image:height" content="768">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://peuterplannen.nl/homepage_hero_ai.jpeg">
+    <meta name="twitter:title" content="PeuterPlannen app — vind peuteruitjes op afstand, type en weer">
+    <meta name="twitter:description" content="Gebruik de PeuterPlannen app om 2138 kindvriendelijke uitjes te vinden op afstand, type, leeftijd en weer. Met regiogidsen, planning en gecheckte locaties in Nederland.">
+
+    <!-- BEGIN:JSONLD_APP -->
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "PeuterPlannen",
+      "url": "https://peuterplannen.nl/app.html",
+      "description": "Interactieve kaart met 2138 kindvriendelijke locaties. Filter op type: speeltuin, restaurant, museum, natuur.",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "Any",
+      "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+      "author": {"@type": "Person", "name": "Bas Metten"},
+      "areaServed": [
+        {"@type": "City", "name": "Amsterdam"},
+        {"@type": "City", "name": "Rotterdam"},
+        {"@type": "City", "name": "Den Haag"},
+        {"@type": "City", "name": "Utrecht"},
+        {"@type": "City", "name": "Haarlem"},
+        {"@type": "City", "name": "Amersfoort"},
+        {"@type": "City", "name": "Leiden"},
+        {"@type": "AdministrativeArea", "name": "Utrechtse Heuvelrug"},
+        {"@type": "City", "name": "Eindhoven"},
+        {"@type": "City", "name": "Groningen"},
+        {"@type": "City", "name": "Almere"},
+        {"@type": "City", "name": "Tilburg"},
+        {"@type": "City", "name": "Breda"},
+        {"@type": "City", "name": "Nijmegen"},
+        {"@type": "City", "name": "Arnhem"},
+        {"@type": "City", "name": "Apeldoorn"},
+        {"@type": "City", "name": "'s-Hertogenbosch"},
+        {"@type": "City", "name": "Gooi en Vechtstreek"},
+        {"@type": "City", "name": "Enschede"},
+        {"@type": "City", "name": "Zwolle"},
+        {"@type": "City", "name": "Maastricht"},
+        {"@type": "City", "name": "Dordrecht"}
+      ]
+    }
+    </script>
+<!-- END:JSONLD_APP -->
+
+    <!-- Preconnect & DNS Prefetch -->
+    <link rel="preconnect" href="https://piujsvgbfflrrvauzsxe.supabase.co" crossorigin>
+    <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="dns-prefetch" href="https://maps.googleapis.com">
+    <link rel="dns-prefetch" href="https://tiles.openfreemap.org">
+    <link rel="dns-prefetch" href="https://static.cloudflareinsights.com">
+    <link rel="dns-prefetch" href="https://esm.sh">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.css" />
+    <link rel="preload" href="https://unpkg.com/maplibre-gl@5.19.0/dist/maplibre-gl.js" as="script" crossorigin>
+
+    <!-- Fonts (self-hosted) + Critical preloads -->
+    <link rel="preload" href="/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/plus-jakarta-sans-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/app.bundle.css?v=202603250715-6edec4dd00">
+    <script src="/nav-floating.js?v=202603250715-6edec4dd00" defer></script>
+
+</head>
+<body class="pp-app">
+<!-- BEGIN:NOSCRIPT -->
+<noscript>
+  <div>
+    <h1>PeuterPlannen</h1>
+    <p>2138 uitjes voor gezinnen met jonge kinderen.</p>
+    <h2>Per stad</h2>
+    <ul>
+      <li><a href="amsterdam.html">Amsterdam (301 locaties)</a></li>
+      <li><a href="rotterdam.html">Rotterdam (145 locaties)</a></li>
+      <li><a href="den-haag.html">Den Haag (175 locaties)</a></li>
+      <li><a href="utrecht.html">Utrecht (185 locaties)</a></li>
+      <li><a href="haarlem.html">Haarlem (106 locaties)</a></li>
+      <li><a href="amersfoort.html">Amersfoort (81 locaties)</a></li>
+      <li><a href="leiden.html">Leiden (68 locaties)</a></li>
+      <li><a href="utrechtse-heuvelrug.html">Utrechtse Heuvelrug (108 locaties)</a></li>
+      <li><a href="eindhoven.html">Eindhoven (72 locaties)</a></li>
+      <li><a href="groningen.html">Groningen (120 locaties)</a></li>
+      <li><a href="almere.html">Almere (73 locaties)</a></li>
+      <li><a href="tilburg.html">Tilburg (89 locaties)</a></li>
+      <li><a href="breda.html">Breda (72 locaties)</a></li>
+      <li><a href="nijmegen.html">Nijmegen (56 locaties)</a></li>
+      <li><a href="arnhem.html">Arnhem (74 locaties)</a></li>
+      <li><a href="apeldoorn.html">Apeldoorn (72 locaties)</a></li>
+      <li><a href="s-hertogenbosch.html">'s-Hertogenbosch (107 locaties)</a></li>
+      <li><a href="gooi-en-vechtstreek.html">Gooi en Vechtstreek (54 locaties)</a></li>
+      <li><a href="enschede.html">Enschede (49 locaties)</a></li>
+      <li><a href="zwolle.html">Zwolle (48 locaties)</a></li>
+      <li><a href="maastricht.html">Maastricht (37 locaties)</a></li>
+      <li><a href="dordrecht.html">Dordrecht (46 locaties)</a></li>
+    </ul>
+    <h2>Per type</h2>
+    <ul>
+      <li><a href="speeltuinen.html">Speeltuinen</a></li>
+      <li><a href="kinderboerderijen.html">Kinderboerderijen</a></li>
+      <li><a href="natuur.html">Natuur</a></li>
+      <li><a href="musea.html">Musea</a></li>
+      <li><a href="zwemmen.html">Zwemmen</a></li>
+      <li><a href="pannenkoeken.html">Pannenkoeken</a></li>
+      <li><a href="horeca.html">Horeca</a></li>
+    </ul>
+    <h2>Start bij situatie</h2>
+    <ul>
+      <li><a href="regenachtige-dag-met-peuter.html">Regenachtige dag met peuter</a></li>
+      <li><a href="binnenlocaties-peuters.html">Binnenlocaties voor peuters</a></li>
+      <li><a href="horeca-met-speelhoek.html">Horeca met speelhoek</a></li>
+      <li><a href="koffie-en-spelen.html">Koffie en spelen</a></li>
+      <li><a href="dreumes-uitjes.html">Dreumes-uitjes</a></li>
+      <li><a href="peuteruitjes-2-5-jaar.html">Peuteruitjes voor 2-5 jaar</a></li>
+    </ul>
+  </div>
+</noscript>
+<!-- END:NOSCRIPT -->
+
+    <a href="#app-container" class="skip-link">Naar hoofdinhoud</a>
+    <nav aria-label="Hoofdnavigatie" class="floating-nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none" class="nav-logo-svg" aria-hidden="true"><rect width="40" height="40" rx="10" fill="#D4775A"/><path d="M20 6c-5.5 0-10 4.5-10 10 0 7 10 20 10 20s10-13 10-20c0-5.5-4.5-10-10-10z" fill="white"/><circle cx="20" cy="16" r="4" fill="#D4775A"/></svg>
+                <span class="logo-text"><span class="logo-top">Peuter</span><span class="logo-bottom">Plannen</span></span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/ontdekken/" class="nav-link">Ontdekken</a>
+                <a href="/about.html" class="nav-link">Over</a>
+                <a href="/blog/" class="nav-link">Inspiratie</a>
+                <a href="/contact.html" class="nav-link">Contact</a>
+                <a href="/plan.html" class="nav-link">Plan je dag ✨</a>
+                <a href="/app.html" class="nav-cta">Uitjes zoeken</a>
+            </div>
+            <span class="nav-count" id="app-topbar-count"></span>
+            <div class="app-mode-switch compact app-nav-toggle" role="group" aria-label="App-modus">
+                <button type="button" class="app-mode-chip active" data-mode-target="home" onclick="switchView('home')">Ontdek locaties</button>
+                <a href="/plan.html" class="app-mode-chip" data-mode-target="plan">Plan je dag ✨</a>
+            </div>
+            <button class="nav-burger" aria-label="Menu openen" aria-expanded="false" aria-controls="nav-mobile-menu">
+                <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="nav-mobile" id="nav-mobile-menu" aria-hidden="true">
+            <a href="/" class="nav-mobile-link">Home</a>
+            <a href="/ontdekken/" class="nav-mobile-link">Ontdekken</a>
+            <a href="/about.html" class="nav-mobile-link">Over</a>
+            <a href="/blog/" class="nav-mobile-link">Inspiratie</a>
+            <a href="/contact.html" class="nav-mobile-link">Contact</a>
+            <a href="/plan.html" class="nav-mobile-link">Plan je dag ✨</a>
+            <a href="/app.html" class="nav-mobile-link nav-mobile-cta nav-cta">Uitjes zoeken</a>
+        </div>
+    </nav>
+
+    <header class="app-context-strip">
+        <div class="app-context-copy">
+            <p class="app-context-kicker">PeuterPlannen App</p>
+            <p class="app-context-title">Wat gaan we doen?</p>
+            <p class="app-context-sub">Ontdek direct kindvriendelijke uitjes in de buurt</p>
+        </div>
+        <div class="app-mode-switch compact" role="group" aria-label="Desktop app-modus">
+            <button type="button" class="app-mode-chip active" data-mode-target="home" onclick="switchView('home')">Ontdek locaties</button>
+            <a href="/plan.html" class="app-mode-chip" data-mode-target="plan">Plan je dag ✨</a>
+            <a href="/ontdekken/" class="app-mode-chip app-mode-link">Per regio/thema</a>
+        </div>
+    </header>
+    <div class="app-wrapper">
+    <div class="app-container" id="app-container">
+        <div id="offline-banner" class="offline-banner hidden" role="status">Je bent offline — getoonde gegevens kunnen verouderd zijn.</div>
+        <div id="list-view">
+        <button class="panel-collapse-btn" id="panel-collapse-btn" aria-label="Verberg panel" title="Verberg panel">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+
+        <div class="search-section" role="search">
+            <div class="search-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                In de buurt van
+            </div>
+            <div class="search-input-wrapper">
+                <input type="text" id="location-input" class="search-input" placeholder="Waar woon je?" value="" autocomplete="off" aria-label="Zoek locatie">
+                <button class="icon-btn" id="gps-btn" onclick="getCurrentLocation()" data-tooltip="Gebruik mijn locatie" aria-label="Gebruik mijn locatie">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg>
+                </button>
+                <button class="icon-btn primary" onclick="updateLocation()" aria-label="Zoeken">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                </button>
+            </div>
+            <div id="gps-status" class="gps-status hidden" role="status" aria-live="polite"></div>
+            <div class="popular-cities" id="popular-cities">
+                <span class="popular-label">Populair:</span>
+                <button class="city-chip" onclick="setCity('Amsterdam')">Amsterdam</button>
+                <button class="city-chip" onclick="setCity('Utrecht')">Utrecht</button>
+                <button class="city-chip" onclick="setCity('Rotterdam')">Rotterdam</button>
+                <button class="city-chip" onclick="setCity('Den Haag')">Den Haag</button>
+                <button class="city-chip" onclick="setCity('Haarlem')">Haarlem</button>
+            </div>
+        </div>
+
+        <div id="gps-onboarding" class="gps-onboarding hidden" role="complementary">
+            <div class="gps-onboarding-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="width:32px;height:32px;color:var(--pp-primary);"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <strong>Waar ben je?</strong>
+            <p>Deel je locatie zodat we uitjes bij jou in de buurt kunnen tonen.</p>
+            <div class="gps-onboarding-actions">
+                <button class="gps-onboarding-btn primary" onclick="getCurrentLocation();document.getElementById('gps-onboarding').hidden=true;">Gebruik mijn locatie</button>
+                <button class="gps-onboarding-btn" onclick="document.getElementById('location-input').focus();document.getElementById('gps-onboarding').hidden=true;">Typ je stad</button>
+            </div>
+        </div>
+
+        <section class="decision-stage" aria-label="Wat voor dag wordt het?">
+        <div class="decision-stage-header">
+            <div class="decision-stage-kicker">Wat voor dag wordt het?</div>
+        </div>
+        <div class="preset-strip" role="toolbar" aria-label="Situatie-presets">
+            <button class="preset-chip" data-preset="rain" onclick="togglePreset('rain', event)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10"/><path d="M8 9a4 4 0 1 1 8 0c0 3-4 8-4 8s-4-5-4-8z"/></svg>
+                <div><strong>Regenproof</strong><span>Binnen of hybride keuzes</span></div>
+            </button>
+            <button class="preset-chip" data-preset="outdoor-coffee" onclick="togglePreset('outdoor-coffee', event)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M12 1v2M4.93 4.93l1.41 1.41M1 12h2"/></svg>
+                <div><strong>Buiten + koffie</strong><span>Spelen zonder haast</span></div>
+            </button>
+            <button class="preset-chip" data-preset="dreumesproof" onclick="togglePreset('dreumesproof', event)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M7 21v-4a5 5 0 0 1 10 0v4"/></svg>
+                <div><strong>Dreumesproof</strong><span>Rustiger en praktischer</span></div>
+            </button>
+            <button class="preset-chip" data-preset="peuterproof" onclick="togglePreset('peuterproof', event)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="3"/><path d="M5 21c1-4 3-6 7-6s6 2 7 6"/></svg>
+                <div><strong>Peuterproof</strong><span>Meer speelenergie kwijt</span></div>
+            </button>
+            <button class="preset-chip" data-preset="now-open" onclick="togglePreset('now-open', event)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                <div><strong>Nu open</strong><span>Plekken die nu open zijn</span></div>
+            </button>
+            <button class="preset-chip" data-preset="short-drive" onclick="togglePreset('short-drive', event)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h13l4 4v6a2 2 0 0 1-2 2h-2"/><circle cx="7.5" cy="17" r="2.5"/><circle cx="17.5" cy="17" r="2.5"/></svg>
+                <div><strong>Korte rit</strong><span>Dichtbij als tijd telt</span></div>
+            </button>
+            <button class="preset-chip" data-preset="lunch-play" onclick="togglePreset('lunch-play', event)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2v10"/><path d="M12 2v10"/><path d="M10 12v10"/><path d="M18 2v20"/></svg>
+                <div><strong>Lunch + spelen</strong><span>Eten zonder stilzitten</span></div>
+            </button>
+            <button class="preset-chip" data-preset="terras-kids" onclick="togglePreset('terras-kids', event)" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><circle cx="12" cy="4" r="1.5"/></svg>
+                <div><strong>Terrasje met de kids</strong><span>Terras + speelruimte</span></div>
+            </button>
+        </div>
+        <button class="preset-more" onclick="document.querySelector('.preset-strip').classList.add('expanded');this.remove();">Meer situaties</button>
+
+        <div class="filter-panel collapsed" id="filter-panel">
+            <button class="filter-panel-toggle" id="filter-panel-toggle" type="button" onclick="toggleFilterPanel()" aria-expanded="false" aria-controls="filter-chip-toolbar">
+                <div>
+                    <span>Meer filters</span>
+                    <strong id="filter-panel-summary">Type, weer en extra filters</strong>
+                    <span id="filter-panel-meta">Toon of verberg de uitgebreide filters</span>
+                </div>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="filter-chips" id="filter-chip-toolbar" role="toolbar" aria-label="Filter categorieën">
+                <button class="chip active" onclick="toggleTag('all', event)" aria-selected="true">Alles</button>
+                <span class="chip-label">Type:</span>
+                <button class="chip" data-type="play" onclick="toggleTag('play', event)" aria-selected="false">Speeltuin</button>
+                <button class="chip" data-type="farm" onclick="toggleTag('farm', event)" aria-selected="false">Boerderij</button>
+                <button class="chip" data-type="nature" onclick="toggleTag('nature', event)" aria-selected="false">Natuur</button>
+                <button class="chip" data-type="museum" onclick="toggleTag('museum', event)" aria-selected="false">Museum</button>
+                <button class="chip" data-type="swim" onclick="toggleTag('swim', event)" aria-selected="false">Zwemmen</button>
+                <button class="chip" data-type="pancake" onclick="toggleTag('pancake', event)" aria-selected="false">Pannenkoeken</button>
+                <button class="chip" data-type="horeca" onclick="toggleTag('horeca', event)" aria-selected="false">Horeca</button>
+                <span class="chip-label">Weer:</span>
+                <button class="chip" onclick="toggleWeather('indoor', event)" aria-selected="false">Binnen</button>
+                <button class="chip" onclick="toggleWeather('outdoor', event)" aria-selected="false">Buiten</button>
+                <span class="chip-label">Extra:</span>
+                <button class="chip" onclick="toggleFacility('coffee', event)" aria-selected="false">Koffie</button>
+                <button class="chip" onclick="toggleFacility('diaper', event)" aria-selected="false">Verschonen</button>
+                <button class="chip" onclick="toggleFacility('alcohol', event)" aria-selected="false">Alcohol</button>
+                <span class="chip-label">Leeftijd:</span>
+                <button class="chip" onclick="toggleAge('dreumes', event)" aria-selected="false">Dreumes (0–2)</button>
+                <button class="chip" onclick="toggleAge('peuter', event)" aria-selected="false">Peuter (2–5)</button>
+                <span class="chip-label">Afstand:</span>
+                <button class="chip radius-chip" onclick="toggleRadius(5, event)" aria-selected="false">5 km</button>
+                <button class="chip radius-chip" onclick="toggleRadius(10, event)" aria-selected="false">10 km</button>
+                <button class="chip radius-chip" onclick="toggleRadius(25, event)" aria-selected="false">25 km</button>
+            </div>
+        </div>
+        </section>
+
+        <div class="results-utilities">
+            <div class="active-filters" id="active-filters" style="display:none;">
+                <div class="active-filters-copy">
+                    <span id="filter-count"></span>
+                    <span id="filter-summary"></span>
+                </div>
+                <div>
+                    <button onclick="clearSharedShortlist()" id="clear-shared-shortlist" style="display:none;">Verlaat gedeelde shortlist</button>
+                    <button onclick="resetAllFilters()">Wis filters</button>
+                </div>
+            </div>
+
+            <div class="shortlist-bar" id="shortlist-bar">
+                <div class="shortlist-copy">
+                    <strong id="shortlist-title">Je shortlist</strong>
+                    <span id="shortlist-subtitle">Sla locaties op terwijl je vergelijkt en deel ze later als een compacte shortlist.</span>
+                </div>
+                <div class="shortlist-actions">
+                    <button class="shortlist-btn" type="button" onclick="showShortlist()">Open shortlist</button>
+                    <button class="shortlist-btn primary" type="button" onclick="shareShortlist()">Deel shortlist</button>
+                    <button class="shortlist-btn secondary" type="button" onclick="clearShortlist()">Wis</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="weather-banner"></div>
+
+        <div class="results-toolbar">
+            <div class="results-count" id="results-count" aria-live="polite"></div>
+            <select id="sort-select" class="sort-select" onchange="applySort(this.value)" aria-label="Sorteer op">
+                <option value="default">Standaard</option>
+                <option value="peuterscore">Beste Peuterscore</option>
+                <option value="az">A–Z</option>
+            </select>
+        </div>
+
+        <div id="results-container" class="results-list"></div>
+        <div id="loader" class="loader" role="status" aria-label="Laden">
+            <div class="skeleton-cards">
+                <div class="skeleton-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line-name skeleton"></div><div class="skel-line-meta skeleton"></div></div><div class="skel-score skeleton"></div></div>
+                <div class="skeleton-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line-name skeleton"></div><div class="skel-line-meta skeleton"></div></div><div class="skel-score skeleton"></div></div>
+                <div class="skeleton-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line-name skeleton"></div><div class="skel-line-meta skeleton"></div></div><div class="skel-score skeleton"></div></div>
+                <div class="skeleton-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line-name skeleton"></div><div class="skel-line-meta skeleton"></div></div><div class="skel-score skeleton"></div></div>
+                <div class="skeleton-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line-name skeleton"></div><div class="skel-line-meta skeleton"></div></div><div class="skel-score skeleton"></div></div>
+                <div class="skeleton-card"><div class="skel-img skeleton"></div><div class="skel-body"><div class="skel-line-name skeleton"></div><div class="skel-line-meta skeleton"></div></div><div class="skel-score skeleton"></div></div>
+            </div>
+        </div>
+        <div id="error" class="error-msg hidden" role="alert"></div>
+        </div><!-- /#list-view -->
+
+        <div id="map-container" class="map-container" role="application" aria-label="Kaart met locaties">
+            <div id="map" class="map-canvas"></div>
+            <!-- map-controls moved outside map-container for proper z-index stacking -->
+            <!-- Floating search pill (mobile map view) -->
+            <div class="map-search-pill" id="map-search-pill" onclick="openMapFilters()" role="button" tabindex="0" aria-label="Open zoek- en filteropties">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <span class="pill-label">Zoek &amp; filter...</span>
+                <span class="pill-badge" id="map-pill-badge" style="display:none;"></span>
+            </div>
+            <!-- Filter overlay (mobile map view) -->
+            <div class="map-filters-overlay" id="map-filters-overlay">
+                <div class="map-filter-header">
+                    <span class="map-filter-title">Zoek &amp; filter</span>
+                    <button class="map-filter-close" onclick="closeMapFilters()" aria-label="Sluiten">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <div class="search-input-wrapper">
+                    <input type="text" id="map-location-input" class="search-input" placeholder="Waar woon je?" autocomplete="off" aria-label="Zoek locatie">
+                    <button class="icon-btn" onclick="getCurrentLocation()" aria-label="Gebruik mijn locatie">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg>
+                    </button>
+                    <button class="icon-btn primary" onclick="updateLocationFromMap()" aria-label="Zoeken">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    </button>
+                </div>
+                <!-- Type chips — always visible, scrollable -->
+                <div class="map-filter-type-row" id="map-filter-type-chips">
+                    <button class="chip active" onclick="toggleTag('all', event)" aria-selected="true">Alles</button>
+                    <button class="chip" onclick="toggleTag('favorites', event)" aria-selected="false">Favorieten</button>
+                    <button class="chip" onclick="toggleTag('play', event)" aria-selected="false">Speeltuin</button>
+                    <button class="chip" onclick="toggleTag('farm', event)" aria-selected="false">Boerderij</button>
+                    <button class="chip" onclick="toggleTag('nature', event)" aria-selected="false">Natuur</button>
+                    <button class="chip" onclick="toggleTag('museum', event)" aria-selected="false">Museum</button>
+                    <button class="chip" onclick="toggleTag('swim', event)" aria-selected="false">Zwemmen</button>
+                    <button class="chip" onclick="toggleTag('pancake', event)" aria-selected="false">Pannenkoeken</button>
+                    <button class="chip" onclick="toggleTag('horeca', event)" aria-selected="false">Horeca</button>
+                </div>
+                <!-- More filters — toggle -->
+                <button class="map-filter-more-btn" id="map-filter-more-btn" onclick="toggleMapMoreFilters()">
+                    Meer filters <span class="map-filter-more-badge" id="map-filter-more-badge" style="display:none;"></span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="map-filter-extra" id="map-filter-extra" style="display:none;">
+                    <div class="map-filter-group">
+                        <span class="map-filter-group-label">Weer</span>
+                        <div class="map-filter-group-chips">
+                            <button class="chip" onclick="toggleWeather('indoor', event)" aria-selected="false">Binnen</button>
+                            <button class="chip" onclick="toggleWeather('outdoor', event)" aria-selected="false">Buiten</button>
+                        </div>
+                    </div>
+                    <div class="map-filter-group">
+                        <span class="map-filter-group-label">Extra</span>
+                        <div class="map-filter-group-chips">
+                            <button class="chip" onclick="toggleFacility('coffee', event)" aria-selected="false">Koffie</button>
+                            <button class="chip" onclick="toggleFacility('diaper', event)" aria-selected="false">Verschonen</button>
+                            <button class="chip" onclick="toggleFacility('alcohol', event)" aria-selected="false">Alcohol</button>
+                        </div>
+                    </div>
+                    <div class="map-filter-group">
+                        <span class="map-filter-group-label">Leeftijd</span>
+                        <div class="map-filter-group-chips">
+                            <button class="chip" onclick="toggleAge('dreumes', event)" aria-selected="false">Dreumes (0–2)</button>
+                            <button class="chip" onclick="toggleAge('peuter', event)" aria-selected="false">Peuter (2–5)</button>
+                        </div>
+                    </div>
+                    <div class="map-filter-group">
+                        <span class="map-filter-group-label">Afstand</span>
+                        <div class="map-filter-group-chips">
+                            <button class="chip radius-chip" onclick="toggleRadius(5, event)" aria-selected="false">5 km</button>
+                            <button class="chip radius-chip" onclick="toggleRadius(10, event)" aria-selected="false">10 km</button>
+                            <button class="chip radius-chip" onclick="toggleRadius(25, event)" aria-selected="false">25 km</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="map-no-results" class="map-no-results hidden">
+                <strong>Geen locaties gevonden</strong>
+                Probeer een andere categorie of filter
+            </div>
+        </div>
+    </div><!-- /#app-container -->
+    </div><!-- /.app-wrapper -->
+
+    <!-- Detail view (shown when ?locatie= parameter is present) -->
+    <section id="detail-view" class="detail-view hidden" aria-label="Locatie detail"></section>
+
+    <!-- Plan view (hidden until tab selected) -->
+    <section id="plan-view" class="plan-view hidden">
+        <div class="plan-mobile-nav">
+            <button class="plan-back-btn" onclick="switchView('home')" aria-label="Terug naar Ontdek">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                <span>Terug</span>
+            </button>
+        </div>
+        <div class="plan-shell">
+        <div class="plan-main">
+        <div class="plan-stage">
+        <div class="app-mode-switch plan-mode-toolbar" role="group" aria-label="Desktop app-modus">
+            <a href="/app.html" class="app-mode-chip" data-mode-target="home">Ontdek locaties</a>
+            <button type="button" class="app-mode-chip active" data-mode-target="plan">Plan je dag ✨</button>
+        </div>
+        <div class="plan-view-header">
+            <h2>Plan je dag ✨</h2>
+            <p>Vertel hoe je dag eruitziet. Wij bouwen een route.</p>
+        </div>
+        <div class="plan-location-chip" id="plan-location-chip">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <span id="plan-location-label">Locatie niet ingesteld</span>
+        </div>
+
+        <div class="plan-wizard" id="plan-wizard">
+            <!-- Step 1: Hoe oud is je peuter? -->
+            <div class="plan-step">
+                <div class="plan-step-label">Hoe oud is je peuter?</div>
+                <div class="kids-row">
+                    <span class="kids-row-label">Aantal</span>
+                    <div class="kids-counter">
+                        <button onclick="changeKidsCount(-1)" aria-label="Minder kinderen">−</button>
+                        <span class="kids-counter-val" id="kids-count-val">1</span>
+                        <button onclick="changeKidsCount(1)" aria-label="Meer kinderen">+</button>
+                    </div>
+                </div>
+                <div id="age-sliders"></div>
+            </div>
+
+            <!-- Step 2: Hoe ga je op pad? -->
+            <div class="plan-step">
+                <div class="plan-step-label">Hoe ga je op pad?</div>
+                <div class="plan-chip-grid">
+                    <button class="plan-chip selected" data-transport="auto" onclick="selectPlanOption(this,'transport')">
+                        <svg viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h13l4 4v6a2 2 0 0 1-2 2h-2"/><circle cx="7.5" cy="17" r="2.5"/><circle cx="17.5" cy="17" r="2.5"/></svg>
+                        <span>Auto <small>50 km</small></span>
+                    </button>
+                    <button class="plan-chip" data-transport="fiets" onclick="selectPlanOption(this,'transport')">
+                        <svg viewBox="0 0 24 24"><circle cx="5.5" cy="17.5" r="3"/><circle cx="18.5" cy="17.5" r="3"/><path d="M15 6h-4l-2 6h7l-1-6z"/><path d="M5.5 14.5 9 6"/></svg>
+                        <span>Fiets <small>5 km</small></span>
+                    </button>
+                    <button class="plan-chip" data-transport="ov" onclick="selectPlanOption(this,'transport')">
+                        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/><path d="M2 12h20"/></svg>
+                        <span>OV <small>25 km</small></span>
+                    </button>
+                    <button class="plan-chip" data-transport="bakfiets" onclick="selectPlanOption(this,'transport')">
+                        <svg viewBox="0 0 24 24"><circle cx="18" cy="17" r="3"/><circle cx="7" cy="17" r="3"/><path d="M7 17h7V8H7zM14 8h4l2 4"/></svg>
+                        <span>Bakfiets <small>8 km</small></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Wanneer? -->
+            <div class="plan-step">
+                <div class="plan-step-label">Wanneer?</div>
+                <div class="plan-chip-grid" id="plan-date-options">
+                    <button class="plan-chip selected" data-date="today" onclick="selectPlanDate(this,'today')">Vandaag</button>
+                    <button class="plan-chip" data-date="tomorrow" onclick="selectPlanDate(this,'tomorrow')">Morgen</button>
+                    <button class="plan-chip" data-date="saturday" onclick="selectPlanDate(this,'saturday')">Zaterdag</button>
+                    <button class="plan-chip" data-date="sunday" onclick="selectPlanDate(this,'sunday')">Zondag</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Hoe lang? -->
+            <div class="plan-step">
+                <div class="plan-step-label">Hoe lang?</div>
+                <div class="plan-duration-grid" id="plan-duration-options">
+                    <button class="plan-chip plan-duration-chip selected" data-duration="morning" onclick="selectPlanOption(this,'duration')">
+                        <span class="plan-duration-main">Ochtend</span>
+                        <span class="plan-duration-sub">2-3 uur · 1-2 plekken</span>
+                    </button>
+                    <button class="plan-chip plan-duration-chip" data-duration="half_day" onclick="selectPlanOption(this,'duration')">
+                        <span class="plan-duration-main">Halve dag</span>
+                        <span class="plan-duration-sub">4 uur · 2-3 plekken</span>
+                    </button>
+                    <button class="plan-chip plan-duration-chip" data-duration="whole_day" onclick="selectPlanOption(this,'duration')">
+                        <span class="plan-duration-main">Hele dag</span>
+                        <span class="plan-duration-sub">7 uur · 3-5 plekken</span>
+                    </button>
+                    <button class="plan-chip plan-duration-chip" data-duration="one_spot" onclick="selectPlanOption(this,'duration')">
+                        <span class="plan-duration-main">Eén locatie</span>
+                        <span class="plan-duration-sub">De beste plek voor nu</span>
+                    </button>
+                </div>
+            </div>
+
+            <button class="plan-generate-btn" id="plan-gen-btn" onclick="generatePlan()">Maak mijn dagplan ✨</button>
+        </div>
+        </div>
+        </div>
+
+        <aside class="plan-side">
+            <div class="plan-preview-card">
+                <div class="plan-preview-kicker">Dagvoorstel</div>
+                <h3 class="plan-preview-title" id="plan-preview-title">Rustig, slim en peuterproof opgebouwd.</h3>
+                <p class="plan-preview-copy" id="plan-preview-copy">Kies je dag, kinderen en vervoer. Rechts verschijnt daarna direct een bruikbaar plan, zonder losse lijstjes of giswerk.</p>
+                <div class="plan-preview-list" id="plan-preview-list"></div>
+            </div>
+            <div id="plan-result-container" class="plan-result-slot hidden"></div>
+        </aside>
+        </div>
+    </section>
+
+    <div class="newsletter-signup" style="max-width:700px;margin:48px auto;">
+      <h3>Elke vrijdag: 3 uitjes die passen bij het weer</h3>
+      <form action="https://buttondown.com/api/emails/embed-subscribe/peuterplannen"
+            method="post" target="popupwindow"
+            onsubmit="window.open('https://buttondown.com/peuterplannen','popupwindow')">
+        <input type="email" name="email" placeholder="jouw@email.nl" required
+          aria-label="E-mailadres voor nieuwsbrief">
+        <button type="submit">Aanmelden</button>
+      </form>
+      <p style="font-size:var(--pp-text-sm);opacity:0.85;margin-top:12px;">Geen spam. Uitschrijven wanneer je wilt.</p>
+    </div>
+
+    <details class="seo-content app-seo-content" aria-labelledby="app-seo-heading">
+      <summary>Meer over PeuterPlannen</summary>
+        <div class="app-seo-grid">
+            <article class="app-seo-card">
+                <p class="app-seo-kicker">Waarom deze pagina bestaat</p>
+                <h2 id="app-seo-heading">De app is bedoeld om sneller tot een echte shortlist te komen</h2>
+                <p>PeuterPlannen is geen losse kaart met willekeurige pins. De app combineert afstand, type uitje, leeftijd, weer en praktische voorzieningen zodat ouders niet steeds opnieuw hoeven te zoeken. Daardoor werkt deze pagina anders dan een standaard stads- of lijstpagina: hier begin je met je situatie van vandaag.</p>
+                <ul>
+                    <li><strong>Zoeken op afstand:</strong> handig als je niet weet welke wijk of gemeente het beste uitkomt.</li>
+                    <li><strong>Filteren op dagtype:</strong> buiten, regenproof, koffie, verschonen of alleen favorieten.</li>
+                    <li><strong>Plan mijn dag:</strong> logischer voor ouders die niet één plek zoeken maar een dagritme willen bouwen.</li>
+                </ul>
+                <div class="app-seo-links">
+                    <a href="/methode/" class="app-seo-link"><strong>Hoe PeuterPlannen selecteert</strong><span>Lees hoe geverifieerd, praktisch en oudercontext zwaarder wegen dan alleen listing-data.</span></a>
+                </div>
+            </article>
+            <article class="app-seo-card">
+                <p class="app-seo-kicker">Regionale shortcuts</p>
+                <h3>Begin desnoods toch met een regio- of themapagina</h3>
+                <p>Voor Google en voor ouders werkt het vaak beter om eerst te landen op een regio- of themapagina en daarna pas de app te openen. Daarom horen deze pagina’s bij elkaar.</p>
+                <div class="app-seo-links">
+                    <a href="/amsterdam.html" class="app-seo-link"><strong>Amsterdam met peuters</strong><span>Stadsgids met locaties, context en link naar de app.</span></a>
+                    <a href="/utrecht.html" class="app-seo-link"><strong>Utrecht met peuters</strong><span>Voor wie eerst een regio-overzicht wil en daarna op afstand zoekt.</span></a>
+                    <a href="/speeltuinen.html" class="app-seo-link"><strong>Speeltuinen voor peuters</strong><span>Landelijke typepagina voor buitenspeelplekken en indoor regenbackup.</span></a>
+                    <a href="/horeca.html" class="app-seo-link"><strong>Kindvriendelijke horeca</strong><span>Voor lunch, koffie en plekken waar kinderen niet alleen stil hoeven te zitten.</span></a>
+                </div>
+            </article>
+            <article class="app-seo-card">
+                <p class="app-seo-kicker">Waarop je kunt filteren</p>
+                <h3>De app is het sterkst voor praktische keuzes</h3>
+                <p>De filterlaag is gebouwd voor de vragen die ouders echt stellen op een drukke dag: wat is dichtbij, wat werkt met een dreumes, wat kan binnen, en waar kun je onderweg nog fatsoenlijk zitten of verschonen.</p>
+                <div class="app-seo-chip-row">
+                    <span class="app-seo-chip">Speeltuin</span>
+                    <span class="app-seo-chip">Kinderboerderij</span>
+                    <span class="app-seo-chip">Museum</span>
+                    <span class="app-seo-chip">Pannenkoeken</span>
+                    <span class="app-seo-chip">Binnen</span>
+                    <span class="app-seo-chip">Buiten</span>
+                    <span class="app-seo-chip">Koffie</span>
+                    <span class="app-seo-chip">Verschonen</span>
+                    <span class="app-seo-chip">Dreumes</span>
+                    <span class="app-seo-chip">Peuter</span>
+                </div>
+                <div class="app-seo-links">
+                    <a href="/ontdekken/" class="app-seo-link"><strong>Bekijk eerst regio’s en routes</strong><span>Handig als je liever start bij een dagtype, stad of themapagina en daarna pas de app gebruikt.</span></a>
+                </div>
+            </article>
+        </div>
+    </details>
+
+    <!-- Info panel (slide-up bottom sheet) -->
+    <div class="info-overlay" id="info-overlay" onclick="closeInfoPanel()" aria-hidden="true"></div>
+    <div class="info-panel" id="info-panel" role="dialog" aria-label="Over PeuterPlannen" aria-hidden="true">
+        <div class="info-handle" onclick="closeInfoPanel()"></div>
+        <div class="info-header">
+            <h2>Over PeuterPlannen</h2>
+            <button class="info-close" onclick="closeInfoPanel()" aria-label="Sluiten">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div class="info-body">
+            <p>PeuterPlannen helpt ouders met jonge kinderen de leukste uitjes te vinden in heel Nederland. 22 regio's, alle locaties gecheckt op kindvriendelijkheid.</p>
+
+            <!-- BEGIN:INFO_STATS -->
+            <div class="info-stats">
+                <div class="info-stat">
+                    <strong>2138+</strong>
+                    <span>Locaties</span>
+                </div>
+                <div class="info-stat">
+                    <strong>22</strong>
+                    <span>Regio's</span>
+                </div>
+                <div class="info-stat">
+                    <strong>8</strong>
+                    <span>Categorieën</span>
+                </div>
+            </div>
+<!-- END:INFO_STATS -->
+
+            <p>Ontworpen door een vader van twee peuters die simpelweg betere tooling wilde. Geen startup, geen VC-geld — gewoon een tool die werkt.</p>
+
+            <div class="info-ai-note">
+                <h3>Hoe werkt de aanbeveling?</h3>
+                <p>PeuterPlannen combineert actuele weerdata, jouw locatie en de leeftijd van je kinderen om de meest geschikte uitjes naar boven te halen. Alle 2138 locaties zijn handmatig geverifieerd — niet gegenereerd door een chatbot.</p>
+            </div>
+
+            <div class="info-links">
+                <a href="about.html" class="info-link">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                    <div>Lees het hele verhaal<br><span>Over PeuterPlannen</span></div>
+                </a>
+                <a href="contact.html" class="info-link">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+                    <div>Contact<br><span>Stuur ons een bericht</span></div>
+                </a>
+                <a href="index.html" class="info-link">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                    <div>Homepage<br><span>Bekijk alle steden en categorieën</span></div>
+                </a>
+            </div>
+
+            <div class="info-prefs-section">
+                <button class="info-clear-btn" onclick="clearAllPrefs()">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    Wis mijn voorkeuren
+                </button>
+                <p class="info-version">PeuterPlannen v2.4 &middot; 2138 locaties &middot; 22 regio's</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Location bottom sheet (map view) -->
+    <div id="loc-overlay" class="info-overlay" onclick="closeLocSheet()" aria-hidden="true"></div>
+    <div id="loc-sheet" class="loc-sheet" role="dialog" aria-label="Locatie details" aria-hidden="true">
+        <div class="info-handle" onclick="closeLocSheet()"></div>
+        <div id="loc-sheet-content" class="loc-sheet-content"></div>
+    </div>
+
+    <!-- Apple Maps-style map controls (outside map-container for z-index) -->
+    <div class="map-controls" id="map-controls">
+        <button class="map-controls-btn" id="map-gps-btn" aria-label="Mijn locatie">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
+        </button>
+    </div>
+
+    <!-- Bottom Sheet (mobile map/browse) -->
+    <div id="sheet-overlay" class="sheet-overlay" aria-hidden="true"></div>
+    <div id="sheet-scroll-host" class="sheet-scroll-host">
+        <!-- Scroll-snap spacer segments + detent points (heights set by JS) -->
+        <div class="sheet-snap-spacer" id="snap-spacer-head" aria-hidden="true"></div>
+        <div class="sheet-snap--peek" id="snap-peek" aria-hidden="true"></div>
+        <div class="sheet-snap-spacer-tail" id="snap-spacer-mid" aria-hidden="true"></div>
+        <div class="sheet-snap--half" id="snap-half" aria-hidden="true"></div>
+        <div class="sheet-snap-spacer-tail" id="snap-spacer-tail" aria-hidden="true"></div>
+
+        <div id="bottom-sheet" class="bottom-sheet" role="dialog" aria-label="Locaties" aria-expanded="false" data-state="hidden">
+            <div class="sheet-drag-handle" id="sheet-drag-handle">
+                <div class="sheet-handle-bar"></div>
+            </div>
+            <div class="sheet-content" id="sheet-content">
+            <!-- Peek content: search pill + preset chips + tabs -->
+            <div class="sheet-peek" id="sheet-peek">
+                <div class="sheet-search-area" id="sheet-search-area" role="search" aria-label="Zoek locaties">
+                    <div class="sheet-search-pill" id="sheet-search-pill">
+                        <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        <span class="pill-text" id="search-pill-text">Zoek stad of plek</span>
+                        <input type="text" class="sheet-search-input" id="sheet-search-input" placeholder="Zoek stad of plek" autocomplete="off" aria-label="Zoek locatie of regio">
+                        <button class="search-clear-btn" id="search-clear-btn" type="button" aria-label="Wis zoekopdracht">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.25"/><path d="m15 9-6 6M9 9l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <!-- Preset chips — compact horizontal scroll -->
+                <div class="sheet-presets" id="sheet-presets" role="toolbar" aria-label="Situatie-presets">
+                    <button class="sheet-preset sheet-preset-filters" id="sheet-preset-filters" aria-label="Open filters">
+                        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M3 6h18M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+                        Filters
+                    </button>
+                    <button class="sheet-preset" data-preset="short-drive" onclick="togglePreset('short-drive', event)" aria-pressed="false">Korte rit</button>
+                    <button class="sheet-preset" data-preset="rain" onclick="togglePreset('rain', event)" aria-pressed="false">Regenproof</button>
+                    <button class="sheet-preset" data-preset="lunch-play" onclick="togglePreset('lunch-play', event)" aria-pressed="false">Lunch+spelen</button>
+                    <button class="sheet-preset" data-preset="peuterproof" onclick="togglePreset('peuterproof', event)" aria-pressed="false">Peuterproof</button>
+                    <button class="sheet-preset" data-preset="now-open" onclick="togglePreset('now-open', event)" aria-pressed="false">Nu open</button>
+                    <button class="sheet-preset" data-preset="outdoor-coffee" onclick="togglePreset('outdoor-coffee', event)" aria-pressed="false">Buiten+koffie</button>
+                </div>
+                <!-- Inline filter chips (shown when search expanded) -->
+                <!-- Category chips — always visible in peek -->
+                <div class="sheet-filter-chips" id="sheet-filter-chips" role="toolbar" aria-label="Filter op type">
+                    <button class="sheet-filter-chip active" data-filter="all" aria-pressed="true">Alles</button>
+                    <button class="sheet-filter-chip" data-filter="play" data-type="play" aria-pressed="false">Speeltuin</button>
+                    <button class="sheet-filter-chip" data-filter="farm" data-type="farm" aria-pressed="false">Boerderij</button>
+                    <button class="sheet-filter-chip" data-filter="nature" data-type="nature" aria-pressed="false">Natuur</button>
+                    <button class="sheet-filter-chip" data-filter="museum" data-type="museum" aria-pressed="false">Museum</button>
+                    <button class="sheet-filter-chip" data-filter="horeca" data-type="horeca" aria-pressed="false">Horeca</button>
+                    <button class="sheet-filter-chip" data-filter="swim" data-type="swim" aria-pressed="false">Zwemmen</button>
+                </div>
+            </div>
+            <!-- Meta (shown in half/full, not peek) -->
+            <div class="sheet-meta" id="sheet-meta">
+                <span class="sheet-count" id="sheet-count"></span>
+            </div>
+            <!-- Location preview (shown when marker tapped) -->
+            <div class="sheet-loc-preview" id="sheet-loc-preview"></div>
+            <!-- Half content: compact location list -->
+            <div class="sheet-list" id="sheet-list" role="list" aria-label="Locatie lijst"></div>
+            <!-- Full content: location detail -->
+            <div class="sheet-detail" id="sheet-detail"></div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Screen reader announcements for sheet state changes -->
+    <!-- Filter modal (slide-up) -->
+    <div class="filter-modal-overlay" id="filter-modal-overlay"></div>
+    <div class="filter-modal" id="filter-modal" aria-modal="true" role="dialog" aria-label="Meer filters">
+        <div class="filter-modal-header">
+            <h3>Meer filters</h3>
+            <button class="filter-modal-close" id="filter-modal-close" aria-label="Sluit filter paneel">&times;</button>
+        </div>
+        <div class="filter-modal-body">
+            <div class="filter-modal-group">
+                <div class="filter-modal-label">Weer</div>
+                <div class="filter-modal-options">
+                    <button class="filter-modal-chip" data-action="weather" data-value="indoor" aria-pressed="false">Binnen</button>
+                    <button class="filter-modal-chip" data-action="weather" data-value="outdoor" aria-pressed="false">Buiten</button>
+                </div>
+            </div>
+            <div class="filter-modal-group">
+                <div class="filter-modal-label">Leeftijd</div>
+                <div class="filter-modal-options">
+                    <button class="filter-modal-chip" data-action="age" data-value="dreumes" aria-pressed="false">Dreumes (0-2)</button>
+                    <button class="filter-modal-chip" data-action="age" data-value="peuter" aria-pressed="false">Peuter (2-5)</button>
+                </div>
+            </div>
+            <div class="filter-modal-group">
+                <div class="filter-modal-label">Faciliteiten</div>
+                <div class="filter-modal-options">
+                    <button class="filter-modal-chip" data-action="facility" data-value="coffee" aria-pressed="false">Koffie</button>
+                    <button class="filter-modal-chip" data-action="facility" data-value="diaper" aria-pressed="false">Verschonen</button>
+                </div>
+            </div>
+            <div class="filter-modal-group">
+                <div class="filter-modal-label">Eten &amp; drinken</div>
+                <div class="filter-modal-options">
+                    <button class="filter-modal-chip" data-action="facility" data-value="coffee" aria-pressed="false">Koffie</button>
+                    <button class="filter-modal-chip" data-action="facility" data-value="lunch" aria-pressed="false">Lunch</button>
+                </div>
+            </div>
+            <div class="filter-modal-group">
+                <div class="filter-modal-label">Afstand</div>
+                <div class="filter-modal-options">
+                    <button class="filter-modal-chip" data-action="radius" data-value="5" aria-pressed="false">5 km</button>
+                    <button class="filter-modal-chip" data-action="radius" data-value="10" aria-pressed="false">10 km</button>
+                    <button class="filter-modal-chip" data-action="radius" data-value="25" aria-pressed="false">25 km</button>
+                </div>
+            </div>
+            <div class="filter-modal-group">
+                <div class="filter-modal-label">Persoonlijk</div>
+                <div class="filter-modal-options">
+                    <button class="filter-modal-chip" data-action="saved" data-value="only" aria-pressed="false">Alleen bewaard</button>
+                </div>
+            </div>
+        </div>
+        <button class="filter-modal-apply" id="filter-modal-apply">Toon resultaten</button>
+    </div>
+
+    <div id="sr-announcer" class="sr-only" aria-live="polite" role="status"></div>
+
+    <script type="module" src="app.bundle.js?v=202603250715-6edec4dd00"></script>
+
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
+</body>
+</html>

@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - PeuterPlannen</title>
+  <meta name="description" content="Adminportal voor PeuterPlannen: beheer claims, content, SEO, trustsignalen en publicatie.">
+  <link rel="canonical" href="https://admin.peuterplannen.nl/">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/admin/favicon.ico" sizes="any">
+  <link rel="stylesheet" href="/fonts.css">
+  <link rel="stylesheet" href="/design-system.css?v=202603200616">
+  <link rel="stylesheet" href="/admin/portal-shell.css?v=202603200616">
+  <style>
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .admin-auth {
+      max-width: 540px;
+      margin: 22px auto 0;
+    }
+
+    .admin-auth .portal-card {
+      border-radius: 22px;
+      padding: 28px;
+    }
+
+    .admin-hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .admin-hero-note {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .admin-kpi-card {
+      border: 1px solid rgba(35, 31, 26, 0.08);
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .admin-kpi-value {
+      font-family: var(--pp-font-head);
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .admin-kpi-label {
+      font-size: 12px;
+      color: var(--pp-text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .admin-tabs-card {
+      padding: 18px;
+    }
+
+    .admin-workbench {
+      display: grid;
+      grid-template-columns: minmax(280px, 1.15fr) minmax(220px, 0.85fr) minmax(220px, 0.85fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .admin-workbench-card {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(35, 31, 26, 0.08);
+      box-shadow: var(--pp-shadow-sm);
+    }
+
+    .admin-workbench-card h3 {
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    .admin-workbench-copy {
+      color: var(--pp-text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .admin-tab-groups {
+      display: grid;
+      gap: 12px;
+    }
+
+    .admin-tab-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .admin-tab-group-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--pp-text-muted);
+      font-weight: 700;
+      padding-left: 4px;
+    }
+
+    .admin-section-title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    .admin-section-title p {
+      margin: 0;
+      color: var(--pp-text-muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .admin-section-card {
+      border: 1px solid rgba(35, 31, 26, 0.08);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 16px;
+    }
+
+    .admin-section-card h3 {
+      margin-bottom: 4px;
+      font-size: 16px;
+    }
+
+    .admin-help {
+      margin: 0 0 10px;
+      color: var(--pp-text-muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .admin-workbench-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .admin-start-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .admin-start-step {
+      border: 1px solid rgba(35, 31, 26, 0.08);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.86);
+      padding: 14px 16px;
+    }
+
+    .admin-start-step strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--pp-text-muted);
+    }
+
+    .admin-start-step p {
+      margin: 0;
+      color: var(--pp-text);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .admin-two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .admin-three-col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .admin-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px 14px;
+    }
+
+    .admin-form-grid .portal-form-group.full,
+    .admin-form-grid .admin-full {
+      grid-column: 1 / -1;
+    }
+
+    .admin-panel-stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .admin-advanced-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--pp-text-muted);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .admin-advanced-toggle input {
+      accent-color: var(--pp-primary);
+    }
+
+    .admin-advanced-section.hidden {
+      display: none;
+    }
+
+    .admin-disclosure {
+      border: 1px solid rgba(35, 31, 26, 0.08);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.62);
+      padding: 0 14px 14px;
+    }
+
+    .admin-disclosure summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 14px 0;
+      font-weight: 700;
+      color: var(--pp-text);
+    }
+
+    .admin-disclosure summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .admin-disclosure-copy {
+      margin: 0 0 12px;
+      color: var(--pp-text-muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .admin-summary-card {
+      min-height: 126px;
+    }
+
+    .admin-summary-card .portal-muted {
+      display: inline-block;
+      margin-top: 4px;
+      line-height: 1.6;
+    }
+
+    .admin-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .admin-info-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-info-item {
+      border: 1px solid rgba(35, 31, 26, 0.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.75);
+    }
+
+    .admin-info-item strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--pp-text-muted);
+    }
+
+    .admin-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      border: 1px solid rgba(35, 31, 26, 0.12);
+      border-radius: 8px;
+      background: #f7f3ee;
+      padding: 2px 6px;
+    }
+
+    .portal-link-btn {
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--pp-primary-deep);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .portal-link-btn:hover {
+      text-decoration: underline;
+    }
+
+    .portal-table td.actions {
+      width: 220px;
+    }
+
+    .portal-table td.tight,
+    .portal-table th.tight {
+      white-space: nowrap;
+    }
+
+    .portal-inline-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      border: 1px solid rgba(35, 31, 26, 0.12);
+      border-radius: 6px;
+      background: #f7f3ee;
+      padding: 2px 6px;
+    }
+
+    .admin-empty-note {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px dashed rgba(35, 31, 26, 0.14);
+      color: var(--pp-text-muted);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    @media (max-width: 980px) {
+      .admin-hero-grid,
+      .admin-workbench,
+      .admin-two-col,
+      .admin-three-col,
+      .admin-start-strip,
+      .admin-form-grid,
+      .admin-info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .portal-stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .portal-table td.actions {
+        width: auto;
+      }
+    }
+
+    /* FAQ Visual Editor */
+    .faq-editor { display: flex; flex-direction: column; gap: 10px; }
+    .faq-pair { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; padding: 12px; border: 1px solid rgba(35,31,26,0.10); border-radius: 10px; background: rgba(255,255,255,0.7); }
+    .faq-pair-fields { display: flex; flex-direction: column; gap: 6px; }
+    .faq-pair input, .faq-pair textarea { font-size: 14px; }
+    .faq-remove-btn { background: none; border: none; color: var(--pp-text-muted); cursor: pointer; font-size: 18px; padding: 4px 8px; border-radius: 6px; }
+    .faq-remove-btn:hover { background: rgba(212,119,90,0.12); color: var(--pp-terracotta); }
+    .faq-add-btn { align-self: flex-start; font-size: 13px; padding: 6px 14px; border-radius: 8px; border: 1px dashed rgba(35,31,26,0.18); background: none; cursor: pointer; color: var(--pp-sage); font-weight: 600; }
+    .faq-add-btn:hover { background: rgba(107,142,107,0.08); }
+
+    /* Slug auto-generation */
+    .slug-row { display: flex; gap: 8px; align-items: center; }
+    .slug-row input { flex: 1; }
+    .slug-auto-btn { font-size: 12px; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(35,31,26,0.14); background: rgba(255,255,255,0.8); cursor: pointer; white-space: nowrap; color: var(--pp-sage); font-weight: 600; }
+    .slug-auto-btn:hover { background: rgba(107,142,107,0.08); }
+
+    /* Image preview */
+    .image-preview-wrap { margin-top: 8px; }
+    .image-preview-thumb { max-width: 280px; border-radius: 10px; border: 1px solid rgba(35,31,26,0.10); }
+    .image-preview-empty { font-size: 13px; color: var(--pp-text-muted); font-style: italic; }
+
+    /* Location autocomplete chips */
+    .chip-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; background: var(--pp-cream); border: 1px solid rgba(35,31,26,0.12); font-size: 13px; }
+    .chip-remove { background: none; border: none; cursor: pointer; font-size: 14px; color: var(--pp-text-muted); padding: 0 2px; line-height: 1; }
+    .chip-remove:hover { color: var(--pp-terracotta); }
+    .autocomplete-wrap { position: relative; }
+    .autocomplete-results { position: absolute; z-index: 50; top: 100%; left: 0; right: 0; max-height: 200px; overflow-y: auto; background: #fff; border: 1px solid rgba(35,31,26,0.14); border-radius: 10px; box-shadow: var(--pp-shadow-sm); display: none; }
+    .autocomplete-results.visible { display: block; }
+    .autocomplete-item { padding: 8px 12px; cursor: pointer; font-size: 13px; }
+    .autocomplete-item:hover { background: rgba(107,142,107,0.08); }
+    .autocomplete-item .autocomplete-meta { color: var(--pp-text-muted); font-size: 12px; }
+
+    /* Live Preview Modal */
+    .preview-modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; padding: 24px; }
+    .preview-modal-overlay.visible { display: flex; }
+    .preview-modal { background: #fff; border-radius: 18px; width: 100%; max-width: 720px; max-height: 85vh; overflow-y: auto; padding: 28px; box-shadow: 0 8px 30px rgba(0,0,0,0.18); }
+    .preview-modal h1 { font-size: 24px; margin-bottom: 6px; }
+    .preview-modal .preview-kicker { font-size: 13px; color: var(--pp-terracotta); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+    .preview-modal .preview-hero-body { font-size: 15px; color: var(--pp-text-muted); margin-bottom: 16px; line-height: 1.6; }
+    .preview-modal .preview-body { font-size: 15px; line-height: 1.7; }
+    .preview-modal .preview-body h2 { font-size: 20px; margin-top: 20px; margin-bottom: 8px; }
+    .preview-modal .preview-body h3 { font-size: 17px; margin-top: 16px; margin-bottom: 6px; }
+    .preview-modal .preview-body ul, .preview-modal .preview-body ol { padding-left: 20px; }
+    .preview-modal .preview-faq { margin-top: 20px; }
+    .preview-modal .preview-faq dt { font-weight: 700; margin-top: 12px; }
+    .preview-modal .preview-faq dd { margin: 4px 0 0 0; color: var(--pp-text-muted); }
+    .preview-close-btn { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--pp-text-muted); }
+  </style>
+</head>
+<body class="portal-admin">
+  <a href="#main-content" class="skip-link">Naar hoofdinhoud</a>
+
+  <nav class="portal-nav" aria-label="Hoofdnavigatie">
+    <div class="portal-nav-inner">
+      <a class="portal-nav-brand" href="/">
+        PeuterPlannen
+        <span class="portal-nav-pill">Admin</span>
+      </a>
+      <div class="portal-nav-right">
+        <span id="nav-user" class="portal-nav-user hidden"></span>
+        <button id="nav-logout" class="portal-btn portal-btn-secondary portal-btn-sm hidden" type="button">Uitloggen</button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main-content" class="portal-container">
+    <section id="screen-login" class="admin-auth">
+      <div class="portal-card">
+        <h1 class="portal-screen-title">Admin toegang</h1>
+        <p class="portal-subtitle">Log in op het vaste admin-account. Je krijgt eerst een 6-cijferige code en daarnaast een fallback-link.</p>
+        <div id="login-alert" class="portal-alert-wrap" aria-live="assertive"></div>
+        <div class="portal-form-group">
+          <label class="portal-label" for="admin-email">E-mailadres</label>
+          <input class="portal-input" type="email" id="admin-email" placeholder="basmetten@gmail.com" autocomplete="email">
+        </div>
+        <button id="send-otp-btn" class="portal-btn portal-btn-primary portal-btn-full" type="button">Inlogcode sturen</button>
+      </div>
+    </section>
+
+    <section id="screen-otp" class="admin-auth hidden">
+      <div class="portal-card">
+        <h1 class="portal-screen-title">Verifieer je login</h1>
+        <p class="portal-subtitle">Inlogmail verstuurd naar <strong id="otp-email-display"></strong>. Vul de 6-cijferige code in. Werkt dat niet, gebruik dan de link uit dezelfde mail.</p>
+        <div id="otp-alert" class="portal-alert-wrap" aria-live="assertive"></div>
+        <div class="portal-form-group">
+          <label class="portal-label" for="otp-code">6-cijferige code</label>
+          <input class="portal-input" type="text" id="otp-code" maxlength="6" autocomplete="one-time-code" inputmode="numeric" placeholder="000000">
+        </div>
+        <div class="portal-btn-row">
+          <button id="verify-otp-btn" class="portal-btn portal-btn-primary" type="button">Inloggen</button>
+          <button id="otp-back-btn" class="portal-btn portal-btn-secondary" type="button">Terug</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-dashboard" class="hidden admin-layout">
+      <h1 class="sr-only">PeuterPlannen admin dashboard</h1>
+
+      <article class="portal-hero">
+        <div class="admin-hero-grid">
+          <div>
+            <p class="portal-chip">Beheercentrum</p>
+            <h2 class="portal-title" style="margin-top:8px;">PeuterPlannen beheren zonder technische omwegen</h2>
+            <p style="margin:10px 0 0;color:rgba(255,255,255,0.82);font-size:14px;max-width:58ch;">Werk eerst de belangrijkste aandachtspunten weg, verbeter daarna locaties of pagina’s, en zet wijzigingen pas daarna live. Alles hier draait om duidelijkere keuzes voor ouders.</p>
+          </div>
+          <div class="admin-hero-note">
+            <strong style="display:block;font-family:var(--pp-font-head);margin-bottom:6px;">Zo gebruik je dit scherm</strong>
+            Begin bij <em>Wat aandacht nodig heeft</em> of <em>Nog te controleren</em>. Pak daarna pas <em>Locatie bewerken</em> of <em>Pagina-inhoud</em>. De onderdelen onder <em>Extra beheer</em> heb je minder vaak nodig.
+          </div>
+        </div>
+      </article>
+
+      <section class="portal-stat-grid" id="stat-grid" aria-label="Kerncijfers">
+        <div class="portal-stat-card admin-kpi-card"><span class="admin-kpi-value is-loading" id="stat-pending">-</span><span class="admin-kpi-label">Open claims</span></div>
+        <div class="portal-stat-card admin-kpi-card"><span class="admin-kpi-value is-loading" id="stat-subs">-</span><span class="admin-kpi-label">Actieve subscriptions</span></div>
+        <div class="portal-stat-card admin-kpi-card"><span class="admin-kpi-value is-loading" id="stat-edits">-</span><span class="admin-kpi-label">Edits 7 dagen</span></div>
+        <div class="portal-stat-card admin-kpi-card"><span class="admin-kpi-value is-loading" id="stat-owners">-</span><span class="admin-kpi-label">Owners</span></div>
+        <div class="portal-stat-card admin-kpi-card"><span class="admin-kpi-value is-loading" id="stat-observations">-</span><span class="admin-kpi-label">Te controleren signalen</span></div>
+        <div class="portal-stat-card admin-kpi-card"><span class="admin-kpi-value is-loading" id="stat-tasks">-</span><span class="admin-kpi-label">Open aandachtspunten</span></div>
+      </section>
+
+      <section class="portal-card portal-card-soft admin-tabs-card">
+        <div class="admin-section-title">
+          <h2>Werkbank</h2>
+          <p>Kies eerst wat nu aandacht nodig heeft. De specialistische schermen staan daaronder gegroepeerd in gewone taal.</p>
+        </div>
+        <div class="admin-start-strip" style="margin-bottom:16px;">
+          <div class="admin-start-step">
+            <strong>Stap 1</strong>
+            <p>Begin met signalen of open aandachtspunten. Daar haal je meestal de snelste kwaliteitswinst.</p>
+          </div>
+          <div class="admin-start-step">
+            <strong>Stap 2</strong>
+            <p>Open daarna een locatie of pagina en pas alleen aan wat ouders of Google echt helpt.</p>
+          </div>
+          <div class="admin-start-step">
+            <strong>Stap 3</strong>
+            <p>Controleer als laatste of er iets klaarstaat om opnieuw live te zetten.</p>
+          </div>
+        </div>
+        <div class="admin-workbench">
+          <article class="admin-workbench-card">
+            <div class="admin-workbench-copy">
+              <strong>Volgende beste stap</strong>
+              <p id="workbench-next-step-copy">Ik laad eerst de backlog zodat ik kan aangeven wat nu het meeste oplevert.</p>
+            </div>
+            <div class="admin-workbench-actions">
+              <button id="workbench-next-location-btn" class="portal-btn portal-btn-primary" type="button">Open volgende locatie</button>
+              <button id="workbench-open-trust-btn" class="portal-btn portal-btn-secondary" type="button">Bekijk te controleren signalen</button>
+            </div>
+          </article>
+          <article class="admin-workbench-card">
+            <div class="admin-workbench-copy">
+              <strong>Huidige locatie</strong>
+              <p id="workbench-selected-location">Nog geen locatie gekozen. Open eerst een locatie vanuit Locaties of vanuit de backlog.</p>
+            </div>
+            <div class="admin-workbench-actions">
+              <button id="workbench-open-selected-content-btn" class="portal-btn portal-btn-secondary" type="button" disabled>Open inhoud</button>
+              <button id="workbench-open-selected-seo-btn" class="portal-btn portal-btn-secondary" type="button" disabled>Open Google &amp; vindbaarheid</button>
+              <button id="workbench-open-selected-editorial-btn" class="portal-btn portal-btn-secondary" type="button" disabled>Maak of open pagina-inhoud</button>
+            </div>
+          </article>
+          <article class="admin-workbench-card">
+            <div class="admin-workbench-copy">
+              <strong>Live status</strong>
+              <p id="workbench-publish-state">Ik controleer of er wijzigingen klaarstaan om live te zetten.</p>
+            </div>
+            <div class="admin-workbench-actions">
+              <button id="workbench-open-publishing-btn" class="portal-btn portal-btn-secondary" type="button">Open live status</button>
+            </div>
+          </article>
+        </div>
+        <div class="admin-tab-groups" style="margin-top:16px;">
+          <div class="admin-tab-group">
+            <span class="admin-tab-group-label">Dagelijks werk</span>
+            <div class="portal-tabs" role="tablist" aria-label="Dagelijks werk">
+              <button class="portal-tab active" id="tab-btn-overview" data-tab-target="tab-overview" role="tab" aria-selected="true" type="button">Start</button>
+              <button class="portal-tab" id="tab-btn-insights" data-tab-target="tab-insights" role="tab" aria-selected="false" type="button">Wat aandacht nodig heeft</button>
+              <button class="portal-tab" id="tab-btn-trust" data-tab-target="tab-trust" role="tab" aria-selected="false" type="button">Nog te controleren</button>
+              <button class="portal-tab" id="tab-btn-location-detail" data-tab-target="tab-location-detail" role="tab" aria-selected="false" type="button">Locatie bewerken</button>
+              <button class="portal-tab" id="tab-btn-publishing" data-tab-target="tab-publishing" role="tab" aria-selected="false" type="button">Live zetten</button>
+            </div>
+          </div>
+          <label class="admin-advanced-toggle">
+            <input id="toggle-advanced-tools" type="checkbox">
+            Extra beheer tonen
+          </label>
+          <div class="admin-tab-group admin-advanced-section hidden" id="advanced-admin-group">
+            <span class="admin-tab-group-label">Extra beheer</span>
+            <div class="portal-tabs" role="tablist" aria-label="Beheer">
+              <button class="portal-tab" id="tab-btn-locations" data-tab-target="tab-locations" role="tab" aria-selected="false" type="button">Alle locaties</button>
+              <button class="portal-tab" id="tab-btn-seo" data-tab-target="tab-seo" role="tab" aria-selected="false" type="button">Google &amp; vindbaarheid</button>
+              <button class="portal-tab" id="tab-btn-editorial" data-tab-target="tab-editorial" role="tab" aria-selected="false" type="button">Pagina-inhoud</button>
+              <button class="portal-tab" id="tab-btn-duplicates" data-tab-target="tab-duplicates" role="tab" aria-selected="false" type="button">Dubbele locaties</button>
+              <button class="portal-tab" id="tab-btn-claims" data-tab-target="tab-claims" role="tab" aria-selected="false" type="button">Claims</button>
+              <button class="portal-tab" id="tab-btn-owners" data-tab-target="tab-owners" role="tab" aria-selected="false" type="button">Partners</button>
+              <button class="portal-tab" id="tab-btn-editlog" data-tab-target="tab-editlog" role="tab" aria-selected="false" type="button">Geschiedenis</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-overview" class="portal-card">
+        <div class="portal-heading-row"><h2>Start hier</h2></div>
+        <p class="portal-subtitle">Dit scherm helpt je kiezen waar je nu begint. Werk eerst signalen en aandachtspunten weg. Gebruik daarna pas de specialistische schermen.</p>
+        <div id="overview-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="admin-three-col">
+          <div class="portal-card portal-card-soft admin-summary-card">
+            <h3>Begin met wat blokkeert</h3>
+            <p class="portal-subtitle">Te controleren signalen en open aandachtspunten verbeteren direct de kwaliteit van wat ouders zien.</p>
+            <div class="portal-btn-row" style="margin-top:12px;">
+              <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-tab-target="tab-trust">Open nog te controleren</button>
+              <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-tab-target="tab-insights">Open aandachtspunten</button>
+            </div>
+          </div>
+          <div class="portal-card portal-card-soft admin-summary-card">
+            <h3>Werk daarna aan inhoud</h3>
+            <p class="portal-subtitle">Gebruik pagina-inhoud voor regio’s, clusters en sterke detailpagina’s. Dat helpt zowel ouders als Google.</p>
+            <div class="portal-btn-row" style="margin-top:12px;">
+              <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-tab-target="tab-editorial">Open pagina-inhoud</button>
+              <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-tab-target="tab-seo">Open Google &amp; vindbaarheid</button>
+            </div>
+          </div>
+          <div class="portal-card portal-card-soft admin-summary-card">
+            <h3>Zet wijzigingen daarna live</h3>
+            <p class="portal-subtitle">Als er wijzigingen klaarstaan, kun je hier controleren of de site opnieuw moet worden klaargezet.</p>
+            <div class="portal-btn-row" style="margin-top:12px;">
+              <button class="portal-btn portal-btn-secondary portal-btn-sm" type="button" data-tab-target="tab-publishing">Open live status</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-claims" class="portal-card hidden">
+        <div class="portal-heading-row"><h2>Claim-aanvragen</h2></div>
+        <div class="portal-pill-row" id="claims-filter-row">
+          <button class="portal-pill active" type="button" data-claims-filter="pending">Openstaand</button>
+          <button class="portal-pill" type="button" data-claims-filter="approved">Goedgekeurd</button>
+          <button class="portal-pill" type="button" data-claims-filter="rejected">Afgewezen</button>
+          <button class="portal-pill" type="button" data-claims-filter="auto_rejected_duplicate">Auto duplicate</button>
+        </div>
+        <div id="claims-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="portal-table-wrap">
+          <table class="portal-table" aria-label="Claims tabel">
+            <thead><tr><th>Datum</th><th>Email</th><th>Locatie</th><th>Bericht</th><th>Status</th><th>Acties</th></tr></thead>
+            <tbody id="claims-tbody"><tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-owners" class="portal-card hidden">
+        <div class="portal-heading-row"><h2>Partners</h2></div>
+        <div id="owners-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="portal-table-wrap">
+          <table class="portal-table" aria-label="Owners tabel">
+            <thead><tr><th>Email</th><th>Locatie</th><th>Plan</th><th>Status</th><th>Vervalt</th><th>Actie</th></tr></thead>
+            <tbody id="owners-tbody"><tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-locations" class="portal-card hidden">
+        <div class="portal-heading-row">
+          <h2>Locaties</h2>
+          <div class="portal-btn-row">
+            <button class="portal-btn portal-btn-secondary portal-btn-sm" id="loc-prev-btn" type="button" disabled>Vorige</button>
+            <span id="loc-page-label" class="portal-muted">Pagina 1</span>
+            <button class="portal-btn portal-btn-secondary portal-btn-sm" id="loc-next-btn" type="button">Volgende</button>
+          </div>
+        </div>
+        <p class="portal-subtitle">Gebruik dit overzicht om een locatie te openen. Daarna werk je meestal verder in <em>Locatie bewerken</em> of <em>Google &amp; vindbaarheid</em>.</p>
+        <div class="portal-form-group">
+          <label class="portal-label" for="loc-search">Zoek op naam of stad</label>
+          <input id="loc-search" class="portal-input" type="text" placeholder="Bijv. Monkey Town Amsterdam of Utrecht">
+        </div>
+        <div id="locations-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="portal-table-wrap">
+          <table class="portal-table" aria-label="Locaties tabel">
+            <thead><tr><th>Naam</th><th>Regio</th><th>Locality</th><th>Tier</th><th>Featured</th><th>Geverifieerd</th><th>Acties</th></tr></thead>
+            <tbody id="locations-tbody"><tr class="portal-loading-row"><td colspan="7"><span class="portal-spinner"></span></td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-location-detail" class="portal-card hidden">
+        <div class="portal-heading-row"><h2>Locatie bewerken</h2></div>
+        <div class="admin-two-col">
+          <div class="admin-panel-stack">
+            <div class="portal-card portal-card-soft admin-summary-card" id="location-detail-summary">
+              <div class="portal-empty-state"><strong>Nog geen locatie gekozen</strong>Open eerst een locatie vanuit de tab Locaties.</div>
+            </div>
+            <div id="location-detail-alert" class="portal-alert-wrap" aria-live="polite"></div>
+            <div class="admin-panel-stack">
+              <section class="admin-section-card">
+                <div class="admin-section-title">
+                  <h3>Verhaal en basis</h3>
+                  <p>Dit is wat ouders als eerste lezen. Houd het concreet en praktisch.</p>
+                </div>
+                <div class="admin-form-grid">
+                  <div class="portal-form-group full"><label class="portal-label" for="field-location-description">Beschrijving</label><textarea id="field-location-description" class="portal-textarea" rows="5"></textarea></div>
+                  <div class="portal-form-group full"><label class="portal-label" for="field-location-toddler-highlight">Korte samenvatting voor ouders</label><textarea id="field-location-toddler-highlight" class="portal-textarea" rows="3"></textarea></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-website">Website</label><input id="field-location-website" class="portal-input" type="url"></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-opening-hours">Openingstijden</label><input id="field-location-opening-hours" class="portal-input" type="text" placeholder="Bijv. wo-zo 10:00-17:00"></div>
+                  <div class="portal-form-group full"><label class="portal-label" for="field-location-owner-photo-url">Foto van de locatie of eigenaar</label><input id="field-location-owner-photo-url" class="portal-input" type="url"></div>
+                </div>
+              </section>
+              <section class="admin-section-card">
+                <div class="admin-section-title">
+                  <h3>Praktische context</h3>
+                  <p>Vul alleen in wat echt helpt om sneller te beslissen.</p>
+                </div>
+                <div class="admin-form-grid">
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-weather">Binnen of buiten</label><select id="field-location-weather" class="portal-select"></select></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-min-age">Minimumleeftijd</label><input id="field-location-min-age" class="portal-input" type="number" min="0" max="18"></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-max-age">Maximumleeftijd</label><input id="field-location-max-age" class="portal-input" type="number" min="0" max="18"></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-price-band">Prijsniveau</label><select id="field-location-price-band" class="portal-select"></select></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-time-of-day-fit">Beste dagdeel</label><select id="field-location-time-of-day-fit" class="portal-select"></select></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-rain-backup-quality">Werkt dit bij regen?</label><input id="field-location-rain-backup-quality" class="portal-input" type="text" placeholder="Bijv. grotendeels binnen of alleen bij droog weer"></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-shade-or-shelter">Schaduw of beschutting</label><input id="field-location-shade-or-shelter" class="portal-input" type="text" placeholder="Bijv. veel bomen of overdekte tafels"></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-parking-ease">Parkeren</label><input id="field-location-parking-ease" class="portal-input" type="text" placeholder="Bijv. gratis voor de deur of lastig in weekend"></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-buggy-friendliness">Buggyvriendelijkheid</label><input id="field-location-buggy-friendliness" class="portal-input" type="text" placeholder="Bijv. vlak pad, trapjes of ruim genoeg"></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-toilet-confidence">Toiletten en verschonen</label><input id="field-location-toilet-confidence" class="portal-input" type="text" placeholder="Bijv. wc aanwezig, verschoontafel onbekend"></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-noise-level">Geluidsniveau</label><input id="field-location-noise-level" class="portal-input" type="text" placeholder="Bijv. rustig in ochtend, druk na lunch"></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-food-fit">Eten of lunch</label><input id="field-location-food-fit" class="portal-input" type="text" placeholder="Bijv. prima lunch ter plekke of alleen snacks"></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-play-corner-quality">Speelkans of speelhoek</label><input id="field-location-play-corner-quality" class="portal-input" type="text" placeholder="Bijv. kleine speelhoek of buiten veel ruimte"></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-crowd-pattern">Druktepatroon</label><input id="field-location-crowd-pattern" class="portal-input" type="text" placeholder="Bijv. rustig in ochtend, druk na lunch"></div>
+                  <div class="portal-form-group full">
+                    <label class="portal-label">Voorzieningen</label>
+                    <div class="portal-btn-row">
+                      <label><input id="field-location-coffee" type="checkbox"> Koffie</label>
+                      <label><input id="field-location-diaper" type="checkbox"> Verschonen</label>
+                      <label><input id="field-location-alcohol" type="checkbox"> Alcohol</label>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <section class="admin-section-card">
+                <div class="admin-section-title">
+                  <h3>Betrouwbaarheid</h3>
+                  <p>Gebruik dit om vast te leggen hoe zeker we zijn van de informatie.</p>
+                </div>
+                <div class="admin-form-grid">
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-verification-mode">Bron van controle</label><select id="field-location-verification-mode" class="portal-select"></select></div>
+                  <div class="portal-form-group"><label class="portal-label" for="field-location-verification-confidence">Zekerheid</label><input id="field-location-verification-confidence" class="portal-input" type="number" min="0" max="1" step="0.05"></div>
+                </div>
+              </section>
+            </div>
+            <div class="portal-btn-row">
+              <button id="save-location-detail-btn" class="portal-btn portal-btn-primary" type="button">Opslaan</button>
+              <button id="create-location-draft-btn" class="portal-btn portal-btn-secondary" type="button">Maak pagina-inhoud</button>
+            </div>
+          </div>
+          <div class="admin-panel-stack">
+            <div class="portal-card portal-card-soft">
+              <h3>Pagina-inhoud</h3>
+              <div id="location-editorial-draft" class="admin-panel-stack"><div class="portal-muted">Nog geen locatie gekozen.</div></div>
+            </div>
+            <div class="portal-card portal-card-soft">
+              <h3>Open aandachtspunten</h3>
+              <ul id="location-tasks-list" class="admin-list"><li class="portal-muted">Geen open quality tasks voor deze locatie.</li></ul>
+            </div>
+            <div class="portal-card portal-card-soft">
+              <h3>Recente wijzigingen</h3>
+              <div class="portal-table-wrap">
+                <table class="portal-table" aria-label="Recente locatie-edits">
+                  <thead><tr><th>Datum</th><th>Veld</th><th>Van</th><th>Naar</th><th>Door</th></tr></thead>
+                  <tbody id="location-history-tbody"><tr><td colspan="5" class="portal-muted">Open eerst een locatie vanuit de tab Locaties.</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-trust" class="portal-card hidden">
+        <div class="portal-heading-row">
+          <h2>Nog te controleren</h2>
+          <div class="portal-form-group" style="margin:0;min-width:220px;">
+            <label class="portal-label" for="observation-status-filter">Status</label>
+            <select id="observation-status-filter" class="portal-select"></select>
+          </div>
+        </div>
+        <p class="portal-subtitle">Hier keur je voorstellen uit editor-, partner- of ouderbronnen goed of af voordat ze zichtbaar worden voor ouders.</p>
+        <div id="trust-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="portal-table-wrap">
+          <table class="portal-table" aria-label="Observaties tabel">
+            <thead><tr><th>Datum</th><th>Locatie</th><th>Bron</th><th>Veld</th><th>Waarde</th><th>Confidence</th><th>Bewijs</th><th>Actie</th></tr></thead>
+            <tbody id="observations-tbody"><tr class="portal-loading-row"><td colspan="8"><span class="portal-spinner"></span></td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-seo" class="portal-card hidden">
+        <div class="portal-heading-row"><h2>Google &amp; vindbaarheid</h2></div>
+        <div class="admin-two-col">
+          <div class="admin-panel-stack">
+            <div class="portal-card portal-card-soft admin-summary-card" id="seo-location-summary">
+              <div class="portal-empty-state"><strong>Nog geen locatie gekozen</strong>Open eerst een locatie vanuit de tab Locaties.</div>
+            </div>
+            <div id="seo-alert" class="portal-alert-wrap" aria-live="polite"></div>
+            <div class="admin-form-grid">
+              <div class="portal-form-group"><label class="portal-label" for="field-seo-primary-locality">Wijk of locality</label><input id="field-seo-primary-locality" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="field-seo-tier">Vindbaarheidslaag</label><select id="field-seo-tier" class="portal-select"></select></div>
+              <div class="portal-form-group full"><label class="portal-label" for="field-seo-title-override">Titel voor Google</label><input id="field-seo-title-override" class="portal-input" type="text"></div>
+              <div class="portal-form-group full"><label class="portal-label" for="field-seo-description-override">Samenvatting voor Google</label><textarea id="field-seo-description-override" class="portal-textarea" rows="3"></textarea></div>
+              <div class="portal-form-group full"><label class="portal-label" for="field-seo-intro-override">Eigen intro voor deze pagina</label><textarea id="field-seo-intro-override" class="portal-textarea" rows="5"></textarea></div>
+            </div>
+            <details class="admin-disclosure">
+              <summary>Geavanceerde Google-instellingen</summary>
+              <p class="admin-disclosure-copy">Gebruik dit alleen als je een locatie bewust wilt samenvoegen, verplaatsen of tijdelijk uit de sitemap wilt houden.</p>
+              <div class="admin-form-grid">
+                <div class="portal-form-group"><label class="portal-label" for="field-seo-canonical-target">Koppel aan andere hoofdlocatie (ID)</label><input id="field-seo-canonical-target" class="portal-input" type="number" min="1"></div>
+                <div class="portal-form-group"><label class="portal-label">Sitemap</label><label><input id="field-seo-exclude-from-sitemap" type="checkbox"> Niet actief meenemen in sitemap</label></div>
+              </div>
+            </details>
+            <div class="portal-btn-row"><button id="save-location-seo-btn" class="portal-btn portal-btn-primary" type="button">Opslaan</button></div>
+          </div>
+          <div class="admin-panel-stack">
+            <div class="portal-card portal-card-soft">
+              <h3>Waar gebruik je dit voor?</h3>
+              <p class="portal-subtitle">Gebruik dit scherm voor wijknamen, betere titels voor Google, duidelijke intro’s en het samenvoegen van dubbele locaties.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-editorial" class="portal-card hidden">
+        <div class="portal-heading-row">
+          <h2>Pagina-inhoud</h2>
+          <div class="portal-btn-row">
+            <div class="portal-form-group" style="margin:0;min-width:220px;">
+              <label class="portal-label" for="editorial-status-filter">Filter op status</label>
+              <select id="editorial-status-filter" class="portal-select"><option value="">Alle statussen</option></select>
+            </div>
+            <button id="new-editorial-page-btn" class="portal-btn portal-btn-secondary" type="button">Nieuwe pagina</button>
+          </div>
+        </div>
+        <div id="editorial-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="admin-two-col">
+          <div class="portal-table-wrap">
+            <table class="portal-table" aria-label="Editorial pages tabel">
+              <thead><tr><th>Type</th><th>Slug</th><th>Status</th><th>Bijgewerkt</th><th>Actie</th></tr></thead>
+              <tbody id="editorial-tbody"><tr class="portal-loading-row"><td colspan="5"><span class="portal-spinner"></span></td></tr></tbody>
+            </table>
+          </div>
+          <div class="admin-panel-stack">
+            <div class="portal-card portal-card-soft admin-summary-card" id="editorial-summary">
+              <div class="portal-empty-state"><strong>Nieuwe redactionele pagina</strong>Begin met titel, korte intro en hoofdtekst. De technische velden kun je later pas invullen.</div>
+            </div>
+            <input id="editorial-page-id" type="hidden">
+            <div class="admin-form-grid">
+              <div class="portal-form-group"><label class="portal-label" for="editorial-page-type">Paginasoort</label><select id="editorial-page-type" class="portal-select"></select></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-status">Status</label><select id="editorial-status" class="portal-select"></select></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-slug">Slug</label><div class="slug-row"><input id="editorial-slug" class="portal-input" type="text"><button type="button" id="editorial-slug-auto-btn" class="slug-auto-btn" title="Genereer slug uit titel">Auto</button></div></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-title">Publieke titel</label><input id="editorial-title" class="portal-input" type="text"></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-label">Redactioneel label</label><input id="editorial-label" class="portal-input" type="text" placeholder="Bijv. PeuterPlannen redactie"></div>
+              <div class="portal-form-group"><label class="portal-label" for="editorial-hero-kicker">Korte bovenregel</label><input id="editorial-hero-kicker" class="portal-input" type="text" placeholder="Bijv. Voor regenachtige dagen"></div>
+              <div class="portal-form-group full"><label class="portal-label" for="editorial-hero-body">Korte intro bovenaan</label><textarea id="editorial-hero-body" class="portal-textarea" rows="4" placeholder="Schrijf hier in 2–4 zinnen wat deze pagina oplost voor ouders."></textarea></div>
+              <div class="portal-form-group full"><label class="portal-label">Afbeelding</label><div class="image-preview-wrap" id="editorial-image-preview"><span class="image-preview-empty">Geen afbeelding — wordt automatisch gegenereerd bij publicatie.</span></div></div>
+              <div class="portal-form-group full"><label class="portal-label" for="editorial-body">Hoofdtekst</label><textarea id="editorial-body" class="portal-textarea" rows="10" placeholder="Schrijf hier de hoofdtekst. Gebruik concrete voorbeelden, lokale context en duidelijke keuzes."></textarea></div>
+              <div class="portal-form-group full"><label class="portal-label">Belangrijkste locaties</label><div class="chip-container" id="editorial-location-chips"></div><div class="autocomplete-wrap"><input id="editorial-location-search" class="portal-input" type="text" placeholder="Zoek op locatienaam…" autocomplete="off"><div class="autocomplete-results" id="editorial-location-results"></div></div><input id="editorial-curated-location-ids" type="hidden"></div>
+              <div class="portal-form-group full"><label class="portal-label" for="editorial-related-blog-slugs">Gerelateerde blogpagina’s (slugs, met komma’s)</label><textarea id="editorial-related-blog-slugs" class="portal-textarea" rows="3" placeholder="Bijv. utrecht-met-peuters, gratis-peuteruitjes"></textarea></div>
+            </div>
+            <details class="admin-disclosure">
+              <summary>Geavanceerde pagina-instellingen</summary>
+              <p class="admin-disclosure-copy">Gebruik dit alleen als je een pagina technisch nauwkeurig wilt koppelen of optimaliseren voor Google.</p>
+              <div class="admin-form-grid">
+                <div class="portal-form-group"><label class="portal-label" for="editorial-region-slug">Regio-slug</label><input id="editorial-region-slug" class="portal-input" type="text"></div>
+                <div class="portal-form-group"><label class="portal-label" for="editorial-type-slug">Type-slug</label><input id="editorial-type-slug" class="portal-input" type="text"></div>
+                <div class="portal-form-group"><label class="portal-label" for="editorial-cluster-slug">Cluster-slug</label><input id="editorial-cluster-slug" class="portal-input" type="text"></div>
+                <div class="portal-form-group"><label class="portal-label" for="editorial-location-id">Locatie-ID</label><input id="editorial-location-id" class="portal-input" type="number" min="1"></div>
+                <div class="portal-form-group"><label class="portal-label" for="editorial-meta-title">Titel voor Google</label><input id="editorial-meta-title" class="portal-input" type="text"></div>
+                <div class="portal-form-group"><label class="portal-label" for="editorial-meta-description">Samenvatting voor Google</label><textarea id="editorial-meta-description" class="portal-textarea" rows="3"></textarea></div>
+                <div class="portal-form-group full"><label class="portal-label">FAQ-inhoud</label><div class="faq-editor" id="editorial-faq-editor"></div><button type="button" id="editorial-faq-add-btn" class="faq-add-btn">+ Vraag toevoegen</button><textarea id="editorial-faq-json" class="portal-textarea" rows="3" style="display:none">[]</textarea></div>
+              </div>
+            </details>
+            <div class="portal-btn-row"><button id="preview-editorial-btn" class="portal-btn portal-btn-secondary" type="button">Preview</button><button id="save-editorial-page-btn" class="portal-btn portal-btn-primary" type="button">Opslaan</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-duplicates" class="portal-card hidden">
+        <div class="portal-heading-row"><h2>Dubbele locaties</h2></div>
+        <p class="portal-subtitle">Gebruik deze lijst om te bepalen welke locatie de hoofdversie moet zijn. De rest kan daarna netjes doorverwijzen.</p>
+        <div id="duplicates-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="portal-table-wrap">
+          <table class="portal-table" aria-label="Duplicate candidates tabel">
+            <thead><tr><th>Groep</th><th>Canonical suggestie</th><th>Items</th><th>Actie</th></tr></thead>
+            <tbody id="duplicates-tbody"><tr class="portal-loading-row"><td colspan="4"><span class="portal-spinner"></span></td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="tab-publishing" class="portal-card hidden">
+        <div class="portal-heading-row"><h2>Live zetten</h2></div>
+        <p class="portal-subtitle">Hier zie je of er wijzigingen klaarstaan om opnieuw live te gaan via GitHub en Cloudflare.</p>
+        <div id="publishing-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="admin-info-grid">
+          <div class="admin-info-item"><strong>Wijzigingen klaar</strong><span id="publish-dirty">-</span></div>
+          <div class="admin-info-item"><strong>Aantal open wijzigingen</strong><span id="publish-pending-count">-</span></div>
+          <div class="admin-info-item"><strong>Reden laatste wijziging</strong><span id="publish-last-change">-</span></div>
+          <div class="admin-info-item"><strong>Laatste publish</strong><span id="publish-last-published">-</span></div>
+          <div class="admin-info-item admin-full"><strong>Laatste ref</strong><span id="publish-last-ref">-</span></div>
+        </div>
+        <div class="portal-btn-row" style="margin-top:16px;"><button id="publish-trigger-btn" class="portal-btn portal-btn-primary" type="button">Site opnieuw klaarzetten</button></div>
+      </section>
+
+      <section id="tab-insights" class="portal-card hidden">
+        <div class="portal-heading-row">
+          <h2>Wat aandacht nodig heeft</h2>
+          <div class="portal-btn-row">
+            <button id="next-priority-location-btn" class="portal-btn portal-btn-secondary" type="button">Open volgende locatie</button>
+            <button id="seed-priority-drafts-btn" class="portal-btn portal-btn-secondary" type="button">Maak concepten voor toplocaties</button>
+            <button id="refresh-quality-tasks-btn" class="portal-btn portal-btn-secondary" type="button">Werk aandachtspunten bij</button>
+          </div>
+        </div>
+        <div id="insights-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div id="insight-summary" class="admin-panel-stack"><div class="admin-empty-note">Insights worden geladen.</div></div>
+        <div class="portal-card portal-card-soft" style="margin-top:16px;">
+          <h3>Prioriteitenrij</h3>
+          <ul id="insight-priority-queue" class="admin-list"><li class="portal-muted">Nog geen data geladen.</li></ul>
+        </div>
+        <div class="admin-two-col" style="margin-top:16px;">
+          <div class="portal-card portal-card-soft">
+            <h3>Belangrijkste contextgaten</h3>
+            <ul id="insight-context-gaps" class="admin-list"><li class="portal-muted">Nog geen data geladen.</li></ul>
+          </div>
+          <div class="portal-card portal-card-soft">
+            <h3>Google-overzicht</h3>
+            <div id="insight-gsc-summary" class="portal-subtitle">Nog geen data geladen.</div>
+          </div>
+        </div>
+        <div class="admin-two-col" style="margin-top:16px;">
+          <div class="portal-card portal-card-soft">
+            <h3>Belangrijkste pagina’s</h3>
+            <ul id="insight-top-pages" class="admin-list"><li class="portal-muted">Nog geen data geladen.</li></ul>
+          </div>
+          <div class="portal-card portal-card-soft">
+            <h3>Belangrijkste zoekopdrachten</h3>
+            <ul id="insight-top-queries" class="admin-list"><li class="portal-muted">Nog geen data geladen.</li></ul>
+          </div>
+        </div>
+        <div class="admin-two-col" style="margin-top:16px;">
+          <div class="portal-card portal-card-soft">
+            <h3>Pagina’s met lage klikratio</h3>
+            <ul id="insight-low-ctr" class="admin-list"><li class="portal-muted">Nog geen data geladen.</li></ul>
+          </div>
+          <div class="portal-card portal-card-soft">
+            <h3>Pagina’s die bijna bovenaan staan</h3>
+            <ul id="insight-near-win" class="admin-list"><li class="portal-muted">Nog geen data geladen.</li></ul>
+          </div>
+        </div>
+        <div class="portal-card portal-card-soft" style="margin-top:16px;">
+          <h3>Open aandachtspunten</h3>
+          <ul id="insight-quality-backlog" class="admin-list"><li class="portal-muted">Nog geen data geladen.</li></ul>
+        </div>
+        <div class="portal-card portal-card-soft" style="margin-top:16px;">
+          <h3>Werknotities</h3>
+          <div id="insight-ops-briefs" class="admin-panel-stack"><div class="portal-muted">Nog geen ops briefs geladen.</div></div>
+        </div>
+      </section>
+
+      <section id="tab-editlog" class="portal-card hidden">
+        <div class="portal-heading-row"><h2>Geschiedenis</h2></div>
+        <div id="editlog-alert" class="portal-alert-wrap" aria-live="polite"></div>
+        <div class="portal-table-wrap">
+          <table class="portal-table" aria-label="Editlog tabel">
+            <thead><tr><th>Datum</th><th>Locatie</th><th>Owner</th><th>Veld</th><th>Van</th><th>Naar</th></tr></thead>
+            <tbody id="editlog-tbody"><tr class="portal-loading-row"><td colspan="6"><span class="portal-spinner"></span></td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div id="edit-owner-modal" class="portal-modal" aria-hidden="true">
+    <div class="portal-modal-backdrop" data-close-modal="true"></div>
+    <div class="portal-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="edit-owner-title">
+      <h2 id="edit-owner-title" class="portal-modal-title">Abonnement aanpassen</h2>
+      <input type="hidden" id="modal-owner-id">
+      <div class="portal-form-group">
+        <label class="portal-label" for="modal-status">Status</label>
+        <select id="modal-status" class="portal-select">
+          <option value="none">Geen</option>
+          <option value="trial">Trial</option>
+          <option value="featured">Featured</option>
+          <option value="past_due">Past due</option>
+          <option value="canceled">Opgezegd</option>
+        </select>
+      </div>
+      <div class="portal-form-group">
+        <label class="portal-label" for="modal-tier">Plan tier</label>
+        <select id="modal-tier" class="portal-select">
+          <option value="none">Geen</option>
+          <option value="featured">Featured</option>
+        </select>
+      </div>
+      <div id="modal-alert" class="portal-alert-wrap" aria-live="assertive"></div>
+      <div class="portal-modal-actions">
+        <button id="modal-cancel-btn" class="portal-btn portal-btn-secondary" type="button" data-close-modal="true">Annuleren</button>
+        <button id="modal-save-btn" class="portal-btn portal-btn-primary" type="button">Opslaan</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirm-modal" class="portal-modal" aria-hidden="true">
+    <div class="portal-modal-backdrop" data-close-modal="true"></div>
+    <div class="portal-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+      <h2 id="confirm-title" class="portal-modal-title" data-confirm-title>Bevestigen</h2>
+      <p class="portal-modal-text" data-confirm-text></p>
+      <div class="portal-modal-actions">
+        <button type="button" class="portal-btn portal-btn-secondary" data-confirm-cancel>Annuleren</button>
+        <button type="button" class="portal-btn portal-btn-primary" data-confirm-ok>Bevestigen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="preview-modal-overlay" id="preview-modal-overlay">
+    <div class="preview-modal" style="position:relative;">
+      <button class="preview-close-btn" id="preview-close-btn" type="button" aria-label="Sluiten">&times;</button>
+      <div id="preview-modal-content"></div>
+    </div>
+  </div>
+  <script src="/pp-interactions.js" defer></script>
+  <script src="/admin/portal-shell.js"></script>
+  <script type="module" src="/admin/admin.js?v=202603200616"></script>
+</body>
+</html>

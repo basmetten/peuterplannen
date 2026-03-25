@@ -1,0 +1,80 @@
+[
+  {
+    "id": "2f616f43-8d5f-4986-b7f1-b35ad2f0cbff",
+    "page_type": "region_hub",
+    "slug": "breda",
+    "region_slug": "breda",
+    "type_slug": null,
+    "cluster_slug": null,
+    "location_id": null,
+    "status": "published",
+    "title": "breda",
+    "meta_title": "Breda met peuters | stad, bos en rustige gezinskeuzes",
+    "meta_description": "Breda met peuters: combineer stad, bos en kindvriendelijke stops tot een rustige dag die ook in de praktijk prettig blijft.",
+    "hero_kicker": "PeuterPlannen redactie",
+    "hero_body_md": "",
+    "body_md": "## Waarom Breda goed werkt als gezinsdag\n\nBreda is sterk als je een stad wilt zonder dat alles op het centrum hoeft te leunen. Met natuur aan de rand en voldoende gezinsplekken in en rond de stad kun je hier makkelijk een korte of halve dag bouwen.\n\n## Waar je hier het meeste aan hebt\n\nAan een simpele opzet: eerst buiten, dan eten of drinken, daarna eventueel nog één extra plek. Voor peuters werkt Breda vooral als rustige combinatie, niet als volle planning.",
+    "faq_json": [],
+    "curated_location_ids": [],
+    "related_blog_slugs": [
+      "breda-met-peuters"
+    ],
+    "editorial_label": "PeuterPlannen redactie",
+    "updated_by": null,
+    "created_at": "2026-03-12T15:28:06.790227+00:00",
+    "updated_at": "2026-03-12T15:49:34.845788+00:00",
+    "published_at": "2026-03-12T15:49:34.689+00:00"
+  },
+  {
+    "id": "061e260f-7820-4489-92d7-246dcaf8836b",
+    "page_type": "region_hub",
+    "slug": "den-haag",
+    "region_slug": "den-haag",
+    "type_slug": null,
+    "cluster_slug": null,
+    "location_id": null,
+    "status": "published",
+    "title": "den-haag",
+    "meta_title": "Den Haag met peuters | strand, stad en regenroutes die bij elkaar passen",
+    "meta_description": "Den Haag met peuters: strand, parken, musea en kindvriendelijke horeca in een stad waar buiten en binnen goed te combineren zijn.",
+    "hero_kicker": "PeuterPlannen redactie",
+    "hero_body_md": "",
+    "body_md": "## Wat Den Haag sterk maakt\n\nDen Haag werkt goed omdat je hier strand, park, stad en binnenlocaties relatief makkelijk in één daglogica kunt combineren. Dat maakt de regio sterk voor dagen waarop je vooraf nog niet precies weet wat het weer of het humeur gaat doen.\n\n## Handig voor jonge kinderen\n\nDe beste keuzes in deze regio zijn meestal niet de grootste highlights, maar de combinaties: eerst buitenlucht, dan lunch, daarna een compacte binnenstop of juist andersom.",
+    "faq_json": [],
+    "curated_location_ids": [],
+    "related_blog_slugs": [
+      "den-haag-met-peuters"
+    ],
+    "editorial_label": "PeuterPlannen redactie",
+    "updated_by": null,
+    "created_at": "2026-03-12T15:28:06.790227+00:00",
+    "updated_at": "2026-03-12T15:49:34.845788+00:00",
+    "published_at": "2026-03-12T15:49:34.689+00:00"
+  },
+  {
+    "id": "203ccd67-bc35-47dc-a43c-1c3f910b85a4",
+    "page_type": "region_hub",
+    "slug": "eindhoven",
+    "region_slug": "eindhoven",
+    "type_slug": null,
+    "cluster_slug": null,
+    "location_id": null,
+    "status": "published",
+    "title": "eindhoven",
+    "meta_title": "Eindhoven met peuters | slimme binnen-buitencombinaties voor jonge kinderen",
+    "meta_description": "Eindhoven met peuters: praktische binnen-buitenroutes, kindvriendelijke horeca en genoeg ruimte om de dag flexibel te houden.",
+    "hero_kicker": "PeuterPlannen redactie",
+    "hero_body_md": "",
+    "body_md": "## Wat Eindhoven prettig maakt\n\nEindhoven heeft genoeg stedelijke voorzieningen, maar voelt minder gejaagd dan de Randstad. Daardoor is het een sterke regio voor gezinnen die een degelijke mix zoeken van buitenruimte, lunch en binnenbackup.\n\n## Waar je hier op wilt letten\n\nNiet alles ligt op loopafstand. De beste routes in Eindhoven zijn vaak combinaties van één hoofdplek en een tweede logische stop, niet een hele stadswandeling.",
+    "faq_json": [],
+    "curated_location_ids": [],
+    "related_blog_slugs": [
+      "eindhoven-met-peuters"
+    ],
+    "editorial_label": "PeuterPlannen redactie",
+    "updated_by": null,
+    "created_at": "2026-03-12T15:28:06.790227+00:00",
+    "updated_at": "2026-03-12T15:49:34.845788+00:00",
+    "published_at": "2026-03-12T15:49:34.691+00:00"
+  }
+]

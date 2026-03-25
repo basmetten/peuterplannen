@@ -1,0 +1,264 @@
+name: Sync PeuterPlannen Data
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '*/10 * * * *'
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Force rebuild and publish
+        required: false
+        default: false
+        type: boolean
+  repository_dispatch:
+    types: [data-changed]
+
+concurrency:
+  group: sync-site
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Decide if build is needed
+        id: gate
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          FORCE_INPUT: ${{ github.event.inputs.force || 'false' }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${EVENT_NAME}" == "push" || "${EVENT_NAME}" == "repository_dispatch" ]]; then
+            echo "run_build=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [[ "${FORCE_INPUT}" == "true" ]]; then
+            echo "run_build=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [[ -z "${SUPABASE_URL:-}" || -z "${SUPABASE_SERVICE_KEY:-}" ]]; then
+            echo "Supabase secrets ontbreken; build wordt uitgevoerd als veilige fallback."
+            echo "run_build=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          tmp_response="$(mktemp)"
+          http_code="$(
+            curl -sS -o "${tmp_response}" -w "%{http_code}" \
+              -H "apikey: ${SUPABASE_SERVICE_KEY}" \
+              -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
+              -H "Content-Type: application/json" \
+              "${SUPABASE_URL}/rest/v1/site_publish_state?id=eq.1&select=dirty,pending_count" \
+              || true
+          )"
+          response="$(cat "${tmp_response}")"
+          rm -f "${tmp_response}"
+
+          if [[ "${http_code}" == "404" ]]; then
+            echo "site_publish_state ontbreekt live; build draait als veilige fallback."
+            echo "run_build=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [[ ! "${http_code}" =~ ^[0-9]{3}$ || -z "${response}" || "${http_code}" -ge 400 ]]; then
+            echo "Dirty-state niet leesbaar; build wordt uitgevoerd als fallback."
+            echo "run_build=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          dirty="$(echo "${response}" | jq -r 'if type=="array" and length>0 then .[0].dirty else false end')"
+          pending="$(echo "${response}" | jq -r 'if type=="array" and length>0 then (. [0].pending_count // 0) else 0 end')"
+          echo "Dirty=${dirty} Pending=${pending}"
+
+          if [[ "${dirty}" == "true" ]]; then
+            echo "run_build=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run_build=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Stop when no publish changes are pending
+        if: steps.gate.outputs.run_build != 'true'
+        run: echo "No publish-impact data changes detected."
+
+      - uses: actions/setup-node@v4
+        if: steps.gate.outputs.run_build == 'true'
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.gate.outputs.run_build == 'true'
+        run: npm ci
+
+      - name: Bundle JS and CSS
+        if: steps.gate.outputs.run_build == 'true'
+        run: npm run bundle
+
+      - name: Run tests
+        if: steps.gate.outputs.run_build == 'true'
+        run: npm test
+
+      - name: Fetch new location photos
+        if: github.event.schedule == '0 3 * * 1'
+        run: node .scripts/pipeline/fetch-photos.js
+        env:
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+      - name: Build static site
+        if: steps.gate.outputs.run_build == 'true'
+        run: npm run build
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Sanity check generated files
+        if: steps.gate.outputs.run_build == 'true'
+        run: |
+          set -euo pipefail
+          count=$(find . -name '*.html' -not -path './node_modules/*' -not -path './.git/*' | wc -l)
+          echo "Generated HTML files: $count"
+          if [ "$count" -lt 100 ]; then
+            echo "ERROR: Too few HTML files generated ($count). Build may be broken."
+            exit 1
+          fi
+          if [ "$count" -gt 3000 ]; then
+            echo "ERROR: Too many HTML files generated ($count). Possible runaway generation."
+            exit 1
+          fi
+
+          # Verify key pages exist and have content
+          for page in amsterdam.html app.html rotterdam.html index.html sitemap.xml; do
+            if [ ! -f "$page" ]; then
+              echo "ERROR: Key file missing: $page"
+              exit 1
+            fi
+            size=$(wc -c < "$page")
+            if [ "$size" -lt 500 ]; then
+              echo "ERROR: $page is suspiciously small (${size} bytes)"
+              exit 1
+            fi
+          done
+          echo "Key page checks passed"
+
+      - name: Run consistency audit (strict)
+        if: steps.gate.outputs.run_build == 'true'
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          node .scripts/audit_internal_consistency.js --strict
+
+      - name: Run portal audit (strict)
+        if: steps.gate.outputs.run_build == 'true'
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          node .scripts/audit_portals.js --strict
+
+      - name: Run SEO audit (strict)
+        if: steps.gate.outputs.run_build == 'true'
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          node .scripts/audit_seo_quality.js --strict
+
+      - name: Design system audit
+        if: steps.gate.outputs.run_build == 'true'
+        continue-on-error: true
+        run: node .scripts/audit_design_system.js --strict
+
+      - name: Design token compliance audit
+        if: steps.gate.outputs.run_build == 'true'
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          node .scripts/audit_design_tokens.js --strict
+
+      - name: Deploy to Cloudflare Worker (production)
+        if: steps.gate.outputs.run_build == 'true'
+        env:
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy
+
+      - name: Purge Cloudflare cache
+        if: steps.gate.outputs.run_build == 'true'
+        env:
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+        run: |
+          zone_id=$(curl -sS -f \
+            "https://api.cloudflare.com/client/v4/zones?name=peuterplannen.nl" \
+            -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" \
+            -H "X-Auth-Key: ${CLOUDFLARE_API_KEY}" \
+            | jq -r '.result[0].id')
+          if [[ -z "$zone_id" || "$zone_id" == "null" ]]; then
+            echo "Could not find zone ID for peuterplannen.nl, skipping cache purge"
+            exit 0
+          fi
+          echo "Purging cache for zone $zone_id"
+          curl -sS -f -X POST \
+            "https://api.cloudflare.com/client/v4/zones/${zone_id}/purge_cache" \
+            -H "X-Auth-Email: ${CLOUDFLARE_EMAIL}" \
+            -H "X-Auth-Key: ${CLOUDFLARE_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{"purge_everything":true}'
+
+      - name: Smoke test live site
+        if: steps.gate.outputs.run_build == 'true'
+        run: |
+          set -euo pipefail
+          echo "Waiting 5s for CDN propagation..."
+          sleep 5
+          for url in "https://peuterplannen.nl/app.html" "https://peuterplannen.nl/" "https://peuterplannen.nl/amsterdam.html"; do
+            status=$(curl -sSL -o /dev/null -w "%{http_code}" --max-time 15 "$url")
+            if [[ "$status" != "200" ]]; then
+              echo "ERROR: Smoke test failed — $url returned HTTP $status"
+              exit 1
+            fi
+            echo "OK: $url (HTTP $status)"
+          done
+          echo "All smoke tests passed"
+
+      - name: Mark publish state clean
+        if: steps.gate.outputs.run_build == 'true'
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${SUPABASE_URL:-}" || -z "${SUPABASE_SERVICE_KEY:-}" ]]; then
+            echo "Supabase secrets ontbreken; clean-state update overgeslagen."
+            exit 0
+          fi
+
+          payload="$(jq -nc --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg ref "$(git rev-parse HEAD)" '{dirty:false,pending_count:0,last_published_at:$ts,last_publish_ref:$ref,updated_at:$ts}')"
+
+          curl -sS -f -X PATCH \
+            -H "apikey: ${SUPABASE_SERVICE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_KEY}" \
+            -H "Content-Type: application/json" \
+            -H "Prefer: return=minimal" \
+            -d "${payload}" \
+            "${SUPABASE_URL}/rest/v1/site_publish_state?id=eq.1" \
+            >/dev/null

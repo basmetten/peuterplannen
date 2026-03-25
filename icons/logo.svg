@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 40" fill="none">
+  <!-- Wordmark: "peuter" in text color, "plannen" in primary with pin-in-p -->
+  <text x="0" y="30" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="28" letter-spacing="-0.5">
+    <tspan fill="#2D2926">peuter</tspan><tspan fill="#D4775A">plannen</tspan>
+  </text>
+  <!-- Pin accent on the 'p' of 'plannen' — subtle teardrop at top of stem -->
+  <path d="M98.5 6.5c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5c0 4.5-6.5 9.5-6.5 9.5S98.5 11 98.5 6.5z" fill="#D4775A"/>
+  <circle cx="105" cy="6.5" r="2.2" fill="white"/>
+</svg>
