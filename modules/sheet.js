@@ -427,7 +427,7 @@ export function initSheetGestures() {
     document.addEventListener('click', function(e) {
         const overlay = document.getElementById('map-filters-overlay');
         if (!overlay || !overlay.classList.contains('open')) return;
-        if (!overlay.contains(e.target) && e.target.id !== 'map-search-pill' && !e.target.closest('.map-search-pill')) {
+        if (!overlay.contains(e.target) && !e.target.closest('.map-search-cluster') && !e.target.closest('.map-search-bar')) {
             bus.emit('filters:closemap');
         }
     });

@@ -686,6 +686,8 @@ function initFilterModal() {
     // "Filters" preset chip in sheet also opens this modal
     const filtersPreset = document.getElementById('sheet-preset-filters');
     if (filtersPreset) filtersPreset.addEventListener('click', openModal);
+    // Map filter button opens this modal via bus event
+    bus.on('filtermodal:open', openModal);
     closeBtn.addEventListener('click', closeModal);
     overlay.addEventListener('click', closeModal);
     applyBtn.addEventListener('click', () => { bus.emit('data:reload'); closeModal(); });

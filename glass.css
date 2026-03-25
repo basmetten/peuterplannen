@@ -1339,16 +1339,12 @@
   /* Old map-recenter replaced by .map-controls */
   .pp-mobile-map .map-recenter { display: none; }
 
-  /* Hide old map search pill — replaced by sheet search pill */
-  .pp-mobile-map .map-search-pill {
-    display: none !important;
-  }
+  /* Map search cluster and preset row — visible in map view (controlled by app.css) */
 
   /* Hide all non-map content on mobile */
   .pp-mobile-map .newsletter-section,
   .pp-mobile-map .about-disclosure,
-  .pp-mobile-map .map-no-results,
-  .pp-mobile-map .map-filters-overlay {
+  .pp-mobile-map .map-no-results {
     display: none !important;
   }
 
@@ -2035,9 +2031,9 @@
   }
   body.pp-app .nav-count { display: block; }
 
-  /* Adjust map-controls to clear floating nav */
+  /* Adjust map-controls to clear floating nav + search cluster + preset row */
   .map-controls {
-    top: calc(80px + env(safe-area-inset-top, 0px)) !important;
+    top: calc(172px + env(safe-area-inset-top, 0px)) !important;
   }
 }
 

@@ -4,7 +4,7 @@ import { escapeHtml, slugify, trackEvent, buildDetailUrl } from './modules/utils
 import { toggleFavorite, toggleFavoriteFromSheet, shareLocation, updateShortlistBar, updateFavBadge, shareShortlist, showShortlist, clearShortlist, clearSharedShortlist } from './modules/favorites.js';
 import { loadLocations, checkWeather, initAutocomplete, getCurrentLocation, updateLocation, setCity, updateLocationFromMap, applySort, showGpsStatus } from './modules/data.js';
 import { initGeolocation } from './modules/geolocation.js';
-import { toggleTag, toggleWeather, toggleFacility, toggleAge, toggleRadius, togglePreset, toggleFilterPanel, resetAllFilters, updateFilterCount, syncFilterPanelForViewport, syncPresetAria, syncChipAria, openMapFilters, closeMapFilters, toggleMapMoreFilters, updateMapPillBadge } from './modules/filters.js';
+import { toggleTag, toggleWeather, toggleFacility, toggleAge, toggleRadius, togglePreset, toggleFilterPanel, resetAllFilters, updateFilterCount, syncFilterPanelForViewport, syncPresetAria, syncChipAria, openMapFilters, closeMapFilters, toggleMapMoreFilters, updateMapPillBadge, openMapFilterModal, toggleMapTag } from './modules/filters.js';
 import { renderCards } from './modules/cards.js';
 import { loadMapLibre, initMap, updateMapMarkers, fitMapToMarkers, updateUserLocationOnMap, highlightMarker, setDisplayMode } from './modules/map.js';
 import { openLocSheet, closeLocSheet, openInfoPanel, closeInfoPanel, showLocationDetail, initSheetGestures } from './modules/sheet.js';
@@ -76,7 +76,8 @@ Object.assign(window, {
     toggleFacility, toggleAge, toggleRadius, resetAllFilters,
     clearSharedShortlist, showShortlist, shareShortlist, clearShortlist,
     fitMapToMarkers, openMapFilters, closeMapFilters, updateLocationFromMap,
-    toggleMapMoreFilters, closeInfoPanel, closeLocSheet, setSheetState,
+    toggleMapMoreFilters, openMapFilterModal, toggleMapTag,
+    closeInfoPanel, closeLocSheet, setSheetState,
     selectPlanDate, selectPlanOption, changeKidsCount, updateChildAge,
     generatePlan, sharePlan, sharePlanWhatsApp,
     swapPlanSlot: handleSwapPlanSlot,
@@ -296,10 +297,11 @@ function clearAllPrefs() {
 }
 window.clearAllPrefs = clearAllPrefs;
 
-// Keyboard accessibility for map search pill
-document.getElementById('map-search-pill')?.addEventListener('keydown', (e) => {
+// Keyboard accessibility for map search cluster
+document.getElementById('map-search-cluster')?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        openMapFilters();
+        if (e.target.closest('.map-filter-btn')) openMapFilterModal();
+        else openMapFilters();
     }
 });

@@ -84,15 +84,15 @@ export function syncFilterPanelForViewport() {
 }
 
 /**
- * Update the filter badge on the map search pill to show the total active filter count.
+ * Update the filter badge on the map filter button to show the count of active advanced filters.
+ * Only counts non-type filters (type is visible via preset chips).
  * @returns {void}
  */
-export function updateMapPillBadge() {
-    const badge = document.getElementById('map-pill-badge');
-    const pill = document.getElementById('map-search-pill');
-    if (!badge || !pill) return;
+export function updateMapFilterBadge() {
+    const badge = document.getElementById('map-filter-badge');
+    const btn = document.getElementById('map-filter-btn');
+    if (!badge || !btn) return;
     let count = 0;
-    if (state.activeTag !== 'all') count++;
     if (state.activeWeather) count++;
     if (state.activeFacilities.coffee) count++;
     if (state.activeFacilities.diaper) count++;
@@ -102,13 +102,19 @@ export function updateMapPillBadge() {
     if (state.activePreset) count++;
     if (count > 0) {
         const prev = badge.textContent;
-        badge.textContent = count + ' filter' + (count !== 1 ? 's' : '');
-        badge.style.display = '';
+        badge.textContent = String(count);
+        badge.classList.add('visible');
+        btn.classList.add('has-filters');
         if (prev !== badge.textContent) popAnimate(badge);
     } else {
-        badge.style.display = 'none';
+        badge.textContent = '';
+        badge.classList.remove('visible');
+        btn.classList.remove('has-filters');
     }
 }
+
+/** Backward-compat alias */
+export const updateMapPillBadge = updateMapFilterBadge;
 
 /**
  * Recalculate all active filters, update the filter bar label/summary, and sync panel state.
@@ -331,29 +337,30 @@ export function resetAllFilters() {
     if (firstChip) firstChip.classList.add('active');
     syncPresetAria();
     syncChipAria();
+    syncMapPresetRow();
     updateFilterCount();
     collapseFilterPanelAfterSelection();
     loadLocations();
 }
 
-// === Map filter overlay ===
+// === Map filter controls ===
 
 /**
- * Open the map filter overlay and sync its chips to current filter state.
+ * Open the map search overlay and sync location input.
  * @returns {void}
  */
 export function openMapFilters() {
     const overlay = document.getElementById('map-filters-overlay');
     if (!overlay) return;
-    syncMapFilterChips();
     const mainInput = document.getElementById('location-input');
     const mapInput = document.getElementById('map-location-input');
     if (mainInput && mapInput) mapInput.value = mainInput.value;
     overlay.classList.add('open');
+    setTimeout(() => mapInput?.focus(), 100);
 }
 
 /**
- * Close the map filter overlay.
+ * Close the map search overlay.
  * @returns {void}
  */
 export function closeMapFilters() {
@@ -362,81 +369,73 @@ export function closeMapFilters() {
 }
 
 /**
- * Sync all chip active states in the map filter overlay to match current filter state.
+ * Open the advanced filter modal from the map filter button.
+ * Emits bus event to trigger the modal in sheet-engine.js.
  * @returns {void}
  */
-export function syncMapFilterChips() {
-    const typeRow = document.getElementById('map-filter-type-chips');
-    if (typeRow) {
-        typeRow.querySelectorAll('.chip').forEach(chip => {
-            const onclick = chip.getAttribute('onclick') || '';
-            let isActive = false;
-            if (onclick.includes("'all'")) isActive = state.activeTag === 'all';
-            else if (onclick.includes("'favorites'")) isActive = state.activeTag === 'favorites';
-            else if (onclick.includes("'play'")) isActive = state.activeTag === 'play';
-            else if (onclick.includes("'farm'")) isActive = state.activeTag === 'farm';
-            else if (onclick.includes("'nature'")) isActive = state.activeTag === 'nature';
-            else if (onclick.includes("'museum'")) isActive = state.activeTag === 'museum';
-            else if (onclick.includes("'swim'")) isActive = state.activeTag === 'swim';
-            else if (onclick.includes("'pancake'")) isActive = state.activeTag === 'pancake';
-            else if (onclick.includes("'horeca'")) isActive = state.activeTag === 'horeca';
-            chip.classList.toggle('active', isActive);
-            chip.setAttribute('aria-selected', isActive ? 'true' : 'false');
-        });
-    }
-    const extra = document.getElementById('map-filter-extra');
-    if (extra) {
-        extra.querySelectorAll('.chip').forEach(chip => {
-            const onclick = chip.getAttribute('onclick') || '';
-            let isActive = false;
-            if (onclick.includes("toggleWeather")) isActive = onclick.includes("'indoor'") ? state.activeWeather === 'indoor' : state.activeWeather === 'outdoor';
-            else if (onclick.includes("toggleFacility('coffee'")) isActive = !!state.activeFacilities.coffee;
-            else if (onclick.includes("toggleFacility('diaper'")) isActive = !!state.activeFacilities.diaper;
-            else if (onclick.includes("toggleFacility('alcohol'")) isActive = !!state.activeFacilities.alcohol;
-            else if (onclick.includes("toggleAge('dreumes'")) isActive = state.activeAgeGroup === 'dreumes';
-            else if (onclick.includes("toggleAge('peuter'")) isActive = state.activeAgeGroup === 'peuter';
-            else if (onclick.includes("toggleRadius(5")) isActive = state.activeRadius === 5;
-            else if (onclick.includes("toggleRadius(10")) isActive = state.activeRadius === 10;
-            else if (onclick.includes("toggleRadius(25")) isActive = state.activeRadius === 25;
-            chip.classList.toggle('active', isActive);
-            chip.setAttribute('aria-selected', isActive ? 'true' : 'false');
-        });
-    }
-    updateMapMoreBadge();
+export function openMapFilterModal() {
+    bus.emit('filtermodal:open');
 }
 
 /**
- * Toggle visibility of the extra filter section in the map filter overlay.
+ * Toggle a type filter from the map preset chip row (does NOT switch to list view).
+ * @param {string} tag - Type filter key
+ * @param {Event} [evt] - Click event from the chip
  * @returns {void}
  */
-export function toggleMapMoreFilters() {
-    const extra = document.getElementById('map-filter-extra');
-    const btn = document.getElementById('map-filter-more-btn');
-    if (!extra || !btn) return;
-    const isHidden = extra.style.display === 'none';
-    extra.style.display = isHidden ? 'block' : 'none';
-    btn.classList.toggle('expanded', isHidden);
+export function toggleMapTag(tag, evt) {
+    trackEvent('filter', { type: tag, source: 'map_preset' });
+    state.activeTag = tag;
+    // Sync all .chip elements in sidebar/overlay
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    const tagLabels = { all: 'Alles', favorites: 'Favorieten', play: 'Speeltuin', farm: 'Boerderij', nature: 'Natuur', museum: 'Museum', swim: 'Zwemmen', pancake: 'Pannenkoeken', horeca: 'Horeca' };
+    const label = tagLabels[tag];
+    if (label) {
+        document.querySelectorAll('.chip').forEach(c => {
+            if (c.textContent.trim() === label) c.classList.add('active');
+        });
+    }
+    // Re-add active to non-type chips
+    document.querySelectorAll('.chip').forEach(c => {
+        if (c.textContent.trim() === 'Koffie' && state.activeFacilities.coffee) c.classList.add('active');
+        if (c.textContent.trim() === 'Verschonen' && state.activeFacilities.diaper) c.classList.add('active');
+        if (c.textContent.trim() === 'Alcohol' && state.activeFacilities.alcohol) c.classList.add('active');
+        if (c.textContent.trim() === 'Dreumes (0–2)' && state.activeAgeGroup === 'dreumes') c.classList.add('active');
+        if (c.textContent.trim() === 'Peuter (2–5)' && state.activeAgeGroup === 'peuter') c.classList.add('active');
+        if (state.activeRadius && c.classList.contains('radius-chip') && c.textContent.trim() === `${state.activeRadius} km`) c.classList.add('active');
+    });
+    syncMapPresetRow();
+    syncChipAria();
+    updateFilterCount();
+    loadLocations();
 }
 
-function updateMapMoreBadge() {
-    const badge = document.getElementById('map-filter-more-badge');
-    if (!badge) return;
-    let count = 0;
-    if (state.activeWeather) count++;
-    if (state.activeFacilities.coffee) count++;
-    if (state.activeFacilities.diaper) count++;
-    if (state.activeFacilities.alcohol) count++;
-    if (state.activeAgeGroup) count++;
-    if (state.activeRadius) count++;
-    if (count > 0) {
-        const prev = badge.textContent;
-        badge.textContent = count;
-        badge.style.display = '';
-        if (prev !== String(count)) popAnimate(badge);
-    } else {
-        badge.style.display = 'none';
-    }
+/**
+ * Sync map preset chip row active states to match current filter state.
+ * @returns {void}
+ */
+export function syncMapPresetRow() {
+    const row = document.getElementById('map-preset-row');
+    if (!row) return;
+    row.querySelectorAll('.map-preset-chip').forEach(chip => {
+        const tag = chip.dataset.tag;
+        const isActive = state.activeTag === tag;
+        chip.classList.toggle('active', isActive);
+        chip.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
 }
+
+/**
+ * Sync all map filter controls — preset row + filter badge.
+ * @returns {void}
+ */
+export function syncMapFilterChips() {
+    syncMapPresetRow();
+    updateMapFilterBadge();
+}
+
+/** Legacy — kept for backward compat */
+export function toggleMapMoreFilters() {}
 
 // Bus listeners
 bus.on('filters:countupdate', updateFilterCount);
