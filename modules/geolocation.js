@@ -146,12 +146,19 @@ export async function requestLocation(opts = {}) {
         return null;
     }
 
-    // Previously denied — skip futile request
+    // Previously denied — check if user has since granted permission
+    // On iOS Safari, the Permissions API is not supported for geolocation,
+    // so we cannot reliably detect permission changes. Instead of blocking
+    // with a session-long poison pill, we use a short TTL (60s) so users
+    // who fix their settings in iOS can retry within a minute.
     try {
-        if (sessionStorage.getItem(SESSION_KEY) === 'denied') {
+        const deniedAt = sessionStorage.getItem(SESSION_KEY);
+        if (deniedAt && (Date.now() - Number(deniedAt)) < 60000) {
             setState('denied');
             return null;
         }
+        // Expired or invalid — clear and retry against the OS
+        if (deniedAt) sessionStorage.removeItem(SESSION_KEY);
     } catch { /* sessionStorage unavailable */ }
 
     setState('requesting');
@@ -198,9 +205,9 @@ export async function requestLocation(opts = {}) {
                     resolve(state.userLocation);
                 },
                 (err) => {
-                    // Permission denied — remember for session
+                    // Permission denied — remember with TTL
                     if (err.code === 1) {
-                        try { sessionStorage.setItem(SESSION_KEY, 'denied'); } catch {}
+                        try { sessionStorage.setItem(SESSION_KEY, String(Date.now())); } catch {}
                         setState('denied');
                         resolve(null);
                         return;
@@ -228,10 +235,14 @@ export async function requestLocation(opts = {}) {
 /** Reset geolocation state (called when user manually sets a city) */
 export function resetLocationState() {
     geoState = 'idle';
+    try { sessionStorage.removeItem(SESSION_KEY); } catch {}
     updateStatusUI('idle', {});
 }
 
 /** Initialize module — expose retry handler */
 export function initGeolocation() {
-    window._geoRetry = () => requestLocation();
+    window._geoRetry = () => {
+        try { sessionStorage.removeItem(SESSION_KEY); } catch {}
+        return requestLocation();
+    };
 }
