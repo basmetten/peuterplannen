@@ -437,11 +437,12 @@
   scroll-snap-align: start;
   padding: 8px 18px;
   min-height: 40px;
-  border: 1px solid rgba(140, 110, 100, 0.12);
+  border: 1px solid rgba(140, 110, 100, 0.18);
   border-radius: var(--pp-radius-pill, 100px);
-  background: rgba(255, 252, 249, 0.9);
+  background: rgba(255, 252, 249, 0.95);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   font-size: var(--pp-text-xs);
-  font-weight: 500;
+  font-weight: 600;
   font-family: inherit;
   color: var(--pp-text-secondary, var(--wg-text-body));
   cursor: pointer;
@@ -454,8 +455,9 @@
               border-color 200ms ease;
 }
 .sheet-preset:active {
-  background: rgba(255, 255, 255, 0.95);
-  transform: scale(0.95);
+  background: rgba(var(--pp-primary-rgb), 0.08);
+  border-color: rgba(var(--pp-primary-rgb), 0.25);
+  transform: scale(0.93);
   transition: transform 80ms var(--wg-ease-spring);
 }
 @media (hover: hover) {
