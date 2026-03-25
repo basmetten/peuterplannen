@@ -101,12 +101,20 @@ Object.assign(window, {
         }, 0);
     }
     if (params.get('type') && params.get('type') !== 'all') {
-        state.activeTag = params.get('type');
+        const typeParam = params.get('type');
+        // Support comma-separated multi-type: ?type=play,farm
+        if (typeParam.includes(',')) {
+            state.activeTags = typeParam.split(',').filter(Boolean);
+        } else {
+            state.activeTags = [typeParam];
+        }
         setTimeout(() => {
+            const tagLabels = { play: 'Speeltuin', farm: 'Boerderij', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', swim: 'Zwemmen', pancake: 'Pannenkoeken' };
+            const activeLabels = new Set(state.activeTags.map(t => tagLabels[t]).filter(Boolean));
             document.querySelector('.chip.active')?.classList.remove('active');
             document.querySelectorAll('.chip').forEach(c => {
-                const map = { play: 'Speeltuin', farm: 'Boerderij', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', swim: 'Zwemmen', pancake: 'Pannenkoeken' };
-                if (c.textContent.trim() === map[state.activeTag]) c.classList.add('active');
+                const text = c.textContent.trim();
+                if (activeLabels.has(text)) c.classList.add('active');
             });
             syncChipAria();
         }, 0);

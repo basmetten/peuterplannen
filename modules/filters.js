@@ -38,7 +38,7 @@ export function syncPresetAria() {
  */
 export function getAdvancedFilterCount() {
     let count = 0;
-    if (state.activeTag !== 'all' && state.activeTag !== 'favorites') count++;
+    count += state.activeTags.length;
     if (state.activeWeather) count++;
     if (state.activeFacilities.coffee) count++;
     if (state.activeFacilities.diaper) count++;
@@ -131,9 +131,11 @@ export const updateMapPillBadge = updateMapFilterBadge;
 export function updateFilterCount() {
     let count = 0;
     const labels = [];
-    if (state.activeTag !== 'all') count++;
-    if (state.activeTag === 'favorites') labels.push('shortlist');
-    else if (state.activeTag !== 'all') labels.push(TYPE_LABELS[state.activeTag] || state.activeTag);
+    if (state.activeFavorites) { count++; labels.push('shortlist'); }
+    if (state.activeTags.length > 0) {
+        count += state.activeTags.length;
+        state.activeTags.forEach(tag => labels.push(TYPE_LABELS[tag] || tag));
+    }
     if (state.activeWeather) { count++; labels.push(state.activeWeather === 'indoor' ? 'binnen' : 'buiten'); }
     if (state.activeFacilities.coffee) { count++; labels.push('koffie'); }
     if (state.activeFacilities.diaper) { count++; labels.push('verschonen'); }
@@ -235,23 +237,48 @@ export function toggleWeather(weather, evt) {
 // Base toggleTag (before nav sync extension)
 function toggleTagBase(tag, evt) {
     trackEvent('filter', { type: tag });
-    state.activeTag = tag;
-    state.activeWeather = null;
-    document.querySelectorAll('.chip').forEach(p => p.classList.remove('active'));
-    if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
-    else document.querySelector('.chip').classList.add('active');
-    document.querySelectorAll('.chip').forEach(c => {
-        if (c.textContent.trim() === 'Koffie' && state.activeFacilities.coffee) c.classList.add('active');
-        if (c.textContent.trim() === 'Verschonen' && state.activeFacilities.diaper) c.classList.add('active');
-        if (c.textContent.trim() === 'Alcohol' && state.activeFacilities.alcohol) c.classList.add('active');
-        if (c.textContent.trim() === 'Dreumes (0–2)' && state.activeAgeGroup === 'dreumes') c.classList.add('active');
-        if (c.textContent.trim() === 'Peuter (2–5)' && state.activeAgeGroup === 'peuter') c.classList.add('active');
-        if (state.activeRadius && c.classList.contains('radius-chip') && c.textContent.trim() === `${state.activeRadius} km`) c.classList.add('active');
-    });
+    // Multi-select: toggle tag in/out of activeTags array
+    if (tag === 'all') {
+        state.activeTags = [];
+        state.activeFavorites = false;
+    } else if (tag === 'favorites') {
+        state.activeFavorites = !state.activeFavorites;
+    } else {
+        state.activeFavorites = false;
+        const idx = state.activeTags.indexOf(tag);
+        if (idx >= 0) state.activeTags.splice(idx, 1);
+        else state.activeTags.push(tag);
+    }
+    // Sync chip UI: "Alles" active when no tags selected, individual chips toggle
+    syncTypeChips();
     syncChipAria();
     updateFilterCount();
     collapseFilterPanelAfterSelection();
     loadLocations();
+}
+
+/** Sync all type chip active states to match current activeTags */
+function syncTypeChips() {
+    const tagLabels = { play: 'Speeltuin', farm: 'Boerderij', nature: 'Natuur', museum: 'Museum', swim: 'Zwemmen', pancake: 'Pannenkoeken', horeca: 'Horeca' };
+    const activeLabels = new Set(state.activeTags.map(t => tagLabels[t]).filter(Boolean));
+    document.querySelectorAll('.chip').forEach(c => {
+        const text = c.textContent.trim();
+        // "Alles" chip: active when no tags and no favorites
+        if (text === 'Alles') {
+            c.classList.toggle('active', state.activeTags.length === 0 && !state.activeFavorites);
+        }
+        // Type chips
+        else if (Object.values(tagLabels).includes(text)) {
+            c.classList.toggle('active', activeLabels.has(text));
+        }
+        // Non-type chips: keep their own state
+        else if (text === 'Koffie') c.classList.toggle('active', state.activeFacilities.coffee);
+        else if (text === 'Verschonen') c.classList.toggle('active', state.activeFacilities.diaper);
+        else if (text === 'Alcohol') c.classList.toggle('active', state.activeFacilities.alcohol);
+        else if (text === 'Dreumes (0–2)') c.classList.toggle('active', state.activeAgeGroup === 'dreumes');
+        else if (text === 'Peuter (2–5)') c.classList.toggle('active', state.activeAgeGroup === 'peuter');
+        else if (c.classList.contains('radius-chip')) c.classList.toggle('active', state.activeRadius && text === `${state.activeRadius} km`);
+    });
 }
 
 /**
@@ -367,7 +394,8 @@ export function togglePriceBand(value) {
  * @returns {void}
  */
 export function resetAllFilters() {
-    state.activeTag = 'all';
+    state.activeTags = [];
+    state.activeFavorites = false;
     state.activeWeather = null;
     state.activeFacilities = { coffee: false, diaper: false, alcohol: false };
     state.activeAgeGroup = null;
@@ -433,25 +461,20 @@ export function openMapFilterModal() {
  */
 export function toggleMapTag(tag, evt) {
     trackEvent('filter', { type: tag, source: 'map_preset' });
-    state.activeTag = tag;
-    // Sync all .chip elements in sidebar/overlay
-    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-    const tagLabels = { all: 'Alles', favorites: 'Favorieten', play: 'Speeltuin', farm: 'Boerderij', nature: 'Natuur', museum: 'Museum', swim: 'Zwemmen', pancake: 'Pannenkoeken', horeca: 'Horeca' };
-    const label = tagLabels[tag];
-    if (label) {
-        document.querySelectorAll('.chip').forEach(c => {
-            if (c.textContent.trim() === label) c.classList.add('active');
-        });
+    // Multi-select: toggle tag in/out of activeTags array
+    if (tag === 'all') {
+        state.activeTags = [];
+        state.activeFavorites = false;
+    } else if (tag === 'favorites') {
+        state.activeFavorites = !state.activeFavorites;
+    } else {
+        state.activeFavorites = false;
+        const idx = state.activeTags.indexOf(tag);
+        if (idx >= 0) state.activeTags.splice(idx, 1);
+        else state.activeTags.push(tag);
     }
-    // Re-add active to non-type chips
-    document.querySelectorAll('.chip').forEach(c => {
-        if (c.textContent.trim() === 'Koffie' && state.activeFacilities.coffee) c.classList.add('active');
-        if (c.textContent.trim() === 'Verschonen' && state.activeFacilities.diaper) c.classList.add('active');
-        if (c.textContent.trim() === 'Alcohol' && state.activeFacilities.alcohol) c.classList.add('active');
-        if (c.textContent.trim() === 'Dreumes (0–2)' && state.activeAgeGroup === 'dreumes') c.classList.add('active');
-        if (c.textContent.trim() === 'Peuter (2–5)' && state.activeAgeGroup === 'peuter') c.classList.add('active');
-        if (state.activeRadius && c.classList.contains('radius-chip') && c.textContent.trim() === `${state.activeRadius} km`) c.classList.add('active');
-    });
+    // Sync chip UI
+    syncTypeChips();
     syncMapPresetRow();
     syncChipAria();
     updateFilterCount();
@@ -467,7 +490,10 @@ export function syncMapPresetRow() {
     if (!row) return;
     row.querySelectorAll('.map-preset-chip').forEach(chip => {
         const tag = chip.dataset.tag;
-        const isActive = state.activeTag === tag;
+        let isActive;
+        if (tag === 'all') isActive = state.activeTags.length === 0 && !state.activeFavorites;
+        else if (tag === 'favorites') isActive = state.activeFavorites;
+        else isActive = state.activeTags.includes(tag);
         chip.classList.toggle('active', isActive);
         chip.setAttribute('aria-selected', isActive ? 'true' : 'false');
     });

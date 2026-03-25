@@ -14,7 +14,9 @@
 
 /**
  * @typedef {Object} AppState
- * @property {string} activeTag - Selected type filter ('all', 'play', 'farm', etc. or 'favorites')
+ * @property {string[]} activeTags - Selected type filters (empty array = all types)
+ * @property {boolean} activeFavorites - Whether favorites-only mode is active
+ * @property {string} activeTag - Legacy computed property for backward compat (reads/writes activeTags + activeFavorites)
  * @property {string|null} activeWeather - Active weather filter ('indoor', 'outdoor', or null)
  * @property {string|null} activeRegion - Active region filter or null
  * @property {string|null} activeAgeGroup - Active age group ('dreumes', 'peuter', or null)
@@ -216,7 +218,8 @@ export const RAIN_CODES = new Set([51,53,55,56,57,61,63,65,66,67,80,81,82,83,84,
 
 /** @type {AppState} Global mutable application state shared across all modules. */
 export const state = {
-    activeTag: 'all',
+    activeTags: [],
+    activeFavorites: false,
     activeWeather: null,
     activeRegion: null,
     activeAgeGroup: null,
@@ -247,3 +250,28 @@ export const state = {
     isRaining: false,
     isSunny: false,
 };
+
+// Backward-compatible getter/setter for `activeTag` — used by sheet-engine.js and other legacy code.
+// Reads: returns 'favorites' if activeFavorites, first activeTags entry if single, or 'all'.
+// Writes: maps string values to the new activeTags/activeFavorites properties.
+Object.defineProperty(state, 'activeTag', {
+    get() {
+        if (state.activeFavorites) return 'favorites';
+        if (state.activeTags.length === 1) return state.activeTags[0];
+        if (state.activeTags.length === 0) return 'all';
+        return state.activeTags[0]; // multi-select: return first for legacy readers
+    },
+    set(val) {
+        if (val === 'favorites') {
+            state.activeFavorites = true;
+        } else if (val === 'all') {
+            state.activeTags = [];
+            state.activeFavorites = false;
+        } else {
+            state.activeTags = [val];
+            state.activeFavorites = false;
+        }
+    },
+    enumerable: true,
+    configurable: true,
+});

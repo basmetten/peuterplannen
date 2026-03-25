@@ -108,8 +108,8 @@
     <link rel="preload" href="/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/plus-jakarta-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/app.bundle.css?v=202603252049-617186d">
-    <script src="/nav-floating.js?v=202603252049-617186d" defer></script>
+    <link rel="stylesheet" href="/app.bundle.css?v=202603252114-b39643f">
+    <script src="/nav-floating.js?v=202603252114-b39643f" defer></script>
 
 </head>
 <body class="pp-app">
@@ -759,16 +759,14 @@
                 </div>
             </div>
 
-            <!-- Divider: progressive disclosure toggle -->
-            <button class="filter-modal-divider" id="filter-modal-more-toggle" aria-expanded="false">
-                <span class="filter-modal-divider-line"></span>
-                <span class="filter-modal-divider-label" id="filter-modal-more-label">Meer opties</span>
-                <svg class="filter-modal-divider-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-                <span class="filter-modal-divider-line"></span>
-            </button>
-
-            <!-- Layer 2: Collapsed by default -->
-            <div class="filter-modal-collapsible" id="filter-modal-collapsible">
+            <!-- Layer 2: Gradient veil progressive disclosure -->
+            <div class="filter-more-container" id="filter-more-container">
+                <div class="filter-more-veil" aria-hidden="true"></div>
+                <button class="filter-more-pill" id="filter-more-pill" aria-expanded="false">
+                    <span class="filter-more-pill-label">Meer opties</span>
+                    <span class="filter-more-pill-count" id="filter-more-pill-count"></span>
+                </button>
+                <div class="filter-more-content" id="filter-more-content">
                 <div class="filter-modal-group" data-group="faciliteiten">
                     <div class="filter-modal-label">Faciliteiten</div>
                     <div class="filter-modal-options">
@@ -807,6 +805,8 @@
                         <button class="filter-modal-chip" data-action="saved" data-value="only" aria-pressed="false">Alleen bewaard</button>
                     </div>
                 </div>
+                <button class="filter-more-collapse" id="filter-more-collapse">Minder opties</button>
+                </div>
             </div>
         </div>
         <div class="filter-modal-footer">
@@ -817,7 +817,7 @@
 
     <div id="sr-announcer" class="sr-only" aria-live="polite" role="status"></div>
 
-    <script type="module" src="app.bundle.js?v=202603252049-617186d"></script>
+    <script type="module" src="app.bundle.js?v=202603252114-b39643f"></script>
 
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>

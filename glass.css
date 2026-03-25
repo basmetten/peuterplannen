@@ -1893,40 +1893,99 @@
   }
   .filter-modal-chip:hover:not(.active) { background: rgba(var(--pp-primary-rgb), 0.08); border-color: rgba(var(--pp-primary-rgb), 0.18); }
 
-  /* Progressive disclosure divider */
-  .filter-modal-divider {
-    display: flex; align-items: center; gap: 12px;
-    width: 100%; padding: 8px 0 16px; margin: 4px 0 0;
-    background: none; border: none; cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
+  /* ── Progressive disclosure: gradient veil + pill ── */
+  .filter-more-container {
+    position: relative;
+    max-height: 80px;
+    overflow: hidden;
+    transition: max-height 420ms cubic-bezier(0.34, 1.2, 0.64, 1);
+    margin-top: 4px;
   }
-  .filter-modal-divider-line {
-    flex: 1; height: 1px;
-    background: rgba(var(--pp-primary-rgb), 0.12);
-  }
-  .filter-modal-divider-label {
-    font-size: 12px; font-weight: 600; color: var(--pp-primary);
-    white-space: nowrap; letter-spacing: 0.02em;
-  }
-  .filter-modal-divider-icon {
-    width: 16px; height: 16px; flex-shrink: 0;
-    stroke: var(--pp-primary); fill: none;
-    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-    transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1);
-  }
-  .filter-modal-divider[aria-expanded="true"] .filter-modal-divider-icon {
-    transform: rotate(180deg);
+  .filter-more-container.expanded {
+    max-height: 800px;
+    overflow: visible;
   }
 
-  /* Collapsible section */
-  .filter-modal-collapsible {
-    max-height: 0; overflow: hidden;
-    transition: max-height 0.3s cubic-bezier(0.32, 0.72, 0, 1),
-                opacity 0.25s ease;
-    opacity: 0;
+  /* Warm gradient veil that fades to reveal content */
+  .filter-more-veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 15%,
+      rgba(255, 252, 249, 0.97) 70%
+    );
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 300ms ease-out;
+    z-index: 2;
   }
-  .filter-modal-collapsible.expanded {
-    max-height: 600px; opacity: 1;
+  .filter-more-container.expanded .filter-more-veil {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Floating pill toggle */
+  .filter-more-pill {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(var(--pp-primary-rgb), 0.18);
+    background: rgba(255, 252, 249, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--pp-primary);
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 2px 10px rgba(212, 119, 86, 0.10);
+    transition: transform 300ms cubic-bezier(0.34, 1.2, 0.64, 1),
+                opacity 300ms ease-out,
+                background 200ms ease-out;
+    -webkit-tap-highlight-color: transparent;
+    font-family: inherit;
+  }
+  .filter-more-pill:active {
+    transform: translateX(-50%) scale(0.95);
+    background: rgba(var(--pp-primary-rgb), 0.08);
+  }
+  .filter-more-container.expanded .filter-more-pill {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+    pointer-events: none;
+  }
+  .filter-more-pill-count {
+    opacity: 0.55;
+    font-weight: 500;
+  }
+
+  /* "Minder" collapse link — appears after expand */
+  .filter-more-collapse {
+    display: none;
+    width: 100%;
+    padding: 10px 0 4px;
+    background: none;
+    border: none;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--pp-primary);
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: 0.02em;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .filter-more-container.expanded .filter-more-collapse {
+    display: block;
   }
 
   /* Footer with reset + apply */

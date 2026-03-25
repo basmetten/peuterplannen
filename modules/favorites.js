@@ -54,7 +54,7 @@ export function toggleFavorite(locationId, btn) {
             btn.addEventListener('animationend', () => btn.classList.remove('heart-pop'), { once: true });
         }
         ppToast(action === 'add' ? 'Opgeslagen in favorieten' : 'Verwijderd uit favorieten', 'success', 2000);
-        if (state.activeTag === 'favorites') {
+        if (state.activeFavorites) {
             const filtered = state.allLocations.filter(item => getFavorites().includes(item.id));
             bus.emit('cards:render', filtered, {});
         } else {
@@ -154,7 +154,7 @@ export function showShortlist() {
 export function clearShortlist() {
     if (state.sharedShortlistIds.length > 0) { clearSharedShortlist(); return; }
     try { localStorage.removeItem('peuterplannen_favorites'); } catch (error) { console.warn('[favorites:clearShortlist] localStorage remove failed:', error.message); }
-    if (state.activeTag === 'favorites') state.activeTag = 'all';
+    if (state.activeFavorites) { state.activeFavorites = false; state.activeTags = []; }
     updateShortlistBar();
     bus.emit('filters:countupdate');
     bus.emit('data:reload');

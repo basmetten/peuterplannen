@@ -21,11 +21,26 @@ export async function load(url, context, nextLoad) {
       format: 'module',
       source: `
         export const state = {
-          activeTag: 'all',
+          activeTags: [],
+          activeFavorites: false,
           allLocations: [],
           sharedShortlistIds: [],
           activeLocSheet: null,
         };
+        Object.defineProperty(state, 'activeTag', {
+          get() {
+            if (state.activeFavorites) return 'favorites';
+            if (state.activeTags.length === 1) return state.activeTags[0];
+            if (state.activeTags.length === 0) return 'all';
+            return state.activeTags[0];
+          },
+          set(val) {
+            if (val === 'favorites') { state.activeFavorites = true; }
+            else if (val === 'all') { state.activeTags = []; state.activeFavorites = false; }
+            else { state.activeTags = [val]; state.activeFavorites = false; }
+          },
+          enumerable: true, configurable: true,
+        });
       `,
     };
   }

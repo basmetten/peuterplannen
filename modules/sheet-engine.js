@@ -229,15 +229,10 @@ function initSheetTouch() {
     const dragSurface = sheetEl;
     if (!dragSurface) return;
 
+    let needsDisambiguation = false;
+
     dragSurface.addEventListener('touchstart', (e) => {
-        // Don't hijack scrolling inside sheet-content when it has overflow
         const target = e.target;
-        if (contentEl && contentEl.scrollHeight > contentEl.clientHeight + 10) {
-            // If touching inside scrollable content in full state, let it scroll naturally
-            if (currentState === 'full' && contentEl.contains(target) && !dragHandle.contains(target)) {
-                return;
-            }
-        }
 
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
@@ -247,6 +242,11 @@ function initSheetTouch() {
         lastY = startY;
         lastTime = Date.now();
         velocity = 0;
+
+        // Check if we need to disambiguate content scroll vs sheet drag
+        const contentIsScrollable = contentEl && contentEl.scrollHeight > contentEl.clientHeight + 10;
+        needsDisambiguation = currentState === 'full' && contentIsScrollable
+            && contentEl.contains(target) && !dragHandle.contains(target);
 
         // Apple Maps pattern: mark sheet as dragging (CSS can disable transitions)
         sheetEl.classList.add('dragging');
@@ -275,6 +275,21 @@ function initSheetTouch() {
             sheetEl.classList.remove('dragging');
             hostEl.style.scrollSnapType = 'y mandatory';
             return;
+        }
+
+        // Apple Maps disambiguation: in full state, content scroll vs sheet drag
+        if (needsDisambiguation) {
+            needsDisambiguation = false; // only check once per gesture
+            const draggingDown = currentY > startY;
+            const contentAtTop = contentEl.scrollTop <= 2;
+            if (!draggingDown || !contentAtTop) {
+                // User wants to scroll content, not drag sheet
+                isDragging = false;
+                sheetEl.classList.remove('dragging');
+                hostEl.style.scrollSnapType = 'y mandatory';
+                return;
+            }
+            // Dragging down with content at top → collapse sheet (continue to drag logic)
         }
 
         // Vertical drag — existing behavior
@@ -678,7 +693,7 @@ function initFilterModal() {
         first.focus();
     }
 
-    const openModal  = () => { syncModalChips(); updateModalCount(); syncResetBtn(); modal.classList.add('open'); overlay.classList.add('open'); trapFocus(modal); if (typeof window.pushNavState === 'function') window.pushNavState('filter-modal'); const ann = document.getElementById('sr-announcer'); if (ann) ann.textContent = 'Filter paneel geopend'; };
+    const openModal  = () => { syncModalChips(); updateModalCount(); syncResetBtn(); syncVeilPillCount(); modal.classList.add('open'); overlay.classList.add('open'); trapFocus(modal); if (typeof window.pushNavState === 'function') window.pushNavState('filter-modal'); const ann = document.getElementById('sr-announcer'); if (ann) ann.textContent = 'Filter paneel geopend'; };
     const closeModal = () => { if (modal._focusTrapHandler) modal.removeEventListener('keydown', modal._focusTrapHandler); modal.classList.remove('open'); overlay.classList.remove('open'); const ann = document.getElementById('sr-announcer'); if (ann) ann.textContent = 'Filter paneel gesloten'; };
 
     if (btn) btn.addEventListener('click', openModal);
@@ -703,19 +718,40 @@ function initFilterModal() {
             else if (action === 'foodfit')  { state.activeFoodFit = state.activeFoodFit === value ? null : value; }
             else if (action === 'practical') { state.activePractical[value] = !state.activePractical[value]; }
             else if (action === 'priceband') { state.activePriceBand = state.activePriceBand === value ? null : value; }
-            syncModalChips(); updateModalCount(); updateMoreBadge(); syncResetBtn();
+            syncModalChips(); updateMoreBadge(); syncResetBtn(); syncVeilPillCount();
+            // Live update: reload data immediately so results + count update in real-time
+            bus.emit('data:reload');
         });
     });
 
-    // Progressive disclosure: "Meer opties" toggle
-    const moreToggle = document.getElementById('filter-modal-more-toggle');
-    const collapsible = document.getElementById('filter-modal-collapsible');
-    if (moreToggle && collapsible) {
-        moreToggle.addEventListener('click', () => {
-            const isExpanded = collapsible.classList.toggle('expanded');
-            moreToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
-            const label = document.getElementById('filter-modal-more-label');
-            if (label) label.textContent = isExpanded ? 'Minder opties' : 'Meer opties';
+    // Listen for data loaded to update the modal count live
+    bus.on('data:loaded', (count) => {
+        const btn = document.getElementById('filter-modal-apply');
+        if (btn) btn.textContent = count === 1 ? 'Toon 1 resultaat' : `Toon ${count} resultaten`;
+    });
+
+    // Gradient veil progressive disclosure
+    const veilContainer = document.getElementById('filter-more-container');
+    const veilPill = document.getElementById('filter-more-pill');
+    const collapseBtn = document.getElementById('filter-more-collapse');
+    if (veilPill && veilContainer) {
+        // Measure full content height for transition
+        const content = document.getElementById('filter-more-content');
+        if (content) {
+            requestAnimationFrame(() => {
+                veilContainer.style.setProperty('--layer2-full-height', content.scrollHeight + 'px');
+            });
+        }
+        veilPill.addEventListener('click', () => {
+            veilContainer.classList.add('expanded');
+            veilPill.setAttribute('aria-expanded', 'true');
+        });
+    }
+    if (collapseBtn && veilContainer) {
+        collapseBtn.addEventListener('click', () => {
+            veilContainer.classList.remove('expanded');
+            if (veilPill) veilPill.setAttribute('aria-expanded', 'false');
+            veilContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         });
     }
 
@@ -732,7 +768,8 @@ function initFilterModal() {
             state.activePriceBand = null;
             state.activePractical = { parking: false, buggy: false };
             state.activeTag = state.activeTag === 'favorites' ? 'all' : state.activeTag;
-            syncModalChips(); updateModalCount(); updateMoreBadge(); syncResetBtn();
+            syncModalChips(); updateMoreBadge(); syncResetBtn(); syncVeilPillCount();
+            bus.emit('data:reload');
         });
     }
     function syncResetBtn() {
@@ -778,10 +815,9 @@ function syncModalChips() {
 }
 
 function autoExpandIfActive() {
-    const collapsible = document.getElementById('filter-modal-collapsible');
-    const toggle = document.getElementById('filter-modal-more-toggle');
-    if (!collapsible || !toggle) return;
-    // Check if any filter in the collapsed section is active
+    const container = document.getElementById('filter-more-container');
+    const pill = document.getElementById('filter-more-pill');
+    if (!container) return;
     let hasActive = false;
     if (state.activeFacilities.coffee || state.activeFacilities.diaper || state.activeFacilities.alcohol) hasActive = true;
     if (state.activeFoodFit) hasActive = true;
@@ -789,12 +825,23 @@ function autoExpandIfActive() {
     if (state.activePriceBand) hasActive = true;
     if (state.activeRadius) hasActive = true;
     if (state.activeTag === 'favorites') hasActive = true;
-    if (hasActive && !collapsible.classList.contains('expanded')) {
-        collapsible.classList.add('expanded');
-        toggle.setAttribute('aria-expanded', 'true');
-        const label = document.getElementById('filter-modal-more-label');
-        if (label) label.textContent = 'Minder opties';
+    if (hasActive && !container.classList.contains('expanded')) {
+        container.classList.add('expanded');
+        if (pill) pill.setAttribute('aria-expanded', 'true');
     }
+}
+
+function syncVeilPillCount() {
+    const countEl = document.getElementById('filter-more-pill-count');
+    if (!countEl) return;
+    let count = 0;
+    if (state.activeFacilities.coffee || state.activeFacilities.diaper || state.activeFacilities.alcohol) count++;
+    if (state.activeFoodFit) count++;
+    if (state.activePractical.parking || state.activePractical.buggy) count++;
+    if (state.activePriceBand) count++;
+    if (state.activeRadius) count++;
+    if (state.activeTag === 'favorites') count++;
+    countEl.textContent = count > 0 ? `· ${count} actief` : '';
 }
 
 function updateModalCount() {

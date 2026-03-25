@@ -49,7 +49,8 @@ function syncSheetTabs(view) {
 
 /** Reset all filters to defaults */
 function resetFilters() {
-    state.activeTag = 'all';
+    state.activeTags = [];
+    state.activeFavorites = false;
     state.activeWeather = null;
     state.activeFacilities = { coffee: false, diaper: false, alcohol: false };
     state.activeAgeGroup = null;
@@ -75,7 +76,7 @@ function resetFilters() {
 /** Desktop view switching — sidebar + always-visible map */
 function switchViewDesktop(view) {
     if (view === 'favorites') {
-        state.activeTag = 'favorites';
+        state.activeFavorites = true;
         loadLocations();
     } else if (view === 'info') {
         openInfoPanel();
@@ -113,7 +114,7 @@ function switchViewMobile(view) {
             updateMapPillBadge();
             break;
         case 'favorites':
-            state.activeTag = 'favorites';
+            state.activeFavorites = true;
             state.activeWeather = null;
             loadLocations();
             bus.emit('sheet:setstate', 'half');

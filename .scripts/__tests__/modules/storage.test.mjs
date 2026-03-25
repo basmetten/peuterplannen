@@ -209,7 +209,8 @@ const { state } = await import(resolve(rootDir, 'modules', 'state.js'));
 describe('favorites module', () => {
   beforeEach(() => {
     localStorage.clear();
-    state.activeTag = 'all';
+    state.activeTags = [];
+    state.activeFavorites = false;
     state.allLocations = [];
     state.sharedShortlistIds = [];
     state.activeLocSheet = null;
@@ -323,10 +324,13 @@ describe('favorites module', () => {
       assert.equal(localStorage.getItem('peuterplannen_favorites'), null);
     });
 
-    it('resets activeTag from favorites to all', () => {
-      state.activeTag = 'favorites';
+    it('resets activeFavorites from true to false', () => {
+      state.activeFavorites = true;
       state.sharedShortlistIds = [];
       clearShortlist();
+      assert.equal(state.activeFavorites, false);
+      assert.deepEqual(state.activeTags, []);
+      // Backward compat: activeTag getter returns 'all'
       assert.equal(state.activeTag, 'all');
     });
   });
