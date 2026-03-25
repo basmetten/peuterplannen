@@ -144,13 +144,10 @@
         }
         @media (max-width: 679px) {
             body.map-view-active .map-search-cluster {
-                top: 80px;
-            }
-            body.map-view-active .map-preset-row {
-                top: 132px;
+                top: calc(72px + env(safe-area-inset-top, 0px));
             }
             body.map-view-active .map-filters-overlay {
-                top: 130px;
+                top: calc(124px + env(safe-area-inset-top, 0px));
                 border-radius: 0 0 16px 16px;
             }
         }
@@ -240,55 +237,6 @@
         }
         .map-filter-badge.visible { display: flex; }
 
-        /* ── Preset type chip row ── */
-        .map-preset-row {
-            position: absolute;
-            top: 56px;
-            left: 12px;
-            right: 0;
-            z-index: 3;
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            scroll-snap-type: x proximity;
-            padding: 2px 0;
-            mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
-            -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
-            animation: map-control-enter 0.35s var(--wg-ease-smooth) both;
-            animation-delay: 0.3s;
-        }
-        .map-preset-row::-webkit-scrollbar { display: none; }
-        .map-preset-row::after { content: ''; flex-shrink: 0; width: 12px; }
-
-        .map-preset-chip {
-            flex-shrink: 0;
-            scroll-snap-align: start;
-            padding: 8px 16px;
-            border-radius: 100px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            background: rgba(255, 252, 249, 0.94);
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--pp-text-secondary);
-            cursor: pointer;
-            white-space: nowrap;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
-        }
-        .map-preset-chip:active { transform: scale(0.96); }
-        .map-preset-chip.active {
-            background: var(--pp-primary);
-            color: var(--pp-text-inverse);
-            border-color: transparent;
-            box-shadow: 0 2px 8px rgba(212, 119, 86, 0.25);
-            font-weight: 700;
-        }
-
         /* ── Search overlay (simplified — location input only) ── */
         .map-filters-overlay {
             position: absolute;
@@ -334,7 +282,6 @@
         /* Hide map controls on desktop — filters are always visible in sidebar */
         @media (min-width: 680px) {
             .map-search-cluster { display: none; }
-            .map-preset-row { display: none; }
             .map-filters-overlay { display: none; }
         }
 

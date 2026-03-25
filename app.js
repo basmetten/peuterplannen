@@ -76,7 +76,7 @@ Object.assign(window, {
     toggleFacility, toggleAge, toggleRadius, resetAllFilters,
     clearSharedShortlist, showShortlist, shareShortlist, clearShortlist,
     fitMapToMarkers, openMapFilters, closeMapFilters, updateLocationFromMap,
-    toggleMapMoreFilters, openMapFilterModal, toggleMapTag,
+    toggleMapMoreFilters, openMapFilterModal,
     closeInfoPanel, closeLocSheet, setSheetState,
     selectPlanDate, selectPlanOption, changeKidsCount, updateChildAge,
     generatePlan, sharePlan, sharePlanWhatsApp,
