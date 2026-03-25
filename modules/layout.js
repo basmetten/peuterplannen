@@ -1,7 +1,7 @@
 import { state, DESKTOP_WIDTH } from './state.js';
 import { closeLocSheet, closeInfoPanel, openInfoPanel } from './sheet.js';
 import { setDisplayMode, fitMapToMarkers, updateUserLocationOnMap } from './map.js';
-import { updateFilterCount, updateMapPillBadge } from './filters.js';
+import { updateFilterCount, updateMapPillBadge, resetAllFilters } from './filters.js';
 import { trackEvent } from './utils.js';
 import { requestLocation, getLocationState } from './geolocation.js';
 import bus from './bus.js';
@@ -47,15 +47,7 @@ function syncSheetTabs(view) {
     });
 }
 
-/** Reset all filters to defaults */
-function resetFilters() {
-    state.activeTags = [];
-    state.activeFavorites = false;
-    state.activeWeather = null;
-    state.activeFacilities = { coffee: false, diaper: false, alcohol: false };
-    state.activeAgeGroup = null;
-    state.activeRadius = null;
-}
+// resetFilters replaced by canonical resetAllFilters from filters.js
 
 // --- View switching per viewport ---
 //
@@ -81,11 +73,7 @@ function switchViewDesktop(view) {
     } else if (view === 'info') {
         openInfoPanel();
     } else if (view === 'home') {
-        resetFilters();
-        document.querySelectorAll('.chip').forEach(ch => ch.classList.remove('active'));
-        document.querySelector('.chip').classList.add('active');
-        updateFilterCount();
-        loadLocations();
+        resetAllFilters(); // canonical reset: clears all state, syncs chips, reloads data
     }
 }
 
@@ -95,9 +83,7 @@ function switchViewMobile(view) {
 
     switch (view) {
         case 'home':
-            resetFilters();
-            updateFilterCount();
-            loadLocations();
+            resetAllFilters(); // canonical reset: clears all state, syncs chips, reloads data
             bus.emit('sheet:setstate', 'peek');
             if (state.mapInstance) setTimeout(() => state.mapInstance.resize(), MAP_RESIZE_DELAY_MS);
             break;

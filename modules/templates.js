@@ -6,11 +6,11 @@
  * to fully extract here, but they use getPhotoData() for consistency.
  */
 
-import { state, CATEGORY_IMAGES, TYPE_PHOTO_COLORS, TYPE_LABELS, WEATHER_LABELS } from './state.js';
+import { state, CATEGORY_IMAGES, TYPE_PHOTO_COLORS, TYPE_LABELS } from './state.js';
 import { escapeHtml } from './utils.js';
-import { computePeuterScore, getCardDecisionSentence, getPrimaryFitReason, getPracticalBullets } from './scoring.js';
-import { getTopTags } from './tags.js';
+import { computePeuterScore } from './scoring.js';
 import { isFavorite } from './favorites.js';
+import { getKenmerkenTags, getDistanceLabel, getUnifiedOneLiner } from './card-data.js';
 
 // === Shared photo data ===
 
@@ -66,9 +66,9 @@ export function renderCompactCard(loc, opts = {}) {
     const isFav = isFavorite(loc.id);
     const favStyle = isFav ? 'fill: #D4775A; stroke: #D4775A;' : '';
 
-    // Distance/region
+    // Distance/region — unified via card-data
     const travelInfo = travelTimes ? travelTimes[loc.id] : null;
-    const distance = travelInfo ? travelInfo.duration : (loc.region || '');
+    const distance = getDistanceLabel(loc, travelInfo);
 
     const styleAttr = extraStyle ? ` style="${extraStyle}"` : '';
     const imgStyleAttr = imgStyle ? ` style="${imgStyle};background:${photoColor}"` : ` style="background:${photoColor}"`;
@@ -78,15 +78,11 @@ export function renderCompactCard(loc, opts = {}) {
     const scoreClass = ps >= 8 ? ' score-high' : ps >= 7 ? ' score-mid' : '';
     const scoreBadge = ps ? `<span class="compact-card-score${scoreClass}">\u2605 ${ps}</span>` : '';
 
-    // Facility icons
-    const facilities = [];
-    if (loc.coffee) facilities.push('\u2615');
-    if (loc.diaper) facilities.push('\ud83d\udebb');
-    const facilityHtml = facilities.length ? `<span class="compact-card-facilities">${facilities.join(' ')}</span>` : '';
-
-    // Weather suitability indicator
-    const weatherHtml = loc.weather === 'indoor' ? '<span class="compact-card-indoor" title="Binnen">\ud83c\udfe0</span>'
-        : (loc.weather === 'outdoor' ? '<span class="compact-card-outdoor" title="Buiten">\ud83c\udf3f</span>' : '');
+    // Facility + weather tags — unified via card-data kenmerken
+    const kenmerkenTags = getKenmerkenTags(loc, 3);
+    const facilityHtml = kenmerkenTags.length
+        ? kenmerkenTags.map(k => `<span class="compact-card-facilities" title="${escapeHtml(k.label)}">${k.icon}</span>`).join('')
+        : '';
 
     // Region in meta line (shown when distance is travel time, so region isn't already shown there)
     const regionHtml = loc.region && travelInfo
@@ -104,7 +100,7 @@ export function renderCompactCard(loc, opts = {}) {
             ? `<div class="compact-card-status"><span class="status-hours">${escapeHtml(loc.opening_hours)}</span></div>`
             : '');
 
-    return `<div class="compact-card" role="listitem"${styleAttr} data-id="${loc.id}">
+    return `<div class="compact-card" role="listitem"${styleAttr} data-loc-id="${loc.id}">
             <img class="compact-card-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async" width="72" height="72"${imgStyleAttr}
                  onerror="if(!this.dataset.retried){this.dataset.retried='1';this.classList.remove('loaded');this.onload=function(){this.classList.add('loaded')};this.src='${escapeHtml(categoryImg)}'}">
             <div class="compact-card-body">
@@ -112,7 +108,7 @@ export function renderCompactCard(loc, opts = {}) {
                     <span class="compact-card-name">${escapeHtml(loc.name)}</span>
                     ${distanceHtml}
                 </div>
-                <div class="compact-card-meta">${escapeHtml(typeLabel)}${regionHtml}${weatherHtml}${facilityHtml}</div>
+                <div class="compact-card-meta">${escapeHtml(typeLabel)}${regionHtml}${facilityHtml}</div>
                 ${statusHtml}
             </div>
             ${scoreBadge}
@@ -133,23 +129,20 @@ export function renderCompactCard(loc, opts = {}) {
 export function renderSheetPreview(loc) {
     const { imgSrc, categoryImg, photoColor } = getPhotoData(loc);
     const typeLabel = TYPE_LABELS[loc.type] || loc.type;
-    const distance = loc.region || '';
+
+    // Distance — unified via card-data (picks up GPS travel time when available)
+    const travelInfo = state.lastTravelTimes ? state.lastTravelTimes[loc.id] : null;
+    const distance = getDistanceLabel(loc, travelInfo);
+
     const isFav = isFavorite(loc.id);
     const favClass = isFav ? ' active' : '';
 
-    // Practical reasons (max 3)
-    const reasons = [];
-    if (loc.coffee) reasons.push('Koffie');
-    if (loc.diaper) reasons.push('Verschonen');
-    const weatherMap = WEATHER_LABELS;
-    if (loc.weather && weatherMap[loc.weather]) reasons.push(weatherMap[loc.weather]);
-    if (loc.play_corner_quality === 'strong' && reasons.length < 3) reasons.push('Speelprikkel');
-    if (loc.rain_backup_quality === 'strong' && reasons.length < 3) reasons.push('Regenproof');
-    if (loc.parking_ease === 'easy' && reasons.length < 3) reasons.push('Makkelijk parkeren');
-    const reasonsHtml = reasons.slice(0, 3).length
+    // Practical reasons — unified via card-data kenmerken tags (max 3)
+    const kenmerkenTags = getKenmerkenTags(loc, 3);
+    const reasonsHtml = kenmerkenTags.length
         ? `<div class="sheet-preview-reasons-section">
             <span class="sheet-preview-reasons-label">Waarom nu handig</span>
-            <div class="sheet-preview-reasons">${reasons.slice(0, 3).map(r => `<span class="preview-reason">${escapeHtml(r)}</span>`).join('')}</div>
+            <div class="sheet-preview-reasons">${kenmerkenTags.map(r => `<span class="preview-reason">${escapeHtml(r.label)}</span>`).join('')}</div>
            </div>`
         : '';
 
@@ -176,7 +169,7 @@ export function renderSheetPreview(loc) {
         <div class="sheet-preview-actions">
             <button class="sheet-preview-btn sheet-preview-btn-primary" id="sheet-preview-meer">Details</button>
             ${loc.lat && loc.lng ? `<button class="sheet-preview-btn sheet-preview-btn-secondary" id="sheet-preview-route"
-                onclick="window.open('https://maps.apple.com/?daddr=${loc.lat},${loc.lng}','_blank')">Route</button>` : ''}
+                onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(loc.lat + ',' + loc.lng)}','_blank')">Route</button>` : ''}
         </div>`;
 }
 
@@ -199,42 +192,17 @@ export function renderSheetScanCard(loc, opts = {}) {
     const isFav = isFavorite(loc.id);
     const favStyle = isFav ? 'fill: #D4775A; stroke: #D4775A;' : '';
 
-    // Distance
+    // Distance — unified via card-data
     const travelInfo = travelTimes ? travelTimes[loc.id] : null;
-    let distance = '';
-    if (state.userLocation && travelInfo) {
-        distance = travelInfo.duration;
-    } else if (loc.region) {
-        distance = loc.region;
-    }
+    const distance = getDistanceLabel(loc, travelInfo);
 
-    // One-liner: decision sentence, toddler highlight, or primary fit reason as fallback
-    const oneLiner = getCardDecisionSentence(loc, travelInfo) || loc.toddler_highlight || getPrimaryFitReason(loc);
+    // One-liner — unified 3-step chain via card-data
+    const oneLiner = getUnifiedOneLiner(loc, travelInfo);
 
-    // Age range label
-    const minAge = loc.min_age != null ? loc.min_age : 0;
-    const maxAge = loc.max_age != null ? loc.max_age : 12;
-    const ageLabel = `${minAge}–${maxAge} jr`;
+    // Kenmerken tags — unified via card-data (max 3, identical to desktop scan card)
+    const kenmerkenTags = getKenmerkenTags(loc, 3);
 
-    // Weather label
-    const weatherMap = WEATHER_LABELS;
-    const weatherLabel = weatherMap[loc.weather] || '';
-
-    // Facility icons
-    const facilities = [];
-    if (loc.coffee) facilities.push('<span class="scan-facility" title="Koffie">☕</span>');
-    if (loc.diaper) facilities.push('<span class="scan-facility" title="Verschoontafel">🚼</span>');
-
-    // Kenmerken tags (max 3)
-    const kenmerken = [];
-    if (loc.coffee) kenmerken.push('Koffie');
-    if (loc.diaper) kenmerken.push('Verschonen');
-    if (loc.weather && weatherMap[loc.weather]) kenmerken.push(weatherMap[loc.weather]);
-    if (loc.play_corner_quality === 'strong' && kenmerken.length < 3) kenmerken.push('Speelprikkel');
-    if (loc.rain_backup_quality === 'strong' && kenmerken.length < 3) kenmerken.push('Regenproof');
-    if (loc.parking_ease === 'easy' && kenmerken.length < 3) kenmerken.push('Parkeren');
-
-    return `<article class="scan-card sheet-scan-card" data-id="${loc.id}" role="listitem">
+    return `<article class="scan-card sheet-scan-card" data-loc-id="${loc.id}" role="listitem">
         <div class="scan-photo${!photoSrc ? ' scan-photo--category' : ''}" style="--photo-color: ${photoColor}">
             <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async" width="400" height="160"
                  onload="this.classList.add('loaded')"
@@ -250,7 +218,7 @@ export function renderSheetScanCard(loc, opts = {}) {
                 ${distance ? `<span class="scan-distance">${escapeHtml(String(distance))}</span>` : ''}
             </div>
             <div class="scan-meta">${escapeHtml(typeLabel)}${distance ? '' : (loc.region ? ' \u00b7 ' + escapeHtml(loc.region) : '')}</div>
-            ${kenmerken.length ? `<div class="scan-kenmerken">${kenmerken.slice(0, 3).map(k => `<span class="scan-kenmerk">${escapeHtml(k)}</span>`).join('')}</div>` : ''}
+            ${kenmerkenTags.length ? `<div class="scan-kenmerken">${kenmerkenTags.map(k => `<span class="scan-kenmerk">${escapeHtml(k.label)}</span>`).join('')}</div>` : ''}
             ${oneLiner ? `<p class="scan-oneliner">${escapeHtml(oneLiner)}</p>` : ''}
         </div>
     </article>`;

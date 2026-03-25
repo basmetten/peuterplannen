@@ -498,8 +498,6 @@ export async function setCity(cityName) {
     resetLocationState();
     const popularEl = document.getElementById('popular-cities');
     if (popularEl) popularEl.classList.add('hidden');
-    try { localStorage.setItem('pp-last-city', cityName); } catch(e) { console.warn('[data:setCity] localStorage save city failed:', e.message); }
-    setPrefs({ city: cityName });
     try { await loadGoogleMaps(state); } catch(e) { showGpsStatus('Google Maps niet beschikbaar', 'error'); return; }
     const geocoder = new google.maps.Geocoder();
     try {
@@ -509,6 +507,9 @@ export async function setCity(cityName) {
             });
         });
         state.userLocation = { lat: result.geometry.location.lat(), lng: result.geometry.location.lng(), name: cityName };
+        // Persist city AFTER geocoding succeeds
+        try { localStorage.setItem('pp-last-city', cityName); } catch(e) { console.warn('[data:setCity] localStorage save city failed:', e.message); }
+        setPrefs({ city: cityName });
         showGpsStatus(`Zoeken bij ${cityName}...`, 'active');
         document.getElementById('app-container')?.classList.add('has-location');
         document.getElementById('gps-btn')?.classList.remove('gps-active');

@@ -68,6 +68,7 @@ function updateStatusUI(s, data) {
             el.innerHTML = '<span class="gps-status-msg">\u26A0\uFE0F Locatietoegang geblokkeerd</span>'
                 + '<button class="gps-status-link" onclick="document.getElementById(\'location-input\')?.focus()">Typ je stad</button>'
                 + '<details class="gps-guidance"><summary>Hoe fix ik dit?</summary><p>' + guidance + '</p></details>';
+            bus.emit('gps:error', { type: 'denied', message: 'Locatietoegang geblokkeerd' });
             break;
         }
         case 'timeout':
@@ -75,12 +76,14 @@ function updateStatusUI(s, data) {
             el.innerHTML = '<span class="gps-status-msg">\u26A0\uFE0F Locatie ophalen duurde te lang</span>'
                 + '<button class="gps-status-link" onclick="window._geoRetry?.()">Probeer opnieuw</button>'
                 + '<button class="gps-status-link secondary" onclick="document.getElementById(\'location-input\')?.focus()">Typ je stad</button>';
+            bus.emit('gps:error', { type: 'timeout', message: 'Locatie ophalen duurde te lang' });
             break;
         case 'error':
             el.classList.add('error');
             el.innerHTML = '<span class="gps-status-msg">\u26A0\uFE0F Locatie niet beschikbaar</span>'
                 + '<button class="gps-status-link" onclick="window._geoRetry?.()">Probeer opnieuw</button>'
                 + '<button class="gps-status-link secondary" onclick="document.getElementById(\'location-input\')?.focus()">Typ je stad</button>';
+            bus.emit('gps:error', { type: 'error', message: 'Locatie niet beschikbaar' });
             break;
     }
 }

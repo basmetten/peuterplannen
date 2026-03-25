@@ -1,8 +1,7 @@
-import { state, DESKTOP_WIDTH, TYPE_LABELS, WEATHER_LABELS, PROMO_ITEMS, ADSENSE_PUB_ID, ADSENSE_SLOT_ID, ADSENSE_EVERY_N, BATCH_SIZE } from './state.js';
+import { state, DESKTOP_WIDTH, PROMO_ITEMS, ADSENSE_PUB_ID, ADSENSE_SLOT_ID, ADSENSE_EVERY_N, BATCH_SIZE } from './state.js';
 import { escapeHtml, buildDetailUrl } from './utils.js';
 import { isFavorite } from './favorites.js';
-import { getCardDecisionSentence } from './scoring.js';
-import { getPhotoData } from './templates.js';
+import { getCardFields, getKenmerkenTags } from './card-data.js';
 import bus from './bus.js';
 
 // --- Constants ---
@@ -99,33 +98,16 @@ function appendBatch() {
  * 2. Heart (save button, floating on photo)
  * 3. Name + distance (one row)
  * 4. Meta (type + region)
- * 5. Kenmerken tags (max 3: koffie, verschonen, binnen/buiten)
- * 6. One-liner (decision sentence, 1 line max)
+ * 5. Kenmerken tags (max 3: unified via card-data.js)
+ * 6. One-liner (unified 3-step chain via card-data.js)
  */
 function renderScanCard(item, travelInfo, batchIdx) {
-    const { imgSrc, categoryImg, photoColor, photoSrc } = getPhotoData(item);
-    const typeLabel = TYPE_LABELS[item.type] || item.type;
+    const fields = getCardFields(item, { travelInfo });
+    const { photo, typeLabel, distanceLabel: distance, oneLiner } = fields;
+    const { imgSrc, categoryImg, photoColor, photoSrc } = photo;
+    const kenmerkenTags = getKenmerkenTags(item, 3);
     const isFav = isFavorite(item.id);
     const favStyle = isFav ? 'fill: #D4775A; stroke: #D4775A;' : '';
-
-    // Distance
-    let distance = '';
-    if (state.userLocation && travelInfo) {
-        distance = travelInfo.duration;
-    } else if (item.region) {
-        distance = item.region;
-    }
-
-    // Kenmerken tags (max 3)
-    const kenmerken = [];
-    if (item.coffee) kenmerken.push('Koffie');
-    if (item.diaper) kenmerken.push('Verschonen');
-    if (item.weather && WEATHER_LABELS[item.weather]) kenmerken.push(WEATHER_LABELS[item.weather]);
-    if (item.rain_backup_quality === 'strong' && kenmerken.length < 3) kenmerken.push('Regenproof');
-    if (item.parking_ease === 'easy' && kenmerken.length < 3) kenmerken.push('Parkeren');
-
-    // One-liner: decision sentence or toddler highlight
-    const oneLiner = getCardDecisionSentence(item, travelInfo) || item.toddler_highlight || '';
 
     const card = document.createElement('article');
     card.className = 'loc-card scan-card reveal';
@@ -174,7 +156,7 @@ function renderScanCard(item, travelInfo, batchIdx) {
                 ${distance ? `<span class="scan-distance">${escapeHtml(String(distance))}</span>` : ''}
             </div>
             <div class="scan-meta">${escapeHtml(typeLabel)}${distance ? '' : (item.region ? ' \u00b7 ' + escapeHtml(item.region) : '')}</div>
-            ${kenmerken.length ? `<div class="scan-kenmerken">${kenmerken.slice(0, 3).map(k => `<span class="scan-kenmerk">${escapeHtml(k)}</span>`).join('')}</div>` : ''}
+            ${kenmerkenTags.length ? `<div class="scan-kenmerken">${kenmerkenTags.map(k => `<span class="scan-kenmerk">${escapeHtml(k.label)}</span>`).join('')}</div>` : ''}
             ${oneLiner ? `<p class="scan-oneliner">${escapeHtml(oneLiner)}</p>` : ''}
         </div>
     `;

@@ -2,7 +2,8 @@ import { state, DESKTOP_WIDTH, TYPE_LABELS, WEATHER_LABELS } from './state.js';
 import { escapeHtml } from './utils.js';
 import bus from './bus.js';
 import { renderCompactCard, renderSheetPreview, renderSheetScanCard, getPhotoData } from './templates.js';
-import { getPracticalBullets, computePeuterScore } from './scoring.js';
+import { getPracticalBullets, computePeuterScoreV2, getTrustBullets } from './scoring.js';
+import { getSterkePunten } from './tags.js';
 import { isFavorite } from './favorites.js';
 
 /* ===================================================
@@ -759,16 +760,27 @@ function initFilterModal() {
     const resetBtn = document.getElementById('filter-modal-reset');
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
+            // Full canonical reset of all filter state
+            state.activeTags = [];
+            state.activeFavorites = false;
             state.activeWeather = null;
             state.activeAgeGroup = null;
             state.activeFacilities = { coffee: false, diaper: false, alcohol: false };
             state.activeRadius = null;
-            state.activePreset = null;
-            state.activeFoodFit = null;
-            state.activePriceBand = null;
-            state.activePractical = { parking: false, buggy: false };
+            state.activePreset = '';
+            state.activeFoodFit = '';
+            state.activePriceBand = '';
+            state.activePractical = '';
+            state.activeSort = 'relevance';
             state.activeTag = state.activeTag === 'favorites' ? 'all' : state.activeTag;
+            // Sync all filter chip surfaces (modal + sheet)
             syncModalChips(); updateMoreBadge(); syncResetBtn(); syncVeilPillCount();
+            // Sync main chip row
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            const firstChip = document.querySelector('.chip');
+            if (firstChip) firstChip.classList.add('active');
+            const sortSelect = document.getElementById('sort-select');
+            if (sortSelect) sortSelect.value = 'relevance';
             bus.emit('data:reload');
         });
     }
@@ -881,7 +893,8 @@ export function renderSheetList(locations, travelTimes = {}) {
         if (isFavoritesView) {
             listEl.innerHTML = '<div class="favorites-empty"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><strong>Nog geen favorieten</strong><p>Tik op het hartje bij een locatie om \u2019m hier te bewaren. Zo houd je de leukste plekken bij de hand.</p></div>';
         } else {
-            listEl.innerHTML = '<div style="text-align:center;padding:32px 16px;color:var(--pp-text-muted);"><p style="font-size:0.9rem;font-weight:600;">Geen locaties gevonden</p><p style="font-size:0.8rem;margin-top:4px;">Pas je filters aan voor meer resultaten.</p></div>';
+            listEl.innerHTML = '<div class="sheet-empty-state"><div class="sheet-empty-icon">\uD83D\uDD0D</div><p class="sheet-empty-title">Geen locaties gevonden</p><p class="sheet-empty-hint">Pas je filters aan of probeer een andere stad</p><button class="sheet-empty-reset">Alle filters wissen</button></div>';
+            listEl.querySelector('.sheet-empty-reset')?.addEventListener('click', () => bus.emit('filters:resetall'));
         }
         return;
     }
@@ -905,13 +918,13 @@ function _loadMoreCards() {
         card.setAttribute('tabindex', '0');
         card.addEventListener('click', (e) => {
             if (e.target.closest('.scan-fav')) return;
-            bus.emit('sheet:open', parseInt(card.dataset.id, 10));
+            bus.emit('sheet:open', parseInt(card.dataset.locId, 10));
         });
         card.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 if (!e.target.closest('.scan-fav')) {
-                    bus.emit('sheet:open', parseInt(card.dataset.id, 10));
+                    bus.emit('sheet:open', parseInt(card.dataset.locId, 10));
                 }
             }
         });
@@ -982,9 +995,38 @@ function renderInSheetDetail(loc) {
     const isFav = isFavorite(loc.id);
     const favClass = isFav ? ' active' : '';
 
-    // Score
-    const ps = computePeuterScore(loc);
-    const scoreHtml = ps ? `<span class="detail-score">\u2605 ${ps}</span>` : '';
+    // Score V2 with dimension breakdown
+    const weather = state.isRaining ? 'rain' : state.isSunny ? 'sun' : null;
+    const v2 = computePeuterScoreV2(loc, { weather, dayOfWeek: new Date().getDay() });
+    const totalScore = v2.total;
+    const scoreHtml = totalScore !== null ? `<span class="detail-score">\u2605 ${totalScore}</span>` : '';
+
+    // Score breakdown bars (same as desktop)
+    let scoreBreakdownHtml = '';
+    try {
+        const dims = Object.values(v2.dimensions);
+        const barsHtml = dims.map(d => {
+            const pct = d.score * 10;
+            const tone = d.score >= 8 ? 'strong' : d.score >= 5 ? 'good' : 'basic';
+            return `<div class="score-bar-row">
+                <span class="score-bar-label">${d.label}</span>
+                <div class="score-bar-track"><div class="score-bar-fill score-bar-fill--${tone}" style="width:${pct}%"></div></div>
+                <span class="score-bar-value">${d.score}/10</span>
+            </div>`;
+        }).join('');
+
+        scoreBreakdownHtml = `<div class="score-breakdown" id="score-breakdown">
+            <button class="score-breakdown-toggle" onclick="this.closest('.score-breakdown').classList.toggle('open')">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                Waarom deze score?
+            </button>
+            <div class="score-breakdown-bars">${barsHtml}</div>
+        </div>`;
+    } catch(e) { /* v2 breakdown not available */ }
+
+    // Sterke punten + trust bullets (matching desktop)
+    const sterkePunten = getSterkePunten(loc);
+    const trustBullets = getTrustBullets(loc);
 
     // Age range
     const minAge = loc.min_age != null ? loc.min_age : 0;
@@ -1048,6 +1090,11 @@ function renderInSheetDetail(loc) {
         sectionsHtml.push(`<div class="detail-section"><div class="detail-section-label">Waarom hier naartoe</div><div class="sheet-detail-reasons-list">${reasons.slice(0, 6).map(r => `<span class="detail-reason-tag">${escapeHtml(r)}</span>`).join('')}</div></div>`);
     }
 
+    // Section: sterke punten (matching desktop)
+    if (sterkePunten.length) {
+        sectionsHtml.push(`<div class="detail-section"><div class="sterke-punten"><h3>Waarom goed voor peuters</h3><ul>${sterkePunten.map(p => `<li>\u2713 ${escapeHtml(p)}</li>`).join('')}</ul></div></div>`);
+    }
+
     // Section: facilities (supporting info)
     if (facilities.length) {
         sectionsHtml.push(`<div class="detail-section"><div class="detail-section-label">Faciliteiten</div><div class="sheet-detail-facilities-grid">${facilities.map(f => `<span class="detail-facility">${f.icon} ${escapeHtml(f.label)}</span>`).join('')}</div></div>`);
@@ -1058,9 +1105,19 @@ function renderInSheetDetail(loc) {
         sectionsHtml.push(`<div class="detail-section"><div class="detail-section-label">Praktisch</div>${practicalBullets.slice(0, 5).map(b => `<p class="detail-practical-item">${escapeHtml(b)}</p>`).join('')}</div>`);
     }
 
+    // Section: score breakdown (collapsible, matching desktop style)
+    if (scoreBreakdownHtml) {
+        sectionsHtml.push(`<div class="detail-section">${scoreBreakdownHtml}</div>`);
+    }
+
     // Section: description (deep detail)
     if (loc.description) {
         sectionsHtml.push(`<div class="detail-section"><p class="sheet-detail-insheet-desc">${escapeHtml(loc.description)}</p></div>`);
+    }
+
+    // Section: trust bullets (matching desktop Tier 3)
+    if (trustBullets.length) {
+        sectionsHtml.push(`<div class="detail-section"><ul class="sheet-trust-list">${trustBullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul></div>`);
     }
 
     return `
@@ -1119,6 +1176,9 @@ export function showDetailInSheet(locationId) {
     // Switch view
     sheetEl.classList.add('show-detail');
     setSheetState('full');
+
+    // Push history state for browser-back support
+    if (typeof window.pushNavState === 'function') window.pushNavState('in-sheet-detail', { locationId });
 
     // Back button
     detailEl.querySelector('.sheet-detail-back')?.addEventListener('click', hideDetailInSheet);
@@ -1186,3 +1246,36 @@ bus.on('sheet:hidepreview', hideLocationPreview);
 bus.on('sheet:renderlist', renderSheetList);
 bus.on('sheet:updatemeta', updateSheetMeta);
 bus.on('sheet:opendetail', showDetailInSheet);
+
+// GPS error toast — show inside bottom sheet for mobile visibility
+bus.on('gps:error', ({ type, message }) => {
+    const sheetEl2 = document.getElementById('bottom-sheet');
+    if (!sheetEl2) return;
+
+    // Remove any existing toast
+    sheetEl2.querySelector('.gps-toast')?.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'gps-toast';
+    toast.innerHTML = `
+        <span class="gps-toast-icon">\uD83D\uDCCD</span>
+        <span class="gps-toast-text">Locatie niet gevonden \u2014 <button class="gps-toast-action">typ je stad</button></span>
+        <button class="gps-toast-close" aria-label="Sluiten">\u2715</button>
+    `;
+
+    // Wire up action buttons (no inline onclick)
+    toast.querySelector('.gps-toast-action')?.addEventListener('click', () => {
+        document.getElementById('sheet-search-input')?.focus();
+    });
+    toast.querySelector('.gps-toast-close')?.addEventListener('click', () => {
+        toast.remove();
+    });
+
+    // Insert at top of sheet content
+    const content = sheetEl2.querySelector('.sheet-content') || sheetEl2.querySelector('[data-sheet-content]') || sheetEl2.children[0];
+    if (content) content.prepend(toast);
+    else sheetEl2.prepend(toast);
+
+    // Auto-dismiss after 6s
+    setTimeout(() => toast.remove(), 6000);
+});

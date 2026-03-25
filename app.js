@@ -10,7 +10,7 @@ import { loadMapLibre, initMap, updateMapMarkers, fitMapToMarkers, updateUserLoc
 import { openLocSheet, closeLocSheet, openInfoPanel, closeInfoPanel, showLocationDetail, initSheetGestures } from './modules/sheet.js';
 import { switchView, applyLayout, syncDesktopModeSwitch, initMapListToggle, initPanelCollapse } from './modules/layout.js';
 import { generatePlan, selectPlanDate, selectPlanOption, changeKidsCount, updateChildAge, sharePlan, sharePlanWhatsApp, updatePlanLocationChip, renderAgeSliders, renderPlanPreview, initPlan, initPlanFromPrefs, handleSwapPlanSlot } from './modules/plan.js';
-import { initSheet, initSheetTabs, renderSheetList, updateSheetMeta, setSheetState, showLocationInSheet, hideLocationPreview } from './modules/sheet-engine.js';
+import { initSheet, initSheetTabs, renderSheetList, updateSheetMeta, setSheetState, showLocationInSheet, hideLocationPreview, hideDetailInSheet } from './modules/sheet-engine.js';
 import { getPrefs, clearPrefs } from './modules/prefs.js';
 import bus from './modules/bus.js';
 
@@ -48,6 +48,13 @@ window.addEventListener('popstate', (e) => {
             case 'plan':
                 window.location.href = '/plan.html';
                 break;
+            case 'in-sheet-detail': {
+                const bs = document.getElementById('bottom-sheet');
+                if (bs?.classList.contains('show-detail')) {
+                    hideDetailInSheet();
+                }
+                break;
+            }
             case 'info':
                 closeInfoPanel();
                 break;

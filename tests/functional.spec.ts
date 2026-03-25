@@ -140,8 +140,8 @@ test.describe('Sheet states', () => {
     await expect(page.locator('#filter-modal')).toHaveClass(/open/);
 
     // "Alleen bewaard" is in the collapsible Layer 2 — expand it first
-    await page.locator('#filter-modal-more-toggle').click();
-    await expect(page.locator('#filter-modal-collapsible')).toBeVisible();
+    await page.locator('#filter-more-pill').click();
+    await expect(page.locator('#filter-more-container')).toHaveClass(/expanded/);
 
     // "Alleen bewaard" chip should be present
     const savedChip = page.locator('.filter-modal-chip[data-action="saved"]');

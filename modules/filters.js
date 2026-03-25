@@ -514,3 +514,4 @@ export function toggleMapMoreFilters() {}
 // Bus listeners
 bus.on('filters:countupdate', updateFilterCount);
 bus.on('filters:closemap', closeMapFilters);
+bus.on('filters:resetall', resetAllFilters);

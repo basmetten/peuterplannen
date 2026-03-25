@@ -2970,3 +2970,51 @@
   }
 
 } /* end @layer overrides */
+
+/* GPS error toast — shown inside bottom sheet on mobile */
+.gps-toast {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    margin: 8px 12px;
+    background: #FFF3E0;
+    border: 1px solid #FFE0B2;
+    border-radius: 12px;
+    font-size: 13px;
+    color: #5D4037;
+    animation: toast-slide-in 300ms ease-out;
+    z-index: 10;
+    position: relative;
+}
+.gps-toast-icon { font-size: 16px; flex-shrink: 0; }
+.gps-toast-text { flex: 1; }
+.gps-toast-action {
+    background: none; border: none; color: #D4774E; font-weight: 600;
+    text-decoration: underline; cursor: pointer; padding: 0; font-size: inherit;
+}
+.gps-toast-close {
+    background: none; border: none; color: #8D6E63; cursor: pointer;
+    padding: 4px; font-size: 14px; line-height: 1; opacity: 0.6;
+}
+.gps-toast-close:hover { opacity: 1; }
+@keyframes toast-slide-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Sheet empty state */
+.sheet-empty-state {
+    text-align: center;
+    padding: 32px 20px;
+    color: #5D4037;
+}
+.sheet-empty-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.5; }
+.sheet-empty-title { font-size: 16px; font-weight: 600; margin: 0 0 6px; }
+.sheet-empty-hint { font-size: 13px; color: #8D6E63; margin: 0 0 16px; }
+.sheet-empty-reset {
+    background: var(--accent, #D4774E); color: white; border: none;
+    padding: 10px 20px; border-radius: 10px; font-size: 14px;
+    font-weight: 600; cursor: pointer;
+}
+.sheet-empty-reset:hover { background: #C06A45; }
