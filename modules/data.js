@@ -3,6 +3,7 @@ import { escapeHtml, calculateTravelTimes, loadGoogleMaps, trackEvent } from './
 import { computePeuterScore, matchesPreset, matchesPresetDistance } from './scoring.js';
 import { getFavorites } from './favorites.js';
 import { setPrefs } from './prefs.js';
+import { requestLocation, resetLocationState } from './geolocation.js';
 import bus from './bus.js';
 
 // --- Constants ---
@@ -17,9 +18,6 @@ const FETCH_RETRY_DELAY_MS = 2000;
 const CACHE_MAX_ITEMS = 250;
 const FALLBACK_LAT = 52.37;
 const FALLBACK_LNG = 4.90;
-const GPS_STATUS_HIDE_DELAY_MS = 2000;
-const GEOLOCATION_TIMEOUT_MS = 10000;
-const GEOLOCATION_MAX_AGE_MS = 60000;
 
 let currentAbort = null;
 let autoRetryInterval = null;
@@ -408,35 +406,14 @@ export async function initAutocomplete() {
 }
 
 /**
- * Request the user's GPS position, reverse-geocode it, and reload locations.
+ * Request the user's GPS position via centralized geolocation module, then reload locations.
  * @returns {Promise<void>}
  */
 export async function getCurrentLocation() {
-    const statusEl = document.getElementById('gps-status'), input = document.getElementById('location-input');
-    if (!navigator.geolocation) { showGpsStatus('GPS niet beschikbaar', 'error'); return; }
-    showGpsStatus('Locatie ophalen...', 'loading');
-    navigator.geolocation.getCurrentPosition(async (position) => {
-        state.userLocation = { lat: position.coords.latitude, lng: position.coords.longitude, name: 'Mijn locatie' };
-        try {
-            await loadGoogleMaps(state);
-            const geocoder = new google.maps.Geocoder();
-            const result = await new Promise((resolve, reject) => {
-                geocoder.geocode({ location: { lat: state.userLocation.lat, lng: state.userLocation.lng } }, (results, status) => {
-                    if (status === 'OK' && results[0]) resolve(results[0]); else reject(status);
-                });
-            });
-            const locality = result.address_components?.find(c => c.types.includes('locality') || c.types.includes('sublocality'));
-            state.userLocation.name = locality ? locality.long_name : result.formatted_address;
-            if (input) input.value = state.userLocation.name;
-            showGpsStatus(`Locatie: ${state.userLocation.name}`, '');
-            setTimeout(() => statusEl.classList.add('hidden'), GPS_STATUS_HIDE_DELAY_MS);
-            document.getElementById('app-container')?.classList.add('has-location');
-            document.getElementById('gps-btn')?.classList.add('gps-active');
-            bus.emit('plan:chipupdate');
-            trackEvent('search', { query_type: 'gps' });
-            loadLocations(); bus.emit('map:userlocation');
-        } catch (err) { input.value = 'Mijn locatie'; showGpsStatus('Locatie gevonden', ''); setTimeout(() => statusEl.classList.add('hidden'), 2000); document.getElementById('app-container')?.classList.add('has-location'); document.getElementById('gps-btn')?.classList.add('gps-active'); bus.emit('plan:chipupdate'); trackEvent('search', { query_type: 'gps' }); loadLocations(); bus.emit('map:userlocation'); }
-    }, (err) => { let msg = 'Locatie niet beschikbaar'; if (err.code === 1) msg = 'Toestemming geweigerd'; if (err.code === 2) msg = 'Locatie niet gevonden'; if (err.code === 3) msg = 'Timeout'; showGpsStatus(msg, 'error'); }, { enableHighAccuracy: true, timeout: GEOLOCATION_TIMEOUT_MS, maximumAge: GEOLOCATION_MAX_AGE_MS });
+    const loc = await requestLocation();
+    if (loc) {
+        loadLocations();
+    }
 }
 
 /**
@@ -457,6 +434,7 @@ export function showGpsStatus(message, type) {
  */
 export async function updateLocation() {
     const input = document.getElementById('location-input').value.trim(); if (!input) return;
+    resetLocationState();
     try { await loadGoogleMaps(state); } catch(e) { showGpsStatus('Google Maps niet beschikbaar', 'error'); return; }
     const geocoder = new google.maps.Geocoder();
     try {
@@ -485,6 +463,7 @@ export async function updateLocation() {
 export async function setCity(cityName) {
     const input = document.getElementById('location-input');
     if (input) input.value = cityName;
+    resetLocationState();
     const popularEl = document.getElementById('popular-cities');
     if (popularEl) popularEl.classList.add('hidden');
     try { localStorage.setItem('pp-last-city', cityName); } catch(e) { console.warn('[data:setCity] localStorage save city failed:', e.message); }

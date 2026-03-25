@@ -3,6 +3,7 @@ import { state, DESKTOP_WIDTH } from './modules/state.js';
 import { escapeHtml, slugify, trackEvent, buildDetailUrl } from './modules/utils.js';
 import { toggleFavorite, toggleFavoriteFromSheet, shareLocation, updateShortlistBar, updateFavBadge, shareShortlist, showShortlist, clearShortlist, clearSharedShortlist } from './modules/favorites.js';
 import { loadLocations, checkWeather, initAutocomplete, getCurrentLocation, updateLocation, setCity, updateLocationFromMap, applySort, showGpsStatus } from './modules/data.js';
+import { initGeolocation } from './modules/geolocation.js';
 import { toggleTag, toggleWeather, toggleFacility, toggleAge, toggleRadius, togglePreset, toggleFilterPanel, resetAllFilters, updateFilterCount, syncFilterPanelForViewport, syncPresetAria, syncChipAria, openMapFilters, closeMapFilters, toggleMapMoreFilters, updateMapPillBadge } from './modules/filters.js';
 import { renderCards } from './modules/cards.js';
 import { loadMapLibre, initMap, updateMapMarkers, fitMapToMarkers, updateUserLocationOnMap, highlightMarker, setDisplayMode } from './modules/map.js';
@@ -133,6 +134,8 @@ Object.assign(window, {
 })();
 
 // === Init ===
+// Initialize centralized geolocation state machine
+initGeolocation();
 // Setup gesture handlers for sheets
 initSheetGestures();
 // Initialize mobile bottom sheet (4-state)

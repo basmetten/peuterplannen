@@ -3,12 +3,11 @@ import { escapeHtml, calculateDistance } from './utils.js';
 import { computePeuterScore } from './scoring.js';
 import { fetchAllPages } from './data.js';
 import { getPrefs, setPrefs } from './prefs.js';
+import { requestLocation } from './geolocation.js';
 import bus from './bus.js';
 
 // --- Constants ---
 const MAX_KIDS_COUNT = 4;
-const GEOLOCATION_TIMEOUT_MS = 6000;
-const GEOLOCATION_MAX_AGE_MS = 300000;
 const LEGACY_DISTANCE_PENALTY = 0.1;
 const NEAR_LUNCH_MAX_KM = 20;
 const OV_EXTRA_MINUTES = 10;
@@ -262,17 +261,11 @@ export async function generatePlan() {
     resultContainer.innerHTML = '';
 
     let locationEstimated = false;
-    if (!state.userLocation && navigator.geolocation) {
-        btn.textContent = 'Locatie ophalen…';
-        try {
-            await new Promise((resolve) => {
-                navigator.geolocation.getCurrentPosition(
-                    (pos) => { state.userLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude, name: 'Mijn locatie' }; document.getElementById('gps-btn')?.classList.add('gps-active'); updatePlanLocationChip(); resolve(); },
-                    () => resolve(), { enableHighAccuracy: false, timeout: GEOLOCATION_TIMEOUT_MS, maximumAge: GEOLOCATION_MAX_AGE_MS }
-                );
-            });
-        } catch {}
-        btn.textContent = 'Plan wordt gemaakt…';
+    if (!state.userLocation) {
+        btn.textContent = 'Locatie ophalen\u2026';
+        const loc = await requestLocation({ lowAccuracy: true, timeout: 6000, maxAge: 300000 });
+        btn.textContent = 'Plan wordt gemaakt\u2026';
+        if (loc) updatePlanLocationChip();
     }
     if (!state.userLocation) locationEstimated = true;
 
@@ -303,7 +296,7 @@ export async function generatePlan() {
         const wDesc = wCode <= 3 ? `${temp}° · zonnig` : wCode >= 51 ? `${temp}° · regen` : `${temp}° · bewolkt`;
         const dateObj = new Date(dateStr + 'T12:00:00');
         const dayLabel = dateObj.toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' });
-        const locName = locationEstimated ? 'Amsterdam' : (state.userLocation?.name || 'Jouw locatie');
+        const locName = locationEstimated ? 'Amsterdam (stel locatie in)' : (state.userLocation?.name || 'Jouw locatie');
 
         // ── V2 Timeline (plan-engine.js) ──
         if (planEngine) {

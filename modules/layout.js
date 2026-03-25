@@ -3,6 +3,7 @@ import { closeLocSheet, closeInfoPanel, openInfoPanel } from './sheet.js';
 import { setDisplayMode, fitMapToMarkers, updateUserLocationOnMap } from './map.js';
 import { updateFilterCount, updateMapPillBadge } from './filters.js';
 import { trackEvent } from './utils.js';
+import { requestLocation, getLocationState } from './geolocation.js';
 import bus from './bus.js';
 
 // --- Constants ---
@@ -158,78 +159,38 @@ export function switchView(view) {
 
 const GPS_FLY_ZOOM = 14;
 const GPS_FLY_DURATION = 1500;
-const GPS_TIMEOUT_MS = 10000;
-const GPS_MAX_AGE_MS = 60000;
 const GPS_ERROR_TOAST_MS = 3000;
 
 export function initMapListToggle() {
     const gpsBtn = document.getElementById('map-gps-btn');
     if (!gpsBtn) return;
 
-    gpsBtn.addEventListener('click', () => {
+    gpsBtn.addEventListener('click', async () => {
         // If already have location, just fly there
-        if (state.userLocation && gpsBtn.classList.contains('gps-active')) {
+        if (state.userLocation && getLocationState() === 'active') {
             flyToUserLocation();
-            // Subtle tap feedback
             gpsBtn.style.transform = 'scale(0.85)';
             setTimeout(() => { gpsBtn.style.transform = ''; }, 150);
             return;
         }
 
-        // Start loading state
-        gpsBtn.classList.remove('gps-active');
-        gpsBtn.classList.add('gps-loading');
+        // Request location via centralized module (handles UI states + retries)
+        const loc = await requestLocation();
 
-        if (!navigator.geolocation) {
-            showGpsToast('GPS niet beschikbaar');
-            gpsBtn.classList.remove('gps-loading');
-            return;
+        if (loc) {
+            // Show blue user dot on map
+            updateUserLocationOnMap();
+            // Fly to location
+            flyToUserLocation();
+            // Trigger data reload
+            bus.emit('data:reload');
+            trackEvent('search', { query_type: 'gps_map_btn' });
+        } else {
+            // Show toast with current error state
+            const s = getLocationState();
+            const msgs = { denied: 'Toestemming geweigerd', timeout: 'Timeout', error: 'Locatie niet beschikbaar' };
+            showGpsToast(msgs[s] || 'Locatie niet beschikbaar');
         }
-
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-
-                // Set user location in state
-                state.userLocation = {
-                    lat, lng,
-                    name: state.userLocation?.name || 'Mijn locatie'
-                };
-
-                // Update state classes
-                gpsBtn.classList.remove('gps-loading');
-                gpsBtn.classList.add('gps-active');
-
-                // Show blue user dot on map
-                updateUserLocationOnMap();
-
-                // Fly to location
-                flyToUserLocation();
-
-                // Trigger distance sort + data reload via bus
-                state.activeSort = 'default'; // keep distance as primary sort
-                document.getElementById('app-container')?.classList.add('has-location');
-                document.getElementById('gps-btn')?.classList.add('gps-active');
-                bus.emit('plan:chipupdate');
-                bus.emit('map:userlocation');
-                bus.emit('data:reload');
-                trackEvent('search', { query_type: 'gps_map_btn' });
-            },
-            (err) => {
-                gpsBtn.classList.remove('gps-loading');
-                let msg = 'Locatie niet beschikbaar';
-                if (err.code === 1) msg = 'Toestemming geweigerd';
-                if (err.code === 2) msg = 'Locatie niet gevonden';
-                if (err.code === 3) msg = 'Timeout';
-                showGpsToast(msg);
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: GPS_TIMEOUT_MS,
-                maximumAge: GPS_MAX_AGE_MS
-            }
-        );
     });
 }
 
