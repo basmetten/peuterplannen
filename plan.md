@@ -1,362 +1,302 @@
-# Plan: Filter entry in map view — dedicated filter button
+# Plan: Sheet Default + Canonical Filters + Progressive Disclosure
 
 ## Goal
-Create one clear primary filter control directly adjacent to the search bar, visually grouped as a single control cluster. Filtering should never be mistaken for a regular chip — it gets its own dedicated button with strong affordance.
 
-## Design Direction
-- Search bar remains the main width owner
-- Filter button sits on the **right side** of the search bar, visually grouped (same surface/shadow)
-- Sliders/filter icon, 20–22px, centered in a 48×48 tap target
-- Active filter badge (count) when filters are applied
-- Inactive: neutral but clearly tappable (not a chip)
-- Active: stronger border/fill/accent — user sees filtering is on
-- Clicking filter button → opens the existing filter modal
-- Quick preset chips below search stay as secondary shortcuts, but made more recognizable as tappable
-- Keep PeuterPlannen visual language: warm light surface, rounded corners, soft shadow, terracotta accent
+Three coordinated changes to make PeuterPlannen's discovery system feel like one cohesive product:
 
-## Current State
+1. **Sheet default → half-open** — user immediately sees content, not just a peek strip
+2. **One canonical filter model** — eliminate inconsistencies between sidebar, modal, sheet chips, and presets
+3. **Progressive disclosure** — compact first layer for scanning, expandable groups for depth
 
-**Search pill** (`#map-search-pill`, lines 393-397 in app.html):
-- Full-width glass pill: `left: 12px; right: 12px; top: 80px` (mobile map view)
-- Contains: search icon + "Zoek & filter..." label + optional badge
-- Tapping it opens the `#map-filters-overlay` panel (slides down from top)
-- Glass background `rgba(250, 247, 242, 0.78)`, muted text, 16px icon at 0.7 opacity
+These ship together because they're interdependent: the half-open sheet shows the filter UI, the canonical model decides *what* that UI contains, and progressive disclosure decides *how* it's organized.
 
-**Filter overlay** (`#map-filters-overlay`, lines 399-464):
-- Search input + GPS button + search button
-- Type chip row (scrollable)
-- "Meer filters" toggle with extra filter groups
-- Slides down from top, z-index 4
+---
 
-**Preset chips**: Currently inside the overlay only — not visible until you tap the pill.
+## Current State (Key Facts)
 
-## Steps
+### Sheet
+- 4 states: hidden → peek → **half (55vh)** → full
+- Default = **peek** (set in `sheet-engine.js:201`)
+- Gesture-aware snapping with velocity threshold 0.5 px/ms
+- Content scroll locked until 85% toward full
+- Lazy-loads 30 cards per batch via IntersectionObserver
 
-### 1. HTML: Restructure search pill into search bar + filter button cluster
-**File:** `app.html` (lines 393-397)
+### Filters — Where They Live
 
-Replace the current `#map-search-pill` with a grouped control cluster:
+| Location | What's shown | Gaps |
+|----------|-------------|------|
+| **Sidebar** (desktop, collapsed on mobile) | All 7 types + weather + coffee/diaper/alcohol + age + radius | Complete but hidden behind toggle |
+| **Sheet type chips** (`#sheet-filter-chips`) | 7 types (missing Pannenkoeken) | No weather/age/facilities |
+| **Sheet preset chips** (`#sheet-presets`) | 6 of 8 presets | Missing `lunch-play`, `terras-kids` |
+| **Filter modal** (`#filter-modal`) | Weather, age, 2 facilities, distance, favorites | Missing: alcohol, presets, types. "Lunch" facility has no state mapping |
+| **Preset strip** (above sidebar) | All 8 presets | Desktop only when sidebar visible |
 
-```html
-<div class="map-search-cluster" id="map-search-cluster">
-  <!-- Search bar — main width, taps to open overlay -->
-  <button class="map-search-bar" id="map-search-bar"
-          onclick="openMapFilters()" role="button" tabindex="0"
-          aria-label="Open zoekopties">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-    </svg>
-    <span class="map-search-label">Zoek locatie...</span>
-  </button>
-  <!-- Filter button — dedicated, opens filter modal -->
-  <button class="map-filter-btn" id="map-filter-btn"
-          onclick="openMapFilterModal()"
-          aria-label="Filters">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M4 21V14M4 10V3M12 21V12M12 8V3M20 21V16M20 12V3"/>
-      <path d="M1 14h6M9 8h6M17 16h6"/>
-    </svg>
-    <span class="map-filter-badge" id="map-filter-badge"></span>
-  </button>
-</div>
+### Supabase Fields Available but Unexposed
+
+11 quality attributes exist in DB but have no filter UI:
+`price_band`, `parking_ease`, `buggy_friendliness`, `food_fit`, `play_corner_quality`, `toilet_confidence`, `rain_backup_quality`, `shade_or_shelter`, `noise_level`, `time_of_day_fit`, `crowd_pattern`
+
+---
+
+## Approach
+
+### Change 1: Sheet Default → Half-Open
+
+**What:** Change one line in `sheet-engine.js` from `setSheetState('peek')` → `setSheetState('half')`.
+
+**Why it's not just one line:** Half-open reveals the sheet content area. We need to ensure:
+- Cards render immediately (lazy loading triggers at half, not just full)
+- Map remains usable — 45% viewport is enough for map interaction
+- First-load experience feels right (no empty sheet if data hasn't loaded yet)
+- Deep-link / `locatieParam` flows still work (sheet should stay hidden when showing a direct location)
+- Performance: half-state triggers card rendering — ensure skeleton/loading state shows during data fetch
+
+**Detailed changes:**
+
+| File | Change | Lines |
+|------|--------|-------|
+| `modules/sheet-engine.js` | `setSheetState('peek')` → `setSheetState('half')` in `initSheet()` | ~201 |
+| `modules/sheet-engine.js` | Also update the post-RAF re-measure block (line ~208) to re-set `half` not `peek` | ~208 |
+| `modules/sheet-engine.js` | Ensure `renderSheetList()` fires on half-state (check if it already does via the scroll handler) | ~754-821 |
+| `glass.css` | Verify that half-state CSS shows content area, list skeleton, and filter chips correctly (likely already works) | sheet rules |
+
+**Edge cases:**
+- If `state.locatieParam` is set → keep sheet hidden (detail view takes over)
+- If `sharedShortlistIds` → half is fine, shows the shortlist
+- Skeleton cards should show while data loads (verify existing skeleton logic covers half-state)
+
+### Change 2: Canonical Filter Model
+
+**What:** Define ONE authoritative filter schema that all UI surfaces derive from. Eliminate duplicates, fill gaps, and add high-value missing filters.
+
+**Canonical schema:**
+
+```
+┌─────────────────────────────────────────────────────┐
+│  CANONICAL FILTER GROUPS                             │
+├──────────────┬──────────────────────────────────────┤
+│ Group        │ Filters                              │
+├──────────────┼──────────────────────────────────────┤
+│ type         │ all, play, farm, nature, museum,     │
+│              │ swim, pancake, horeca                 │
+│              │ (+ favorites as view toggle)          │
+├──────────────┼──────────────────────────────────────┤
+│ situaties    │ rain, outdoor-coffee, dreumesproof,  │
+│ (presets)    │ peuterproof, now-open, short-drive,  │
+│              │ lunch-play, terras-kids               │
+├──────────────┼──────────────────────────────────────┤
+│ weer         │ indoor, outdoor                      │
+├──────────────┼──────────────────────────────────────┤
+│ leeftijd     │ dreumes (0-2), peuter (2-5)          │
+├──────────────┼──────────────────────────────────────┤
+│ faciliteiten │ coffee, diaper, alcohol               │
+├──────────────┼──────────────────────────────────────┤
+│ eten_drinken │ food_fit: full, snacks               │
+│              │ (replaces broken "Lunch" chip)        │
+├──────────────┼──────────────────────────────────────┤
+│ praktisch    │ parking_ease: easy                   │
+│              │ buggy_friendliness: easy              │
+│              │ price_band: free, budget              │
+├──────────────┼──────────────────────────────────────┤
+│ afstand      │ 5 km, 10 km, 25 km                  │
+│              │ (requires user location)              │
+├──────────────┼──────────────────────────────────────┤
+│ persoonlijk  │ favorites-only toggle                 │
+└──────────────┴──────────────────────────────────────┘
 ```
 
-### 2. HTML: Add preset chip row below the search cluster
-**File:** `app.html` (after the cluster, before the overlay)
+**New filters added (from existing DB fields):**
+- `food_fit` → "Restaurant" (full) / "Snacks" (snacks) — replaces broken "Lunch" chip
+- `parking_ease` → "Makkelijk parkeren" (easy)
+- `buggy_friendliness` → "Buggy-vriendelijk" (easy)
+- `price_band` → "Gratis" (free) / "Budget" (budget)
 
-```html
-<div class="map-preset-row" id="map-preset-row">
-  <button class="map-preset-chip active" onclick="toggleTag('all', event)">Alles</button>
-  <button class="map-preset-chip" onclick="toggleTag('play', event)">Speeltuin</button>
-  <button class="map-preset-chip" onclick="toggleTag('farm', event)">Boerderij</button>
-  <button class="map-preset-chip" onclick="toggleTag('nature', event)">Natuur</button>
-  <button class="map-preset-chip" onclick="toggleTag('museum', event)">Museum</button>
-  <button class="map-preset-chip" onclick="toggleTag('swim', event)">Zwemmen</button>
-  <button class="map-preset-chip" onclick="toggleTag('pancake', event)">Pannenkoeken</button>
-  <button class="map-preset-chip" onclick="toggleTag('horeca', event)">Horeca</button>
-</div>
-```
+**Inconsistencies fixed:**
+- Add `alcohol` to filter modal (currently missing)
+- Add `Pannenkoeken` to sheet type chips (currently missing)
+- Remove duplicate "Koffie" from "Eten & drinken" group (already in Faciliteiten)
+- Replace non-functional "Lunch" chip with `food_fit` filter
+- Ensure preset chips are available in all 3 preset locations (strip, sheet, modal)
 
-### 3. CSS: Search cluster (grouped surface)
-**File:** `app.css`
-
-```css
-.map-search-cluster {
-  position: absolute;
-  top: 80px; /* below navbar on mobile */
-  left: 12px;
-  right: 12px;
-  z-index: 3;
-  display: flex;
-  gap: 0; /* no gap — visually one unit */
-  background: rgba(255, 252, 249, 0.96); /* near-opaque warm white */
-  border-radius: 14px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.10), 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  overflow: hidden; /* children share the rounded container */
-  animation: map-control-enter 0.35s ease both;
-  animation-delay: 0.15s;
-}
-```
-
-### 4. CSS: Search bar (left, main width)
-```css
-.map-search-bar {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 16px;
-  min-height: 48px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: var(--pp-text-sm);
-  color: var(--pp-text-secondary);
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.map-search-bar svg {
-  width: 20px;
-  height: 20px;
-  stroke: var(--pp-primary);
-  fill: none;
-  stroke-width: 2;
-  flex-shrink: 0;
-}
-
-.map-search-bar:active {
-  background: rgba(0, 0, 0, 0.03);
-}
-```
-
-### 5. CSS: Filter button (right, dedicated)
-```css
-.map-filter-btn {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px; /* 48px tap + padding */
-  min-height: 48px;
-  background: none;
-  border: none;
-  border-left: 1px solid rgba(0, 0, 0, 0.06); /* separator */
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  transition: background 0.2s ease;
-}
-
-.map-filter-btn svg {
-  width: 20px;
-  height: 20px;
-  stroke: var(--pp-text-secondary);
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-}
-
-.map-filter-btn:active {
-  background: rgba(0, 0, 0, 0.04);
-}
-
-/* Active state — filters are applied */
-.map-filter-btn.has-filters {
-  background: rgba(var(--pp-primary-rgb), 0.08);
-  border-left-color: rgba(var(--pp-primary-rgb), 0.15);
-}
-
-.map-filter-btn.has-filters svg {
-  stroke: var(--pp-primary);
-}
-
-/* Badge */
-.map-filter-badge {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
-  background: var(--pp-primary);
-  color: var(--pp-text-inverse);
-  font-size: 11px;
-  font-weight: 700;
-  border-radius: 9px;
-  display: none; /* shown via JS */
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-}
-
-.map-filter-badge.visible {
-  display: flex;
-}
-```
-
-### 6. CSS: Preset chip row (below search, secondary shortcuts)
-```css
-.map-preset-row {
-  position: absolute;
-  top: 136px; /* 80 (navbar offset) + 48 (cluster height) + 8 (gap) */
-  left: 12px;
-  right: 12px;
-  z-index: 3;
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  scroll-snap-type: x proximity;
-  padding: 2px 0;
-  mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
-  -webkit-mask-image: linear-gradient(to right, black calc(100% - 24px), transparent);
-  animation: map-control-enter 0.35s ease both;
-  animation-delay: 0.3s; /* stagger after search cluster */
-}
-.map-preset-row::-webkit-scrollbar { display: none; }
-
-.map-preset-chip {
-  flex-shrink: 0;
-  scroll-snap-align: start;
-  padding: 8px 16px;
-  border-radius: 100px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 252, 249, 0.94);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--pp-text-secondary);
-  cursor: pointer;
-  white-space: nowrap;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  transition: background 0.2s ease, color 0.2s ease,
-              border-color 0.2s ease, box-shadow 0.2s ease,
-              transform 0.15s ease;
-}
-
-.map-preset-chip:active {
-  transform: scale(0.96);
-}
-
-.map-preset-chip.active {
-  background: var(--pp-primary);
-  color: var(--pp-text-inverse);
-  border-color: transparent;
-  box-shadow: 0 2px 8px rgba(212, 119, 86, 0.25);
-  font-weight: 700;
-}
-```
-
-### 7. CSS: Entrance animation + responsive
-```css
-@keyframes map-control-enter {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Adjust overlay and map-controls positioning */
-body.map-view-active .map-filters-overlay {
-  top: 140px; /* below preset row */
-}
-
-body.map-view-active .map-controls {
-  top: calc(184px + env(safe-area-inset-top, 0px)); /* below chips */
-}
-
-/* Hide on desktop */
-@media (min-width: 680px) {
-  .map-search-cluster { display: none; }
-  .map-preset-row { display: none; }
-}
-```
-
-### 8. JS: New `openMapFilterModal()` function
-**File:** `modules/filters.js`
-
-Create a new function that opens the existing filter modal directly (the bottom-sheet style `#filter-modal`), bypassing the overlay:
-
-```js
-export function openMapFilterModal() {
-  // Sync current filter state to modal chips
-  syncFilterModal();
-  // Open the modal
-  document.getElementById('filter-modal')?.classList.add('open');
-  document.getElementById('filter-modal-overlay')?.classList.add('open');
-}
-```
-
-### 9. JS: Update badge logic
-**File:** `modules/filters.js`
-
-Update `updateMapPillBadge()` → `updateMapFilterBadge()`:
-- Count all active non-type filters (weather, facilities, age, radius, preset)
-- Show count on `#map-filter-badge` with `.visible` class
-- Toggle `.has-filters` class on `#map-filter-btn`
-
-### 10. JS: Sync preset chip row
-**File:** `modules/filters.js`
-
-Update `syncMapFilterChips()` to also sync the new `#map-preset-row` chips:
-- On map view activation, sync active states
-- When a preset chip is tapped, update both the row and the sidebar chips
-
-### 11. JS: Expose new function on window
-**File:** `app.js`
-
-Add `openMapFilterModal` to the `Object.assign(window, {...})` block.
-
-### 12. HTML: Clean up overlay
-**File:** `app.html`
-
-The overlay (`#map-filters-overlay`) can be simplified:
-- Remove type chip row (now in preset row on map surface)
-- Keep: search input + GPS + search button
-- Keep: "Meer filters" button that opens filter modal
-- Or: consider removing overlay entirely if search can be handled differently
-
-### 13. Test & verify
-- Run `/verify-change` with mobile (390px) + desktop (1280px) screenshots
-- Verify search bar + filter button look like one grouped control
-- Verify filter button has clear tap affordance (not a chip)
-- Verify badge appears when filters are active
-- Verify preset chips are visible and clearly tappable
-- Verify filter modal opens from the filter button
-- Verify existing overlay still works from search bar tap
-- Cross-browser: test in Safari, Chrome, Firefox
-- Run `npm run test:e2e`
-
-## Files to modify
+**State changes:**
 
 | File | Change |
 |------|--------|
-| `app.html` | Replace pill with search cluster + filter button, add preset row, simplify overlay |
-| `app.css` | New styles for cluster, search bar, filter button, preset chips, positioning |
-| `modules/filters.js` | Add `openMapFilterModal()`, update badge logic, sync preset row |
-| `app.js` | Expose `openMapFilterModal` on window |
+| `modules/state.js` | Add `activePractical: { parking: false, buggy: false }` and `activeFoodFit: null` and `activePriceBand: null` to state |
+| `modules/state.js` | Add `FILTER_SCHEMA` constant — single source of truth defining all groups, options, labels |
+| `modules/filters.js` | Add `togglePractical(key)`, `toggleFoodFit(value)`, `togglePriceBand(value)` functions |
+| `modules/filters.js` | Update `resetAllFilters()` to clear new filters |
+| `modules/filters.js` | Update `updateFilterCount()` and `updateMapFilterBadge()` to count new filters |
+| `modules/data.js` | Add `parking_ease`, `buggy_friendliness`, `food_fit`, `price_band` to Supabase query filters in `fetchLocationsLive()` |
+
+### Change 3: Progressive Disclosure in Filter Modal
+
+**What:** Restructure the filter modal into collapsible groups. Default: show compact "quick filters" (situaties, weather, age). Expandable: facilities, food, practical, distance.
+
+**Layout (mobile filter modal):**
+
+```
+┌──────────────────────────────────────┐
+│  Filters                          ×  │
+├──────────────────────────────────────┤
+│                                      │
+│  SITUATIES (always visible)          │
+│  [Rain] [Buiten+koffie] [Dreumes..] │
+│  [Peuter..] [Nu open] [Korte rit]   │
+│  [Lunch+spelen] [Terras+kids]       │
+│                                      │
+│  WEER (always visible)               │
+│  [Binnen] [Buiten]                   │
+│                                      │
+│  LEEFTIJD (always visible)           │
+│  [Dreumes 0-2] [Peuter 2-5]         │
+│                                      │
+│  ─── Meer opties ▾ ────────────     │
+│                                      │
+│  FACILITEITEN (collapsed)            │
+│  [Koffie] [Verschonen] [Alcohol]     │
+│                                      │
+│  ETEN & DRINKEN (collapsed)          │
+│  [Restaurant] [Snacks]              │
+│                                      │
+│  PRAKTISCH (collapsed)               │
+│  [Makkelijk parkeren]                │
+│  [Buggy-vriendelijk]                 │
+│  [Gratis] [Budget]                   │
+│                                      │
+│  AFSTAND (collapsed)                 │
+│  [5 km] [10 km] [25 km]             │
+│                                      │
+│  PERSOONLIJK (collapsed)             │
+│  [Alleen bewaard]                    │
+│                                      │
+│  ┌──────────────────────────────┐   │
+│  │     Toon X resultaten        │   │
+│  └──────────────────────────────┘   │
+│                                      │
+│  Wis alle filters                    │
+└──────────────────────────────────────┘
+```
+
+**Disclosure logic:**
+- **Always visible** (layer 1): Situaties, Weer, Leeftijd — the most-used filters, zero taps to reach
+- **Collapsed** (layer 2): Behind "Meer opties" divider — Faciliteiten, Eten & drinken, Praktisch, Afstand, Persoonlijk
+- **Auto-expand:** If any collapsed filter is active, its group auto-expands (user sees what's filtering)
+- **"Meer opties" button:** Toggles all collapsed groups open/closed with smooth height animation
+- **Result count:** "Toon X resultaten" button shows live count
+- **Reset:** "Wis alle filters" link at bottom, only visible when filters are active
+
+**Detailed changes:**
+
+| File | Change |
+|------|--------|
+| `app.html` | Rewrite `#filter-modal` body: new group structure with `data-group` attributes, "Meer opties" toggle, preset chips in modal, new filter chips (parking, buggy, food_fit, price_band), "Wis alle filters" link, result count in apply button |
+| `glass.css` | Add `.filter-modal-divider` styles, `.filter-modal-collapsible` hide/show with `max-height` transition, auto-expanded group highlight |
+| `modules/sheet-engine.js` | Update `initFilterModal()`: "Meer opties" toggle handler, auto-expand logic for active groups, live result count on filter change |
+| `modules/filters.js` | Wire new chip click handlers through existing `data-action`/`data-value` pattern |
+| `modules/data.js` | Add `getFilteredCount()` — returns count without full render (for live preview in apply button) |
+
+---
+
+## Steps (Implementation Order)
+
+### Phase A: State & Data Layer (no UI changes yet)
+1. **`modules/state.js`** — Add new state properties + `FILTER_SCHEMA` constant
+2. **`modules/filters.js`** — Add new toggle functions, update counters, update `resetAllFilters()`
+3. **`modules/data.js`** — Add new Supabase query params in `fetchLocationsLive()` + add `getFilteredCount()`
+
+### Phase B: Sheet Default Change
+4. **`modules/sheet-engine.js`** — Change default from peek → half (2 lines)
+5. Verify lazy loading triggers correctly at half-state
+
+### Phase C: Filter Modal Rebuild + Progressive Disclosure
+6. **`app.html`** — Rewrite `#filter-modal` with canonical groups + progressive disclosure structure
+7. **`glass.css`** — Add collapsible group styles, divider, max-height transition animation
+8. **`modules/sheet-engine.js`** — Update `initFilterModal()` for new groups, toggle, auto-expand, live count
+9. **`modules/filters.js`** — Wire new chip handlers via `data-action`/`data-value`
+
+### Phase D: Sync All Filter Surfaces
+10. **`app.html`** — Add Pannenkoeken to `#sheet-filter-chips`
+11. **`app.html`** — Update sidebar filter panel to match canonical model (add food_fit, practical chips)
+12. **`modules/filters.js`** — Update `syncModalChips()` for new groups, update `syncFilterPanelForViewport()`
+13. **`app.js`** — Export new toggle functions to window
+
+### Phase E: Polish & Verify
+14. Build bundles, run `npm test` + `npm run test:e2e`
+15. Visual QA: mobile 390px + desktop 1280px screenshots
+16. Test sheet states: app loads → half (new default) → drag to full → back to half
+17. Test filter modal: open, "Meer opties" expand, apply filters, verify badge counts
+18. Test every new filter chip (parking, buggy, food_fit, price_band) → verify results filter correctly
+19. Test auto-expand: activate a collapsed filter → re-open modal → group is expanded
+20. Push + verify CI green + purge CDN
+
+---
+
+## Files to Modify
+
+| File | Changes | Size |
+|------|---------|------|
+| `modules/state.js` | Add state props, FILTER_SCHEMA | Small |
+| `modules/filters.js` | New toggles, counter updates, sync updates | Medium |
+| `modules/data.js` | New query params, getFilteredCount() | Medium |
+| `modules/sheet-engine.js` | Default state change, modal init rewrite | Medium |
+| `app.html` | Filter modal rebuild, sheet chips fix, sidebar sync | Large |
+| `glass.css` | Collapsible group styles, animation | Medium |
+| `app.js` | Export new functions to window | Small |
+
+---
+
+## Parallel Subagent Strategy
+
+These phases can be parallelized:
+
+```
+Agent 1: Phase A (state.js + filters.js + data.js)  ─┐
+                                                       ├→ Agent 4: Phase D + E (sync + QA)
+Agent 2: Phase B (sheet-engine.js default change)     ─┤
+                                                       │
+Agent 3: Phase C (modal HTML + CSS + JS)              ─┘
+```
+
+- **Agent 1:** Phase A — state.js + filters.js + data.js changes (data layer)
+- **Agent 2:** Phase B — sheet-engine.js default change (fast, 2 lines)
+- **Agent 3:** Phase C — app.html modal rebuild + glass.css styles + sheet-engine.js modal init
+
+After all three complete:
+- **Agent 4:** Phase D (sync all surfaces) + Phase E (build/test/visual QA)
+
+Each agent gets full context: file paths, line numbers, exact changes, and the canonical schema to ensure consistency.
+
+---
 
 ## Risks
 
 | Risk | Mitigation |
 |------|-----------|
-| Filter modal not designed for map-context entry | It already works as a standalone modal — just needs correct state sync |
-| Old pill CSS/JS references break | Search for `map-search-pill` and `map-pill-badge` — replace all refs |
-| Preset chip row overlaps map controls | Adjust `.map-controls` top position |
-| Cross-browser: `overflow: hidden` + `border-radius` on cluster | Well-supported pattern, test in Safari |
-| Entrance animation janky | Simple opacity + translateY, hardware accelerated |
+| Half-default shows empty sheet before data loads | Verify skeleton cards display in half-state; sheet-engine already has skeleton logic |
+| New filters break existing Supabase queries | New filters are additive `AND` clauses; null/false = no filter applied |
+| Collapsible groups feel sluggish | Use CSS `max-height` transition ≤200ms, not JS animation |
+| Live result count is expensive | `getFilteredCount()` reuses existing filter pipeline, returns `.length` without rendering cards |
+| Modal rewrite breaks existing filter sync | Extend existing `data-action`/`data-value` pattern, don't replace |
+| CSS brace imbalance from modal rewrite | Pre-commit hook catches this; also manual check before commit |
+| Parallel agents create merge conflicts | Agents edit different files; Phase D reconciles after all complete |
+
+---
 
 ## Verification
-1. Mobile (390px): search bar + filter button clearly visible as one unit
-2. Filter button looks like a dedicated control, not a chip
-3. Badge shows "3" when 3 filters active, `.has-filters` tints the button
-4. Preset chips below: clearly tappable, active state with terracotta fill
-5. Tapping filter button → filter modal opens
-6. Tapping search bar → overlay with search input opens
-7. Desktop (1280px): no change (hidden on desktop)
-8. `npm run test:e2e` passes
-9. Gemini Flash confirms high affordance and salience
+
+1. **Automated:** `npm test` + `npm run test:e2e` pass (no new failures beyond pre-existing)
+2. **Visual QA (mobile 390px):**
+   - App loads → sheet opens at half (not peek) ← **Change 1**
+   - Cards visible immediately, skeleton during data load
+   - Tap filter button → modal opens with progressive disclosure ← **Change 3**
+   - Layer 1 (situaties, weer, leeftijd) visible immediately
+   - Tap "Meer opties" → layer 2 expands smoothly
+   - New filters visible: Makkelijk parkeren, Buggy-vriendelijk, Gratis, Restaurant, Snacks ← **Change 2**
+   - Apply filters → badge shows, results filter correctly
+   - Reset filters → all clear, badge gone
+   - Activate a collapsed filter → close + reopen modal → group auto-expanded
+3. **Visual QA (desktop 1280px):**
+   - Sidebar shows updated filter panel matching canonical model
+4. **Cross-check:** activate filter in modal → verify same filter shows active in sidebar (and vice versa)
+5. **Performance:** half-default doesn't add visible load time

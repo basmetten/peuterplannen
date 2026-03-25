@@ -23,6 +23,9 @@
  * @property {Object<number, Object>} lastTravelTimes - Cached travel times keyed by location id
  * @property {FacilityFilters} activeFacilities - Active facility filters
  * @property {string|null} activePreset - Active preset filter key or null
+ * @property {string|null} activeFoodFit - Active food fit filter ('full', 'snacks', or null)
+ * @property {string|null} activePriceBand - Active price band filter ('free', 'budget', or null)
+ * @property {{parking: boolean, buggy: boolean}} activePractical - Active practical filters
  * @property {number[]} sharedShortlistIds - Location ids from a shared shortlist URL
  * @property {boolean} filterPanelUserExpanded - Whether user manually expanded the filter panel
  * @property {UserLocation|null} userLocation - User's current location or null
@@ -155,6 +158,55 @@ export const TYPE_PHOTO_COLORS = {
     horeca: '#E8D5C4',  // warm beige (horeca)
 };
 
+/**
+ * Canonical filter schema — single source of truth for all filter UI surfaces.
+ * Each group has a key, Dutch label, and array of options.
+ * @type {Array<{group: string, label: string, options: Array<{value: string, label: string, action: string}>}>}
+ */
+export const FILTER_SCHEMA = [
+    { group: 'situaties', label: 'Situaties', options: [
+        { value: 'rain', label: 'Regenproof', action: 'preset' },
+        { value: 'outdoor-coffee', label: 'Buiten + koffie', action: 'preset' },
+        { value: 'dreumesproof', label: 'Dreumesproof', action: 'preset' },
+        { value: 'peuterproof', label: 'Peuterproof', action: 'preset' },
+        { value: 'now-open', label: 'Nu open', action: 'preset' },
+        { value: 'short-drive', label: 'Korte rit', action: 'preset' },
+        { value: 'lunch-play', label: 'Lunch + spelen', action: 'preset' },
+        { value: 'terras-kids', label: 'Terrasje + kids', action: 'preset' },
+    ]},
+    { group: 'weer', label: 'Weer', options: [
+        { value: 'indoor', label: 'Binnen', action: 'weather' },
+        { value: 'outdoor', label: 'Buiten', action: 'weather' },
+    ]},
+    { group: 'leeftijd', label: 'Leeftijd', options: [
+        { value: 'dreumes', label: 'Dreumes (0-2)', action: 'age' },
+        { value: 'peuter', label: 'Peuter (2-5)', action: 'age' },
+    ]},
+    { group: 'faciliteiten', label: 'Faciliteiten', options: [
+        { value: 'coffee', label: 'Koffie', action: 'facility' },
+        { value: 'diaper', label: 'Verschonen', action: 'facility' },
+        { value: 'alcohol', label: 'Alcohol', action: 'facility' },
+    ]},
+    { group: 'eten_drinken', label: 'Eten & drinken', options: [
+        { value: 'full', label: 'Restaurant', action: 'foodfit' },
+        { value: 'snacks', label: 'Snacks', action: 'foodfit' },
+    ]},
+    { group: 'praktisch', label: 'Praktisch', options: [
+        { value: 'parking', label: 'Makkelijk parkeren', action: 'practical' },
+        { value: 'buggy', label: 'Buggy-vriendelijk', action: 'practical' },
+        { value: 'free', label: 'Gratis', action: 'priceband' },
+        { value: 'budget', label: 'Budget', action: 'priceband' },
+    ]},
+    { group: 'afstand', label: 'Afstand', options: [
+        { value: '5', label: '5 km', action: 'radius' },
+        { value: '10', label: '10 km', action: 'radius' },
+        { value: '25', label: '25 km', action: 'radius' },
+    ]},
+    { group: 'persoonlijk', label: 'Persoonlijk', options: [
+        { value: 'only', label: 'Alleen bewaard', action: 'saved' },
+    ]},
+];
+
 // === Shared Constants ===
 
 /** @type {Set<number>} WMO weather codes that indicate rain conditions. */
@@ -173,6 +225,9 @@ export const state = {
     lastTravelTimes: {},
     activeFacilities: { coffee: false, diaper: false, alcohol: false },
     activePreset: null,
+    activeFoodFit: null,           // 'full' or 'snacks' or null
+    activePriceBand: null,         // 'free' or 'budget' or null
+    activePractical: { parking: false, buggy: false },
     sharedShortlistIds: [],
     filterPanelUserExpanded: false,
     userLocation: null,

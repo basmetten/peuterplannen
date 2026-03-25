@@ -197,14 +197,14 @@ export function initSheet() {
     // directly and programmatically scroll the host.
     initSheetTouch();
 
-    // Start in peek
-    setSheetState('peek');
+    // Start in half — use instant scroll so CSS scroll-snap doesn't re-snap during layout settle
+    setSheetState('half', 'instant');
 
     // Re-measure after layout settles (nav may not have final position during init)
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {
             computeSnapPositions();
-            setSheetState(currentState);
+            setSheetState(currentState, 'instant');
         });
     });
 }
@@ -433,7 +433,7 @@ function detectStateFromScroll() {
     }
 }
 
-export function setSheetState(newState) {
+export function setSheetState(newState, behavior = 'smooth') {
     if (!hostEl || !['hidden', 'peek', 'half', 'full'].includes(newState)) return;
     currentState = newState;
     sheetEl.dataset.state = newState;
@@ -453,8 +453,7 @@ export function setSheetState(newState) {
     // detectStateFromScroll with a different scrollTop under heavy CPU load.
     suppressDetect = Date.now() + SUPPRESS_DETECT_MS;
 
-    // Smooth scroll for natural bounce-back feel; CSS transitions handle border-radius/margin.
-    hostEl.scrollTo({ top: target, behavior: 'smooth' });
+    hostEl.scrollTo({ top: target, behavior });
     applyMorphs(target);
     announceState(newState);
 }
@@ -679,7 +678,7 @@ function initFilterModal() {
         first.focus();
     }
 
-    const openModal  = () => { syncModalChips(); updateModalCount(); modal.classList.add('open'); overlay.classList.add('open'); trapFocus(modal); if (typeof window.pushNavState === 'function') window.pushNavState('filter-modal'); const ann = document.getElementById('sr-announcer'); if (ann) ann.textContent = 'Filter paneel geopend'; };
+    const openModal  = () => { syncModalChips(); updateModalCount(); syncResetBtn(); modal.classList.add('open'); overlay.classList.add('open'); trapFocus(modal); if (typeof window.pushNavState === 'function') window.pushNavState('filter-modal'); const ann = document.getElementById('sr-announcer'); if (ann) ann.textContent = 'Filter paneel geopend'; };
     const closeModal = () => { if (modal._focusTrapHandler) modal.removeEventListener('keydown', modal._focusTrapHandler); modal.classList.remove('open'); overlay.classList.remove('open'); const ann = document.getElementById('sr-announcer'); if (ann) ann.textContent = 'Filter paneel gesloten'; };
 
     if (btn) btn.addEventListener('click', openModal);
@@ -700,9 +699,56 @@ function initFilterModal() {
             else if (action === 'facility') state.activeFacilities[value] = !state.activeFacilities[value];
             else if (action === 'radius')   { const n = parseInt(value, 10); state.activeRadius = state.activeRadius === n ? null : n; }
             else if (action === 'saved')    { state.activeTag = state.activeTag === 'favorites' ? 'all' : 'favorites'; }
-            syncModalChips(); updateModalCount(); updateMoreBadge();
+            else if (action === 'preset')   { state.activePreset = state.activePreset === value ? null : value; }
+            else if (action === 'foodfit')  { state.activeFoodFit = state.activeFoodFit === value ? null : value; }
+            else if (action === 'practical') { state.activePractical[value] = !state.activePractical[value]; }
+            else if (action === 'priceband') { state.activePriceBand = state.activePriceBand === value ? null : value; }
+            syncModalChips(); updateModalCount(); updateMoreBadge(); syncResetBtn();
         });
     });
+
+    // Progressive disclosure: "Meer opties" toggle
+    const moreToggle = document.getElementById('filter-modal-more-toggle');
+    const collapsible = document.getElementById('filter-modal-collapsible');
+    if (moreToggle && collapsible) {
+        moreToggle.addEventListener('click', () => {
+            const isExpanded = collapsible.classList.toggle('expanded');
+            moreToggle.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+            const label = document.getElementById('filter-modal-more-label');
+            if (label) label.textContent = isExpanded ? 'Minder opties' : 'Meer opties';
+        });
+    }
+
+    // Reset all filters button
+    const resetBtn = document.getElementById('filter-modal-reset');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            state.activeWeather = null;
+            state.activeAgeGroup = null;
+            state.activeFacilities = { coffee: false, diaper: false, alcohol: false };
+            state.activeRadius = null;
+            state.activePreset = null;
+            state.activeFoodFit = null;
+            state.activePriceBand = null;
+            state.activePractical = { parking: false, buggy: false };
+            state.activeTag = state.activeTag === 'favorites' ? 'all' : state.activeTag;
+            syncModalChips(); updateModalCount(); updateMoreBadge(); syncResetBtn();
+        });
+    }
+    function syncResetBtn() {
+        if (!resetBtn) return;
+        let count = 0;
+        if (state.activeWeather) count++;
+        if (state.activeAgeGroup) count++;
+        if (state.activeFacilities.coffee || state.activeFacilities.diaper || state.activeFacilities.alcohol) count++;
+        if (state.activeRadius) count++;
+        if (state.activePreset) count++;
+        if (state.activeFoodFit) count++;
+        if (state.activePriceBand) count++;
+        if (state.activePractical.parking || state.activePractical.buggy) count++;
+        if (state.activeTag === 'favorites') count++;
+        resetBtn.classList.toggle('visible', count > 0);
+    }
 
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
     bus.on('data:reload', () => updateMoreBadge());
@@ -720,14 +766,42 @@ function syncModalChips() {
         else if (action === 'facility') active = !!state.activeFacilities[value];
         else if (action === 'radius')   active = state.activeRadius === parseInt(value, 10);
         else if (action === 'saved')    active = state.activeTag === 'favorites';
+        else if (action === 'preset')   active = state.activePreset === value;
+        else if (action === 'foodfit')  active = state.activeFoodFit === value;
+        else if (action === 'practical') active = !!state.activePractical[value];
+        else if (action === 'priceband') active = state.activePriceBand === value;
         chip.classList.toggle('active', active);
         chip.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
+    // Auto-expand collapsed section if any collapsed filter is active
+    autoExpandIfActive();
+}
+
+function autoExpandIfActive() {
+    const collapsible = document.getElementById('filter-modal-collapsible');
+    const toggle = document.getElementById('filter-modal-more-toggle');
+    if (!collapsible || !toggle) return;
+    // Check if any filter in the collapsed section is active
+    let hasActive = false;
+    if (state.activeFacilities.coffee || state.activeFacilities.diaper || state.activeFacilities.alcohol) hasActive = true;
+    if (state.activeFoodFit) hasActive = true;
+    if (state.activePractical.parking || state.activePractical.buggy) hasActive = true;
+    if (state.activePriceBand) hasActive = true;
+    if (state.activeRadius) hasActive = true;
+    if (state.activeTag === 'favorites') hasActive = true;
+    if (hasActive && !collapsible.classList.contains('expanded')) {
+        collapsible.classList.add('expanded');
+        toggle.setAttribute('aria-expanded', 'true');
+        const label = document.getElementById('filter-modal-more-label');
+        if (label) label.textContent = 'Minder opties';
+    }
 }
 
 function updateModalCount() {
     const btn = document.getElementById('filter-modal-apply');
-    if (btn) btn.textContent = `Toon ${state.allLocations.length} resultaten`;
+    if (!btn) return;
+    const count = state.allLocations.length;
+    btn.textContent = count === 1 ? 'Toon 1 resultaat' : `Toon ${count} resultaten`;
 }
 
 function updateMoreBadge() {

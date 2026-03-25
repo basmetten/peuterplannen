@@ -33,23 +33,23 @@ test.describe('App loads correctly', () => {
       // Search pill visible
       await expect(page.locator('#sheet-search-pill')).toBeVisible();
 
-      // Category filter chips visible in peek
+      // Category filter chips visible in half state
       await expect(page.locator('.sheet-filter-chip[data-filter="all"]')).toBeVisible();
-      // Preset chips visible
-      await expect(page.locator('#sheet-preset-filters')).toBeVisible();
+      // Filter button visible next to search bar
+      await expect(page.locator('#sheet-filter-btn')).toBeVisible();
     } else {
       // Desktop sidebar visible
       await expect(page.locator('#list-view')).toBeVisible();
     }
   });
 
-  test('peek state screenshot', async ({ page }) => {
+  test('initial state screenshot', async ({ page }) => {
     await page.goto('/app.html');
     await expect(page.locator('#map')).toBeVisible({ timeout: 15000 });
     // Wait for map tiles
     await page.waitForTimeout(2000);
 
-    await expect(page).toHaveScreenshot('peek-state.png', {
+    await expect(page).toHaveScreenshot('initial-state.png', {
       maxDiffPixelRatio: 0.03,
     });
   });
@@ -74,12 +74,12 @@ test.describe('Sheet navigation', () => {
     });
   });
 
-  test('Filters preset opens filter modal', async ({ page, isMobile }) => {
+  test('Filter button opens filter modal', async ({ page, isMobile }) => {
     if (!isMobile) test.skip();
     await page.goto('/app.html');
     await expect(page.locator('#map')).toBeVisible({ timeout: 15000 });
 
-    await page.locator('#sheet-preset-filters').click();
+    await page.locator('#sheet-filter-btn').click();
 
     // Filter modal should open
     await expect(page.locator('#filter-modal')).toHaveClass(/open/);
@@ -97,14 +97,14 @@ test.describe('Sheet navigation', () => {
 });
 
 test.describe('Filter chips', () => {
-  test('preset chips are visible in peek', async ({ page, isMobile }) => {
+  test('preset chips are visible in half state', async ({ page, isMobile }) => {
     if (!isMobile) test.skip();
 
     await page.goto('/app.html');
     await expect(page.locator('#map')).toBeVisible({ timeout: 15000 });
 
-    await expect(page.getByRole('button', { name: 'Regenproof' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Buiten+Koffie' })).toBeVisible();
+    await expect(page.locator('#sheet-presets button[data-preset="rain"]')).toBeVisible();
+    await expect(page.locator('#sheet-presets button[data-preset="outdoor-coffee"]')).toBeVisible();
   });
 
   test('type filter chips work', async ({ page, isMobile }) => {
@@ -128,21 +128,18 @@ test.describe('Filter chips', () => {
     await expect(museumChip).toHaveClass(/active/);
   });
 
-  test('Meer filter modal opens', async ({ page, isMobile }) => {
+  test('Filter modal opens with correct structure', async ({ page, isMobile }) => {
     if (!isMobile) test.skip();
 
     await page.goto('/app.html');
     await expect(page.locator('#map')).toBeVisible({ timeout: 15000 });
 
-    await clickSheetTab(page, 'ontdek');
-    await expect(page.locator('.sheet-scan-card').first()).toBeVisible({ timeout: 10000 });
-
-    // Open filter modal
-    await page.locator('#sheet-preset-filters').click();
+    // Open filter modal via filter button
+    await page.locator('#sheet-filter-btn').click();
 
     // Modal should be visible
     await expect(page.locator('#filter-modal')).toHaveClass(/open/);
-    await expect(page.getByRole('heading', { name: 'Meer filters' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Filters' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Binnen' })).toBeVisible();
 
     await expect(page).toHaveScreenshot('filter-modal.png', {

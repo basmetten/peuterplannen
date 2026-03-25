@@ -45,6 +45,10 @@ export function getAdvancedFilterCount() {
     if (state.activeFacilities.alcohol) count++;
     if (state.activeAgeGroup) count++;
     if (state.activeRadius) count++;
+    if (state.activeFoodFit) count++;
+    if (state.activePriceBand) count++;
+    if (state.activePractical.parking) count++;
+    if (state.activePractical.buggy) count++;
     return count;
 }
 
@@ -100,6 +104,10 @@ export function updateMapFilterBadge() {
     if (state.activeAgeGroup) count++;
     if (state.activeRadius) count++;
     if (state.activePreset) count++;
+    if (state.activeFoodFit) count++;
+    if (state.activePriceBand) count++;
+    if (state.activePractical.parking) count++;
+    if (state.activePractical.buggy) count++;
     if (count > 0) {
         const prev = badge.textContent;
         badge.textContent = String(count);
@@ -133,6 +141,10 @@ export function updateFilterCount() {
     if (state.activeAgeGroup) { count++; labels.push(state.activeAgeGroup === 'dreumes' ? '0–2 jaar' : '2–5 jaar'); }
     if (state.activeRadius) { count++; labels.push(`${state.activeRadius} km`); }
     if (state.activePreset) { count++; labels.push(PRESET_LABELS[state.activePreset] || state.activePreset); }
+    if (state.activeFoodFit) { count++; labels.push(state.activeFoodFit === 'full' ? 'restaurant' : 'snacks'); }
+    if (state.activePriceBand) { count++; labels.push(state.activePriceBand === 'free' ? 'gratis' : 'budget'); }
+    if (state.activePractical.parking) { count++; labels.push('parkeren'); }
+    if (state.activePractical.buggy) { count++; labels.push('buggy'); }
     if (state.sharedShortlistIds.length) { count++; labels.push(`gedeelde shortlist (${state.sharedShortlistIds.length})`); }
     const bar = document.getElementById('active-filters');
     const label = document.getElementById('filter-count');
@@ -318,6 +330,39 @@ export function toggleRadius(km, evt) {
 }
 
 /**
+ * Toggle the food fit filter ('full' or 'snacks') and reload locations.
+ * @param {string} value - Food fit value ('full' or 'snacks')
+ * @returns {void}
+ */
+export function toggleFoodFit(value) {
+    state.activeFoodFit = state.activeFoodFit === value ? null : value;
+    updateFilterCount();
+    loadLocations();
+}
+
+/**
+ * Toggle a practical filter (parking, buggy) and reload locations.
+ * @param {string} key - Practical filter key ('parking' or 'buggy')
+ * @returns {void}
+ */
+export function togglePractical(key) {
+    state.activePractical[key] = !state.activePractical[key];
+    updateFilterCount();
+    loadLocations();
+}
+
+/**
+ * Toggle the price band filter ('free' or 'budget') and reload locations.
+ * @param {string} value - Price band value ('free' or 'budget')
+ * @returns {void}
+ */
+export function togglePriceBand(value) {
+    state.activePriceBand = state.activePriceBand === value ? null : value;
+    updateFilterCount();
+    loadLocations();
+}
+
+/**
  * Reset all filters to their default values and reload locations.
  * @returns {void}
  */
@@ -329,6 +374,9 @@ export function resetAllFilters() {
     state.activeRadius = null;
     state.activeSort = 'default';
     state.activePreset = null;
+    state.activeFoodFit = null;
+    state.activePriceBand = null;
+    state.activePractical = { parking: false, buggy: false };
     state.filterPanelUserExpanded = false;
     const sortSelect = document.getElementById('sort-select');
     if (sortSelect) sortSelect.value = 'default';

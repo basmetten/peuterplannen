@@ -46,8 +46,8 @@ test.describe('Search functionality', () => {
     await page.locator('#sheet-search-pill').click();
     await expect(page.locator('#bottom-sheet')).toHaveClass(/search-active/);
 
-    // Cancel
-    await page.locator('#sheet-search-cancel').click();
+    // Cancel via Escape key (clear button only visible when there's text)
+    await page.keyboard.press('Escape');
     await expect(page.locator('#bottom-sheet')).not.toHaveClass(/search-active/);
   });
 
@@ -113,12 +113,12 @@ test.describe('Preset chips', () => {
    SHEET STATES (mobile)
    ───────────────────────────────────────────── */
 test.describe('Sheet states', () => {
-  test('sheet starts in peek state', async ({ page, isMobile }) => {
+  test('sheet starts in half state', async ({ page, isMobile }) => {
     if (!isMobile) test.skip();
     await page.goto('/app.html');
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
 
-    await expect(page.locator('#bottom-sheet')).toHaveAttribute('data-state', 'peek');
+    await expect(page.locator('#bottom-sheet')).toHaveAttribute('data-state', 'half');
   });
 
   test('tapping Ontdek tab transitions to half', async ({ page, isMobile }) => {
@@ -135,9 +135,13 @@ test.describe('Sheet states', () => {
     await page.goto('/app.html');
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
 
-    // Open filter modal via Filters preset chip
-    await page.locator('#sheet-preset-filters').click();
+    // Open filter modal via filter button next to search bar
+    await page.locator('#sheet-filter-btn').click();
     await expect(page.locator('#filter-modal')).toHaveClass(/open/);
+
+    // "Alleen bewaard" is in the collapsible Layer 2 — expand it first
+    await page.locator('#filter-modal-more-toggle').click();
+    await expect(page.locator('#filter-modal-collapsible')).toBeVisible();
 
     // "Alleen bewaard" chip should be present
     const savedChip = page.locator('.filter-modal-chip[data-action="saved"]');
@@ -182,17 +186,13 @@ test.describe('Sheet filter chips', () => {
     await expect(allChip).toHaveAttribute('aria-pressed', 'false');
   });
 
-  test('Meer filters button opens filter modal', async ({ page, isMobile }) => {
+  test('Filter button opens filter modal', async ({ page, isMobile }) => {
     if (!isMobile) test.skip();
     await page.goto('/app.html');
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
 
-    // Expand to half
-    await clickSheetTab(page, 'ontdek');
-    await expect(page.locator('#bottom-sheet')).toHaveAttribute('data-state', 'half');
-
-    // Click Meer button
-    await page.locator('#sheet-preset-filters').click();
+    // Sheet starts in half state — click filter button next to search bar
+    await page.locator('#sheet-filter-btn').click();
     await expect(page.locator('#filter-modal')).toHaveClass(/open/);
   });
 
@@ -201,8 +201,7 @@ test.describe('Sheet filter chips', () => {
     await page.goto('/app.html');
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
 
-    await clickSheetTab(page, 'ontdek');
-    await page.locator('#sheet-preset-filters').click();
+    await page.locator('#sheet-filter-btn').click();
     await expect(page.locator('#filter-modal')).toHaveClass(/open/);
 
     // Close modal
@@ -472,7 +471,7 @@ test.describe('Accessibility', () => {
     const modal = page.locator('#filter-modal');
     await expect(modal).toHaveAttribute('role', 'dialog');
     await expect(modal).toHaveAttribute('aria-modal', 'true');
-    await expect(modal).toHaveAttribute('aria-label', 'Meer filters');
+    await expect(modal).toHaveAttribute('aria-label', 'Filters');
   });
 
   test('search input has aria-label', async ({ page }) => {
@@ -506,13 +505,13 @@ test.describe('Visual regression - additional states', () => {
     });
   });
 
-  test('mobile peek state baseline', async ({ page, isMobile }) => {
+  test('mobile initial half state baseline', async ({ page, isMobile }) => {
     if (!isMobile) test.skip();
     await page.goto('/app.html');
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
     await page.waitForTimeout(2000);
 
-    await expect(page).toHaveScreenshot('mobile-peek.png', {
+    await expect(page).toHaveScreenshot('mobile-initial-half.png', {
       maxDiffPixelRatio: 0.03,
     });
   });
@@ -560,10 +559,7 @@ test.describe('Visual regression - additional states', () => {
     await page.goto('/app.html');
     await page.locator('#map').waitFor({ state: 'visible', timeout: 15000 });
 
-    await clickSheetTab(page, 'ontdek');
-    await expect(page.locator('#bottom-sheet')).toHaveAttribute('data-state', 'half');
-
-    await page.locator('#sheet-preset-filters').click();
+    await page.locator('#sheet-filter-btn').click();
     await expect(page.locator('#filter-modal')).toHaveClass(/open/);
     await page.waitForTimeout(300);
 

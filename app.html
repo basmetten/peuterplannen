@@ -108,8 +108,8 @@
     <link rel="preload" href="/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/plus-jakarta-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/app.bundle.css?v=202603252010-1d39372">
-    <script src="/nav-floating.js?v=202603252010-1d39372" defer></script>
+    <link rel="stylesheet" href="/app.bundle.css?v=202603252049-617186d">
+    <script src="/nav-floating.js?v=202603252049-617186d" defer></script>
 
 </head>
 <body class="pp-app">
@@ -691,6 +691,8 @@
                     <button class="sheet-preset" data-preset="peuterproof" onclick="togglePreset('peuterproof', event)" aria-pressed="false">Peuterproof</button>
                     <button class="sheet-preset" data-preset="now-open" onclick="togglePreset('now-open', event)" aria-pressed="false">Nu open</button>
                     <button class="sheet-preset" data-preset="outdoor-coffee" onclick="togglePreset('outdoor-coffee', event)" aria-pressed="false">Buiten+koffie</button>
+                    <button class="sheet-preset" data-preset="dreumesproof" onclick="togglePreset('dreumesproof', event)" aria-pressed="false">Dreumesproof</button>
+                    <button class="sheet-preset" data-preset="terras-kids" onclick="togglePreset('terras-kids', event)" aria-pressed="false">Terrasje+kids</button>
                 </div>
                 <!-- Inline filter chips (shown when search expanded) -->
                 <!-- Category chips — always visible in peek -->
@@ -702,6 +704,7 @@
                     <button class="sheet-filter-chip" data-filter="museum" data-type="museum" aria-pressed="false">Museum</button>
                     <button class="sheet-filter-chip" data-filter="horeca" data-type="horeca" aria-pressed="false">Horeca</button>
                     <button class="sheet-filter-chip" data-filter="swim" data-type="swim" aria-pressed="false">Zwemmen</button>
+                    <button class="sheet-filter-chip" data-filter="pancake" data-type="pancake" aria-pressed="false">Pannenkoeken</button>
                 </div>
             </div>
             <!-- Meta (shown in half/full, not peek) -->
@@ -721,61 +724,100 @@
     <!-- Screen reader announcements for sheet state changes -->
     <!-- Filter modal (slide-up) -->
     <div class="filter-modal-overlay" id="filter-modal-overlay"></div>
-    <div class="filter-modal" id="filter-modal" aria-modal="true" role="dialog" aria-label="Meer filters">
+    <div class="filter-modal" id="filter-modal" aria-modal="true" role="dialog" aria-label="Filters">
         <div class="filter-modal-header">
-            <h3>Meer filters</h3>
-            <button class="filter-modal-close" id="filter-modal-close" aria-label="Sluit filter paneel">&times;</button>
+            <h3>Filters</h3>
+            <button class="filter-modal-close" id="filter-modal-close" aria-label="Sluit filters">&times;</button>
         </div>
         <div class="filter-modal-body">
-            <div class="filter-modal-group">
+            <!-- Layer 1: Always visible -->
+            <div class="filter-modal-group" data-group="situaties">
+                <div class="filter-modal-label">Situaties</div>
+                <div class="filter-modal-options">
+                    <button class="filter-modal-chip" data-action="preset" data-value="rain" aria-pressed="false">Regenproof</button>
+                    <button class="filter-modal-chip" data-action="preset" data-value="outdoor-coffee" aria-pressed="false">Buiten + koffie</button>
+                    <button class="filter-modal-chip" data-action="preset" data-value="dreumesproof" aria-pressed="false">Dreumesproof</button>
+                    <button class="filter-modal-chip" data-action="preset" data-value="peuterproof" aria-pressed="false">Peuterproof</button>
+                    <button class="filter-modal-chip" data-action="preset" data-value="now-open" aria-pressed="false">Nu open</button>
+                    <button class="filter-modal-chip" data-action="preset" data-value="short-drive" aria-pressed="false">Korte rit</button>
+                    <button class="filter-modal-chip" data-action="preset" data-value="lunch-play" aria-pressed="false">Lunch + spelen</button>
+                    <button class="filter-modal-chip" data-action="preset" data-value="terras-kids" aria-pressed="false">Terrasje + kids</button>
+                </div>
+            </div>
+            <div class="filter-modal-group" data-group="weer">
                 <div class="filter-modal-label">Weer</div>
                 <div class="filter-modal-options">
                     <button class="filter-modal-chip" data-action="weather" data-value="indoor" aria-pressed="false">Binnen</button>
                     <button class="filter-modal-chip" data-action="weather" data-value="outdoor" aria-pressed="false">Buiten</button>
                 </div>
             </div>
-            <div class="filter-modal-group">
+            <div class="filter-modal-group" data-group="leeftijd">
                 <div class="filter-modal-label">Leeftijd</div>
                 <div class="filter-modal-options">
                     <button class="filter-modal-chip" data-action="age" data-value="dreumes" aria-pressed="false">Dreumes (0-2)</button>
                     <button class="filter-modal-chip" data-action="age" data-value="peuter" aria-pressed="false">Peuter (2-5)</button>
                 </div>
             </div>
-            <div class="filter-modal-group">
-                <div class="filter-modal-label">Faciliteiten</div>
-                <div class="filter-modal-options">
-                    <button class="filter-modal-chip" data-action="facility" data-value="coffee" aria-pressed="false">Koffie</button>
-                    <button class="filter-modal-chip" data-action="facility" data-value="diaper" aria-pressed="false">Verschonen</button>
+
+            <!-- Divider: progressive disclosure toggle -->
+            <button class="filter-modal-divider" id="filter-modal-more-toggle" aria-expanded="false">
+                <span class="filter-modal-divider-line"></span>
+                <span class="filter-modal-divider-label" id="filter-modal-more-label">Meer opties</span>
+                <svg class="filter-modal-divider-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                <span class="filter-modal-divider-line"></span>
+            </button>
+
+            <!-- Layer 2: Collapsed by default -->
+            <div class="filter-modal-collapsible" id="filter-modal-collapsible">
+                <div class="filter-modal-group" data-group="faciliteiten">
+                    <div class="filter-modal-label">Faciliteiten</div>
+                    <div class="filter-modal-options">
+                        <button class="filter-modal-chip" data-action="facility" data-value="coffee" aria-pressed="false">Koffie</button>
+                        <button class="filter-modal-chip" data-action="facility" data-value="diaper" aria-pressed="false">Verschonen</button>
+                        <button class="filter-modal-chip" data-action="facility" data-value="alcohol" aria-pressed="false">Alcohol</button>
+                    </div>
                 </div>
-            </div>
-            <div class="filter-modal-group">
-                <div class="filter-modal-label">Eten &amp; drinken</div>
-                <div class="filter-modal-options">
-                    <button class="filter-modal-chip" data-action="facility" data-value="coffee" aria-pressed="false">Koffie</button>
-                    <button class="filter-modal-chip" data-action="facility" data-value="lunch" aria-pressed="false">Lunch</button>
+                <div class="filter-modal-group" data-group="eten_drinken">
+                    <div class="filter-modal-label">Eten &amp; drinken</div>
+                    <div class="filter-modal-options">
+                        <button class="filter-modal-chip" data-action="foodfit" data-value="full" aria-pressed="false">Restaurant</button>
+                        <button class="filter-modal-chip" data-action="foodfit" data-value="snacks" aria-pressed="false">Snacks</button>
+                    </div>
                 </div>
-            </div>
-            <div class="filter-modal-group">
-                <div class="filter-modal-label">Afstand</div>
-                <div class="filter-modal-options">
-                    <button class="filter-modal-chip" data-action="radius" data-value="5" aria-pressed="false">5 km</button>
-                    <button class="filter-modal-chip" data-action="radius" data-value="10" aria-pressed="false">10 km</button>
-                    <button class="filter-modal-chip" data-action="radius" data-value="25" aria-pressed="false">25 km</button>
+                <div class="filter-modal-group" data-group="praktisch">
+                    <div class="filter-modal-label">Praktisch</div>
+                    <div class="filter-modal-options">
+                        <button class="filter-modal-chip" data-action="practical" data-value="parking" aria-pressed="false">Makkelijk parkeren</button>
+                        <button class="filter-modal-chip" data-action="practical" data-value="buggy" aria-pressed="false">Buggy-vriendelijk</button>
+                        <button class="filter-modal-chip" data-action="priceband" data-value="free" aria-pressed="false">Gratis</button>
+                        <button class="filter-modal-chip" data-action="priceband" data-value="budget" aria-pressed="false">Budget</button>
+                    </div>
                 </div>
-            </div>
-            <div class="filter-modal-group">
-                <div class="filter-modal-label">Persoonlijk</div>
-                <div class="filter-modal-options">
-                    <button class="filter-modal-chip" data-action="saved" data-value="only" aria-pressed="false">Alleen bewaard</button>
+                <div class="filter-modal-group" data-group="afstand">
+                    <div class="filter-modal-label">Afstand</div>
+                    <div class="filter-modal-options">
+                        <button class="filter-modal-chip" data-action="radius" data-value="5" aria-pressed="false">5 km</button>
+                        <button class="filter-modal-chip" data-action="radius" data-value="10" aria-pressed="false">10 km</button>
+                        <button class="filter-modal-chip" data-action="radius" data-value="25" aria-pressed="false">25 km</button>
+                    </div>
+                </div>
+                <div class="filter-modal-group" data-group="persoonlijk">
+                    <div class="filter-modal-label">Persoonlijk</div>
+                    <div class="filter-modal-options">
+                        <button class="filter-modal-chip" data-action="saved" data-value="only" aria-pressed="false">Alleen bewaard</button>
+                    </div>
                 </div>
             </div>
         </div>
-        <button class="filter-modal-apply" id="filter-modal-apply">Toon resultaten</button>
+        <div class="filter-modal-footer">
+            <button class="filter-modal-reset" id="filter-modal-reset">Wis alle filters</button>
+            <button class="filter-modal-apply" id="filter-modal-apply">Toon resultaten</button>
+        </div>
     </div>
 
     <div id="sr-announcer" class="sr-only" aria-live="polite" role="status"></div>
 
-    <script type="module" src="app.bundle.js?v=202603252010-1d39372"></script>
+    <script type="module" src="app.bundle.js?v=202603252049-617186d"></script>
 
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>

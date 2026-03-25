@@ -182,6 +182,10 @@ async function fetchLocationsLive(signal) {
     if (state.activeFacilities.coffee) baseFilters.push("&coffee=eq.true");
     if (state.activeFacilities.diaper) baseFilters.push("&diaper=eq.true");
     if (state.activeFacilities.alcohol) baseFilters.push("&alcohol=eq.true");
+    if (state.activeFoodFit) baseFilters.push("&food_fit=eq." + state.activeFoodFit);
+    if (state.activePriceBand) baseFilters.push("&price_band=eq." + state.activePriceBand);
+    if (state.activePractical.parking) baseFilters.push("&parking_ease=eq.easy");
+    if (state.activePractical.buggy) baseFilters.push("&buggy_friendliness=eq.easy");
     if (state.activeRegion) baseFilters.push("&region=eq." + encodeURIComponent(state.activeRegion));
     const suffix = `${baseFilters.join('')}&order=created_at.desc`;
     const fullUrl = `${SB_URL}?select=${FULL_LOCATION_SELECT}${suffix}`;
@@ -222,6 +226,32 @@ export function applySort(val) {
 export function updateResultsCount(count) {
     const el = document.getElementById('results-count');
     if (el) el.textContent = count + ' locatie' + (count !== 1 ? 's' : '');
+}
+
+/**
+ * Return the count of locations that match current filters without rendering.
+ * Uses a lightweight fetch + client-side filter to show live count in filter modal.
+ * @returns {Promise<number>}
+ */
+export async function getFilteredCount() {
+    try {
+        const locations = await fetchLocationsLive();
+        let filtered = locations;
+        if (state.activeTag === 'favorites') {
+            const favorites = getFavorites();
+            filtered = filtered.filter(item => favorites.includes(item.id));
+        }
+        if (state.activeAgeGroup === 'dreumes') {
+            filtered = filtered.filter(loc => loc.min_age === null || loc.min_age <= 2);
+        } else if (state.activeAgeGroup === 'peuter') {
+            filtered = filtered.filter(loc =>
+                (loc.min_age === null || loc.min_age <= 5) && (loc.max_age === null || loc.max_age >= 2));
+        }
+        filtered = filtered.filter(loc => matchesPreset(loc));
+        return filtered.length;
+    } catch (e) {
+        return state.allLocations.length;
+    }
 }
 
 /**
