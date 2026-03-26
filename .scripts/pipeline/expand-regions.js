@@ -171,22 +171,31 @@ out center;`,
   },
 };
 
+async function fetchWithHardTimeout(url, options, timeoutMs) {
+  return Promise.race([
+    fetch(url, options),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('hard_timeout')), timeoutMs)),
+  ]);
+}
+
 async function fetchOverpass(query) {
   const startIdx = _rrIdx++ % OVERPASS_ENDPOINTS.length;
   const endpoints = [...OVERPASS_ENDPOINTS.slice(startIdx), ...OVERPASS_ENDPOINTS.slice(0, startIdx)];
   for (const endpoint of endpoints) {
     try {
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 60000);
-      const res = await fetch(endpoint, {
+      const res = await fetchWithHardTimeout(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `data=${encodeURIComponent(query)}`,
         signal: controller.signal,
-      });
-      clearTimeout(timeout);
-      if (!res.ok) continue;
-      const data = await res.json();
+      }, 30000);
+      if (!res.ok) { controller.abort(); continue; }
+      const text = await Promise.race([
+        res.text(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('body_timeout')), 30000)),
+      ]);
+      const data = JSON.parse(text);
       return data.elements || [];
     } catch { continue; }
   }
@@ -290,7 +299,7 @@ async function validateWithGoogle(location) {
   const searchText = [location.name, location.region, 'Nederland'].filter(Boolean).join(' ');
   try {
     const findUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(searchText)}&inputtype=textquery&fields=place_id,name,formatted_address,business_status,geometry&key=${GOOGLE_KEY}`;
-    const findRes = await fetch(findUrl);
+    const findRes = await fetchWithHardTimeout(findUrl, {}, 15000);
     if (!findRes.ok) return location;
 
     const findData = await findRes.json();
@@ -308,7 +317,7 @@ async function validateWithGoogle(location) {
     // Get details
     await wait(200);
     const detailUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=opening_hours,formatted_phone_number,website,price_level,rating,user_ratings_total&key=${GOOGLE_KEY}`;
-    const detailRes = await fetch(detailUrl);
+    const detailRes = await fetchWithHardTimeout(detailUrl, {}, 15000);
     if (detailRes.ok) {
       const detail = await detailRes.json();
       const r = detail?.result;
@@ -350,13 +359,13 @@ async function scrapeWebsiteSignals(location) {
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 10000);
-    const res = await fetch(location.website, {
+    const res = await fetchWithHardTimeout(location.website, {
       signal: controller.signal,
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; PeuterPlannenBot/1.0; +https://peuterplannen.nl)',
         Accept: 'text/html',
       },
-    });
+    }, 10000);
     clearTimeout(timeout);
 
     if (!res.ok) return location;
@@ -376,11 +385,11 @@ async function scrapeWebsiteSignals(location) {
 
     if (hasCoffee) location.coffee = true;
     if (hasDiaper) location.diaper = true;
-    if (hasPlayCorner && !location.play_corner_quality) location.play_corner_quality = 'standard';
+    if (hasPlayCorner && !location.play_corner_quality) location.play_corner_quality = 'basic';
     if (hasAlcohol) location.alcohol = true;
-    if (hasToilet) location.toilet_confidence = 'likely';
-    if (hasParking) location.parking_ease = 'available';
-    if (hasShelter) location.rain_backup_quality = 'partial';
+    if (hasToilet) location.toilet_confidence = 'medium';
+    if (hasParking) location.parking_ease = 'easy';
+    if (hasShelter) location.rain_backup_quality = 'low';
     if (hasPancake && location.type === 'horeca') location.type = 'pancake';
 
     // Extract og:image for photo
@@ -403,13 +412,13 @@ async function findPhoto(location) {
   // Try og:image first
   if (location._og_image) {
     try {
-      const res = await fetch(location._og_image, { method: 'HEAD' });
+      const res = await fetchWithHardTimeout(location._og_image, { method: 'HEAD' }, 10000);
       if (res.ok) {
         const contentType = res.headers.get('content-type') || '';
         const contentLength = parseInt(res.headers.get('content-length') || '0');
         if (contentType.startsWith('image/') && contentLength > 5000) {
           location.photo_url = location._og_image;
-          location.photo_source = 'website_og';
+          location.photo_source = 'scraped';
           return location;
         }
       }
@@ -420,13 +429,13 @@ async function findPhoto(location) {
   if (location.place_id && GOOGLE_KEY) {
     try {
       const detailUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${location.place_id}&fields=photos&key=${GOOGLE_KEY}`;
-      const res = await fetch(detailUrl);
+      const res = await fetchWithHardTimeout(detailUrl, {}, 15000);
       if (res.ok) {
         const data = await res.json();
         const photo = data?.result?.photos?.[0];
         if (photo?.photo_reference) {
           location.photo_url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photo_reference=${photo.photo_reference}&key=${GOOGLE_KEY}`;
-          location.photo_source = 'google_places';
+          location.photo_source = 'scraped';
           return location;
         }
       }
@@ -443,7 +452,7 @@ async function scorePhotoWithGemini(location) {
 
   try {
     // Download photo
-    const imgRes = await fetch(location.photo_url);
+    const imgRes = await fetchWithHardTimeout(location.photo_url, {}, 20000);
     if (!imgRes.ok) return location;
     const imgBuf = Buffer.from(await imgRes.arrayBuffer());
     const base64 = imgBuf.toString('base64');
@@ -459,7 +468,7 @@ Score 1-5:
 
 Reply with ONLY the number (1-5), nothing else.`;
 
-    const geminiRes = await fetch(
+    const geminiRes = await fetchWithHardTimeout(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_KEY}`,
       {
         method: 'POST',
@@ -471,7 +480,8 @@ Reply with ONLY the number (1-5), nothing else.`;
           ] }],
           generationConfig: { maxOutputTokens: 10, temperature: 0.1 },
         }),
-      }
+      },
+      30000
     );
 
     if (geminiRes.ok) {
@@ -519,7 +529,7 @@ ${location.opening_hours ? `Openingstijden: ${location.opening_hours}` : ''}
 Schrijf warm en informatief. Focus op wat het leuk maakt voor jonge kinderen. Geen opsommingen, gewone lopende tekst. Alleen de beschrijving, geen titel of extra tekst.`;
 
   try {
-    const res = await fetch(
+    const res = await fetchWithHardTimeout(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_KEY}`,
       {
         method: 'POST',
@@ -528,7 +538,8 @@ Schrijf warm en informatief. Focus op wat het leuk maakt voor jonge kinderen. Ge
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: { maxOutputTokens: 200, temperature: 0.7 },
         }),
-      }
+      },
+      30000
     );
 
     if (res.ok) {
@@ -551,23 +562,37 @@ Schrijf warm en informatief. Focus op wat het leuk maakt voor jonge kinderen. Ge
 function deriveContextFields(location) {
   const type = location.type;
 
+  // Valid DB values:
+  // time_of_day_fit: flexibel, hele dag, middag, ochtend
+  // rain_backup_quality: excellent, low, none
+  // weather: both, indoor, outdoor
+  // noise_level: high, low, medium
+  // food_fit: basic, cafe, full, none
+  // buggy_friendliness: high, low, medium
+  // price_band: free, low, mid
+  // toilet_confidence: high, low, medium
+  // parking_ease: easy, varies
+  // play_corner_quality: basic, none, significant, strong
+
   // Time of day fit
   if (['museum', 'play', 'culture', 'swim'].includes(type)) {
-    location.time_of_day_fit = 'any';
+    location.time_of_day_fit = 'hele dag';
   } else if (type === 'nature') {
-    location.time_of_day_fit = 'daytime';
+    location.time_of_day_fit = 'middag';
   } else {
-    location.time_of_day_fit = 'any';
+    location.time_of_day_fit = 'flexibel';
   }
 
   // Rain backup
   if (!location.rain_backup_quality) {
     if (['museum', 'swim', 'culture'].includes(type)) {
-      location.rain_backup_quality = 'full';
+      location.rain_backup_quality = 'excellent';
     } else if (type === 'play' && /indoor|binnen/i.test(location.name || '')) {
-      location.rain_backup_quality = 'full';
+      location.rain_backup_quality = 'excellent';
     } else if (['nature', 'farm'].includes(type)) {
       location.rain_backup_quality = 'none';
+    } else {
+      location.rain_backup_quality = 'low';
     }
   }
 
@@ -584,34 +609,36 @@ function deriveContextFields(location) {
 
   // Noise level
   if (['play', 'swim'].includes(type)) {
-    location.noise_level = 'lively';
+    location.noise_level = 'high';
   } else if (['museum', 'culture'].includes(type)) {
-    location.noise_level = 'moderate';
+    location.noise_level = 'medium';
   } else if (type === 'nature') {
-    location.noise_level = 'quiet';
+    location.noise_level = 'low';
   }
 
   // Food fit
   if (['horeca', 'pancake'].includes(type)) {
-    location.food_fit = 'full_meal';
+    location.food_fit = 'full';
   } else if (['museum', 'play', 'swim'].includes(type)) {
-    location.food_fit = 'snacks_available';
+    location.food_fit = 'basic';
   }
 
   // Buggy friendliness
   if (['museum', 'swim', 'horeca', 'pancake'].includes(type)) {
-    location.buggy_friendliness = 'easy';
+    location.buggy_friendliness = 'high';
   } else if (type === 'nature') {
-    location.buggy_friendliness = 'difficult';
+    location.buggy_friendliness = 'low';
+  } else {
+    location.buggy_friendliness = 'medium';
   }
 
   // Price band
   if (['nature', 'farm'].includes(type)) {
     location.price_band = 'free';
   } else if (['museum', 'swim', 'play'].includes(type)) {
-    location.price_band = 'budget';
+    location.price_band = 'low';
   } else if (['horeca', 'pancake'].includes(type)) {
-    location.price_band = 'moderate';
+    location.price_band = 'mid';
   }
 
   // Age range
@@ -829,7 +856,8 @@ async function main() {
   }
 
   // ─── SAVE ENRICHED DATA (so inserts can be retried without re-running phases 1-7) ───
-  const ENRICHED_FILE = path.join(OUTPUT_DIR, 'expand-regions-enriched.json');
+  const regionSlug = (targetRegions[0] || 'all').toLowerCase().replace(/\s+/g, '-');
+  const ENRICHED_FILE = path.join(OUTPUT_DIR, `expand-enriched-${regionSlug}.json`);
   fs.writeFileSync(ENRICHED_FILE, JSON.stringify(validatedLocations, null, 2));
   log('info', `Saved ${validatedLocations.length} enriched locations to ${ENRICHED_FILE}`);
 

@@ -66,6 +66,8 @@
   --pp-bg-rgb: 252, 249, 247;
   --pp-surface-rgb: 255, 255, 255;
   --pp-hero-blog-glow-rgb: 250, 212, 160;
+  --pp-neutral-warm-rgb: 92, 68, 51;
+  --pp-neutral-muted-rgb: 140, 110, 100;
 
   /* === Colors — Semantic (purpose-driven) === */
   --pp-semantic-success: #2D8B5E;
@@ -139,7 +141,14 @@
   --pp-font-body: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', -apple-system, sans-serif;
   --pp-font-accent: 'Instrument Serif', Georgia, 'Times New Roman', serif;
 
+  /* === Typography — Font Weights === */
+  --pp-weight-regular: 400;
+  --pp-weight-medium: 500;
+  --pp-weight-semibold: 600;
+  --pp-weight-bold: 700;
+
   /* === Typography — Fluid Scale (Minor Third 1.2, base 16px) === */
+  --pp-text-2xs: clamp(0.625rem, 0.6rem + 0.1vw, 0.6875rem);  /* 10-11px, badges/metadata */
   --pp-text-xs:  clamp(0.75rem, 0.7rem + 0.2vw, 0.8125rem);
   --pp-text-sm:  clamp(0.8125rem, 0.76rem + 0.25vw, 0.875rem);
   --pp-text-base: clamp(0.9375rem, 0.88rem + 0.35vw, 1.0625rem);
@@ -150,9 +159,13 @@
   --pp-text-4xl: clamp(2.5rem, 1.2rem + 5vw, 4.5rem);
 
   /* === Spacing (4-point grid) === */
+  --pp-space-2xs: 2px;
   --pp-space-xs: 4px;
+  --pp-space-xs2: 6px;
   --pp-space-sm: 8px;
+  --pp-space-sm2: 12px;
   --pp-space-md: 16px;
+  --pp-space-md2: 20px;
   --pp-space-lg: 24px;
   --pp-space-xl: 32px;
   --pp-space-2xl: 48px;
@@ -186,6 +199,20 @@
   --pp-transition: 0.2s cubic-bezier(0.22, 1, 0.36, 1);
   --pp-transition-slow: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 
+  /* === Motion — Duration tokens === */
+  --pp-duration-instant: 100ms;
+  --pp-duration-fast: 150ms;
+  --pp-duration-normal: 250ms;
+  --pp-duration-slow: 400ms;
+  --pp-duration-slower: 600ms;
+
+  /* === Motion — Easing curves === */
+  --pp-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --pp-ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --pp-ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --pp-ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --pp-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
   /* === Layout === */
   --pp-max-width: 1200px;
   --pp-content-width: 720px;
@@ -215,6 +242,16 @@
   --pp-type-swim:      #2196F3;  --pp-type-swim-bg:      rgba(33, 150, 243, 0.10);
   --pp-type-pancake:   #E9C46A;  --pp-type-pancake-bg:   rgba(233, 196, 106, 0.12);
   --pp-type-horeca:    #E76F51;  --pp-type-horeca-bg:    rgba(231, 111, 81, 0.10);
+
+  /* Type-dark variants (for active chip states) */
+  --pp-type-play-dark: #3D8B66;
+  --pp-type-farm-dark: #6B5438;
+  --pp-type-nature-dark: #24553F;
+  --pp-type-museum-dark: #612470;
+  --pp-type-culture-dark: #4A2E6E;
+  --pp-type-swim-dark: #1976D2;
+  --pp-type-pancake-dark: #9E7E1E;
+  --pp-type-horeca-dark: #C4593E;
 
 }
 
@@ -809,3 +846,62 @@ p, li {
 .pp-btn-text:hover { color: var(--pp-primary-dark); }
 .pp-btn-text:active { transform: scale(0.97); }
 .pp-btn-text:focus-visible { outline: 2px solid var(--pp-primary); outline-offset: 2px; }
+
+/* ============================================
+   Card Base System — canonical card pattern
+   All card variants should extend this base.
+   ============================================ */
+
+.pp-card {
+  background: var(--pp-surface);
+  border-radius: var(--pp-radius-sm);
+  border: 1px solid transparent;
+  box-shadow: var(--pp-shadow-card);
+  overflow: hidden;
+  transition: transform var(--pp-duration-fast) var(--pp-ease-spring),
+              box-shadow var(--pp-duration-fast) var(--pp-ease-spring);
+}
+.pp-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--pp-shadow-card-hover);
+}
+.pp-card:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ============================================
+   Chip Base System — canonical chip pattern
+   All chip/tag/filter variants extend this.
+   ============================================ */
+
+.pp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pp-space-xs);
+  padding: var(--pp-space-xs) var(--pp-space-sm2);
+  border-radius: var(--pp-radius-pill);
+  font-family: var(--pp-font-ui);
+  font-size: var(--pp-text-sm);
+  font-weight: var(--pp-weight-medium);
+  line-height: 1.4;
+  border: 1px solid var(--pp-border);
+  background: var(--pp-surface);
+  color: var(--pp-text);
+  cursor: pointer;
+  transition: all var(--pp-duration-fast) var(--pp-ease-spring);
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+.pp-chip:hover {
+  border-color: var(--pp-border-strong);
+  background: var(--pp-primary-50);
+}
+.pp-chip.is-active,
+.pp-chip[aria-pressed="true"] {
+  background: var(--pp-primary);
+  color: var(--pp-text-inverse);
+  border-color: var(--pp-primary);
+}
+.pp-chip:active {
+  transform: scale(0.96);
+}

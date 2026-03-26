@@ -189,6 +189,16 @@ curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/purge_cache
 - Never commit `.env`, credentials, or API keys
 - Bundle files (`app.bundle.css`, `app.bundle.js`) MUST be committed — they are served directly by GitHub Pages
 
+## Design System (MANDATORY)
+- `DESIGN.md` is the canonical design reference — read it before any visual work
+- `design-system.css` is the single source of truth for CSS tokens
+- NEVER hardcode colors, font-sizes, spacing, border-radius, or shadows
+- Always use `--pp-*` (core) or `--wg-*` (glass/map UI) custom properties
+- A PreToolUse hook enforces this on every CSS/HTML/JS edit — follow its instructions
+- After CSS changes, run `node .scripts/audit_design_tokens.js` to check compliance
+- When unsure which token to use, check DESIGN.md component specs
+- Key token prefixes: colors (`--pp-primary-*`, `--pp-type-*`), spacing (`--pp-space-*`), radius (`--pp-radius-*`), shadows (`--pp-shadow-*`), motion (`--pp-duration-*`, `--pp-ease-*`)
+
 ## Style guidelines
 - Vanilla JS — no frameworks, no build step for frontend
 - ES modules with explicit imports

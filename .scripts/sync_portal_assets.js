@@ -4,15 +4,15 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
+
+// portal-shell.css is now referenced as /portal-shell.css from all portals.
+// Only JS files need syncing to subdirectories.
 const targets = [
-  path.join(ROOT, 'admin', 'portal-shell.css'),
-  path.join(ROOT, 'partner', 'portal-shell.css'),
   path.join(ROOT, 'admin', 'portal-shell.js'),
   path.join(ROOT, 'partner', 'portal-shell.js'),
 ];
 
 const sourceMap = new Map([
-  ['portal-shell.css', path.join(ROOT, 'portal-shell.css')],
   ['portal-shell.js', path.join(ROOT, 'portal-shell.js')],
 ]);
 

@@ -243,8 +243,7 @@ function rewriteAssetVersions(filePath) {
     [/\/app\.min\.css(?:\?v=[^"]*)?/g, `/app.min.css?v=${ASSET_VERSION}`],
     [/\/nav-floating\.css(?:\?v=[^"]*)?/g, `/nav-floating.css?v=${ASSET_VERSION}`],
     [/\/nav-floating\.js(?:\?v=[^"]*)?/g, `/nav-floating.js?v=${ASSET_VERSION}`],
-    [/\/admin\/portal-shell\.css(?:\?v=[^"]*)?/g, `/admin/portal-shell.css?v=${ASSET_VERSION}`],
-    [/\/partner\/portal-shell\.css(?:\?v=[^"]*)?/g, `/partner/portal-shell.css?v=${ASSET_VERSION}`],
+    [/\/portal-shell\.css(?:\?v=[^"]*)?/g, `/portal-shell.css?v=${ASSET_VERSION}`],
     [/\/admin\/admin\.js(?:\?v=[^"]*)?/g, `/admin/admin.js?v=${ASSET_VERSION}`],
     [/\/partner\/partner\.js(?:\?v=[^"]*)?/g, `/partner/partner.js?v=${ASSET_VERSION}`],
   ];
