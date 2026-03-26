@@ -514,10 +514,8 @@ p, li {
 /* CSS modernization: selection colors */
 ::selection { background: var(--pp-primary-200); color: var(--pp-primary-900); }
 
-/* Smooth scroll (with motion guard) */
-@media (prefers-reduced-motion: no-preference) {
-  html { scroll-behavior: smooth; }
-}
+/* Smooth scroll removed from global html — it breaks iOS touch-drag scrolling.
+   Use scrollIntoView({ behavior: 'smooth' }) in JS for individual smooth-scroll needs. */
 
 /* Focus-visible global */
 :focus-visible { outline: 2.5px solid var(--pp-primary); outline-offset: 3px; }

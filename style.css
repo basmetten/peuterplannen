@@ -31,7 +31,7 @@ body { font-family: var(--pp-font-body); background: var(--pp-bg); color: var(--
 img, video, svg, canvas { max-width: 100%; height: auto; }
 h1, h2, h3, h4, h5 { font-family: var(--pp-font-heading); text-wrap: balance; }
 p, li, .blog-excerpt, .location-description, .intro-box p { text-wrap: pretty; }
-@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+/* scroll-behavior: smooth removed — breaks iOS touch-drag. Use JS scrollIntoView() instead. */
 ::selection { background: var(--pp-primary); color: var(--pp-text-inverse); }
 :focus-visible { outline: 2.5px solid var(--pp-primary); outline-offset: 4px; border-radius: var(--pp-radius-xs); }
 :focus:not(:focus-visible) { outline: none; }
