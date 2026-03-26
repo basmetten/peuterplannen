@@ -10,5 +10,13 @@
   },
   "compatibility_flags": [
     "nodejs_compat"
-  ]
+  ],
+  "env": {
+    "staging": {
+      "name": "peuterplannen-staging",
+      "routes": [
+        { "pattern": "testen.peuterplannen.nl/*", "zone_name": "peuterplannen.nl" }
+      ]
+    }
+  }
 }

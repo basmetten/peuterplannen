@@ -1,0 +1,73 @@
+name: Staging Deployment
+
+on:
+  push:
+    branches: [staging]
+  workflow_dispatch:
+
+concurrency:
+  group: staging-deploy
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        run: npm run build
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Ensure DNS record exists for testen.peuterplannen.nl
+        env:
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+        run: |
+          set -euo pipefail
+          ZONE_ID="e40d136b27bf0c6f381da6e874721c98"
+          count=$(curl -s "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/dns_records?name=testen.peuterplannen.nl" \
+            -H "X-Auth-Email: $CLOUDFLARE_EMAIL" \
+            -H "X-Auth-Key: $CLOUDFLARE_API_KEY" \
+            | python3 -c "import json,sys; print(json.load(sys.stdin)['result_info']['count'])")
+          if [ "$count" = "0" ]; then
+            curl -sf -X POST "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/dns_records" \
+              -H "X-Auth-Email: $CLOUDFLARE_EMAIL" \
+              -H "X-Auth-Key: $CLOUDFLARE_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{"type":"CNAME","name":"testen","content":"peuterplannen.nl","ttl":1,"proxied":true}'
+            echo "DNS record aangemaakt voor testen.peuterplannen.nl"
+          else
+            echo "DNS record bestaat al — skip."
+          fi
+
+      - name: Deploy to Cloudflare Worker (staging)
+        env:
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy --env staging
+
+      - name: Smoke test staging
+        run: |
+          sleep 15
+          status=$(curl -sS -o /dev/null -w "%{http_code}" "https://testen.peuterplannen.nl/app.html")
+          echo "Smoke test: HTTP $status"
+          [[ "$status" == "200" ]] || exit 1
