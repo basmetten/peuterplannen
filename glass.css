@@ -1370,14 +1370,16 @@
   justify-content: center;
   gap: 6px;
   flex: 1;
+  min-height: 48px;
   padding: 12px 16px;
-  border-radius: 12px;
+  border-radius: 14px;
   font-size: 0.8125rem;
-  font-weight: 600;
+  font-weight: 650;
+  letter-spacing: -0.01em;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: opacity 0.12s ease, transform 0.12s ease;
+  transition: opacity 0.12s ease, transform 0.12s ease, box-shadow 0.15s ease;
 }
 .dt-cta-btn:active {
   transform: scale(0.97);
@@ -1386,10 +1388,10 @@
 .dt-cta--primary {
   background: var(--pp-primary, #D4775A);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(var(--pp-primary-rgb, 212,119,90), 0.22);
+  box-shadow: 0 4px 14px rgba(var(--pp-primary-rgb, 212,119,90), 0.28);
 }
 .dt-cta--primary:active {
-  box-shadow: 0 2px 6px rgba(var(--pp-primary-rgb, 212,119,90), 0.12);
+  box-shadow: 0 2px 6px rgba(var(--pp-primary-rgb, 212,119,90), 0.15);
 }
 .dt-cta--ghost {
   background: rgba(var(--pp-text-rgb, 45,41,38), 0.025);
@@ -1423,8 +1425,8 @@
 /* --- Section --- */
 .dt-section,
 .dt-card {
-  padding: 24px 20px;
-  border-top: 1px solid rgba(var(--pp-text-rgb, 45,41,38), 0.06);
+  padding: 28px 20px;
+  border-top: none;
   animation: dt-enter 280ms ease-out both;
   animation-delay: calc(var(--si, 0) * 45ms);
 }
@@ -1433,16 +1435,18 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Section label — warm serif, sentence case */
+/* Section label — editorial serif with subtle underline */
 .dt-label {
   font-family: var(--pp-font-accent, 'Instrument Serif', Georgia, serif);
-  font-size: 1.125rem;
+  font-size: 1.1875rem;
   font-weight: 400;
   font-style: normal;
   text-transform: none;
   letter-spacing: 0;
-  color: var(--pp-text-tertiary, #756762);
-  margin-bottom: 12px;
+  color: var(--pp-brown-dark, #5C4433);
+  margin-bottom: 14px;
+  padding-bottom: 6px;
+  border-bottom: 0.5px solid rgba(140, 110, 100, 0.12);
 }
 
 /* ===========================================
@@ -1450,24 +1454,22 @@
    Warm-tinted, editorial authority.
    =========================================== */
 .dt-card--highlight {
-  background: var(--pp-primary-50, #FDF1ED);
-  border-radius: 16px;
-  margin: 24px 16px 0 !important;
+  background: linear-gradient(145deg, #f7faf7 0%, #eff5ef 100%);
+  border-radius: 20px;
+  margin: 24px 16px 8px !important;
   padding: 24px !important;
-  border: 1px solid rgba(var(--pp-primary-rgb, 212,119,90), 0.08);
-  box-shadow:
-    0 1px 3px rgba(0,0,0,0.04),
-    0 8px 24px rgba(var(--pp-primary-rgb, 212,119,90), 0.07);
+  border: 1px solid #dce8dc;
+  box-shadow: 0 4px 16px rgba(74, 122, 74, 0.06);
 }
 .dt-card-header {
   font-family: var(--pp-font-accent, 'Instrument Serif', Georgia, serif);
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
   font-weight: 400;
   font-style: normal;
   text-transform: none;
   letter-spacing: 0;
-  color: var(--pp-primary-700, #8F4A35);
-  margin-bottom: 14px;
+  color: var(--pp-success, #2D8B5E);
+  margin-bottom: 12px;
 }
 .dt-hl-summary {
   font-size: 0.875rem;
@@ -1520,8 +1522,9 @@
   gap: 10px;
 }
 .dt-row {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  align-items: start;
   gap: 10px;
   font-size: 0.8125rem;
   font-weight: 500;
@@ -1578,7 +1581,10 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 20px 20px 24px;
+  background: var(--pp-bg-cream, #FFF5EB);
+  border-radius: 16px;
+  margin: 8px 16px 24px;
+  padding: 20px;
   animation: dt-enter 280ms ease-out both;
   animation-delay: calc(var(--si, 0) * 45ms);
 }
