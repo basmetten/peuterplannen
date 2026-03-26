@@ -1136,22 +1136,23 @@ function renderInSheetDetail(loc) {
         ).join('')}</div>`);
     }
 
-    // Score HTML
+    // Score — typographic, not badge
     const scoreHtml = totalScore != null
-        ? `<div class="dt-score dt-score--${scoreTier}"><span class="dt-score-num">${totalScore}</span><span class="dt-score-max">/10</span></div>` : '';
+        ? `<span class="dt-score dt-score--${scoreTier}">${totalScore}</span>` : '';
 
-    // Verdict + proof chips (above fold)
+    // Verdict block — the emotional moment
     const verdictHtml = scoreVerbal
-        ? `<div class="dt-verdict"><svg class="dt-verdict-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${escapeHtml(scoreVerbal)}</div>` : '';
+        ? `<div class="dt-verdict-block"><span class="dt-verdict-text">${escapeHtml(scoreVerbal)}</span></div>` : '';
 
+    // Proof chips
     const proofHtml = topProof.length
         ? `<div class="dt-proof">${topProof.map(t => `<span class="dt-chip">${escapeHtml(t.label)}</span>`).join('')}</div>` : '';
 
     // CTA row
     const ctaHtml = `<div class="dt-cta">
-        ${googleMapsUrl ? `<a href="${googleMapsUrl}" target="_blank" rel="noopener" class="dt-cta-btn dt-cta--primary"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Route</a>` : ''}
-        ${loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="dt-cta-btn dt-cta--secondary"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
-        <button class="dt-cta-btn dt-cta--tertiary" data-share-loc="${loc.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Deel</button>
+        ${googleMapsUrl ? `<a href="${googleMapsUrl}" target="_blank" rel="noopener" class="dt-cta-btn dt-cta--primary"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Route</a>` : ''}
+        ${loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="dt-cta-btn dt-cta--ghost"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
+        <button class="dt-cta-btn dt-cta--ghost" data-share-loc="${loc.id}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Deel</button>
     </div>`;
 
     return `
@@ -1159,6 +1160,7 @@ function renderInSheetDetail(loc) {
             <div class="photo-container detail-hero-photo" style="--photo-color: ${photo.photoColor || '#E8D5C4'}">
                 <img class="sheet-hero-img" src="${escapeHtml(photo.imgSrc || '')}" alt="${escapeHtml(loc.name)}" loading="lazy">
             </div>
+            <div class="dt-hero-veil"></div>
             <button class="detail-float-btn detail-back-btn" aria-label="Terug">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
             </button>

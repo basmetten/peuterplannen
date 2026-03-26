@@ -1178,133 +1178,225 @@
 }
 
 /* ===========================================================
-   DETAIL VIEW — Art-Directed Premium Detail
-   Spacing system: 8 / 12 / 16 / 24 px rhythm.
-   Typography: 4 levels. Patterns: 9 canonical. Surfaces: 1.
+   DETAIL VIEW — "Editorial Warmth"
+
+   Design system: 8 / 12 / 16 / 24 px spacing grid.
+   Typography: Newsreader (display), Jakarta Sans (body).
+   Color: warm neutrals + single green accent for trust.
+   Surfaces: one. Atmosphere: gradient veil on hero.
    =========================================================== */
 
-/* --- 1. Hero --- */
-.detail-hero-wrap { position: relative; margin: 0; }
+/* --- Hero with gradient veil --- */
+.detail-hero-wrap {
+  position: relative;
+  margin: 0;
+}
 .detail-hero-photo {
-  width: 100%; aspect-ratio: 2.5 / 1;
-  min-height: 150px; max-height: 210px;
-  border-radius: 0; margin: 0; overflow: hidden;
+  width: 100%;
+  aspect-ratio: 5 / 3;
+  min-height: 180px;
+  max-height: 240px;
+  border-radius: 0;
+  margin: 0;
+  overflow: hidden;
+}
+/* Warm gradient veil — bridges photo to content */
+.dt-hero-veil {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: linear-gradient(to top, var(--pp-bg, #fcf9f7) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
 }
 
-/* --- 2. Float controls (34px, glass) --- */
+/* --- Float controls --- */
 .detail-float-btn {
   position: absolute;
-  width: 34px; height: 34px; border-radius: 50%;
-  border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.6);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.10);
   color: var(--pp-text, #2D2926);
-  transition: background 0.15s, transform 0.15s;
-  z-index: 2;
+  transition: background 0.15s ease, transform 0.15s ease;
+  z-index: 3;
 }
-.detail-float-btn:active { transform: scale(0.88); background: rgba(255,255,255,0.85); }
-.detail-back-btn { top: 10px; left: 12px; }
-.detail-fav-btn  { top: 10px; right: 50px; }
-.detail-fav-btn svg { fill: none; stroke: rgba(255,255,255,0.85); stroke-width: 2; }
-.detail-fav-btn.active svg { fill: var(--pp-primary, #D4775A); stroke: var(--pp-primary, #D4775A); }
-.detail-close-btn { top: 10px; right: 12px; }
-
+.detail-float-btn:active {
+  transform: scale(0.90);
+  background: rgba(255, 255, 255, 0.85);
+}
+.detail-back-btn  { top: 12px; left: 16px; }
+.detail-fav-btn   { top: 12px; right: 56px; }
+.detail-close-btn { top: 12px; right: 16px; }
+.detail-fav-btn svg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 2;
+}
+.detail-fav-btn.active svg {
+  fill: var(--pp-primary, #D4775A);
+  stroke: var(--pp-primary, #D4775A);
+}
 @keyframes detail-fav-spring {
-  0% { transform: scale(1); } 40% { transform: scale(1.25); } 100% { transform: scale(1); }
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
 }
-.detail-fav-spring { animation: detail-fav-spring 380ms cubic-bezier(0.34,1.56,0.64,1); }
+.detail-fav-spring {
+  animation: detail-fav-spring 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 
-/* --- 3. Above-fold composition --- */
-.dt-above-fold { padding: 16px 20px 0; }
+/* ===========================================
+   ABOVE-FOLD COMPOSITION
+   One designed unit: title → meta → verdict →
+   proof → actions.
+   =========================================== */
+.dt-above-fold {
+  padding: 16px 20px 0;
+}
 
-/* Title row */
-.dt-title-row { display: flex; align-items: baseline; gap: 12px; }
+/* --- Title + Score --- */
+.dt-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
 .dt-name {
-  font-family: var(--pp-font-heading, 'Newsreader', Georgia, serif);
-  font-size: 1.4375rem; font-weight: 600;
+  font-family: var(--pp-font-heading);
+  font-size: 1.5rem;
+  font-weight: 580;
   color: var(--pp-text, #2D2926);
-  margin: 0; line-height: 1.22;
-  letter-spacing: -0.02em;
-  flex: 1; min-width: 0;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  flex: 1;
+  min-width: 0;
 }
-
-/* Score — refined compact indicator */
+/* Score — typographic numeral, no background */
 .dt-score {
-  flex-shrink: 0; display: flex; align-items: baseline; gap: 1px;
-  padding: 5px 9px 4px; border-radius: 8px;
+  flex-shrink: 0;
+  font-family: var(--pp-font-heading);
+  font-size: 1.5rem;
+  font-weight: 450;
   line-height: 1;
+  letter-spacing: -0.02em;
 }
-.dt-score-num { font-size: 0.9375rem; font-weight: 750; color: #fff; }
-.dt-score-max { font-size: 0.625rem; font-weight: 600; color: rgba(255,255,255,0.7); }
-.dt-score--high { background: var(--pp-success, #2D8B5E); }
-.dt-score--mid  { background: #C4903A; }
-.dt-score--low  { background: var(--pp-text-muted, #A39490); }
+.dt-score--high { color: var(--pp-success, #2D8B5E); }
+.dt-score--mid  { color: #C4903A; }
+.dt-score--low  { color: var(--pp-text-muted, #A39490); }
 
-/* Meta line */
+/* --- Meta line --- */
 .dt-meta {
-  display: flex; align-items: center; gap: 0;
-  margin-top: 6px;
-  font-size: 0.8125rem; font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: 4px;
+  font-size: 0.8125rem;
+  font-weight: 500;
   color: var(--pp-text-tertiary, #756762);
-  flex-wrap: wrap; line-height: 1.45;
+  flex-wrap: wrap;
+  line-height: 1.5;
 }
-.dt-dot { margin: 0 6px; opacity: 0.35; }
+.dt-dot {
+  margin: 0 6px;
+  opacity: 0.35;
+}
 .dt-status { font-weight: 600; }
 .dt-status--green { color: var(--pp-success, #2D8B5E); }
 .dt-status--amber { color: #C4903A; }
 .dt-status--red   { color: #C0392B; }
 
-/* Verdict — the toddler suitability signal */
-.dt-verdict {
-  display: inline-flex; align-items: center; gap: 6px;
+/* --- Verdict block — the emotional moment --- */
+.dt-verdict-block {
   margin-top: 12px;
-  font-size: 0.8125rem; font-weight: 650;
+  padding: 8px 12px;
+  background: var(--pp-success-bg, #E8F5EF);
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+}
+.dt-verdict-text {
+  font-size: 0.8125rem;
+  font-weight: 650;
   color: var(--pp-success, #2D8B5E);
+  letter-spacing: 0.005em;
 }
-.dt-verdict-icon { flex-shrink: 0; stroke: var(--pp-success, #2D8B5E); }
 
-/* Proof chips (above fold) */
+/* --- Proof chips --- */
 .dt-proof {
-  display: flex; gap: 8px; flex-wrap: wrap;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
   margin-top: 12px;
 }
 
-/* CTA row */
+/* --- CTA row --- */
 .dt-cta {
-  display: flex; gap: 8px;
-  margin-top: 16px; padding-bottom: 16px;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-bottom: 0;
 }
 .dt-cta-btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  gap: 6px; flex: 1;
-  padding: 11px 12px; border-radius: 10px;
-  font-size: 0.8125rem; font-weight: 620;
-  text-decoration: none; border: none; cursor: pointer;
-  transition: opacity 0.12s, transform 0.12s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.12s ease, transform 0.12s ease;
 }
-.dt-cta-btn:active { transform: scale(0.97); opacity: 0.75; }
-.dt-cta--primary { background: var(--pp-primary, #D4775A); color: #fff; }
-.dt-cta--secondary { background: rgba(45,41,38,0.05); color: var(--pp-text, #2D2926); }
-.dt-cta--tertiary { background: rgba(45,41,38,0.05); color: var(--pp-text-tertiary, #756762); }
+.dt-cta-btn:active {
+  transform: scale(0.97);
+  opacity: 0.75;
+}
+.dt-cta--primary {
+  background: var(--pp-primary, #D4775A);
+  color: #fff;
+}
+.dt-cta--ghost {
+  background: none;
+  border: 1.5px solid rgba(var(--pp-text-rgb, 45,41,38), 0.12);
+  color: var(--pp-text-secondary, #5C4A48);
+}
 
-/* --- 4. Canonical chip --- */
+/* ===========================================
+   CANONICAL COMPONENTS
+   =========================================== */
+
+/* --- Chip --- */
 .dt-chip {
   display: inline-block;
-  padding: 6px 12px; border-radius: 6px;
-  font-size: 0.75rem; font-weight: 580;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 580;
   color: var(--pp-text-secondary, #5C4A48);
-  background: rgba(45,41,38,0.05);
+  background: rgba(var(--pp-text-rgb, 45,41,38), 0.04);
   line-height: 1.4;
 }
 
-/* --- 5. Section system --- */
-.dt-section, .dt-card {
-  padding: 20px 20px;
-  border-top: 1px solid rgba(0,0,0,0.06);
+/* --- Section --- */
+.dt-section,
+.dt-card {
+  padding: 24px 20px;
+  border-top: 1px solid rgba(var(--pp-text-rgb, 45,41,38), 0.06);
   animation: dt-enter 280ms ease-out both;
   animation-delay: calc(var(--si, 0) * 45ms);
 }
@@ -1313,104 +1405,161 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Section label (Level 4 typography) */
+/* Section label */
 .dt-label {
-  font-size: 0.6875rem; font-weight: 680;
-  text-transform: uppercase; letter-spacing: 0.06em;
+  font-size: 0.6875rem;
+  font-weight: 680;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
   color: var(--pp-text-muted, #A39490);
   margin-bottom: 12px;
 }
 
-/* --- 6. Highlight card (showpiece) --- */
+/* ===========================================
+   HIGHLIGHT CARD — the showpiece
+   Warm-tinted, editorial authority.
+   =========================================== */
 .dt-card--highlight {
-  background: linear-gradient(180deg, rgba(45,139,94,0.035) 0%, rgba(45,139,94,0.01) 100%);
-  border-top: 1px solid rgba(45,139,94,0.10);
-  border-left: 3px solid var(--pp-success, #2D8B5E);
-  padding: 20px 20px 20px 20px;
+  background: var(--pp-primary-50, #FDF1ED);
+  border-radius: 16px;
+  margin: 24px 16px 0 !important;
+  padding: 20px !important;
+  box-shadow: 0 2px 8px rgba(var(--pp-primary-rgb, 212,119,90), 0.08);
 }
 .dt-card-header {
-  font-size: 0.6875rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--pp-success, #2D8B5E);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--pp-primary-600, #B35D42);
   margin-bottom: 12px;
 }
 .dt-hl-summary {
-  font-size: 0.875rem; font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 480;
   color: var(--pp-text, #2D2926);
-  line-height: 1.55; margin: 0 0 12px;
+  line-height: 1.6;
+  margin: 0 0 12px;
 }
 .dt-hl-reasons {
-  list-style: none; padding: 0; margin: 0;
-  display: flex; flex-direction: column; gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 .dt-hl-reasons li {
-  font-size: 0.8125rem; font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: 500;
   color: var(--pp-text-secondary, #5C4A48);
   line-height: 1.55;
-  padding-left: 24px; position: relative;
+  padding-left: 24px;
+  position: relative;
 }
 .dt-hl-reasons li::before {
-  content: ''; position: absolute; left: 0; top: 4px;
-  width: 14px; height: 14px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232D8B5E' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") no-repeat center / contain;
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23B35D42' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") no-repeat center / contain;
 }
 
-/* --- 7. Chip cluster (facilities etc.) --- */
-.dt-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+/* ===========================================
+   CONTENT SECTIONS
+   =========================================== */
 
-/* --- 8. Row list (practical, hours) --- */
-.dt-rows { display: flex; flex-direction: column; gap: 8px; }
+/* Chip cluster */
+.dt-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Row list */
+.dt-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 .dt-row {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 0.8125rem; font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8125rem;
+  font-weight: 500;
   color: var(--pp-text-secondary, #5C4A48);
   line-height: 1.55;
 }
-.dt-row-icon { flex-shrink: 0; color: var(--pp-text-muted, #A39490); }
+.dt-row-icon {
+  flex-shrink: 0;
+  color: var(--pp-text-muted, #A39490);
+}
 .dt-row-dot {
-  width: 4px; height: 4px; border-radius: 50%;
-  background: var(--pp-text-muted, #A39490);
-  flex-shrink: 0; margin-left: 6px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--pp-primary-300, #E8957A);
+  flex-shrink: 0;
+  margin-left: 5px;
 }
 
-/* --- Description (collapsible) --- */
+/* Description */
 .detail-desc-wrap { position: relative; }
 .detail-desc-text {
-  font-size: 0.8125rem; font-weight: 450;
+  font-size: 0.8125rem;
+  font-weight: 450;
   color: var(--pp-text-secondary, #5C4A48);
-  line-height: 1.65; margin: 0;
+  line-height: 1.65;
+  margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 .detail-desc-wrap.expanded .detail-desc-text {
-  display: block; -webkit-line-clamp: unset;
+  display: block;
+  -webkit-line-clamp: unset;
 }
 .detail-desc-toggle {
-  display: inline-block; margin-top: 8px;
-  background: none; border: none;
+  display: inline-block;
+  margin-top: 8px;
+  background: none;
+  border: none;
   color: var(--pp-primary, #D4775A);
-  font-size: 0.8125rem; font-weight: 600;
-  cursor: pointer; padding: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
 }
 .detail-desc-toggle:active { opacity: 0.7; }
 
-/* --- 9. Trust footer --- */
+/* ===========================================
+   TRUST FOOTER
+   =========================================== */
 .dt-trust {
-  display: flex; flex-wrap: wrap; gap: 6px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
   padding: 16px 20px 24px;
-  border-top: 1px solid rgba(0,0,0,0.06);
   animation: dt-enter 280ms ease-out both;
   animation-delay: calc(var(--si, 0) * 45ms);
 }
 .dt-trust-item {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-size: 0.6875rem; font-weight: 550;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.6875rem;
+  font-weight: 550;
   color: var(--pp-text-muted, #A39490);
   line-height: 1.6;
 }
-.dt-trust-check { flex-shrink: 0; stroke: var(--pp-success, #2D8B5E); }
+.dt-trust-check {
+  flex-shrink: 0;
+  stroke: var(--pp-primary-300, #E8957A);
+}
 
 /* --- Swipe-to-dismiss --- */
 
