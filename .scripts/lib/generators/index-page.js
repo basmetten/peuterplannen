@@ -23,22 +23,22 @@ function updateIndex(data) {
     const count = typeCounts[type] || 0;
     const imgSrc = TYPE_IMAGES[type];
     const imgFileExists = imgSrc && fs.existsSync(path.join(ROOT, imgSrc));
-    const img = imgFileExists ? `\n                        <picture><source type="image/webp" srcset="${imgSrc.replace(‘.png’, ‘.webp’)}"><img src="${imgSrc}" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>` : ‘’;
+    const img = imgFileExists ? `\n                        <picture><source type="image/webp" srcset="${imgSrc.replace('.png', '.webp')}"><img src="${imgSrc}" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>` : '';
     return `                    <a href="${info.slug}.html" class="city-card">${img}
                         <strong>${info.label}</strong>
                         <span>${count} locaties</span>
                     </a>`;
-  }).join(‘\n’);
+  }).join('\n');
 
   const situatieChips = CLUSTER_PAGES.map((page) => {
     const label = page.kicker || page.h1;
     return `                    <a href="${page.slug}.html" class="situatie-chip">${escapeHtml(label)}</a>`;
-  }).join(‘\n’);
+  }).join('\n');
 
   const cityCards = regions.map(r => {
     const count = regionCounts[r.name] || 0;
     return `                    <a href="${r.slug}.html" class="city-card"><strong>${r.name}</strong><span>${count} locaties</span></a>`;
-  }).join(‘\n’);
+  }).join('\n');
 
   const browseHTML = `    <section class="browse-section pp-reveal" id="browse" style="background: var(--pp-bg-warm);">
         <div class="container">
@@ -68,7 +68,7 @@ ${cityCards}
             </p>
         </div>
     </section>`;
-  content = replaceMarker(content, ‘BROWSE_SECTION’, browseHTML);
+  content = replaceMarker(content, 'BROWSE_SECTION', browseHTML);
 
   // BLOG_PREVIEW
   const blogPreviewCards = featuredBlogEntries.slice(0, 5).map((entry) => {
