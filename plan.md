@@ -1,302 +1,136 @@
-# Plan: Sheet Default + Canonical Filters + Progressive Disclosure
+# Plan: Homepage CTA-hiërarchie + Browse-bundeling (Roadmap 9 & 10)
 
 ## Goal
+Simplify the homepage so it has **one clear primary action** above the fold, and merge the "per type" and "per regio" browse sections into **one coherent browse block** — reducing scroll depth, decision friction, and fragmentation.
 
-Three coordinated changes to make PeuterPlannen's discovery system feel like one cohesive product:
+## Current state (problems)
 
-1. **Sheet default → half-open** — user immediately sees content, not just a peek strip
-2. **One canonical filter model** — eliminate inconsistencies between sidebar, modal, sheet chips, and presets
-3. **Progressive disclosure** — compact first layer for scanning, expandable groups for depth
+### Above the fold
+- **4 competing CTAs**: "Uitjes in de buurt" (primary), "Plan je dag", "Inspiratie", "Ons verhaal"
+- "Inspiratie" and "Ons verhaal" are secondary/tertiary content posing as equal-weight actions
+- "Door een vader van twee peuters" trust line is buried and disconnected
+- The primary CTA label "Uitjes in de buurt" requires GPS permission — can feel like a commitment
 
-These ship together because they're interdependent: the half-open sheet shows the filter UI, the canonical model decides *what* that UI contains, and progressive disclosure decides *how* it's organized.
-
----
-
-## Current State (Key Facts)
-
-### Sheet
-- 4 states: hidden → peek → **half (55vh)** → full
-- Default = **peek** (set in `sheet-engine.js:201`)
-- Gesture-aware snapping with velocity threshold 0.5 px/ms
-- Content scroll locked until 85% toward full
-- Lazy-loads 30 cards per batch via IntersectionObserver
-
-### Filters — Where They Live
-
-| Location | What's shown | Gaps |
-|----------|-------------|------|
-| **Sidebar** (desktop, collapsed on mobile) | All 7 types + weather + coffee/diaper/alcohol + age + radius | Complete but hidden behind toggle |
-| **Sheet type chips** (`#sheet-filter-chips`) | 7 types (missing Pannenkoeken) | No weather/age/facilities |
-| **Sheet preset chips** (`#sheet-presets`) | 6 of 8 presets | Missing `lunch-play`, `terras-kids` |
-| **Filter modal** (`#filter-modal`) | Weather, age, 2 facilities, distance, favorites | Missing: alcohol, presets, types. "Lunch" facility has no state mapping |
-| **Preset strip** (above sidebar) | All 8 presets | Desktop only when sidebar visible |
-
-### Supabase Fields Available but Unexposed
-
-11 quality attributes exist in DB but have no filter UI:
-`price_band`, `parking_ease`, `buggy_friendliness`, `food_fit`, `play_corner_quality`, `toilet_confidence`, `rain_backup_quality`, `shade_or_shelter`, `noise_level`, `time_of_day_fit`, `crowd_pattern`
-
----
+### Browse sections (below fold)
+- **Two separate sections** with identical visual language (same card grid, same heading style):
+  1. "Uitjes per type" (8 type cards + 6 situatie links)
+  2. "Uitjes per regio" (22 region cards + 2 meta links)
+- Combined scroll depth: ~1800px on mobile just for browse
+- "Of kies op situatie" feels like an afterthought bolted onto the type section
+- Region section is clamped at 340px on mobile with a "show all" button — creates friction
+- Both sections share `.cities-section` and `.city-card` classes (even types use city-card) — semantic confusion
+- The 6 situatie-links and 2 meta-links feel disconnected
 
 ## Approach
 
-### Change 1: Sheet Default → Half-Open
+### Part A: Hero CTA hierarchy (Roadmap 9)
+**One primary action, everything else demoted.**
 
-**What:** Change one line in `sheet-engine.js` from `setSheetState('peek')` → `setSheetState('half')`.
+1. **Keep "Uitjes in de buurt"** as the single primary CTA (it's the core loop entry)
+2. **Add a secondary text link** "of zoek op plaats of type" that scrolls to the browse section — gives an alternative for users who don't want GPS
+3. **Remove "Inspiratie" and "Ons verhaal"** from above-fold CTAs — they're in the nav already
+4. **Keep "Plan je dag"** but restyle as a subtle secondary link, not a glass card
+5. **Move trust statement** up — place "2138 uitjes, door ouders gecheckt" more prominently as a trust badge rather than subtitle
+6. **Tighten vertical spacing** — hero should breathe but not sprawl
 
-**Why it's not just one line:** Half-open reveals the sheet content area. We need to ensure:
-- Cards render immediately (lazy loading triggers at half, not just full)
-- Map remains usable — 45% viewport is enough for map interaction
-- First-load experience feels right (no empty sheet if data hasn't loaded yet)
-- Deep-link / `locatieParam` flows still work (sheet should stay hidden when showing a direct location)
-- Performance: half-state triggers card rendering — ensure skeleton/loading state shows during data fetch
+### Part B: Unified browse section (Roadmap 10)
+**One heading, two browse modes (type / regio) under tabs or toggle.**
 
-**Detailed changes:**
+1. **Single section**: "Ontdek uitjes" (or "Zoek en ontdek")
+2. **Two sub-modes** via lightweight inline tabs: "Per type" | "Per regio"
+   - Default: "Per type" (more actionable, answers "what kind of day")
+   - Tab switch shows region grid (no page reload, CSS/JS toggle)
+3. **Situatie-links** become a compact row below the type grid (they're type-adjacent)
+4. **Meta-links** ("Alles geordend bekijken", "Hoe we selecteren") move to a single subtle footer line below both tab contents
+5. **Region grid** shows top 8 regions by default, expandable — no separate "show all" button needed, tab already provides focus
+6. **One card style** for both (already the case visually, now also semantically)
 
-| File | Change | Lines |
-|------|--------|-------|
-| `modules/sheet-engine.js` | `setSheetState('peek')` → `setSheetState('half')` in `initSheet()` | ~201 |
-| `modules/sheet-engine.js` | Also update the post-RAF re-measure block (line ~208) to re-set `half` not `peek` | ~208 |
-| `modules/sheet-engine.js` | Ensure `renderSheetList()` fires on half-state (check if it already does via the scroll handler) | ~754-821 |
-| `glass.css` | Verify that half-state CSS shows content area, list skeleton, and filter chips correctly (likely already works) | sheet rules |
+## Steps
 
-**Edge cases:**
-- If `state.locatieParam` is set → keep sheet hidden (detail view takes over)
-- If `sharedShortlistIds` → half is fine, shows the shortlist
-- Skeleton cards should show while data loads (verify existing skeleton logic covers half-state)
+### Step 1: Hero simplification
+**Files**: `index.html` (lines 355-392 + inline CSS 184-231)
 
-### Change 2: Canonical Filter Model
+1. Remove `hero-cta-row` div with "Plan je dag", "Inspiratie", "Ons verhaal" glass cards
+2. Add a secondary text link below primary CTA: `<a class="hero-secondary-link">of zoek op type of regio</a>` that smooth-scrolls to `#browse`
+3. Restyle trust line: move "2138 uitjes" count into a small badge/kicker above the h1
+4. Simplify hero-sub to just "Door ouders gecheckt. Altijd actueel."
+5. Remove associated CSS for `.hero-cta-row`, `.hero-cta-secondary`
+6. Add minimal CSS for `.hero-secondary-link` (text link style, coral color, centered)
 
-**What:** Define ONE authoritative filter schema that all UI surfaces derive from. Eliminate duplicates, fill gaps, and add high-value missing filters.
+### Step 2: Merge browse sections into one
+**Files**: `index.html` (lines 409-592 + inline CSS 252-267)
 
-**Canonical schema:**
+1. Replace both `<section class="cities-section">` blocks with one:
+   ```html
+   <section class="browse-section pp-reveal" id="browse">
+     <div class="container">
+       <h2 class="section-title">Ontdek uitjes</h2>
+       <div class="browse-tabs">
+         <button class="browse-tab active" data-tab="type">Per type</button>
+         <button class="browse-tab" data-tab="regio">Per regio</button>
+       </div>
+       <div class="browse-panel active" id="browse-type">
+         <!-- type cards grid (8 cards) -->
+         <!-- situatie links compact row -->
+       </div>
+       <div class="browse-panel" id="browse-regio">
+         <!-- region cards grid (22 cards, top 8 visible) -->
+       </div>
+       <p class="browse-meta">
+         <a href="/ontdekken/">Alles geordend bekijken</a> ·
+         <a href="/methode/">Hoe we selecteren</a>
+       </p>
+     </div>
+   </section>
+   ```
 
-```
-┌─────────────────────────────────────────────────────┐
-│  CANONICAL FILTER GROUPS                             │
-├──────────────┬──────────────────────────────────────┤
-│ Group        │ Filters                              │
-├──────────────┼──────────────────────────────────────┤
-│ type         │ all, play, farm, nature, museum,     │
-│              │ swim, pancake, horeca                 │
-│              │ (+ favorites as view toggle)          │
-├──────────────┼──────────────────────────────────────┤
-│ situaties    │ rain, outdoor-coffee, dreumesproof,  │
-│ (presets)    │ peuterproof, now-open, short-drive,  │
-│              │ lunch-play, terras-kids               │
-├──────────────┼──────────────────────────────────────┤
-│ weer         │ indoor, outdoor                      │
-├──────────────┼──────────────────────────────────────┤
-│ leeftijd     │ dreumes (0-2), peuter (2-5)          │
-├──────────────┼──────────────────────────────────────┤
-│ faciliteiten │ coffee, diaper, alcohol               │
-├──────────────┼──────────────────────────────────────┤
-│ eten_drinken │ food_fit: full, snacks               │
-│              │ (replaces broken "Lunch" chip)        │
-├──────────────┼──────────────────────────────────────┤
-│ praktisch    │ parking_ease: easy                   │
-│              │ buggy_friendliness: easy              │
-│              │ price_band: free, budget              │
-├──────────────┼──────────────────────────────────────┤
-│ afstand      │ 5 km, 10 km, 25 km                  │
-│              │ (requires user location)              │
-├──────────────┼──────────────────────────────────────┤
-│ persoonlijk  │ favorites-only toggle                 │
-└──────────────┴──────────────────────────────────────┘
-```
+2. Add tab switching JS (simple, no framework):
+   - Click handler toggles `.active` on tabs and panels
+   - CSS: `.browse-panel { display: none; } .browse-panel.active { display: block; }`
 
-**New filters added (from existing DB fields):**
-- `food_fit` → "Restaurant" (full) / "Snacks" (snacks) — replaces broken "Lunch" chip
-- `parking_ease` → "Makkelijk parkeren" (easy)
-- `buggy_friendliness` → "Buggy-vriendelijk" (easy)
-- `price_band` → "Gratis" (free) / "Budget" (budget)
+3. Restyle situatie-links as compact pill-chips below the type grid instead of full-width cards
 
-**Inconsistencies fixed:**
-- Add `alcohol` to filter modal (currently missing)
-- Add `Pannenkoeken` to sheet type chips (currently missing)
-- Remove duplicate "Koffie" from "Eten & drinken" group (already in Faciliteiten)
-- Replace non-functional "Lunch" chip with `food_fit` filter
-- Ensure preset chips are available in all 3 preset locations (strip, sheet, modal)
+### Step 3: CSS cleanup and new styles
+**Files**: `index.html` inline `<style>` block
 
-**State changes:**
+1. Add `.browse-section`, `.browse-tabs`, `.browse-tab`, `.browse-panel`, `.browse-meta` styles
+2. Tab design: underline-style tabs (not pill tabs) — fits editorial warmth brand
+3. Remove `.show-all-regions` button (replaced by tab interaction)
+4. Keep `.city-card` as-is (works for both type and region cards)
+5. Region grid: show all on desktop, first 2 rows (8 items) on mobile with "Alle regio's" link
 
+### Step 4: Update build generator
+**Files**: `.scripts/lib/generators/index-page.js`
+
+1. Update marker system: replace `TYPE_GRID` + `CITY_GRID` with single `BROWSE_SECTION` marker
+2. Both type and region data still injected at build time
+3. Blog preview section unchanged
+
+### Step 5: Gemini UI review
+1. Take mobile (390px) + desktop (1280px) screenshots of new homepage
+2. Run `/gemini-ui` with task: "Review homepage CTA hierarchy and browse section redesign"
+3. Apply feedback
+4. Final verification
+
+## Files to modify
 | File | Change |
 |------|--------|
-| `modules/state.js` | Add `activePractical: { parking: false, buggy: false }` and `activeFoodFit: null` and `activePriceBand: null` to state |
-| `modules/state.js` | Add `FILTER_SCHEMA` constant — single source of truth defining all groups, options, labels |
-| `modules/filters.js` | Add `togglePractical(key)`, `toggleFoodFit(value)`, `togglePriceBand(value)` functions |
-| `modules/filters.js` | Update `resetAllFilters()` to clear new filters |
-| `modules/filters.js` | Update `updateFilterCount()` and `updateMapFilterBadge()` to count new filters |
-| `modules/data.js` | Add `parking_ease`, `buggy_friendliness`, `food_fit`, `price_band` to Supabase query filters in `fetchLocationsLive()` |
-
-### Change 3: Progressive Disclosure in Filter Modal
-
-**What:** Restructure the filter modal into collapsible groups. Default: show compact "quick filters" (situaties, weather, age). Expandable: facilities, food, practical, distance.
-
-**Layout (mobile filter modal):**
-
-```
-┌──────────────────────────────────────┐
-│  Filters                          ×  │
-├──────────────────────────────────────┤
-│                                      │
-│  SITUATIES (always visible)          │
-│  [Rain] [Buiten+koffie] [Dreumes..] │
-│  [Peuter..] [Nu open] [Korte rit]   │
-│  [Lunch+spelen] [Terras+kids]       │
-│                                      │
-│  WEER (always visible)               │
-│  [Binnen] [Buiten]                   │
-│                                      │
-│  LEEFTIJD (always visible)           │
-│  [Dreumes 0-2] [Peuter 2-5]         │
-│                                      │
-│  ─── Meer opties ▾ ────────────     │
-│                                      │
-│  FACILITEITEN (collapsed)            │
-│  [Koffie] [Verschonen] [Alcohol]     │
-│                                      │
-│  ETEN & DRINKEN (collapsed)          │
-│  [Restaurant] [Snacks]              │
-│                                      │
-│  PRAKTISCH (collapsed)               │
-│  [Makkelijk parkeren]                │
-│  [Buggy-vriendelijk]                 │
-│  [Gratis] [Budget]                   │
-│                                      │
-│  AFSTAND (collapsed)                 │
-│  [5 km] [10 km] [25 km]             │
-│                                      │
-│  PERSOONLIJK (collapsed)             │
-│  [Alleen bewaard]                    │
-│                                      │
-│  ┌──────────────────────────────┐   │
-│  │     Toon X resultaten        │   │
-│  └──────────────────────────────┘   │
-│                                      │
-│  Wis alle filters                    │
-└──────────────────────────────────────┘
-```
-
-**Disclosure logic:**
-- **Always visible** (layer 1): Situaties, Weer, Leeftijd — the most-used filters, zero taps to reach
-- **Collapsed** (layer 2): Behind "Meer opties" divider — Faciliteiten, Eten & drinken, Praktisch, Afstand, Persoonlijk
-- **Auto-expand:** If any collapsed filter is active, its group auto-expands (user sees what's filtering)
-- **"Meer opties" button:** Toggles all collapsed groups open/closed with smooth height animation
-- **Result count:** "Toon X resultaten" button shows live count
-- **Reset:** "Wis alle filters" link at bottom, only visible when filters are active
-
-**Detailed changes:**
-
-| File | Change |
-|------|--------|
-| `app.html` | Rewrite `#filter-modal` body: new group structure with `data-group` attributes, "Meer opties" toggle, preset chips in modal, new filter chips (parking, buggy, food_fit, price_band), "Wis alle filters" link, result count in apply button |
-| `glass.css` | Add `.filter-modal-divider` styles, `.filter-modal-collapsible` hide/show with `max-height` transition, auto-expanded group highlight |
-| `modules/sheet-engine.js` | Update `initFilterModal()`: "Meer opties" toggle handler, auto-expand logic for active groups, live result count on filter change |
-| `modules/filters.js` | Wire new chip click handlers through existing `data-action`/`data-value` pattern |
-| `modules/data.js` | Add `getFilteredCount()` — returns count without full render (for live preview in apply button) |
-
----
-
-## Steps (Implementation Order)
-
-### Phase A: State & Data Layer (no UI changes yet)
-1. **`modules/state.js`** — Add new state properties + `FILTER_SCHEMA` constant
-2. **`modules/filters.js`** — Add new toggle functions, update counters, update `resetAllFilters()`
-3. **`modules/data.js`** — Add new Supabase query params in `fetchLocationsLive()` + add `getFilteredCount()`
-
-### Phase B: Sheet Default Change
-4. **`modules/sheet-engine.js`** — Change default from peek → half (2 lines)
-5. Verify lazy loading triggers correctly at half-state
-
-### Phase C: Filter Modal Rebuild + Progressive Disclosure
-6. **`app.html`** — Rewrite `#filter-modal` with canonical groups + progressive disclosure structure
-7. **`glass.css`** — Add collapsible group styles, divider, max-height transition animation
-8. **`modules/sheet-engine.js`** — Update `initFilterModal()` for new groups, toggle, auto-expand, live count
-9. **`modules/filters.js`** — Wire new chip handlers via `data-action`/`data-value`
-
-### Phase D: Sync All Filter Surfaces
-10. **`app.html`** — Add Pannenkoeken to `#sheet-filter-chips`
-11. **`app.html`** — Update sidebar filter panel to match canonical model (add food_fit, practical chips)
-12. **`modules/filters.js`** — Update `syncModalChips()` for new groups, update `syncFilterPanelForViewport()`
-13. **`app.js`** — Export new toggle functions to window
-
-### Phase E: Polish & Verify
-14. Build bundles, run `npm test` + `npm run test:e2e`
-15. Visual QA: mobile 390px + desktop 1280px screenshots
-16. Test sheet states: app loads → half (new default) → drag to full → back to half
-17. Test filter modal: open, "Meer opties" expand, apply filters, verify badge counts
-18. Test every new filter chip (parking, buggy, food_fit, price_band) → verify results filter correctly
-19. Test auto-expand: activate a collapsed filter → re-open modal → group is expanded
-20. Push + verify CI green + purge CDN
-
----
-
-## Files to Modify
-
-| File | Changes | Size |
-|------|---------|------|
-| `modules/state.js` | Add state props, FILTER_SCHEMA | Small |
-| `modules/filters.js` | New toggles, counter updates, sync updates | Medium |
-| `modules/data.js` | New query params, getFilteredCount() | Medium |
-| `modules/sheet-engine.js` | Default state change, modal init rewrite | Medium |
-| `app.html` | Filter modal rebuild, sheet chips fix, sidebar sync | Large |
-| `glass.css` | Collapsible group styles, animation | Medium |
-| `app.js` | Export new functions to window | Small |
-
----
-
-## Parallel Subagent Strategy
-
-These phases can be parallelized:
-
-```
-Agent 1: Phase A (state.js + filters.js + data.js)  ─┐
-                                                       ├→ Agent 4: Phase D + E (sync + QA)
-Agent 2: Phase B (sheet-engine.js default change)     ─┤
-                                                       │
-Agent 3: Phase C (modal HTML + CSS + JS)              ─┘
-```
-
-- **Agent 1:** Phase A — state.js + filters.js + data.js changes (data layer)
-- **Agent 2:** Phase B — sheet-engine.js default change (fast, 2 lines)
-- **Agent 3:** Phase C — app.html modal rebuild + glass.css styles + sheet-engine.js modal init
-
-After all three complete:
-- **Agent 4:** Phase D (sync all surfaces) + Phase E (build/test/visual QA)
-
-Each agent gets full context: file paths, line numbers, exact changes, and the canonical schema to ensure consistency.
-
----
+| `index.html` | Hero simplification, browse section merge, new inline CSS |
+| `.scripts/lib/generators/index-page.js` | Update markers for new browse section |
+| `pp-interactions.js` | Add tab switching logic, remove show-all-regions handler |
 
 ## Risks
-
-| Risk | Mitigation |
-|------|-----------|
-| Half-default shows empty sheet before data loads | Verify skeleton cards display in half-state; sheet-engine already has skeleton logic |
-| New filters break existing Supabase queries | New filters are additive `AND` clauses; null/false = no filter applied |
-| Collapsible groups feel sluggish | Use CSS `max-height` transition ≤200ms, not JS animation |
-| Live result count is expensive | `getFilteredCount()` reuses existing filter pipeline, returns `.length` without rendering cards |
-| Modal rewrite breaks existing filter sync | Extend existing `data-action`/`data-value` pattern, don't replace |
-| CSS brace imbalance from modal rewrite | Pre-commit hook catches this; also manual check before commit |
-| Parallel agents create merge conflicts | Agents edit different files; Phase D reconciles after all complete |
-
----
+1. **SEO**: The type and region pages are linked from these grids — must preserve all `<a>` links with same hrefs. Tab-hidden content is still in DOM, so crawlers see it.
+2. **Build system**: Marker replacement in `index-page.js` needs to match new HTML structure. Test with `npm run build:local`.
+3. **Scroll-to-browse**: The `#browse` anchor link from hero needs smooth scroll behavior.
+4. **Mobile tab UX**: Tabs must be large enough tap targets (44px min height).
+5. **Situatie links on mobile**: Currently pills on mobile, full cards on desktop. Merging might lose desktop descriptions. Keep descriptions in `title` attr or tooltip.
 
 ## Verification
-
-1. **Automated:** `npm test` + `npm run test:e2e` pass (no new failures beyond pre-existing)
-2. **Visual QA (mobile 390px):**
-   - App loads → sheet opens at half (not peek) ← **Change 1**
-   - Cards visible immediately, skeleton during data load
-   - Tap filter button → modal opens with progressive disclosure ← **Change 3**
-   - Layer 1 (situaties, weer, leeftijd) visible immediately
-   - Tap "Meer opties" → layer 2 expands smoothly
-   - New filters visible: Makkelijk parkeren, Buggy-vriendelijk, Gratis, Restaurant, Snacks ← **Change 2**
-   - Apply filters → badge shows, results filter correctly
-   - Reset filters → all clear, badge gone
-   - Activate a collapsed filter → close + reopen modal → group auto-expanded
-3. **Visual QA (desktop 1280px):**
-   - Sidebar shows updated filter panel matching canonical model
-4. **Cross-check:** activate filter in modal → verify same filter shows active in sidebar (and vice versa)
-5. **Performance:** half-default doesn't add visible load time
+1. `npm test` — unit tests pass
+2. `npm run test:e2e` — e2e tests pass (may need baseline updates for homepage)
+3. Visual QA: mobile 390px + desktop 1280px screenshots
+4. Gemini UI review pass
+5. All existing links still work (type pages, region pages, guide pages)
+6. Tab switching works without JS errors
+7. Build generator produces correct output: `npm run build:local`

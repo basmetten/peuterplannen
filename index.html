@@ -181,6 +181,7 @@
     <link rel="stylesheet" href="/style.min.css?v=202603200616">
     <style>
         /* Homepage-specific styles */
+        html { scroll-behavior: smooth; }
         .hero-home {
             background: none;
             color: var(--pp-text);
@@ -203,6 +204,17 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
             font-style: normal;
         }
+        .hero-kicker {
+            font-size: 14px; font-weight: 600; letter-spacing: 0.02em;
+            color: var(--pp-primary); margin: 0 0 16px;
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(212,119,86,0.08); padding: 6px 14px 6px 12px;
+            border-radius: 100px; border: 1px solid rgba(212,119,86,0.15);
+        }
+        .hero-kicker::before {
+            content: ''; display: inline-block; width: 7px; height: 7px;
+            background: var(--pp-primary); border-radius: 50%; flex-shrink: 0;
+        }
         .hero-sub { font-size: 15px; color: var(--pp-text-secondary); margin: 0 0 24px; line-height: 1.5; }
         .hero-cta-primary {
             display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -214,21 +226,18 @@
         }
         .hero-cta-primary:hover { box-shadow: 0 4px 20px rgba(212, 119, 86, 0.35); transform: translateY(-1px); }
         .hero-cta-primary:active { transform: scale(0.98); }
-        .hero-cta-row { display: flex; gap: 8px; margin-bottom: 16px; }
-        .hero-cta-secondary {
-            flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
-            padding: 12px 8px;
-            background: var(--wg-glass-chip, rgba(250, 247, 242, 0.72));
-            backdrop-filter: var(--wg-blur-light, blur(6px));
-            -webkit-backdrop-filter: var(--wg-blur-light, blur(6px));
-            border: var(--wg-border-warm, 1px solid rgba(212, 119, 86, 0.12));
-            border-radius: 14px; font-size: 13px; font-weight: 600;
-            color: var(--pp-text, #3A2F2C); text-decoration: none; transition: all 0.15s;
+        .hero-secondary-row {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            margin-top: 8px;
         }
-        .hero-cta-secondary:hover { background: var(--wg-glass-control, rgba(250, 247, 242, 0.78)); border-color: var(--pp-primary, #D47756); }
-        .hero-cta-secondary:active { transform: scale(0.96); }
-        .hero-cta-secondary svg { stroke: var(--pp-primary, #D47756); flex-shrink: 0; }
-        .hero-trust { font-size: 13px; color: var(--pp-text-secondary); text-align: center; margin: 0; }
+        .hero-secondary-link {
+            font-size: 14px; font-weight: 600; color: var(--pp-text-secondary);
+            text-decoration: none; transition: color 0.15s;
+            border-bottom: 1px solid rgba(58,47,44,0.15);
+            padding-bottom: 1px;
+        }
+        .hero-secondary-link:hover { color: var(--pp-primary); border-color: var(--pp-primary); }
+        .hero-dot { color: var(--pp-border); font-size: 12px; }
 
         .hero-visual { position: relative; width: 100%; max-height: 400px; height: 400px; display: flex; align-items: center; justify-content: center; }
         .hero-image-wrapper {
@@ -249,10 +258,59 @@
         @media (prefers-reduced-motion: reduce) { .hero-visual { animation: none; } }
         .hero-visual::before { content: ''; position: absolute; width: 80%; height: 80%; background: linear-gradient(135deg, var(--pp-primary), var(--pp-accent)); filter: blur(100px); opacity: 0.15; z-index: -1; }
 
+        .browse-section { padding: 80px 24px; background: var(--pp-bg-cream); }
         .cities-section { padding: 80px 24px; background: var(--pp-bg-cream); }
         .section-title { font-size: var(--pp-text-3xl); font-weight: 700; color: var(--pp-text); text-align: center; margin-bottom: 12px; letter-spacing: -0.02em; line-height: 0.96; text-wrap: balance; }
         .section-sub { color: var(--pp-text-secondary); text-align: center; font-size: var(--pp-text-base); margin-bottom: 40px; }
         .container { max-width: 1100px; margin: 0 auto; }
+
+        /* Browse tabs */
+        .browse-tabs {
+            display: flex; justify-content: center; gap: 0;
+            margin: 0 auto 32px; position: relative;
+            border-bottom: 1px solid var(--pp-border);
+            max-width: 320px;
+        }
+        .browse-tabs::after {
+            content: ''; position: absolute; bottom: -1px; left: 0;
+            height: 2px; background: var(--pp-primary);
+            width: var(--indicator-w, 50%);
+            transform: translateX(var(--indicator-x, 0px));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .browse-tab {
+            flex: 1; background: none; border: none; padding: 12px 20px;
+            font-family: var(--pp-font-body); font-size: 15px; font-weight: 600;
+            color: var(--pp-text-muted); cursor: pointer; transition: color 0.2s;
+            position: relative; min-height: 44px;
+        }
+        .browse-tab:hover { color: var(--pp-text-secondary); }
+        .browse-tab[aria-selected="true"] { color: var(--pp-text); }
+
+        /* Browse panels */
+        .browse-panel { display: none; animation: browseFadeIn 0.25s ease; }
+        .browse-panel.is-active { display: block; }
+        @keyframes browseFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Situatie chips */
+        .situatie-chips { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding-top: 8px; }
+        .situatie-label { font-size: 12px; font-weight: 700; color: var(--pp-text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-right: 2px; }
+        .situatie-chip {
+            display: inline-block; padding: 8px 16px; font-size: 14px; font-weight: 500;
+            color: var(--pp-text-secondary); background: var(--pp-surface);
+            border: 1px solid var(--pp-border); border-radius: 100px;
+            text-decoration: none; transition: all 0.15s; white-space: nowrap;
+            min-height: 36px; line-height: 1;
+        }
+        .situatie-chip:hover { border-color: var(--pp-primary-200); color: var(--pp-primary); background: rgba(212,119,86,0.06); }
+
+        /* Browse meta footer */
+        .browse-meta {
+            text-align: center; margin-top: 28px; font-size: 14px; color: var(--pp-text-muted);
+        }
+        .browse-meta a { color: var(--pp-text-secondary); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+        .browse-meta a:hover { color: var(--pp-primary); }
+        .browse-meta span { margin: 0 6px; }
         .cities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
         .city-card {
             background: var(--pp-surface); border-radius: 12px; padding: 24px 20px; text-align: center;
@@ -302,16 +360,11 @@
             .hero-sub { text-align: center; }
             .footer-container { grid-template-columns: 1fr 1fr; }
         }
-        .show-all-regions { display: none; }
         @media (max-width: 768px) {
-            .cities-section .cities-grid { max-height: 340px; overflow: hidden; position: relative; }
-            .cities-section .cities-grid.expanded { max-height: none; }
-            .show-all-regions {
-                display: block; width: 100%; margin-top: 16px; padding: 12px; background: none;
-                border: 1px solid var(--pp-border); border-radius: 10px; font-family: var(--pp-font-body);
-                font-size: var(--pp-text-sm); font-weight: 600; color: var(--pp-primary); cursor: pointer; transition: all 0.2s;
-            }
-            .show-all-regions:hover { background: var(--pp-primary-light); border-color: var(--pp-primary); }
+            .browse-section { padding: 56px 20px; }
+            .browse-tabs { max-width: none; margin-bottom: 24px; }
+            .browse-tab { padding: 10px 16px; font-size: 14px; }
+            .hero-kicker { justify-content: center; }
         }
         @media (max-width: 480px) {
             .footer-container { grid-template-columns: 1fr; }
@@ -354,30 +407,22 @@
 
     <section class="hero-home" id="main-content">
         <div class="hero-content">
+            <!-- BEGIN:HERO_KICKER -->
+            <p class="hero-kicker">2138 locaties · 22 regio's · 100% geverifieerd</p>
+            <!-- END:HERO_KICKER -->
             <h1>Wat gaan we <span class="accent">vandaag</span> doen?</h1>
-            <p class="hero-sub">2138 uitjes, door ouders gecheckt. Altijd actueel.</p>
+            <p class="hero-sub">Vind het perfecte uitje voor je peuter. Door ouders gecheckt, altijd actueel.</p>
 
             <a href="/app.html?gps=1" class="hero-cta-primary">
                 <svg viewBox="0 0 24 24" width="20" height="20"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
                 Uitjes in de buurt
             </a>
 
-            <div class="hero-cta-row">
-                <a href="/app.html#plan" class="hero-cta-secondary">
-                    <svg viewBox="0 0 24 24" width="18" height="18"><rect x="3" y="4" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 2v4M8 2v4M3 10h18" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                    Plan je dag
-                </a>
-                <a href="/blog/" class="hero-cta-secondary">
-                    <svg viewBox="0 0 24 24" width="18" height="18"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                    Inspiratie
-                </a>
-                <a href="/about.html" class="hero-cta-secondary">
-                    <svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 16v-4M12 8h.01" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-                    Ons verhaal
-                </a>
+            <div class="hero-secondary-row">
+                <a href="#browse" class="hero-secondary-link">of zoek op type of regio</a>
+                <span class="hero-dot">·</span>
+                <a href="/app.html#plan" class="hero-secondary-link">Plan je dag</a>
             </div>
-
-            <p class="hero-trust">Door een vader van twee peuters.</p>
         </div>
         <div class="hero-visual">
             <div class="hero-image-wrapper">
@@ -406,190 +451,101 @@
 
 
     
-    <!-- BEGIN:TYPE_GRID -->
-    <section class="cities-section pp-reveal" style="background: var(--pp-bg-warm);">
+    <!-- BEGIN:BROWSE_SECTION -->
+    <section class="browse-section pp-reveal" id="browse" style="background: var(--pp-bg-warm);">
         <div class="container">
-            <h2 class="section-title">Uitjes per type</h2>
-            <p class="section-sub">Weet je al wat voor dag het wordt? Zoek <span class="accent">direct</span> op type uitje.</p>
-            <div class="cities-grid">
-                <a href="speeltuinen.html" class="city-card">
-                    <picture><source type="image/webp" srcset="/images/categories/speeltuinen.webp"><img src="/images/categories/speeltuinen.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
-                    <strong>Speeltuinen</strong>
-                    <span>443 locaties</span>
-                </a>
-                <a href="kinderboerderijen.html" class="city-card">
-                    <picture><source type="image/webp" srcset="/images/categories/kinderboerderijen.webp"><img src="/images/categories/kinderboerderijen.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
-                    <strong>Kinderboerderijen</strong>
-                    <span>316 locaties</span>
-                </a>
-                <a href="natuur.html" class="city-card">
-                    <picture><source type="image/webp" srcset="/images/categories/natuur.webp"><img src="/images/categories/natuur.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
-                    <strong>Natuur</strong>
-                    <span>253 locaties</span>
-                </a>
-                <a href="musea.html" class="city-card">
-                    <picture><source type="image/webp" srcset="/images/categories/musea.webp"><img src="/images/categories/musea.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
-                    <strong>Musea</strong>
-                    <span>159 locaties</span>
-                </a>
-                <a href="zwemmen.html" class="city-card">
-                    <picture><source type="image/webp" srcset="/images/categories/zwemmen.webp"><img src="/images/categories/zwemmen.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
-                    <strong>Zwemmen</strong>
-                    <span>117 locaties</span>
-                </a>
-                <a href="pannenkoeken.html" class="city-card">
-                    <picture><source type="image/webp" srcset="/images/categories/pannenkoeken.webp"><img src="/images/categories/pannenkoeken.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
-                    <strong>Pannenkoeken</strong>
-                    <span>239 locaties</span>
-                </a>
-                <a href="horeca.html" class="city-card">
-                    <picture><source type="image/webp" srcset="/images/categories/horeca.webp"><img src="/images/categories/horeca.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
-                    <strong>Horeca</strong>
-                    <span>588 locaties</span>
-                </a>
-                <a href="cultuur.html" class="city-card">
-                    <picture><source type="image/webp" srcset="/images/categories/cultuur.webp"><img src="/images/categories/cultuur.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
-                    <strong>Cultuur</strong>
-                    <span>23 locaties</span>
-                </a>
+            <h2 class="section-title">Ontdek uitjes</h2>
+            <div class="browse-tabs" role="tablist" aria-label="Zoek op type of regio">
+                <button class="browse-tab" role="tab" id="tab-type" aria-controls="panel-type" aria-selected="true" tabindex="0">Per type</button>
+                <button class="browse-tab" role="tab" id="tab-regio" aria-controls="panel-regio" aria-selected="false" tabindex="-1">Per regio</button>
             </div>
-            <div class="guide-section-compact" style="margin-top:24px;">
-                <p class="guide-kicker" style="margin-bottom:12px;">Of kies op situatie</p>
-                <div class="guide-links">
-              <a href="regenachtige-dag-met-peuter.html" class="guide-link">
-                <strong>Regenachtige dag met peuter</strong>
-                <span>Binnenopties voor regenachtige dagen met peuters: musea, speelplekken, horeca met speelhoek en andere locaties die ook bij slecht weer werken.</span>
-              </a>
-              <a href="binnenlocaties-peuters.html" class="guide-link">
-                <strong>Binnenlocaties voor peuters</strong>
-                <span>Overdekte locaties voor peuters en dreumesen in Nederland. Handig voor regen, kou of een snelle indoor-back-up dicht bij huis.</span>
-              </a>
-              <a href="horeca-met-speelhoek.html" class="guide-link">
-                <strong>Horeca met speelhoek</strong>
-                <span>Restaurants, cafés en pannenkoekenplekken waar jonge kinderen kunnen spelen terwijl ouders iets drinken of eten. Gericht geselecteerd voor gezinnen met peuters.</span>
-              </a>
-              <a href="koffie-en-spelen.html" class="guide-link">
-                <strong>Koffie en spelen</strong>
-                <span>Uitjes waar jonge kinderen kunnen spelen en ouders even kunnen landen. Met koffie, ruimte, verschonen en vaak een logische combinatie van buiten, horeca of dieren.</span>
-              </a>
-              <a href="dreumes-uitjes.html" class="guide-link">
-                <strong>Dreumes-uitjes</strong>
-                <span>Uitjes die ook werken voor de jongste kinderen: rustig, overzichtelijk en praktisch voor 0-2 jaar. Met verschonen, tempo en veilige eerste ontdekplekken.</span>
-              </a>
-              <a href="peuteruitjes-2-5-jaar.html" class="guide-link">
-                <strong>Peuteruitjes voor 2-5 jaar</strong>
-                <span>Uitjes voor kinderen van ongeveer 2 tot 5 jaar: meer actie, meer ontdekken en nog steeds praktisch voor ouders. Van natuur en speeltuinen tot horeca en musea.</span>
-              </a>
+            <div class="browse-panel is-active" role="tabpanel" id="panel-type" aria-labelledby="tab-type">
+                <div class="cities-grid">
+                    <a href="speeltuinen.html" class="city-card">
+                        <picture><source type="image/webp" srcset="/images/categories/speeltuinen.webp"><img src="/images/categories/speeltuinen.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
+                        <strong>Speeltuinen</strong>
+                        <span>443 locaties</span>
+                    </a>
+                    <a href="kinderboerderijen.html" class="city-card">
+                        <picture><source type="image/webp" srcset="/images/categories/kinderboerderijen.webp"><img src="/images/categories/kinderboerderijen.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
+                        <strong>Kinderboerderijen</strong>
+                        <span>316 locaties</span>
+                    </a>
+                    <a href="natuur.html" class="city-card">
+                        <picture><source type="image/webp" srcset="/images/categories/natuur.webp"><img src="/images/categories/natuur.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
+                        <strong>Natuur</strong>
+                        <span>253 locaties</span>
+                    </a>
+                    <a href="musea.html" class="city-card">
+                        <picture><source type="image/webp" srcset="/images/categories/musea.webp"><img src="/images/categories/musea.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
+                        <strong>Musea</strong>
+                        <span>159 locaties</span>
+                    </a>
+                    <a href="zwemmen.html" class="city-card">
+                        <picture><source type="image/webp" srcset="/images/categories/zwemmen.webp"><img src="/images/categories/zwemmen.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
+                        <strong>Zwemmen</strong>
+                        <span>117 locaties</span>
+                    </a>
+                    <a href="pannenkoeken.html" class="city-card">
+                        <picture><source type="image/webp" srcset="/images/categories/pannenkoeken.webp"><img src="/images/categories/pannenkoeken.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
+                        <strong>Pannenkoeken</strong>
+                        <span>239 locaties</span>
+                    </a>
+                    <a href="horeca.html" class="city-card">
+                        <picture><source type="image/webp" srcset="/images/categories/horeca.webp"><img src="/images/categories/horeca.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
+                        <strong>Horeca</strong>
+                        <span>588 locaties</span>
+                    </a>
+                    <a href="cultuur.html" class="city-card">
+                        <picture><source type="image/webp" srcset="/images/categories/cultuur.webp"><img src="/images/categories/cultuur.png" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy" decoding="async"></picture>
+                        <strong>Cultuur</strong>
+                        <span>23 locaties</span>
+                    </a>
+                </div>
+                <div class="situatie-chips" style="margin-top:20px;">
+                    <span class="situatie-label">Op situatie:</span>
+                    <a href="regenachtige-dag-met-peuter.html" class="situatie-chip">Slecht weer</a>
+                    <a href="binnenlocaties-peuters.html" class="situatie-chip">Indoor</a>
+                    <a href="horeca-met-speelhoek.html" class="situatie-chip">Eten &amp; spelen</a>
+                    <a href="koffie-en-spelen.html" class="situatie-chip">Rust voor beide kanten</a>
+                    <a href="dreumes-uitjes.html" class="situatie-chip">0-2 jaar</a>
+                    <a href="peuteruitjes-2-5-jaar.html" class="situatie-chip">2-5 jaar</a>
                 </div>
             </div>
-        </div>
-    </section>
-<!-- END:TYPE_GRID -->
-    <!-- BEGIN:CITY_GRID -->
-    <section class="cities-section pp-reveal">
-        <div class="container">
-            <h2 class="section-title">Uitjes per regio</h2>
-            <p class="section-sub"><span class="accent">Elke regio</span> omvat de stad én omliggende gemeenten. Gecheckt en actueel.</p>
-            <div class="cities-grid">
-                <a href="amsterdam.html" class="city-card">
-                    <strong>Amsterdam</strong>
-                    <span>301 locaties</span>
-                </a>
-                <a href="rotterdam.html" class="city-card">
-                    <strong>Rotterdam</strong>
-                    <span>145 locaties</span>
-                </a>
-                <a href="den-haag.html" class="city-card">
-                    <strong>Den Haag</strong>
-                    <span>175 locaties</span>
-                </a>
-                <a href="utrecht.html" class="city-card">
-                    <strong>Utrecht</strong>
-                    <span>185 locaties</span>
-                </a>
-                <a href="haarlem.html" class="city-card">
-                    <strong>Haarlem</strong>
-                    <span>106 locaties</span>
-                </a>
-                <a href="amersfoort.html" class="city-card">
-                    <strong>Amersfoort</strong>
-                    <span>81 locaties</span>
-                </a>
-                <a href="leiden.html" class="city-card">
-                    <strong>Leiden</strong>
-                    <span>68 locaties</span>
-                </a>
-                <a href="utrechtse-heuvelrug.html" class="city-card">
-                    <strong>Utrechtse Heuvelrug</strong>
-                    <span>108 locaties</span>
-                </a>
-                <a href="eindhoven.html" class="city-card">
-                    <strong>Eindhoven</strong>
-                    <span>72 locaties</span>
-                </a>
-                <a href="groningen.html" class="city-card">
-                    <strong>Groningen</strong>
-                    <span>120 locaties</span>
-                </a>
-                <a href="almere.html" class="city-card">
-                    <strong>Almere</strong>
-                    <span>73 locaties</span>
-                </a>
-                <a href="tilburg.html" class="city-card">
-                    <strong>Tilburg</strong>
-                    <span>89 locaties</span>
-                </a>
-                <a href="breda.html" class="city-card">
-                    <strong>Breda</strong>
-                    <span>72 locaties</span>
-                </a>
-                <a href="nijmegen.html" class="city-card">
-                    <strong>Nijmegen</strong>
-                    <span>56 locaties</span>
-                </a>
-                <a href="arnhem.html" class="city-card">
-                    <strong>Arnhem</strong>
-                    <span>74 locaties</span>
-                </a>
-                <a href="apeldoorn.html" class="city-card">
-                    <strong>Apeldoorn</strong>
-                    <span>72 locaties</span>
-                </a>
-                <a href="s-hertogenbosch.html" class="city-card">
-                    <strong>'s-Hertogenbosch</strong>
-                    <span>107 locaties</span>
-                </a>
-                <a href="gooi-en-vechtstreek.html" class="city-card">
-                    <strong>Gooi en Vechtstreek</strong>
-                    <span>54 locaties</span>
-                </a>
-                <a href="enschede.html" class="city-card">
-                    <strong>Enschede</strong>
-                    <span>49 locaties</span>
-                </a>
-                <a href="zwolle.html" class="city-card">
-                    <strong>Zwolle</strong>
-                    <span>48 locaties</span>
-                </a>
-                <a href="maastricht.html" class="city-card">
-                    <strong>Maastricht</strong>
-                    <span>37 locaties</span>
-                </a>
-                <a href="dordrecht.html" class="city-card">
-                    <strong>Dordrecht</strong>
-                    <span>46 locaties</span>
-                </a>
-            </div>
-            <button class="show-all-regions pp-show-all">Alle 22 regio's bekijken</button>
-          <div class="guide-section-compact" style="margin-top:24px;">
-                <div class="guide-links">
-                  <a href="/ontdekken/" class="guide-link"><strong>Alles geordend bekijken</strong><span>Regio’s, typen, situaties en blogroutes op één pagina.</span></a>
-                  <a href="/methode/" class="guide-link"><strong>Hoe we selecteren</strong><span>Waarom sommige locaties hoger scoren dan andere.</span></a>
+            <div class="browse-panel" role="tabpanel" id="panel-regio" aria-labelledby="tab-regio" hidden>
+                <div class="cities-grid">
+                    <a href="amsterdam.html" class="city-card"><strong>Amsterdam</strong><span>301 locaties</span></a>
+                    <a href="rotterdam.html" class="city-card"><strong>Rotterdam</strong><span>145 locaties</span></a>
+                    <a href="den-haag.html" class="city-card"><strong>Den Haag</strong><span>175 locaties</span></a>
+                    <a href="utrecht.html" class="city-card"><strong>Utrecht</strong><span>185 locaties</span></a>
+                    <a href="haarlem.html" class="city-card"><strong>Haarlem</strong><span>106 locaties</span></a>
+                    <a href="amersfoort.html" class="city-card"><strong>Amersfoort</strong><span>81 locaties</span></a>
+                    <a href="leiden.html" class="city-card"><strong>Leiden</strong><span>68 locaties</span></a>
+                    <a href="utrechtse-heuvelrug.html" class="city-card"><strong>Utrechtse Heuvelrug</strong><span>108 locaties</span></a>
+                    <a href="eindhoven.html" class="city-card"><strong>Eindhoven</strong><span>72 locaties</span></a>
+                    <a href="groningen.html" class="city-card"><strong>Groningen</strong><span>120 locaties</span></a>
+                    <a href="almere.html" class="city-card"><strong>Almere</strong><span>73 locaties</span></a>
+                    <a href="tilburg.html" class="city-card"><strong>Tilburg</strong><span>89 locaties</span></a>
+                    <a href="breda.html" class="city-card"><strong>Breda</strong><span>72 locaties</span></a>
+                    <a href="nijmegen.html" class="city-card"><strong>Nijmegen</strong><span>56 locaties</span></a>
+                    <a href="arnhem.html" class="city-card"><strong>Arnhem</strong><span>74 locaties</span></a>
+                    <a href="apeldoorn.html" class="city-card"><strong>Apeldoorn</strong><span>72 locaties</span></a>
+                    <a href="s-hertogenbosch.html" class="city-card"><strong>’s-Hertogenbosch</strong><span>107 locaties</span></a>
+                    <a href="gooi-en-vechtstreek.html" class="city-card"><strong>Gooi en Vechtstreek</strong><span>54 locaties</span></a>
+                    <a href="enschede.html" class="city-card"><strong>Enschede</strong><span>49 locaties</span></a>
+                    <a href="zwolle.html" class="city-card"><strong>Zwolle</strong><span>48 locaties</span></a>
+                    <a href="maastricht.html" class="city-card"><strong>Maastricht</strong><span>37 locaties</span></a>
+                    <a href="dordrecht.html" class="city-card"><strong>Dordrecht</strong><span>46 locaties</span></a>
                 </div>
             </div>
+            <p class="browse-meta">
+                <a href="/ontdekken/">Alles geordend bekijken</a>
+                <span>·</span>
+                <a href="/methode/">Hoe we selecteren</a>
+            </p>
         </div>
     </section>
-<!-- END:CITY_GRID -->
+    <!-- END:BROWSE_SECTION -->
 
     <!-- BEGIN:BLOG_PREVIEW -->
     <section class="blog-preview-section pp-reveal">
@@ -665,6 +621,62 @@
 
 <script src="/reveal.js" defer></script>
 <script src="/homepage-results.js" defer></script>
+<script>
+// Browse tabs — accessible tab switching with animated underline
+(function() {
+  var tablist = document.querySelector('.browse-tabs');
+  if (!tablist) return;
+  var tabs = [].slice.call(tablist.querySelectorAll('[role="tab"]'));
+  var panels = tabs.map(function(t) { return document.getElementById(t.getAttribute('aria-controls')); });
+
+  function moveIndicator(tab) {
+    tablist.style.setProperty('--indicator-w', tab.offsetWidth + 'px');
+    tablist.style.setProperty('--indicator-x', tab.offsetLeft + 'px');
+  }
+
+  function activate(tab) {
+    tabs.forEach(function(t, i) {
+      var selected = t === tab;
+      t.setAttribute('aria-selected', selected ? 'true' : 'false');
+      t.tabIndex = selected ? 0 : -1;
+      if (selected) {
+        panels[i].hidden = false;
+        panels[i].classList.add('is-active');
+      } else {
+        panels[i].classList.remove('is-active');
+        panels[i].hidden = true;
+      }
+    });
+    moveIndicator(tab);
+  }
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() { activate(tab); });
+  });
+
+  // Keyboard: arrow keys within tablist
+  tablist.addEventListener('keydown', function(e) {
+    var idx = tabs.indexOf(document.activeElement);
+    var next = -1;
+    if (e.key === 'ArrowRight') next = (idx + 1) % tabs.length;
+    if (e.key === 'ArrowLeft') next = (idx - 1 + tabs.length) % tabs.length;
+    if (e.key === 'Home') next = 0;
+    if (e.key === 'End') next = tabs.length - 1;
+    if (next >= 0) { e.preventDefault(); tabs[next].focus(); activate(tabs[next]); }
+  });
+
+  // Initialize indicator position
+  moveIndicator(tabs[0]);
+
+  // Smooth scroll for hero link
+  document.querySelectorAll('a[href="#browse"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('browse').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+})();
+</script>
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
 </html>

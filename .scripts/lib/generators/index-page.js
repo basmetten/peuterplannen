@@ -18,68 +18,57 @@ function updateIndex(data) {
   const kickerHTML = `            <p class="hero-kicker">${total} locaties · ${regions.length} regio's · 100% geverifieerd</p>`;
   content = replaceMarker(content, 'HERO_KICKER', kickerHTML);
 
-  // TYPE_GRID
+  // BROWSE_SECTION — unified type + region tabs
   const typeCards = Object.entries(TYPE_MAP).map(([type, info]) => {
     const count = typeCounts[type] || 0;
     const imgSrc = TYPE_IMAGES[type];
     const imgFileExists = imgSrc && fs.existsSync(path.join(ROOT, imgSrc));
-    const img = imgFileExists ? `\n                    <picture><source type="image/webp" srcset="${imgSrc.replace('.png', '.webp')}"><img src="${imgSrc}" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>` : '';
-    return `                <a href="${info.slug}.html" class="city-card">${img}
-                    <strong>${info.label}</strong>
-                    <span>${count} locaties</span>
-                </a>`;
-  }).join('\n');
+    const img = imgFileExists ? `\n                        <picture><source type="image/webp" srcset="${imgSrc.replace(‘.png’, ‘.webp’)}"><img src="${imgSrc}" alt="" width="48" height="48" style="border-radius:var(--pp-radius-sm);margin-bottom:8px;" loading="lazy"></picture>` : ‘’;
+    return `                    <a href="${info.slug}.html" class="city-card">${img}
+                        <strong>${info.label}</strong>
+                        <span>${count} locaties</span>
+                    </a>`;
+  }).join(‘\n’);
 
-  const clusterCards = CLUSTER_PAGES.map((page) => `              <a href="${page.slug}.html" class="guide-link">
-                <strong>${page.h1}</strong>
-                <span>${page.metaDesc}</span>
-              </a>`).join('\n');
+  const situatieChips = CLUSTER_PAGES.map((page) => {
+    const label = page.kicker || page.h1;
+    return `                    <a href="${page.slug}.html" class="situatie-chip">${escapeHtml(label)}</a>`;
+  }).join(‘\n’);
 
-  const typeGridHTML = `    <section class="cities-section pp-reveal" style="background: var(--pp-bg-warm);">
-        <div class="container">
-            <h2 class="section-title">Uitjes per type</h2>
-            <p class="section-sub">Weet je al wat voor dag het wordt? Zoek <span class="accent">direct</span> op type uitje.</p>
-            <div class="cities-grid">
-${typeCards}
-            </div>
-            <div class="guide-section-compact" style="margin-top:24px;">
-                <p class="guide-kicker" style="margin-bottom:12px;">Of kies op situatie</p>
-                <div class="guide-links">
-${clusterCards}
-                </div>
-            </div>
-        </div>
-    </section>`;
-  content = replaceMarker(content, 'TYPE_GRID', typeGridHTML);
-
-  // CITY_GRID
   const cityCards = regions.map(r => {
     const count = regionCounts[r.name] || 0;
-    return `                <a href="${r.slug}.html" class="city-card">
-                    <strong>${r.name}</strong>
-                    <span>${count} locaties</span>
-                </a>`;
-  }).join('\n');
+    return `                    <a href="${r.slug}.html" class="city-card"><strong>${r.name}</strong><span>${count} locaties</span></a>`;
+  }).join(‘\n’);
 
-  const crawlHubHTML = `          <div class="guide-section-compact" style="margin-top:24px;">
-                <div class="guide-links">
-                  <a href="/ontdekken/" class="guide-link"><strong>Alles geordend bekijken</strong><span>Regio’s, typen, situaties en blogroutes op één pagina.</span></a>
-                  <a href="/methode/" class="guide-link"><strong>Hoe we selecteren</strong><span>Waarom sommige locaties hoger scoren dan andere.</span></a>
-                </div>
-            </div>`;
-
-  const cityGridHTML = `    <section class="cities-section pp-reveal">
+  const browseHTML = `    <section class="browse-section pp-reveal" id="browse" style="background: var(--pp-bg-warm);">
         <div class="container">
-            <h2 class="section-title">Uitjes per regio</h2>
-            <p class="section-sub"><span class="accent">Elke regio</span> omvat de stad én omliggende gemeenten. Gecheckt en actueel.</p>
-            <div class="cities-grid">
-${cityCards}
+            <h2 class="section-title">Ontdek uitjes</h2>
+            <div class="browse-tabs" role="tablist" aria-label="Zoek op type of regio">
+                <button class="browse-tab" role="tab" id="tab-type" aria-controls="panel-type" aria-selected="true" tabindex="0">Per type</button>
+                <button class="browse-tab" role="tab" id="tab-regio" aria-controls="panel-regio" aria-selected="false" tabindex="-1">Per regio</button>
             </div>
-            <button class="show-all-regions pp-show-all">Alle ${regions.length} regio's bekijken</button>
-${crawlHubHTML}
+            <div class="browse-panel is-active" role="tabpanel" id="panel-type" aria-labelledby="tab-type">
+                <div class="cities-grid">
+${typeCards}
+                </div>
+                <div class="situatie-chips" style="margin-top:20px;">
+                    <span class="situatie-label">Op situatie:</span>
+${situatieChips}
+                </div>
+            </div>
+            <div class="browse-panel" role="tabpanel" id="panel-regio" aria-labelledby="tab-regio" hidden>
+                <div class="cities-grid">
+${cityCards}
+                </div>
+            </div>
+            <p class="browse-meta">
+                <a href="/ontdekken/">Alles geordend bekijken</a>
+                <span>·</span>
+                <a href="/methode/">Hoe we selecteren</a>
+            </p>
         </div>
     </section>`;
-  content = replaceMarker(content, 'CITY_GRID', cityGridHTML);
+  content = replaceMarker(content, ‘BROWSE_SECTION’, browseHTML);
 
   // BLOG_PREVIEW
   const blogPreviewCards = featuredBlogEntries.slice(0, 5).map((entry) => {
