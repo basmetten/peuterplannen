@@ -97,10 +97,10 @@ export const TYPE_COLORS = {
 };
 
 /** @type {string} Comma-separated Supabase select fields for the primary location query. */
-export const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_quality,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,food_fit,play_corner_quality,noise_level,crowd_pattern,time_of_day_fit,price_band,opening_hours,verification_confidence,verification_mode,always_open';
+export const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_quality,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,food_fit,play_corner_quality,noise_level,crowd_pattern,time_of_day_fit,price_band,opening_hours,verification_confidence,verification_mode';
 
 /** @type {string} Comma-separated Supabase select fields used as fallback when primary query fails. */
-export const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_quality,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,food_fit,play_corner_quality,noise_level,crowd_pattern,time_of_day_fit,price_band,opening_hours,verification_confidence,verification_mode,always_open';
+export const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_quality,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,food_fit,play_corner_quality,noise_level,crowd_pattern,time_of_day_fit,price_band,opening_hours,verification_confidence,verification_mode';
 
 /** @type {string} IndexedDB key used to store the cached locations payload. */
 export const LOCATIONS_CACHE_KEY = 'pp_locations_cache_v5';
