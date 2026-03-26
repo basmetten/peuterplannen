@@ -8,9 +8,9 @@
 
 import { state, CATEGORY_IMAGES, TYPE_PHOTO_COLORS, TYPE_LABELS } from './state.js';
 import { escapeHtml } from './utils.js';
-import { computePeuterScore } from './scoring.js';
+import { computePeuterScoreV2 } from './scoring.js';
 import { isFavorite } from './favorites.js';
-import { getKenmerkenTags, getDistanceLabel, getUnifiedOneLiner } from './card-data.js';
+import { getKenmerkenTags, getDistanceLabel, getUnifiedOneLiner, getScoreTier } from './card-data.js';
 
 // === Shared photo data ===
 
@@ -73,10 +73,11 @@ export function renderCompactCard(loc, opts = {}) {
     const styleAttr = extraStyle ? ` style="${extraStyle}"` : '';
     const imgStyleAttr = imgStyle ? ` style="${imgStyle};background:${photoColor}"` : ` style="background:${photoColor}"`;
 
-    // Score badge with tier classes
-    const ps = computePeuterScore(loc);
-    const scoreClass = ps >= 8 ? ' score-high' : ps >= 7 ? ' score-mid' : '';
-    const scoreBadge = ps ? `<span class="compact-card-score${scoreClass}">\u2605 ${ps}</span>` : '';
+    // Score badge with tier classes (V2 scoring)
+    const ps = computePeuterScoreV2(loc).total;
+    const tier = getScoreTier(ps);
+    const scoreClass = tier === 'high' ? ' score-high' : tier === 'mid' ? ' score-mid' : '';
+    const scoreBadge = ps ? `<span class="compact-card-score${scoreClass}">\u2605 ${Math.round(ps * 10) / 10}</span>` : '';
 
     // Facility + weather tags — unified via card-data kenmerken
     const kenmerkenTags = getKenmerkenTags(loc, 3);

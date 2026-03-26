@@ -5,6 +5,7 @@ import { renderCompactCard, renderSheetPreview, renderSheetScanCard, getPhotoDat
 import { getPracticalBullets, computePeuterScoreV2, getTrustBullets } from './scoring.js';
 import { getSterkePunten } from './tags.js';
 import { isFavorite } from './favorites.js';
+import { getAdvancedFilterCount } from './filters.js';
 
 /* ===================================================
    SCROLL-SNAP SHEET ENGINE
@@ -623,15 +624,24 @@ function initSheetFilterChips() {
     container.querySelectorAll('.sheet-filter-chip').forEach(chip => {
         chip.addEventListener('click', () => {
             const filter = chip.dataset.filter;
+            if (filter === 'all') {
+                state.activeTags = [];
+                state.activeFavorites = false;
+            } else {
+                const idx = state.activeTags.indexOf(filter);
+                if (idx >= 0) state.activeTags.splice(idx, 1);
+                else state.activeTags.push(filter);
+                state.activeFavorites = false;
+            }
+            // Sync chip active classes for multi-select
             container.querySelectorAll('.sheet-filter-chip').forEach(c => {
-                c.classList.remove('active');
-                c.setAttribute('aria-pressed', 'false');
+                const chipFilter = c.dataset.filter;
+                const isActive = chipFilter === 'all' ? state.activeTags.length === 0 : state.activeTags.includes(chipFilter);
+                c.classList.toggle('active', isActive);
+                c.setAttribute('aria-pressed', isActive ? 'true' : 'false');
             });
-            chip.classList.add('active');
-            chip.setAttribute('aria-pressed', 'true');
-            state.activeTag = filter;
-            state.activeWeather = null;
             bus.emit('data:reload');
+            updateSheetMeta();
         });
     });
 }
@@ -646,7 +656,7 @@ export function updateSheetMeta() {
     // Active filter context
     const activePreset = state.activePreset;
     if (activePreset) {
-        const presetLabels = { 'short-drive': 'korte rit', 'rain': 'regenproof', 'lunch-play': 'lunch+spelen', 'peuterproof': 'peuterproof', 'outdoor-coffee': 'buiten+koffie', 'now-open': 'nu open' };
+        const presetLabels = { 'short-drive': 'korte rit', 'rain': 'regenproof', 'lunch-play': 'lunch+spelen', 'peuterproof': 'peuterproof', 'outdoor-coffee': 'buiten+koffie', 'now-open': 'nu open', 'dreumesproof': 'dreumesproof', 'terras-kids': 'terrasje + kids' };
         if (presetLabels[activePreset]) parts.push(presetLabels[activePreset]);
     }
     if (state.activeWeather === 'indoor') parts.push('binnen');
@@ -767,12 +777,11 @@ function initFilterModal() {
             state.activeAgeGroup = null;
             state.activeFacilities = { coffee: false, diaper: false, alcohol: false };
             state.activeRadius = null;
-            state.activePreset = '';
-            state.activeFoodFit = '';
-            state.activePriceBand = '';
-            state.activePractical = '';
-            state.activeSort = 'relevance';
-            state.activeTag = state.activeTag === 'favorites' ? 'all' : state.activeTag;
+            state.activePreset = null;
+            state.activeFoodFit = null;
+            state.activePriceBand = null;
+            state.activePractical = { parking: false, buggy: false };
+            state.activeSort = 'default';
             // Sync all filter chip surfaces (modal + sheet)
             syncModalChips(); updateMoreBadge(); syncResetBtn(); syncVeilPillCount();
             // Sync main chip row
@@ -864,16 +873,9 @@ function updateModalCount() {
 }
 
 function updateMoreBadge() {
+    const count = getAdvancedFilterCount();
     const badge = document.getElementById('filter-more-badge');
-    if (!badge) return;
-    let count = 0;
-    if (state.activeWeather) count++;
-    if (state.activeAgeGroup) count++;
-    if (state.activeFacilities.coffee) count++;
-    if (state.activeFacilities.diaper) count++;
-    if (state.activeRadius) count++;
-    badge.textContent = count > 0 ? count : '';
-    badge.classList.toggle('has-count', count > 0);
+    if (badge) { badge.textContent = count || ''; badge.hidden = !count; }
 }
 
 /* ===================================================
@@ -1059,8 +1061,8 @@ function renderInSheetDetail(loc) {
     if (loc.parking_ease === 'easy') facilities.push({ icon: '\uD83C\uDD7F\uFE0F', label: 'Parkeren' });
     if (loc.buggy_friendliness === 'easy') facilities.push({ icon: '\uD83D\uDED2', label: 'Buggy OK' });
     if (loc.toilet_confidence === 'confident') facilities.push({ icon: '\uD83D\uDEBB', label: 'Toilet' });
-    if (loc.weather === 'indoor' || loc.weather === 'hybrid') facilities.push({ icon: '\uD83C\uDFE0', label: 'Binnen' });
-    if (loc.weather === 'outdoor' || loc.weather === 'hybrid') facilities.push({ icon: '\uD83C\uDF3F', label: 'Buiten' });
+    if (loc.weather === 'indoor' || loc.weather === 'hybrid' || loc.weather === 'both') facilities.push({ icon: '\uD83C\uDFE0', label: 'Binnen' });
+    if (loc.weather === 'outdoor' || loc.weather === 'hybrid' || loc.weather === 'both') facilities.push({ icon: '\uD83C\uDF3F', label: 'Buiten' });
     if (loc.alcohol) facilities.push({ icon: '\uD83C\uDF77', label: 'Alcohol' });
 
     const practicalBullets = getPracticalBullets(loc);

@@ -65,7 +65,7 @@ export const SB_EVENTS_URL = "https://piujsvgbfflrrvauzsxe.supabase.co/rest/v1/a
 // === Label Maps ===
 
 /** @type {Object<string, string>} Maps location type keys to Dutch display labels. */
-export const TYPE_LABELS = { play: 'Speeltuin', farm: 'Boerderij', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', swim: 'Zwemmen', pancake: 'Pannenkoeken' };
+export const TYPE_LABELS = { play: 'Speeltuin', farm: 'Kinderboerderij', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', swim: 'Zwemmen', pancake: 'Pannenkoeken', culture: 'Cultuur' };
 
 /** @type {Object<string, string>} Maps weather type keys to Dutch display labels. */
 export const WEATHER_LABELS = { indoor: 'Binnen', outdoor: 'Buiten', hybrid: 'Binnen+buiten', both: 'Binnen+buiten' };
@@ -78,7 +78,7 @@ export const PRESET_LABELS = {
     peuterproof: 'Peuterproof',
     'short-drive': 'Korte rit',
     'lunch-play': 'Lunch + spelen',
-    'terras-kids': 'Terrasje met de kids',
+    'terras-kids': 'Terrasje + kids',
     'now-open': 'Nu open',
 };
 
@@ -97,10 +97,10 @@ export const TYPE_COLORS = {
 };
 
 /** @type {string} Comma-separated Supabase select fields for the primary location query. */
-export const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_quality,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,food_fit,play_corner_quality,noise_level,crowd_pattern,time_of_day_fit,price_band,opening_hours';
+export const FULL_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_quality,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,food_fit,play_corner_quality,noise_level,crowd_pattern,time_of_day_fit,price_band,opening_hours,verification_confidence,verification_mode,always_open';
 
 /** @type {string} Comma-separated Supabase select fields used as fallback when primary query fails. */
-export const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_quality,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,food_fit,play_corner_quality,noise_level,crowd_pattern,time_of_day_fit,price_band,opening_hours';
+export const FALLBACK_LOCATION_SELECT = 'id,name,type,description,website,distance_from_city_center_km,region,coffee,alcohol,diaper,place_id,lat,lng,weather,last_verified,verification_source,min_age,max_age,toddler_highlight,is_featured,featured_until,owner_verified,owner_photo_url,photo_url,photo_quality,rain_backup_quality,shade_or_shelter,parking_ease,buggy_friendliness,toilet_confidence,food_fit,play_corner_quality,noise_level,crowd_pattern,time_of_day_fit,price_band,opening_hours,verification_confidence,verification_mode,always_open';
 
 /** @type {string} IndexedDB key used to store the cached locations payload. */
 export const LOCATIONS_CACHE_KEY = 'pp_locations_cache_v5';
@@ -181,8 +181,8 @@ export const FILTER_SCHEMA = [
         { value: 'outdoor', label: 'Buiten', action: 'weather' },
     ]},
     { group: 'leeftijd', label: 'Leeftijd', options: [
-        { value: 'dreumes', label: 'Dreumes (0-2)', action: 'age' },
-        { value: 'peuter', label: 'Peuter (2-5)', action: 'age' },
+        { value: 'dreumes', label: 'Dreumes (0–2)', action: 'age' },
+        { value: 'peuter', label: 'Peuter (2–5)', action: 'age' },
     ]},
     { group: 'faciliteiten', label: 'Faciliteiten', options: [
         { value: 'coffee', label: 'Koffie', action: 'facility' },

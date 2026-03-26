@@ -1,9 +1,10 @@
 import { state, SB_KEY, DESKTOP_WIDTH, TYPE_LABELS, WEATHER_LABELS, WEATHER_ICONS, SB_URL, FULL_LOCATION_SELECT } from './state.js';
-import { escapeHtml, safeUrl, slugify, cleanToddlerHighlight, calculateDistance, buildDetailUrl, trackEvent } from './utils.js';
+import { escapeHtml, safeUrl, slugify, cleanToddlerHighlight, buildDetailUrl, trackEvent } from './utils.js';
 import { getTrustBullets, getPracticalBullets, computePeuterScoreV2 } from './scoring.js';
 import { isFavorite } from './favorites.js';
 import { fetchJsonWithRetry, normalizeLocationRow } from './data.js';
 import { getSterkePunten } from './tags.js';
+import { getDistanceLabel } from './card-data.js';
 import { markVisited } from './visited.js';
 import { getPrefs, setPrefs, hasCompletedOnboarding } from './prefs.js';
 import { getPhotoData } from './templates.js';
@@ -43,11 +44,11 @@ export function openLocSheet(locationId) {
     const weatherLabel = WEATHER_LABELS[loc.weather] || '';
     const weatherIcon = WEATHER_ICONS[loc.weather] || '';
 
+    const travelInfo = state.lastTravelTimes?.[loc.id];
+    const distLabel = getDistanceLabel(loc, travelInfo);
     let distancePill = '';
-    if (state.userLocation && loc.lat && loc.lng) {
-        const dist = calculateDistance(state.userLocation.lat, state.userLocation.lng, loc.lat, loc.lng);
-        const mins = Math.round(dist * DISTANCE_TO_MINUTES_FACTOR);
-        distancePill = `<span class="pill pill-distance">${mins < 60 ? mins + ' min' : Math.floor(mins/60) + 'u ' + (mins%60) + 'm'}</span>`;
+    if (distLabel) {
+        distancePill = `<span class="pill pill-distance">${distLabel}</span>`;
     } else if (loc.region) {
         distancePill = `<span class="pill pill-region">${loc.region}</span>`;
     }
@@ -311,7 +312,7 @@ function renderDetailView(loc, regionSlug) {
     const isFav = isFavorite(loc.id);
     const favStyle = isFav ? 'fill: #D4775A; stroke: #D4775A;' : '';
     const v2 = computePeuterScoreV2(loc, {});
-    const psScore = Math.round(v2.total / 10);
+    const psScore = Math.round(v2.total * 10) / 10;
 
     let ageText = '';
     if (loc.min_age != null && loc.max_age != null) ageText = loc.min_age + '–' + loc.max_age + ' jaar';

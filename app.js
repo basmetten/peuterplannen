@@ -118,7 +118,7 @@ Object.assign(window, {
         setTimeout(() => {
             const tagLabels = { play: 'Speeltuin', farm: 'Boerderij', nature: 'Natuur', horeca: 'Horeca', museum: 'Museum', swim: 'Zwemmen', pancake: 'Pannenkoeken' };
             const activeLabels = new Set(state.activeTags.map(t => tagLabels[t]).filter(Boolean));
-            document.querySelector('.chip.active')?.classList.remove('active');
+            document.querySelectorAll('.chip.active').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.chip').forEach(c => {
                 const text = c.textContent.trim();
                 if (activeLabels.has(text)) c.classList.add('active');

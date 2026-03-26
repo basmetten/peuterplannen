@@ -67,6 +67,7 @@ function syncSheetTabs(view) {
 
 /** Desktop view switching — sidebar + always-visible map */
 function switchViewDesktop(view) {
+    state.currentView = view;
     if (view === 'favorites') {
         state.activeFavorites = true;
         loadLocations();
