@@ -2,9 +2,10 @@ import { state, DESKTOP_WIDTH, TYPE_LABELS, WEATHER_LABELS } from './state.js';
 import { escapeHtml } from './utils.js';
 import bus from './bus.js';
 import { renderCompactCard, renderSheetPreview, renderSheetScanCard, getPhotoData } from './templates.js';
-import { getPracticalBullets, computePeuterScoreV2, getTrustBullets } from './scoring.js';
+import { getPracticalBullets, computePeuterScoreV2, getTrustBullets, getOpenStatus } from './scoring.js';
 import { getSterkePunten } from './tags.js';
 import { isFavorite } from './favorites.js';
+import { getDistanceLabel, getKenmerkenTags, getScoreTier } from './card-data.js';
 import { getAdvancedFilterCount } from './filters.js';
 
 /* ===================================================
@@ -990,6 +991,13 @@ export function hideLocationPreview() {
    IN-SHEET LOCATION DETAIL (mobile only)
    =================================================== */
 
+function getScoreVerbalLabel(total) {
+    if (total >= 8.5) return 'Uitstekend voor peuters';
+    if (total >= 7) return 'Heel goed voor peuters';
+    if (total >= 5) return 'Goed voor peuters';
+    return 'Redelijk voor peuters';
+}
+
 function renderInSheetDetail(loc) {
     const photo = getPhotoData(loc);
     const typeLbl = TYPE_LABELS[loc.type] || loc.type;
@@ -997,13 +1005,14 @@ function renderInSheetDetail(loc) {
     const isFav = isFavorite(loc.id);
     const favClass = isFav ? ' active' : '';
 
-    // Score V2 with dimension breakdown
+    // Score V2
     const weather = state.isRaining ? 'rain' : state.isSunny ? 'sun' : null;
     const v2 = computePeuterScoreV2(loc, { weather, dayOfWeek: new Date().getDay() });
     const totalScore = v2.total;
-    const scoreHtml = totalScore !== null ? `<span class="detail-score">\u2605 ${totalScore}</span>` : '';
+    const scoreTier = getScoreTier(totalScore);
+    const scoreVerbal = getScoreVerbalLabel(totalScore);
 
-    // Score breakdown bars (same as desktop)
+    // Score breakdown bars
     let scoreBreakdownHtml = '';
     try {
         const dims = Object.values(v2.dimensions);
@@ -1016,7 +1025,6 @@ function renderInSheetDetail(loc) {
                 <span class="score-bar-value">${d.score}/10</span>
             </div>`;
         }).join('');
-
         scoreBreakdownHtml = `<div class="score-breakdown" id="score-breakdown">
             <button class="score-breakdown-toggle" onclick="this.closest('.score-breakdown').classList.toggle('open')">
                 <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
@@ -1026,133 +1034,150 @@ function renderInSheetDetail(loc) {
         </div>`;
     } catch(e) { /* v2 breakdown not available */ }
 
-    // Sterke punten + trust bullets (matching desktop)
+    // Distance
+    const travelInfo = state.lastTravelTimes?.[loc.id];
+    const distLabel = getDistanceLabel(loc, travelInfo);
+
+    // Open status
+    const openStatus = getOpenStatus(loc);
+
+    // Top facility badges (above fold — max 3 most important)
+    const topBadges = getKenmerkenTags(loc, 3);
+
+    // Sterke punten + trust bullets
     const sterkePunten = getSterkePunten(loc);
     const trustBullets = getTrustBullets(loc);
 
-    // Age range
-    const minAge = loc.min_age != null ? loc.min_age : 0;
-    const maxAge = loc.max_age != null ? loc.max_age : 12;
-    const ageHtml = `<span class="detail-meta-pill">${minAge}\u2013${maxAge} jr</span>`;
-
-    // Price
-    const priceMap = { free: 'Gratis', low: '\u20AC', mid: '\u20AC\u20AC', high: '\u20AC\u20AC\u20AC' };
-    const priceHtml = loc.price_band && priceMap[loc.price_band] ? `<span class="detail-meta-pill">${priceMap[loc.price_band]}</span>` : '';
-
-    // Weather
-    const weatherMap = WEATHER_LABELS;
-    const weatherHtml = loc.weather && weatherMap[loc.weather] ? `<span class="detail-meta-pill">${escapeHtml(weatherMap[loc.weather])}</span>` : '';
-
-    // Practical reasons
-    const reasons = [];
-    if (loc.coffee) reasons.push('Koffie');
-    if (loc.diaper) reasons.push('Verschonen');
-    if (loc.play_corner_quality === 'strong') reasons.push('Speelprikkel');
-    if (loc.rain_backup_quality === 'strong') reasons.push('Regenproof');
-    if (loc.parking_ease === 'easy') reasons.push('Parkeren');
-    if (loc.food_fit === 'strong') reasons.push('Goed eten');
-    if (loc.buggy_friendliness === 'easy') reasons.push('Buggy-vriendelijk');
-    if (loc.toilet_confidence === 'confident') reasons.push('Goed toilet');
-
-    // Facility grid — comprehensive
+    // Full facility grid (below fold)
     const facilities = [];
     if (loc.coffee) facilities.push({ icon: '\u2615', label: 'Koffie' });
     if (loc.diaper) facilities.push({ icon: '\uD83D\uDEBC', label: 'Verschonen' });
     if (loc.parking_ease === 'easy') facilities.push({ icon: '\uD83C\uDD7F\uFE0F', label: 'Parkeren' });
     if (loc.buggy_friendliness === 'easy') facilities.push({ icon: '\uD83D\uDED2', label: 'Buggy OK' });
-    if (loc.toilet_confidence === 'confident') facilities.push({ icon: '\uD83D\uDEBB', label: 'Toilet' });
+    if (loc.toilet_confidence === 'confident' || loc.toilet_confidence === 'high') facilities.push({ icon: '\uD83D\uDEBB', label: 'Toilet' });
     if (loc.weather === 'indoor' || loc.weather === 'hybrid' || loc.weather === 'both') facilities.push({ icon: '\uD83C\uDFE0', label: 'Binnen' });
     if (loc.weather === 'outdoor' || loc.weather === 'hybrid' || loc.weather === 'both') facilities.push({ icon: '\uD83C\uDF3F', label: 'Buiten' });
     if (loc.alcohol) facilities.push({ icon: '\uD83C\uDF77', label: 'Alcohol' });
 
     const practicalBullets = getPracticalBullets(loc);
 
-    // Opening hours
-    const hoursHtml = loc.opening_hours
-        ? `<div class="detail-hours"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> ${escapeHtml(loc.opening_hours)}</div>`
-        : loc.always_open
-            ? '<div class="detail-hours"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Altijd open</div>'
-            : '';
+    // Meta line: type · distance · open status
+    const metaParts = [escapeHtml(typeLbl)];
+    if (distLabel) metaParts.push(escapeHtml(distLabel));
+    const metaLine = metaParts.join(' <span class="detail-meta-dot">\u00b7</span> ');
 
-    // Toddler highlight (editorial intro)
-    const highlightHtml = loc.toddler_highlight
-        ? `<p class="detail-highlight">${escapeHtml(loc.toddler_highlight)}</p>`
-        : '';
-
-    // Build sections with separators
+    // Build sections with stagger index
+    let sectionIdx = 0;
     const sectionsHtml = [];
 
-    // Section: highlight + hours (key decision info)
-    if (highlightHtml || hoursHtml) {
-        sectionsHtml.push(`<div class="detail-section detail-section-key">${highlightHtml}${hoursHtml}</div>`);
+    // Section: facility badges (above fold, large icon pills)
+    if (topBadges.length) {
+        sectionsHtml.push(`<div class="detail-section detail-section-badges" style="--section-i:${sectionIdx++}">
+            <div class="detail-badges-row">${topBadges.map((b, i) => `<span class="detail-badge" style="--badge-i:${i}"><span aria-hidden="true">${b.icon}</span> ${escapeHtml(b.label)}</span>`).join('')}</div>
+        </div>`);
     }
 
-    // Section: reasons (quick scan)
-    if (reasons.length) {
-        sectionsHtml.push(`<div class="detail-section"><div class="detail-section-label">Waarom hier naartoe</div><div class="sheet-detail-reasons-list">${reasons.slice(0, 6).map(r => `<span class="detail-reason-tag">${escapeHtml(r)}</span>`).join('')}</div></div>`);
+    // Section: editorial pull-quote
+    if (loc.toddler_highlight) {
+        sectionsHtml.push(`<div class="detail-section detail-section-quote" style="--section-i:${sectionIdx++}">
+            <blockquote class="detail-pullquote">\u201C${escapeHtml(loc.toddler_highlight)}\u201D</blockquote>
+        </div>`);
     }
 
-    // Section: sterke punten (matching desktop)
+    // Section: sterke punten (green card)
     if (sterkePunten.length) {
-        sectionsHtml.push(`<div class="detail-section"><div class="sterke-punten"><h3>Waarom goed voor peuters</h3><ul>${sterkePunten.map(p => `<li>\u2713 ${escapeHtml(p)}</li>`).join('')}</ul></div></div>`);
+        sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
+            <div class="sterke-punten"><h3>Waarom goed voor peuters</h3><ul>${sterkePunten.map(p => `<li>\u2713 ${escapeHtml(p)}</li>`).join('')}</ul></div>
+        </div>`);
     }
 
-    // Section: facilities (supporting info)
+    // Section: full facilities grid
     if (facilities.length) {
-        sectionsHtml.push(`<div class="detail-section"><div class="detail-section-label">Faciliteiten</div><div class="sheet-detail-facilities-grid">${facilities.map(f => `<span class="detail-facility">${f.icon} ${escapeHtml(f.label)}</span>`).join('')}</div></div>`);
+        sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
+            <div class="detail-section-label">Faciliteiten</div>
+            <div class="sheet-detail-facilities-grid">${facilities.map(f => `<span class="detail-facility${f.available !== false ? '' : ' detail-facility--na'}"><span aria-hidden="true">${f.icon}</span> ${escapeHtml(f.label)}</span>`).join('')}</div>
+        </div>`);
     }
 
-    // Section: practical (supporting info)
+    // Section: practical info (2-column grid)
     if (practicalBullets.length) {
-        sectionsHtml.push(`<div class="detail-section"><div class="detail-section-label">Praktisch</div>${practicalBullets.slice(0, 5).map(b => `<p class="detail-practical-item">${escapeHtml(b)}</p>`).join('')}</div>`);
+        sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
+            <div class="detail-section-label">Praktisch</div>
+            <div class="detail-practical-grid">${practicalBullets.slice(0, 6).map(b => `<p class="detail-practical-item">${escapeHtml(b)}</p>`).join('')}</div>
+        </div>`);
     }
 
-    // Section: score breakdown (collapsible, matching desktop style)
+    // Section: opening hours
+    if (loc.opening_hours || loc.always_open) {
+        const hoursText = loc.always_open ? 'Altijd open' : loc.opening_hours;
+        sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
+            <div class="detail-section-label">Openingstijden</div>
+            <div class="detail-hours-block"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> <span>${escapeHtml(hoursText)}</span></div>
+        </div>`);
+    }
+
+    // Section: score breakdown (collapsible — first 2 bars visible as teaser)
     if (scoreBreakdownHtml) {
-        sectionsHtml.push(`<div class="detail-section">${scoreBreakdownHtml}</div>`);
+        sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">${scoreBreakdownHtml}</div>`);
     }
 
-    // Section: description (deep detail)
+    // Section: description (collapsed, "Lees meer" after 3 lines)
     if (loc.description) {
-        sectionsHtml.push(`<div class="detail-section"><p class="sheet-detail-insheet-desc">${escapeHtml(loc.description)}</p></div>`);
+        sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
+            <div class="detail-section-label">Over deze plek</div>
+            <div class="detail-desc-wrap">
+                <p class="detail-desc-text">${escapeHtml(loc.description)}</p>
+                <button class="detail-desc-toggle" onclick="this.closest('.detail-desc-wrap').classList.toggle('expanded')">Lees meer</button>
+            </div>
+        </div>`);
     }
 
-    // Section: trust bullets (matching desktop Tier 3)
+    // Section: trust bullets
     if (trustBullets.length) {
-        sectionsHtml.push(`<div class="detail-section"><ul class="sheet-trust-list">${trustBullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul></div>`);
+        sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
+            <ul class="sheet-trust-list">${trustBullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>
+        </div>`);
     }
 
     return `
-        <button class="sheet-detail-back pp-btn-icon" aria-label="Terug">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <div class="sheet-hero-wrap">
-            <div class="sheet-hero-photo" style="--photo-color: ${photo.photoColor || '#E8D5C4'}">
+        <div class="detail-hero-wrap">
+            <div class="sheet-hero-photo detail-hero-photo" style="--photo-color: ${photo.photoColor || '#E8D5C4'}">
                 <img class="sheet-hero-img" src="${escapeHtml(photo.imgSrc || '')}" alt="${escapeHtml(loc.name)}" loading="lazy">
             </div>
+            <button class="detail-float-btn detail-back-btn" aria-label="Terug">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="detail-float-btn detail-fav-btn${favClass}" data-loc-id="${loc.id}" aria-label="${isFav ? 'Verwijder favoriet' : 'Bewaar'}"${isFav ? ' aria-pressed="true"' : ' aria-pressed="false"'}>
+                <svg viewBox="0 0 24 24" width="20" height="20"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="detail-float-btn detail-close-btn" aria-label="Sluiten">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
         </div>
-        <div class="sheet-detail-insheet-header">
-            <div class="sheet-detail-insheet-title-row">
-                <h2 class="sheet-detail-insheet-name">${escapeHtml(loc.name)}</h2>
-                <button class="sheet-detail-fav${favClass}" onclick="event.stopPropagation();toggleFavorite(${loc.id}, this)" aria-label="${isFav ? 'Verwijder favoriet' : 'Bewaar'}">
-                    <svg viewBox="0 0 24 24" width="22" height="22"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                </button>
+        <div class="detail-above-fold">
+            <div class="detail-title-row">
+                <h2 class="detail-name">${escapeHtml(loc.name)}</h2>
+                ${totalScore != null ? `<span class="detail-score-badge detail-score--${scoreTier}" aria-label="PeuterScore ${totalScore} uit 10, ${scoreVerbal}">${totalScore}</span>` : ''}
             </div>
-            <div class="detail-meta-row">
-                <span class="sheet-detail-insheet-type">${escapeHtml(typeLbl)}</span>
-                ${loc.region ? `<span class="detail-meta-sep">\u00b7</span><span class="sheet-detail-insheet-region">${escapeHtml(loc.region)}</span>` : ''}
-                ${scoreHtml}
-            </div>
-            <div class="detail-pills-row">
-                ${ageHtml}${weatherHtml}${priceHtml}
+            <p class="detail-score-verbal">${escapeHtml(scoreVerbal)}</p>
+            <div class="detail-meta-line">
+                ${metaLine}
+                ${openStatus ? `<span class="detail-meta-dot">\u00b7</span><span class="detail-open-pill detail-open--${openStatus.color}">${escapeHtml(openStatus.label)}</span>` : ''}
             </div>
         </div>
         ${sectionsHtml.join('')}
-        <div class="detail-section detail-section-cta">
-            <div class="sheet-detail-insheet-actions">
-                ${googleMapsUrl ? `<a href="${googleMapsUrl}" target="_blank" rel="noopener" class="pp-btn-primary">Route</a>` : ''}
-                ${loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="pp-btn-secondary">Website</a>` : ''}
-            </div>
+        <div class="detail-action-bar">
+            ${googleMapsUrl ? `<a href="${googleMapsUrl}" target="_blank" rel="noopener" class="detail-action-btn detail-action-primary" aria-label="Route naar ${escapeHtml(loc.name)} (opent in nieuw venster)">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Route
+            </a>` : ''}
+            ${loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="detail-action-btn detail-action-secondary" aria-label="Website van ${escapeHtml(loc.name)} (opent in nieuw venster)">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Website
+            </a>` : ''}
+            <button class="detail-action-btn detail-action-icon" aria-label="Deel deze locatie" data-share-loc="${loc.id}">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            </button>
         </div>
     `;
 }
@@ -1168,7 +1193,7 @@ export function showDetailInSheet(locationId) {
     // Render detail content
     detailEl.innerHTML = renderInSheetDetail(loc);
 
-    // Photo fade-in
+    // Photo fade-in with subtle scale
     const heroImg = detailEl.querySelector('.sheet-hero-img');
     if (heroImg) {
         if (heroImg.complete && heroImg.naturalWidth > 0) heroImg.classList.add('loaded');
@@ -1179,19 +1204,73 @@ export function showDetailInSheet(locationId) {
     sheetEl.classList.add('show-detail');
     setSheetState('full');
 
+    // Scroll detail container to top
+    detailEl.scrollTop = 0;
+
     // Push history state for browser-back support
     if (typeof window.pushNavState === 'function') window.pushNavState('in-sheet-detail', { locationId });
 
-    // Back button
-    detailEl.querySelector('.sheet-detail-back')?.addEventListener('click', hideDetailInSheet);
+    // Back button + close button
+    detailEl.querySelector('.detail-back-btn')?.addEventListener('click', hideDetailInSheet);
+    detailEl.querySelector('.detail-close-btn')?.addEventListener('click', hideDetailInSheet);
+
+    // Fav button (with haptic + spring)
+    const favBtn = detailEl.querySelector('.detail-fav-btn');
+    if (favBtn) {
+        favBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const locId = Number(favBtn.dataset.locId);
+            window.toggleFavorite(locId, favBtn);
+            // Haptic feedback
+            if (navigator.vibrate) navigator.vibrate(10);
+            // Spring animation
+            favBtn.classList.add('detail-fav-spring');
+            favBtn.addEventListener('animationend', () => favBtn.classList.remove('detail-fav-spring'), { once: true });
+            // Update aria-pressed
+            const nowFav = !favBtn.classList.contains('active');
+            favBtn.setAttribute('aria-pressed', String(nowFav));
+        });
+    }
+
+    // Share button
+    const shareBtn = detailEl.querySelector('[data-share-loc]');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+            bus.emit('location:share', loc, loc.region);
+        });
+    }
+
+    // "Lees meer" toggles
+    detailEl.querySelectorAll('.detail-desc-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const wrap = btn.closest('.detail-desc-wrap');
+            if (wrap) {
+                wrap.classList.toggle('expanded');
+                btn.textContent = wrap.classList.contains('expanded') ? 'Lees minder' : 'Lees meer';
+            }
+        });
+    });
 }
 
 export function hideDetailInSheet() {
     if (!sheetEl) return;
-    sheetEl.classList.remove('show-detail');
     const detailEl = document.getElementById('sheet-detail');
-    if (detailEl) detailEl.innerHTML = '';
-    setSheetState('half');
+
+    // Exit animation
+    if (detailEl) {
+        sheetEl.classList.add('detail-closing');
+        const onEnd = () => {
+            sheetEl.classList.remove('show-detail', 'detail-closing');
+            detailEl.innerHTML = '';
+            setSheetState('half');
+        };
+        detailEl.addEventListener('animationend', onEnd, { once: true });
+        // Fallback if animation doesn't fire
+        setTimeout(onEnd, 350);
+    } else {
+        sheetEl.classList.remove('show-detail');
+        setSheetState('half');
+    }
 }
 
 /* ===================================================

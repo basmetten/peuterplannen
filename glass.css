@@ -1122,15 +1122,27 @@
   pointer-events: auto;
 }
 
-/* In-sheet detail view (mobile) */
+/* ====================================================
+   CINEMATIC DETAIL SHEET — In-sheet location detail
+   Inspired by Apple Maps spring physics + Google Maps
+   docked actions + Airbnb information hierarchy.
+   ==================================================== */
+
 .sheet-detail {
   display: none;
-  padding: 0 18px 24px;
+  padding: 0;
 }
 
 .bottom-sheet.show-detail .sheet-detail {
   display: block;
   animation: slideInRight 300ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Exit animation */
+.bottom-sheet.detail-closing .sheet-detail {
+  animation: slideOutRight 280ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
 }
 
 .bottom-sheet.show-detail .sheet-list,
@@ -1147,6 +1159,10 @@
   from { opacity: 0; transform: translateX(30px); }
   to   { opacity: 1; transform: translateX(0); }
 }
+@keyframes slideOutRight {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(30px); }
+}
 
 @keyframes cardSlideIn {
   from { opacity: 0; transform: translateY(8px); }
@@ -1158,81 +1174,334 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.sheet-detail-back {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  margin: 8px 0;
-  background: none;
+/* --- Hero with floating buttons --- */
+.detail-hero-wrap {
+  position: relative;
+  margin: 0;
+}
+.detail-hero-photo {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 200px;
+  max-height: 280px;
+  border-radius: 0;
+  margin: 0;
+  overflow: hidden;
+}
+.detail-hero-photo .sheet-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 400ms ease, transform 400ms ease;
+}
+.detail-hero-photo .sheet-hero-img.loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Floating glass buttons over hero */
+.detail-float-btn {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   border: none;
   cursor: pointer;
-  color: var(--pp-text);
-  padding: 8px;
-  border-radius: 50%;
-  transition: background 0.15s;
-}
-
-.sheet-detail-back:active {
-  background: rgba(0, 0, 0, 0.06);
-}
-
-.sheet-detail-insheet-name {
-  font-size: var(--pp-text-xl, 1.25rem);
-  font-weight: 700;
-  color: var(--pp-text);
-  margin: 12px 0 4px;
-}
-
-.sheet-detail-insheet-type {
-  font-size: var(--pp-text-sm);
-  color: var(--pp-text-muted);
-  font-style: italic;
-}
-
-.sheet-detail-insheet-region {
-  font-size: var(--pp-text-sm);
-  color: var(--pp-text-muted);
-  margin-left: 8px;
-}
-
-.sheet-detail-insheet-actions {
   display: flex;
-  gap: 12px;
-  margin: 16px 0;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  color: var(--pp-text, #3E2723);
+  transition: background 0.15s, transform 0.15s;
+  z-index: 2;
+}
+.detail-float-btn:active {
+  transform: scale(0.92);
+  background: rgba(255, 255, 255, 0.9);
+}
+.detail-back-btn { top: 12px; left: 12px; }
+.detail-fav-btn { top: 12px; right: 52px; }
+.detail-fav-btn svg { fill: none; stroke: #9B8688; stroke-width: 2; }
+.detail-fav-btn.active svg { fill: #D4775A; stroke: #D4775A; }
+.detail-close-btn { top: 12px; right: 12px; }
+
+/* Fav spring animation */
+@keyframes detail-fav-spring {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+.detail-fav-spring {
+  animation: detail-fav-spring 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.sheet-detail-insheet-actions .pp-btn-primary,
-.sheet-detail-insheet-actions .pp-btn-secondary {
+/* --- Above fold: key decision info --- */
+.detail-above-fold {
+  padding: 16px 18px 12px;
+}
+.detail-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.detail-name {
+  font-size: 1.375rem;
+  font-weight: 720;
+  color: var(--pp-text, #3E2723);
+  margin: 0;
+  line-height: 1.2;
   flex: 1;
-  text-align: center;
-  padding: 10px 16px;
+}
+.detail-score-badge {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+.detail-score--high { background: #4CAF50; }
+.detail-score--mid  { background: #FF9800; }
+.detail-score--low  { background: #9E9E9E; }
+
+.detail-score-verbal {
+  font-size: 0.8125rem;
+  color: #4CAF50;
+  font-weight: 600;
+  margin: 2px 0 0;
+  letter-spacing: 0.01em;
+}
+
+.detail-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 0.8125rem;
+  color: var(--pp-text-muted, #8D6E63);
+  flex-wrap: wrap;
+}
+.detail-meta-dot {
+  opacity: 0.4;
+}
+
+/* "Nu open" pill */
+.detail-open-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.detail-open--green { background: rgba(76, 175, 80, 0.12); color: #2E7D32; }
+.detail-open--amber { background: rgba(255, 152, 0, 0.12); color: #E65100; }
+.detail-open--red   { background: rgba(244, 67, 54, 0.12); color: #C62828; }
+
+/* --- Sections with staggered entry --- */
+.detail-section {
+  padding: 14px 18px;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.06);
+  animation: section-enter 350ms ease-out both;
+  animation-delay: calc(var(--section-i, 0) * 60ms);
+}
+@keyframes section-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.detail-section-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--pp-text-muted, #8D6E63);
+  margin-bottom: 10px;
+}
+
+/* --- Facility badges (above fold, large) --- */
+.detail-badges-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.detail-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: var(--pp-surface-secondary, #F0EBE5);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--pp-text, #3E2723);
+  animation: badge-enter 300ms ease-out both;
+  animation-delay: calc(var(--badge-i, 0) * 40ms + 200ms);
+}
+@keyframes badge-enter {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* --- Pull-quote (editorial highlight) --- */
+.detail-pullquote {
+  font-size: 0.9375rem;
+  font-style: italic;
+  color: var(--pp-text-secondary, #5D4037);
+  line-height: 1.5;
+  margin: 0;
+  padding: 12px 16px;
+  border-left: 3px solid var(--pp-primary, #D4775A);
+  background: rgba(212, 119, 90, 0.04);
+  border-radius: 0 8px 8px 0;
+}
+
+/* --- Full facility grid --- */
+.sheet-detail-facilities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+}
+.detail-facility {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
   border-radius: 10px;
-  font-size: var(--pp-text-sm);
+  background: var(--pp-surface-secondary, #F0EBE5);
+  font-size: 0.8125rem;
+  color: var(--pp-text, #3E2723);
+}
+.detail-facility--na {
+  opacity: 0.35;
+  text-decoration: line-through;
+}
+
+/* --- Practical info (2-column grid) --- */
+.detail-practical-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+}
+.detail-practical-item {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--pp-text-secondary, #5D4037);
+  line-height: 1.5;
+}
+
+/* --- Opening hours block --- */
+.detail-hours-block {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  color: var(--pp-text-secondary, #5D4037);
+}
+.detail-hours-block svg { flex-shrink: 0; color: var(--pp-text-muted, #8D6E63); }
+
+/* --- Description with "Lees meer" --- */
+.detail-desc-wrap {
+  position: relative;
+}
+.detail-desc-text {
+  font-size: 0.8125rem;
+  color: var(--pp-text-secondary, #5D4037);
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.detail-desc-wrap.expanded .detail-desc-text {
+  display: block;
+  -webkit-line-clamp: unset;
+}
+.detail-desc-toggle {
+  display: inline-block;
+  margin-top: 6px;
+  background: none;
+  border: none;
+  color: var(--pp-primary, #D4775A);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+.detail-desc-toggle:active { opacity: 0.7; }
+
+/* --- Sticky action bar --- */
+.detail-action-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+  padding: 12px 18px;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  background: rgba(255, 252, 249, 0.92);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-top: 0.5px solid rgba(0, 0, 0, 0.06);
+}
+.detail-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px 16px;
+  border-radius: 12px;
+  font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
-  transition: opacity 0.15s;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
 }
-
-.sheet-detail-insheet-actions .pp-btn-primary {
+.detail-action-btn:active { transform: scale(0.97); opacity: 0.8; }
+.detail-action-primary {
+  flex: 1;
   background: var(--pp-primary, #D4775A);
   color: #fff;
 }
-
-.sheet-detail-insheet-actions .pp-btn-secondary {
+.detail-action-secondary {
+  flex: 1;
   background: var(--pp-surface-secondary, #F0EBE5);
-  color: var(--pp-text);
+  color: var(--pp-text, #3E2723);
 }
-
-.sheet-detail-insheet-actions .pp-btn-primary:active,
-.sheet-detail-insheet-actions .pp-btn-secondary:active {
-  opacity: 0.7;
+.detail-action-icon {
+  width: 44px;
+  flex-shrink: 0;
+  background: var(--pp-surface-secondary, #F0EBE5);
+  color: var(--pp-text-muted, #8D6E63);
 }
+.detail-action-icon svg { stroke: currentColor; }
 
-.sheet-detail-insheet-desc {
-  font-size: var(--pp-text-sm);
-  color: var(--pp-text-secondary);
-  line-height: 1.6;
-  margin: 16px 0;
+/* --- Reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  .detail-section,
+  .detail-badge,
+  .detail-hero-photo .sheet-hero-img,
+  .detail-fav-spring,
+  .bottom-sheet.show-detail .sheet-detail,
+  .bottom-sheet.detail-closing .sheet-detail {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /* No backdrop-filter fallback needed: bottom sheet uses solid background */

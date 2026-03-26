@@ -52,8 +52,10 @@ export function toggleFavorite(locationId, btn) {
         if (btn) {
             btn.classList.add('heart-pop');
             btn.addEventListener('animationend', () => btn.classList.remove('heart-pop'), { once: true });
+            // Haptic feedback on save
+            if (action === 'add' && navigator.vibrate) navigator.vibrate(10);
         }
-        ppToast(action === 'add' ? 'Opgeslagen in favorieten' : 'Verwijderd uit favorieten', 'success', 2000);
+        ppToast(action === 'add' ? 'Bewaard in favorieten' : 'Verwijderd uit favorieten', 'success', 2000);
         if (state.activeFavorites) {
             const filtered = state.allLocations.filter(item => getFavorites().includes(item.id));
             bus.emit('cards:render', filtered, {});

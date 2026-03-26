@@ -864,178 +864,77 @@
   margin-bottom: 14px;
 }
 
-/* Header refinements */
-.sheet-detail-insheet-name {
-  font-size: 1.1875rem; /* 19px */
+/* ============================================
+   CINEMATIC DETAIL — v2 mobile refinements
+   ============================================ */
+
+/* Detail hero — edge-to-edge, no border radius */
+.detail-hero-photo {
+  border-radius: 0 !important;
+  min-height: 200px;
+  max-height: 260px;
+}
+
+/* Above fold — refined spacing */
+.detail-above-fold {
+  padding: 14px 18px 10px;
+}
+.detail-name {
+  font-size: 1.25rem;
   font-weight: 720;
   letter-spacing: -0.02em;
-  line-height: 1.2;
-  color: var(--pp-text, #3D2E2A);
 }
-
-.sheet-detail-insheet-type {
-  font-size: 0.8125rem;
-  color: var(--pp-text-muted, #B8A09C);
-  font-style: normal;
-  font-weight: 500;
-}
-
-.sheet-detail-insheet-region {
-  font-size: 0.8125rem;
-  color: var(--pp-text-muted, #B8A09C);
-  margin-left: 0;
-}
-
-/* Meta row — inline type + region + score */
-.detail-meta-row {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 2px;
-}
-
-.detail-meta-sep {
-  color: var(--pp-text-muted, #B8A09C);
-  font-size: 0.75rem;
-}
-
-/* Score badge */
-.detail-score {
-  margin-left: auto;
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--pp-primary, #D4775A);
-}
-
-/* Pills row — age, weather, price */
-.detail-pills-row {
-  display: flex;
-  gap: 5px;
-  margin-top: 8px;
-  flex-wrap: wrap;
-}
-
-.detail-meta-pill {
-  font-size: 0.6875rem;
+.detail-score-verbal {
   font-weight: 560;
-  padding: 3px 10px;
-  border-radius: 100px;
-  background: rgba(140, 110, 90, 0.06);
-  color: var(--pp-text-secondary, #8C6E64);
+  font-size: 0.75rem;
+  letter-spacing: 0.01em;
+}
+.detail-meta-line {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--pp-text-muted, #B8A09C);
 }
 
-/* Section system — consistent spacing with subtle separators */
+/* Section refinements */
 .detail-section {
-  padding: 14px 0;
-  border-bottom: 0.5px solid rgba(140, 110, 90, 0.07);
+  border-bottom-color: rgba(140, 110, 90, 0.07);
 }
 .detail-section:last-of-type {
-  border-bottom: none;
-}
-.detail-section-key {
-  padding-top: 0;
-}
-.detail-section-cta {
-  padding: 16px 0 8px;
   border-bottom: none;
 }
 .detail-section-label {
   font-size: 0.625rem;
   font-weight: 660;
-  text-transform: uppercase;
   letter-spacing: 0.07em;
   color: var(--pp-text-muted, #B8A09C);
-  margin-bottom: 8px;
 }
 
-/* Toddler highlight — editorial intro with warm accent border */
-.detail-highlight {
-  font-size: 0.875rem;
-  font-weight: 460;
-  line-height: 1.55;
-  color: var(--pp-text-secondary, #7A5F55);
-  margin: 4px 0 0;
-  padding: 10px 14px;
-  border-left: 2.5px solid rgba(212, 119, 86, 0.3);
-  background: rgba(212, 119, 86, 0.03);
-  border-radius: 0 8px 8px 0;
-  font-family: var(--pp-font-accent, 'Instrument Serif', Georgia, serif);
-  font-style: italic;
-}
-
-/* Opening hours */
-.detail-hours {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 10px;
+/* Badges — warm tinted backgrounds */
+.detail-badge {
+  background: rgba(140, 110, 90, 0.06);
+  font-weight: 560;
   font-size: 0.8125rem;
-  font-weight: 520;
-  color: var(--pp-text-secondary, #8C6E64);
-}
-.detail-hours svg {
-  flex-shrink: 0;
-  stroke: var(--pp-text-muted, #B8A09C);
 }
 
-/* Reasons — refined */
-.sheet-detail-reasons-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-.detail-reason-tag {
-  font-size: 0.6875rem;
-  font-weight: 540;
-  padding: 4px 10px;
-  border-radius: 100px;
-  background: rgba(212, 119, 86, 0.07);
-  color: var(--pp-primary-dark, #B35D42);
+/* Pull-quote — warm accent border */
+.detail-pullquote {
+  font-family: var(--pp-font-accent, 'Instrument Serif', Georgia, serif);
+  border-left-color: rgba(212, 119, 86, 0.3);
+  background: rgba(212, 119, 86, 0.03);
+  color: var(--pp-text-secondary, #7A5F55);
 }
 
-/* Actions — premium CTAs at bottom of content */
-.sheet-detail-insheet-actions {
-  margin: 0;
-  gap: 10px;
-}
-.sheet-detail-insheet-actions .pp-btn-primary {
-  border-radius: 12px;
-  font-weight: 640;
-  box-shadow: 0 2px 10px rgba(212, 119, 86, 0.20);
-}
-.sheet-detail-insheet-actions .pp-btn-secondary {
-  border-radius: 12px;
-  font-weight: 600;
-}
-.sheet-detail-insheet-actions .pp-btn-primary:active,
-.sheet-detail-insheet-actions .pp-btn-secondary:active {
-  transform: scale(0.97);
-  transition: transform 60ms ease;
-}
-
-/* Facilities — grid layout */
-.sheet-detail-facilities-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 6px;
-}
+/* Facilities — warm tinted */
 .detail-facility {
-  font-size: 0.75rem;
-  font-weight: 500;
-  padding: 8px 10px;
-  border-radius: 10px;
   background: rgba(140, 110, 90, 0.04);
   color: var(--pp-text-secondary, #8C6E64);
-  text-align: center;
-  white-space: nowrap;
+  font-weight: 500;
 }
 
-/* Practical section */
+/* Practical grid items */
 .detail-practical-item {
   font-size: 0.8125rem;
-  line-height: 1.5;
   color: var(--pp-text-secondary, #8C6E64);
-  margin: 0 0 6px;
   padding-left: 16px;
   position: relative;
 }
@@ -1046,56 +945,30 @@
   color: var(--pp-text-muted, #B8A09C);
 }
 
-/* Description — inside section, no extra border */
-.sheet-detail-insheet-desc {
-  font-size: 0.8125rem;
-  line-height: 1.6;
-  color: var(--pp-text-secondary, #8C6E64);
-  margin: 0;
+/* Nested element resets */
+.detail-section .sterke-punten { margin: 0; }
+.detail-section .score-breakdown { margin: 0; }
+.detail-section .sheet-trust-list { margin: 0; }
+
+/* Action bar — warm glass tint */
+.detail-action-bar {
+  background: rgba(255, 252, 249, 0.94);
+}
+.detail-action-primary {
+  box-shadow: 0 2px 10px rgba(212, 119, 86, 0.20);
+  font-weight: 640;
+}
+.detail-action-secondary {
+  font-weight: 600;
 }
 
-/* Back button — refined */
-.sheet-detail-back {
-  background: rgba(140, 110, 90, 0.06);
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Float buttons — warm tint */
+.detail-float-btn {
+  background: rgba(255, 252, 249, 0.78);
 }
-.sheet-detail-back:active {
-  background: rgba(140, 110, 90, 0.12);
-  transform: scale(0.92);
-}
-
-/* Fav button in detail */
-.sheet-detail-fav {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  color: var(--pp-text-muted, #B8A09C);
-  transition: transform 100ms ease;
-}
-.sheet-detail-fav:active {
-  transform: scale(1.15);
-}
-.sheet-detail-fav.active {
-  color: var(--pp-primary, #D4775A);
-}
-.sheet-detail-fav.active svg {
+.detail-fav-btn.active svg {
   fill: var(--pp-primary, #D4775A);
-}
-.sheet-detail-fav svg {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.5;
+  stroke: var(--pp-primary, #D4775A);
 }
 
 /* ============================================

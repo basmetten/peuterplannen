@@ -74,6 +74,63 @@ export function isLocationOpenNow(loc) {
     return false;
 }
 
+/**
+ * Compute a user-facing open/closed status from opening_hours or always_open.
+ * @param {Object} loc - Location object
+ * @returns {{ open: boolean, label: string, color: 'green'|'amber'|'red' } | null}
+ */
+export function getOpenStatus(loc) {
+    if (loc.always_open) return { open: true, label: 'Altijd open', color: 'green' };
+    if (!loc.opening_hours) return null;
+
+    const now = new Date();
+    const dayIndex = now.getDay();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    const dayMap = { 'ma': 1, 'di': 2, 'wo': 3, 'do': 4, 'vr': 5, 'za': 6, 'zo': 0 };
+    const segments = loc.opening_hours.toLowerCase().replace(/\s+/g, ' ').split(/[,;]+/).map(s => s.trim());
+
+    for (const segment of segments) {
+        const match = segment.match(/^([\w\-\u2013]+)\s+(\d{1,2})[:\.](\d{2})\s*[-\u2013]\s*(\d{1,2})[:\.](\d{2})/);
+        if (!match) continue;
+
+        const dayPart = match[1];
+        const openMin = parseInt(match[2]) * 60 + parseInt(match[3]);
+        const closeMin = parseInt(match[4]) * 60 + parseInt(match[5]);
+
+        let days = [];
+        if (dayPart === 'dag' || dayPart === 'daily') {
+            days = [0, 1, 2, 3, 4, 5, 6];
+        } else {
+            const rangeParts = dayPart.split(/[-\u2013]/);
+            if (rangeParts.length === 2 && dayMap[rangeParts[0]] !== undefined && dayMap[rangeParts[1]] !== undefined) {
+                let d = dayMap[rangeParts[0]];
+                const end = dayMap[rangeParts[1]];
+                while (true) { days.push(d); if (d === end) break; d = (d + 1) % 7; }
+            } else if (dayMap[dayPart] !== undefined) {
+                days = [dayMap[dayPart]];
+            }
+        }
+
+        if (days.includes(dayIndex)) {
+            if (currentMinutes >= openMin && currentMinutes <= closeMin) {
+                // Currently open — check if closing soon (within 30 min)
+                const minsLeft = closeMin - currentMinutes;
+                if (minsLeft <= 30) {
+                    const closeH = String(Math.floor(closeMin / 60)).padStart(2, '0');
+                    const closeM = String(closeMin % 60).padStart(2, '0');
+                    return { open: true, label: `Sluit om ${closeH}:${closeM}`, color: 'amber' };
+                }
+                return { open: true, label: 'Nu open', color: 'green' };
+            }
+            // Today's segment but currently closed
+            return { open: false, label: 'Nu gesloten', color: 'red' };
+        }
+    }
+
+    // No matching day segment found
+    return null;
+}
+
 export function matchesPreset(loc) {
     if (!state.activePreset) return true;
     switch (state.activePreset) {

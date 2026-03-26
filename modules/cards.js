@@ -121,20 +121,28 @@ function renderScanCard(item, travelInfo, batchIdx) {
         card.addEventListener('mouseleave', () => bus.emit('map:highlight', null));
     }
 
-    // Click → detail view
+    // Click → detail view (mobile: in-sheet, desktop: page nav)
     const detailUrl = buildDetailUrl(item);
     if (detailUrl) {
         card.style.cursor = 'pointer';
         card.setAttribute('tabindex', '0');
         card.addEventListener('click', (e) => {
             if (e.target.closest('.card-fav')) return;
-            window.location.href = detailUrl;
+            if (window.innerWidth < DESKTOP_WIDTH) {
+                bus.emit('sheet:opendetail', item.id);
+            } else {
+                window.location.href = detailUrl;
+            }
         });
         card.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 if (!e.target.closest('.card-fav')) {
-                    window.location.href = detailUrl;
+                    if (window.innerWidth < DESKTOP_WIDTH) {
+                        bus.emit('sheet:opendetail', item.id);
+                    } else {
+                        window.location.href = detailUrl;
+                    }
                 }
             }
         });

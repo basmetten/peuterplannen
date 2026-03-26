@@ -1,10 +1,10 @@
 import { state, SB_KEY, DESKTOP_WIDTH, TYPE_LABELS, WEATHER_LABELS, WEATHER_ICONS, SB_URL, FULL_LOCATION_SELECT } from './state.js';
 import { escapeHtml, safeUrl, slugify, cleanToddlerHighlight, buildDetailUrl, trackEvent } from './utils.js';
-import { getTrustBullets, getPracticalBullets, computePeuterScoreV2 } from './scoring.js';
+import { getTrustBullets, getPracticalBullets, computePeuterScoreV2, getOpenStatus } from './scoring.js';
 import { isFavorite } from './favorites.js';
 import { fetchJsonWithRetry, normalizeLocationRow } from './data.js';
 import { getSterkePunten } from './tags.js';
-import { getDistanceLabel } from './card-data.js';
+import { getDistanceLabel, getScoreTier } from './card-data.js';
 import { markVisited } from './visited.js';
 import { getPrefs, setPrefs, hasCompletedOnboarding } from './prefs.js';
 import { getPhotoData } from './templates.js';
@@ -125,61 +125,78 @@ export function openLocSheet(locationId) {
         return { label: 'Info', value: b.replace(/\.$/, '') };
     });
 
+    // Open status + score verbal (matching mobile)
+    const openStatus = getOpenStatus(loc);
+    const scoreTier = totalScore != null ? getScoreTier(totalScore) : 'mid';
+    const scoreVerbalMap = { high: 'Heel goed voor peuters', mid: 'Goed voor peuters', low: 'Redelijk voor peuters' };
+    if (totalScore >= 8.5) scoreVerbalMap.high = 'Uitstekend voor peuters';
+    const scoreVerbal = totalScore != null ? (totalScore >= 8.5 ? 'Uitstekend voor peuters' : scoreVerbalMap[scoreTier]) : '';
+
     const content = document.getElementById('loc-sheet-content');
     content.innerHTML = `
-        <!-- TIER 1: Hero + essentials + actions -->
-        <div class="sheet-hero-wrap">
+        <!-- Hero with floating back + fav -->
+        <div class="detail-hero-wrap">
             <div class="sheet-hero-photo${!photoSrc ? ' sheet-hero--category' : ''}" style="--photo-color: ${photoColor}">
                 <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" decoding="async" width="600" height="263"
                      onload="this.classList.add('loaded')"
                      onerror="if(this.dataset.retried){this.parentElement.classList.add('sheet-hero--fallback')}else{this.dataset.retried='1';this.src='${escapeHtml(fallbackSrc || categoryImg)}'}">
             </div>
-            <button class="loc-sheet-back" id="loc-sheet-back" aria-label="Terug naar overzicht">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <button class="detail-float-btn detail-back-btn" id="loc-sheet-back" aria-label="Terug naar overzicht">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="detail-float-btn detail-fav-btn${isFav ? ' active' : ''}" onclick="toggleFavoriteFromSheet(${loc.id}, this)" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}"${isFav ? ' aria-pressed="true"' : ' aria-pressed="false"'}>
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </button>
         </div>
 
-        <div class="sheet-detail-header">
-            <div class="card-pills">
-                <span class="pill pill-type">${typeLabel}</span>
-                ${weatherLabel ? `<span class="pill pill-weather">${weatherIcon}${weatherLabel}</span>` : ''}
-                ${distancePill}
-                ${pricePill}
+        <!-- Title + score + meta (matching mobile hierarchy) -->
+        <div class="detail-above-fold">
+            <div class="detail-title-row">
+                <h2 class="detail-name">${escapeHtml(loc.name)}</h2>
+                ${totalScore != null ? `<span class="detail-score-badge detail-score--${scoreTier}" aria-label="PeuterScore ${totalScore} uit 10, ${scoreVerbal}">${totalScore}</span>` : ''}
             </div>
-            <button class="card-fav" onclick="toggleFavoriteFromSheet(${loc.id}, this)" data-tooltip="${isFav ? 'Verwijder favoriet' : 'Opslaan'}" aria-label="${isFav ? 'Verwijder favoriet' : 'Opslaan als favoriet'}">
-                <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            ${scoreVerbal ? `<p class="detail-score-verbal">${escapeHtml(scoreVerbal)}</p>` : ''}
+            <div class="detail-meta-line">
+                <span>${escapeHtml(typeLabel)}</span>
+                ${distLabel ? `<span class="detail-meta-dot">\u00b7</span><span>${escapeHtml(distLabel)}</span>` : ''}
+                ${openStatus ? `<span class="detail-meta-dot">\u00b7</span><span class="detail-open-pill detail-open--${openStatus.color}">${escapeHtml(openStatus.label)}</span>` : ''}
+            </div>
+        </div>
+
+        <!-- Quick facility badges -->
+        <div class="detail-section detail-section-badges" style="padding: 10px 18px;">
+            <div class="detail-badges-row">
+                ${loc.coffee ? '<span class="detail-badge">\u2615 Koffie</span>' : ''}
+                ${loc.diaper ? '<span class="detail-badge">\uD83D\uDEBC Verschonen</span>' : ''}
+                ${loc.parking_ease === 'easy' ? '<span class="detail-badge">\uD83C\uDD7F\uFE0F Parkeren</span>' : ''}
+                ${loc.alcohol ? '<span class="detail-badge">\uD83C\uDF77 Alcohol</span>' : ''}
+            </div>
+        </div>
+
+        <!-- Highlight pull-quote -->
+        ${loc.toddler_highlight ? `<div class="detail-section" style="padding: 10px 18px;">
+            <blockquote class="detail-pullquote">\u201C${escapeHtml(loc.toddler_highlight)}\u201D</blockquote>
+        </div>` : ''}
+
+        <!-- Action buttons -->
+        <div class="detail-action-bar" style="position: relative; border-top: none;">
+            ${googleMapsUrl ? `<a href="${googleMapsUrl}" target="_blank" rel="noopener" class="detail-action-btn detail-action-primary">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Route
+            </a>` : ''}
+            ${safeUrl(loc.website) ? `<a href="${safeUrl(loc.website)}" target="_blank" rel="noopener" class="detail-action-btn detail-action-secondary">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Website
+            </a>` : ''}
+            <button class="detail-action-btn detail-action-icon btn-share" aria-label="Deel ${escapeHtml(loc.name)}">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             </button>
+            ${detailUrl ? `<a href="${detailUrl}" class="detail-action-btn detail-action-secondary">Meer info</a>` : ''}
         </div>
 
-        ${ageInfo}
-        <h2 class="card-name">${escapeHtml(loc.name)}</h2>
+        <!-- Sterke punten -->
+        ${sterkePunten.length ? `<div class="sterke-punten" style="margin: 0 18px;"><h3>Waarom goed voor peuters</h3><ul>${sterkePunten.map(p => `<li>\u2713 ${escapeHtml(p)}</li>`).join('')}</ul></div>` : ''}
 
-        <div class="detail-quick-facts">
-            ${totalScore !== null ? `<span class="detail-fact"><strong>${totalScore}</strong>★</span>` : ''}
-            ${loc.coffee ? '<span class="detail-fact">☕ Koffie</span>' : ''}
-            ${loc.diaper ? '<span class="detail-fact">🚻 Verschonen</span>' : ''}
-            ${loc.alcohol ? '<span class="detail-fact">🍷 Alcohol</span>' : ''}
-        </div>
-
-        <div class="sheet-detail-actions">
-            ${googleMapsUrl ? `<a href="${googleMapsUrl}" target="_blank" rel="noopener" class="sheet-detail-btn sheet-detail-btn-primary">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg> Route
-            </a>` : ''}
-            ${safeUrl(loc.website) ? `<a href="${safeUrl(loc.website)}" target="_blank" rel="noopener" class="sheet-detail-btn">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Website
-            </a>` : ''}
-            <button class="sheet-detail-btn sheet-detail-btn-icon btn-share" data-tooltip="Delen" aria-label="Deel ${escapeHtml(loc.name)}">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-            </button>
-            ${detailUrl ? `<a href="${detailUrl}" class="sheet-detail-btn">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg> Meer info
-            </a>` : ''}
-        </div>
-
-        <!-- TIER 2: Why it's good + practical info -->
-        ${sterkePunten.length ? `<div class="sterke-punten"><h3>Waarom goed voor peuters</h3><ul>${sterkePunten.map(p => `<li>✓ ${escapeHtml(p)}</li>`).join('')}</ul></div>` : ''}
-
-        ${(weatherLabel || loc.crowd_pattern || practicalCells.length) ? `<div class="sheet-info-grid">
+        <!-- Practical info grid -->
+        ${practicalCells.length ? `<div class="sheet-info-grid" style="margin: 0 18px;">
             ${weatherLabel ? `<div class="sheet-info-cell">
                 <span class="sheet-info-label">Weer</span>
                 <span class="sheet-info-value">${weatherIcon} ${escapeHtml(weatherLabel)}</span>
@@ -194,14 +211,20 @@ export function openLocSheet(locationId) {
             </div>`).join('')}
         </div>` : ''}
 
-        <!-- TIER 3: Behind toggle -->
+        <!-- Opening hours -->
+        ${loc.opening_hours || loc.always_open ? `<div class="detail-section" style="padding: 10px 18px;">
+            <div class="detail-section-label">Openingstijden</div>
+            <div class="detail-hours-block">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                <span>${escapeHtml(loc.always_open ? 'Altijd open' : loc.opening_hours)}</span>
+            </div>
+        </div>` : ''}
+
+        <!-- Score + description + trust (expandable) -->
         <details class="sheet-detail-more" aria-label="Meer details over ${escapeHtml(loc.name)}">
             <summary class="sheet-detail-more-toggle">Meer details</summary>
-
             ${scoreBreakdownHtml ? `<div class="sheet-score-breakdown-wrap">${scoreBreakdownHtml}</div>` : ''}
-
             ${longerDescription ? `<p class="sheet-detail-description">${escapeHtml(longerDescription)}</p>` : ''}
-
             ${trustBullets.length ? `<ul class="sheet-trust-list">${trustBullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>` : ''}
         </details>
     `;
