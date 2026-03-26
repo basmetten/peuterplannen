@@ -1236,20 +1236,20 @@ ins.adsbygoogle:empty { display: none !important; }
 
 /* --- City/type cards hover polish --- */
 .city-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: transform var(--pp-duration-fast) var(--pp-ease-spring), box-shadow var(--pp-duration-fast) var(--pp-ease-spring), border-color var(--pp-duration-fast);
 }
 .city-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--pp-shadow-card-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(var(--pp-neutral-warm-rgb), 0.10);
 }
 
 /* --- Blog preview cards --- */
 .blog-preview-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform var(--pp-duration-fast) var(--pp-ease-spring), box-shadow var(--pp-duration-fast) var(--pp-ease-spring);
 }
 .blog-preview-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--pp-shadow-card-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(var(--pp-neutral-warm-rgb), 0.10);
 }
 
 /* --- Quick result cards --- */
