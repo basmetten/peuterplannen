@@ -1053,144 +1053,148 @@ function renderInSheetDetail(loc) {
     // Open status
     const openStatus = getOpenStatus(loc);
 
-    // Top facility badges (above fold — max 3 most important)
-    const topBadges = getKenmerkenTags(loc, 3);
-
     // Sterke punten + trust bullets
     const sterkePunten = getSterkePunten(loc);
     const trustBullets = getTrustBullets(loc);
 
-    // Full facility grid (below fold)
-    const facilities = [];
-    if (loc.coffee) facilities.push({ icon: '\u2615', label: 'Koffie' });
-    if (loc.diaper) facilities.push({ icon: '\uD83D\uDEBC', label: 'Verschonen' });
-    if (loc.parking_ease === 'easy') facilities.push({ icon: '\uD83C\uDD7F\uFE0F', label: 'Parkeren' });
-    if (loc.buggy_friendliness === 'easy') facilities.push({ icon: '\uD83D\uDED2', label: 'Buggy OK' });
-    if (loc.toilet_confidence === 'confident' || loc.toilet_confidence === 'high') facilities.push({ icon: '\uD83D\uDEBB', label: 'Toilet' });
-    if (loc.weather === 'indoor' || loc.weather === 'hybrid' || loc.weather === 'both') facilities.push({ icon: '\uD83C\uDFE0', label: 'Binnen' });
-    if (loc.weather === 'outdoor' || loc.weather === 'hybrid' || loc.weather === 'both') facilities.push({ icon: '\uD83C\uDF3F', label: 'Buiten' });
-    if (loc.alcohol) facilities.push({ icon: '\uD83C\uDF77', label: 'Alcohol' });
+    // Facilities — compact inline list (no pill grid)
+    const facilityItems = [];
+    if (loc.coffee) facilityItems.push('Koffie');
+    if (loc.diaper) facilityItems.push('Verschonen');
+    if (loc.parking_ease === 'easy') facilityItems.push('Parkeren');
+    if (loc.buggy_friendliness === 'easy') facilityItems.push('Buggy OK');
+    if (loc.toilet_confidence === 'confident' || loc.toilet_confidence === 'high') facilityItems.push('Toilet');
+    if (loc.weather === 'indoor' || loc.weather === 'hybrid' || loc.weather === 'both') facilityItems.push('Binnen');
+    if (loc.weather === 'outdoor' || loc.weather === 'hybrid' || loc.weather === 'both') facilityItems.push('Buiten');
+    if (loc.alcohol) facilityItems.push('Alcohol');
 
     const practicalBullets = getPracticalBullets(loc);
 
     // Meta line: type · distance · open status
     const metaParts = [escapeHtml(typeLbl)];
     if (distLabel) metaParts.push(escapeHtml(distLabel));
-    const metaLine = metaParts.join(' <span class="detail-meta-dot">\u00b7</span> ');
+    const metaLine = metaParts.join(' <span class="detail-meta-dot" aria-hidden="true">\u00b7</span> ');
 
     // Build sections with stagger index
     let sectionIdx = 0;
     const sectionsHtml = [];
 
-    // Section: facility badges (above fold, large icon pills)
-    if (topBadges.length) {
-        sectionsHtml.push(`<div class="detail-section detail-section-badges" style="--section-i:${sectionIdx++}">
-            <div class="detail-badges-row">${topBadges.map((b, i) => `<span class="detail-badge" style="--badge-i:${i}"><span aria-hidden="true">${b.icon}</span> ${escapeHtml(b.label)}</span>`).join('')}</div>
+    // Section 1: Quick actions (Route / Website / Share) — ABOVE FOLD
+    const hasActions = googleMapsUrl || loc.website;
+    if (hasActions) {
+        sectionsHtml.push(`<div class="detail-actions" style="--section-i:${sectionIdx++}">
+            ${googleMapsUrl ? `<a href="${googleMapsUrl}" target="_blank" rel="noopener" class="detail-action-btn detail-action-primary" aria-label="Route naar ${escapeHtml(loc.name)}">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Route
+            </a>` : ''}
+            ${loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="detail-action-btn detail-action-secondary" aria-label="Website van ${escapeHtml(loc.name)}">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Website
+            </a>` : ''}
+            <button class="detail-action-btn detail-action-tertiary" aria-label="Deel ${escapeHtml(loc.name)}" data-share-loc="${loc.id}">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                Deel
+            </button>
         </div>`);
     }
 
-    // Section: editorial pull-quote
-    if (loc.toddler_highlight) {
-        sectionsHtml.push(`<div class="detail-section detail-section-quote" style="--section-i:${sectionIdx++}">
-            <blockquote class="detail-pullquote">\u201C${escapeHtml(loc.toddler_highlight)}\u201D</blockquote>
+    // Section 2: Highlight — editorial quote OR sterke punten (strongest trust signal)
+    if (loc.toddler_highlight || sterkePunten.length) {
+        let highlightContent = '';
+        if (loc.toddler_highlight) {
+            highlightContent += `<p class="detail-highlight-text">${escapeHtml(loc.toddler_highlight)}</p>`;
+        }
+        if (sterkePunten.length) {
+            highlightContent += `<ul class="detail-highlight-list">${sterkePunten.slice(0, 4).map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>`;
+        }
+        sectionsHtml.push(`<div class="detail-section detail-section--highlight" style="--section-i:${sectionIdx++}">
+            <div class="detail-section-title">Goed voor peuters</div>
+            ${highlightContent}
         </div>`);
     }
 
-    // Section: sterke punten (green card)
-    if (sterkePunten.length) {
+    // Section 3: Facilities — compact inline row
+    if (facilityItems.length) {
         sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
-            <div class="sterke-punten"><h3>Waarom goed voor peuters</h3><ul>${sterkePunten.map(p => `<li>\u2713 ${escapeHtml(p)}</li>`).join('')}</ul></div>
+            <div class="detail-section-title">Faciliteiten</div>
+            <div class="detail-facilities-row">${facilityItems.map(f => `<span class="detail-facility-tag">${escapeHtml(f)}</span>`).join('')}</div>
         </div>`);
     }
 
-    // Section: full facilities grid
-    if (facilities.length) {
+    // Section 4: Description (collapsed)
+    if (loc.description) {
         sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
-            <div class="detail-section-label">Faciliteiten</div>
-            <div class="sheet-detail-facilities-grid">${facilities.map(f => `<span class="detail-facility${f.available !== false ? '' : ' detail-facility--na'}"><span aria-hidden="true">${f.icon}</span> ${escapeHtml(f.label)}</span>`).join('')}</div>
+            <div class="detail-section-title">Over deze plek</div>
+            <div class="detail-desc-wrap">
+                <p class="detail-desc-text">${escapeHtml(loc.description)}</p>
+                <button class="detail-desc-toggle">Lees meer</button>
+            </div>
         </div>`);
     }
 
-    // Section: practical info (2-column grid)
-    if (practicalBullets.length) {
-        sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
-            <div class="detail-section-label">Praktisch</div>
-            <div class="detail-practical-grid">${practicalBullets.slice(0, 6).map(b => `<p class="detail-practical-item">${escapeHtml(b)}</p>`).join('')}</div>
-        </div>`);
-    }
-
-    // Section: opening hours
+    // Section 5: Practical + hours merged
+    const practicalRows = [];
     if (loc.opening_hours || loc.always_open) {
         const hoursText = loc.always_open ? 'Altijd open' : loc.opening_hours;
+        practicalRows.push(`<div class="detail-info-row">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <span>${escapeHtml(hoursText)}</span>
+        </div>`);
+    }
+    practicalBullets.slice(0, 4).forEach(b => {
+        practicalRows.push(`<div class="detail-info-row"><span class="detail-info-dot" aria-hidden="true"></span><span>${escapeHtml(b)}</span></div>`);
+    });
+    if (practicalRows.length) {
         sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
-            <div class="detail-section-label">Openingstijden</div>
-            <div class="detail-hours-block"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> <span>${escapeHtml(hoursText)}</span></div>
+            <div class="detail-section-title">Praktisch</div>
+            <div class="detail-info-list">${practicalRows.join('')}</div>
         </div>`);
     }
 
-    // Section: score breakdown (collapsible — first 2 bars visible as teaser)
+    // Section 6: Score breakdown (collapsible)
     if (scoreBreakdownHtml) {
         sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">${scoreBreakdownHtml}</div>`);
     }
 
-    // Section: description (collapsed, "Lees meer" after 3 lines)
-    if (loc.description) {
-        sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
-            <div class="detail-section-label">Over deze plek</div>
-            <div class="detail-desc-wrap">
-                <p class="detail-desc-text">${escapeHtml(loc.description)}</p>
-                <button class="detail-desc-toggle" onclick="this.closest('.detail-desc-wrap').classList.toggle('expanded')">Lees meer</button>
-            </div>
+    // Section 7: Trust & freshness footer
+    if (trustBullets.length) {
+        sectionsHtml.push(`<div class="detail-section detail-section--trust" style="--section-i:${sectionIdx++}">
+            <div class="detail-trust-list">${trustBullets.map(b => `<span class="detail-trust-item">${escapeHtml(b)}</span>`).join('')}</div>
         </div>`);
     }
 
-    // Section: trust bullets
-    if (trustBullets.length) {
-        sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
-            <ul class="sheet-trust-list">${trustBullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>
-        </div>`);
-    }
+    // Score display — inline with title, refined
+    const scoreHtml = totalScore != null
+        ? `<span class="detail-score detail-score--${scoreTier}" aria-label="PeuterScore ${totalScore} uit 10">${totalScore}</span>`
+        : '';
 
     return `
         <div class="detail-hero-wrap">
-            <div class="sheet-hero-photo detail-hero-photo" style="--photo-color: ${photo.photoColor || '#E8D5C4'}">
+            <div class="photo-container detail-hero-photo" style="--photo-color: ${photo.photoColor || '#E8D5C4'}">
                 <img class="sheet-hero-img" src="${escapeHtml(photo.imgSrc || '')}" alt="${escapeHtml(loc.name)}" loading="lazy">
             </div>
             <button class="detail-float-btn detail-back-btn" aria-label="Terug">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
             <button class="detail-float-btn detail-fav-btn${favClass}" data-loc-id="${loc.id}" aria-label="${isFav ? 'Verwijder favoriet' : 'Bewaar'}"${isFav ? ' aria-pressed="true"' : ' aria-pressed="false"'}>
-                <svg viewBox="0 0 24 24" width="20" height="20"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </button>
             <button class="detail-float-btn detail-close-btn" aria-label="Sluiten">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
             </button>
         </div>
-        <div class="detail-above-fold">
+        <div class="detail-header">
             <div class="detail-title-row">
                 <h2 class="detail-name">${escapeHtml(loc.name)}</h2>
-                ${totalScore != null ? `<span class="detail-score-badge detail-score--${scoreTier}" aria-label="PeuterScore ${totalScore} uit 10, ${scoreVerbal}">${totalScore}</span>` : ''}
+                ${scoreHtml}
             </div>
-            <p class="detail-score-verbal">${escapeHtml(scoreVerbal)}</p>
             <div class="detail-meta-line">
                 ${metaLine}
-                ${openStatus ? `<span class="detail-meta-dot">\u00b7</span><span class="detail-open-pill detail-open--${openStatus.color}">${escapeHtml(openStatus.label)}</span>` : ''}
+                ${openStatus ? `<span class="detail-meta-dot" aria-hidden="true">\u00b7</span><span class="detail-open-status detail-open--${openStatus.color}">${escapeHtml(openStatus.label)}</span>` : ''}
             </div>
+            ${scoreVerbal ? `<div class="detail-verdict">${escapeHtml(scoreVerbal)}</div>` : ''}
         </div>
         ${sectionsHtml.join('')}
-        <div class="detail-action-bar">
-            ${googleMapsUrl ? `<a href="${googleMapsUrl}" target="_blank" rel="noopener" class="detail-action-btn detail-action-primary" aria-label="Route naar ${escapeHtml(loc.name)} (opent in nieuw venster)">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                Route
-            </a>` : ''}
-            ${loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="detail-action-btn detail-action-secondary" aria-label="Website van ${escapeHtml(loc.name)} (opent in nieuw venster)">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                Website
-            </a>` : ''}
-            <button class="detail-action-btn detail-action-icon" aria-label="Deel deze locatie" data-share-loc="${loc.id}">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            </button>
-        </div>
     `;
 }
 
