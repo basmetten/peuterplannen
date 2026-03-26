@@ -42,7 +42,10 @@ jobs:
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
         run: |
           set -euo pipefail
-          ZONE_ID="e40d136b27bf0c6f381da6e874721c98"
+          ZONE_ID=$(curl -sS -f "https://api.cloudflare.com/client/v4/zones?name=peuterplannen.nl" \
+            -H "X-Auth-Email: $CLOUDFLARE_EMAIL" \
+            -H "X-Auth-Key: $CLOUDFLARE_API_KEY" \
+            | python3 -c "import json,sys; print(json.load(sys.stdin)['result'][0]['id'])")
           count=$(curl -s "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/dns_records?name=staging.peuterplannen.nl" \
             -H "X-Auth-Email: $CLOUDFLARE_EMAIL" \
             -H "X-Auth-Key: $CLOUDFLARE_API_KEY" \
