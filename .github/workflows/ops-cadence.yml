@@ -55,6 +55,8 @@ jobs:
       - name: Build current public state
         if: steps.gate.outputs.run_ops == 'true'
         run: npm run build
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       - name: Refresh trust gaps
         if: steps.gate.outputs.run_ops == 'true'

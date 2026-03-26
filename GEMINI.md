@@ -42,6 +42,14 @@ PeuterPlannen is een nuchtere, snelle, betrouwbare discovery-tool voor ouders.
 - Staging branch → `staging.peuterplannen.nl` (veilig experimenteren)
 - Main branch → `peuterplannen.nl` (productie)
 
+## 🔑 SECURITY AUDIT BEVINDINGEN (maart 2026)
+- **Google Maps API key in `modules/utils.js:148`**: Dit is opzettelijk — Maps JS API vereist een publieke key in de frontend. Risico zit in ontbrekende key restrictions. Bas moet in Google Cloud Console de key beperken tot `peuterplannen.nl/*` en `staging.peuterplannen.nl/*`. Niet uit de code halen.
+- **Supabase anon key in `.scripts/lib/config.js`**: Veilig en opzettelijk. Read-only publieke key, hoort in de code.
+- **Cloudflare analytics token in `.scripts/lib/config.js`**: Veilig. Analytics tokens zijn publiek by design.
+- **`.supabase_env`**: Bevat service keys — correct gitignored, nooit committen.
+- **Hardcoded Zone IDs**: Verwijderd uit `staging.yml`; wordt nu dynamisch opgehaald (consistent met `sync-site.yml`).
+- **`.archive/`**: Gitignored. Oude expired Gemini keys in HANDOFF.md — geen actief risico.
+
 ## 📌 HUIDIGE FOCUS: HORIZON 3 (Data Reliability)
 - **Taak 11:** Datakwaliteitbatch draaien (openingstijden, dode links, duplicaten).
 - **Output:** `dataset_audit_report.md`, `dataset_fixes.sql`, `manual_review_queue.csv`.
