@@ -1017,14 +1017,14 @@ function renderInSheetDetail(loc) {
     const isFav = isFavorite(loc.id);
     const favClass = isFav ? ' active' : '';
 
-    // Score V2
+    // Score
     const weather = state.isRaining ? 'rain' : state.isSunny ? 'sun' : null;
     const v2 = computePeuterScoreV2(loc, { weather, dayOfWeek: new Date().getDay() });
     const totalScore = v2.total;
     const scoreTier = getScoreTier(totalScore);
     const scoreVerbal = getScoreVerbalLabel(totalScore);
 
-    // Score breakdown bars
+    // Score breakdown
     let scoreBreakdownHtml = '';
     try {
         const dims = Object.values(v2.dimensions);
@@ -1046,18 +1046,14 @@ function renderInSheetDetail(loc) {
         </div>`;
     } catch(e) { /* v2 breakdown not available */ }
 
-    // Distance
     const travelInfo = state.lastTravelTimes?.[loc.id];
     const distLabel = getDistanceLabel(loc, travelInfo);
-
-    // Open status
     const openStatus = getOpenStatus(loc);
-
-    // Sterke punten + trust bullets
     const sterkePunten = getSterkePunten(loc);
     const trustBullets = getTrustBullets(loc);
+    const practicalBullets = getPracticalBullets(loc);
 
-    // Facilities — compact inline list (no pill grid)
+    // Facilities
     const facilityItems = [];
     if (loc.coffee) facilityItems.push('Koffie');
     if (loc.diaper) facilityItems.push('Verschonen');
@@ -1068,63 +1064,59 @@ function renderInSheetDetail(loc) {
     if (loc.weather === 'outdoor' || loc.weather === 'hybrid' || loc.weather === 'both') facilityItems.push('Buiten');
     if (loc.alcohol) facilityItems.push('Alcohol');
 
-    const practicalBullets = getPracticalBullets(loc);
-
-    // Meta line: type · distance · open status
+    // Meta line
     const metaParts = [escapeHtml(typeLbl)];
     if (distLabel) metaParts.push(escapeHtml(distLabel));
-    const metaLine = metaParts.join(' <span class="detail-meta-dot" aria-hidden="true">\u00b7</span> ');
+    if (openStatus) metaParts.push(`<span class="dt-status dt-status--${openStatus.color}">${escapeHtml(openStatus.label)}</span>`);
+    const metaLine = metaParts.join('<span class="dt-dot">\u00b7</span>');
 
-    // Build sections with stagger index
-    let sectionIdx = 0;
-    const sectionsHtml = [];
+    // Top proof chips (above fold — max 3, curated)
+    const topProof = getKenmerkenTags(loc, 3);
 
-    // Section 1: Quick actions (Route / Website / Share) — ABOVE FOLD
-    const hasActions = googleMapsUrl || loc.website;
-    if (hasActions) {
-        sectionsHtml.push(`<div class="detail-actions" style="--section-i:${sectionIdx++}">
-            ${googleMapsUrl ? `<a href="${googleMapsUrl}" target="_blank" rel="noopener" class="detail-action-btn detail-action-primary" aria-label="Route naar ${escapeHtml(loc.name)}">
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                Route
-            </a>` : ''}
-            ${loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="detail-action-btn detail-action-secondary" aria-label="Website van ${escapeHtml(loc.name)}">
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                Website
-            </a>` : ''}
-            <button class="detail-action-btn detail-action-tertiary" aria-label="Deel ${escapeHtml(loc.name)}" data-share-loc="${loc.id}">
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-                Deel
-            </button>
-        </div>`);
-    }
+    // Build sections
+    let si = 0;
+    const sections = [];
 
-    // Section 2: Highlight — editorial quote OR sterke punten (strongest trust signal)
+    // Section: Highlight card — editorial + sterke punten
     if (loc.toddler_highlight || sterkePunten.length) {
-        let highlightContent = '';
-        if (loc.toddler_highlight) {
-            highlightContent += `<p class="detail-highlight-text">${escapeHtml(loc.toddler_highlight)}</p>`;
-        }
-        if (sterkePunten.length) {
-            highlightContent += `<ul class="detail-highlight-list">${sterkePunten.slice(0, 4).map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>`;
-        }
-        sectionsHtml.push(`<div class="detail-section detail-section--highlight" style="--section-i:${sectionIdx++}">
-            <div class="detail-section-title">Goed voor peuters</div>
-            ${highlightContent}
+        const summary = loc.toddler_highlight
+            ? `<p class="dt-hl-summary">${escapeHtml(loc.toddler_highlight)}</p>` : '';
+        const reasons = sterkePunten.length
+            ? `<ul class="dt-hl-reasons">${sterkePunten.slice(0, 4).map(p => `<li>${escapeHtml(p)}</li>`).join('')}</ul>` : '';
+        sections.push(`<div class="dt-card dt-card--highlight" style="--si:${si++}">
+            <div class="dt-card-header">Waarom goed voor peuters</div>
+            ${summary}${reasons}
         </div>`);
     }
 
-    // Section 3: Facilities — compact inline row
+    // Section: Facilities
     if (facilityItems.length) {
-        sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
-            <div class="detail-section-title">Faciliteiten</div>
-            <div class="detail-facilities-row">${facilityItems.map(f => `<span class="detail-facility-tag">${escapeHtml(f)}</span>`).join('')}</div>
+        sections.push(`<div class="dt-section" style="--si:${si++}">
+            <div class="dt-label">Faciliteiten</div>
+            <div class="dt-chips">${facilityItems.map(f => `<span class="dt-chip">${escapeHtml(f)}</span>`).join('')}</div>
         </div>`);
     }
 
-    // Section 4: Description (collapsed)
+    // Section: Practical + hours
+    const infoRows = [];
+    if (loc.opening_hours || loc.always_open) {
+        const hoursText = loc.always_open ? 'Altijd open' : loc.opening_hours;
+        infoRows.push(`<div class="dt-row"><svg class="dt-row-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>${escapeHtml(hoursText)}</span></div>`);
+    }
+    practicalBullets.slice(0, 4).forEach(b => {
+        infoRows.push(`<div class="dt-row"><span class="dt-row-dot"></span><span>${escapeHtml(b)}</span></div>`);
+    });
+    if (infoRows.length) {
+        sections.push(`<div class="dt-section" style="--si:${si++}">
+            <div class="dt-label">Praktisch</div>
+            <div class="dt-rows">${infoRows.join('')}</div>
+        </div>`);
+    }
+
+    // Section: Description
     if (loc.description) {
-        sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
-            <div class="detail-section-title">Over deze plek</div>
+        sections.push(`<div class="dt-section" style="--si:${si++}">
+            <div class="dt-label">Over deze plek</div>
             <div class="detail-desc-wrap">
                 <p class="detail-desc-text">${escapeHtml(loc.description)}</p>
                 <button class="detail-desc-toggle">Lees meer</button>
@@ -1132,41 +1124,35 @@ function renderInSheetDetail(loc) {
         </div>`);
     }
 
-    // Section 5: Practical + hours merged
-    const practicalRows = [];
-    if (loc.opening_hours || loc.always_open) {
-        const hoursText = loc.always_open ? 'Altijd open' : loc.opening_hours;
-        practicalRows.push(`<div class="detail-info-row">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            <span>${escapeHtml(hoursText)}</span>
-        </div>`);
-    }
-    practicalBullets.slice(0, 4).forEach(b => {
-        practicalRows.push(`<div class="detail-info-row"><span class="detail-info-dot" aria-hidden="true"></span><span>${escapeHtml(b)}</span></div>`);
-    });
-    if (practicalRows.length) {
-        sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">
-            <div class="detail-section-title">Praktisch</div>
-            <div class="detail-info-list">${practicalRows.join('')}</div>
-        </div>`);
-    }
-
-    // Section 6: Score breakdown (collapsible)
+    // Section: Score breakdown
     if (scoreBreakdownHtml) {
-        sectionsHtml.push(`<div class="detail-section" style="--section-i:${sectionIdx++}">${scoreBreakdownHtml}</div>`);
+        sections.push(`<div class="dt-section" style="--si:${si++}">${scoreBreakdownHtml}</div>`);
     }
 
-    // Section 7: Trust & freshness footer
+    // Section: Trust footer
     if (trustBullets.length) {
-        sectionsHtml.push(`<div class="detail-section detail-section--trust" style="--section-i:${sectionIdx++}">
-            <div class="detail-trust-list">${trustBullets.map(b => `<span class="detail-trust-item">${escapeHtml(b)}</span>`).join('')}</div>
-        </div>`);
+        sections.push(`<div class="dt-trust" style="--si:${si++}">${trustBullets.map(b =>
+            `<span class="dt-trust-item"><svg class="dt-trust-check" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>${escapeHtml(b)}</span>`
+        ).join('')}</div>`);
     }
 
-    // Score display — inline with title, refined
+    // Score HTML
     const scoreHtml = totalScore != null
-        ? `<span class="detail-score detail-score--${scoreTier}" aria-label="PeuterScore ${totalScore} uit 10">${totalScore}</span>`
-        : '';
+        ? `<div class="dt-score dt-score--${scoreTier}"><span class="dt-score-num">${totalScore}</span><span class="dt-score-max">/10</span></div>` : '';
+
+    // Verdict + proof chips (above fold)
+    const verdictHtml = scoreVerbal
+        ? `<div class="dt-verdict"><svg class="dt-verdict-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${escapeHtml(scoreVerbal)}</div>` : '';
+
+    const proofHtml = topProof.length
+        ? `<div class="dt-proof">${topProof.map(t => `<span class="dt-chip">${escapeHtml(t.label)}</span>`).join('')}</div>` : '';
+
+    // CTA row
+    const ctaHtml = `<div class="dt-cta">
+        ${googleMapsUrl ? `<a href="${googleMapsUrl}" target="_blank" rel="noopener" class="dt-cta-btn dt-cta--primary"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Route</a>` : ''}
+        ${loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="dt-cta-btn dt-cta--secondary"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
+        <button class="dt-cta-btn dt-cta--tertiary" data-share-loc="${loc.id}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Deel</button>
+    </div>`;
 
     return `
         <div class="detail-hero-wrap">
@@ -1183,18 +1169,17 @@ function renderInSheetDetail(loc) {
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
             </button>
         </div>
-        <div class="detail-header">
-            <div class="detail-title-row">
-                <h2 class="detail-name">${escapeHtml(loc.name)}</h2>
+        <div class="dt-above-fold">
+            <div class="dt-title-row">
+                <h2 class="dt-name">${escapeHtml(loc.name)}</h2>
                 ${scoreHtml}
             </div>
-            <div class="detail-meta-line">
-                ${metaLine}
-                ${openStatus ? `<span class="detail-meta-dot" aria-hidden="true">\u00b7</span><span class="detail-open-status detail-open--${openStatus.color}">${escapeHtml(openStatus.label)}</span>` : ''}
-            </div>
-            ${scoreVerbal ? `<div class="detail-verdict">${escapeHtml(scoreVerbal)}</div>` : ''}
+            <div class="dt-meta">${metaLine}</div>
+            ${verdictHtml}
+            ${proofHtml}
+            ${ctaHtml}
         </div>
-        ${sectionsHtml.join('')}
+        ${sections.join('')}
     `;
 }
 
