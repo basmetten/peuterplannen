@@ -1206,8 +1206,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 48px;
-  background: linear-gradient(to top, var(--pp-bg, #fcf9f7) 0%, transparent 100%);
+  height: 72px;
+  background: linear-gradient(to top, var(--pp-bg, #fcf9f7) 12%, transparent 100%);
   pointer-events: none;
   z-index: 1;
 }
@@ -1282,14 +1282,24 @@
   flex: 1;
   min-width: 0;
 }
-/* Score — typographic numeral, no background */
+/* Score — refined numeral with context */
 .dt-score {
   flex-shrink: 0;
   font-family: var(--pp-font-heading);
-  font-size: 1.5rem;
-  font-weight: 450;
+  font-size: 1.375rem;
+  font-weight: 500;
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
+  padding: 4px 8px 3px;
+  border-radius: 6px;
+  background: rgba(var(--pp-text-rgb, 45,41,38), 0.04);
+}
+.dt-score::after {
+  content: '/10';
+  font-size: 0.6em;
+  font-weight: 400;
+  opacity: 0.55;
+  margin-left: 1px;
 }
 .dt-score--high { color: var(--pp-success, #2D8B5E); }
 .dt-score--mid  { color: #C4903A; }
@@ -1316,21 +1326,28 @@
 .dt-status--amber { color: #C4903A; }
 .dt-status--red   { color: #C0392B; }
 
-/* --- Verdict block — the emotional moment --- */
+/* --- Verdict block — tier-colored emotional moment --- */
 .dt-verdict-block {
   margin-top: 12px;
   padding: 8px 12px;
-  background: var(--pp-success-bg, #E8F5EF);
   border-radius: 8px;
   display: inline-flex;
   align-items: center;
+  background: rgba(var(--pp-text-rgb, 45,41,38), 0.03);
 }
 .dt-verdict-text {
   font-size: 0.8125rem;
   font-weight: 650;
-  color: var(--pp-success, #2D8B5E);
+  color: var(--pp-text-tertiary, #756762);
   letter-spacing: 0.005em;
 }
+/* Tier overrides */
+.dt-verdict--high { background: var(--pp-success-bg, #E8F5EF); }
+.dt-verdict--high .dt-verdict-text { color: var(--pp-success, #2D8B5E); }
+.dt-verdict--mid { background: var(--pp-semantic-warning-bg, #FFF8E1); }
+.dt-verdict--mid .dt-verdict-text { color: #C4903A; }
+.dt-verdict--low { background: rgba(var(--pp-text-rgb, 45,41,38), 0.03); }
+.dt-verdict--low .dt-verdict-text { color: var(--pp-text-muted, #A39490); }
 
 /* --- Proof chips --- */
 .dt-proof {
@@ -1369,11 +1386,21 @@
 .dt-cta--primary {
   background: var(--pp-primary, #D4775A);
   color: #fff;
+  box-shadow: 0 4px 12px rgba(var(--pp-primary-rgb, 212,119,90), 0.22);
+}
+.dt-cta--primary:active {
+  box-shadow: 0 2px 6px rgba(var(--pp-primary-rgb, 212,119,90), 0.12);
 }
 .dt-cta--ghost {
-  background: none;
-  border: 1.5px solid rgba(var(--pp-text-rgb, 45,41,38), 0.12);
+  background: rgba(var(--pp-text-rgb, 45,41,38), 0.025);
+  border: 1.5px solid rgba(var(--pp-text-rgb, 45,41,38), 0.10);
   color: var(--pp-text-secondary, #5C4A48);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  padding: 11px 16px; /* compensate border */
+}
+.dt-cta--ghost:active {
+  background: rgba(var(--pp-text-rgb, 45,41,38), 0.05);
+  box-shadow: none;
 }
 
 /* ===========================================
@@ -1423,8 +1450,11 @@
   background: var(--pp-primary-50, #FDF1ED);
   border-radius: 16px;
   margin: 24px 16px 0 !important;
-  padding: 20px !important;
-  box-shadow: 0 2px 8px rgba(var(--pp-primary-rgb, 212,119,90), 0.08);
+  padding: 24px !important;
+  border: 1px solid rgba(var(--pp-primary-rgb, 212,119,90), 0.08);
+  box-shadow:
+    0 1px 3px rgba(0,0,0,0.04),
+    0 8px 24px rgba(var(--pp-primary-rgb, 212,119,90), 0.07);
 }
 .dt-card-header {
   font-size: 0.6875rem;
@@ -1541,24 +1571,26 @@
    =========================================== */
 .dt-trust {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px 16px;
-  padding: 16px 20px 24px;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 20px 24px;
   animation: dt-enter 280ms ease-out both;
   animation-delay: calc(var(--si, 0) * 45ms);
 }
 .dt-trust-item {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 0.6875rem;
-  font-weight: 550;
-  color: var(--pp-text-muted, #A39490);
-  line-height: 1.6;
+  gap: 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--pp-text-tertiary, #756762);
+  line-height: 1.5;
 }
 .dt-trust-check {
   flex-shrink: 0;
-  stroke: var(--pp-primary-300, #E8957A);
+  stroke: var(--pp-success, #2D8B5E);
+  width: 14px;
+  height: 14px;
 }
 
 /* --- Swipe-to-dismiss --- */

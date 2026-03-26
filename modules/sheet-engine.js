@@ -1140,9 +1140,9 @@ function renderInSheetDetail(loc) {
     const scoreHtml = totalScore != null
         ? `<span class="dt-score dt-score--${scoreTier}">${totalScore}</span>` : '';
 
-    // Verdict block — the emotional moment
+    // Verdict block — tier-colored emotional moment
     const verdictHtml = scoreVerbal
-        ? `<div class="dt-verdict-block"><span class="dt-verdict-text">${escapeHtml(scoreVerbal)}</span></div>` : '';
+        ? `<div class="dt-verdict-block dt-verdict--${scoreTier}"><span class="dt-verdict-text">${escapeHtml(scoreVerbal)}</span></div>` : '';
 
     // Proof chips
     const proofHtml = topProof.length
