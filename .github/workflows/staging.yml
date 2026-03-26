@@ -68,6 +68,6 @@ jobs:
       - name: Smoke test staging
         run: |
           sleep 15
-          status=$(curl -sS -o /dev/null -w "%{http_code}" "https://testen.peuterplannen.nl/app.html")
+          status=$(curl -sSL -o /dev/null -w "%{http_code}" "https://testen.peuterplannen.nl/")
           echo "Smoke test: HTTP $status"
           [[ "$status" == "200" ]] || exit 1
