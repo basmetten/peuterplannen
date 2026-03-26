@@ -15,7 +15,7 @@
     "staging": {
       "name": "peuterplannen-staging",
       "routes": [
-        { "pattern": "testen.peuterplannen.nl/*", "zone_name": "peuterplannen.nl" }
+        { "pattern": "staging.peuterplannen.nl/*", "zone_name": "peuterplannen.nl" }
       ]
     }
   }
