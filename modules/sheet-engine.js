@@ -41,6 +41,18 @@ const LAZY_OBSERVER_THRESHOLD = 0.1;
 const SEARCH_MIN_CHARS = 2;
 const SEARCH_MAX_SUGGESTIONS = 6;
 
+// Swipe-to-dismiss constants
+const DISMISS_THRESHOLD_PX = 120;
+const DISMISS_VELOCITY_PX_MS = 0.8;    // px/ms for fast-flick dismiss
+const DISMISS_MIN_DIST_FOR_VELOCITY = 40; // minimum travel for velocity to count
+const DISMISS_COMMIT_PX = 10;           // dead zone before committing to a direction
+const SCROLL_LOCK_TIMEOUT_MS = 100;     // block dismiss for 100ms after last scroll
+const DISMISS_RUBBER_FACTOR = 0.45;     // resistance beyond threshold
+const SNAP_BACK_MS = 250;               // spring-back duration
+
+// Swipe-to-dismiss state
+let _dismissCleanup = null;
+
 // --- DOM ---
 let hostEl, sheetEl, contentEl, listEl, dragHandle;
 let snapPeekEl, snapHalfEl;
@@ -1182,6 +1194,176 @@ function renderInSheetDetail(loc) {
     `;
 }
 
+/* ===================================================
+   SWIPE-TO-DISMISS (Detail View)
+   Pointer-event gesture recognizer with scroll-lock
+   timeout, DOM tree walk, and rubber-band resistance.
+   Based on Vaul (shadcn/ui drawer) battle-tested patterns.
+   =================================================== */
+
+function attachDetailSwipeDismiss(detailEl) {
+    let startY = 0, startX = 0, startTime = 0;
+    let deltaY = 0, state = 'idle'; // idle | pending | dragging
+    let lastScrollTime = 0;
+    let pointerId = null;
+
+    // Scroll lock: block dismiss for 100ms after any scroll inside detail
+    function onContentScroll() {
+        lastScrollTime = Date.now();
+    }
+    detailEl.addEventListener('scroll', onContentScroll, { passive: true, capture: true });
+
+    // Walk DOM tree checking scrollable ancestors
+    function isAnyAncestorScrolled(target) {
+        let el = target;
+        while (el && el !== detailEl) {
+            if (el.scrollHeight > el.clientHeight + 2 && el.scrollTop > 1) return true;
+            el = el.parentElement;
+        }
+        return detailEl.scrollTop > 1;
+    }
+
+    function onPointerDown(e) {
+        // Multi-touch → ignore (pinch)
+        if (e.touches && e.touches.length > 1) return;
+        if (sheetEl.classList.contains('detail-closing')) return;
+        startY = e.clientY ?? e.touches[0].clientY;
+        startX = e.clientX ?? e.touches[0].clientX;
+        startTime = Date.now();
+        deltaY = 0;
+        state = 'pending';
+        if (e.pointerId != null) {
+            pointerId = e.pointerId;
+            try { detailEl.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+        }
+    }
+
+    function onPointerMove(e) {
+        if (state === 'idle') return;
+        const currentY = e.clientY ?? e.touches?.[0]?.clientY ?? 0;
+        const currentX = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
+        deltaY = currentY - startY;
+        const deltaX = currentX - startX;
+
+        if (state === 'pending') {
+            const absDY = Math.abs(deltaY);
+            const absDX = Math.abs(deltaX);
+            // Dead zone: haven't committed to a direction yet
+            if (absDY < DISMISS_COMMIT_PX && absDX < DISMISS_COMMIT_PX) return;
+            // Horizontal → cancel (don't interfere with horizontal gestures)
+            if (absDX > absDY * 1.5) { state = 'idle'; return; }
+            // Upward → native scroll, cancel
+            if (deltaY < 0) { state = 'idle'; return; }
+            // Scroll lock active → block
+            if (Date.now() - lastScrollTime < SCROLL_LOCK_TIMEOUT_MS) { state = 'idle'; return; }
+            // Any ancestor scrolled → block
+            if (isAnyAncestorScrolled(e.target)) { state = 'idle'; return; }
+            // Commit to dragging
+            state = 'dragging';
+            detailEl.classList.add('swipe-active');
+            detailEl.style.willChange = 'transform, opacity';
+        }
+
+        if (state === 'dragging') {
+            e.preventDefault(); // Steal from native scroll
+            // Rubber-band resistance beyond threshold
+            const applied = deltaY <= DISMISS_THRESHOLD_PX
+                ? deltaY
+                : DISMISS_THRESHOLD_PX + (deltaY - DISMISS_THRESHOLD_PX) * DISMISS_RUBBER_FACTOR;
+            const opacity = Math.max(0.3, 1 - applied / (DISMISS_THRESHOLD_PX * 3));
+            detailEl.style.transform = `translateY(${applied}px)`;
+            detailEl.style.opacity = String(opacity);
+        }
+    }
+
+    function onPointerUp() {
+        if (state !== 'dragging') { state = 'idle'; return; }
+        const elapsed = Date.now() - startTime;
+        const velocity = elapsed > 0 ? deltaY / elapsed : 0; // px/ms
+        const shouldDismiss =
+            (deltaY >= DISMISS_THRESHOLD_PX) ||
+            (velocity >= DISMISS_VELOCITY_PX_MS && deltaY >= DISMISS_MIN_DIST_FOR_VELOCITY);
+
+        if (shouldDismiss) {
+            // Animate out before cleanup
+            detailEl.style.transition = `transform ${SNAP_BACK_MS}ms cubic-bezier(0.32, 0.72, 0, 1), opacity ${SNAP_BACK_MS}ms cubic-bezier(0.32, 0.72, 0, 1)`;
+            detailEl.style.transform = `translateY(${window.innerHeight}px)`;
+            detailEl.style.opacity = '0';
+            const onTransEnd = () => {
+                detailEl.style.transition = '';
+                cleanup();
+                hideDetailInSheet();
+            };
+            detailEl.addEventListener('transitionend', onTransEnd, { once: true });
+            setTimeout(onTransEnd, SNAP_BACK_MS + 50); // fallback
+        } else {
+            // Snap back
+            detailEl.classList.add('swipe-snap-back');
+            detailEl.style.transform = 'translateY(0)';
+            detailEl.style.opacity = '1';
+            const onTransEnd = () => {
+                detailEl.classList.remove('swipe-snap-back', 'swipe-active');
+                detailEl.style.willChange = '';
+                detailEl.style.transform = '';
+                detailEl.style.opacity = '';
+            };
+            detailEl.addEventListener('transitionend', onTransEnd, { once: true });
+            setTimeout(onTransEnd, SNAP_BACK_MS + 50); // fallback
+        }
+        state = 'idle';
+        if (pointerId != null) {
+            try { detailEl.releasePointerCapture(pointerId); } catch (_) { /* ignore */ }
+            pointerId = null;
+        }
+    }
+
+    // Use pointer events where available (unified mouse+touch), fallback to touch
+    const usePointer = 'PointerEvent' in window;
+    if (usePointer) {
+        detailEl.addEventListener('pointerdown', onPointerDown);
+        detailEl.addEventListener('pointermove', onPointerMove, { passive: false });
+        detailEl.addEventListener('pointerup', onPointerUp);
+        detailEl.addEventListener('pointercancel', onPointerUp);
+    } else {
+        detailEl.addEventListener('touchstart', onPointerDown, { passive: true });
+        detailEl.addEventListener('touchmove', onPointerMove, { passive: false });
+        detailEl.addEventListener('touchend', onPointerUp, { passive: true });
+        detailEl.addEventListener('touchcancel', onPointerUp, { passive: true });
+    }
+
+    // iOS workaround: reset stale drag state on touchend (pointerup can fire late)
+    function iosTouchEndReset() { if (state === 'pending') state = 'idle'; }
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    if (isIOS) {
+        window.addEventListener('touchend', iosTouchEndReset, { passive: true });
+    }
+
+    // Cleanup function — removes all listeners
+    function cleanup() {
+        detailEl.removeEventListener('scroll', onContentScroll, { capture: true });
+        if (usePointer) {
+            detailEl.removeEventListener('pointerdown', onPointerDown);
+            detailEl.removeEventListener('pointermove', onPointerMove);
+            detailEl.removeEventListener('pointerup', onPointerUp);
+            detailEl.removeEventListener('pointercancel', onPointerUp);
+        } else {
+            detailEl.removeEventListener('touchstart', onPointerDown);
+            detailEl.removeEventListener('touchmove', onPointerMove);
+            detailEl.removeEventListener('touchend', onPointerUp);
+            detailEl.removeEventListener('touchcancel', onPointerUp);
+        }
+        window.removeEventListener('touchend', iosTouchEndReset);
+        detailEl.classList.remove('swipe-active', 'swipe-snap-back');
+        detailEl.style.transform = '';
+        detailEl.style.opacity = '';
+        detailEl.style.willChange = '';
+        detailEl.style.transition = '';
+        state = 'idle';
+    }
+
+    return cleanup;
+}
+
 export function showDetailInSheet(locationId) {
     if (!sheetEl) return;
     const loc = state.allLocations.find(l => l.id === locationId);
@@ -1206,6 +1388,16 @@ export function showDetailInSheet(locationId) {
 
     // Scroll detail container to top
     detailEl.scrollTop = 0;
+
+    // Attach swipe-to-dismiss gesture
+    if (_dismissCleanup) _dismissCleanup();
+    _dismissCleanup = attachDetailSwipeDismiss(detailEl);
+
+    // Escape key dismiss
+    const escHandler = (e) => { if (e.key === 'Escape') hideDetailInSheet(); };
+    document.addEventListener('keydown', escHandler);
+    // Store for cleanup
+    detailEl._escHandler = escHandler;
 
     // Push history state for browser-back support
     if (typeof window.pushNavState === 'function') window.pushNavState('in-sheet-detail', { locationId });
@@ -1255,6 +1447,23 @@ export function showDetailInSheet(locationId) {
 export function hideDetailInSheet() {
     if (!sheetEl) return;
     const detailEl = document.getElementById('sheet-detail');
+
+    // Clean up swipe-to-dismiss
+    if (_dismissCleanup) { _dismissCleanup(); _dismissCleanup = null; }
+
+    // Clean up escape handler
+    if (detailEl?._escHandler) {
+        document.removeEventListener('keydown', detailEl._escHandler);
+        detailEl._escHandler = null;
+    }
+
+    // Clear inline swipe styles before exit animation
+    if (detailEl) {
+        detailEl.style.transform = '';
+        detailEl.style.opacity = '';
+        detailEl.style.willChange = '';
+        detailEl.style.transition = '';
+    }
 
     // Exit animation
     if (detailEl) {

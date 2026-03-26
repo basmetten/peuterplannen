@@ -1489,6 +1489,30 @@
 }
 .detail-action-icon svg { stroke: currentColor; }
 
+/* --- Swipe-to-dismiss --- */
+
+/* Snap-back transition (spring curve) */
+.sheet-detail.swipe-snap-back {
+  transition: transform 250ms cubic-bezier(0.32, 0.72, 0, 1),
+              opacity 250ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* During drag: prevent accidental taps on interactive elements */
+.sheet-detail.swipe-active {
+  user-select: none;
+  -webkit-user-select: none;
+}
+.sheet-detail.swipe-active .detail-action-bar,
+.sheet-detail.swipe-active a,
+.sheet-detail.swipe-active button:not(.detail-back-btn):not(.detail-close-btn) {
+  pointer-events: none;
+}
+
+/* Prevent iOS rubber-band scroll chaining on detail container */
+.bottom-sheet.show-detail .sheet-detail {
+  overscroll-behavior: contain;
+}
+
 /* --- Reduced motion --- */
 @media (prefers-reduced-motion: reduce) {
   .detail-section,
@@ -1496,7 +1520,8 @@
   .detail-hero-photo .sheet-hero-img,
   .detail-fav-spring,
   .bottom-sheet.show-detail .sheet-detail,
-  .bottom-sheet.detail-closing .sheet-detail {
+  .bottom-sheet.detail-closing .sheet-detail,
+  .sheet-detail.swipe-snap-back {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
