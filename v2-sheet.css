@@ -364,27 +364,25 @@
   border-radius: 14px 14px 8px 8px;
 }
 
-/* Detail view — remove clipping so hero photo + carousel go edge-to-edge */
+/* Detail view — opaque panel, scroll-enabled, no map bleed */
 .bottom-sheet.show-detail {
   border-radius: 0;
   margin: 0;
-  overflow: visible;
+  overflow: hidden;           /* hidden clips map bleed on iOS (was: visible) */
   contain: none;
+  background: var(--wg-surface-warm, #FFFCF9);  /* opaque — covers map completely */
 }
 .bottom-sheet.show-detail .sheet-content {
-  overflow: hidden;
+  overflow: visible;          /* visible lets scroll events reach .sheet-detail (was: hidden) */
   contain: none;
   max-height: none;
-  /* overflow:hidden (not visible) so sticky header works in sheet-detail */
+  height: 100%;               /* propagates definite height to .sheet-detail */
+  padding: 0;                 /* sections handle own padding; 0 here avoids transparent gaps */
 }
-/* Hero photo: rounded corners with inset padding (Apple Maps style) */
-/* No longer full-bleed — hero-wrap has its own padding */
-/* Full-bleed: nearby carousel breaks out of section padding */
-.bottom-sheet.show-detail .dt-nearby-scroll {
-  margin-left: calc(-1 * var(--pp-space-lg));
-  margin-right: calc(-1 * var(--pp-space-lg));
-  padding-left: var(--pp-space-lg);
-  padding-right: var(--pp-space-lg);
+/* Ensure .sheet-detail is the scroll container with correct overflow */
+.bottom-sheet.show-detail .sheet-detail {
+  overflow-x: hidden;         /* prevent horizontal scroll from carousel margins */
+  padding-bottom: max(env(safe-area-inset-bottom, 16px), 16px); /* safe area at scroll end */
 }
 
 /* Sheet meta line — aligned with content padding */
