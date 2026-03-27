@@ -1150,7 +1150,9 @@
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  /* Prevent iOS rubber-band from revealing map behind */
+  height: 100%;
+  /* height: 100% is critical — without a defined scroll container height,
+     overflow-y: auto never activates on iOS and bounce propagates to parent */
 }
 
 /* Exit animation */
