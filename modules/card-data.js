@@ -129,20 +129,30 @@ export function getScoreTier(total) {
 }
 
 /**
- * Find nearby locations of the same type, sorted by distance.
- * Used for "Vergelijkbaar in de buurt" retention tail in detail view.
+ * Find nearby locations for "Vergelijkbaar in de buurt" retention tail.
+ * Prioritizes: same type > has photo > closer distance.
+ * Caps at ~30km to avoid showing irrelevant far-away locations.
  */
 export function findNearbyByType(loc, count = 3) {
     if (!loc.lat || !loc.lng) return [];
+    const MAX_DIST = 0.3; // ~30km in lat/lng euclidean for NL
     return state.allLocations
-        .filter(l => l.id !== loc.id && l.type === loc.type && l.lat && l.lng)
-        .map(l => ({
-            ...l,
-            _dist: Math.sqrt(
+        .filter(l => l.id !== loc.id && l.lat && l.lng)
+        .map(l => {
+            const dist = Math.sqrt(
                 Math.pow(l.lat - loc.lat, 2) + Math.pow(l.lng - loc.lng, 2)
-            )
-        }))
-        .sort((a, b) => a._dist - b._dist)
+            );
+            return { ...l, _dist: dist, _sameType: l.type === loc.type, _hasPhoto: !!(l.photo_url || l.owner_photo_url) };
+        })
+        .filter(l => l._dist < MAX_DIST)
+        .sort((a, b) => {
+            // Same type first
+            if (a._sameType !== b._sameType) return a._sameType ? -1 : 1;
+            // Prefer locations with photos
+            if (a._hasPhoto !== b._hasPhoto) return a._hasPhoto ? -1 : 1;
+            // Then by distance
+            return a._dist - b._dist;
+        })
         .slice(0, count);
 }
 

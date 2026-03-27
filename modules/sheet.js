@@ -7,7 +7,7 @@ import { getSterkePunten } from './tags.js';
 import { getDistanceLabel, getScoreTier, findNearbyByType } from './card-data.js';
 import { markVisited } from './visited.js';
 import { getPrefs, setPrefs, hasCompletedOnboarding } from './prefs.js';
-import { getPhotoData, renderCompactCard } from './templates.js';
+import { getPhotoData, renderCompactCard, renderSheetScanCard } from './templates.js';
 import bus from './bus.js';
 
 // --- Constants ---
@@ -243,7 +243,7 @@ export function openLocSheet(locationId) {
         <!-- Retention tail: Vergelijkbaar in de buurt -->
         ${(() => { const nearby = findNearbyByType(loc, 3); return nearby.length ? `<div class="dt-nearby" style="margin: 0 18px;">
             <div class="dt-label" style="font-size: var(--pp-text-base); font-weight: 600; color: var(--pp-text); margin-bottom: var(--pp-space-sm2);">Vergelijkbaar in de buurt</div>
-            <div class="dt-nearby-scroll">${nearby.map(n => renderCompactCard(n, {})).join('')}</div>
+            <div class="dt-nearby-scroll">${nearby.map(n => renderSheetScanCard(n, {})).join('')}</div>
         </div>` : ''; })()}
 
         <!-- Claim placeholder -->

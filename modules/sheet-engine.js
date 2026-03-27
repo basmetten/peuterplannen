@@ -1165,7 +1165,7 @@ function renderInSheetDetail(loc) {
     if (nearbyLocations.length) {
         sections.push(`<div class="dt-section dt-nearby" style="--si:${si++}">
             <div class="dt-label">Vergelijkbaar in de buurt</div>
-            <div class="dt-nearby-scroll">${nearbyLocations.map(n => renderCompactCard(n, { showTags: false })).join('')}</div>
+            <div class="dt-nearby-scroll">${nearbyLocations.map(n => renderSheetScanCard(n, {})).join('')}</div>
         </div>`);
     }
 
