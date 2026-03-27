@@ -1400,6 +1400,7 @@ export function showDetailInSheet(locationId) {
 
     const detailSheet = document.getElementById('detail-sheet');
     const bodyEl = document.getElementById('detail-sheet-body');
+    const overlay = document.getElementById('detail-sheet-overlay');
     if (!detailSheet || !bodyEl) return;
 
     // Render detail content into the separate detail sheet
@@ -1412,12 +1413,23 @@ export function showDetailInSheet(locationId) {
         else heroImg.addEventListener('load', () => heroImg.classList.add('loaded'), { once: true });
     }
 
+    // Position below navbar (same logic as main sheet in initSheet)
+    const nav = document.querySelector('.floating-nav');
+    const navbarHeight = nav ? Math.max(Math.ceil(nav.getBoundingClientRect().bottom) + 4, 78) : 78;
+    detailSheet.style.top = navbarHeight + 'px';
+
     // Open the detail sheet (slide up)
     detailSheet.classList.remove('closing');
     detailSheet.setAttribute('aria-hidden', 'false');
     // Force reflow so the opening transition triggers
     void detailSheet.offsetHeight;
     detailSheet.classList.add('open');
+
+    // Show overlay (dims map)
+    if (overlay) {
+        overlay.classList.add('visible');
+        overlay.addEventListener('click', hideDetailInSheet, { once: true });
+    }
 
     // Scroll body to top
     bodyEl.scrollTop = 0;
@@ -1437,6 +1449,15 @@ export function showDetailInSheet(locationId) {
     // Back button + close button
     bodyEl.querySelector('.detail-back-btn')?.addEventListener('click', hideDetailInSheet);
     bodyEl.querySelector('.detail-close-btn')?.addEventListener('click', hideDetailInSheet);
+
+    // Focus the back button for accessibility
+    requestAnimationFrame(() => {
+        bodyEl.querySelector('.detail-back-btn')?.focus({ preventScroll: true });
+    });
+
+    // Screen reader announcement
+    const announcer = document.getElementById('sr-announcer');
+    if (announcer) announcer.textContent = `Locatiedetails geopend: ${loc.name}`;
 
     // Fav button (with haptic + spring)
     const favBtn = bodyEl.querySelector('.detail-fav-btn');
@@ -1476,6 +1497,7 @@ export function showDetailInSheet(locationId) {
 export function hideDetailInSheet() {
     const detailSheet = document.getElementById('detail-sheet');
     const bodyEl = document.getElementById('detail-sheet-body');
+    const overlay = document.getElementById('detail-sheet-overlay');
 
     // Clean up swipe-to-dismiss
     if (_dismissCleanup) { _dismissCleanup(); _dismissCleanup = null; }
@@ -1488,6 +1510,12 @@ export function hideDetailInSheet() {
 
     if (!detailSheet) return;
 
+    // Hide overlay
+    if (overlay) {
+        overlay.classList.remove('visible');
+        overlay.removeEventListener('click', hideDetailInSheet);
+    }
+
     // Clear inline swipe styles
     detailSheet.style.transform = '';
     detailSheet.style.opacity = '';
@@ -1499,9 +1527,14 @@ export function hideDetailInSheet() {
     detailSheet.classList.add('closing');
     detailSheet.setAttribute('aria-hidden', 'true');
 
+    // Screen reader announcement
+    const announcer = document.getElementById('sr-announcer');
+    if (announcer) announcer.textContent = 'Locatiedetails gesloten';
+
     // Clean up content after transition
     const onEnd = () => {
         detailSheet.classList.remove('closing');
+        detailSheet.style.top = '';
         if (bodyEl) bodyEl.innerHTML = '';
     };
     detailSheet.addEventListener('transitionend', onEnd, { once: true });

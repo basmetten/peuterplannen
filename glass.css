@@ -1130,23 +1130,37 @@
    Slides up from bottom, independent of main bottom sheet.
    ==================================================== */
 
+/* Overlay behind detail sheet — dims map + provides tap-to-close */
+.detail-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1199; /* just below detail-sheet */
+  background: rgba(0, 0, 0, 0);
+  pointer-events: none;
+  transition: background 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.detail-sheet-overlay.visible {
+  background: rgba(0, 0, 0, 0.18);
+  pointer-events: auto;
+}
+
 .detail-sheet {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
+  /* top is set dynamically by JS to sit below navbar */
   z-index: 1200; /* above navbar (1100) and sheet-scroll-host (1000) */
   background: var(--wg-surface-warm, #FFFCF9);
-  border-radius: var(--wg-radius-sheet, 12px) var(--wg-radius-sheet, 12px) 0 0;
+  border-radius: 14px 14px 0 0; /* matches v2-sheet.css main sheet */
   transform: translateY(100%);
   will-change: transform;
-  max-height: calc(100dvh - env(safe-area-inset-top, 0px));
-  height: calc(100dvh - env(safe-area-inset-top, 0px));
   display: flex;
   flex-direction: column;
   box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.04);
   pointer-events: none;
   visibility: hidden;
+  contain: layout style paint;
 }
 
 .detail-sheet.open {
@@ -1154,6 +1168,7 @@
   pointer-events: auto;
   visibility: visible;
   transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1),
+              border-radius 0.3s cubic-bezier(0.22, 1, 0.36, 1),
               visibility 0s linear 0s;
 }
 
@@ -1174,6 +1189,15 @@
   cursor: grab;
   -webkit-user-select: none;
   user-select: none;
+  touch-action: none; /* prevent iOS from intercepting drags */
+  -webkit-touch-callout: none;
+}
+/* Handle bar visual feedback during drag */
+.detail-sheet-handle:active .sheet-handle-bar,
+.detail-sheet.swipe-active .sheet-handle-bar {
+  width: 42px;
+  background: rgba(var(--pp-neutral-muted-rgb), 0.5);
+  transform: scaleY(1.3);
 }
 
 .detail-sheet-body {
@@ -1188,6 +1212,12 @@
   background: var(--wg-surface-warm, #FFFCF9);
 }
 .detail-sheet-body::-webkit-scrollbar { display: none; }
+
+/* Delay section stagger animations until after sheet opens */
+.detail-sheet .dt-section,
+.detail-sheet .dt-card {
+  animation-delay: calc(0.38s + var(--si, 0) * 45ms);
+}
 
 @keyframes cardSlideIn {
   from { opacity: 0; transform: translateY(8px); }
