@@ -1192,7 +1192,49 @@
    Surfaces: one. Atmosphere: gradient veil on hero.
    =========================================================== */
 
-/* --- Hero with gradient veil --- */
+/* --- Header bar (Apple Maps pattern) --- */
+.dt-header-bar {
+  display: flex;
+  align-items: center;
+  padding: var(--pp-space-sm) var(--pp-space-md);
+  gap: var(--pp-space-sm);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--wg-surface-warm, #FFFCF9);
+}
+.dt-header-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(45, 41, 38, 0.05);
+  color: var(--pp-text, #2D2926);
+  transition: background var(--pp-duration-fast) ease, transform 0.1s ease;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.dt-header-btn:active {
+  transform: scale(0.90);
+  background: rgba(45, 41, 38, 0.10);
+}
+.dt-header-btn svg {
+  pointer-events: none;
+}
+/* Fav active state in header */
+.dt-header-btn.detail-fav-btn.active svg {
+  fill: var(--pp-primary);
+  stroke: var(--pp-primary);
+}
+.dt-header-spacer {
+  flex: 1;
+}
+
+/* --- Hero photo (now below above-fold, in scrollable content) --- */
 .detail-hero-wrap {
   position: relative;
   margin: 0;

@@ -372,10 +372,10 @@
   contain: none;
 }
 .bottom-sheet.show-detail .sheet-content {
-  overflow: visible;
+  overflow: hidden;
   contain: none;
   max-height: none;
-  /* Keep side padding for text — hero + carousel break out via negative margin */
+  /* overflow:hidden (not visible) so sticky header works in sheet-detail */
 }
 /* Full-bleed elements: hero photo breaks out of sheet-content padding */
 .bottom-sheet.show-detail .detail-hero-wrap {

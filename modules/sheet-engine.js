@@ -1189,38 +1189,45 @@ function renderInSheetDetail(loc) {
     const proofHtml = topProof.length
         ? `<div class="dt-proof">${topProof.map(t => `<span class="dt-chip">${escapeHtml(t.label)}</span>`).join('')}</div>` : '';
 
-    // CTA row
+    // CTA row (Route + Website only — Share moved to header bar)
     const ctaHtml = `<div class="dt-cta">
         ${googleMapsUrl ? `<a href="${googleMapsUrl}" target="_blank" rel="noopener" class="dt-cta-btn dt-cta--primary"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Route</a>` : ''}
         ${loc.website ? `<a href="${escapeHtml(loc.website)}" target="_blank" rel="noopener" class="dt-cta-btn dt-cta--ghost"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Website</a>` : ''}
-        <button class="dt-cta-btn dt-cta--ghost" data-share-loc="${loc.id}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Deel</button>
+    </div>`;
+
+    // Header bar (Apple Maps pattern: back, spacer, fav, share, close)
+    const headerBarHtml = `<div class="dt-header-bar">
+        <button class="dt-header-btn detail-back-btn" aria-label="Terug">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="dt-header-spacer"></div>
+        <button class="dt-header-btn detail-fav-btn${favClass}" data-loc-id="${loc.id}" aria-label="${isFav ? 'Verwijder favoriet' : 'Bewaar'}"${isFav ? ' aria-pressed="true"' : ' aria-pressed="false"'}>
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <button class="dt-header-btn" data-share-loc="${loc.id}" aria-label="Deel">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        </button>
+        <button class="dt-header-btn detail-close-btn" aria-label="Sluiten">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
     </div>`;
 
     return `
-        <div class="detail-hero-wrap">
-            <div class="photo-container detail-hero-photo" style="--photo-color: ${photo.photoColor || '#E8D5C4'}">
-                <img class="sheet-hero-img" src="${escapeHtml(photo.imgSrc || '')}" alt="${escapeHtml(loc.name)}" loading="lazy">
-            </div>
-            <div class="dt-hero-veil"></div>
-            <button class="detail-float-btn detail-back-btn" aria-label="Terug">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
-            </button>
-            <button class="detail-float-btn detail-fav-btn${favClass}" data-loc-id="${loc.id}" aria-label="${isFav ? 'Verwijder favoriet' : 'Bewaar'}"${isFav ? ' aria-pressed="true"' : ' aria-pressed="false"'}>
-                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-            <button class="detail-float-btn detail-close-btn" aria-label="Sluiten">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            </button>
-        </div>
+        ${headerBarHtml}
         <div class="dt-above-fold">
             <div class="dt-title-row">
                 <h2 class="dt-name">${escapeHtml(loc.name)}</h2>
                 ${scoreHtml}
             </div>
             <div class="dt-meta">${metaLine}</div>
+            ${ctaHtml}
             ${verdictHtml}
             ${proofHtml}
-            ${ctaHtml}
+        </div>
+        <div class="detail-hero-wrap">
+            <div class="photo-container detail-hero-photo" style="--photo-color: ${photo.photoColor || '#E8D5C4'}">
+                <img class="sheet-hero-img" src="${escapeHtml(photo.imgSrc || '')}" alt="${escapeHtml(loc.name)}" loading="lazy">
+            </div>
         </div>
         ${sections.join('')}
     `;
