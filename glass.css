@@ -1240,7 +1240,7 @@
 .detail-close-btn { top: var(--pp-space-sm2); right: var(--pp-space-md); }
 .detail-fav-btn svg {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.9);
+  stroke: var(--wg-text-muted);
   stroke-width: 2;
 }
 .detail-fav-btn.active svg {
