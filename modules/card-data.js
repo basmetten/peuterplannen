@@ -7,7 +7,7 @@
  * computing their own data inline.
  */
 
-import { TYPE_LABELS, WEATHER_LABELS } from './state.js';
+import { state, TYPE_LABELS, WEATHER_LABELS } from './state.js';
 import { getPhotoData } from './templates.js';
 import {
     computePeuterScoreV2,
@@ -126,6 +126,24 @@ export function getScoreTier(total) {
     if (total >= 7) return 'high';
     if (total >= 5) return 'mid';
     return 'low';
+}
+
+/**
+ * Find nearby locations of the same type, sorted by distance.
+ * Used for "Vergelijkbaar in de buurt" retention tail in detail view.
+ */
+export function findNearbyByType(loc, count = 3) {
+    if (!loc.lat || !loc.lng) return [];
+    return state.allLocations
+        .filter(l => l.id !== loc.id && l.type === loc.type && l.lat && l.lng)
+        .map(l => ({
+            ...l,
+            _dist: Math.sqrt(
+                Math.pow(l.lat - loc.lat, 2) + Math.pow(l.lng - loc.lng, 2)
+            )
+        }))
+        .sort((a, b) => a._dist - b._dist)
+        .slice(0, count);
 }
 
 /**

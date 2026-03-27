@@ -4,10 +4,10 @@ import { getTrustBullets, getPracticalBullets, computePeuterScoreV2, getOpenStat
 import { isFavorite } from './favorites.js';
 import { fetchJsonWithRetry, normalizeLocationRow } from './data.js';
 import { getSterkePunten } from './tags.js';
-import { getDistanceLabel, getScoreTier } from './card-data.js';
+import { getDistanceLabel, getScoreTier, findNearbyByType } from './card-data.js';
 import { markVisited } from './visited.js';
 import { getPrefs, setPrefs, hasCompletedOnboarding } from './prefs.js';
-import { getPhotoData } from './templates.js';
+import { getPhotoData, renderCompactCard } from './templates.js';
 import bus from './bus.js';
 
 // --- Constants ---
@@ -163,21 +163,6 @@ export function openLocSheet(locationId) {
             </div>
         </div>
 
-        <!-- Quick facility badges -->
-        <div class="detail-section detail-section-badges" style="padding: 10px 18px;">
-            <div class="detail-badges-row">
-                ${loc.coffee ? '<span class="detail-badge">\u2615 Koffie</span>' : ''}
-                ${loc.diaper ? '<span class="detail-badge">\uD83D\uDEBC Verschonen</span>' : ''}
-                ${loc.parking_ease === 'easy' ? '<span class="detail-badge">\uD83C\uDD7F\uFE0F Parkeren</span>' : ''}
-                ${loc.alcohol ? '<span class="detail-badge">\uD83C\uDF77 Alcohol</span>' : ''}
-            </div>
-        </div>
-
-        <!-- Highlight pull-quote -->
-        ${loc.toddler_highlight ? `<div class="detail-section" style="padding: 10px 18px;">
-            <blockquote class="detail-pullquote">\u201C${escapeHtml(loc.toddler_highlight)}\u201D</blockquote>
-        </div>` : ''}
-
         <!-- Action buttons -->
         <div class="detail-action-bar" style="position: relative; border-top: none;">
             ${googleMapsUrl ? `<a href="${googleMapsUrl}" target="_blank" rel="noopener" class="detail-action-btn detail-action-primary">
@@ -192,24 +177,49 @@ export function openLocSheet(locationId) {
             ${detailUrl ? `<a href="${detailUrl}" class="detail-action-btn detail-action-secondary">Meer info</a>` : ''}
         </div>
 
-        <!-- Sterke punten -->
-        ${sterkePunten.length ? `<div class="sterke-punten" style="margin: 0 18px;"><h3>Waarom goed voor peuters</h3><ul>${sterkePunten.map(p => `<li>\u2713 ${escapeHtml(p)}</li>`).join('')}</ul></div>` : ''}
-
-        <!-- Practical info grid -->
-        ${practicalCells.length ? `<div class="sheet-info-grid" style="margin: 0 18px;">
-            ${weatherLabel ? `<div class="sheet-info-cell">
-                <span class="sheet-info-label">Weer</span>
-                <span class="sheet-info-value">${weatherIcon} ${escapeHtml(weatherLabel)}</span>
-            </div>` : ''}
-            ${loc.crowd_pattern ? `<div class="sheet-info-cell">
-                <span class="sheet-info-label">Drukte</span>
-                <span class="sheet-info-value">${escapeHtml(loc.crowd_pattern)}</span>
-            </div>` : ''}
-            ${practicalCells.map(c => `<div class="sheet-info-cell">
-                <span class="sheet-info-label">${escapeHtml(c.label)}</span>
-                <span class="sheet-info-value">${escapeHtml(c.value)}</span>
-            </div>`).join('')}
+        <!-- Tier 2: Highlight + Bento Grid + Hours -->
+        ${loc.toddler_highlight || sterkePunten.length ? `<div class="detail-section" style="padding: 10px 18px;">
+            <div class="detail-section-label">Waarom goed voor peuters</div>
+            ${loc.toddler_highlight ? `<blockquote class="detail-pullquote">\u201C${escapeHtml(loc.toddler_highlight)}\u201D</blockquote>` : ''}
+            ${sterkePunten.length ? `<ul class="sterke-punten-list">${sterkePunten.map(p => `<li>\u2713 ${escapeHtml(p)}</li>`).join('')}</ul>` : ''}
         </div>` : ''}
+
+        <!-- Bento Grid — Facilities -->
+        <div class="detail-section" style="padding: 10px 18px;">
+            <div class="detail-section-label">Faciliteiten</div>
+            <div class="dt-bento">
+                ${loc.weather ? `<div class="dt-bento-cell">
+                    <span class="dt-bento-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">${loc.weather === 'indoor' ? '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>' : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>'}</svg></span>
+                    <span class="dt-bento-label">Weer</span>
+                    <span class="dt-bento-value">${escapeHtml(loc.weather === 'indoor' ? 'Binnen' : loc.weather === 'outdoor' ? 'Buiten' : 'Beide')}</span>
+                </div>` : ''}
+                ${loc.parking_ease ? `<div class="dt-bento-cell">
+                    <span class="dt-bento-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></span>
+                    <span class="dt-bento-label">Parkeren</span>
+                    <span class="dt-bento-value">${escapeHtml(loc.parking_ease === 'easy' ? 'Makkelijk' : 'Lastig')}</span>
+                </div>` : ''}
+                ${loc.coffee != null ? `<div class="dt-bento-cell">
+                    <span class="dt-bento-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></span>
+                    <span class="dt-bento-label">Koffie</span>
+                    <span class="dt-bento-value">${loc.coffee ? 'Ja' : 'Nee'}</span>
+                </div>` : ''}
+                ${loc.diaper != null ? `<div class="dt-bento-cell">
+                    <span class="dt-bento-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><circle cx="12" cy="12" r="10"/></svg></span>
+                    <span class="dt-bento-label">Verschonen</span>
+                    <span class="dt-bento-value">${loc.diaper ? 'Ja' : 'Nee'}</span>
+                </div>` : ''}
+                ${loc.crowd_pattern ? `<div class="dt-bento-cell">
+                    <span class="dt-bento-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                    <span class="dt-bento-label">Drukte</span>
+                    <span class="dt-bento-value">${escapeHtml(loc.crowd_pattern.includes('rustig') ? 'Rustig' : loc.crowd_pattern.includes('druk') ? 'Druk' : 'Gemiddeld')}</span>
+                </div>` : ''}
+                ${loc.buggy_friendliness ? `<div class="dt-bento-cell">
+                    <span class="dt-bento-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></span>
+                    <span class="dt-bento-label">Buggy</span>
+                    <span class="dt-bento-value">${escapeHtml(loc.buggy_friendliness === 'easy' ? 'Makkelijk' : 'Lastig')}</span>
+                </div>` : ''}
+            </div>
+        </div>
 
         <!-- Opening hours -->
         ${loc.opening_hours || loc.always_open ? `<div class="detail-section" style="padding: 10px 18px;">
@@ -220,13 +230,29 @@ export function openLocSheet(locationId) {
             </div>
         </div>` : ''}
 
-        <!-- Score + description + trust (expandable) -->
-        <details class="sheet-detail-more" aria-label="Meer details over ${escapeHtml(loc.name)}">
-            <summary class="sheet-detail-more-toggle">Meer details</summary>
-            ${scoreBreakdownHtml ? `<div class="sheet-score-breakdown-wrap">${scoreBreakdownHtml}</div>` : ''}
-            ${longerDescription ? `<p class="sheet-detail-description">${escapeHtml(longerDescription)}</p>` : ''}
-            ${trustBullets.length ? `<ul class="sheet-trust-list">${trustBullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>` : ''}
+        <!-- Tier 3: Progressive disclosure -->
+        <details class="dt-more-details" aria-label="Meer details over ${escapeHtml(loc.name)}" style="padding: 0 18px;">
+            <summary class="dt-more-toggle">Meer details</summary>
+            <div class="dt-more-content">
+                ${scoreBreakdownHtml ? `<div class="sheet-score-breakdown-wrap">${scoreBreakdownHtml}</div>` : ''}
+                ${longerDescription ? `<p class="sheet-detail-description">${escapeHtml(longerDescription)}</p>` : ''}
+                ${trustBullets.length ? `<ul class="sheet-trust-list">${trustBullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>` : ''}
+            </div>
         </details>
+
+        <!-- Retention tail: Vergelijkbaar in de buurt -->
+        ${(() => { const nearby = findNearbyByType(loc, 3); return nearby.length ? `<div class="dt-nearby" style="margin: 0 18px;">
+            <div class="dt-label" style="font-size: var(--pp-text-base); font-weight: 600; color: var(--pp-text); margin-bottom: var(--pp-space-sm2);">Vergelijkbaar in de buurt</div>
+            <div class="dt-nearby-scroll">${nearby.map(n => renderCompactCard(n, {})).join('')}</div>
+        </div>` : ''; })()}
+
+        <!-- Claim placeholder -->
+        <div class="dt-future-cta" style="padding: 0 18px 18px;">
+            <button class="dt-claim-btn" disabled>
+                <span>Beheer deze locatie</span>
+                <span class="dt-claim-soon">Binnenkort beschikbaar</span>
+            </button>
+        </div>
     `;
     const shareButton = content.querySelector('.btn-share');
     if (shareButton) {

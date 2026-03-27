@@ -5,7 +5,7 @@ import { renderCompactCard, renderSheetPreview, renderSheetScanCard, getPhotoDat
 import { getPracticalBullets, computePeuterScoreV2, getTrustBullets, getOpenStatus } from './scoring.js';
 import { getSterkePunten } from './tags.js';
 import { isFavorite } from './favorites.js';
-import { getDistanceLabel, getKenmerkenTags, getScoreTier } from './card-data.js';
+import { getDistanceLabel, getKenmerkenTags, getScoreTier, findNearbyByType } from './card-data.js';
 import { getAdvancedFilterCount } from './filters.js';
 
 /* ===================================================
@@ -1053,16 +1053,33 @@ function renderInSheetDetail(loc) {
     const trustBullets = getTrustBullets(loc);
     const practicalBullets = getPracticalBullets(loc);
 
-    // Facilities
-    const facilityItems = [];
-    if (loc.coffee) facilityItems.push('Koffie');
-    if (loc.diaper) facilityItems.push('Verschonen');
-    if (loc.parking_ease === 'easy') facilityItems.push('Parkeren');
-    if (loc.buggy_friendliness === 'easy') facilityItems.push('Buggy OK');
-    if (loc.toilet_confidence === 'confident' || loc.toilet_confidence === 'high') facilityItems.push('Toilet');
-    if (loc.weather === 'indoor' || loc.weather === 'hybrid' || loc.weather === 'both') facilityItems.push('Binnen');
-    if (loc.weather === 'outdoor' || loc.weather === 'hybrid' || loc.weather === 'both') facilityItems.push('Buiten');
-    if (loc.alcohol) facilityItems.push('Alcohol');
+    // Bento grid data for Tier 2
+    const bentoItems = [];
+    if (loc.weather) {
+        const wLabel = loc.weather === 'indoor' ? 'Binnen' : loc.weather === 'outdoor' ? 'Buiten' : 'Beide';
+        const wIcon = loc.weather === 'indoor'
+            ? '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>'
+            : '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+        bentoItems.push({ icon: wIcon, label: 'Weer', value: wLabel });
+    }
+    if (loc.parking_ease) {
+        const pLabel = loc.parking_ease === 'easy' ? 'Makkelijk' : 'Lastig';
+        bentoItems.push({ icon: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>', label: 'Parkeren', value: pLabel });
+    }
+    if (loc.coffee != null) {
+        bentoItems.push({ icon: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>', label: 'Koffie', value: loc.coffee ? 'Ja' : 'Nee' });
+    }
+    if (loc.diaper != null) {
+        bentoItems.push({ icon: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><circle cx="12" cy="12" r="10"/></svg>', label: 'Verschonen', value: loc.diaper ? 'Ja' : 'Nee' });
+    }
+    if (loc.crowd_pattern) {
+        const cLabel = loc.crowd_pattern.includes('rustig') ? 'Rustig' : loc.crowd_pattern.includes('druk') ? 'Druk' : 'Gemiddeld';
+        bentoItems.push({ icon: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>', label: 'Drukte', value: cLabel });
+    }
+    if (loc.buggy_friendliness) {
+        const bLabel = loc.buggy_friendliness === 'easy' ? 'Makkelijk' : 'Lastig';
+        bentoItems.push({ icon: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>', label: 'Buggy', value: bLabel });
+    }
 
     // Meta line
     const metaParts = [escapeHtml(typeLbl)];
@@ -1089,11 +1106,15 @@ function renderInSheetDetail(loc) {
         </div>`);
     }
 
-    // Section: Facilities
-    if (facilityItems.length) {
+    // Section: Bento grid — replaces flat facility chips
+    if (bentoItems.length) {
         sections.push(`<div class="dt-section" style="--si:${si++}">
             <div class="dt-label">Faciliteiten</div>
-            <div class="dt-chips">${facilityItems.map(f => `<span class="dt-chip">${escapeHtml(f)}</span>`).join('')}</div>
+            <div class="dt-bento">${bentoItems.map(b => `<div class="dt-bento-cell">
+                <span class="dt-bento-icon">${b.icon}</span>
+                <span class="dt-bento-label">${escapeHtml(b.label)}</span>
+                <span class="dt-bento-value">${escapeHtml(b.value)}</span>
+            </div>`).join('')}</div>
         </div>`);
     }
 
@@ -1113,9 +1134,13 @@ function renderInSheetDetail(loc) {
         </div>`);
     }
 
-    // Section: Description
+    // Tier 3: Progressive disclosure — score breakdown + description + trust
+    const tier3Parts = [];
+    if (scoreBreakdownHtml) {
+        tier3Parts.push(scoreBreakdownHtml);
+    }
     if (loc.description) {
-        sections.push(`<div class="dt-section" style="--si:${si++}">
+        tier3Parts.push(`<div class="dt-section">
             <div class="dt-label">Over deze plek</div>
             <div class="detail-desc-wrap">
                 <p class="detail-desc-text">${escapeHtml(loc.description)}</p>
@@ -1123,18 +1148,34 @@ function renderInSheetDetail(loc) {
             </div>
         </div>`);
     }
-
-    // Section: Score breakdown
-    if (scoreBreakdownHtml) {
-        sections.push(`<div class="dt-section" style="--si:${si++}">${scoreBreakdownHtml}</div>`);
-    }
-
-    // Section: Trust footer
     if (trustBullets.length) {
-        sections.push(`<div class="dt-trust" style="--si:${si++}">${trustBullets.map(b =>
+        tier3Parts.push(`<div class="dt-trust">${trustBullets.map(b =>
             `<span class="dt-trust-item"><svg class="dt-trust-check" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>${escapeHtml(b)}</span>`
         ).join('')}</div>`);
     }
+    if (tier3Parts.length) {
+        sections.push(`<details class="dt-more-details" style="--si:${si++}">
+            <summary class="dt-more-toggle">Meer details</summary>
+            <div class="dt-more-content">${tier3Parts.join('')}</div>
+        </details>`);
+    }
+
+    // Retention tail: "Vergelijkbaar in de buurt"
+    const nearbyLocations = findNearbyByType(loc, 3);
+    if (nearbyLocations.length) {
+        sections.push(`<div class="dt-section dt-nearby" style="--si:${si++}">
+            <div class="dt-label">Vergelijkbaar in de buurt</div>
+            <div class="dt-nearby-scroll">${nearbyLocations.map(n => renderCompactCard(n, { showTags: false })).join('')}</div>
+        </div>`);
+    }
+
+    // Future placeholder: claim CTA
+    sections.push(`<div class="dt-section dt-future-cta" style="--si:${si++}">
+        <button class="dt-claim-btn" disabled>
+            <span>Beheer deze locatie</span>
+            <span class="dt-claim-soon">Binnenkort beschikbaar</span>
+        </button>
+    </div>`);
 
     // Score — typographic, not badge
     const scoreHtml = totalScore != null
