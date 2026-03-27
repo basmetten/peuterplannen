@@ -1255,6 +1255,11 @@
   margin: 0;
   overflow: hidden;
 }
+/* Below-photo zone (verdict + proof chips between photo and sections) */
+.dt-below-photo {
+  padding: var(--pp-space-sm2) var(--pp-space-lg) var(--pp-space-sm);
+}
+
 /* Warm gradient veil — bridges photo to content */
 .dt-hero-veil {
   position: absolute;
@@ -1317,7 +1322,7 @@
    proof → actions.
    =========================================== */
 .dt-above-fold {
-  padding: var(--pp-space-md) var(--pp-space-lg) 0;
+  padding: var(--pp-space-md) var(--pp-space-lg) var(--pp-space-md);
 }
 
 /* --- Title + Score --- */
@@ -1328,7 +1333,7 @@
 }
 .dt-name {
   font-family: var(--pp-font-heading);
-  font-size: 1.5rem;
+  font-size: 1.3125rem;
   font-weight: 580;
   color: var(--pp-text, #2D2926);
   margin: 0;
@@ -1365,7 +1370,7 @@
   display: flex;
   align-items: center;
   gap: 0;
-  margin-top: var(--pp-space-xs);
+  margin-top: var(--pp-space-sm);
   font-size: 0.8125rem;
   font-weight: var(--pp-weight-medium);
   color: var(--pp-text-tertiary, #756762);
@@ -1392,7 +1397,7 @@
 }
 .dt-verdict-text {
   font-size: 0.8125rem;
-  font-weight: 650;
+  font-weight: 500;
   color: var(--pp-text-tertiary, #756762);
   letter-spacing: 0.005em;
 }
@@ -1467,9 +1472,9 @@
 /* --- Chip (pill style) --- */
 .dt-chip {
   display: inline-block;
-  padding: 8px 16px;
-  border-radius: var(--pp-radius-pill);
-  font-size: 0.8125rem;
+  padding: 7px 14px;
+  border-radius: 12px;
+  font-size: 0.75rem;
   font-weight: 550;
   color: var(--pp-text-secondary, #5C4A48);
   background: rgba(var(--pp-primary-rgb, 212,119,90), 0.06);
@@ -1480,8 +1485,8 @@
 /* --- Section --- */
 .dt-section,
 .dt-card {
-  padding: 28px var(--pp-space-lg);
-  border-top: none;
+  padding: 24px var(--pp-space-lg);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
   animation: dt-enter 280ms ease-out both;
   animation-delay: calc(var(--si, 0) * 45ms);
 }

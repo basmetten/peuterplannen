@@ -1221,13 +1221,15 @@ function renderInSheetDetail(loc) {
             </div>
             <div class="dt-meta">${metaLine}</div>
             ${ctaHtml}
-            ${verdictHtml}
-            ${proofHtml}
         </div>
         <div class="detail-hero-wrap">
             <div class="photo-container detail-hero-photo" style="--photo-color: ${photo.photoColor || '#E8D5C4'}">
                 <img class="sheet-hero-img" src="${escapeHtml(photo.imgSrc || '')}" alt="${escapeHtml(loc.name)}" loading="lazy">
             </div>
+        </div>
+        <div class="dt-below-photo">
+            ${verdictHtml}
+            ${proofHtml}
         </div>
         ${sections.join('')}
     `;
