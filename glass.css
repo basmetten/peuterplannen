@@ -1262,7 +1262,7 @@
    proof → actions.
    =========================================== */
 .dt-above-fold {
-  padding: var(--pp-space-md) var(--pp-space-md2) 0;
+  padding: var(--pp-space-md) var(--pp-space-lg) 0;
 }
 
 /* --- Title + Score --- */
@@ -1425,7 +1425,7 @@
 /* --- Section --- */
 .dt-section,
 .dt-card {
-  padding: 28px var(--pp-space-md2);
+  padding: 28px var(--pp-space-lg);
   border-top: none;
   animation: dt-enter 280ms ease-out both;
   animation-delay: calc(var(--si, 0) * 45ms);
@@ -1609,13 +1609,13 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
-  padding: var(--pp-space-md) 0;
+  padding: var(--pp-space-sm2) 0 0;
 }
 .dt-bento-cell {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
+  gap: 10px;
+  padding: 12px 14px;
   background: var(--wg-glass-interactive);
   border-radius: var(--wg-radius-tag);
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
@@ -1642,6 +1642,7 @@
 /* === Progressive Disclosure — Detail Tier 3 === */
 .dt-more-details {
   margin-top: var(--pp-space-md);
+  padding: 0 var(--pp-space-lg);
 }
 .dt-more-toggle {
   display: flex;
@@ -1677,12 +1678,23 @@
 .dt-more-content {
   padding-top: var(--pp-space-md);
 }
+.dt-more-content .dt-section {
+  padding-left: 0;
+  padding-right: 0;
+}
+.dt-more-content .dt-trust {
+  padding-left: 0;
+  padding-right: 0;
+}
 
 /* === Retention Tail — Vergelijkbaar in de buurt === */
 .dt-nearby {
   margin-top: var(--pp-space-lg);
   padding-top: var(--pp-space-lg);
   border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+.dt-nearby .dt-label {
+  padding-left: var(--pp-space-lg);
 }
 .dt-nearby-scroll {
   display: flex;
@@ -1691,7 +1703,7 @@
   scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding-bottom: 4px;
+  padding: 0 var(--pp-space-lg) 4px;
 }
 .dt-nearby-scroll::-webkit-scrollbar { display: none; }
 .dt-nearby-scroll > .compact-card {
@@ -1702,6 +1714,7 @@
 /* === Claim CTA placeholder === */
 .dt-future-cta {
   margin-top: var(--pp-space-md);
+  padding: 0 var(--pp-space-lg) var(--pp-space-lg);
 }
 .dt-claim-btn {
   width: 100%;
