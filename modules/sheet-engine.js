@@ -188,7 +188,7 @@ export function initSheet() {
     // Keyboard
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            if (document.getElementById('detail-sheet')?.classList.contains('open')) {
+            if (document.getElementById('detail-sheet-host')?.classList.contains('open')) {
                 hideDetailInSheet(); e.preventDefault();
             } else if (sheetEl?.classList.contains('search-active')) {
                 cancelSearch(); e.preventDefault();
@@ -1242,224 +1242,214 @@ function renderInSheetDetail(loc) {
    Based on Vaul (shadcn/ui drawer) battle-tested patterns.
    =================================================== */
 
-function attachDetailSwipeDismiss(scrollEl, sheetOverlay) {
-    // scrollEl = the scroll container we listen on (#detail-sheet-body)
-    // sheetOverlay = the element we transform (#detail-sheet)
-    let startY = 0, startX = 0, startTime = 0;
-    let deltaY = 0, state = 'idle'; // idle | pending | dragging
-    let lastScrollTime = 0;
-    let pointerId = null;
+/* ===================================================
+   DETAIL SHEET PHYSICS — scroll-snap based
+   Same architecture as main sheet: CSS scroll-snap host
+   with touch-driven drag and velocity-biased snapping.
+   =================================================== */
 
-    // Scroll lock: block dismiss for 100ms after any scroll inside detail
-    function onContentScroll() {
-        lastScrollTime = Date.now();
-    }
-    scrollEl.addEventListener('scroll', onContentScroll, { passive: true, capture: true });
+let _detailHostEl = null;
+let _detailSheetEl = null;
+let _detailBodyEl = null;
+let _detailHandleEl = null;
+let _detailIsOpen = false;
 
-    // Walk DOM tree checking scrollable ancestors
-    function isAnyAncestorScrolled(target) {
-        let el = target;
-        while (el && el !== scrollEl) {
-            if (el.scrollHeight > el.clientHeight + 2 && el.scrollTop > 1) return true;
-            el = el.parentElement;
-        }
-        return scrollEl.scrollTop > 1;
-    }
+function initDetailSheetTouch(hostEl, sheetEl, bodyEl, handleEl) {
+    let startX = 0, startY = 0, startScrollTop = 0;
+    let isDragging = false;
+    let swipeDirection = null;
+    let lastY = 0, lastTime = 0, velocity = 0;
+    let needsDisambiguation = false;
 
-    function onPointerDown(e) {
-        if (e.touches && e.touches.length > 1) return;
-        if (sheetOverlay.classList.contains('closing')) return;
-        startY = e.clientY ?? e.touches[0].clientY;
-        startX = e.clientX ?? e.touches[0].clientX;
-        startTime = Date.now();
-        deltaY = 0;
-        state = 'pending';
-        if (e.pointerId != null) {
-            pointerId = e.pointerId;
-            try { scrollEl.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
-        }
-    }
+    // Listen on the sheet element (same as main sheet)
+    sheetEl.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        startScrollTop = hostEl.scrollTop;
+        isDragging = true;
+        swipeDirection = null;
+        lastY = startY;
+        lastTime = Date.now();
+        velocity = 0;
 
-    function onPointerMove(e) {
-        if (state === 'idle') return;
-        const currentY = e.clientY ?? e.touches?.[0]?.clientY ?? 0;
-        const currentX = e.clientX ?? e.touches?.[0]?.clientX ?? 0;
-        deltaY = currentY - startY;
-        const deltaX = currentX - startX;
+        // Disambiguate: content scroll vs sheet drag
+        const contentScrollable = bodyEl.scrollHeight > bodyEl.clientHeight + 10;
+        needsDisambiguation = contentScrollable
+            && bodyEl.contains(e.target) && !handleEl.contains(e.target);
 
-        if (state === 'pending') {
-            const absDY = Math.abs(deltaY);
-            const absDX = Math.abs(deltaX);
-            if (absDY < DISMISS_COMMIT_PX && absDX < DISMISS_COMMIT_PX) return;
-            if (absDX > absDY * 1.5) { state = 'idle'; return; }
-            if (deltaY < 0) { state = 'idle'; return; }
-            if (Date.now() - lastScrollTime < SCROLL_LOCK_TIMEOUT_MS) { state = 'idle'; return; }
-            if (isAnyAncestorScrolled(e.target)) { state = 'idle'; return; }
-            state = 'dragging';
-            sheetOverlay.classList.add('swipe-active');
-            sheetOverlay.style.willChange = 'transform, opacity';
+        sheetEl.classList.add('dragging');
+        hostEl.style.scrollSnapType = 'none';
+    }, { passive: true });
+
+    sheetEl.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+
+        const currentX = e.touches[0].clientX;
+        const currentY = e.touches[0].clientY;
+
+        // Detect direction on first significant movement
+        if (!swipeDirection) {
+            const dx = Math.abs(currentX - startX);
+            const dy = Math.abs(currentY - startY);
+            if (dx < 4 && dy < 4) return;
+            swipeDirection = dx > dy ? 'horizontal' : 'vertical';
         }
 
-        if (state === 'dragging') {
-            e.preventDefault();
-            const applied = deltaY <= DISMISS_THRESHOLD_PX
-                ? deltaY
-                : DISMISS_THRESHOLD_PX + (deltaY - DISMISS_THRESHOLD_PX) * DISMISS_RUBBER_FACTOR;
-            const opacity = Math.max(0.3, 1 - applied / (DISMISS_THRESHOLD_PX * 3));
-            sheetOverlay.style.transform = `translateY(${applied}px)`;
-            sheetOverlay.style.opacity = String(opacity);
+        // Horizontal → release to child (nearby carousel, etc.)
+        if (swipeDirection === 'horizontal') {
+            isDragging = false;
+            sheetEl.classList.remove('dragging');
+            hostEl.style.scrollSnapType = 'y mandatory';
+            return;
         }
-    }
 
-    function onPointerUp() {
-        if (state !== 'dragging') { state = 'idle'; return; }
-        const elapsed = Date.now() - startTime;
-        const velocity = elapsed > 0 ? deltaY / elapsed : 0;
-        const shouldDismiss =
-            (deltaY >= DISMISS_THRESHOLD_PX) ||
-            (velocity >= DISMISS_VELOCITY_PX_MS && deltaY >= DISMISS_MIN_DIST_FOR_VELOCITY);
+        // Disambiguation: content scroll vs sheet drag (Apple Maps pattern)
+        if (needsDisambiguation) {
+            needsDisambiguation = false;
+            const draggingDown = currentY > startY;
+            const contentAtTop = bodyEl.scrollTop <= 2;
+            if (!draggingDown || !contentAtTop) {
+                isDragging = false;
+                sheetEl.classList.remove('dragging');
+                hostEl.style.scrollSnapType = 'y mandatory';
+                return;
+            }
+        }
 
-        if (shouldDismiss) {
-            sheetOverlay.style.transition = `transform ${SNAP_BACK_MS}ms cubic-bezier(0.32, 0.72, 0, 1), opacity ${SNAP_BACK_MS}ms cubic-bezier(0.32, 0.72, 0, 1)`;
-            sheetOverlay.style.transform = `translateY(${window.innerHeight}px)`;
-            sheetOverlay.style.opacity = '0';
-            const onTransEnd = () => {
-                sheetOverlay.style.transition = '';
-                cleanup();
+        // Vertical drag — move host scroll to follow finger
+        const deltaY = startY - currentY;
+        const now = Date.now();
+        const dt = now - lastTime;
+        if (dt > 0) velocity = (lastY - currentY) / dt;
+        lastY = currentY;
+        lastTime = now;
+
+        hostEl.scrollTop = startScrollTop + deltaY;
+        if (e.cancelable) e.preventDefault();
+    }, { passive: false });
+
+    sheetEl.addEventListener('touchend', () => {
+        if (!isDragging) return;
+        isDragging = false;
+
+        // Re-enable scroll-snap — browser handles the snap animation
+        hostEl.style.scrollSnapType = 'y mandatory';
+        setTimeout(() => sheetEl.classList.remove('dragging'), 300);
+
+        // Velocity override: strong downward flick = dismiss
+        if (velocity < -0.5) {
+            // Flick down → scroll to hidden position (top)
+            hostEl.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        // Otherwise scroll-snap handles it natively
+    }, { passive: true });
+
+    // Detect when scroll-snap settles at hidden position → close the sheet
+    let scrollTimer;
+    function onHostScroll() {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+            if (hostEl.scrollTop < 30 && _detailIsOpen) {
                 hideDetailInSheet();
-            };
-            sheetOverlay.addEventListener('transitionend', onTransEnd, { once: true });
-            setTimeout(onTransEnd, SNAP_BACK_MS + 50);
-        } else {
-            sheetOverlay.classList.add('swipe-snap-back');
-            sheetOverlay.style.transform = 'translateY(0)';
-            sheetOverlay.style.opacity = '1';
-            const onTransEnd = () => {
-                sheetOverlay.classList.remove('swipe-snap-back', 'swipe-active');
-                sheetOverlay.style.willChange = '';
-                sheetOverlay.style.transform = '';
-                sheetOverlay.style.opacity = '';
-            };
-            sheetOverlay.addEventListener('transitionend', onTransEnd, { once: true });
-            setTimeout(onTransEnd, SNAP_BACK_MS + 50);
-        }
-        state = 'idle';
-        if (pointerId != null) {
-            try { scrollEl.releasePointerCapture(pointerId); } catch (_) { /* ignore */ }
-            pointerId = null;
-        }
+            }
+        }, 200);
     }
+    hostEl.addEventListener('scroll', onHostScroll, { passive: true });
 
-    const usePointer = 'PointerEvent' in window;
-    if (usePointer) {
-        scrollEl.addEventListener('pointerdown', onPointerDown);
-        scrollEl.addEventListener('pointermove', onPointerMove, { passive: false });
-        scrollEl.addEventListener('pointerup', onPointerUp);
-        scrollEl.addEventListener('pointercancel', onPointerUp);
-    } else {
-        scrollEl.addEventListener('touchstart', onPointerDown, { passive: true });
-        scrollEl.addEventListener('touchmove', onPointerMove, { passive: false });
-        scrollEl.addEventListener('touchend', onPointerUp, { passive: true });
-        scrollEl.addEventListener('touchcancel', onPointerUp, { passive: true });
+    // Also detect native scrollend for faster response
+    if ('onscrollend' in window) {
+        hostEl.addEventListener('scrollend', () => {
+            if (hostEl.scrollTop < 30 && _detailIsOpen) {
+                hideDetailInSheet();
+            }
+        });
     }
-
-    function iosTouchEndReset() { if (state === 'pending') state = 'idle'; }
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    if (isIOS) {
-        window.addEventListener('touchend', iosTouchEndReset, { passive: true });
-    }
-
-    function cleanup() {
-        scrollEl.removeEventListener('scroll', onContentScroll, { capture: true });
-        if (usePointer) {
-            scrollEl.removeEventListener('pointerdown', onPointerDown);
-            scrollEl.removeEventListener('pointermove', onPointerMove);
-            scrollEl.removeEventListener('pointerup', onPointerUp);
-            scrollEl.removeEventListener('pointercancel', onPointerUp);
-        } else {
-            scrollEl.removeEventListener('touchstart', onPointerDown);
-            scrollEl.removeEventListener('touchmove', onPointerMove);
-            scrollEl.removeEventListener('touchend', onPointerUp);
-            scrollEl.removeEventListener('touchcancel', onPointerUp);
-        }
-        window.removeEventListener('touchend', iosTouchEndReset);
-        sheetOverlay.classList.remove('swipe-active', 'swipe-snap-back');
-        sheetOverlay.style.transform = '';
-        sheetOverlay.style.opacity = '';
-        sheetOverlay.style.willChange = '';
-        sheetOverlay.style.transition = '';
-        state = 'idle';
-    }
-
-    return cleanup;
 }
 
 export function showDetailInSheet(locationId) {
     const loc = state.allLocations.find(l => l.id === locationId);
     if (!loc) return;
 
+    const hostEl = document.getElementById('detail-sheet-host');
     const detailSheet = document.getElementById('detail-sheet');
     const bodyEl = document.getElementById('detail-sheet-body');
+    const handleEl = document.getElementById('detail-sheet-handle');
     const overlay = document.getElementById('detail-sheet-overlay');
-    if (!detailSheet || !bodyEl) return;
+    const spacer = document.getElementById('detail-snap-spacer');
+    if (!hostEl || !detailSheet || !bodyEl) return;
 
-    // Render detail content into the separate detail sheet
+    // Cache refs for touch handler and hide function
+    _detailHostEl = hostEl;
+    _detailSheetEl = detailSheet;
+    _detailBodyEl = bodyEl;
+    _detailHandleEl = handleEl;
+
+    // Render detail content
     bodyEl.innerHTML = renderInSheetDetail(loc);
 
-    // Photo fade-in with subtle scale
+    // Photo fade-in
     const heroImg = bodyEl.querySelector('.sheet-hero-img');
     if (heroImg) {
         if (heroImg.complete && heroImg.naturalWidth > 0) heroImg.classList.add('loaded');
         else heroImg.addEventListener('load', () => heroImg.classList.add('loaded'), { once: true });
     }
 
-    // Position below navbar (same logic as main sheet in initSheet)
+    // Position below navbar (same as main sheet)
     const nav = document.querySelector('.floating-nav');
     const navbarHeight = nav ? Math.max(Math.ceil(nav.getBoundingClientRect().bottom) + 4, 78) : 78;
-    detailSheet.style.top = navbarHeight + 'px';
+    hostEl.style.top = navbarHeight + 'px';
 
-    // Open the detail sheet (slide up)
-    detailSheet.classList.remove('closing');
-    detailSheet.setAttribute('aria-hidden', 'false');
-    // Force reflow so the opening transition triggers
-    void detailSheet.offsetHeight;
-    detailSheet.classList.add('open');
+    // Set spacer height = host height (pushes sheet offscreen when at scrollTop=0)
+    const hostHeight = window.innerHeight - navbarHeight;
+    spacer.style.height = hostHeight + 'px';
 
-    // Show overlay (dims map)
+    // Show the host (but scroll is at top = sheet hidden)
+    hostEl.setAttribute('aria-hidden', 'false');
+    hostEl.classList.add('open');
+
+    // Scroll body to top
+    bodyEl.scrollTop = 0;
+
+    // Scroll host to snap point (= open the sheet) with smooth animation
+    requestAnimationFrame(() => {
+        hostEl.scrollTo({ top: hostEl.scrollHeight, behavior: 'smooth' });
+        _detailIsOpen = true;
+    });
+
+    // Show overlay
     if (overlay) {
         overlay.classList.add('visible');
         overlay.addEventListener('click', hideDetailInSheet, { once: true });
     }
 
-    // Scroll body to top
-    bodyEl.scrollTop = 0;
-
-    // Attach swipe-to-dismiss gesture (listen on body, transform on sheet)
-    if (_dismissCleanup) _dismissCleanup();
-    _dismissCleanup = attachDetailSwipeDismiss(bodyEl, detailSheet);
+    // Init touch handling (same pattern as main sheet)
+    if (!hostEl._touchInitialized) {
+        initDetailSheetTouch(hostEl, detailSheet, bodyEl, handleEl);
+        hostEl._touchInitialized = true;
+    }
 
     // Escape key dismiss
     const escHandler = (e) => { if (e.key === 'Escape') hideDetailInSheet(); };
     document.addEventListener('keydown', escHandler);
-    detailSheet._escHandler = escHandler;
+    hostEl._escHandler = escHandler;
 
-    // Push history state for browser-back support
+    // Push history state
     if (typeof window.pushNavState === 'function') window.pushNavState('in-sheet-detail', { locationId });
 
-    // Back button + close button
+    // Button handlers
     bodyEl.querySelector('.detail-back-btn')?.addEventListener('click', hideDetailInSheet);
     bodyEl.querySelector('.detail-close-btn')?.addEventListener('click', hideDetailInSheet);
 
-    // Focus the back button for accessibility
+    // Focus back button
     requestAnimationFrame(() => {
         bodyEl.querySelector('.detail-back-btn')?.focus({ preventScroll: true });
     });
 
-    // Screen reader announcement
+    // Screen reader
     const announcer = document.getElementById('sr-announcer');
     if (announcer) announcer.textContent = `Locatiedetails geopend: ${loc.name}`;
 
-    // Fav button (with haptic + spring)
+    // Fav button
     const favBtn = bodyEl.querySelector('.detail-fav-btn');
     if (favBtn) {
         favBtn.addEventListener('click', (e) => {
@@ -1495,20 +1485,18 @@ export function showDetailInSheet(locationId) {
 }
 
 export function hideDetailInSheet() {
-    const detailSheet = document.getElementById('detail-sheet');
-    const bodyEl = document.getElementById('detail-sheet-body');
+    if (!_detailIsOpen) return;
+    _detailIsOpen = false;
+
+    const hostEl = _detailHostEl || document.getElementById('detail-sheet-host');
+    const bodyEl = _detailBodyEl || document.getElementById('detail-sheet-body');
     const overlay = document.getElementById('detail-sheet-overlay');
 
-    // Clean up swipe-to-dismiss
-    if (_dismissCleanup) { _dismissCleanup(); _dismissCleanup = null; }
-
     // Clean up escape handler
-    if (detailSheet?._escHandler) {
-        document.removeEventListener('keydown', detailSheet._escHandler);
-        detailSheet._escHandler = null;
+    if (hostEl?._escHandler) {
+        document.removeEventListener('keydown', hostEl._escHandler);
+        hostEl._escHandler = null;
     }
-
-    if (!detailSheet) return;
 
     // Hide overlay
     if (overlay) {
@@ -1516,29 +1504,25 @@ export function hideDetailInSheet() {
         overlay.removeEventListener('click', hideDetailInSheet);
     }
 
-    // Clear inline swipe styles
-    detailSheet.style.transform = '';
-    detailSheet.style.opacity = '';
-    detailSheet.style.willChange = '';
-    detailSheet.style.transition = '';
-
-    // Close animation: slide down
-    detailSheet.classList.remove('open');
-    detailSheet.classList.add('closing');
-    detailSheet.setAttribute('aria-hidden', 'true');
-
-    // Screen reader announcement
+    // Screen reader
     const announcer = document.getElementById('sr-announcer');
     if (announcer) announcer.textContent = 'Locatiedetails gesloten';
 
-    // Clean up content after transition
+    // Scroll host to top (closes sheet via scroll-snap)
+    if (hostEl) {
+        hostEl.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Clean up after scroll animation
     const onEnd = () => {
-        detailSheet.classList.remove('closing');
-        detailSheet.style.top = '';
+        if (hostEl) {
+            hostEl.classList.remove('open');
+            hostEl.setAttribute('aria-hidden', 'true');
+            hostEl.style.top = '';
+        }
         if (bodyEl) bodyEl.innerHTML = '';
     };
-    detailSheet.addEventListener('transitionend', onEnd, { once: true });
-    setTimeout(onEnd, 400); // fallback
+    setTimeout(onEnd, 400);
 }
 
 /* ===================================================

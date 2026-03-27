@@ -108,8 +108,8 @@
     <link rel="preload" href="/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/plus-jakarta-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/app.bundle.css?v=202603272258-7d40301f">
-    <script src="/nav-floating.js?v=202603272258-7d40301f" defer></script>
+    <link rel="stylesheet" href="/app.bundle.css?v=202603272320-5c5e8db3">
+    <script src="/nav-floating.js?v=202603272320-5c5e8db3" defer></script>
 
 </head>
 <body class="pp-app">
@@ -721,12 +721,16 @@
 
     <!-- Detail Sheet overlay (dims map when detail is open) -->
     <div id="detail-sheet-overlay" class="detail-sheet-overlay"></div>
-    <!-- Detail Sheet — separate overlay (Apple Maps pattern) -->
-    <div id="detail-sheet" class="detail-sheet" role="dialog" aria-modal="true" aria-label="Locatie details" aria-hidden="true">
-        <div class="detail-sheet-handle">
-            <div class="sheet-handle-bar"></div>
+    <!-- Detail Sheet — scroll-snap host (same physics engine as main sheet) -->
+    <div id="detail-sheet-host" class="detail-sheet-host" aria-hidden="true">
+        <div class="detail-snap-spacer" id="detail-snap-spacer" aria-hidden="true"></div>
+        <div class="detail-snap-point" id="detail-snap-point" aria-hidden="true"></div>
+        <div id="detail-sheet" class="detail-sheet" role="dialog" aria-modal="true" aria-label="Locatie details">
+            <div class="detail-sheet-handle" id="detail-sheet-handle">
+                <div class="sheet-handle-bar"></div>
+            </div>
+            <div class="detail-sheet-body" id="detail-sheet-body"></div>
         </div>
-        <div class="detail-sheet-body" id="detail-sheet-body"></div>
     </div>
 
     <!-- Screen reader announcements for sheet state changes -->
@@ -826,7 +830,7 @@
 
     <div id="sr-announcer" class="sr-only" aria-live="polite" role="status"></div>
 
-    <script type="module" src="app.bundle.js?v=202603272258-7d40301f"></script>
+    <script type="module" src="app.bundle.js?v=202603272320-5c5e8db3"></script>
 
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
