@@ -1136,6 +1136,11 @@
   padding: 0;
 }
 
+.bottom-sheet.show-detail {
+  border-radius: 0;
+  margin: 0;
+  overflow: visible;
+}
 .bottom-sheet.show-detail .sheet-detail {
   display: block;
   animation: slideInRight 300ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
@@ -1707,27 +1712,37 @@
 }
 .dt-nearby-scroll {
   display: flex;
-  gap: 12px;
+  gap: var(--pp-space-sm2);
   overflow-x: auto;
   scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding: 0 var(--pp-space-lg) 4px;
+  /* Edge-to-edge scroll with inset padding via pseudo-spacers */
+  padding: var(--pp-space-sm) 0 var(--pp-space-sm);
+}
+.dt-nearby-scroll::before,
+.dt-nearby-scroll::after {
+  content: '';
+  flex: 0 0 var(--pp-space-lg);
 }
 .dt-nearby-scroll::-webkit-scrollbar { display: none; }
-/* Scan cards inside nearby scroll — constrained width */
-.dt-nearby-scroll > .scan-card,
-.dt-nearby-scroll > .compact-card {
-  flex: 0 0 280px;
+
+/* Scan cards inside nearby carousel */
+.dt-nearby-scroll > .scan-card {
+  flex: 0 0 260px;
   scroll-snap-align: start;
   border-radius: var(--pp-radius-sm);
   overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 .dt-nearby-scroll > .scan-card .scan-photo {
   aspect-ratio: 16 / 9;
 }
 .dt-nearby-scroll > .scan-card .scan-body {
-  padding: var(--pp-space-sm) var(--pp-space-sm2) var(--pp-space-sm2);
+  padding: var(--pp-space-sm2) var(--pp-space-sm2) var(--pp-space-sm2);
+}
+.dt-nearby-scroll > .scan-card .scan-name {
+  font-size: var(--pp-text-sm);
 }
 .dt-nearby-scroll > .scan-card .scan-oneliner {
   display: none;
