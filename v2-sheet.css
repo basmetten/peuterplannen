@@ -377,11 +377,8 @@
   max-height: none;
   /* overflow:hidden (not visible) so sticky header works in sheet-detail */
 }
-/* Full-bleed elements: hero photo breaks out of sheet-content padding */
-.bottom-sheet.show-detail .detail-hero-wrap {
-  margin-left: -16px;
-  margin-right: -16px;
-}
+/* Hero photo: rounded corners with inset padding (Apple Maps style) */
+/* No longer full-bleed — hero-wrap has its own padding */
 /* Full-bleed: nearby carousel breaks out of section padding */
 .bottom-sheet.show-detail .dt-nearby-scroll {
   margin-left: calc(-1 * var(--pp-space-lg));
