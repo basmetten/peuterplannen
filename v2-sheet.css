@@ -364,26 +364,7 @@
   border-radius: 14px 14px 8px 8px;
 }
 
-/* Detail view — opaque panel, scroll-enabled, no map bleed */
-.bottom-sheet.show-detail {
-  border-radius: 0;
-  margin: 0;
-  overflow: hidden;           /* hidden clips map bleed on iOS (was: visible) */
-  contain: none;
-  background: var(--wg-surface-warm, #FFFCF9);  /* opaque — covers map completely */
-}
-.bottom-sheet.show-detail .sheet-content {
-  overflow: visible;          /* visible lets scroll events reach .sheet-detail (was: hidden) */
-  contain: none;
-  max-height: none;
-  height: 100%;               /* propagates definite height to .sheet-detail */
-  padding: 0;                 /* sections handle own padding; 0 here avoids transparent gaps */
-}
-/* Ensure .sheet-detail is the scroll container with correct overflow */
-.bottom-sheet.show-detail .sheet-detail {
-  overflow-x: hidden;         /* prevent horizontal scroll from carousel margins */
-  padding-bottom: max(env(safe-area-inset-bottom, 16px), 16px); /* safe area at scroll end */
-}
+/* (show-detail rules removed — detail view now uses separate .detail-sheet overlay) */
 
 /* Sheet meta line — aligned with content padding */
 .sheet-meta {

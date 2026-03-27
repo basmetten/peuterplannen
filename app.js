@@ -49,8 +49,8 @@ window.addEventListener('popstate', (e) => {
                 window.location.href = '/plan.html';
                 break;
             case 'in-sheet-detail': {
-                const bs = document.getElementById('bottom-sheet');
-                if (bs?.classList.contains('show-detail')) {
+                const ds = document.getElementById('detail-sheet');
+                if (ds?.classList.contains('open')) {
                     hideDetailInSheet();
                 }
                 break;

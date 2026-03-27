@@ -108,8 +108,8 @@
     <link rel="preload" href="/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/plus-jakarta-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/app.bundle.css?v=202603272151-ad74a026">
-    <script src="/nav-floating.js?v=202603272151-ad74a026" defer></script>
+    <link rel="stylesheet" href="/app.bundle.css?v=202603272216-47970476">
+    <script src="/nav-floating.js?v=202603272216-47970476" defer></script>
 
 </head>
 <body class="pp-app">
@@ -715,10 +715,16 @@
             <div class="sheet-loc-preview" id="sheet-loc-preview"></div>
             <!-- Half content: compact location list -->
             <div class="sheet-list" id="sheet-list" role="list" aria-label="Locatie lijst"></div>
-            <!-- Full content: location detail -->
-            <div class="sheet-detail" id="sheet-detail"></div>
         </div>
     </div>
+    </div>
+
+    <!-- Detail Sheet — separate overlay (Apple Maps pattern) -->
+    <div id="detail-sheet" class="detail-sheet" role="dialog" aria-label="Locatie details" aria-hidden="true">
+        <div class="detail-sheet-handle">
+            <div class="sheet-handle-bar"></div>
+        </div>
+        <div class="detail-sheet-body" id="detail-sheet-body"></div>
     </div>
 
     <!-- Screen reader announcements for sheet state changes -->
@@ -818,7 +824,7 @@
 
     <div id="sr-announcer" class="sr-only" aria-live="polite" role="status"></div>
 
-    <script type="module" src="app.bundle.js?v=202603272151-ad74a026"></script>
+    <script type="module" src="app.bundle.js?v=202603272216-47970476"></script>
 
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
