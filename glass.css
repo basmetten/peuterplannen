@@ -1238,27 +1238,27 @@
    Surfaces: one. Atmosphere: gradient veil on hero.
    =========================================================== */
 
-/* --- Header bar (Apple Maps pattern) --- */
+/* --- Header bar (Apple Maps pattern — compact) --- */
 .dt-header-bar {
   display: flex;
   align-items: center;
-  padding: var(--pp-space-xs) var(--pp-space-md) var(--pp-space-sm);
-  gap: var(--pp-space-sm);
+  padding: 2px var(--pp-space-md) 4px;
+  gap: 6px;
   position: sticky;
   top: 0;
   z-index: 10;
   background: var(--wg-surface-warm, #FFFCF9);
 }
 .dt-header-btn {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(var(--pp-neutral-muted-rgb), 0.12);
+  background: rgba(var(--pp-neutral-muted-rgb), 0.10);
   color: var(--pp-text, #2D2926);
   transition: background var(--pp-duration-fast) ease, transform 0.1s ease;
   flex-shrink: 0;
@@ -1266,7 +1266,7 @@
 }
 .dt-header-btn:active {
   transform: scale(0.90);
-  background: rgba(var(--pp-neutral-muted-rgb), 0.22);
+  background: rgba(var(--pp-neutral-muted-rgb), 0.20);
 }
 .dt-header-btn svg {
   pointer-events: none;
@@ -1283,7 +1283,7 @@
 /* --- Hero photo — edge-to-edge (Apple Maps pattern) --- */
 .detail-hero-wrap {
   position: relative;
-  margin: var(--pp-space-md) 0;
+  margin: var(--pp-space-sm) 0 0;
   padding: 0; /* edge-to-edge — no horizontal padding */
 }
 .detail-hero-photo {
@@ -1297,7 +1297,7 @@
 }
 /* Below-photo zone (verdict + proof chips between photo and sections) */
 .dt-below-photo {
-  padding: var(--pp-space-md) var(--pp-space-lg) var(--pp-space-sm2);
+  padding: var(--pp-space-sm2) var(--pp-space-lg) var(--pp-space-sm);
 }
 
 /* Warm gradient veil — bridges photo to content */
@@ -1362,7 +1362,7 @@
    proof → actions.
    =========================================== */
 .dt-above-fold {
-  padding: var(--pp-space-md) var(--pp-space-lg) var(--pp-space-md);
+  padding: var(--pp-space-sm) var(--pp-space-lg) var(--pp-space-sm);
 }
 
 /* --- Title + Score --- */
@@ -1461,7 +1461,7 @@
 .dt-cta {
   display: flex;
   gap: var(--pp-space-sm);
-  margin-top: var(--pp-space-md);
+  margin-top: var(--pp-space-sm2);
   padding-bottom: 0;
 }
 .dt-cta-btn {
@@ -1470,9 +1470,9 @@
   justify-content: center;
   gap: var(--pp-space-xs2);
   flex: 1;
-  min-height: 48px;
-  padding: var(--pp-space-sm2) var(--pp-space-md);
-  border-radius: 14px;
+  min-height: 44px;
+  padding: var(--pp-space-sm) var(--pp-space-md);
+  border-radius: var(--wg-radius-sheet, 12px);
   font-size: 0.8125rem;
   font-weight: var(--pp-weight-semibold);
   letter-spacing: -0.01em;
@@ -1522,7 +1522,7 @@
 /* --- Section --- */
 .dt-section,
 .dt-card {
-  padding: 24px var(--pp-space-lg);
+  padding: var(--pp-space-md) var(--pp-space-lg);
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   animation: dt-enter 280ms ease-out both;
   animation-delay: calc(var(--si, 0) * 45ms);
@@ -1553,8 +1553,8 @@
 .dt-card--highlight {
   background: linear-gradient(145deg, #f7faf7 0%, #eff5ef 100%);
   border-radius: var(--pp-radius-md);
-  margin: var(--pp-space-lg) var(--pp-space-md) var(--pp-space-sm) !important;
-  padding: var(--pp-space-lg) !important;
+  margin: var(--pp-space-md) var(--pp-space-md) var(--pp-space-sm) !important;
+  padding: var(--pp-space-md) !important;
   box-shadow: 0 4px 16px rgba(74, 122, 74, 0.08), 0 1px 3px rgba(74, 122, 74, 0.04);
 }
 .dt-card-header {
