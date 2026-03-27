@@ -1140,6 +1140,7 @@
   border-radius: 0;
   margin: 0;
   overflow: visible;
+  contain: none; /* Override paint containment that clips content at edges */
 }
 .bottom-sheet.show-detail .sheet-detail {
   display: block;
