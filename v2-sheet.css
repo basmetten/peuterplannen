@@ -364,7 +364,7 @@
   border-radius: 14px 14px 8px 8px;
 }
 
-/* Detail view — remove all clipping so hero photo + carousel go edge-to-edge */
+/* Detail view — remove clipping so hero photo + carousel go edge-to-edge */
 .bottom-sheet.show-detail {
   border-radius: 0;
   margin: 0;
@@ -374,9 +374,20 @@
 .bottom-sheet.show-detail .sheet-content {
   overflow: visible;
   contain: none;
-  padding-left: 0;
-  padding-right: 0;
   max-height: none;
+  /* Keep side padding for text — hero + carousel break out via negative margin */
+}
+/* Full-bleed elements: hero photo breaks out of sheet-content padding */
+.bottom-sheet.show-detail .detail-hero-wrap {
+  margin-left: -16px;
+  margin-right: -16px;
+}
+/* Full-bleed: nearby carousel breaks out of section padding */
+.bottom-sheet.show-detail .dt-nearby-scroll {
+  margin-left: calc(-1 * var(--pp-space-lg));
+  margin-right: calc(-1 * var(--pp-space-lg));
+  padding-left: var(--pp-space-lg);
+  padding-right: var(--pp-space-lg);
 }
 
 /* Sheet meta line — aligned with content padding */
