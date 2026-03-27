@@ -1137,14 +1137,14 @@
   bottom: 0;
   z-index: 1200; /* above navbar (1100) and sheet-scroll-host (1000) */
   background: var(--wg-surface-warm, #FFFCF9);
-  border-radius: 14px 14px 0 0;
+  border-radius: var(--wg-radius-sheet, 12px) var(--wg-radius-sheet, 12px) 0 0;
   transform: translateY(100%);
   will-change: transform;
   max-height: calc(100dvh - env(safe-area-inset-top, 0px));
   height: calc(100dvh - env(safe-area-inset-top, 0px));
   display: flex;
   flex-direction: column;
-  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.04);
   pointer-events: none;
   visibility: hidden;
 }
@@ -1165,12 +1165,15 @@
   visibility: hidden;
 }
 
+/* Handle — matches main sheet handle exactly */
 .detail-sheet-handle {
   flex-shrink: 0;
-  padding: 8px 0 4px;
+  padding: 10px 0 6px;
   display: flex;
   justify-content: center;
   cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .detail-sheet-body {
@@ -1179,9 +1182,12 @@
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  padding-bottom: max(env(safe-area-inset-bottom, 20px), 20px);
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding-bottom: max(env(safe-area-inset-bottom, 16px), 16px);
   background: var(--wg-surface-warm, #FFFCF9);
 }
+.detail-sheet-body::-webkit-scrollbar { display: none; }
 
 @keyframes cardSlideIn {
   from { opacity: 0; transform: translateY(8px); }
@@ -1206,7 +1212,7 @@
 .dt-header-bar {
   display: flex;
   align-items: center;
-  padding: var(--pp-space-sm2) var(--pp-space-md) var(--pp-space-md);
+  padding: var(--pp-space-xs) var(--pp-space-md) var(--pp-space-sm);
   gap: var(--pp-space-sm);
   position: sticky;
   top: 0;
@@ -1214,15 +1220,15 @@
   background: var(--wg-surface-warm, #FFFCF9);
 }
 .dt-header-btn {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(45, 41, 38, 0.05);
+  background: rgba(var(--pp-neutral-muted-rgb), 0.12);
   color: var(--pp-text, #2D2926);
   transition: background var(--pp-duration-fast) ease, transform 0.1s ease;
   flex-shrink: 0;
@@ -1230,7 +1236,7 @@
 }
 .dt-header-btn:active {
   transform: scale(0.90);
-  background: rgba(45, 41, 38, 0.10);
+  background: rgba(var(--pp-neutral-muted-rgb), 0.22);
 }
 .dt-header-btn svg {
   pointer-events: none;
@@ -1244,18 +1250,18 @@
   flex: 1;
 }
 
-/* --- Hero photo (now below above-fold, in scrollable content) --- */
+/* --- Hero photo — edge-to-edge (Apple Maps pattern) --- */
 .detail-hero-wrap {
   position: relative;
   margin: var(--pp-space-md) 0;
-  padding: 0 var(--pp-space-lg);
+  padding: 0; /* edge-to-edge — no horizontal padding */
 }
 .detail-hero-photo {
   width: 100%;
   aspect-ratio: 5 / 3;
   min-height: 180px;
   max-height: 240px;
-  border-radius: var(--pp-radius-md);
+  border-radius: 0; /* flush with sheet edges */
   margin: 0;
   overflow: hidden;
 }
@@ -1759,7 +1765,7 @@
 .dt-nearby {
   margin-top: var(--pp-space-lg);
   padding-top: var(--pp-space-lg);
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 .dt-nearby .dt-label {
   padding-left: var(--pp-space-lg);
@@ -1771,13 +1777,13 @@
   scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  /* Edge-to-edge scroll with inset padding via pseudo-spacers */
-  padding: var(--pp-space-sm) 0 var(--pp-space-sm);
+  /* Edge-to-edge: cards flush with sheet edges, padding via spacers */
+  padding: var(--pp-space-sm) 0 var(--pp-space-md);
 }
 .dt-nearby-scroll::before,
 .dt-nearby-scroll::after {
   content: '';
-  flex: 0 0 var(--pp-space-lg);
+  flex: 0 0 var(--pp-space-md); /* 16px — matches text content padding */
 }
 .dt-nearby-scroll::-webkit-scrollbar { display: none; }
 
