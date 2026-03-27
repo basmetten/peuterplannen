@@ -653,6 +653,10 @@ p, li {
 
   /* --- Glass Surfaces --- */
   --wg-glass-chip:     rgba(250, 247, 242, 0.72);
+  --wg-glass-interactive:        rgba(250, 247, 242, 0.92);
+  --wg-glass-interactive-hover:  rgba(250, 247, 242, 0.96);
+  --wg-glass-interactive-pressed: rgba(245, 240, 235, 0.94);
+  --wg-glass-elevated:           rgba(255, 252, 249, 0.95);
   --wg-glass-control:  rgba(250, 247, 242, 0.78);
   --wg-glass-surface:  rgba(245, 240, 235, 0.82);
   --wg-glass-panel:    rgba(250, 247, 242, 0.85);
@@ -690,8 +694,8 @@ p, li {
   --wg-text-primary:     #3A2F2C;
   --wg-text-body:        #5C4433;
   --wg-text-muted:       #6B5A54;
-  --wg-text-faint:       #8B7355;
-  --wg-text-placeholder: #9B8688;
+  --wg-text-faint:       #6B5A4A;
+  --wg-text-placeholder: #7A6B6D;
   --wg-text-inverse:     #FFFBF7;
 
   /* --- Brand Colors (reference --pp-* where possible) --- */
@@ -761,6 +765,26 @@ p, li {
 }
 
 } /* end @layer tokens */
+
+/* ============================================
+   High Contrast Mode — WCAG AAA overrides
+   ============================================ */
+@media (prefers-contrast: more) {
+  :root {
+    --wg-glass-interactive: rgba(250, 247, 242, 0.98);
+    --wg-glass-chip:        rgba(250, 247, 242, 0.95);
+    --wg-glass-control:     rgba(250, 247, 242, 0.96);
+    --wg-glass-panel:       rgba(250, 247, 242, 0.97);
+    --wg-text-placeholder:  #5C4A48;
+    --wg-text-faint:        #4A3D35;
+  }
+
+  .chip, .filter-chip, .preset-chip, .sheet-preset,
+  .sheet-filter-chip, .sheet-search-pill {
+    box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.15),
+                var(--wg-shadow-chip);
+  }
+}
 
 /* ============================================
    Button Type System — 5 standaard types
