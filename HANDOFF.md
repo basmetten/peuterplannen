@@ -8,6 +8,7 @@
 **Route restructuring complete** — unified `(app)` shell replaces `(marketing)` + `(pwa)`.
 **Phase 3 progressive enhancement complete** — interactive map on SSR content pages (desktop), now with persistent map.
 **Code review hardening complete** — 9 issues fixed (2 critical, 7 warnings).
+**Mobile interactive sheet complete** — SSR content pages use draggable bottom sheet on mobile (CSS-first, zero CLS).
 
 ## Architecture (current)
 
@@ -67,12 +68,13 @@ The `(app)` layout hosts a persistent MapLibre GL map that never unmounts during
           ├── PersistentMapLoader (client, dynamic) — desktop only, loads MapLibre lazily
           │   └── PersistentMap (client) — reads MapStateContext, updates markers/bounds
           └── {children} (page content)
-              └── ContentShell (server) — renders MapUpdater + sidebar
-                  └── MapUpdater (client) — pushes page data to MapStateContext
+              └── ContentShell (server) — renders MapUpdater + ContentSheetContainer
+                  ├── MapUpdater (client) — pushes page data to MapStateContext
+                  └── ContentSheetContainer (client) — responsive sheet/sidebar
 ```
 
 - **Desktop**: sidebar (420px, absolute left) + persistent map (fills viewport behind sidebar)
-- **Mobile**: full-width scrollable content, no map (MapLibre not loaded — saves ~200KB)
+- **Mobile**: draggable bottom sheet (peek/half/full) — no map (MapLibre not loaded — saves ~200KB)
 - **Home page**: AppShell renders its own MapContainer on top, hiding persistent map
 - **Blog/guides**: MapUpdater sets empty locations → map shows NL with no markers
 - **Content→content navigation**: map persists, markers update smoothly, bounds fly to new locations
@@ -83,14 +85,26 @@ Key files:
 - `src/components/layout/PersistentMapLoader.tsx` — `next/dynamic` + desktop gate via `useIsDesktop`
 - `src/components/layout/MapUpdater.tsx` — invisible client component, pushes page data to context
 
-### ContentShell component
+### ContentShell + mobile sheet
 
-`src/components/layout/ContentShell.tsx` — wraps SSR content in an app-like visual:
-- Desktop: 420px sidebar panel (absolute left, z-10) — persistent map visible to the right
-- Mobile: full-width scrollable content (no map)
+`src/components/layout/ContentShell.tsx` — server component wrapping SSR content:
 - Renders `MapUpdater` to push location data to persistent map
-- Sheet footer: partner link + privacy/terms/about/contact links
+- Delegates layout to `ContentSheetContainer` (client component)
 - Map props: `mapLocations`, `mapRegionSlug`/`mapRegionSlugMap`, `mapHighlightId`
+
+`src/components/layout/ContentSheetContainer.tsx` — responsive layout container:
+- **Desktop (≥768px)**: 420px sidebar panel (absolute left, z-10), scroll, border/shadow
+- **Mobile (<768px)**: Draggable bottom sheet with peek/half/full snap states
+- **CSS-first approach**: Base layout is pure CSS (`.content-sheet` in globals.css), no JS needed for SSR
+  - Mobile default: `position: fixed; bottom: 0; transform: translateY(50%)` → half state
+  - Desktop override: `@media (min-width: 768px)` → `position: absolute; width: 420px; transform: none !important`
+  - Zero CLS on both viewports
+- **Client enhancement**: After hydration on mobile, drag handler + scroll-to-drag handoff activate
+- **Initial snap by page type**: `half` for location pages (via `.content-sheet`), `full` for blog/guides (via `.content-sheet--full`)
+- Built-in drag logic (extracted from `Sheet.tsx`): velocity-based fling, closest-snap fallback, corner radius morphing
+- Footer: partner link + privacy/terms/about/contact links
+
+**Known issue**: Turbopack (dev mode) strips `.content-sheet` CSS rules. Use `npm run build && npx next start` for accurate testing. Production builds work correctly.
 - Blog/guides pages don't pass map props → persistent map shows no markers
 
 ### Blog data architecture
@@ -110,27 +124,17 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Code review hardening (9 fixes)
-1. **CRITICAL: `safeHostname()`** — `new URL()` wrapped in try/catch for URLs without protocol
-2. **CRITICAL: Open redirect prevention** — `seo_canonical_target` validated: must start with `/` and not `//`
-3. **Sitemap dedup** — removed duplicate `TYPE_SLUG_MAP`, imports `TYPE_SLUGS` from `seo.ts`
-4. **`resolveHub` caching** — wrapped with React `cache()` to avoid double fetch per request
-5. **Plural labels** — uses `LOCATION_TYPE_LABELS_PLURAL` instead of hardcoded `{typeName}en`
-6. **Blog reading time** — decoupled from `post.tags.length`, always visible
-7. **Date validation** — bundle-posts.mjs validates YYYY-MM-DD format, warns on malformed dates
-8. **Robots narrowed** — `/app` → `/app.html` to avoid blocking future routes
-9. **Blog descriptions** — `z.string().min(1)` + build-time fallback from body for empty descriptions
-
-### Persistent map (Phase 3 remaining)
-1. **MapStateContext** — React context in `(app)` layout holds location data for the persistent map
-2. **PersistentMap** — MapLibre GL component that lives in the layout, never unmounts. Reads data from context. Dynamic GeoJSON updates, fly-to bounds on navigation, highlight filter.
-3. **PersistentMapLoader** — `next/dynamic` wrapper + `useIsDesktop` gate. Mobile clients never download MapLibre (~200KB savings).
-4. **MapUpdater** — invisible client component rendered by ContentShell. Pushes page-specific locations/hrefs/highlightId to context on mount.
-5. **ContentShell refactored** — removed right panel map div. Sidebar uses absolute positioning (left 0, z-10). Persistent map in layout shows through on right side.
-6. **ContentMap + ContentMapLoader deleted** — replaced by PersistentMap architecture.
-7. **Layout upgraded** — `(app)/layout.tsx` now wraps children in `MapStateProvider` + renders `PersistentMapLoader` behind content.
+### Mobile interactive sheet
+1. **ContentSheetContainer** — new client component with built-in drag logic (extracted from `Sheet.tsx`). Responsive: sidebar on desktop, draggable sheet on mobile.
+2. **CSS-first positioning** — `.content-sheet` + `.content-sheet--full` classes in `globals.css`. SSR renders correct layout on both viewports without waiting for JS hydration. Zero CLS.
+3. **ContentShell refactored** — now delegates layout to `ContentSheetContainer`. Stays a server component. MapUpdater + buildLocationHrefs unchanged.
+4. **Drag mechanics** — velocity-based fling, closest-snap fallback, scroll-to-drag handoff, corner radius morphing (16px → 0 from half → full). Same physics as AppShell's Sheet.
+5. **Snap states** — peek (25%), half (50%), full (92%). Location pages start at half, blog/guides start at full.
+6. **Desktop override** — `@media (min-width: 768px)` with `transform: none !important` ensures sidebar layout regardless of JS state.
 
 ### Previous sessions
+- Code review hardening (9 fixes, 2 critical)
+- Persistent map in (app) layout (MapStateContext, PersistentMap, MapUpdater)
 - Phase 3 progressive enhancement (ContentMap on SSR pages)
 - Phase 3 blog/guides migration (57 posts, index, guides overview)
 - Phase 3 Tier 4: city+type combo pages (224 pages)
@@ -145,13 +149,16 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What's NOT done yet
 
-### Phase 3 remaining
-- Mobile interactive sheet for location-based SSR pages (currently full-width scroll)
+### Phase 3.5
+- Photo migration to Cloudflare R2
 
-### Beyond Phase 3
-- Phase 3.5: Photo migration to Cloudflare R2
-- Phase 4: Polish & Canonicalize
-- Phase 5: Quality Gates (E2E tests, CWV, accessibility, service worker)
+### Phase 4: Polish & Canonicalize
+- Visual refinement, performance optimization
+- Mobile map on SSR content pages (currently warm bg behind sheet — add static map image or lazy MapLibre)
+- Turbopack dev compatibility for `.content-sheet` CSS (works in production, stripped in dev mode)
+
+### Phase 5: Quality Gates
+- E2E tests, CWV, accessibility, service worker
 - Staging deployment (Cloudflare Pages)
 
 ## Key design decisions
@@ -162,6 +169,8 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 | Map on mobile | Not loaded | `useIsDesktop` gate prevents MapLibre bundle download on mobile (~200KB savings) |
 | Map data flow | Server page → ContentShell → MapUpdater → Context → PersistentMap | Server components compute locations + hrefs, client MapUpdater pushes to context |
 | ContentShell positioning | Absolute sidebar (z-10) + transparent right side | Persistent map in layout (z-0) visible through transparent area |
+| Mobile content sheet | CSS-first `.content-sheet` + JS drag enhancement | Zero CLS: CSS handles SSR layout, JS adds drag after hydration. `!important` desktop override prevents inline style conflicts. |
+| Content sheet initial snap | half for location pages, full for blog/guides | `.content-sheet` = translateY(50%), `.content-sheet--full` = translateY(8%). Server-rendered class, no JS needed. |
 | Home page map | Two map instances (AppShell + persistent) | AppShell covers persistent map. Simpler than unifying MapContainer + PersistentMap. |
 | Map on blog/guides | Empty markers, map tiles visible | MapUpdater sets empty locations. NL map tiles show as neutral background. |
 | Home page route | `/` (was `/app`) | App IS the website per architecture doc |
@@ -174,11 +183,11 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## Next step
 
-Persistent map is complete. Remaining Phase 3 work:
+Phase 3 is complete (persistent map + mobile sheet). Next priorities:
 
-1. **Mobile interactive sheet** — SSR location pages use draggable sheet instead of full-width scroll
-2. **Photo migration** (Phase 3.5) — Cloudflare R2 storage
-3. **Phase 4: Polish** — visual refinement, performance optimization
+1. **Photo migration** (Phase 3.5) — Cloudflare R2 storage for location images
+2. **Phase 4: Polish** — visual refinement, performance optimization, mobile map behind sheet
+3. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
 
 **Before starting**, the session should:
 - Read this HANDOFF.md

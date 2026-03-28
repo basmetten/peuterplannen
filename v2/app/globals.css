@@ -151,6 +151,46 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Content sheet — SSR-safe responsive positioning.
+   Mobile: bottom sheet with snap states (half / full default).
+   Desktop: 420px sidebar panel. CSS handles both without JS. */
+.content-sheet {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 30;
+  height: 100%;
+  will-change: transform;
+  transform: translateY(50%); /* half state default */
+  border-top-left-radius: var(--radius-sheet);
+  border-top-right-radius: var(--radius-sheet);
+  box-shadow: var(--shadow-sheet);
+}
+
+.content-sheet--full {
+  transform: translateY(8%); /* full state: 92% visible */
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+
+@media (min-width: 768px) {
+  .content-sheet,
+  .content-sheet--full {
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    right: auto;
+    z-index: 10;
+    width: 420px;
+    height: auto;
+    transform: none !important; /* Override any JS inline transforms */
+    will-change: auto;
+    border-radius: 0 !important;
+    border-right: 1px solid var(--color-separator);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+  }
+}
+
 /* Hairline dividers (Apple Maps style: 0.5px) */
 .hairline {
   height: 0.5px;
