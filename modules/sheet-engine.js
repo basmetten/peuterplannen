@@ -1523,6 +1523,9 @@ export function hideDetailInSheet() {
         if (bodyEl) bodyEl.innerHTML = '';
     };
     setTimeout(onEnd, 400);
+
+    // Notify other modules (carousel uses this to restore itself)
+    bus.emit('sheet:detailclosed');
 }
 
 /* ===================================================

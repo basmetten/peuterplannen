@@ -16,6 +16,9 @@ let carouselVisible = false;
 let carouselLocations = [];
 let carouselActiveIndex = 0;
 let showTimeout = null; // guards against rapid double-tap race condition
+let _suspended = false; // true when carousel is hidden for detail view
+let _suspendedLocations = [];
+let _suspendedIndex = 0;
 
 // --- Constants ---
 const CARD_WIDTH = 280;
@@ -92,11 +95,14 @@ export function showCarousel(locations) {
     track.onclick = (e) => {
         const card = e.target.closest('.preview-card');
         if (!card) return;
+        // Ignore clicks on fav/route buttons (they have their own onclick)
+        if (e.target.closest('.preview-card-fav, .preview-card-route')) return;
         const locId = Number(card.dataset.locId);
         const loc = carouselLocations.find(l => l.id === locId);
         if (loc) {
-            bus.emit('sheet:showlocation', loc);
-            bus.emit('sheet:showdetail', loc);
+            // Suspend carousel — remember state for restoration on detail close
+            suspendCarousel();
+            bus.emit('sheet:opendetail', loc.id);
         }
     };
 }
@@ -131,9 +137,12 @@ export function hideCarousel() {
         bus.emit('sheet:setstate', 'peek');
     }, CAROUSEL_DISMISS_SHEET_DELAY);
 
-    // Clear marker highlight
+    // Clear marker highlight and all state
     highlightMarker(null);
     carouselLocations = [];
+    _suspended = false;
+    _suspendedLocations = [];
+    _suspendedIndex = 0;
 }
 
 /**
@@ -143,6 +152,75 @@ export function hideCarousel() {
 export function isCarouselVisible() {
     return carouselVisible;
 }
+
+// --- Suspend / Restore (detail view navigation) ---
+
+/**
+ * Suspend carousel — hide it visually but remember state for restoration.
+ * Called when a carousel card is tapped to open the detail view.
+ */
+function suspendCarousel() {
+    _suspended = true;
+    _suspendedLocations = [...carouselLocations];
+    _suspendedIndex = carouselActiveIndex;
+
+    // Slide carousel down
+    const el = document.getElementById('map-carousel');
+    if (el) el.classList.remove('visible');
+    carouselVisible = false;
+
+    // Remove scroll listener while suspended
+    const track = document.querySelector('.carousel-track');
+    if (track) track.removeEventListener('scroll', onCarouselScroll);
+
+    // Remove data-carousel-active so the sheet can show the detail view
+    const host = document.getElementById('sheet-scroll-host');
+    if (host) host.removeAttribute('data-carousel-active');
+}
+
+/**
+ * Restore carousel after returning from detail view.
+ * Re-shows the carousel with the same locations and scroll position.
+ */
+function restoreCarousel() {
+    if (!_suspended || !_suspendedLocations.length) {
+        _suspended = false;
+        return;
+    }
+    _suspended = false;
+
+    // Re-show carousel with the saved locations
+    showCarousel(_suspendedLocations);
+
+    // Restore scroll position to the previously active card
+    if (_suspendedIndex > 0) {
+        const track = document.querySelector('.carousel-track');
+        if (track) {
+            const scrollTarget = _suspendedIndex * (CARD_WIDTH + CARD_GAP);
+            // Wait for carousel to be visible before scrolling
+            requestAnimationFrame(() => {
+                track.scrollTo({ left: scrollTarget, behavior: 'instant' });
+                carouselActiveIndex = _suspendedIndex;
+                // Update dots
+                document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+                    dot.classList.toggle('active', i === _suspendedIndex);
+                    dot.setAttribute('aria-selected', String(i === _suspendedIndex));
+                });
+            });
+        }
+    }
+
+    _suspendedLocations = [];
+    _suspendedIndex = 0;
+}
+
+// Listen for detail view closing — restore carousel if it was suspended
+bus.on('sheet:detailclosed', () => {
+    if (_suspended) {
+        // Small delay to let detail close animation finish
+        setTimeout(restoreCarousel, 100);
+    }
+});
 
 // --- Internal helpers ---
 
