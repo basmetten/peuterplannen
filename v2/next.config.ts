@@ -27,11 +27,6 @@ const nextConfig: NextConfig = {
         hostname: 'photos.peuterplannen.nl',
         pathname: '/**',
       },
-      {
-        protocol: 'https',
-        hostname: 'pub-*.r2.dev',
-        pathname: '/**',
-      },
     ],
   },
 

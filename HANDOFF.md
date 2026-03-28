@@ -154,9 +154,8 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 ## What's NOT done yet
 
 ### Phase 3.5 remaining
-- Set up custom domain `photos.peuterplannen.nl` (currently using r2.dev public URL — rate-limited, not for production)
 - Update photo pipeline (`fetch-photos.js`) to upload new photos to R2 instead of disk
-- 55 locations in DB have no matching local hero.webp (may need re-fetch)
+- ~108 locations have null photo_url (no local hero.webp found)
 
 ### Phase 4: Polish & Canonicalize
 - Visual refinement, performance optimization
@@ -193,12 +192,11 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 Phase 3.5 infrastructure is complete. Next priorities:
 
-1. **Custom domain for R2** — set up `photos.peuterplannen.nl` pointing to R2 bucket (r2.dev URL is rate-limited)
-2. **Phase 4: Polish** — visual refinement, performance optimization, mobile map behind sheet
+1. **Phase 4: Polish** — visual refinement, performance optimization, mobile map behind sheet
 3. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
 
 **Before starting**, the session should:
 - Read this HANDOFF.md
 - Run `npm run build` to confirm 1330 pages generate
-- Verify photos load: `curl -sI https://pub-6d4e9e7e203645399b77d6c054334aaa.r2.dev/amsterdam/artis/hero.webp`
+- Verify photos load: `curl -sI https://photos.peuterplannen.nl/amsterdam/artis/hero.webp`
 - `localhost:3000/` → AppShell renders normally with its own map
