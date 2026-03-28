@@ -246,10 +246,75 @@ bus.on('map:userlocation', () => {
     }
 });
 
+// === Desktop cluster-to-sidebar filter ===
+
+let clusterFilterActive = false;
+
+function clearClusterFilter() {
+    clusterFilterActive = false;
+    const container = document.getElementById('results-container');
+    if (!container) return;
+
+    // Remove pill
+    const pill = container.querySelector('.cluster-filter-pill');
+    if (pill) pill.remove();
+
+    // Show all hidden cards
+    container.querySelectorAll('.loc-card.cluster-hidden').forEach(card => {
+        card.classList.remove('cluster-hidden');
+    });
+}
+
+bus.on('sidebar:filterToCluster', (locationIds, coordinates) => {
+    const isDesktop = window.innerWidth >= DESKTOP_WIDTH;
+    if (!isDesktop) return;
+
+    // Clear any previous filter first
+    clearClusterFilter();
+    clusterFilterActive = true;
+
+    const container = document.getElementById('results-container');
+    if (!container) return;
+
+    const idSet = new Set(locationIds.map(Number));
+    let matchCount = 0;
+
+    // Hide non-matching cards
+    container.querySelectorAll('.loc-card').forEach(card => {
+        const locId = Number(card.dataset.locId);
+        if (!locId || !idSet.has(locId)) {
+            card.classList.add('cluster-hidden');
+        } else {
+            matchCount++;
+        }
+    });
+
+    // Prepend "Toon alle locaties" pill
+    const totalCount = state.allLocations.length;
+    const pill = document.createElement('div');
+    pill.className = 'cluster-filter-pill';
+    pill.innerHTML = `<span class="cluster-filter-count">${matchCount} locaties in cluster</span><button class="cluster-filter-clear" aria-label="Toon alle locaties">Toon alle ${totalCount} locaties</button>`;
+    container.insertBefore(pill, container.firstChild);
+
+    pill.querySelector('.cluster-filter-clear').addEventListener('click', clearClusterFilter);
+
+    // Scroll sidebar to top
+    const listView = document.getElementById('list-view');
+    if (listView) listView.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Clear cluster filter when switching views or reloading data
+bus.on('data:reload', clearClusterFilter);
+
 // Bus listeners
-bus.on('view:switch', switchView);
+bus.on('view:switch', (view) => {
+    clearClusterFilter();
+    switchView(view);
+});
 bus.on('nav:syncdesktop', syncDesktopModeSwitch);
 bus.on('sheet:renderlist', () => {
+    // Clear stale cluster filter when new data renders
+    if (clusterFilterActive) clearClusterFilter();
     const topbarCount = document.getElementById('app-topbar-count');
     if (topbarCount && state.allLocations.length) {
         topbarCount.textContent = state.allLocations.length + ' locaties';

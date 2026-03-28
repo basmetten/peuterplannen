@@ -172,9 +172,10 @@ export function initMap() {
             const isMobile = window.innerWidth < DESKTOP_WIDTH;
 
             // Get cluster expansion zoom + leaf count in parallel
+            const leafLimit = isMobile ? CAROUSEL_MAX_LEAVES + 1 : 20;
             Promise.all([
                 source.getClusterExpansionZoom(clusterId),
-                source.getClusterLeaves(clusterId, CAROUSEL_MAX_LEAVES + 1, 0)
+                source.getClusterLeaves(clusterId, leafLimit, 0)
             ]).then(([expansionZoom, leaves]) => {
                 const leafCount = leaves.length;
 
@@ -187,6 +188,19 @@ export function initMap() {
                         showCarousel(locations);
                         return;
                     }
+                }
+
+                // Desktop: cluster can't expand further → filter sidebar to cluster locations
+                if (!isMobile && expansionZoom > CLUSTER_MAX_ZOOM) {
+                    const locationIds = leaves.map(f => f.properties.id);
+                    bus.emit('sidebar:filterToCluster', locationIds, features[0].geometry.coordinates);
+                    state.mapInstance.flyTo({
+                        center: features[0].geometry.coordinates,
+                        zoom: Math.min(expansionZoom, 16),
+                        duration: CLUSTER_FLY_DURATION,
+                        easing: (t) => 1 - Math.pow(1 - t, 3)
+                    });
+                    return;
                 }
 
                 // Default: zoom into cluster with staggered marker pop-in
