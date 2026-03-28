@@ -2499,7 +2499,7 @@
     scroll-snap-align: start;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
     padding: var(--pp-space-sm) var(--pp-space-md);
     border-radius: var(--pp-radius-pill, 100px);
     border: 1px solid rgba(var(--pp-neutral-muted-rgb), 0.08);
@@ -2523,7 +2523,7 @@
     background: var(--wg-glass-interactive-pressed);
     transition-duration: 80ms;
   }
-  .sort-chip svg { flex-shrink: 0; }
+  .sort-chip svg { flex-shrink: 0; vertical-align: -1px; }
   .sort-chevron {
     transition: transform 0.2s var(--pp-ease-spring);
   }
