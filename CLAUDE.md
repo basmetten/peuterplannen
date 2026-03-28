@@ -1,208 +1,118 @@
 # PeuterPlannen — Project Rules for Claude Code
 
-## Project overview
-PeuterPlannen.nl is a vanilla HTML/CSS/JS web app that helps parents find toddler-friendly outings across the Netherlands. It uses MapLibre GL maps, Supabase as backend, and is hosted on GitHub Pages + Cloudflare.
+## ⚠️ CRITICAL: This is a REBUILD, not a patch job
 
-## Architecture
-- `app.html` — main interactive SPA
-- `app.css` / `app.min.css` — styles
-- `app.js` — entry point, imports ES modules
-- `modules/` — 19 ES modules (state, map, sheet, cards, filters, etc.)
-- `design-system.css` / `glass.css` / `fonts.css` — shared styles
-- `.scripts/` — build scripts, pipeline, audits
-- `.scripts/__tests__/` — Node.js unit + snapshot tests
-- Static pages: ~2200 generated HTML files per city/region
+PeuterPlannen is being rebuilt from the ground up on a completely new stack.
 
-## Key UI components
-- **Bottom sheet**: 4 states (peek / half / full / hidden), managed by `sheet-engine.js`
-- **Map**: MapLibre GL with clusters, markers, popup cards — `modules/map.js`
-- **Filter chips**: type, weather, age, radius, presets — `modules/filters.js`
-- **Location cards**: rendered by `modules/cards.js`
-- **Tabs**: Ontdek, Kaart, Favorieten, Plan, Info — `modules/layout.js`
-- **Desktop**: split layout (sidebar + map), no bottom sheet
+**The old app files (app.html, app.css, glass.css, modules/, etc.) are READ-ONLY reference material.**
+**Do NOT edit, patch, or extend any old frontend files.**
 
-## Commands
-- `npm run build` — full static site generation (needs Supabase secrets)
-- `npm run build:local` — local build with fixtures
-- `npm run dev` — local dev server on port 3000
-- `npm test` — all tests (unit + snapshot)
-- `npm run test:unit` — unit tests only
-- `npm run audit:tokens` — design token compliance
+The new app is built in the `/v2/` directory using Next.js, React, TypeScript, and Tailwind.
+All design and architecture decisions are documented in `docs/v2/`.
 
-## Dev server for visual testing
-Start the dev server before any Playwright/visual testing:
-```bash
-cd /Users/basmetten/peuterplannen && npx serve -l 8771 --no-clipboard . &
-```
-The app is then at `http://localhost:8771/app.html`.
+### What to read first
+1. `HANDOFF.md` — current status, what phase we're in, what to do next
+2. `docs/v2/migration-plan.md` — the phased build plan
+3. The specific `docs/v2/*.md` files relevant to your current task
 
-## MapLibre testing
-The map instance is at `state.mapInstance` (in modules/state.js). To check map loaded state from Playwright:
-```js
-await page.waitForFunction(() => {
-  const map = document.querySelector('#map')?.__maplibregl;
-  return map && map.loaded();
-}, { timeout: 15000 });
-```
+### What is READ-ONLY (old app — do not modify)
+- `app.html`, `app.js`, `app.css`, `app.min.css`
+- `glass.css`, `design-system.css`, `fonts.css`
+- `modules/` (all 19 ES modules)
+- `.scripts/` (build pipeline)
+- All static HTML pages (amsterdam.html, etc.)
+- `content/` (blog posts, SEO content)
+
+Use these only as reference for: product behavior, data fields, content, SEO patterns.
+
+### What is ACTIVE (new app — this is where you work)
+- `/v2/` — the new Next.js application
+- `docs/v2/` — architecture and design documentation
+- `HANDOFF.md` — session continuity
 
 ---
 
-## MANDATORY TESTING RULES
+## New stack
 
-These rules are NON-NEGOTIABLE. You MUST follow them on every task.
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js App Router |
+| Language | TypeScript (strict) |
+| UI | React, server components where possible |
+| Styling | Tailwind CSS + CSS custom properties (design tokens) |
+| Server state | TanStack Query |
+| UI state | XState (sheet, map orchestration) |
+| Validation | Zod |
+| Maps | MapLibre GL JS (behind adapter) |
+| Database | Supabase PostgreSQL (existing, server-side access only) |
+| Deployment | Cloudflare Pages → staging.peuterplannen.nl |
+| Testing | Playwright (E2E + visual regression), Vitest (unit) |
 
-### Rule 1: Test after EVERY visual change
-After editing ANY of these files, you MUST run `/verify-change` before reporting done:
-- `app.css`, `app.min.css`, `design-system.css`, `glass.css`, `fonts.css`
-- `app.html`
-- Any file in `modules/`
+## Design direction
 
-"Reporting done" means ANY of: "Done", "All changes applied", "Fixed", "Updated", "The fix is in place", "Changes complete", "Implemented", "Should work now".
+Apple Maps 85-90% likeness with warm coral/terracotta palette. Light mode only.
 
-You are NOT ALLOWED to say any of these phrases until you have taken and inspected screenshots.
+| Aspect | Choice |
+|--------|--------|
+| Main font | Inter (variable) |
+| Accent font | Newsreader (location names on detail sheet only) |
+| Primary accent | `#C05A3A` (deep terracotta) |
+| Sheet | Two separate sheets: browse + detail (never both visible) |
+| Icons | SVG, no emoji |
+| Glass | Only for map overlay controls, sheet is solid |
 
-### Rule 2: What /verify-change means
-1. Ensure dev server is running (`npx serve -l 8771 --no-clipboard . &`)
-2. Take mobile screenshot (390x844) of `http://localhost:8771/app.html`
-3. Take desktop screenshot (1280x800) of `http://localhost:8771/app.html`
-4. Inspect BOTH screenshots yourself — describe what you see
-5. If the change affects a specific component (sheet, filter, map, card), interact with it and screenshot the result
-6. If anything looks wrong, fix it BEFORE reporting done
+Full spec: `docs/v2/design-system.md`
 
-### Rule 3: Full QA on major changes
-For changes that affect layout, sheet behavior, navigation, or multiple components, run `/visual-qa` instead of just `/verify-change`. Major changes include:
-- Any change to `sheet-engine.js` or `sheet.js`
-- Any change to `layout.js`
-- CSS changes affecting layout (flexbox, grid, position, z-index)
-- Changes to more than 3 files in a single task
+## Branch and deployment rules
 
-### Rule 4: Build verification
-After changing build-related files (`.scripts/`, templates), run:
+- **Branch:** `staging` — all v2 work happens here
+- **NEVER touch `main`** — that's production (peuterplannen.nl), must stay untouched
+- **NEVER edit old app files** — they serve the current live site
+- **Deploy target:** staging.peuterplannen.nl (Cloudflare Pages)
+- **NEVER force-push to main**
+- **NEVER commit `.env`, credentials, or API keys**
+
+## Commands (v2 app)
+
 ```bash
-npm run test:unit
-```
-After any HTML template change, run the full test suite:
-```bash
-npm test
-```
-
-### Rule 5: Never skip verification
-- If Playwright MCP is unavailable, use Puppeteer via Bash to take screenshots
-- If the dev server won't start, fix that first
-- If screenshots show issues, fix them — do NOT report "done with caveats"
-- The user should NEVER have to find visual bugs you could have caught
-
-### Rule 6: Gemini second opinion
-For ambiguous visual issues, get a Gemini Flash second opinion:
-```bash
-curl -s -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=$GEMINI_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"contents":[{"parts":[{"text":"Analyze this screenshot for visual bugs: layout issues, overflow, clipping, spacing problems, broken elements. Be specific."},{"inlineData":{"mimeType":"image/png","data":"'"$(base64 -i screenshot.png)"'"}}]}]}'
-```
-(GEMINI_API_KEY is set in the environment. Never commit it.)
-
-### Rule 7: Console error monitoring (CRITICAL)
-After ANY change to JS modules or app.html, check for JavaScript errors:
-```javascript
-// In Playwright tests or ad-hoc scripts, ALWAYS add:
-const errors = [];
-page.on('pageerror', e => errors.push(e.message));
-page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
-// At end of test: assert errors.length === 0
-```
-A broken import, failed Supabase call, or unhandled exception MUST cause a test failure. Never assume "page loaded = no errors".
-
-### Rule 8: Test data correctness, not just UI state
-When testing interactions, assert the RESULT, not just that "something happened":
-- **Search**: after typing, assert results appear AND contain matching text
-- **Filters**: after clicking a chip, assert displayed cards match the filter (e.g., all have the correct `data-type`)
-- **Detail view**: after navigating to `?locatie=X`, assert the location name, image, and key data actually loaded
-- **Cards**: assert cards contain real data (name, image src, type badge) — not just that card elements exist
-- **Map markers**: after map loads, assert markers/clusters are present (`document.querySelectorAll('.maplibregl-marker').length > 0`)
-
-### Rule 9: Test error and empty states
-Always consider what happens when things go wrong:
-- What if Supabase returns 0 results for a filter combination?
-- What if a network request fails?
-- What if favorites/visited localStorage is empty?
-Test these states — don't only test the happy path.
-
-### Rule 10: Run `npm run test:e2e` before reporting done
-After ANY change to CSS, JS, or HTML app files, the full e2e suite must pass:
-```bash
-cd /Users/basmetten/peuterplannen && npm run test:e2e
-```
-If a test fails, fix the code (not the test) unless the change was intentional. If the change is intentional, update baselines with `npm run test:e2e:update`.
-This is separate from visual verification — BOTH must happen.
-
----
-
-## Testing protocol (IMPORTANT)
-
-### Three-layer testing strategy
-The project uses machine-readable verification instead of visual judgment:
-
-| Layer | Command | What it catches |
-|-------|---------|-----------------|
-| **Functional** | `npm run test:e2e -- tests/functional.spec.ts` | Broken interactions, navigation, filter/search logic |
-| **Visual regression** | `npm run test:e2e -- tests/smoke.spec.ts` | Layout shifts, missing elements, color changes (pixel-diff) |
-| **Structural (CSS)** | `npm run test:e2e -- tests/structural.spec.ts` | Wrong font-size, padding, colors, responsive breakpoints |
-| **Accessibility** | `npm run test:a11y` | ARIA violations, missing alt text, role issues |
-| **All e2e tests** | `npm run test:e2e` | Everything above |
-
-### When to run which tests
-- After CSS/layout changes: `npm run test:e2e` (all three layers)
-- After JS logic changes: `npm run test:e2e -- tests/functional.spec.ts`
-- After component changes: `npm run test:e2e -- tests/structural.spec.ts`
-- Before every commit: `npm test` (unit tests) + CSS brace balance (pre-commit hook handles this)
-- After visual redesigns: `npm run test:e2e:update` to update screenshot baselines
-
-### Rules
-- Use ASSERTIONS and PIXEL-DIFFS, not visual judgment of screenshots
-- Run tests AFTER every change, BEFORE reporting done
-- If a test fails, fix the CODE, not the test (unless the change is intentional)
-- After intentional visual changes: update baselines with `npm run test:e2e:update`
-- Never skip tests — if they can't run, fix the blocker first
-
-## Deploy workflow
-
-### After pushing to main:
-Bundle files are tracked in git. The pre-commit hook auto-rebuilds them. After push:
-```bash
-# Purge Cloudflare cache (REQUIRED after CSS/JS changes)
-source ~/.env.cloudflare
-ZONE_ID=$(curl -s "https://api.cloudflare.com/client/v4/zones?name=peuterplannen.nl" \
-  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" | python3 -c "import sys,json;print(json.load(sys.stdin)['result'][0]['id'])")
-curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/purge_cache" \
-  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-  -H "Content-Type: application/json" -d '{"purge_everything":true}'
+cd /v2 && npm run dev        # local dev server
+cd /v2 && npm run build       # production build
+cd /v2 && npm run test        # all tests
+cd /v2 && npm run test:e2e    # Playwright E2E
+cd /v2 && npm run lint        # ESLint + type check
 ```
 
-### Pre-commit hook (auto-installed):
-- Rebuilds `app.bundle.css` and `app.bundle.js` via `npm run bundle`
-- Checks CSS brace balance in `app.css` and `glass.css`
-- Stages the rebuilt bundles automatically
+## Testing rules (v2 app)
 
-## Git workflow
-- Run `npm test` before committing
-- Never force-push to main
-- Never commit `.env`, credentials, or API keys
-- Bundle files (`app.bundle.css`, `app.bundle.js`) MUST be committed — they are served directly by GitHub Pages
+- Run tests after every significant change, before reporting done
+- Playwright E2E for core flows (search, filter, detail, map)
+- Visual regression for key states (sheet peek/half/full, detail, empty)
+- Vitest unit tests for domain logic (scoring, filtering, validation)
+- Console error monitoring in all E2E tests
+- Test empty states and error states, not just happy paths
+- Never report "done" without verification
 
-## Design System (MANDATORY)
-- `DESIGN.md` is the canonical design reference — read it before any visual work
-- `design-system.css` is the single source of truth for CSS tokens
-- NEVER hardcode colors, font-sizes, spacing, border-radius, or shadows
-- Always use `--pp-*` (core) or `--wg-*` (glass/map UI) custom properties
-- A PreToolUse hook enforces this on every CSS/HTML/JS edit — follow its instructions
-- After CSS changes, run `node .scripts/audit_design_tokens.js` to check compliance
-- When unsure which token to use, check DESIGN.md component specs
-- Key token prefixes: colors (`--pp-primary-*`, `--pp-type-*`), spacing (`--pp-space-*`), radius (`--pp-radius-*`), shadows (`--pp-shadow-*`), motion (`--pp-duration-*`, `--pp-ease-*`)
+## Quality standards
 
-## Style guidelines
-- Vanilla JS — no frameworks, no build step for frontend
-- ES modules with explicit imports
-- Design tokens defined in `design-system.css` — use CSS custom properties
-- Mobile-first responsive design
-- Minimum 44px tap targets
-- No "AI slop" aesthetics (Inter font, purple gradients, generic layouts)
+- Strict TypeScript — no `any`, no `@ts-ignore` without justification
+- Every component has one owner, one style source
+- Design tokens from `docs/v2/design-system.md` — never hardcode colors, spacing, radii
+- 44px minimum tap targets
+- Semantic HTML, ARIA where needed
+- Performance: LCP < 2.5s, CLS < 0.1
+- No "AI slop" aesthetics (purple gradients, generic layouts, decorative clutter)
+
+## API keys
+
+All keys live in `~/.zprofile` as environment variables. NEVER hardcode, echo, or commit them.
+- `$SUPABASE_SERVICE_KEY` — server-side only, never in client code
+- `$SUPABASE_ANON_KEY` — read-only, safe for client
+- `$CLOUDFLARE_API_TOKEN` — deployment
+- `$GEMINI_API_KEY` — visual review tool
+
+## Session continuity
+
+- Always read `HANDOFF.md` at the start of every session
+- Always update `HANDOFF.md` before the session ends
+- If `HANDOFF.md` seems outdated, read all `docs/v2/*.md` to reconstruct context
+- Check `git status` and `git log -5` for uncommitted or half-finished work
