@@ -214,6 +214,11 @@ function applyActiveSort() {
  */
 export function applySort(val) {
     state.activeSort = val;
+    if (val === 'default') {
+        // Re-fetch to restore distance-based sort order
+        loadLocations();
+        return;
+    }
     applyActiveSort();
     bus.emit('cards:render', state.allLocations, state.lastTravelTimes);
     bus.emit('sheet:renderlist', state.allLocations, state.lastTravelTimes);

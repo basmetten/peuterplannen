@@ -2494,7 +2494,9 @@
     position: relative;
     flex-shrink: 0;
   }
+  /* Sort chip — matches sheet-filter-chip look exactly */
   .sort-chip {
+    scroll-snap-align: start;
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -2511,11 +2513,15 @@
     white-space: nowrap;
     -webkit-tap-highlight-color: transparent;
     transition: transform var(--wg-duration-fast) var(--wg-ease-standard),
-                background 200ms ease;
+                background 200ms ease,
+                color 200ms ease,
+                border-color 200ms ease,
+                box-shadow var(--wg-duration-fast) var(--wg-ease-standard);
   }
   .sort-chip:active {
     transform: scale(0.95);
     background: var(--wg-glass-interactive-pressed);
+    transition-duration: 80ms;
   }
   .sort-chip svg { flex-shrink: 0; }
   .sort-chevron {
