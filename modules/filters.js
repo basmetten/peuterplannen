@@ -177,6 +177,7 @@ let _sortClickOutside = null;
 
 /**
  * Toggle the sort dropdown open/closed.
+ * Uses fixed positioning to escape scroll container overflow clipping.
  */
 export function toggleSort(e) {
     if (e) e.stopPropagation();
@@ -185,9 +186,13 @@ export function toggleSort(e) {
     if (!pill || !dd) return;
     _sortDropdownOpen = !_sortDropdownOpen;
     pill.setAttribute('aria-expanded', String(_sortDropdownOpen));
-    dd.classList.toggle('open', _sortDropdownOpen);
 
     if (_sortDropdownOpen) {
+        // Position dropdown below pill using fixed coords
+        const rect = pill.getBoundingClientRect();
+        dd.style.top = `${rect.bottom + 6}px`;
+        dd.style.right = `${window.innerWidth - rect.right}px`;
+        dd.classList.add('open');
         _sortClickOutside = (ev) => {
             if (!pill.contains(ev.target) && !dd.contains(ev.target)) {
                 closeSortDropdown();
