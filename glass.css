@@ -3985,7 +3985,7 @@
   pointer-events: none;
 }
 
-/* Desktop: never show carousel */
-@media (min-width: 769px) {
+/* Desktop: never show carousel (matches DESKTOP_WIDTH=680 in state.js) */
+@media (min-width: 680px) {
   .map-carousel { display: none; }
 }

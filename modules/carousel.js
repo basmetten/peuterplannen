@@ -15,6 +15,7 @@ import bus from './bus.js';
 let carouselVisible = false;
 let carouselLocations = [];
 let carouselActiveIndex = 0;
+let showTimeout = null; // guards against rapid double-tap race condition
 
 // --- Constants ---
 const CARD_WIDTH = 280;
@@ -31,6 +32,15 @@ const CAROUSEL_DISMISS_SHEET_DELAY = 200; // ms before sheet returns
 export function showCarousel(locations) {
     if (!locations.length || window.innerWidth >= DESKTOP_WIDTH) return;
 
+    // If already visible, clean up first to avoid listener/timeout accumulation
+    if (carouselVisible) {
+        hideCarousel();
+    }
+    if (showTimeout) {
+        clearTimeout(showTimeout);
+        showTimeout = null;
+    }
+
     carouselLocations = locations;
     carouselActiveIndex = 0;
 
@@ -42,6 +52,10 @@ export function showCarousel(locations) {
     // 2. Render preview cards
     const track = document.querySelector('.carousel-track');
     if (!track) return;
+
+    // Remove any prior scroll listener before re-adding
+    track.removeEventListener('scroll', onCarouselScroll);
+
     track.innerHTML = locations.map(loc => renderPreviewCard(loc)).join('');
     track.scrollLeft = 0;
 
@@ -49,12 +63,13 @@ export function showCarousel(locations) {
     const dots = document.querySelector('.carousel-dots');
     if (dots) {
         dots.innerHTML = locations.map((_, i) =>
-            `<span class="carousel-dot${i === 0 ? ' active' : ''}" role="tab" aria-selected="${i === 0}"></span>`
+            `<span class="carousel-dot${i === 0 ? ' active' : ''}" aria-selected="${i === 0}"></span>`
         ).join('');
     }
 
     // 4. Show carousel (after delay for sheet to start sliding down)
-    setTimeout(() => {
+    showTimeout = setTimeout(() => {
+        showTimeout = null;
         const el = document.getElementById('map-carousel');
         if (el) {
             el.classList.add('visible');
@@ -73,24 +88,30 @@ export function showCarousel(locations) {
     // 7. Attach scroll listener for dot/marker sync
     track.addEventListener('scroll', onCarouselScroll, { passive: true });
 
-    // 8. Attach card click listeners
-    track.querySelectorAll('.preview-card').forEach((card, i) => {
-        card.addEventListener('click', () => {
-            const loc = carouselLocations[i];
-            if (loc) {
-                // Open detail in sheet — carousel stays in memory for back navigation
-                bus.emit('sheet:showlocation', loc);
-                bus.emit('sheet:showdetail', loc);
-            }
-        });
-    });
+    // 8. Card clicks — use event delegation on the track
+    track.onclick = (e) => {
+        const card = e.target.closest('.preview-card');
+        if (!card) return;
+        const locId = Number(card.dataset.locId);
+        const loc = carouselLocations.find(l => l.id === locId);
+        if (loc) {
+            bus.emit('sheet:showlocation', loc);
+            bus.emit('sheet:showdetail', loc);
+        }
+    };
 }
 
 /**
  * Hide the carousel and restore the sheet to peek state.
  */
 export function hideCarousel() {
-    if (!carouselVisible) return;
+    if (!carouselVisible && !showTimeout) return;
+
+    // Cancel pending show timeout (rapid double-tap guard)
+    if (showTimeout) {
+        clearTimeout(showTimeout);
+        showTimeout = null;
+    }
 
     const el = document.getElementById('map-carousel');
     if (el) el.classList.remove('visible');
@@ -98,7 +119,10 @@ export function hideCarousel() {
 
     // Remove scroll listener
     const track = document.querySelector('.carousel-track');
-    if (track) track.removeEventListener('scroll', onCarouselScroll);
+    if (track) {
+        track.removeEventListener('scroll', onCarouselScroll);
+        track.onclick = null;
+    }
 
     // Restore sheet after carousel starts sliding
     setTimeout(() => {
@@ -149,6 +173,7 @@ function onCarouselScroll(e) {
  */
 function fitMapAboveCarousel(locations) {
     if (!state.mapInstance || locations.length === 0) return;
+    if (typeof maplibregl === 'undefined') return;
 
     const locs = locations.filter(l => l.lat && l.lng);
     if (locs.length === 0) return;
