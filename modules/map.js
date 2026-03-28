@@ -10,7 +10,7 @@ const MAP_FADE_DURATION = 300;
 const MAX_PIXEL_RATIO = 2;
 const CLUSTER_MAX_ZOOM = 13;
 const CLUSTER_RADIUS = 45;
-const CLUSTER_FLY_DURATION = 800;
+const CLUSTER_FLY_DURATION = 900;
 const MARKER_OFFSET_RATIO = 0.20;
 const MARKER_EASE_DURATION = 400;
 const SINGLE_LOC_ZOOM = 14;
@@ -97,11 +97,10 @@ export function initMap() {
                 'circle-color': '#D4775A',
                 'circle-radius': [
                     'step', ['get', 'point_count'],
-                    14,      // default (small clusters)
-                    10, 16,  // 10+ locations
-                    50, 19,  // 50+ locations
-                    100, 22, // 100+ locations
-                    200, 26  // 200+ locations
+                    18,      // default (small clusters)
+                    10, 22,  // 10+ locations
+                    30, 28,  // 30+ locations
+                    100, 34  // 100+ locations
                 ],
                 'circle-radius-transition': { duration: 350, delay: 0 },
                 'circle-opacity': 0.92,
@@ -119,7 +118,7 @@ export function initMap() {
                 'text-field': '{point_count_abbreviated}',
                 'text-size': [
                     'step', ['get', 'point_count'],
-                    12, 10, 12, 50, 13, 100, 14
+                    13, 10, 14, 30, 15, 100, 16
                 ],
                 'text-font': ['Noto Sans Bold']
             },
@@ -146,11 +145,44 @@ export function initMap() {
             }
         });
 
+        // Glow ring layer — renders behind unclustered-point for selected marker
+        state.mapInstance.addLayer({
+            id: 'marker-glow', type: 'circle', source: 'locations',
+            filter: ['!', ['has', 'point_count']],
+            paint: {
+                'circle-radius': 0,
+                'circle-radius-transition': { duration: 350, delay: 0 },
+                'circle-color': 'transparent',
+                'circle-stroke-width': 0,
+                'circle-stroke-width-transition': { duration: 350, delay: 0 },
+                'circle-stroke-color': 'rgba(212, 119, 90, 0.3)',
+                'circle-opacity': 0,
+                'circle-opacity-transition': { duration: 300, delay: 0 }
+            }
+        }, 'unclustered-point'); // insert below the marker layer
+
         state.mapInstance.on('click', 'clusters', (e) => {
             const features = state.mapInstance.queryRenderedFeatures(e.point, { layers: ['clusters'] });
             const clusterId = features[0].properties.cluster_id;
             state.mapInstance.getSource('locations').getClusterExpansionZoom(clusterId).then(zoom => {
-                state.mapInstance.flyTo({ center: features[0].geometry.coordinates, zoom: zoom, duration: CLUSTER_FLY_DURATION });
+                // Hide unclustered markers before zoom so they pop in after
+                state.mapInstance.setPaintProperty('unclustered-point', 'circle-opacity', 0);
+                state.mapInstance.setPaintProperty('unclustered-point', 'circle-stroke-width', 0);
+                state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', 0);
+
+                state.mapInstance.flyTo({
+                    center: features[0].geometry.coordinates,
+                    zoom: zoom,
+                    duration: CLUSTER_FLY_DURATION,
+                    easing: (t) => 1 - Math.pow(1 - t, 3) // cubic ease-out — spring feel
+                });
+
+                // Reveal markers with pop-in after zoom completes
+                state.mapInstance.once('moveend', () => {
+                    state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', MARKER_RADIUS_DEFAULT);
+                    state.mapInstance.setPaintProperty('unclustered-point', 'circle-opacity', 0.9);
+                    state.mapInstance.setPaintProperty('unclustered-point', 'circle-stroke-width', MARKER_STROKE_WIDTH);
+                });
             });
         });
 
@@ -294,6 +326,25 @@ export function highlightMarker(id) {
         state.mapInstance.setPaintProperty('unclustered-point', 'circle-stroke-color', [
             'case', ['==', ['get', 'id'], id ?? -1], '#D4775A', '#ffffff'
         ]);
+
+        // Glow ring layer — shows behind selected marker
+        const GLOW_RADIUS = 22;
+        const GLOW_STROKE = 5;
+        if (selecting) {
+            state.mapInstance.setPaintProperty('marker-glow', 'circle-radius', [
+                'case', ['==', ['get', 'id'], id], GLOW_RADIUS, 0
+            ]);
+            state.mapInstance.setPaintProperty('marker-glow', 'circle-stroke-width', [
+                'case', ['==', ['get', 'id'], id], GLOW_STROKE, 0
+            ]);
+            state.mapInstance.setPaintProperty('marker-glow', 'circle-opacity', [
+                'case', ['==', ['get', 'id'], id], 1, 0
+            ]);
+        } else {
+            state.mapInstance.setPaintProperty('marker-glow', 'circle-radius', 0);
+            state.mapInstance.setPaintProperty('marker-glow', 'circle-stroke-width', 0);
+            state.mapInstance.setPaintProperty('marker-glow', 'circle-opacity', 0);
+        }
     } catch(e) { console.warn('[map:highlightMarker] Paint property update failed:', e.message); }
 
     // Pop-ring animation overlay on the selected marker
