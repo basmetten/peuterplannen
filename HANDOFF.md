@@ -1,69 +1,129 @@
 # HANDOFF — PeuterPlannen v2 Rebuild
 
 ## Status
-**Phase 0 complete** — all discovery and documentation done.
-**Phase 1 next** — scaffold the Next.js project.
+**Phase 1 complete** — Next.js foundation scaffolded, compiles clean, Supabase connected.
+**Phase 2 next** — first thin slice (map, markers, sheet, cards).
 
-## What happened
-- Deep inspection of current database (8 Supabase tables, `locations` with ~60 fields)
-- Deep inspection of current app flows (vanilla JS SPA, 20 ES modules, scroll-snap sheet)
-- Deep inspection of current SEO strategy (~2365 pages, graduation system, location pages are redirect shells)
-- Deep inspection of current design system (dual `--pp-*`/`--wg-*` tokens, Warm Liquid Glass)
-- Research: Apple Maps detail flow, Apple Maps design system (reverse-engineered)
-- Review: 52 reference screenshots (Apple Maps, Funda, ZenChef)
-- Review: Gemini CLI session about v3 blueprint
-- 7 comprehensive docs written in `docs/v2/`
+## What happened this session
 
-## Key design decisions
+### Phase 1 delivered
+- Scaffolded Next.js 16 (App Router) in `/v2/` with TypeScript strict, Tailwind v4, ESLint
+- Domain layer: enums, types, Zod schemas — all aligned with REAL Supabase schema
+- Data access: server-only Supabase client, LocationRepository, RegionRepository
+- Design tokens: full Apple Maps-inspired CSS variable system in globals.css
+- App shell: root layout (Inter + Newsreader), (marketing) and (pwa) route groups
+- Config: .env.example, .editorconfig, Prettier, next.config.ts with security headers
+- Verification page at /verify proves Supabase → Zod → SSR pipeline works
+
+### Critical finding: DB schema ≠ docs
+The `docs/v2/system-architecture.md` types/schemas were aspirational, not real. Major differences:
+
+| Doc assumed | Reality |
+|---|---|
+| `slug` column | Does NOT exist — locations have no slug |
+| `region_slug` | `region` (string name, not slug) |
+| `city` column | Does NOT exist |
+| `short_description` | `toddler_highlight` |
+| `peuter_score` (0-100) | `ai_suitability_score_10` (1-10, nullable) |
+| `featured` (boolean) | `is_featured` (boolean) |
+| `age_groups` (array) | `min_age`, `max_age` (numbers) |
+| `facilities` (array) | `coffee`, `diaper`, `alcohol` (booleans) |
+| `quality_*` dimensions | Context dimensions: `rain_backup_quality`, `buggy_friendliness`, etc. |
+| `photos` (array) | Single `photo_url` |
+| `seo_graduated` (boolean) | `seo_exclude_from_sitemap` (boolean, inverted) |
+| Region `tier` (number 1-3) | Region `tier` (string: 'primary', 'standard', 'region') |
+| `weather` always present | 1 location has null weather |
+
+**The domain layer in `/v2/src/domain/` is the source of truth.** The docs in `docs/v2/` are now outdated for schema-related content (types, Zod schemas, repos). Consider updating the docs, or just use the code as reference.
+
+## Key design decisions (unchanged from Phase 0)
 
 | Decision | Choice |
 |---|---|
-| Stack | Next.js App Router, TypeScript, React, Tailwind, Cloudflare Pages |
-| Database | Same Supabase (server-side access only) |
-| Maps | MapLibre GL behind adapter |
-| State | TanStack Query (server), XState (UI orchestration) |
-| Main font | Inter (variable) — replaces Plus Jakarta Sans |
-| Accent font | Newsreader — only for location names on detail sheet |
-| Design | Apple Maps 85-90% likeness, warm terracotta palette |
-| Color mode | Light mode only |
-| Primary accent | `#C05A3A` (deep terracotta) |
-| Detail flow | Separate sheet (not in-place in browse sheet) |
-| Carousel | Compact horizontal cards for small clusters (≤5) |
-| Start screen | Contextual algorithm (time + weather + season + prefs) |
-| Icons | SVG icons, no emoji |
-| Weather API | Open-Meteo (free, no key) |
-| Deployment | Cloudflare Pages → staging.peuterplannen.nl |
-| Production | peuterplannen.nl untouched until v2 proven on staging |
+| Stack | Next.js 16 App Router, TypeScript strict, React 19, Tailwind v4, Cloudflare Pages |
+| Database | Same Supabase (server-side access only via service key) |
+| Maps | MapLibre GL behind adapter (Phase 2) |
+| State | TanStack Query + XState (Phase 2) |
+| Design | Apple Maps 85-90% likeness, warm terracotta `#C05A3A` |
+| Fonts | Inter (UI), Newsreader (location names on detail only) |
 
-## Documentation (read these first)
+## File inventory (`/v2/`)
 
-All in `docs/v2/`:
+```
+app/
+  layout.tsx              — Root layout (Inter + Newsreader, nl lang, viewport)
+  globals.css             — All design tokens + Tailwind v4 @theme
+  not-found.tsx           — Custom 404
+  (marketing)/
+    layout.tsx            — Header + footer for SEO pages
+    page.tsx              — Homepage placeholder
+    verify/page.tsx       — Stack verification (Supabase + Zod proof)
+  (pwa)/
+    layout.tsx            — Full viewport for map app
+    app/page.tsx          — Map app placeholder
 
-| File | What |
-|---|---|
-| `user-flows.md` | 24 concrete user flows with step-by-step journeys |
-| `product-principles.md` | Build rules and decision framework |
-| `information-architecture.md` | Routes, screens, navigation, SEO page strategy |
-| `system-architecture.md` | Full technical architecture with code examples |
-| `design-system.md` | Canonical design system (Apple Maps + warm palette) |
-| `seo-analytics.md` | URL strategy, structured data, event taxonomy |
-| `migration-plan.md` | 7 phases, risks, rollback, deferred scope |
+src/
+  domain/
+    enums.ts              — LocationType, Weather, PriceBand, RegionTier, etc.
+    types.ts              — Location, LocationSummary, Region, FilterState, MapViewport
+    schemas.ts            — Zod v4 schemas matching real DB
+  lib/
+    supabase.ts           — Server-only Supabase client
+    cn.ts                 — clsx + tailwind-merge utility
+    constants.ts          — Column selections, map defaults, site metadata
+  server/repositories/
+    location.repo.ts      — getAllSummaries, getById, getByRegion, getByType, etc.
+    region.repo.ts        — getAll, getBySlug, getByTier
+```
 
-## Next step
+## Build verification
 
-Start Phase 1 from `migration-plan.md`:
-1. Scaffold Next.js project in `/v2/` directory
-2. TypeScript strict, ESLint, Prettier
-3. Tailwind + design token CSS variables
-4. Environment variables (.env.example)
-5. Supabase server-side client + typed repositories
-6. Zod schemas for Location, Region
-7. Basic app shell layout
-8. Deploy to staging.peuterplannen.nl via Cloudflare Pages
+```
+✓ TypeScript — zero errors (strict mode)
+✓ ESLint — zero warnings
+✓ Next.js build — all 4 routes prerendered
+✓ Supabase — 2,415 locations fetched + Zod-validated
+✓ Regions — all active regions fetched + validated
+```
+
+## Next step: Phase 2 — First Thin Slice
+
+From `docs/v2/migration-plan.md`, Phase 2 builds the core loop:
+
+1. **MapLibre integration** — full-bleed map, markers from Supabase data, clustering
+2. **Bottom sheet** — two-sheet system (browse + detail), XState machines, touch gestures
+3. **Location cards** — cards in browse sheet, tap to open detail
+4. **Filter system (basic)** — type filter, weather filter
+5. **Search** — city/place name input
+6. **Location detail** — detail sheet with location info
+
+**Before starting Phase 2**, the session should:
+- Install MapLibre GL, TanStack Query, XState
+- Read `docs/v2/system-architecture.md` sections 3 (state machines), 5 (state management), 6 (map architecture)
+- Note: URL routing for locations needs a decision since there's no `slug` column — options: use `id`, generate slugs from `name`, or add slugs to DB
 
 ## Prompt for new session
 
 ```
-We're rebuilding PeuterPlannen on a new stack. Phase 0 (docs) is done.
-Read docs/v2/migration-plan.md Phase 1 for scope, then start scaffolding.
+cd peuterplannen && read HANDOFF.md
+
+Phase 1 (Next.js foundation) is complete and building clean.
+Start Phase 2: the first thin slice — map, markers, sheet, cards.
+
+Key context:
+- The real DB schema differs from docs/v2/system-architecture.md — trust the code in /v2/src/domain/ over the docs
+- Locations have NO slug — need to decide on URL strategy (id-based, derived slug, or DB migration)
+- 2,415 locations, all Zod-validated
+
+Read docs/v2/migration-plan.md Phase 2 and system-architecture.md (sections 3, 5, 6) before starting.
+Install: maplibre-gl, @tanstack/react-query, xstate @xstate/react
+
+Working rules:
+- Quality over speed. Take more tokens, think deeper, deliver higher quality.
+- Use parallel subagents aggressively wherever tasks are independent.
+- Read the relevant docs/v2/ files thoroughly before writing code.
+- Every architectural decision should trace back to a doc. If it doesn't, flag it.
+- Do NOT touch any old app files (app.html, app.css, glass.css, modules/, etc.) — read-only reference.
+- All new work goes in /v2/. Branch: staging. Never touch main.
+- Update HANDOFF.md before the session ends.
 ```

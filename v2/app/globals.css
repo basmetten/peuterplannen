@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+/* ===================================================
+   PeuterPlannen v2 — Design Tokens
+   Apple Maps 85-90% likeness, warm terracotta palette.
+   Source of truth: docs/v2/design-system.md
+   =================================================== */
+
+:root {
+  /* === Accent (replaces Apple systemBlue) === */
+  --color-accent:         #C05A3A;
+  --color-accent-hover:   #A84D32;
+  --color-accent-active:  #93422B;
+
+  /* === Labels (text hierarchy) === */
+  --color-label:          #1A1209;
+  --color-label-secondary: rgba(90, 60, 40, 0.60);
+  --color-label-tertiary:  rgba(90, 60, 40, 0.30);
+  --color-label-quaternary: rgba(90, 60, 40, 0.18);
+
+  /* === Backgrounds === */
+  --color-bg-primary:     #FFFAF7;
+  --color-bg-secondary:   #F5EDE6;
+  --color-bg-tertiary:    #FFFFFF;
+
+  /* === Separator === */
+  --color-separator:      rgba(180, 130, 100, 0.25);
+
+  /* === System colors === */
+  --color-system-green:   #34C759;
+  --color-system-red:     #FF3B30;
+  --color-system-yellow:  #FFCC00;
+
+  /* === Category colors === */
+  --color-cat-play:       #52B788;
+  --color-cat-farm:       #8B6F47;
+  --color-cat-nature:     #2D6A4F;
+  --color-cat-museum:     #7B2D8B;
+  --color-cat-culture:    #5B3F8B;
+  --color-cat-swim:       #2196F3;
+  --color-cat-pancake:    #E9C46A;
+  --color-cat-horeca:     #E76F51;
+
+  /* === Glass (map controls ONLY) === */
+  --color-glass-bg:       rgba(255, 250, 247, 0.85);
+  --glass-blur:           blur(20px) saturate(180%);
+
+  /* === Spacing (Apple Maps rhythm: multiples of 4) === */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-6:  24px;
+  --space-8:  32px;
+
+  --sheet-padding-x: 16px;
+  --card-padding:    16px;
+  --section-gap:     24px;
+  --tap-target-min:  44px;
+
+  /* === Corner Radii === */
+  --radius-sheet:    16px;
+  --radius-card:     12px;
+  --radius-circle:   50%;
+  --radius-pill:     999px;
+  --radius-photo:    10px;
+  --radius-badge:    8px;
+
+  /* === Shadows === */
+  --shadow-sheet: 0 4px 8px rgba(0,0,0,0.07),
+                  0 8px 24px rgba(0,0,0,0.08),
+                  0 16px 48px rgba(0,0,0,0.05);
+
+  --shadow-card:  0 2px 8px rgba(0,0,0,0.08),
+                  0 4px 16px rgba(0,0,0,0.06);
+
+  /* === Motion === */
+  --ease-default:   cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-bouncy:    cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-fast:    200ms;
+  --duration-default: 350ms;
+  --duration-slow:    500ms;
+
+  --stagger-card:     40ms;
+  --duration-sheet:   350ms;
+}
+
+/* === Tailwind v4 Theme Extension === */
+@theme inline {
+  /* Colors */
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-active: var(--color-accent-active);
+
+  --color-label: var(--color-label);
+  --color-label-secondary: var(--color-label-secondary);
+  --color-label-tertiary: var(--color-label-tertiary);
+  --color-label-quaternary: var(--color-label-quaternary);
+
+  --color-bg-primary: var(--color-bg-primary);
+  --color-bg-secondary: var(--color-bg-secondary);
+  --color-bg-tertiary: var(--color-bg-tertiary);
+
+  --color-separator: var(--color-separator);
+
+  --color-system-green: var(--color-system-green);
+  --color-system-red: var(--color-system-red);
+  --color-system-yellow: var(--color-system-yellow);
+
+  --color-cat-play: var(--color-cat-play);
+  --color-cat-farm: var(--color-cat-farm);
+  --color-cat-nature: var(--color-cat-nature);
+  --color-cat-museum: var(--color-cat-museum);
+  --color-cat-culture: var(--color-cat-culture);
+  --color-cat-swim: var(--color-cat-swim);
+  --color-cat-pancake: var(--color-cat-pancake);
+  --color-cat-horeca: var(--color-cat-horeca);
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-accent: 'Newsreader', Georgia, serif;
+
+  /* Spacing */
+  --spacing-sheet-x: var(--sheet-padding-x);
+
+  /* Border radius */
+  --radius-sheet: var(--radius-sheet);
+  --radius-card: var(--radius-card);
+  --radius-pill: var(--radius-pill);
+  --radius-photo: var(--radius-photo);
+  --radius-badge: var(--radius-badge);
+
+  /* Shadows */
+  --shadow-sheet: var(--shadow-sheet);
+  --shadow-card: var(--shadow-card);
+
+  /* Transitions */
+  --ease-spring: var(--ease-default);
+  --ease-bouncy: var(--ease-bouncy);
+  --duration-fast: var(--duration-fast);
+  --duration-default: var(--duration-default);
+  --duration-slow: var(--duration-slow);
+}
+
+/* === Base Styles === */
+body {
+  background: var(--color-bg-primary);
+  color: var(--color-label);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hairline dividers (Apple Maps style: 0.5px) */
+.hairline {
+  height: 0.5px;
+  background: var(--color-separator);
+}
