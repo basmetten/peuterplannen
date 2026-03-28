@@ -7,6 +7,7 @@ import { initGeolocation } from './modules/geolocation.js';
 import { toggleTag, toggleWeather, toggleFacility, toggleAge, toggleRadius, togglePreset, toggleFilterPanel, resetAllFilters, updateFilterCount, syncFilterPanelForViewport, syncPresetAria, syncChipAria, openMapFilters, closeMapFilters, toggleMapMoreFilters, updateMapPillBadge, openMapFilterModal, toggleMapTag, toggleFoodFit, togglePractical, togglePriceBand, toggleSort, selectSort } from './modules/filters.js';
 import { renderCards } from './modules/cards.js';
 import { loadMapLibre, initMap, updateMapMarkers, fitMapToMarkers, updateUserLocationOnMap, highlightMarker, setDisplayMode } from './modules/map.js';
+import { hideCarousel } from './modules/carousel.js';
 import { openLocSheet, closeLocSheet, openInfoPanel, closeInfoPanel, showLocationDetail, initSheetGestures } from './modules/sheet.js';
 import { switchView, applyLayout, syncDesktopModeSwitch, initMapListToggle, initPanelCollapse } from './modules/layout.js';
 import { generatePlan, selectPlanDate, selectPlanOption, changeKidsCount, updateChildAge, sharePlan, sharePlanWhatsApp, updatePlanLocationChip, renderAgeSliders, renderPlanPreview, initPlan, initPlanFromPrefs, handleSwapPlanSlot } from './modules/plan.js';
@@ -92,6 +93,7 @@ Object.assign(window, {
     syncPresetAria, syncChipAria,
     toggleFoodFit, togglePractical, togglePriceBand,
     toggleSort, selectSort,
+    hideCarousel,
 });
 
 // === URL Parameter Parsing ===

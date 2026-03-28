@@ -1,6 +1,7 @@
 import { state, DESKTOP_WIDTH } from './state.js';
 import { slugify } from './utils.js';
 import bus from './bus.js';
+import { showCarousel, hideCarousel, isCarouselVisible } from './carousel.js';
 
 // --- Constants ---
 const NL_CENTER_LNG = 5.1;
@@ -23,6 +24,8 @@ const MARKER_RADIUS_SELECTED = 15;
 const MARKER_BOUNCE_SETTLE_MS = 180;
 const MARKER_STROKE_WIDTH = 2.5;
 const MARKER_STROKE_WIDTH_SELECTED = 3;
+const CAROUSEL_MAX_LEAVES = 5;
+const COORD_TOLERANCE = 0.0001;
 const POP_RING_CLEANUP_MS = 500;
 const MAP_RESIZE_DELAY_MS = 50;
 
@@ -164,20 +167,40 @@ export function initMap() {
         state.mapInstance.on('click', 'clusters', (e) => {
             const features = state.mapInstance.queryRenderedFeatures(e.point, { layers: ['clusters'] });
             const clusterId = features[0].properties.cluster_id;
-            state.mapInstance.getSource('locations').getClusterExpansionZoom(clusterId).then(zoom => {
-                // Hide unclustered markers before zoom so they pop in after
+            const source = state.mapInstance.getSource('locations');
+            const currentZoom = state.mapInstance.getZoom();
+            const isMobile = window.innerWidth < DESKTOP_WIDTH;
+
+            // Get cluster expansion zoom + leaf count in parallel
+            Promise.all([
+                source.getClusterExpansionZoom(clusterId),
+                source.getClusterLeaves(clusterId, CAROUSEL_MAX_LEAVES + 1, 0)
+            ]).then(([expansionZoom, leaves]) => {
+                const leafCount = leaves.length;
+
+                // Cut-off algorithm: small cluster at high zoom on mobile → carousel
+                if (isMobile && leafCount <= CAROUSEL_MAX_LEAVES && currentZoom >= CLUSTER_MAX_ZOOM - 2) {
+                    const locations = leaves
+                        .map(f => state.allLocations.find(l => l.id === f.properties.id))
+                        .filter(Boolean);
+                    if (locations.length > 0) {
+                        showCarousel(locations);
+                        return;
+                    }
+                }
+
+                // Default: zoom into cluster with staggered marker pop-in
                 state.mapInstance.setPaintProperty('unclustered-point', 'circle-opacity', 0);
                 state.mapInstance.setPaintProperty('unclustered-point', 'circle-stroke-width', 0);
                 state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', 0);
 
                 state.mapInstance.flyTo({
                     center: features[0].geometry.coordinates,
-                    zoom: zoom,
+                    zoom: expansionZoom,
                     duration: CLUSTER_FLY_DURATION,
-                    easing: (t) => 1 - Math.pow(1 - t, 3) // cubic ease-out — spring feel
+                    easing: (t) => 1 - Math.pow(1 - t, 3)
                 });
 
-                // Reveal markers with pop-in after zoom completes
                 state.mapInstance.once('moveend', () => {
                     state.mapInstance.setPaintProperty('unclustered-point', 'circle-radius', MARKER_RADIUS_DEFAULT);
                     state.mapInstance.setPaintProperty('unclustered-point', 'circle-opacity', 0.9);
@@ -189,9 +212,28 @@ export function initMap() {
         state.mapInstance.on('click', 'unclustered-point', (e) => {
             const props = e.features[0].properties;
             const isMobile = window.innerWidth < DESKTOP_WIDTH;
+            const clickCoords = e.features[0].geometry.coordinates;
+
+            // Dismiss carousel if it's open
+            if (isCarouselVisible()) {
+                hideCarousel();
+            }
 
             if (isMobile) {
-                // Find the full location object for the preview
+                // Check for multiple locations at same coordinates
+                const colocated = state.allLocations.filter(l =>
+                    l.lat && l.lng &&
+                    Math.abs(l.lat - clickCoords[1]) < COORD_TOLERANCE &&
+                    Math.abs(l.lng - clickCoords[0]) < COORD_TOLERANCE
+                );
+
+                if (colocated.length > 1) {
+                    // Multiple locations at same spot → show carousel
+                    showCarousel(colocated);
+                    return;
+                }
+
+                // Single location — show preview as usual
                 const loc = state.allLocations.find(l => l.id === props.id);
                 if (loc) {
                     bus.emit('sheet:showlocation', loc);
@@ -200,7 +242,6 @@ export function initMap() {
                     // Center marker in upper portion of viewport (above the half-sheet)
                     const coords = e.features[0].geometry.coordinates.slice();
                     const vh = window.innerHeight;
-                    // Sheet at half = 55% of viewport, so place marker at ~25% from top
                     const offsetY = vh * MARKER_OFFSET_RATIO;
                     state.mapInstance.easeTo({
                         center: coords,
@@ -222,6 +263,12 @@ export function initMap() {
         state.mapInstance.on('click', (e) => {
             const features = state.mapInstance.queryRenderedFeatures(e.point, { layers: ['clusters', 'unclustered-point'] });
             if (features.length === 0) {
+                // Dismiss carousel if visible
+                if (isCarouselVisible()) {
+                    hideCarousel();
+                    return;
+                }
+
                 const isMobile = window.innerWidth < DESKTOP_WIDTH;
                 if (isMobile) {
                     bus.emit('sheet:hidepreview');

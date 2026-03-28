@@ -108,8 +108,8 @@
     <link rel="preload" href="/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/plus-jakarta-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/app.bundle.css?v=202603280706-35bbdd34">
-    <script src="/nav-floating.js?v=202603280706-35bbdd34" defer></script>
+    <link rel="stylesheet" href="/app.bundle.css?v=202603280739-09bfb279">
+    <script src="/nav-floating.js?v=202603280739-09bfb279" defer></script>
 
 </head>
 <body class="pp-app">
@@ -720,6 +720,12 @@
     </div>
     </div>
 
+    <!-- Horizontal carousel (shown when tapping small cluster at high zoom) -->
+    <div id="map-carousel" class="map-carousel" role="region" aria-label="Locaties in deze groep">
+        <div class="carousel-track" role="listbox" aria-label="Locatie kaarten"></div>
+        <div class="carousel-dots" role="group" aria-label="Kaart positie"></div>
+    </div>
+
     <!-- Sort dropdown (outside sheet stacking context for proper fixed positioning) -->
     <div class="sort-dropdown" id="sort-dropdown" role="listbox" aria-label="Sorteer op">
         <button class="sort-option active" data-sort="default" role="option" aria-selected="true" onclick="selectSort('default', event)">Dichtbij</button>
@@ -838,7 +844,7 @@
 
     <div id="sr-announcer" class="sr-only" aria-live="polite" role="status"></div>
 
-    <script type="module" src="app.bundle.js?v=202603280706-35bbdd34"></script>
+    <script type="module" src="app.bundle.js?v=202603280739-09bfb279"></script>
 
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>

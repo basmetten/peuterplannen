@@ -224,3 +224,60 @@ export function renderSheetScanCard(loc, opts = {}) {
         </div>
     </article>`;
 }
+
+// === Preview card (used in carousel + map popup) ===
+
+/**
+ * Renders a preview card for the horizontal carousel or map popup.
+ * 280px wide, photo 16/10 aspect, type badge, score, fav, route.
+ *
+ * @param {object} loc - Location object
+ * @returns {string} HTML string
+ */
+export function renderPreviewCard(loc) {
+    const { imgSrc, categoryImg, photoColor, photoSrc } = getPhotoData(loc);
+    const typeLabel = TYPE_LABELS[loc.type] || loc.type;
+    const isFav = isFavorite(loc.id);
+    const favStyle = isFav ? 'fill: #D4775A; stroke: #D4775A;' : '';
+
+    const travelInfo = state.lastTravelTimes ? state.lastTravelTimes[loc.id] : null;
+    const distance = getDistanceLabel(loc, travelInfo);
+
+    // Status text
+    const status = loc.always_open ? 'Altijd open' : '';
+
+    // Score badge
+    const ps = computePeuterScoreV2(loc).total;
+    const tier = getScoreTier(ps);
+    const scoreClass = tier === 'high' ? ' score-high' : tier === 'mid' ? ' score-mid' : '';
+    const scoreBadge = ps ? `<span class="preview-card-score${scoreClass}">\u2605 ${Math.round(ps * 10) / 10}</span>` : '';
+
+    // Meta line: type · distance · status
+    const metaParts = [typeLabel];
+    if (distance) metaParts.push(distance);
+    if (status) metaParts.push(status);
+    const metaLine = metaParts.map(p => escapeHtml(String(p))).join(' · ');
+
+    return `<div class="preview-card" data-loc-id="${loc.id}" role="option" tabindex="0">
+        <div class="preview-card-photo${!photoSrc ? ' preview-card-photo--category' : ''}" style="--photo-color: ${photoColor}">
+            <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(loc.name)}" loading="lazy" decoding="async" width="280" height="175"
+                 onload="this.classList.add('loaded')"
+                 onerror="if(!this.dataset.retried){this.dataset.retried='1';this.src='${escapeHtml(categoryImg)}'}">
+            <span class="preview-card-type">${escapeHtml(typeLabel)}</span>
+        </div>
+        <div class="preview-card-body">
+            <div class="preview-card-name">${escapeHtml(loc.name)}</div>
+            <div class="preview-card-meta">${metaLine}</div>
+            <div class="preview-card-actions">
+                ${scoreBadge}
+                <span class="preview-card-spacer"></span>
+                <button class="preview-card-fav" onclick="event.stopPropagation();toggleFavorite(${loc.id}, this)" aria-label="${isFav ? 'Verwijder favoriet' : 'Bewaar'}">
+                    <svg viewBox="0 0 24 24" style="${favStyle}" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </button>
+                ${loc.lat && loc.lng ? `<button class="preview-card-route" onclick="event.stopPropagation();window.open('https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(loc.lat + ',' + loc.lng)}','_blank')" aria-label="Route">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                </button>` : ''}
+            </div>
+        </div>
+    </div>`;
+}
