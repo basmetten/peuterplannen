@@ -94,6 +94,11 @@ export function regionCanonicalUrl(regionSlug: string): string {
   return `${SITE_URL}/${encodeURIComponent(regionSlug)}`;
 }
 
+/** Canonical URL for a type hub page */
+export function typeCanonicalUrl(typeSlug: string): string {
+  return `${SITE_URL}/${encodeURIComponent(typeSlug)}`;
+}
+
 // ---------------------------------------------------------------------------
 // Quality dimension labels (Dutch)
 // ---------------------------------------------------------------------------

@@ -3,64 +3,62 @@
 ## Status
 **Phase 1 complete** — Next.js foundation, Supabase connected, slugs migrated.
 **Phase 2 complete** — core loop, polish, desktop layout, navigation, carousel, and PWA done.
-**Phase 3 Tier 1+3 complete** — location detail SSR pages, sitemap, robots.txt, .html redirects.
+**Phase 3 Tier 1+2+3 complete** — location detail pages, region/type hub pages, sitemap, robots.txt, redirects.
 
 ## What happened this session
 
-### Phase 3 Tier 1 — Location Detail SSR Pages (biggest SEO impact)
+### Code quality + security fixes (pre-Phase 3 Tier 2)
 
-1. **Location detail page** (`app/(marketing)/[region]/[slug]/page.tsx`):
-   - Full server-rendered page with ISR (24h revalidation)
-   - `generateStaticParams` — builds 1000+ pages from all SEO-included locations
-   - `generateMetadata` — auto-generated title, description, OG tags, canonical URL, robots directive
-   - Graduation check via `shouldIndex()` — noindex if `seo_exclude_from_sitemap` or no `seo_tier`
-   - Canonical redirect for duplicate locations (`seo_canonical_target`)
-   - Sections: breadcrumb, hero (gradient fallback for missing photos), header with score badge, quick facts, CTA bar ("Bekijk op de kaart" + website), toddler highlight tip, description, quality dimension grid, practical info, nearby locations (6 cards), internal links to region/type hubs
-   - JSON-LD structured data: schema.org type mapping (Playground, Museum, Restaurant, etc.) + BreadcrumbList
+1. **Fetch error handling** — `r.ok` check before `.json()` in TanStack Query functions
+2. **Website URL validation** — only render link if `https://` or `http://` protocol
+3. **Accessibility** — removed zoom lock (`maximumScale`/`userScalable`), added `aria-pressed` to filter chips, `<search>` element for search input
+4. **ISR for app page** — `revalidate = 300` instead of `force-dynamic` (API routes stay dynamic)
+5. **TYPE_COLORS extracted** — single export from `enums.ts`, removed 4 duplicate definitions
+6. **Viewport resize** — `visualViewport` listener for accurate sheet padding on resize/orientation change
 
-2. **SEO utility library** (`src/lib/seo.ts`):
-   - `generateSeoTitle()` / `generateSeoDescription()` — with override support
-   - `shouldIndex()` — graduation check
-   - `locationCanonicalUrl()` — canonical URL builder
-   - Type slug mapping (play → speeltuinen, etc.)
-   - Schema.org type mapping
-   - Quality dimension labels (Dutch)
+### Phase 3 Tier 2 — Region + Type Hub Pages
 
-3. **Components**:
-   - `Breadcrumb` — SEO-friendly nav with chevron separators
-   - `StructuredData` — JSON-LD script tag + `buildLocationStructuredData()` builder
+1. **Hub page** (`app/(marketing)/[region]/page.tsx`):
+   - Single dynamic route handles both region hubs and type hubs
+   - Route conflict resolved: checks `KNOWN_TYPE_SLUGS` first, then region lookup
+   - `generateStaticParams` returns 18 region slugs + 8 type slugs = 36 paths
+   - `generateMetadata` with editorial content frontmatter (meta_title, meta_description)
+   - ISR 24h revalidation
+   - JSON-LD: `CollectionPage` with `ItemList` (top 20 locations) + `BreadcrumbList`
 
-4. **Data access**:
-   - `LocationRepository.getNearby()` — same region, prefer same type, sorted by score
-   - Zod schema hardened: `boolOrFalse` preprocess for nullable DB booleans, nullable description
+2. **Region hub features**:
+   - H1 + region blurb from DB
+   - Editorial content from `content/seo/regions/*.md` (18 files)
+   - Locations grouped by type with category color dots
+   - Max 8 cards per type, "Alle [type] bekijken →" overflow links
+   - Internal links: other regions (pill chips) + all type hubs
 
-### Phase 3 Tier 3 — Sitemap + Redirects + robots.txt
+3. **Type hub features**:
+   - H1 with category color dot
+   - Editorial content from `content/seo/types/*.md` (7 files)
+   - Locations grouped by region with "Alle uitjes →" links
+   - Max 6 cards per region
+   - Internal links: other type categories (pill chips)
 
-1. **Sitemap** (`app/sitemap.ts`):
-   - 1037 URLs: homepage (1.0), region hubs (0.9), type hubs (0.8), location details (0.6)
-   - Queries Supabase for graduated locations, maps region names to slugs
-
-2. **robots.txt** (`app/robots.ts`):
-   - Allow all, disallow /app and /api, sitemap reference
-
-3. **Redirects** (`next.config.ts`):
-   - `/:path*.html` → `/:path*` (permanent redirect)
-   - `trailingSlash: false`
+4. **Content reader** (`src/lib/content.ts`):
+   - Reads markdown files with YAML frontmatter
+   - Parses `## H2` sections into heading + body pairs
+   - Handles filename mismatch: `boerderijen` → `kinderboerderijen.md`
+   - Returns null gracefully for missing files (e.g., `cultuur` has no content file)
 
 ## Key design decisions
 
 | Decision | Choice | Notes |
 |---|---|---|
+| Route conflict | Type slugs checked first via `KNOWN_TYPE_SLUGS` | Static set of 8 slugs; no ambiguity possible |
+| Hub page approach | Single `[region]/page.tsx` for both | Clean branching at top; `generateStaticParams` covers both |
+| Editorial content | Markdown files read at build time via `fs.readFileSync` | Content lives in old repo's `content/seo/` dir; read via `../content/seo/` relative path |
+| Card limit | 8 per type (region hub), 6 per region (type hub) | Prevents huge DOM; overflow links to category/region pages |
 | Hero image fallback | Gradient with category color + map pin | Photos not migrated yet (Phase 3.5); only external URLs shown |
 | Title template | Page generates base title, layout appends "| PeuterPlannen" | Avoids duplication |
 | ISR revalidation | 24 hours (86400s) | Content changes slowly; on-demand revalidation via webhook later |
-| Graduation check | Check `seo_tier` + `seo_exclude_from_sitemap` | Database pre-computes graduation; page respects it |
-| Canonical redirects | 301 via `redirect()` in page | If `seo_canonical_target` is set |
-| Nullable booleans | `z.preprocess(v => v ?? false, z.boolean())` | DB has nulls for coffee/diaper/alcohol/etc. |
-| Nearby locations | Same region, prefer same type, limit 6 | Simple approach; PostGIS distance calc deferred |
-| Schema type mapping | play→Playground, museum→Museum, farm→LocalBusiness, etc. | Per seo-analytics.md spec |
 
-## File inventory (Phase 3 additions)
+## File inventory (Phase 3 all tiers)
 
 ```
 app/
@@ -68,16 +66,20 @@ app/
   robots.ts                   — robots.txt
   (marketing)/
     [region]/
+      page.tsx                — Region + type hub page (ISR 24h)
       [slug]/
         page.tsx              — Location detail SSR page (ISR 24h)
 
 src/
   lib/
-    seo.ts                    — SEO utilities (title, description, graduation, schema types)
+    seo.ts                    — SEO utilities (title, description, graduation, schema types, URL builders)
+    content.ts                — Markdown content reader for editorial blurbs
   components/
     patterns/
       Breadcrumb.tsx          — SEO breadcrumb navigation
       StructuredData.tsx      — JSON-LD structured data component + builders
+  domain/
+    enums.ts                  — Added TYPE_COLORS (single source of truth)
   server/
     repositories/
       location.repo.ts        — Added getNearby() method
@@ -90,9 +92,7 @@ next.config.ts                — Added .html redirects + trailingSlash: false
 ## What's NOT done yet
 
 ### Phase 3 remaining
-- Tier 2: Region hub pages (`/[region]/page.tsx`) + Type hub pages (`/[type]/page.tsx`)
-- Tier 4: City+type combo pages (`/[region]/[type]/page.tsx`)
-- Route conflict resolution for `[region]` vs `[type]` at root level
+- Tier 4: City+type combo pages (`/[region]/[type]/page.tsx`) — e.g., `/amsterdam/speeltuinen`
 
 ### Beyond Phase 3
 - Phase 3.5: Photo migration to Cloudflare R2
@@ -100,24 +100,28 @@ next.config.ts                — Added .html redirects + trailingSlash: false
 - Phase 5: Quality Gates (E2E tests, CWV, accessibility, service worker)
 - Staging deployment (Cloudflare Pages)
 
+## Build stats
+- 1044 total pages (1000 detail + 18 region hubs + 8 type hubs + homepage + app + sitemap + robots + verify + 404)
+- Build time: ~3s for static generation
+- API routes stay `force-dynamic` (TanStack Query with client-side staleTime)
+- App page: ISR 5min; detail + hub pages: ISR 24h
+
 ## Next step
-Continue Phase 3 Tier 2: region hub pages + type hub pages, or move to staging deployment.
+Continue Phase 3 Tier 4 (city+type combo pages) or move to staging deployment.
 
 **Before starting**, the session should:
 - Read this HANDOFF.md
-- Run `npm run dev` in `/v2/` and test a detail page (e.g., localhost:3000/amsterdam/artis)
-- Verify sitemap: localhost:3000/sitemap.xml
-- Verify robots: localhost:3000/robots.txt
-- Test .html redirect: localhost:3000/amsterdam.html → /amsterdam
-- Run `npm run build` to confirm all 1007 pages generate
+- Run `npm run dev` in `/v2/` and test hub pages (e.g., localhost:3000/amsterdam, localhost:3000/speeltuinen)
+- Verify detail pages still work (e.g., localhost:3000/amsterdam/artis)
+- Run `npm run build` to confirm all 1044 pages generate
 
 ## Prompt for new session
 
 ```
 cd peuterplannen && read HANDOFF.md
 
-Phase 3 Tier 1+3 complete (1000+ location detail pages, sitemap, robots, redirects).
-Phase 3 Tier 2 (region/type hub pages) or staging deployment next.
+Phase 3 Tier 1+2+3 complete (1044 pages: details, region hubs, type hubs, sitemap, robots).
+Phase 3 Tier 4 (city+type combo pages) or staging deployment next.
 
 Working rules:
 - Quality over speed
