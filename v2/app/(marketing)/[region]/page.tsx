@@ -73,9 +73,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (hub.kind === 'region') {
     const content = getRegionContent(slug);
-    const title = content?.frontmatter.meta_title || `Uitjes met peuters in ${hub.region.name}`;
+    const title = content?.meta_title || `Uitjes met peuters in ${hub.region.name}`;
     const description =
-      content?.frontmatter.meta_description ||
+      content?.meta_description ||
       `Ontdek de beste kindvriendelijke uitjes in ${hub.region.name}. Speeltuinen, kinderboerderijen, musea en meer — geschikt voor peuters.`;
     const canonical = regionCanonicalUrl(slug);
     return {
@@ -90,9 +90,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Type hub
   const content = getTypeContent(hub.typeSlug);
   const typeName = LOCATION_TYPE_LABELS[hub.typeKey] ?? hub.typeKey;
-  const title = content?.frontmatter.meta_title || `${typeName} voor peuters`;
+  const title = content?.meta_title || `${typeName} voor peuters`;
   const description =
-    content?.frontmatter.meta_description ||
+    content?.meta_description ||
     `Ontdek de beste ${typeName.toLowerCase()} voor peuters in heel Nederland.`;
   const canonical = typeCanonicalUrl(hub.typeSlug);
   return {
@@ -145,7 +145,7 @@ async function RegionHub({
 
   const structuredData = buildHubStructuredData({
     name: `Uitjes met peuters in ${region.name}`,
-    description: content?.frontmatter.meta_description ?? `Kindvriendelijke uitjes in ${region.name}`,
+    description: content?.meta_description ?? `Kindvriendelijke uitjes in ${region.name}`,
     url: regionCanonicalUrl(slug),
     breadcrumbItems: [
       { name: 'Home', url: SITE_URL },
@@ -290,7 +290,7 @@ async function TypeHub({
 
   const structuredData = buildHubStructuredData({
     name: `${typeName} voor peuters`,
-    description: content?.frontmatter.meta_description ?? `De beste ${typeName.toLowerCase()} voor peuters`,
+    description: content?.meta_description ?? `De beste ${typeName.toLowerCase()} voor peuters`,
     url: typeCanonicalUrl(typeSlug),
     breadcrumbItems: [
       { name: 'Home', url: SITE_URL },
