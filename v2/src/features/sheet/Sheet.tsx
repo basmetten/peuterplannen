@@ -295,6 +295,8 @@ export function Sheet({ snap, onSnapChange, children, className = '' }: SheetPro
         onTouchEnd={onScrollTouchEnd}
       >
         {children}
+        {/* Bottom spacer for TabBar (49px + safe area inset) */}
+        <div className="h-[49px]" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
       </div>
     </div>
   );

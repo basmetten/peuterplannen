@@ -10,6 +10,9 @@
 **Code review hardening complete** — 9 issues fixed (2 critical, 7 warnings).
 **Mobile interactive sheet complete** — SSR content pages use draggable bottom sheet on mobile (CSS-first, zero CLS).
 **Phase 3.5 photo migration complete** — 2,324 photos uploaded to Cloudflare R2, all DB URLs updated, all components use `getPhotoUrl()` helper.
+**Phase 4A complete** — Error boundaries on root, (app), and (legal) route segments. Graceful fallback UI in Dutch.
+**Phase 4B complete** — Favorites system: localStorage-backed `useFavorites` hook, heart icons on cards + detail view, bottom tab bar (Ontdek/Kaart/Bewaard/Plan), favorites list view with empty state.
+**Phase 4C complete** — Cloudflare Image Resizing: `OptimizedImage` component, all client + server images use `/cdn-cgi/image/` transform URLs with appropriate presets (card 144x144, hero 800x600, OG 1200x630).
 
 ## Architecture (current)
 
@@ -125,17 +128,30 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Phase 3.5: Photo migration infrastructure
-1. **Image helper** (`src/lib/image.ts`) — `getPhotoUrl()` converts relative DB paths (`/images/locations/...`) to R2 public URLs. Also includes `getResizedPhotoUrl()` and `cloudflareLoader()` ready for Phase 4 Image Resizing.
-2. **Migration script** (`scripts/migrate-photos-r2.mjs`) — scans 2,324 hero.webp files (200MB), uploads to R2 via S3-compatible API, batch-updates Supabase photo_url values. Supports dry run, skip-upload, and concurrency control.
-3. **Component updates** — all 7 photo rendering points now use `getPhotoUrl()`:
-   - Client: LocationCard, CarouselCard, DetailView
-   - Server: HeroImage, NearbyCard, CityTypeCard, RegionLocationCard
-   - Metadata: OG image, structured data
-4. **Config** — `next.config.ts` adds R2 domain to remotePatterns. `wrangler.jsonc` adds R2 bucket binding. `@aws-sdk/client-s3` added as dev dependency.
-5. **Backward compatible** — without `NEXT_PUBLIC_R2_URL` env var, `getPhotoUrl()` returns null for relative paths (shows fallback gradient). With R2 configured, converts to full URLs.
+### Phase 4A: Error Boundaries
+- `app/error.tsx` — root-level fallback (warm white bg, "Er ging iets mis", retry + home buttons)
+- `app/(app)/error.tsx` — app layout overlay (semi-transparent bg, "Oeps, dat ging niet goed")
+- `app/(legal)/error.tsx` — legal pages fallback
+- All client components with `'use client'`, on-brand styling, Dutch copy
+
+### Phase 4B: Favorites System
+1. **`useFavorites` hook** (`src/hooks/useFavorites.ts`) — `useSyncExternalStore` with localStorage (`pp-favorites`). SSR-safe. Cross-tab sync via `storage` event. Cached snapshots to avoid unnecessary allocations.
+2. **Heart on LocationCard** — 28x28 button top-right, `stopPropagation`, scale bounce animation. Filled terracotta when favorited, outline when not.
+3. **Heart on DetailView** — 48px circle action button (matches Website/Route style). Label: "Bewaren" ↔ "Bewaard". Scale bounce on toggle.
+4. **FavoritesList** (`src/features/favorites/FavoritesList.tsx`) — filters `initialLocations` by favorite IDs. Empty state: "Nog geen favorieten" with heart icon.
+5. **TabBar** (`src/components/layout/TabBar.tsx`) — 4 tabs (Ontdek/Kaart/Bewaard/Plan), 49px + safe-area padding, mobile only. Badge count on Bewaard tab. Compass/pin/heart/list SVG icons.
+6. **AppShell integration** — `activeTab` state, tab-based content routing (Bewaard → FavoritesList, Plan → placeholder, default → BrowseContent). Tab changes adjust sheet snap state.
+7. **Sheet bottom padding** — 49px spacer at bottom of Sheet scroll area for TabBar clearance.
+
+### Phase 4C: Image Optimization
+1. **`OptimizedImage` component** (`src/components/patterns/OptimizedImage.tsx`) — generates Cloudflare Image Resizing URLs (`/cdn-cgi/image/...`). Fade-in on load. Warm gradient fallback for null src. `decoding="async"`, explicit width/height for CLS.
+2. **IMAGE_SIZES updated** — card/carousel: 144x144 (2x retina for 72px display), hero: 800x600, OG: 1200x630.
+3. **Client components updated** — LocationCard, CarouselCard, DetailView all use `OptimizedImage`.
+4. **Server components updated** — `[region]/[slug]/page.tsx` and `[region]/page.tsx` use `getResizedPhotoUrl()` for HeroImage, NearbyCard, CityTypeCard, OG images.
+5. **Format auto** — Cloudflare serves WebP/AVIF based on browser Accept header.
 
 ### Previous sessions
+- Phase 3.5: Photo migration to R2 (2,324 files, custom domain photos.peuterplannen.nl)
 - Mobile interactive sheet (ContentSheetContainer, CSS-first, zero CLS)
 - Code review hardening (9 fixes, 2 critical)
 - Persistent map in (app) layout (MapStateContext, PersistentMap, MapUpdater)
@@ -157,10 +173,15 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 - Update photo pipeline (`fetch-photos.js`) to upload new photos to R2 instead of disk
 - ~108 locations have null photo_url (no local hero.webp found)
 
-### Phase 4: Polish & Canonicalize
-- Visual refinement, performance optimization
-- Mobile map on SSR content pages (currently warm bg behind sheet — add static map image or lazy MapLibre)
-- Turbopack dev compatibility for `.content-sheet` CSS (works in production, stripped in dev mode)
+### Phase 4 remaining
+- **Filter system completion** — price band, score threshold, age range UI (data types exist)
+- **Plan view** — basic saved list, reorderable (currently placeholder "Binnenkort beschikbaar")
+- **Desktop favorites** — TabBar is mobile-only; desktop sidebar could show a favorites toggle
+- **Guide/blog content polish** — typography refinements in sheet
+- **Visual refinement** — glass design system, sheet physics tuning
+- **Mobile map on SSR content pages** — currently warm bg behind sheet
+- **Cloudflare Image Resizing activation** — `/cdn-cgi/image/` URLs generated but need Image Resizing enabled on the Cloudflare zone (falls back to full-size images until then)
+- Turbopack dev compatibility for `.content-sheet` CSS (works in production)
 
 ### Phase 5: Quality Gates
 - E2E tests, CWV, accessibility, service worker
@@ -186,17 +207,21 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 | Route conflict | KNOWN_TYPE_SLUGS checked first | blog/guides are explicit segments (no conflict with [region]) |
 | Guides page | Curated view of blog data | Featured + latest + by-city + by-type — all sourced from BlogRepository |
 | Photo URLs | `getPhotoUrl()` centralized helper | Converts relative paths → R2 URLs. All components use it. Backward compatible without R2. |
-| Photo storage | Cloudflare R2 (S3-compatible) | Migration script uploads hero.webp files. Image Resizing ready for Phase 4. |
+| Photo storage | Cloudflare R2 (S3-compatible) | Migration script uploads hero.webp files. Image Resizing URLs generated. |
+| Favorites | localStorage via `useSyncExternalStore` | `pp-favorites` key, Set<number> of IDs. Cross-tab sync. No auth needed. |
+| Tab bar | Mobile-only, 4 tabs (Ontdek/Kaart/Bewaard/Plan) | Apple HIG 49px height + safe area. Content routing via `activeTab` state in AppShell. |
+| Image optimization | Cloudflare Image Resizing via URL pattern | `/cdn-cgi/image/width=W,height=H,fit=cover,quality=Q,format=auto/path`. Client uses `OptimizedImage`, server uses `getResizedPhotoUrl()`. |
 
 ## Next step
 
-Phase 3.5 infrastructure is complete. Next priorities:
+Phase 4A/B/C complete. Next priorities:
 
-1. **Phase 4: Polish** — visual refinement, performance optimization, mobile map behind sheet
+1. **Phase 4 continued** — filter system completion, plan view, visual polish
+2. **Enable Cloudflare Image Resizing** on the zone (via dashboard/API) so `/cdn-cgi/image/` URLs work
 3. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
 
 **Before starting**, the session should:
 - Read this HANDOFF.md
 - Run `npm run build` to confirm 1330 pages generate
 - Verify photos load: `curl -sI https://photos.peuterplannen.nl/amsterdam/artis/hero.webp`
-- `localhost:3000/` → AppShell renders normally with its own map
+- `localhost:3000/` → AppShell renders with map, tab bar, favorites

@@ -26,7 +26,7 @@ import {
   buildLocationStructuredData,
 } from '@/components/patterns/StructuredData';
 import { ContentShell } from '@/components/layout/ContentShell';
-import { getPhotoUrl } from '@/lib/image';
+import { getPhotoUrl, getResizedPhotoUrl } from '@/lib/image';
 
 // ---------------------------------------------------------------------------
 // ISR: revalidate every 24 hours
@@ -119,7 +119,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: canonical,
       siteName: 'PeuterPlannen',
       type: 'website',
-      ...(getPhotoUrl(location.photo_url) && { images: [{ url: getPhotoUrl(location.photo_url)! }] }),
+      ...(getPhotoUrl(location.photo_url) && { images: [{ url: getResizedPhotoUrl(location.photo_url, 'og') ?? getPhotoUrl(location.photo_url)! }] }),
     },
   };
 }
@@ -614,8 +614,11 @@ function ComboLocationCard({
       <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-photo bg-bg-secondary">
         {getPhotoUrl(location.photo_url) ? (
           <img
-            src={getPhotoUrl(location.photo_url)!}
+            src={getResizedPhotoUrl(location.photo_url, 'card') ?? getPhotoUrl(location.photo_url)!}
             alt={location.name}
+            width={144}
+            height={144}
+            decoding="async"
             className="h-full w-full object-cover"
             loading="lazy"
           />
@@ -681,7 +684,7 @@ function HeroImage({
   name: string;
   typeColor: string;
 }) {
-  const resolvedUrl = getPhotoUrl(photoUrl);
+  const resolvedUrl = getResizedPhotoUrl(photoUrl, 'hero') ?? getPhotoUrl(photoUrl);
 
   if (resolvedUrl) {
     return (
@@ -689,6 +692,9 @@ function HeroImage({
         <img
           src={resolvedUrl}
           alt={name}
+          width={800}
+          height={600}
+          decoding="async"
           className="aspect-[16/9] w-full object-cover"
           loading="eager"
         />
@@ -854,8 +860,11 @@ function NearbyLocationCard({
       <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-photo bg-bg-secondary">
         {getPhotoUrl(location.photo_url) ? (
           <img
-            src={getPhotoUrl(location.photo_url)!}
+            src={getResizedPhotoUrl(location.photo_url, 'card') ?? getPhotoUrl(location.photo_url)!}
             alt={location.name}
+            width={144}
+            height={144}
+            decoding="async"
             className="h-full w-full object-cover"
             loading="lazy"
           />

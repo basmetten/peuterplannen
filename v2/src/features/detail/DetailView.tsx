@@ -1,10 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { locationQueries } from '@/features/map/queries';
 import { LOCATION_TYPE_LABELS, PRICE_BAND_LABELS, TYPE_COLORS } from '@/domain/enums';
 import type { PriceBand } from '@/domain/enums';
 import { getPhotoUrl } from '@/lib/image';
+import { OptimizedImage } from '@/components/patterns/OptimizedImage';
+import { useFavorites } from '@/hooks/useFavorites';
 
 interface DetailViewProps {
   locationId: number;
@@ -13,6 +16,16 @@ interface DetailViewProps {
 
 export function DetailView({ locationId, onClose }: DetailViewProps) {
   const { data: location, isLoading } = useQuery(locationQueries.detail(locationId));
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const [bouncing, setBouncing] = useState(false);
+
+  const favorited = isFavorite(locationId);
+
+  const handleToggleFavorite = () => {
+    toggleFavorite(locationId);
+    setBouncing(true);
+    setTimeout(() => setBouncing(false), 300);
+  };
 
   if (isLoading) {
     return <DetailSkeleton />;
@@ -49,9 +62,11 @@ export function DetailView({ locationId, onClose }: DetailViewProps) {
       {/* Hero photo */}
       {getPhotoUrl(location.photo_url) && (
         <div className="mx-4 mb-4 overflow-hidden rounded-photo">
-          <img
-            src={getPhotoUrl(location.photo_url)!}
+          <OptimizedImage
+            src={location.photo_url}
+            size="hero"
             alt={location.name}
+            loading="eager"
             className="aspect-[4/3] w-full object-cover"
           />
         </div>
@@ -125,6 +140,11 @@ export function DetailView({ locationId, onClose }: DetailViewProps) {
               <polygon points="3 11 22 2 13 21 11 13 3 11" />
             </svg>
           }
+        />
+        <FavoriteActionButton
+          favorited={favorited}
+          bouncing={bouncing}
+          onToggle={handleToggleFavorite}
         />
       </div>
 
@@ -208,6 +228,46 @@ function ActionButton({
         {label}
       </span>
     </a>
+  );
+}
+
+/** Favorite action button (matches ActionButton style) */
+function FavoriteActionButton({
+  favorited,
+  bouncing,
+  onToggle,
+}: {
+  favorited: boolean;
+  bouncing: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className="flex flex-col items-center gap-1"
+      aria-label={favorited ? 'Verwijder uit favorieten' : 'Bewaar als favoriet'}
+    >
+      <div
+        className={`flex h-12 w-12 items-center justify-center rounded-full transition-transform duration-fast ease-spring ${
+          favorited ? 'bg-accent text-white' : 'bg-bg-secondary text-label'
+        }`}
+        style={{ transform: bouncing ? 'scale(1.2)' : 'scale(1)' }}
+      >
+        {favorited ? (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+        ) : (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+        )}
+      </div>
+      <span className="text-[11px] tracking-[0.014em] text-accent">
+        {favorited ? 'Bewaard' : 'Bewaren'}
+      </span>
+    </button>
   );
 }
 

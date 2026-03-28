@@ -20,7 +20,7 @@ import { Breadcrumb } from '@/components/patterns/Breadcrumb';
 import { StructuredData } from '@/components/patterns/StructuredData';
 import { SITE_URL } from '@/lib/constants';
 import { ContentShell } from '@/components/layout/ContentShell';
-import { getPhotoUrl } from '@/lib/image';
+import { getPhotoUrl, getResizedPhotoUrl } from '@/lib/image';
 
 // ---------------------------------------------------------------------------
 // ISR — revalidate every 24 hours (same as detail pages)
@@ -411,8 +411,11 @@ function HubLocationCard({
       <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-photo bg-bg-secondary">
         {getPhotoUrl(location.photo_url) ? (
           <img
-            src={getPhotoUrl(location.photo_url)!}
+            src={getResizedPhotoUrl(location.photo_url, 'card') ?? getPhotoUrl(location.photo_url)!}
             alt={location.name}
+            width={144}
+            height={144}
+            decoding="async"
             className="h-full w-full object-cover"
             loading="lazy"
           />

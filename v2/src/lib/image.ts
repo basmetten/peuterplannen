@@ -44,9 +44,9 @@ export function getPhotoUrl(
 
 /** Image size presets for Cloudflare Image Resizing. */
 export const IMAGE_SIZES = {
-  /** LocationCard + CarouselCard thumbnail (72×72 displayed, 2x for retina) */
-  card: { width: 400, height: 300, fit: 'cover', quality: 80 },
-  /** Carousel card (72×72 displayed, 2x) */
+  /** LocationCard thumbnail (72×72 displayed, 2x for retina) */
+  card: { width: 144, height: 144, fit: 'cover', quality: 80 },
+  /** CarouselCard thumbnail (72×72 displayed, 2x for retina) */
   carousel: { width: 144, height: 144, fit: 'cover', quality: 80 },
   /** Detail hero (full width, ~4:3) */
   hero: { width: 800, height: 600, fit: 'cover', quality: 85 },
@@ -74,7 +74,7 @@ export function getResizedPhotoUrl(
 
   const { width, height, fit, quality } = IMAGE_SIZES[size];
   const key = url.slice(R2_PUBLIC_URL.length + 1); // strip domain + leading /
-  return `${R2_PUBLIC_URL}/cdn-cgi/image/width=${width},height=${height},fit=${fit},quality=${quality}/${key}`;
+  return `${R2_PUBLIC_URL}/cdn-cgi/image/width=${width},height=${height},fit=${fit},quality=${quality},format=auto/${key}`;
 }
 
 /**
@@ -100,5 +100,5 @@ export function cloudflareLoader({
 
   const key = src.slice(R2_PUBLIC_URL.length + 1);
   const q = quality ?? 80;
-  return `${R2_PUBLIC_URL}/cdn-cgi/image/width=${width},fit=cover,quality=${q}/${key}`;
+  return `${R2_PUBLIC_URL}/cdn-cgi/image/width=${width},fit=cover,quality=${q},format=auto/${key}`;
 }

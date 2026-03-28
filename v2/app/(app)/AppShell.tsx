@@ -15,6 +15,8 @@ import { CardListSkeleton } from '@/components/patterns/CardSkeleton';
 import { EmptyFilterState } from '@/components/patterns/EmptyState';
 import { DetailView } from '@/features/detail/DetailView';
 import { CarouselOverlay } from '@/features/carousel/CarouselOverlay';
+import { TabBar, type TabId } from '@/components/layout/TabBar';
+import { FavoritesList } from '@/features/favorites/FavoritesList';
 import type { LocationSummary } from '@/domain/types';
 
 interface AppShellProps {
@@ -43,6 +45,7 @@ export function AppShell({ initialLocations }: AppShellProps) {
   const isDesktop = useIsDesktop();
   const [sheetState, sheetSend] = useMachine(sheetMachine);
   const { filters, toggleType, setWeather, setQuery, clearFilters, isFiltered } = useFilters();
+  const [activeTab, setActiveTab] = useState<TabId>('ontdek');
 
   const { snap, detailId, carouselLocationIds, carouselActiveId } = sheetState.context;
   const isDetailOpen = sheetState.matches('detail');
@@ -201,25 +204,68 @@ export function AppShell({ initialLocations }: AppShellProps) {
       .filter((l): l is LocationSummary => l !== undefined);
   }, [carouselLocationIds, initialLocations]);
 
+  // --- Tab change handler ---
+
+  const handleTabChange = useCallback((tab: TabId) => {
+    setActiveTab(tab);
+
+    if (tab === 'kaart') {
+      // Collapse sheet to peek to show the map
+      if (!isDesktop) {
+        sheetSend({ type: 'SNAP_TO', target: 'peek' });
+      }
+    } else if (tab === 'ontdek' || tab === 'bewaard') {
+      // Expand sheet to half if it's at peek
+      if (!isDesktop && snap === 'peek') {
+        sheetSend({ type: 'SNAP_TO', target: 'half' });
+      }
+    }
+  }, [isDesktop, snap, sheetSend]);
+
   // --- Shared content (rendered in sidebar or sheet) ---
 
-  const content = isDetailOpen && detailId ? (
-    <DetailView locationId={detailId} onClose={handleDetailClose} />
-  ) : (
-    <BrowseContent
-      locations={filteredLocations}
-      totalCount={initialLocations.length}
-      filters={filters}
-      isFiltered={isFiltered}
-      onTypeToggle={toggleType}
-      onWeatherChange={setWeather}
-      onQueryChange={setQuery}
-      onClearFilters={clearFilters}
-      onCardTap={handleCardTap}
-      onSearchFocus={handleSearchFocus}
-      selectedId={detailId}
-    />
-  );
+  const getSheetContent = () => {
+    // Detail view always takes priority
+    if (isDetailOpen && detailId) {
+      return <DetailView locationId={detailId} onClose={handleDetailClose} />;
+    }
+
+    // Tab-based content (mobile only — desktop always shows browse in sidebar)
+    if (!isDesktop) {
+      switch (activeTab) {
+        case 'bewaard':
+          return (
+            <FavoritesList
+              locations={initialLocations}
+              onCardTap={handleCardTap}
+              selectedId={detailId}
+            />
+          );
+        case 'plan':
+          return <PlanPlaceholder />;
+        default:
+          break;
+      }
+    }
+
+    return (
+      <BrowseContent
+        locations={filteredLocations}
+        totalCount={initialLocations.length}
+        filters={filters}
+        isFiltered={isFiltered}
+        onTypeToggle={toggleType}
+        onWeatherChange={setWeather}
+        onQueryChange={setQuery}
+        onClearFilters={clearFilters}
+        onCardTap={handleCardTap}
+        onSearchFocus={handleSearchFocus}
+        selectedId={detailId}
+      />
+    );
+  };
+
+  const content = getSheetContent();
 
   return (
     <>
@@ -246,15 +292,18 @@ export function AppShell({ initialLocations }: AppShellProps) {
         />
       )}
 
-      {/* Desktop: persistent sidebar. Mobile: draggable bottom sheet */}
+      {/* Desktop: persistent sidebar. Mobile: draggable bottom sheet + tab bar */}
       {isDesktop ? (
         <Sidebar>{content}</Sidebar>
       ) : (
-        <Suspense>
-          <Sheet snap={snap} onSnapChange={handleSnapChange}>
-            {content}
-          </Sheet>
-        </Suspense>
+        <>
+          <Suspense>
+            <Sheet snap={snap} onSnapChange={handleSnapChange}>
+              {content}
+            </Sheet>
+          </Suspense>
+          <TabBar activeTab={activeTab} onTabChange={handleTabChange} />
+        </>
       )}
     </>
   );
@@ -349,6 +398,31 @@ function BrowseContent({
           </div>
         </>
       )}
+    </div>
+  );
+}
+
+// --- Plan tab placeholder ---
+
+function PlanPlaceholder() {
+  return (
+    <div className="flex flex-col items-center px-8 py-16 text-center">
+      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-bg-secondary">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-label-tertiary">
+          <line x1="8" y1="6" x2="21" y2="6" />
+          <line x1="8" y1="12" x2="21" y2="12" />
+          <line x1="8" y1="18" x2="21" y2="18" />
+          <line x1="3" y1="6" x2="3.01" y2="6" />
+          <line x1="3" y1="12" x2="3.01" y2="12" />
+          <line x1="3" y1="18" x2="3.01" y2="18" />
+        </svg>
+      </div>
+      <h3 className="text-[17px] font-semibold tracking-[-0.025em] text-label">
+        Dagplanner
+      </h3>
+      <p className="mt-2 text-[15px] leading-[1.5] tracking-normal text-label-secondary">
+        Binnenkort beschikbaar
+      </p>
     </div>
   );
 }

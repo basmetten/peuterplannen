@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import type { LocationSummary } from '@/domain/types';
 import { LOCATION_TYPE_LABELS, TYPE_COLORS } from '@/domain/enums';
-import { getPhotoUrl } from '@/lib/image';
+import { OptimizedImage } from '@/components/patterns/OptimizedImage';
+import { useFavorites } from '@/hooks/useFavorites';
 
 interface LocationCardProps {
   location: LocationSummary;
@@ -13,34 +15,56 @@ interface LocationCardProps {
 export function LocationCard({ location, onTap, isSelected }: LocationCardProps) {
   const typeColor = TYPE_COLORS[location.type] ?? 'var(--color-label-secondary)';
   const score = location.ai_suitability_score_10;
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const favorited = isFavorite(location.id);
+  const [bouncing, setBouncing] = useState(false);
+
+  const handleHeartClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleFavorite(location.id);
+    setBouncing(true);
+    setTimeout(() => setBouncing(false), 300);
+  };
 
   return (
     <button
       type="button"
       onClick={() => onTap(location)}
       className={`
-        flex w-full gap-3 rounded-card bg-bg-tertiary p-4 text-left
+        relative flex w-full gap-3 rounded-card bg-bg-tertiary p-4 text-left
         transition-shadow duration-fast ease-spring
         ${isSelected ? 'shadow-card ring-2 ring-accent/30' : 'shadow-[0_1px_3px_rgba(0,0,0,0.06)]'}
       `}
     >
+      {/* Favorite heart button */}
+      <span
+        role="button"
+        tabIndex={0}
+        aria-label={favorited ? 'Verwijder uit favorieten' : 'Bewaar als favoriet'}
+        onClick={handleHeartClick}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleHeartClick(e as unknown as React.MouseEvent); } }}
+        className="absolute right-2 top-2 z-[1] flex h-[28px] w-[28px] items-center justify-center rounded-full bg-bg-tertiary/80 backdrop-blur-sm transition-transform duration-fast ease-spring"
+        style={{ transform: bouncing ? 'scale(1.25)' : 'scale(1)' }}
+      >
+        {favorited ? (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-accent">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+        ) : (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-label-tertiary">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+        )}
+      </span>
+
       {/* Photo */}
       <div className="h-[72px] w-[72px] flex-shrink-0 overflow-hidden rounded-photo bg-bg-secondary">
-        {getPhotoUrl(location.photo_url) ? (
-          <img
-            src={getPhotoUrl(location.photo_url)!}
-            alt={location.name}
-            className="h-full w-full object-cover"
-            loading="lazy"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-label-tertiary">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" strokeWidth="1.5" />
-              <circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.5" />
-            </svg>
-          </div>
-        )}
+        <OptimizedImage
+          src={location.photo_url}
+          size="card"
+          alt={location.name}
+          className="h-full w-full object-cover"
+        />
       </div>
 
       {/* Content */}

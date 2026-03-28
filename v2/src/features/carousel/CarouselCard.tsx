@@ -2,7 +2,7 @@
 
 import type { LocationSummary } from '@/domain/types';
 import { LOCATION_TYPE_LABELS, TYPE_COLORS } from '@/domain/enums';
-import { getPhotoUrl } from '@/lib/image';
+import { OptimizedImage } from '@/components/patterns/OptimizedImage';
 
 interface CarouselCardProps {
   location: LocationSummary;
@@ -34,21 +34,12 @@ export function CarouselCard({ location, onTap, isActive }: CarouselCardProps) {
     >
       {/* Photo */}
       <div className="h-[72px] w-[72px] flex-shrink-0 overflow-hidden rounded-photo bg-bg-secondary">
-        {getPhotoUrl(location.photo_url) ? (
-          <img
-            src={getPhotoUrl(location.photo_url)!}
-            alt={location.name}
-            className="h-full w-full object-cover"
-            loading="lazy"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-label-tertiary">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" strokeWidth="1.5" />
-              <circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.5" />
-            </svg>
-          </div>
-        )}
+        <OptimizedImage
+          src={location.photo_url}
+          size="carousel"
+          alt={location.name}
+          className="h-full w-full object-cover"
+        />
       </div>
 
       {/* Content */}
