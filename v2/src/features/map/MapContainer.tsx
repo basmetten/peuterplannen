@@ -15,11 +15,20 @@ const CLUSTER_COUNT_LAYER = 'cluster-count';
 const MARKER_LAYER = 'markers';
 const MARKER_SELECTED_LAYER = 'markers-selected';
 
+/** Max cluster size that triggers carousel instead of zoom */
+const CAROUSEL_CLUSTER_MAX = 5;
+/** Min zoom level for carousel trigger */
+const CAROUSEL_MIN_ZOOM = 14;
+
 interface MapContainerProps {
   locations: LocationSummary[];
   selectedId: number | null;
+  /** Active carousel location — gets terracotta ring highlight */
+  carouselActiveId?: number | null;
   onMarkerClick: (location: LocationSummary) => void;
   onMapClick: () => void;
+  /** Called when a small cluster is tapped (zoom ≥ 14, ≤ 5 members) */
+  onClusterExpand?: (locations: LocationSummary[]) => void;
   bottomPadding?: number;
   /** Left offset in px for desktop sidebar */
   leftOffset?: number;
@@ -54,16 +63,18 @@ function toGeoJSON(locs: LocationSummary[]) {
 export function MapContainer({
   locations,
   selectedId,
+  carouselActiveId,
   onMarkerClick,
   onMapClick,
+  onClusterExpand,
   bottomPadding = 0,
   leftOffset = 0,
 }: MapContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   // Stable refs for callbacks to avoid stale closures
-  const cbRef = useRef({ onMarkerClick, onMapClick, locations });
-  cbRef.current = { onMarkerClick, onMapClick, locations };
+  const cbRef = useRef({ onMarkerClick, onMapClick, onClusterExpand, locations });
+  cbRef.current = { onMarkerClick, onMapClick, onClusterExpand, locations };
 
   // Initialize map
   useEffect(() => {
@@ -147,12 +158,46 @@ export function MapContainer({
       });
     });
 
-    // Cluster click → zoom
+    // Cluster click → zoom or carousel
     map.on('click', CLUSTER_LAYER, (e) => {
       const feature = e.features?.[0];
       if (!feature) return;
       const clusterId = feature.properties.cluster_id;
+      const pointCount = feature.properties.point_count;
+      const currentZoom = map.getZoom();
       const source = map.getSource(SOURCE_ID) as maplibregl.GeoJSONSource;
+
+      // Small cluster at high zoom → carousel overlay
+      if (
+        currentZoom >= CAROUSEL_MIN_ZOOM &&
+        pointCount <= CAROUSEL_CLUSTER_MAX &&
+        cbRef.current.onClusterExpand
+      ) {
+        source.getClusterLeaves(clusterId, CAROUSEL_CLUSTER_MAX, 0).then((features) => {
+          const resolved = features
+            .map((f) => {
+              const id = f.properties?.id;
+              return cbRef.current.locations.find((l) => l.id === id);
+            })
+            .filter((l): l is LocationSummary => l !== undefined);
+
+          if (resolved.length > 1) {
+            // Center map on the cluster
+            map.flyTo({
+              center: (feature.geometry as GeoJSON.Point).coordinates as [number, number],
+              zoom: Math.max(currentZoom, 15),
+              duration: 400,
+            });
+            cbRef.current.onClusterExpand!(resolved);
+          } else if (resolved.length === 1) {
+            // Single location — go straight to detail
+            cbRef.current.onMarkerClick(resolved[0]);
+          }
+        });
+        return;
+      }
+
+      // Normal: zoom in to expand cluster
       source.getClusterExpansionZoom(clusterId).then((zoom) => {
         map.flyTo({
           center: (feature.geometry as GeoJSON.Point).coordinates as [number, number],
@@ -201,15 +246,16 @@ export function MapContainer({
     }
   }, [locations]);
 
-  // Update selected marker highlight
+  // Update selected marker highlight (detail view or carousel active)
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !map.isStyleLoaded() || !map.getLayer(MARKER_SELECTED_LAYER)) return;
-    map.setFilter(MARKER_SELECTED_LAYER, selectedId
-      ? ['==', ['get', 'id'], selectedId]
+    const highlightId = selectedId ?? carouselActiveId ?? null;
+    map.setFilter(MARKER_SELECTED_LAYER, highlightId
+      ? ['==', ['get', 'id'], highlightId]
       : ['==', ['get', 'id'], -1],
     );
-  }, [selectedId]);
+  }, [selectedId, carouselActiveId]);
 
   // Resize map when sidebar offset changes
   useEffect(() => {

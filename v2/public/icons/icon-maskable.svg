@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Maskable icon: safe zone is inner 80% (51.2px inset on each side) -->
+  <rect width="512" height="512" fill="#C05A3A"/>
+  <g transform="translate(256, 222)" fill="none">
+    <path d="M0-85c-41 0-74 33-74 74 0 55.7 74 119 74 119s74-63.3 74-119c0-41-33-74-74-74z" fill="white"/>
+    <circle cx="0" cy="-11" r="29" fill="#C05A3A"/>
+  </g>
+</svg>

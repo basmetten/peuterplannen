@@ -20,13 +20,20 @@ interface SheetContext {
   detailId: number | null;
   /** Previous snap before detail opened (for back navigation) */
   previousSnap: SheetSnap;
+  /** Location IDs in the carousel (null = no carousel) */
+  carouselLocationIds: number[] | null;
+  /** Currently highlighted location in the carousel */
+  carouselActiveId: number | null;
 }
 
 type SheetEvent =
   | { type: 'SNAP_TO'; target: SheetSnap }
   | { type: 'OPEN_DETAIL'; id: number }
   | { type: 'CLOSE_DETAIL' }
-  | { type: 'DRAG_END'; snapTo: SheetSnap };
+  | { type: 'DRAG_END'; snapTo: SheetSnap }
+  | { type: 'CAROUSEL_OPEN'; locationIds: number[] }
+  | { type: 'CAROUSEL_SWIPE'; locationId: number }
+  | { type: 'CAROUSEL_CLOSE' };
 
 export const sheetMachine = createMachine({
   id: 'sheet',
@@ -38,6 +45,8 @@ export const sheetMachine = createMachine({
     snap: 'peek',
     detailId: null,
     previousSnap: 'peek',
+    carouselLocationIds: null,
+    carouselActiveId: null,
   },
   initial: 'browse',
   states: {
@@ -55,6 +64,15 @@ export const sheetMachine = createMachine({
             previousSnap: ({ context }) => context.snap,
             detailId: ({ event }) => event.id,
             snap: 'half' as SheetSnap,
+          }),
+        },
+        CAROUSEL_OPEN: {
+          target: 'carousel',
+          actions: assign({
+            previousSnap: ({ context }) => context.snap,
+            carouselLocationIds: ({ event }) => event.locationIds,
+            carouselActiveId: ({ event }) => event.locationIds[0] ?? null,
+            snap: 'hidden' as SheetSnap,
           }),
         },
       },
@@ -82,6 +100,32 @@ export const sheetMachine = createMachine({
           actions: assign({
             detailId: null,
             snap: ({ context }) => context.previousSnap,
+          }),
+        },
+      },
+    },
+    carousel: {
+      on: {
+        CAROUSEL_SWIPE: {
+          actions: assign({
+            carouselActiveId: ({ event }) => event.locationId,
+          }),
+        },
+        CAROUSEL_CLOSE: {
+          target: 'browse',
+          actions: assign({
+            carouselLocationIds: null,
+            carouselActiveId: null,
+            snap: ({ context }) => context.previousSnap,
+          }),
+        },
+        OPEN_DETAIL: {
+          target: 'detail',
+          actions: assign({
+            carouselLocationIds: null,
+            carouselActiveId: null,
+            detailId: ({ event }) => event.id,
+            snap: 'half' as SheetSnap,
           }),
         },
       },

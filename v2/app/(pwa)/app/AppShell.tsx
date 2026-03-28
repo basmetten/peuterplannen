@@ -14,6 +14,7 @@ import { LocationCard } from '@/components/patterns/LocationCard';
 import { CardListSkeleton } from '@/components/patterns/CardSkeleton';
 import { EmptyFilterState } from '@/components/patterns/EmptyState';
 import { DetailView } from '@/features/detail/DetailView';
+import { CarouselOverlay } from '@/features/carousel/CarouselOverlay';
 import type { LocationSummary } from '@/domain/types';
 
 interface AppShellProps {
@@ -43,8 +44,9 @@ export function AppShell({ initialLocations }: AppShellProps) {
   const [sheetState, sheetSend] = useMachine(sheetMachine);
   const { filters, toggleType, setWeather, setQuery, clearFilters, isFiltered } = useFilters();
 
-  const { snap, detailId } = sheetState.context;
+  const { snap, detailId, carouselLocationIds, carouselActiveId } = sheetState.context;
   const isDetailOpen = sheetState.matches('detail');
+  const isCarouselOpen = sheetState.matches('carousel');
 
   // Prevent circular URL ↔ state updates
   const isNavigatingRef = useRef(false);
@@ -126,12 +128,14 @@ export function AppShell({ initialLocations }: AppShellProps) {
   }, [sheetSend, pushDetailUrl]);
 
   const handleMapClick = useCallback(() => {
-    if (isDetailOpen) {
+    if (isCarouselOpen) {
+      sheetSend({ type: 'CAROUSEL_CLOSE' });
+    } else if (isDetailOpen) {
       window.history.back(); // popstate → CLOSE_DETAIL
     } else if (!isDesktop && snap !== 'peek') {
       sheetSend({ type: 'SNAP_TO', target: 'peek' });
     }
-  }, [isDetailOpen, isDesktop, snap, sheetSend]);
+  }, [isCarouselOpen, isDetailOpen, isDesktop, snap, sheetSend]);
 
   const handleSnapChange = useCallback((newSnap: SheetSnap) => {
     if (isDetailOpen) {
@@ -160,6 +164,29 @@ export function AppShell({ initialLocations }: AppShellProps) {
     }
   }, [isDesktop, snap, sheetSend]);
 
+  // --- Carousel handlers (mobile only) ---
+
+  const handleClusterExpand = useCallback((locations: LocationSummary[]) => {
+    sheetSend({ type: 'CAROUSEL_OPEN', locationIds: locations.map((l) => l.id) });
+  }, [sheetSend]);
+
+  const handleCarouselCardTap = useCallback((location: LocationSummary) => {
+    sheetSend({ type: 'OPEN_DETAIL', id: location.id });
+    pushDetailUrl(location);
+  }, [sheetSend, pushDetailUrl]);
+
+  const handleCarouselActiveChange = useCallback((locationId: number) => {
+    sheetSend({ type: 'CAROUSEL_SWIPE', locationId });
+  }, [sheetSend]);
+
+  // Resolve carousel IDs to LocationSummary objects for rendering
+  const carouselLocations = useMemo(() => {
+    if (!carouselLocationIds) return [];
+    return carouselLocationIds
+      .map((id) => initialLocations.find((l) => l.id === id))
+      .filter((l): l is LocationSummary => l !== undefined);
+  }, [carouselLocationIds, initialLocations]);
+
   // --- Shared content (rendered in sidebar or sheet) ---
 
   const content = isDetailOpen && detailId ? (
@@ -186,11 +213,24 @@ export function AppShell({ initialLocations }: AppShellProps) {
       <MapContainer
         locations={filteredLocations}
         selectedId={detailId}
+        carouselActiveId={carouselActiveId}
         onMarkerClick={handleMarkerClick}
         onMapClick={handleMapClick}
+        onClusterExpand={isDesktop ? undefined : handleClusterExpand}
         bottomPadding={bottomPadding}
         leftOffset={isDesktop ? SIDEBAR_WIDTH : 0}
       />
+
+      {/* Carousel overlay — mobile only, map-level, not part of sheet */}
+      {!isDesktop && (
+        <CarouselOverlay
+          locations={carouselLocations}
+          activeId={carouselActiveId}
+          onCardTap={handleCarouselCardTap}
+          onActiveChange={handleCarouselActiveChange}
+          visible={isCarouselOpen}
+        />
+      )}
 
       {/* Desktop: persistent sidebar. Mobile: draggable bottom sheet */}
       {isDesktop ? (

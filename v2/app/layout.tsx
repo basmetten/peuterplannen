@@ -23,6 +23,15 @@ export const metadata: Metadata = {
   },
   description: 'Ontdek de leukste uitjes met peuters in heel Nederland. Speeltuinen, kinderboerderijen, musea en meer.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://peuterplannen.nl'),
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'PeuterPlannen',
+  },
+  icons: {
+    apple: '/icons/apple-touch-icon.svg',
+  },
 };
 
 export const viewport: Viewport = {
