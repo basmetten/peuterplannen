@@ -5,6 +5,28 @@
 **Phase 2 complete** — core loop, polish, desktop layout, navigation, carousel, and PWA done.
 **Phase 3 Tier 1+2+3 complete** — location detail pages, region/type hub pages, sitemap, robots.txt, redirects.
 
+## ⚠️ ARCHITECTURE CHANGE — READ BEFORE CONTINUING
+
+**The docs in `docs/v2/` have been updated with a major architecture change.**
+
+Before continuing Phase 3 Tier 4 or any new work, read `docs/v2/information-architecture.md` and `docs/v2/migration-plan.md` (Phase 3 section).
+
+### What changed:
+The `(marketing)` + `(pwa)` route group split is being replaced with a **unified app shell**:
+- `(app)` — everything renders in the map + sheet/sidebar layout (SEO pages, guides, detail, blog, home)
+- `(portal)` — partner/admin dashboards (separate layout, no map)
+- `(legal)` — privacy, terms, about, contact (minimal pages, no map)
+
+### Why:
+peuterplannen.nl should land directly on the map app, like Apple Maps. No separate marketing pages. The browse sheet IS the homepage. SEO pages render as SSR routes within the app shell. Guides (our blog/collection content) render in the sheet.
+
+### What to do:
+1. Read the updated docs (especially information-architecture.md and migration-plan.md Phase 3)
+2. Restructure route groups: rename `(pwa)` → `(app)`, move SEO routes into `(app)` layout with the map
+3. The existing components (Sheet, Map, Detail, Cards, Filters, Carousel, Sidebar) are all still valid — only the route/layout structure changes
+4. The `(marketing)` layout with its header/footer is no longer needed — replace with the unified app layout that renders content in the sheet/sidebar
+5. Add `(portal)` and `(legal)` route groups for partner dashboard and legal pages
+
 ## What happened this session
 
 ### Code quality + security fixes (pre-Phase 3 Tier 2)
