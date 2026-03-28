@@ -1,52 +1,69 @@
-# HANDOFF — 20 maart 2026
+# HANDOFF — PeuterPlannen v2 Rebuild
 
-## Wat is er gedaan deze sessie
+## Status
+**Phase 0 complete** — all discovery and documentation done.
+**Phase 1 next** — scaffold the Next.js project.
 
-### plan-next.md: ALLES AFGEROND
-- **Sessie 1 (A1-A5):** Apple Maps UX polish
-- **Sessie 2 (B1-B4):** 262 nieuwe sfeerfoto's (67%->80%), quality check script, scoring integratie
-- **Sessie 3 (D1-D3):** Personalisatie onboarding, 5-dag forecast, score strength chips
+## What happened
+- Deep inspection of current database (8 Supabase tables, `locations` with ~60 fields)
+- Deep inspection of current app flows (vanilla JS SPA, 20 ES modules, scroll-snap sheet)
+- Deep inspection of current SEO strategy (~2365 pages, graduation system, location pages are redirect shells)
+- Deep inspection of current design system (dual `--pp-*`/`--wg-*` tokens, Warm Liquid Glass)
+- Research: Apple Maps detail flow, Apple Maps design system (reverse-engineered)
+- Review: 52 reference screenshots (Apple Maps, Funda, ZenChef)
+- Review: Gemini CLI session about v3 blueprint
+- 7 comprehensive docs written in `docs/v2/`
 
-### Warm Glass Redesign: VOLLEDIG UITGEVOERD (Fase 0-5)
-- **Fase 0:** Design tokens, motion/mini CDN, reactive store
-- **Fase 1:** ~80 hardcoded CSS waarden gemigreerd naar warm-glass tokens
-- **Fase 2:** Location detail 12 secties -> 3-tier progressive disclosure
-- **Fase 3:** Map polish (cluster sizing, glass FAB, filled nav icons, a11y, Lijst FAB verwijderd, top nav hidden)
-- **Fase 4:** Apple Maps search (expanderende pill, live suggesties, Annuleren knop)
-- **Fase 5:** Performance (content-visibility, blur-up, preconnect, will-change, decoding=async)
-- Framework beslissing: Vanilla JS + motion/mini (geen Svelte)
+## Key design decisions
 
-### B3 Foto Quality Check: 450/1000 GEDAAN
-- 90 foto's succesvol gescoord + DB geüpdatet
-- 62 slechte foto's geïdentificeerd (score 1-2: logos, schilderijen, screenshots)
-- 298 Gemini API errors (rate limit) — moeten opnieuw
-- Herstart volgende sessie: `OFFSET=450 GEMINI_API_KEY=... node .scripts/pipeline/quality-check-photos.js`
+| Decision | Choice |
+|---|---|
+| Stack | Next.js App Router, TypeScript, React, Tailwind, Cloudflare Pages |
+| Database | Same Supabase (server-side access only) |
+| Maps | MapLibre GL behind adapter |
+| State | TanStack Query (server), XState (UI orchestration) |
+| Main font | Inter (variable) — replaces Plus Jakarta Sans |
+| Accent font | Newsreader — only for location names on detail sheet |
+| Design | Apple Maps 85-90% likeness, warm terracotta palette |
+| Color mode | Light mode only |
+| Primary accent | `#C05A3A` (deep terracotta) |
+| Detail flow | Separate sheet (not in-place in browse sheet) |
+| Carousel | Compact horizontal cards for small clusters (≤5) |
+| Start screen | Contextual algorithm (time + weather + season + prefs) |
+| Icons | SVG icons, no emoji |
+| Weather API | Open-Meteo (free, no key) |
+| Deployment | Cloudflare Pages → staging.peuterplannen.nl |
+| Production | peuterplannen.nl untouched until v2 proven on staging |
 
-## Huidige staat
+## Documentation (read these first)
 
-### Code (op main, gepusht)
-- QA: 13/13 critical flows PASS (Fase 5 final QA)
-- Redesign branch gemerged naar main
-- CI: check na merge
+All in `docs/v2/`:
 
-### Wat nog draait / open staat
-1. **B3 quality check** draait in terminal — laat draaien tot klaar, of herstart:
-   ```bash
-   GEMINI_API_KEY=AIzaSyBtd21R1VqAYZLjwnuti5K4Qool-vT9nXA node .scripts/pipeline/quality-check-photos.js
-   ```
-2. **Foto's committen** — 262 nieuwe images (293MB) in `/images/locations/`, nog niet in git
-3. **sync-photo-urls.js** draaien na B3 klaar is
-4. **sw.js updaten** met `warm-glass-tokens.css` in cache-lijst
-5. **Gemini API key** vernieuwd: `AIzaSyBtd21R1VqAYZLjwnuti5K4Qool-vT9nXA`
+| File | What |
+|---|---|
+| `user-flows.md` | 24 concrete user flows with step-by-step journeys |
+| `product-principles.md` | Build rules and decision framework |
+| `information-architecture.md` | Routes, screens, navigation, SEO page strategy |
+| `system-architecture.md` | Full technical architecture with code examples |
+| `design-system.md` | Canonical design system (Apple Maps + warm palette) |
+| `seo-analytics.md` | URL strategy, structured data, event taxonomy |
+| `migration-plan.md` | 7 phases, risks, rollback, deferred scope |
 
-### Belangrijke bestanden
-- `plan-warm-glass-redesign.md` — redesign plan (alle fasen klaar)
-- `warm-glass-tokens.css` — het design token systeem
-- `plan-next.md` — het eerdere plan (alles afgerond)
-- `.scripts/pipeline/quality-check-photos.js` — Gemini quality filter
-- `docs/archive/APPLE-MAPS-UX-RESEARCH.md` — Apple Maps research
+## Next step
 
-### Gemini feedback voor polish later
-- Week picks cards: wit tekst contrast verbeteren
-- Bottom nav tekst iets groter
-- Desktop sidebar glass effect sterker maken (hogere blur na device testing)
+Start Phase 1 from `migration-plan.md`:
+1. Scaffold Next.js project in `/v2/` directory
+2. TypeScript strict, ESLint, Prettier
+3. Tailwind + design token CSS variables
+4. Environment variables (.env.example)
+5. Supabase server-side client + typed repositories
+6. Zod schemas for Location, Region
+7. Basic app shell layout
+8. Deploy to staging.peuterplannen.nl via Cloudflare Pages
+
+## Prompt for new session
+
+```
+We're rebuilding PeuterPlannen on a new stack. Phase 0 (docs) is done.
+Read docs/v2/migration-plan.md Phase 1 for scope, then start scaffolding.
+```
