@@ -14,13 +14,23 @@ const nextConfig: NextConfig = {
     root: resolve(__dirname, '..'),
   },
 
-  // Images from Supabase storage and local
+  // Images from Supabase storage and Cloudflare R2
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'piujsvgbfflrrvauzsxe.supabase.co',
         pathname: '/storage/v1/object/public/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'photos.peuterplannen.nl',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'pub-*.r2.dev',
+        pathname: '/**',
       },
     ],
   },

@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { locationQueries } from '@/features/map/queries';
 import { LOCATION_TYPE_LABELS, PRICE_BAND_LABELS, TYPE_COLORS } from '@/domain/enums';
 import type { PriceBand } from '@/domain/enums';
+import { getPhotoUrl } from '@/lib/image';
 
 interface DetailViewProps {
   locationId: number;
@@ -46,10 +47,10 @@ export function DetailView({ locationId, onClose }: DetailViewProps) {
       </div>
 
       {/* Hero photo */}
-      {location.photo_url && (
+      {getPhotoUrl(location.photo_url) && (
         <div className="mx-4 mb-4 overflow-hidden rounded-photo">
           <img
-            src={location.photo_url}
+            src={getPhotoUrl(location.photo_url)!}
             alt={location.name}
             className="aspect-[4/3] w-full object-cover"
           />

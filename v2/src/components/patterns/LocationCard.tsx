@@ -2,6 +2,7 @@
 
 import type { LocationSummary } from '@/domain/types';
 import { LOCATION_TYPE_LABELS, TYPE_COLORS } from '@/domain/enums';
+import { getPhotoUrl } from '@/lib/image';
 
 interface LocationCardProps {
   location: LocationSummary;
@@ -25,9 +26,9 @@ export function LocationCard({ location, onTap, isSelected }: LocationCardProps)
     >
       {/* Photo */}
       <div className="h-[72px] w-[72px] flex-shrink-0 overflow-hidden rounded-photo bg-bg-secondary">
-        {location.photo_url ? (
+        {getPhotoUrl(location.photo_url) ? (
           <img
-            src={location.photo_url}
+            src={getPhotoUrl(location.photo_url)!}
             alt={location.name}
             className="h-full w-full object-cover"
             loading="lazy"

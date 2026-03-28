@@ -26,6 +26,7 @@ import {
   buildLocationStructuredData,
 } from '@/components/patterns/StructuredData';
 import { ContentShell } from '@/components/layout/ContentShell';
+import { getPhotoUrl } from '@/lib/image';
 
 // ---------------------------------------------------------------------------
 // ISR: revalidate every 24 hours
@@ -118,7 +119,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: canonical,
       siteName: 'PeuterPlannen',
       type: 'website',
-      ...(location.photo_url && { images: [{ url: location.photo_url }] }),
+      ...(getPhotoUrl(location.photo_url) && { images: [{ url: getPhotoUrl(location.photo_url)! }] }),
     },
   };
 }
@@ -191,7 +192,7 @@ export default async function SlugPage({ params }: Props) {
       description: location.description || typeName,
       schemaType: SCHEMA_TYPE_MAP[location.type] ?? 'TouristAttraction',
       canonicalUrl: canonical,
-      imageUrl: location.photo_url,
+      imageUrl: getPhotoUrl(location.photo_url),
       lat: location.lat,
       lng: location.lng,
       city: region.name,
@@ -611,9 +612,9 @@ function ComboLocationCard({
       className="flex gap-3 rounded-card bg-bg-tertiary p-3 shadow-[0_1px_4px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-card"
     >
       <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-photo bg-bg-secondary">
-        {location.photo_url?.startsWith('http') ? (
+        {getPhotoUrl(location.photo_url) ? (
           <img
-            src={location.photo_url}
+            src={getPhotoUrl(location.photo_url)!}
             alt={location.name}
             className="h-full w-full object-cover"
             loading="lazy"
@@ -680,15 +681,13 @@ function HeroImage({
   name: string;
   typeColor: string;
 }) {
-  // Only use external URLs (https://) — local paths (/images/...) aren't
-  // available in v2 yet (Phase 3.5: photo migration to R2)
-  const hasExternalPhoto = photoUrl && photoUrl.startsWith('http');
+  const resolvedUrl = getPhotoUrl(photoUrl);
 
-  if (hasExternalPhoto) {
+  if (resolvedUrl) {
     return (
       <div className="overflow-hidden rounded-card">
         <img
-          src={photoUrl}
+          src={resolvedUrl}
           alt={name}
           className="aspect-[16/9] w-full object-cover"
           loading="eager"
@@ -853,9 +852,9 @@ function NearbyLocationCard({
     >
       {/* Photo */}
       <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-photo bg-bg-secondary">
-        {location.photo_url?.startsWith('http') ? (
+        {getPhotoUrl(location.photo_url) ? (
           <img
-            src={location.photo_url}
+            src={getPhotoUrl(location.photo_url)!}
             alt={location.name}
             className="h-full w-full object-cover"
             loading="lazy"

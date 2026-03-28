@@ -9,6 +9,7 @@
 **Phase 3 progressive enhancement complete** — interactive map on SSR content pages (desktop), now with persistent map.
 **Code review hardening complete** — 9 issues fixed (2 critical, 7 warnings).
 **Mobile interactive sheet complete** — SSR content pages use draggable bottom sheet on mobile (CSS-first, zero CLS).
+**Phase 3.5 photo migration complete** — 2,324 photos uploaded to Cloudflare R2, all DB URLs updated, all components use `getPhotoUrl()` helper.
 
 ## Architecture (current)
 
@@ -124,15 +125,18 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Mobile interactive sheet
-1. **ContentSheetContainer** — new client component with built-in drag logic (extracted from `Sheet.tsx`). Responsive: sidebar on desktop, draggable sheet on mobile.
-2. **CSS-first positioning** — `.content-sheet` + `.content-sheet--full` classes in `globals.css`. SSR renders correct layout on both viewports without waiting for JS hydration. Zero CLS.
-3. **ContentShell refactored** — now delegates layout to `ContentSheetContainer`. Stays a server component. MapUpdater + buildLocationHrefs unchanged.
-4. **Drag mechanics** — velocity-based fling, closest-snap fallback, scroll-to-drag handoff, corner radius morphing (16px → 0 from half → full). Same physics as AppShell's Sheet.
-5. **Snap states** — peek (25%), half (50%), full (92%). Location pages start at half, blog/guides start at full.
-6. **Desktop override** — `@media (min-width: 768px)` with `transform: none !important` ensures sidebar layout regardless of JS state.
+### Phase 3.5: Photo migration infrastructure
+1. **Image helper** (`src/lib/image.ts`) — `getPhotoUrl()` converts relative DB paths (`/images/locations/...`) to R2 public URLs. Also includes `getResizedPhotoUrl()` and `cloudflareLoader()` ready for Phase 4 Image Resizing.
+2. **Migration script** (`scripts/migrate-photos-r2.mjs`) — scans 2,324 hero.webp files (200MB), uploads to R2 via S3-compatible API, batch-updates Supabase photo_url values. Supports dry run, skip-upload, and concurrency control.
+3. **Component updates** — all 7 photo rendering points now use `getPhotoUrl()`:
+   - Client: LocationCard, CarouselCard, DetailView
+   - Server: HeroImage, NearbyCard, CityTypeCard, RegionLocationCard
+   - Metadata: OG image, structured data
+4. **Config** — `next.config.ts` adds R2 domain to remotePatterns. `wrangler.jsonc` adds R2 bucket binding. `@aws-sdk/client-s3` added as dev dependency.
+5. **Backward compatible** — without `NEXT_PUBLIC_R2_URL` env var, `getPhotoUrl()` returns null for relative paths (shows fallback gradient). With R2 configured, converts to full URLs.
 
 ### Previous sessions
+- Mobile interactive sheet (ContentSheetContainer, CSS-first, zero CLS)
 - Code review hardening (9 fixes, 2 critical)
 - Persistent map in (app) layout (MapStateContext, PersistentMap, MapUpdater)
 - Phase 3 progressive enhancement (ContentMap on SSR pages)
@@ -149,8 +153,10 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What's NOT done yet
 
-### Phase 3.5
-- Photo migration to Cloudflare R2
+### Phase 3.5 remaining
+- Set up custom domain `photos.peuterplannen.nl` (currently using r2.dev public URL — rate-limited, not for production)
+- Update photo pipeline (`fetch-photos.js`) to upload new photos to R2 instead of disk
+- 55 locations in DB have no matching local hero.webp (may need re-fetch)
 
 ### Phase 4: Polish & Canonicalize
 - Visual refinement, performance optimization
@@ -180,20 +186,19 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 | Link rewriting | rehype plugin | Converts .html links, /app.html?regio=X, trailing slashes to v2 routes |
 | Route conflict | KNOWN_TYPE_SLUGS checked first | blog/guides are explicit segments (no conflict with [region]) |
 | Guides page | Curated view of blog data | Featured + latest + by-city + by-type — all sourced from BlogRepository |
+| Photo URLs | `getPhotoUrl()` centralized helper | Converts relative paths → R2 URLs. All components use it. Backward compatible without R2. |
+| Photo storage | Cloudflare R2 (S3-compatible) | Migration script uploads hero.webp files. Image Resizing ready for Phase 4. |
 
 ## Next step
 
-Phase 3 is complete (persistent map + mobile sheet). Next priorities:
+Phase 3.5 infrastructure is complete. Next priorities:
 
-1. **Photo migration** (Phase 3.5) — Cloudflare R2 storage for location images
+1. **Custom domain for R2** — set up `photos.peuterplannen.nl` pointing to R2 bucket (r2.dev URL is rate-limited)
 2. **Phase 4: Polish** — visual refinement, performance optimization, mobile map behind sheet
 3. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
 
 **Before starting**, the session should:
 - Read this HANDOFF.md
-- Read `docs/v2/information-architecture.md` for the full architecture spec
 - Run `npm run build` to confirm 1330 pages generate
-- **Verify persistent map in a real browser**: `localhost:3000/amsterdam` → sidebar left, map right with markers
-- Navigate `localhost:3000/amsterdam` → `localhost:3000/amsterdam/artis` → map should smoothly transition (no reset)
-- `localhost:3000/blog` → no markers on map, just NL tiles
+- Verify photos load: `curl -sI https://pub-6d4e9e7e203645399b77d6c054334aaa.r2.dev/amsterdam/artis/hero.webp`
 - `localhost:3000/` → AppShell renders normally with its own map
