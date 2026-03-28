@@ -2,25 +2,13 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { locationQueries } from '@/features/map/queries';
-import { LOCATION_TYPE_LABELS, PRICE_BAND_LABELS } from '@/domain/enums';
+import { LOCATION_TYPE_LABELS, PRICE_BAND_LABELS, TYPE_COLORS } from '@/domain/enums';
 import type { PriceBand } from '@/domain/enums';
 
 interface DetailViewProps {
   locationId: number;
   onClose: () => void;
 }
-
-/** Category color mapping */
-const TYPE_COLORS: Record<string, string> = {
-  play: 'var(--color-cat-play)',
-  farm: 'var(--color-cat-farm)',
-  nature: 'var(--color-cat-nature)',
-  museum: 'var(--color-cat-museum)',
-  culture: 'var(--color-cat-culture)',
-  swim: 'var(--color-cat-swim)',
-  pancake: 'var(--color-cat-pancake)',
-  horeca: 'var(--color-cat-horeca)',
-};
 
 export function DetailView({ locationId, onClose }: DetailViewProps) {
   const { data: location, isLoading } = useQuery(locationQueries.detail(locationId));
@@ -115,7 +103,7 @@ export function DetailView({ locationId, onClose }: DetailViewProps) {
 
       {/* Action buttons (Apple Maps style) */}
       <div className="flex justify-center gap-4 px-4">
-        {location.website && (
+        {location.website && /^https?:\/\//i.test(location.website) && (
           <ActionButton
             label="Website"
             href={location.website}

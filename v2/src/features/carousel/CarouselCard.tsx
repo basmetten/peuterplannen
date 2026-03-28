@@ -1,25 +1,13 @@
 'use client';
 
 import type { LocationSummary } from '@/domain/types';
-import { LOCATION_TYPE_LABELS } from '@/domain/enums';
+import { LOCATION_TYPE_LABELS, TYPE_COLORS } from '@/domain/enums';
 
 interface CarouselCardProps {
   location: LocationSummary;
   onTap: (location: LocationSummary) => void;
   isActive?: boolean;
 }
-
-/** Category color mapping for type badges */
-const TYPE_COLORS: Record<string, string> = {
-  play: 'var(--color-cat-play)',
-  farm: 'var(--color-cat-farm)',
-  nature: 'var(--color-cat-nature)',
-  museum: 'var(--color-cat-museum)',
-  culture: 'var(--color-cat-culture)',
-  swim: 'var(--color-cat-swim)',
-  pancake: 'var(--color-cat-pancake)',
-  horeca: 'var(--color-cat-horeca)',
-};
 
 /**
  * Compact carousel card (~200px wide) for horizontal scrolling overlay.

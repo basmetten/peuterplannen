@@ -31,6 +31,18 @@ export const LOCATION_TYPE_LABELS: Record<LocationType, string> = {
   culture: 'Cultuur',
 };
 
+/** CSS custom property for each category color — single source of truth */
+export const TYPE_COLORS: Record<LocationType, string> = {
+  play: 'var(--color-cat-play)',
+  farm: 'var(--color-cat-farm)',
+  nature: 'var(--color-cat-nature)',
+  museum: 'var(--color-cat-museum)',
+  culture: 'var(--color-cat-culture)',
+  swim: 'var(--color-cat-swim)',
+  pancake: 'var(--color-cat-pancake)',
+  horeca: 'var(--color-cat-horeca)',
+};
+
 /** Human-readable Dutch labels for price bands */
 export const PRICE_BAND_LABELS: Record<PriceBand, string> = {
   free: 'Gratis',

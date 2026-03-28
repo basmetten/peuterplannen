@@ -7,7 +7,7 @@ export interface Location {
   name: string;
   region: string;
   type: LocationType;
-  description: string;
+  description: string | null;
   website: string | null;
 
   // Facilities

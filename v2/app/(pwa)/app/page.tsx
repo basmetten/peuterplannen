@@ -6,7 +6,7 @@ export const metadata = {
   title: 'Kaart',
 };
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 300;
 
 export default async function AppPage() {
   // Server-side: fetch all location summaries for initial render

@@ -18,7 +18,7 @@ export function SearchInput({
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="relative px-4 pb-2">
+    <search className="relative px-4 pb-2">
       <div className="flex items-center gap-2 rounded-pill bg-bg-secondary px-4">
         {/* Search icon */}
         <svg
@@ -60,6 +60,6 @@ export function SearchInput({
           </button>
         )}
       </div>
-    </div>
+    </search>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useEffect, useRef, Suspense } from 'react';
+import { useCallback, useMemo, useEffect, useRef, useState, Suspense } from 'react';
 import { useMachine } from '@xstate/react';
 import { useIsDesktop } from '@/hooks/useIsDesktop';
 import { MapContainer } from '@/features/map/MapContainer';
@@ -58,12 +58,26 @@ export function AppShell({ initialLocations }: AppShellProps) {
     [initialLocations, filters],
   );
 
+  // Track viewport height for accurate sheet padding (handles resize + orientation change)
+  const [viewportHeight, setViewportHeight] = useState(
+    typeof window !== 'undefined' ? window.innerHeight : 800,
+  );
+  useEffect(() => {
+    const vv = window.visualViewport;
+    const update = () => setViewportHeight(vv ? vv.height : window.innerHeight);
+    if (vv) {
+      vv.addEventListener('resize', update);
+      return () => vv.removeEventListener('resize', update);
+    }
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
   // Map bottom padding (mobile only — desktop has no sheet)
   const bottomPadding = useMemo(() => {
     if (isDesktop) return 0;
-    const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
-    return (SNAP_POINTS[snap] / 100) * vh;
-  }, [snap, isDesktop]);
+    return (SNAP_POINTS[snap] / 100) * viewportHeight;
+  }, [snap, isDesktop, viewportHeight]);
 
   // --- URL deep linking: initial load ---
 

@@ -96,6 +96,36 @@ export const LocationRepository = {
     return data;
   },
 
+  /** Fetch nearby locations for a detail page — same region, prefer same type */
+  async getNearby(
+    locationId: number,
+    regionName: string,
+    locationType: string,
+    limit = 6,
+  ): Promise<LocationSummary[]> {
+    const { data, error } = await supabase
+      .from('locations')
+      .select(LOCATION_SUMMARY_COLUMNS)
+      .neq('id', locationId)
+      .eq('region', regionName)
+      .order('ai_suitability_score_10', { ascending: false, nullsFirst: false })
+      .limit(limit * 3); // Fetch extra to allow type-preference sorting
+
+    if (error) throw new Error(`Failed to fetch nearby: ${error.message}`);
+
+    const parsed = data.map((row: unknown) => LocationSummarySchema.parse(row));
+
+    // Sort: same type first, then by score (already sorted by score from DB)
+    const sorted = parsed.sort((a, b) => {
+      const aMatch = a.type === locationType ? 1 : 0;
+      const bMatch = b.type === locationType ? 1 : 0;
+      if (aMatch !== bMatch) return bMatch - aMatch;
+      return (b.ai_suitability_score_10 ?? 0) - (a.ai_suitability_score_10 ?? 0);
+    });
+
+    return sorted.slice(0, limit);
+  },
+
   /** Convert summaries to GeoJSON FeatureCollection */
   toGeoJSON(locations: LocationSummary[]) {
     return {

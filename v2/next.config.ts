@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   // the mount/unmount/remount cycle (WebGL context gets destroyed).
   // Works fine in production builds where strict mode doesn't double-mount.
   reactStrictMode: false,
+
+  // SEO: no trailing slashes on URLs
+  trailingSlash: false,
   // Turbopack root (v2 is nested inside the main repo)
   turbopack: {
     root: resolve(__dirname, '..'),
@@ -31,6 +34,15 @@ const nextConfig: NextConfig = {
         { key: 'X-Content-Type-Options', value: 'nosniff' },
         { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
       ],
+    },
+  ],
+
+  // Legacy .html redirects (301 permanent)
+  redirects: async () => [
+    {
+      source: '/:path*.html',
+      destination: '/:path*',
+      permanent: true,
     },
   ],
 };

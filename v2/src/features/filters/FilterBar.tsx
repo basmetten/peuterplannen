@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback } from 'react';
-import { LOCATION_TYPES, WEATHER_OPTIONS, LOCATION_TYPE_LABELS } from '@/domain/enums';
+import { LOCATION_TYPES, WEATHER_OPTIONS, LOCATION_TYPE_LABELS, TYPE_COLORS } from '@/domain/enums';
 import type { LocationType, Weather } from '@/domain/enums';
 
 interface FilterBarProps {
@@ -11,17 +11,6 @@ interface FilterBarProps {
   onWeatherChange: (weather: Weather | null) => void;
 }
 
-/** Category color mapping */
-const TYPE_COLORS: Record<string, string> = {
-  play: 'var(--color-cat-play)',
-  farm: 'var(--color-cat-farm)',
-  nature: 'var(--color-cat-nature)',
-  museum: 'var(--color-cat-museum)',
-  culture: 'var(--color-cat-culture)',
-  swim: 'var(--color-cat-swim)',
-  pancake: 'var(--color-cat-pancake)',
-  horeca: 'var(--color-cat-horeca)',
-};
 
 const WEATHER_LABELS: Record<Weather, string> = {
   indoor: 'Binnen',
@@ -46,6 +35,7 @@ export function FilterBar({
             <button
               key={type}
               type="button"
+              aria-pressed={isActive}
               onClick={() => onTypeToggle(type)}
               className={`
                 flex-shrink-0 rounded-pill px-3 py-1.5 text-[13px] font-medium tracking-[0.002em]
@@ -71,6 +61,7 @@ export function FilterBar({
             <button
               key={w}
               type="button"
+              aria-pressed={isActive}
               onClick={() => onWeatherChange(isActive ? null : w)}
               className={`
                 rounded-pill px-3 py-1.5 text-[13px] font-medium tracking-[0.002em]
