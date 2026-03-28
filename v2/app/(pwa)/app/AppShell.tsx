@@ -1,9 +1,11 @@
 'use client';
 
-import { useCallback, useMemo, Suspense } from 'react';
+import { useCallback, useMemo, useEffect, useRef, Suspense } from 'react';
 import { useMachine } from '@xstate/react';
+import { useIsDesktop } from '@/hooks/useIsDesktop';
 import { MapContainer } from '@/features/map/MapContainer';
 import { Sheet } from '@/features/sheet/Sheet';
+import { Sidebar, SIDEBAR_WIDTH } from '@/features/sidebar/Sidebar';
 import { sheetMachine, SNAP_POINTS, type SheetSnap } from '@/features/sheet/sheetMachine';
 import { FilterBar } from '@/features/filters/FilterBar';
 import { SearchInput } from '@/features/filters/SearchInput';
@@ -18,12 +20,35 @@ interface AppShellProps {
   initialLocations: LocationSummary[];
 }
 
+// --- URL helpers ---
+
+function locationToParam(loc: LocationSummary): string {
+  return `${encodeURIComponent(loc.region.toLowerCase())}/${encodeURIComponent(loc.slug)}`;
+}
+
+function findByParam(locations: LocationSummary[], param: string): LocationSummary | undefined {
+  const slashIdx = param.indexOf('/');
+  if (slashIdx < 0) return undefined;
+  const region = decodeURIComponent(param.slice(0, slashIdx)).toLowerCase();
+  const slug = decodeURIComponent(param.slice(slashIdx + 1));
+  return locations.find(
+    (l) => l.region.toLowerCase() === region && l.slug === slug,
+  );
+}
+
+// --- Main component ---
+
 export function AppShell({ initialLocations }: AppShellProps) {
+  const isDesktop = useIsDesktop();
   const [sheetState, sheetSend] = useMachine(sheetMachine);
   const { filters, toggleType, setWeather, setQuery, clearFilters, isFiltered } = useFilters();
 
   const { snap, detailId } = sheetState.context;
   const isDetailOpen = sheetState.matches('detail');
+
+  // Prevent circular URL ↔ state updates
+  const isNavigatingRef = useRef(false);
+  const initializedRef = useRef(false);
 
   // Filter locations client-side
   const filteredLocations = useMemo(
@@ -31,29 +56,87 @@ export function AppShell({ initialLocations }: AppShellProps) {
     [initialLocations, filters],
   );
 
-  // Map bottom padding based on sheet state
+  // Map bottom padding (mobile only — desktop has no sheet)
   const bottomPadding = useMemo(() => {
+    if (isDesktop) return 0;
     const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
     return (SNAP_POINTS[snap] / 100) * vh;
-  }, [snap]);
+  }, [snap, isDesktop]);
 
-  // Handlers
+  // --- URL deep linking: initial load ---
+
+  useEffect(() => {
+    if (initializedRef.current || initialLocations.length === 0) return;
+    initializedRef.current = true;
+
+    const url = new URL(window.location.href);
+    const locatie = url.searchParams.get('locatie');
+    if (!locatie) return;
+
+    const loc = findByParam(initialLocations, locatie);
+    if (!loc) return;
+
+    // Set up history so back has a "browse" entry to return to
+    const browseUrl = new URL(window.location.href);
+    browseUrl.searchParams.delete('locatie');
+    window.history.replaceState({ mode: 'browse' }, '', browseUrl.toString());
+    window.history.pushState({ mode: 'detail', id: loc.id }, '', url.toString());
+
+    sheetSend({ type: 'OPEN_DETAIL', id: loc.id });
+  }, [initialLocations, sheetSend]);
+
+  // --- URL deep linking: back/forward ---
+
+  useEffect(() => {
+    const handler = () => {
+      const url = new URL(window.location.href);
+      const locatie = url.searchParams.get('locatie');
+
+      isNavigatingRef.current = true;
+
+      if (locatie) {
+        const loc = findByParam(initialLocations, locatie);
+        if (loc) sheetSend({ type: 'OPEN_DETAIL', id: loc.id });
+      } else {
+        sheetSend({ type: 'CLOSE_DETAIL' });
+      }
+
+      requestAnimationFrame(() => {
+        isNavigatingRef.current = false;
+      });
+    };
+
+    window.addEventListener('popstate', handler);
+    return () => window.removeEventListener('popstate', handler);
+  }, [initialLocations, sheetSend]);
+
+  // Push locatie to URL when detail opens via user action
+  const pushDetailUrl = useCallback((location: LocationSummary) => {
+    if (isNavigatingRef.current) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set('locatie', locationToParam(location));
+    window.history.pushState({ mode: 'detail', id: location.id }, '', url.toString());
+  }, []);
+
+  // --- Handlers ---
+
   const handleMarkerClick = useCallback((location: LocationSummary) => {
     sheetSend({ type: 'OPEN_DETAIL', id: location.id });
-  }, [sheetSend]);
+    pushDetailUrl(location);
+  }, [sheetSend, pushDetailUrl]);
 
   const handleMapClick = useCallback(() => {
     if (isDetailOpen) {
-      sheetSend({ type: 'CLOSE_DETAIL' });
-    } else if (snap !== 'peek') {
+      window.history.back(); // popstate → CLOSE_DETAIL
+    } else if (!isDesktop && snap !== 'peek') {
       sheetSend({ type: 'SNAP_TO', target: 'peek' });
     }
-  }, [isDetailOpen, snap, sheetSend]);
+  }, [isDetailOpen, isDesktop, snap, sheetSend]);
 
   const handleSnapChange = useCallback((newSnap: SheetSnap) => {
     if (isDetailOpen) {
       if (newSnap === 'hidden' || newSnap === 'peek') {
-        sheetSend({ type: 'CLOSE_DETAIL' });
+        window.history.back(); // popstate → CLOSE_DETAIL
       } else {
         sheetSend({ type: 'DRAG_END', snapTo: newSnap });
       }
@@ -64,59 +147,67 @@ export function AppShell({ initialLocations }: AppShellProps) {
 
   const handleCardTap = useCallback((location: LocationSummary) => {
     sheetSend({ type: 'OPEN_DETAIL', id: location.id });
-  }, [sheetSend]);
+    pushDetailUrl(location);
+  }, [sheetSend, pushDetailUrl]);
 
   const handleDetailClose = useCallback(() => {
-    sheetSend({ type: 'CLOSE_DETAIL' });
-  }, [sheetSend]);
+    window.history.back(); // popstate → CLOSE_DETAIL
+  }, []);
 
   const handleSearchFocus = useCallback(() => {
-    if (snap === 'peek') {
+    if (!isDesktop && snap === 'peek') {
       sheetSend({ type: 'SNAP_TO', target: 'half' });
     }
-  }, [snap, sheetSend]);
+  }, [isDesktop, snap, sheetSend]);
+
+  // --- Shared content (rendered in sidebar or sheet) ---
+
+  const content = isDetailOpen && detailId ? (
+    <DetailView locationId={detailId} onClose={handleDetailClose} />
+  ) : (
+    <BrowseContent
+      locations={filteredLocations}
+      totalCount={initialLocations.length}
+      filters={filters}
+      isFiltered={isFiltered}
+      onTypeToggle={toggleType}
+      onWeatherChange={setWeather}
+      onQueryChange={setQuery}
+      onClearFilters={clearFilters}
+      onCardTap={handleCardTap}
+      onSearchFocus={handleSearchFocus}
+      selectedId={detailId}
+    />
+  );
 
   return (
     <>
-      {/* Map (always visible behind sheet) */}
+      {/* Map — always visible, offset on desktop */}
       <MapContainer
         locations={filteredLocations}
         selectedId={detailId}
         onMarkerClick={handleMarkerClick}
         onMapClick={handleMapClick}
         bottomPadding={bottomPadding}
+        leftOffset={isDesktop ? SIDEBAR_WIDTH : 0}
       />
 
-      {/* Sheet */}
-      <Suspense>
-        <Sheet
-          snap={snap}
-          onSnapChange={handleSnapChange}
-        >
-          {isDetailOpen && detailId ? (
-            <DetailView locationId={detailId} onClose={handleDetailClose} />
-          ) : (
-            <BrowseContent
-              locations={filteredLocations}
-              totalCount={initialLocations.length}
-              filters={filters}
-              isFiltered={isFiltered}
-              onTypeToggle={toggleType}
-              onWeatherChange={setWeather}
-              onQueryChange={setQuery}
-              onClearFilters={clearFilters}
-              onCardTap={handleCardTap}
-              onSearchFocus={handleSearchFocus}
-              selectedId={detailId}
-            />
-          )}
-        </Sheet>
-      </Suspense>
+      {/* Desktop: persistent sidebar. Mobile: draggable bottom sheet */}
+      {isDesktop ? (
+        <Sidebar>{content}</Sidebar>
+      ) : (
+        <Suspense>
+          <Sheet snap={snap} onSnapChange={handleSnapChange}>
+            {content}
+          </Sheet>
+        </Suspense>
+      )}
     </>
   );
 }
 
-/** Browse sheet content: search + filters + card list + empty state */
+// --- Browse content (shared between sidebar and sheet) ---
+
 function BrowseContent({
   locations,
   totalCount,
@@ -208,16 +299,17 @@ function BrowseContent({
   );
 }
 
-/** Suspense fallback for the initial app shell load */
+// --- Suspense fallback ---
+
 export function AppShellSkeleton() {
   return (
     <>
       {/* Map placeholder */}
       <div className="absolute inset-0 bg-bg-secondary" />
 
-      {/* Sheet skeleton */}
+      {/* Sheet skeleton (mobile) */}
       <div
-        className="fixed inset-x-0 bottom-0 z-30 bg-bg-primary"
+        className="fixed inset-x-0 bottom-0 z-30 bg-bg-primary md:bottom-auto md:left-0 md:top-0 md:w-[380px] md:border-r md:border-separator"
         style={{
           height: '100%',
           transform: 'translateY(75%)',
@@ -226,8 +318,8 @@ export function AppShellSkeleton() {
           boxShadow: 'var(--shadow-sheet)',
         }}
       >
-        {/* Handle */}
-        <div className="flex items-center justify-center py-2">
+        {/* Handle (mobile only) */}
+        <div className="flex items-center justify-center py-2 md:hidden">
           <div className="h-[5px] w-9 rounded-full" style={{ background: 'rgba(160, 130, 110, 0.30)' }} />
         </div>
 

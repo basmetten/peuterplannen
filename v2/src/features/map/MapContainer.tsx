@@ -21,6 +21,8 @@ interface MapContainerProps {
   onMarkerClick: (location: LocationSummary) => void;
   onMapClick: () => void;
   bottomPadding?: number;
+  /** Left offset in px for desktop sidebar */
+  leftOffset?: number;
 }
 
 function toGeoJSON(locs: LocationSummary[]) {
@@ -55,6 +57,7 @@ export function MapContainer({
   onMarkerClick,
   onMapClick,
   bottomPadding = 0,
+  leftOffset = 0,
 }: MapContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -201,14 +204,21 @@ export function MapContainer({
   // Update selected marker highlight
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !map.isStyleLoaded()) return;
-    try {
-      map.setFilter(MARKER_SELECTED_LAYER, selectedId
-        ? ['==', ['get', 'id'], selectedId]
-        : ['==', ['get', 'id'], -1],
-      );
-    } catch { /* layer may not exist yet */ }
+    if (!map || !map.isStyleLoaded() || !map.getLayer(MARKER_SELECTED_LAYER)) return;
+    map.setFilter(MARKER_SELECTED_LAYER, selectedId
+      ? ['==', ['get', 'id'], selectedId]
+      : ['==', ['get', 'id'], -1],
+    );
   }, [selectedId]);
+
+  // Resize map when sidebar offset changes
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    // Small delay to let CSS transition complete
+    const timer = setTimeout(() => map.resize(), 50);
+    return () => clearTimeout(timer);
+  }, [leftOffset]);
 
   // Fly to selected marker
   useEffect(() => {
@@ -226,7 +236,7 @@ export function MapContainer({
   }, [selectedId, locations, bottomPadding]);
 
   return (
-    <div className="absolute inset-0">
+    <div className="absolute inset-0" style={{ left: leftOffset }}>
       <div ref={containerRef} className="h-full w-full" />
     </div>
   );

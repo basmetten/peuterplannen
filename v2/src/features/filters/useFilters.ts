@@ -31,11 +31,15 @@ export function useFilters() {
 
   const setFilters = useCallback((updates: Partial<FilterState>) => {
     const next = { ...filters, ...updates };
-    const params = new URLSearchParams();
+    // Preserve unknown params (e.g. ?locatie=...) by starting from current URL
+    const params = new URLSearchParams(window.location.search);
 
     if (next.types.length) params.set('types', next.types.join(','));
+    else params.delete('types');
     if (next.weather) params.set('weather', next.weather);
+    else params.delete('weather');
     if (next.query) params.set('q', next.query);
+    else params.delete('q');
 
     const qs = params.toString();
     router.replace(`${pathname}${qs ? `?${qs}` : ''}`, { scroll: false });
@@ -58,7 +62,13 @@ export function useFilters() {
   }, [setFilters]);
 
   const clearFilters = useCallback(() => {
-    router.replace(pathname, { scroll: false });
+    // Preserve unknown params (e.g. ?locatie=...) when clearing filters
+    const params = new URLSearchParams(window.location.search);
+    params.delete('types');
+    params.delete('weather');
+    params.delete('q');
+    const qs = params.toString();
+    router.replace(`${pathname}${qs ? `?${qs}` : ''}`, { scroll: false });
   }, [router, pathname]);
 
   const isFiltered = useMemo(() => {
