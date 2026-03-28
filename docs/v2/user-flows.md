@@ -2,6 +2,8 @@
 
 Phase 0 documentation. Every flow described here is a buildable specification.
 
+> **Architecture note:** The app IS the website. Every page on peuterplannen.nl renders within the same map + sheet/sidebar layout. There are no separate "marketing" pages. SEO routes (region hubs, location details, guides) render as routes within the unified app shell. See `information-architecture.md` for the full route structure.
+
 ---
 
 ## 1. Cold Start on Mobile — First Time Opening the App
@@ -10,7 +12,7 @@ Phase 0 documentation. Every flow described here is a buildable specification.
 
 **Context of use:** Parent is on the couch, Saturday morning, iPhone in one hand, toddler eating breakfast. Tapped a link from a friend or Google result. Has never seen PeuterPlannen before. Mildly curious, will bounce if confused.
 
-**Entry point:** Direct URL `peuterplannen.nl` or `/app` in Safari/Chrome mobile.
+**Entry point:** Direct URL `peuterplannen.nl` (which IS the app — no splash page, no marketing page, no `/app` redirect needed).
 
 **Step-by-step journey:**
 
@@ -443,7 +445,7 @@ The detail view is a **separate sheet** that replaces the browse sheet — the s
 - On marker/card tap: look up place ID from the marker's feature properties or card data. Render detail sheet peek from the preloaded index data (no API call needed for peek content).
 - On swipe to half/full: fetch full detail data from Supabase for this location (all 60 fields) if not already cached. Show skeleton sections while loading.
 - Manage two sheet instances: browse sheet and detail sheet. Only one is visible at a time. Store the browse sheet's previous position (peek/half/full) so it can be restored on detail dismissal.
-- Update URL to `/app/amsterdam/artis` (or similar) for deep-linking and back-button support.
+- Update URL to `/amsterdam/artis` for deep-linking and back-button support.
 - Push to browser history stack so back button dismisses the detail sheet and returns the browse sheet (same as swipe-down past peek).
 
 **Edge cases:**
@@ -674,7 +676,7 @@ The detail sheet content is distributed across three progressive disclosure leve
 - Also store save timestamps for potential sorting: `savedLocations: [{id: 1, savedAt: timestamp}, ...]`.
 - Bewaard tab: fetch full data for saved IDs from the preloaded index (no API call needed for card rendering).
 - Share link generation: encode saved IDs into a URL-safe base64 hash. Store the mapping server-side (simple Supabase table: `shared_lists` with columns `hash`, `location_ids`, `created_at`). No auth required — these are ephemeral lists.
-- On opening a shared link: decode the hash, fetch location data, render as a read-only list with "Open in app" buttons.
+- On opening a shared link: decode the hash, fetch location data, render as a read-only list within the app shell (each location links to its detail route).
 
 **Edge cases:**
 - User clears browser data: saved list is lost. When Bewaard tab is empty, show: "Je bewaarde plekken verschijnen hier. Bewaar plekken door op ❤️ te tikken." (NOT "Log in to save" — that's a future feature.)
@@ -735,7 +737,7 @@ The detail sheet content is distributed across three progressive disclosure leve
 
 **Step-by-step journey:**
 
-1. **Automatic prompt (Chrome Android):** After 3+ visits and 30+ seconds of engagement, Chrome shows the native "Add to Home Screen" mini-infobar. PeuterPlannen manifest provides: app name, icon (192x192 + 512x512), theme color (#1B7B3B or brand green), start URL `/app`.
+1. **Automatic prompt (Chrome Android):** After 3+ visits and 30+ seconds of engagement, Chrome shows the native "Add to Home Screen" mini-infobar. PeuterPlannen manifest provides: app name, icon (192x192 + 512x512), theme color (#1B7B3B or brand green), start URL `/`.
 2. **Manual prompt (Safari iOS):** Safari doesn't support `beforeinstallprompt`. Instead, after 3 visits, show a custom banner at the bottom of the screen: "Voeg PeuterPlannen toe aan je beginscherm voor snelle toegang." with a Safari share icon illustration and "Tik op [share icon] → 'Zet op beginscherm'". Dismissable with ×, don't show again for 30 days after dismissal.
 3. **In-app nudge (both platforms):** After a successful save action, one-time toast: "Tip: zet PeuterPlannen op je beginscherm!" — very brief, non-blocking.
 4. After install: app opens in standalone mode (no browser URL bar). Splash screen shows PeuterPlannen logo on brand green background. App remembers last city and state.
@@ -777,7 +779,7 @@ The detail sheet content is distributed across three progressive disclosure leve
    - Search bar shows "Amsterdam".
    - Previously active filters are restored (if any).
    - Toast: "Welkom terug! Je bent in Amsterdam." (only on revisit after > 24h).
-3. If `lastViewedLocation` exists AND the URL is just `/app` (no deep link):
+3. If `lastViewedLocation` exists AND the URL is just `/` (no deep link):
    - Don't auto-open the last detail view — that feels presumptuous.
    - Instead, the last viewed location's card has a subtle "Laatst bekeken" badge.
 4. GPS status: if previously granted, re-request position silently (no UI, no permission dialog — browser remembers). Update blue dot if successful.
@@ -792,7 +794,7 @@ The detail sheet content is distributed across three progressive disclosure leve
   - `lastViewedLocation` (id)
   - `lastVisit` (timestamp)
 - On load: read these values and restore state. Apply before first render to avoid flash of default state.
-- For deep links (`/app/amsterdam/artis`): ignore stored state, use the URL as source of truth.
+- For deep links (`/amsterdam/artis`): ignore stored state, use the URL as source of truth.
 
 **Edge cases:**
 - Stored city no longer exists in the database (region was renamed or removed): fall back to cold start.
@@ -1074,29 +1076,33 @@ The detail sheet content is distributed across three progressive disclosure leve
 
 ---
 
-## 23. SEO Landing on a Collection/Guide Page
+## 23. SEO Landing on a Region/Type Page
 
 **User goal:** Parent Googled "speeltuinen amsterdam" and landed on a PeuterPlannen page. They want to find a good playground in Amsterdam.
 
 **Context of use:** The parent has never heard of PeuterPlannen. They're on a Google search results page, see our listing ("Beste speeltuinen in Amsterdam — PeuterPlannen"), and tap it. First impression must earn trust and deliver value immediately.
 
-**Entry point:** URL like `/amsterdam/speeltuinen/` — an editorial collection page.
+**Entry point:** URL like `/amsterdam/speeltuinen` — this is a route within the unified app shell, not a separate marketing page.
 
 **Step-by-step journey:**
 
-1. Page loads. It's a server-rendered (or pre-rendered static) HTML page optimized for SEO:
-   - **H1**: "De 12 beste speeltuinen in Amsterdam voor peuters"
-   - **Intro paragraph**: 2-3 sentences of editorial context. "Amsterdam heeft tientallen speeltuinen, maar welke zijn echt leuk voor peuters? We bezochten ze en beoordeelden ze op veiligheid, speelwaarde, en of je er een koffie kunt halen."
-   - **Card list**: the top 12 speeltuinen in Amsterdam, sorted by PeuterScore. Each card shows: photo, name, PeuterScore, one-line summary, and a "Bekijk →" link.
-   - **Map embed**: a static map image (or lightweight MapLibre embed) showing all 12 locations as markers.
-   - **Filter chips** (functional even on the static page): Buiten / Binnen / Gratis — basic toggles that filter the list client-side.
-   - **Footer CTA**: "Bekijk alle 42 plekken in Amsterdam →" linking to the full app view.
+1. Page loads. **It renders inside the same map + sheet/sidebar layout as the rest of the app.** The server pre-renders the content inside the sheet/sidebar container:
+   - **Map**: centered on Amsterdam with speeltuin markers visible
+   - **Sheet/sidebar content** (SSR HTML):
+     - **Back button** (top left) + breadcrumb: Home → Amsterdam → Speeltuinen
+     - **H1**: "De 12 beste speeltuinen in Amsterdam voor peuters"
+     - **Intro paragraph**: 2-3 sentences of editorial context
+     - **Filter chips** — "Speeltuinen" pre-selected, other filters available
+     - **Card list**: the top 12 speeltuinen in Amsterdam, sorted by PeuterScore. Each card shows: photo, name, PeuterScore, one-line summary
+   - The user already sees the map with markers. There is no "Open in app" CTA — they are already IN the app.
 
-2. Parent scans the list. The cards look trustworthy (scores, photos, practical info). Taps "Vondelpark Speeltuin" card.
+2. After hydration (< 1s): the map becomes interactive. Cards become tappable. Filters work. The user has the full app experience.
 
-3. **Transition to app**: the card link goes to `/amsterdam/vondelpark-speeltuin/` (detail page, flow 24) or, if the user taps "Open in app →", to `/app?city=amsterdam&type=speeltuin` (the full interactive experience).
+3. Parent scans the list. Taps "Vondelpark Speeltuin" card.
 
-4. Once in the app: city is pre-set to Amsterdam, type filter is pre-set to Speeltuinen. The parent is in flow 6 seamlessly.
+4. URL changes to `/amsterdam/vondelpark-speeltuin`. Browse sheet hides, detail sheet opens with the location's full information. Map zooms to the location. This is flow 9 — seamless, no page navigation, no layout change.
+
+5. Back button → returns to `/amsterdam/speeltuinen`, browse sheet restores with the filtered list.
 
 **What the UI must communicate at each step:**
 - Step 1: "We're experts on this topic. We've done the research." The editorial voice builds trust.
@@ -1132,29 +1138,34 @@ The detail sheet content is distributed across three progressive disclosure leve
 
 **Context of use:** The parent is actively planning and is looking for parent-specific intel that the official Artis website doesn't provide (buggy-friendliness, noise level, is the food any good for adults, where to park with a stroller).
 
-**Entry point:** URL like `/amsterdam/artis/` — a location detail page.
+**Entry point:** URL `/amsterdam/artis` — this is a route within the unified app shell, not a separate page.
 
 **Step-by-step journey:**
 
-1. Page loads. Server-rendered detail page (similar content to flow 10, but as a full HTML page):
-   - **H1**: "Artis met je peuter — PeuterPlannen Review"
-   - Hero photo (full width)
-   - PeuterScore prominently displayed
-   - Quick-info row (weather, age, price, type)
-   - Full editorial review (longer than the in-app description — SEO pages need more content)
-   - Score breakdown with detailed explanations ("Buggy-vriendelijkheid: 3/5 — De hoofdpaden zijn goed begaanbaar, maar sommige dierverblijven hebben drempels.")
-   - Opening hours, address, parking info
-   - "Koop tickets" affiliate CTA (flow 18)
-   - "Vergelijkbare plekken" section linking to 3-4 nearby alternatives
-   - Breadcrumb: Home → Amsterdam → Musea → Artis
+1. Page loads. **It renders inside the same map + sheet/sidebar layout as the rest of the app.** The server pre-renders the detail content inside the sheet/sidebar container:
+   - **Map**: centered on Artis with the marker highlighted
+   - **Detail sheet/sidebar content** (SSR HTML):
+     - **H1**: "Artis met je peuter — PeuterPlannen Review"
+     - Hero photo (full width in sheet)
+     - PeuterScore prominently displayed
+     - Quick-info row (weather, age, price, type)
+     - Full editorial review
+     - Score breakdown with detailed explanations
+     - Opening hours, address, parking info
+     - "Koop tickets" affiliate CTA (flow 18)
+     - "Vergelijkbare plekken" section linking to 3-4 nearby alternatives
+     - Breadcrumb: Home → Amsterdam → Artis
+   - The user is immediately IN the app — they see the map with the location pin. No "Open in app" CTA needed.
 
-2. Parent reads the review. Checks the score breakdown. Sees parking is 4/5 ("Parkeergarage Artis, EUR 4/uur — reserveer via Yellowbrick"). Decides to go.
+2. After hydration: map becomes interactive. Save/share buttons work. Nearby locations are tappable. The user has the full app experience.
 
-3. Taps "Koop tickets via Tiqets" → flow 18.
+3. Parent reads the review. Checks the score breakdown. Sees parking is 4/5 ("Parkeergarage Artis, EUR 4/uur"). Decides to go.
 
-4. OR taps "Bekijk op de kaart →" which opens `/app?location=artis` — the full interactive app centered on Artis with the detail sheet in peek state (browse sheet hidden).
+4. Taps "Koop tickets via Tiqets" → flow 18. OR taps "Route" to navigate directly.
 
-5. From the app, the parent discovers nearby alternatives (flow 11) and ends up also saving NEMO.
+5. Parent taps a nearby location card (e.g., NEMO) → URL changes to `/amsterdam/nemo`, detail sheet crossfades to NEMO's content, map pans to NEMO. This is flow 11 — seamless within the app shell.
+
+6. Parent taps back → returns to Artis detail. Taps back again → URL changes to `/amsterdam`, browse sheet shows Amsterdam region guide. The user is now browsing Amsterdam — fully in the app, from a single Google click.
 
 **What the UI must communicate at each step:**
 - Step 1: "We visited this place as parents and here's our honest assessment." The editorial voice is parent-to-parent, not corporate.
@@ -1166,7 +1177,7 @@ The detail sheet content is distributed across three progressive disclosure leve
 - SEO metadata: `<title>`: "Artis met je peuter — Review & PeuterScore | PeuterPlannen", `<meta description>`: practical summary, structured data (JSON-LD `LocalBusiness` or `TouristAttraction` with `aggregateRating` mapped from PeuterScore).
 - Internal linking: breadcrumbs, related locations, collection pages.
 - Affiliate CTA: only show if an affiliate relationship exists for this location.
-- "Open in app" link: deep link to the app with location pre-selected.
+- Nearby location cards: tappable, URL changes to the nearby location's detail route within the same app shell.
 
 **Edge cases:**
 - Location has very sparse data (no editorial review, few scores): show what's available with a "We zijn deze locatie nog aan het beoordelen" note. Don't serve a thin page — either have enough content to be useful or redirect to the collection page with an anchor to this location.
@@ -1178,9 +1189,109 @@ The detail sheet content is distributed across three progressive disclosure leve
 - Stale opening hours shown on the SEO page: add a disclaimer "Openingstijden kunnen afwijken — check de website van [location name]" with a link.
 - Page is duplicate of the in-app detail view (canonical confusion): the SEO page and the in-app detail view have different URLs and different `<link rel="canonical">` tags. SEO page is canonical for Google. In-app view is for app users.
 
-**Success criteria:** Detail pages from Google have > 60% scroll depth (users actually read the content). > 20% of Google detail page visitors click an affiliate link or "Open in app". These pages rank in top 5 for "[location name] met peuter/kleuter" queries within 3 months.
+**Success criteria:** Detail pages from Google have > 60% scroll depth (users actually read the content). > 20% of Google detail page visitors click an affiliate link or interact with the map/nearby locations. These pages rank in top 5 for "[location name] met peuter/kleuter" queries within 3 months.
 
 **Metrics signal:** `seo_detail_traffic`, `seo_detail_scroll_depth`, `seo_detail_to_affiliate_rate`, `seo_detail_to_app_rate`, `google_ranking_position_by_keyword`.
+
+---
+
+## 25. Guides Discovery — Browsing Content in the Sheet
+
+**User goal:** Discover curated guides and articles about toddler-friendly outings, directly in the app.
+
+**Context of use:** Parent is on the home screen, browsing the sheet, and scrolls past the contextual suggestions to the "Gidsen" section. They see guide cards like "Amsterdam met peuters" or "Regendag activiteiten". This is the Apple Maps Guides model — editorial content rendered in the sidebar/sheet, not on a separate blog page.
+
+**Entry point:** Home screen (sheet/sidebar), scrolled to the "Gidsen" section. Or `/guides` directly.
+
+**Step-by-step journey:**
+
+1. Parent is on `/` (home). Browse sheet shows contextual suggestions at the top, then a "Gidsen" section with guide cards: hero carousel of featured guides + card grid of latest guides.
+2. Parent taps "Amsterdam met peuters" guide card.
+3. URL changes to `/amsterdam`. Map flies to Amsterdam. Browse sheet content transitions to the Amsterdam region guide: hero image, intro text, type grid, top locations, editorial content.
+4. Parent scrolls through the guide in the sheet. Sees top locations as cards. Taps "Artis" card.
+5. URL changes to `/amsterdam/artis`. Browse sheet hides, detail sheet opens with Artis info. Map zooms to Artis.
+6. Parent taps back → returns to `/amsterdam` region guide. Can continue browsing the guide.
+
+**What the UI must communicate:**
+- Guides are part of the app, not a separate "blog" section. They live in the sheet, with the map responding to the content.
+- Tapping a location in a guide opens its detail — same interaction as tapping a search result card.
+- The map context enhances the guide: when reading about Amsterdam locations, you see them on the map.
+
+**What the system must do:**
+- Guides section on home: fetch editorial pages from Supabase (type: 'guide') + region hub data.
+- Region guides: pre-render as SSG pages within the `(app)` layout.
+- Guide → location transitions: same detail sheet mechanism as browse → detail.
+- Map animation: fly to the region when a guide is opened.
+
+**Success criteria:** > 15% of home screen sessions scroll to the guides section. > 30% of guide viewers tap through to a location detail.
+
+---
+
+## 26. Blog/Article Reading in the Sheet
+
+**User goal:** Read an article about toddler outings, with the map providing ambient context.
+
+**Context of use:** Parent found a blog post via Google ("beste uitjes amsterdam peuters") or tapped a blog card in the guides section. The article renders in the sheet/sidebar — not on a separate page.
+
+**Entry point:** `/blog/beste-uitjes-amsterdam-peuters` — renders in the app shell.
+
+**Step-by-step journey:**
+
+1. Page loads within the unified app shell. Map shows NL overview or Amsterdam (if article is Amsterdam-specific). Sheet/sidebar shows the article content.
+2. **Sheet/sidebar content** (SSR HTML):
+   - Back button (top left) + Share button (top right)
+   - Hero image (full width in sheet)
+   - Title (h1), author badge, date, reading time
+   - Article body with embedded location cards
+   - Map shows markers for all locations mentioned in the article
+3. Parent reads the article. Taps an embedded "Artis" location card.
+4. URL changes to `/amsterdam/artis`. Article sheet hides, detail sheet opens for Artis. Map zooms to Artis.
+5. Back button → returns to the article, scrolled to the same position.
+
+**What the system must do:**
+- Blog posts render as SSG pages within `(app)` layout.
+- Referenced locations: extract location IDs from frontmatter, show their markers on the map.
+- Embedded location cards in article body: MDX component that renders a tappable card linking to the location's detail route.
+- Scroll position preservation: store scroll position before navigating to detail.
+
+**Success criteria:** Blog pages within the app shell have > 60% scroll depth and > 20% click-through to a location detail.
+
+---
+
+## 27. Partner Flow — "Heb je een locatie?"
+
+**User goal:** A venue owner wants to claim or manage their listing on PeuterPlannen.
+
+**Context of use:** The venue owner sees the "Heb je een locatie? Beheer je listing →" link in the sheet footer while browsing the app. Or they found their venue's detail page and want to update information.
+
+**Entry point:** Link in sheet/sidebar footer, or "Is dit jouw locatie?" link at bottom of location detail sheet.
+
+**Step-by-step journey:**
+
+1. Owner taps "Heb je een locatie? Beheer je listing →" in the sheet footer.
+2. Browser navigates to `/partner` — this is in the `(portal)` route group with a separate layout (no map, no sheet).
+3. Partner portal page loads: clean, professional layout with information about claiming a listing, updating details, and featured placement options.
+4. Owner fills out the contact/claim form.
+
+**Key difference from the old plan:** The link to `/partner` is the ONLY place where users leave the app shell (aside from legal pages). There is no separate "voor-bedrijven" marketing page — the partner portal IS the B2B page.
+
+---
+
+## 28. Legal Pages — Outside the App Shell
+
+**User goal:** Read privacy policy, terms, or about page.
+
+**Context of use:** User clicks Privacy, Voorwaarden, or Over in the sheet/sidebar footer.
+
+**Entry point:** Link in sheet/sidebar footer.
+
+**Step-by-step journey:**
+
+1. User taps "Privacy" in the sheet footer.
+2. Browser navigates to `/privacy` — this is in the `(legal)` route group with a minimal layout (no map, no sheet, just simple page content).
+3. User reads the content. Navigates back to the app via browser back button or "← Terug naar PeuterPlannen" link.
+
+**Key point:** Legal pages are the only other pages outside the app shell. They don't need the map — they're reference content.
 
 ---
 
@@ -1188,27 +1299,34 @@ The detail sheet content is distributed across three progressive disclosure leve
 
 ### Navigation model
 
-The app has a clear navigation hierarchy:
+The app has a clear navigation hierarchy. The app IS the website — all navigation happens within the unified map + sheet/sidebar layout (except partner portal and legal pages).
 
 ```
-Bottom tabs: Ontdek (map+sheet) | Bewaard | Plan (future) | Info
+Bottom tabs: Ontdek (map+sheet) | Kaart | Bewaard | Plan
 
-Within Ontdek:
-  City selection → Map + sheet (list) → Detail view → Compare
-                                      ↓
-                                   Filters (modal)
+Within the app shell:
+  Home (suggestions+guides) → Region guide → Type list → Detail → Compare
+                                                       ↓
+                                                    Filters (modal)
 
-URL structure:
-  /app                           → map view, uses stored city
-  /app?city=amsterdam            → map view for Amsterdam
-  /app?city=amsterdam&type=speeltuin → filtered view
-  /app/amsterdam/artis           → detail view for Artis
+URL structure (all within (app) layout):
+  /                              → home: map + suggestions + guides
+  /amsterdam                     → region guide in sheet, map centered
+  /amsterdam/speeltuinen         → filtered list in sheet, map with markers
+  /amsterdam/artis               → detail in sheet, map zoomed to location
+  /blog/slug                     → article in sheet, map ambient
+  /guides                        → guides overview in sheet
+
+Outside the app shell:
+  /partner                       → partner portal (separate layout)
+  /privacy, /terms, /about, /contact → legal pages (minimal layout)
 ```
 
 Back button behavior:
 - Detail sheet → dismiss detail sheet, browse sheet returns to previous position
-- Filtered list → unfiltered list (filters clear)
-- City view → NL overview (clears city)
+- Region guide → home
+- Filtered list → region guide (or home)
+- Article → wherever the user came from
 - Filter modal → whatever was behind it
 
 ### Error handling philosophy

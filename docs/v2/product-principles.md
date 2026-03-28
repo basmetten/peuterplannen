@@ -137,19 +137,33 @@ Apple Maps density, not Instagram noise. Information-rich without feeling clutte
 **This does NOT mean:**
 - We copy Apple Maps pixel-for-pixel. We learn from its information density and spatial clarity, then apply our own identity.
 
-### 2.9 Everything Supports the Discovery Loop
+### 2.9 The App IS the Website
+
+There is no separate marketing site. Every page on peuterplannen.nl renders within the same map + sheet/sidebar layout. peuterplannen.nl lands directly on the map app. The browse sheet IS the homepage.
+
+**This means:**
+- Region hubs, location details, guides, and blog articles all render as routes within the unified app shell.
+- Google gets SSR HTML with real content rendered inside the sheet/sidebar container. Users see the map-first experience. Same URL, same content.
+- There is no "Open in app" CTA on SEO pages — the user is already IN the app.
+- Only partner/admin dashboards and legal pages (privacy, terms, about, contact) live outside the app shell, in their own minimal layouts.
+- The sheet footer replaces the traditional website footer: "Heb je een locatie? Beheer je listing →" + Privacy · Voorwaarden · Over.
+
+**This does NOT mean:**
+- Every pixel on screen is about location discovery. Guide content, editorial articles, and region introductions add context and trust — they just render in the sheet, with the map behind them.
+
+### 2.10 Everything Supports the Discovery Loop
 
 If it doesn't help the user find, evaluate, or choose a place, it does not belong in the core flow.
 
 **This means:**
-- Blog content, about pages, and editorial content live outside the app shell.
+- Guide content and editorial articles render in the sheet and link to real locations. They serve discovery.
 - Settings, account management, and preferences are accessible but never in the way.
 - Onboarding is implicit (use the map, learn the UI) not explicit (tutorial screens, coach marks).
 
 **This does NOT mean:**
-- We never build features outside the loop. We can — but they don't live in the app's primary navigation or interrupt the map experience.
+- We never build content features. Guides and articles are valuable — they live in the sheet and connect to the map. But they don't interrupt active location browsing.
 
-### 2.10 Two-Sheet Separation
+### 2.11 Two-Sheet Separation
 
 The browse sheet and the detail sheet are independent, never overlapping. Only one is visible at a time.
 
@@ -161,7 +175,7 @@ The browse sheet and the detail sheet are independent, never overlapping. Only o
 **This does NOT mean:**
 - The sheets can't share code or design tokens. They should look cohesive — they just don't coexist on screen.
 
-### 2.11 Rebuild Cleanly
+### 2.12 Rebuild Cleanly
 
 No dragging v1 spaghetti into v2 without explicit justification and a migration plan.
 

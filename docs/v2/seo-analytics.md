@@ -1,6 +1,8 @@
 # SEO & Analytics Strategy — PeuterPlannen v2
 
 > Phase 0 documentation. Defines URL structure, rendering strategy, structured data, event taxonomy, and analytics architecture for the Next.js rebuild.
+>
+> **Architecture note:** All SEO pages render within the unified app shell (map + sheet/sidebar). There are no separate marketing pages. Google gets SSR HTML with real content rendered inside the sheet/sidebar container. Users see the map-first experience. Same URL, same content, one layout.
 
 ---
 
@@ -8,17 +10,18 @@
 
 ### Clean URL structure (no `.html` extensions)
 
-| Page type | URL pattern | Example |
-|-----------|-------------|---------|
-| Homepage | `/` | `/` |
-| Region hub | `/{region}` | `/amsterdam` |
-| Type hub | `/{type}` | `/speeltuinen` |
-| City+type combo | `/{region}/{type}` | `/amsterdam/speeltuinen` |
-| Location detail | `/{region}/{slug}` | `/amsterdam/artis` |
-| Blog post | `/blog/{slug}` | `/blog/beste-uitjes-amsterdam-peuters` |
-| Blog index | `/blog` | `/blog` |
-| Cluster/theme | `/{slug}` | `/dierentuinen-nederland` |
-| App shell | `/app` | `/app` |
+| Page type | URL pattern | Example | Layout |
+|-----------|-------------|---------|--------|
+| Homepage | `/` | `/` | `(app)` — map + sheet |
+| Region guide | `/{region}` | `/amsterdam` | `(app)` — map centered + sheet with guide |
+| City+type combo | `/{region}/{type}` | `/amsterdam/speeltuinen` | `(app)` — map with markers + sheet with list |
+| Location detail | `/{region}/{slug}` | `/amsterdam/artis` | `(app)` — map centered + detail sheet |
+| Blog/guide post | `/blog/{slug}` | `/blog/beste-uitjes-amsterdam-peuters` | `(app)` — map ambient + sheet with article |
+| Guides overview | `/guides` | `/guides` | `(app)` — map + sheet with guide cards |
+| Partner portal | `/partner` | `/partner` | `(portal)` — no map |
+| Legal pages | `/{slug}` | `/privacy`, `/terms`, `/about`, `/contact` | `(legal)` — minimal, no map |
+
+All routes in the `(app)` layout share the same map + sheet/sidebar shell. Content renders inside the sheet/sidebar. The map provides spatial context for every page.
 
 ### Redirect map (v1 → v2)
 
@@ -38,8 +41,10 @@ Implementation: `next.config.js` redirects array for known patterns, plus a catc
 
 - Every page sets `<link rel="canonical">` to its own clean URL (full absolute URL with `https://peuterplannen.nl`)
 - Location detail: canonical is always `https://peuterplannen.nl/{region}/{slug}` — if `seo_canonical_target` is set in the database, use that instead (handles duplicates across regions)
-- Filtered views (`?type=speeltuin&regio=amsterdam`) do not get a canonical — they get `noindex`
-- Pagination: `rel="next"` / `rel="prev"` if hub pages paginate; canonical points to page 1
+- All `(app)` routes are indexable by default (they render real SSR content in the sheet/sidebar)
+- Filtered views with query params (`?type=speeltuin`) get `noindex` — only the base route is canonical
+- `/partner/*` and `/admin/*` routes get `noindex`
+- Pagination: `rel="next"` / `rel="prev"` if pages paginate; canonical points to page 1
 
 ### Trailing slash convention
 
@@ -51,23 +56,32 @@ No trailing slashes. Next.js `trailingSlash: false` in config. Requests with tra
 
 | Page type | Strategy | Revalidation | Why |
 |-----------|----------|-------------|-----|
-| Homepage | SSG (ISR) | Daily (86400s) | Content changes slowly; fast TTFB matters |
-| Region hubs | SSG (ISR) | On data change via webhook, fallback 3600s | ~22 pages, stable content, need fast crawl |
-| Type hubs | SSG (ISR) | 3600s | 8 pages, rarely change |
-| City+type combos | SSG (ISR) | 3600s | ~120 pages, manageable at build time |
-| Location detail | SSR | No cache (or short 60s stale-while-revalidate) | **Must pass graduation check at request time**; content can change when editors update |
-| Blog posts | SSG | On deploy (from markdown/MDX) | Static content, changes only on publish |
-| Blog index | SSG (ISR) | 3600s | Picks up new posts |
-| Cluster/theme | SSG (ISR) | 3600s | CMS-managed via `editorial_pages` |
-| App shell (`/app`) | CSR | N/A | Interactive SPA, `noindex`, no SEO value |
+| Homepage (`/`) | SSR (ISR) | Daily (86400s) | Content changes slowly; fast TTFB matters. Renders in app shell. |
+| Region guides (`/{region}`) | SSG (ISR) | On data change via webhook, fallback 3600s | ~22 pages, stable content, need fast crawl. Renders in app shell sheet/sidebar. |
+| City+type combos | SSG (ISR) | 3600s | ~120 pages, manageable at build time. Renders in app shell. |
+| Location detail (`/{region}/{slug}`) | SSR | No cache (or short 60s stale-while-revalidate) | **Must pass graduation check at request time**; content can change. Renders in app shell detail sheet/sidebar. |
+| Blog/guide posts | SSG | On deploy (from markdown/MDX) | Static content, changes only on publish. Renders in app shell sheet/sidebar. |
+| Guides overview (`/guides`) | SSG (ISR) | 3600s | Picks up new guides. Renders in app shell. |
+| Partner portal (`/partner`) | CSR | N/A | Separate layout, `noindex`. |
+| Legal pages | SSG | On deploy | Simple content. Separate minimal layout. |
+
+**Key difference from traditional SSR:** All `(app)` routes render their content inside the unified app shell (map + sheet/sidebar container). The server outputs the app shell HTML with the route-specific content pre-rendered in the sheet/sidebar area. After hydration, the map becomes interactive and the sheet gains gesture support.
 
 ### Location detail SSR rationale
 
-Location detail pages are the core SEO fix. They must be server-rendered because:
+Location detail pages are the core SEO fix. They render within the unified app shell (map + detail sheet/sidebar) and must be server-rendered because:
 1. Graduation status can change (location gets verified, description improves)
 2. The page must return a proper `noindex` header if the location fails graduation — not rely on client JS
 3. Fresh data (opening hours, nearby locations) matters for user experience
-4. Googlebot gets complete HTML on first request
+4. Googlebot gets complete HTML on first request — the detail content is in the HTML inside the sheet/sidebar container
+5. Users landing from Google see the full app experience immediately — map centered on the location, detail content visible
+
+The server renders the app shell with:
+- Map container (initialized with center/zoom for this location)
+- Detail sheet/sidebar with the full location content pre-rendered
+- Structured data in `<head>`
+
+After hydration, the map becomes interactive and the sheet gains gesture/drag support.
 
 For high-traffic location pages, consider adding `Cache-Control: s-maxage=60, stale-while-revalidate=300` at the CDN layer.
 
@@ -87,8 +101,8 @@ This is the #1 SEO improvement. Currently, location detail pages are `noindex` r
 6. **Quality signals**: PeuterProof score breakdown (if graduated)
 7. **Facilities list**: Full facility details
 8. **Nearby locations**: 4-6 similar locations in the same region (cards with links)
-9. **CTA banner**: "Bekijk op de kaart" → opens `/app` with this location focused
-10. **Internal links**: Link to region hub, type hub, related blog posts
+9. **Nearby locations**: 4-6 nearby location cards (tappable → their detail sheet opens, map pans)
+10. **Internal links**: Link to region guide, city+type combo, related blog posts
 
 ### Meta tags
 
@@ -164,7 +178,7 @@ function generateDescription(location: Location): string {
       "publisher": { "@id": "https://peuterplannen.nl/#organization" },
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://peuterplannen.nl/app?q={search_term_string}",
+        "target": "https://peuterplannen.nl/?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     }
@@ -296,49 +310,51 @@ Use the most specific schema type based on `location.type`:
 
 ### Link hierarchy
 
+All links below are within the unified app shell. Navigation between them is seamless — the sheet/sidebar content changes, the map animates to match.
+
 ```
-Homepage
-├── Region hub (/amsterdam)
+Home (/)
+├── Region guide (/amsterdam)
 │   ├── City+type combo (/amsterdam/speeltuinen)
 │   │   └── Location detail (/amsterdam/speeltuin-x)
 │   └── Location detail (/amsterdam/artis)
-├── Type hub (/speeltuinen)
-│   └── City+type combos
-├── Blog index (/blog)
-│   └── Blog post (/blog/slug)
-└── Cluster/theme pages (/dierentuinen-nederland)
-    └── Location details
+├── Guides overview (/guides)
+│   └── Blog/guide post (/blog/slug)
+│       └── Location details (mentioned in content)
+└── Sheet footer links → /partner, /privacy, /terms, /about (exit app shell)
 ```
 
 ### Linking rules
 
-1. **Region hub pages** link to:
+1. **Home sheet** links to:
+   - Featured region guides (Amsterdam, Rotterdam, etc.)
+   - Featured guide/blog posts
+   - Popular locations
+
+2. **Region guide pages** link to:
    - All city+type combos for that region
    - Top 10-20 location detail pages (highest quality score)
    - Related blog posts mentioning the region
+   - Nearby regions
 
-2. **City+type combo pages** link to:
+3. **City+type combo pages** link to:
    - All graduated location detail pages matching that filter
-   - Parent region hub
-   - Parent type hub
+   - Parent region guide
+   - Related combos (same region different type, same type different region)
 
-3. **Location detail pages** link to:
-   - Parent region hub (in breadcrumb + body)
-   - Parent type hub (in breadcrumb + body)
+4. **Location detail pages** link to:
+   - Parent region guide (in breadcrumb)
    - 4-6 nearby locations (same type preferred, same region required)
    - Related blog posts (via tag matching)
 
-4. **Blog posts** link to:
-   - Specific location detail pages mentioned in content
-   - Relevant region hubs
-   - Relevant type hubs
+5. **Blog/guide posts** link to:
+   - Specific location detail pages mentioned in content (as embedded cards in sheet)
+   - Relevant region guides
    - Other related blog posts
 
-5. **Footer** (site-wide):
-   - All region hubs (~22 links)
-   - All type hubs (~8 links)
-   - Blog index
-   - About/contact
+6. **Sheet footer** (on every sheet state):
+   - "Heb je een locatie? Beheer je listing →" → `/partner`
+   - Privacy · Voorwaarden · Over → `/privacy`, `/terms`, `/about`
 
 ### Nearby locations query
 
@@ -369,11 +385,9 @@ LIMIT 6;
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap><loc>https://peuterplannen.nl/sitemap-core.xml</loc></sitemap>
   <sitemap><loc>https://peuterplannen.nl/sitemap-regions.xml</loc></sitemap>
-  <sitemap><loc>https://peuterplannen.nl/sitemap-types.xml</loc></sitemap>
   <sitemap><loc>https://peuterplannen.nl/sitemap-combos.xml</loc></sitemap>
   <sitemap><loc>https://peuterplannen.nl/sitemap-locations.xml</loc></sitemap>
-  <sitemap><loc>https://peuterplannen.nl/sitemap-blog.xml</loc></sitemap>
-  <sitemap><loc>https://peuterplannen.nl/sitemap-editorial.xml</loc></sitemap>
+  <sitemap><loc>https://peuterplannen.nl/sitemap-guides.xml</loc></sitemap>
 </sitemapindex>
 ```
 
@@ -381,13 +395,11 @@ LIMIT 6;
 
 | Sitemap | Content | lastmod source | Priority |
 |---------|---------|---------------|----------|
-| core | Homepage, about, contact | Deploy date | 1.0 |
-| regions | Region hubs | Max location lastmod in region | 0.9 |
-| types | Type hubs | Max location lastmod for type | 0.8 |
-| combos | City+type combos | Max location lastmod in combo | 0.7 |
-| locations | Graduated location details only | `verified_at` or `updated_at` | 0.6 |
-| blog | Published blog posts | `date_modified` frontmatter | 0.5 |
-| editorial | Cluster/theme pages | `editorial_pages.updated_at` | 0.7 |
+| core | Homepage, guides overview, legal pages | Deploy date | 1.0 |
+| regions | Region guide pages (`/amsterdam`, etc.) | Max location lastmod in region | 0.9 |
+| combos | City+type combos (`/amsterdam/speeltuinen`) | Max location lastmod in combo | 0.7 |
+| locations | Graduated location details only (`/amsterdam/artis`) | `verified_at` or `updated_at` | 0.6 |
+| guides | Published blog/guide posts (`/blog/slug`) | `date_modified` frontmatter | 0.5 |
 
 ### Exclusion rules
 
@@ -448,39 +460,45 @@ When multiple entries exist for the same venue (e.g., "Artis" listed under both 
 ### Hard noindex rules
 
 These page types always get `noindex, follow`:
-- `/app` and all app sub-routes
-- Any URL with query parameters (`?type=...`, `?q=...`)
-- Filtered/sorted views
+- `/partner/*` and `/admin/*` (portal routes)
+- Any URL with query parameters (`?type=...`, `?q=...`) — these are filtered/sorted views of otherwise indexable pages
 - Paginated pages beyond page 1 (debatable — revisit based on crawl data)
 - Preview/draft pages
-- Non-graduated location detail pages
+- Non-graduated location detail pages (fail graduation check at SSR time)
 
 ---
 
 ## 8. Content Strategy
 
-### Blog content pillars
+### Guides as the discovery content layer
 
-1. **City guides**: "Uitjes met peuters in {City}" — one per major city, updated seasonally
-2. **Seasonal content**: "Binnenspeeltuinen voor regenachtige dagen", "Buitenactiviteiten zomer"
-3. **Age-specific**: "Uitjes met 1-jarige", "Activiteiten voor 3-jarigen"
-4. **Type deep-dives**: "Beste kinderboerderijen van Nederland", "Gratis speeltuinen"
-5. **Practical guides**: "Peuter-proof dagje uit: checklist", "Reizen met peuters tips"
+Guides replace the traditional blog as the primary content discovery mechanism. They render in the sheet/sidebar within the app shell — not on separate pages. This is the Apple Maps Guides model.
 
-### Collection pages (data-backed)
+**Guide types:**
 
-Collection pages in `editorial_pages` are populated from actual data, not manually curated:
+1. **Region guides** (`/amsterdam`, `/rotterdam`, etc.): The region route IS the guide for that city. Map centered on the region, sheet shows curated guide content with top locations, type grid, tips.
+2. **City guides** (`/blog/amsterdam-met-peuters`): Long-form editorial content about visiting a city with toddlers. Renders in the sheet with map showing mentioned locations.
+3. **Seasonal content** (`/blog/binnenspeeltuinen-regenachtige-dagen`): Timely guides that appear in the "Gidsen" section on the home sheet.
+4. **Age-specific** (`/blog/uitjes-met-1-jarige`): Targeted content for specific age groups.
+5. **Type deep-dives** (`/blog/beste-kinderboerderijen-nederland`): Comprehensive type overviews.
+6. **Practical guides** (`/blog/peuter-proof-dagje-uit-checklist`): Utility content.
+
+**Guides overview** (`/guides`): A dedicated route showing all guides organized by featured, latest, and city. Renders in the sheet/sidebar.
+
+### Collection content (data-backed)
+
+Region guides and city+type pages are populated from actual data:
 
 ```
-/beste-speeltuinen-amsterdam
-→ Query: top 10 locations WHERE type='speeltuin' AND region='amsterdam' ORDER BY seo_quality_score DESC
+/amsterdam/speeltuinen
+→ Query: locations WHERE type='speeltuin' AND region='amsterdam' ORDER BY seo_quality_score DESC
 ```
 
-These pages get:
+These pages render in the app shell sheet and get:
 - Auto-updated location cards from the database
-- Editorial intro/outro text (manual)
-- FAQ section (manual, with FAQPage schema)
+- Editorial intro text (from region/type metadata)
 - Internal links to each featured location
+- Map with markers for all listed locations
 
 ### Editorial overrides
 
@@ -511,7 +529,7 @@ interface AnalyticsEvent {
   session_id: string;
   user_id?: string;          // anonymous hash from cookie
   page_path: string;
-  page_type: 'home' | 'region' | 'type' | 'combo' | 'detail' | 'blog' | 'app' | 'editorial';
+  page_type: 'home' | 'region' | 'combo' | 'detail' | 'guide' | 'guides_overview' | 'partner' | 'legal';
   properties: Record<string, string | number | boolean>;
 }
 ```
@@ -665,11 +683,12 @@ This gives a complete picture of crawl activity and organic page views regardles
 
 ### Key dashboards
 
-1. **Discovery funnel**: Homepage → Region hub → Location detail → Affiliate click (conversion rates at each step)
+1. **Discovery funnel**: Home → Region guide → Location detail → Affiliate click (conversion rates at each step, all within app shell)
 2. **Detail page performance**: Views, scroll depth, time on page, affiliate CTR — grouped by location type and region
 3. **Affiliate performance**: Clicks per provider, per location, per page type, estimated revenue
 4. **SEO health**: Pages indexed (from GSC), impressions, clicks, CTR, average position — trended weekly
-5. **Content quality**: Pages with high impressions but low CTR (title/description optimization candidates)
+5. **Guide engagement**: Guide views, scroll depth, click-through to location details, guide-to-action conversion
+6. **Content quality**: Pages with high impressions but low CTR (title/description optimization candidates)
 
 ---
 
@@ -806,11 +825,12 @@ Weekly review:
 
 ## Summary: Priority order of implementation
 
-1. **Location detail SSR pages** (Section 3) — biggest SEO impact
-2. **Redirect map** (Section 1) — preserve existing authority on migration
-3. **Structured data** (Section 4) — rich results in search
-4. **Sitemap generation** (Section 6) — ensure crawling works
-5. **Event tracking** (Section 9-10) — measure everything from day one
-6. **Internal linking** (Section 5) — strengthen page authority
-7. **Content strategy** (Section 8) — ongoing, post-launch
-8. **Monitoring** (Section 12) — automated health checks
+1. **Unified app shell with SSR** — all pages render within the map + sheet/sidebar layout. This is the foundation.
+2. **Location detail SSR pages** (Section 3) — biggest SEO impact. Content rendered in the detail sheet/sidebar.
+3. **Redirect map** (Section 1) — preserve existing authority on migration
+4. **Structured data** (Section 4) — rich results in search, rendered server-side within app layout
+5. **Region guides + guides feature** (Section 8) — guides replace blog as discovery content layer, rendered in sheet/sidebar
+6. **Sitemap generation** (Section 6) — ensure crawling works
+7. **Event tracking** (Section 9-10) — measure everything from day one
+8. **Internal linking** (Section 5) — strengthen page authority, all links within app shell
+9. **Monitoring** (Section 12) — automated health checks

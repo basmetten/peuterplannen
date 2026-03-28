@@ -10,13 +10,18 @@
 ┌─────────────────────────────────────────────────────────────┐
 │                        Client (Browser)                      │
 │                                                              │
-│  ┌──────────────┐  ┌──────────────┐  ┌───────────────────┐  │
-│  │ (marketing)  │  │    (pwa)     │  │  Service Worker   │  │
-│  │ SSR/SSG SEO  │  │ App Shell    │  │  Offline + Cache  │  │
-│  │ pages        │  │ MapLibre     │  │                   │  │
-│  │              │  │ TanStack Q   │  │                   │  │
-│  │              │  │ XState       │  │                   │  │
-│  └──────────────┘  └──────────────┘  └───────────────────┘  │
+│  ┌────────────────────────────────┐  ┌───────────────────┐  │
+│  │          (app)                 │  │  Service Worker   │  │
+│  │  Unified App Shell             │  │  Offline + Cache  │  │
+│  │  SSR content in sheet/sidebar  │  │                   │  │
+│  │  MapLibre + TanStack Q         │  │                   │  │
+│  │  XState (sheet orchestration)  │  │                   │  │
+│  └────────────────────────────────┘  └───────────────────┘  │
+│  ┌─────────────┐  ┌──────────────┐                          │
+│  │  (portal)   │  │   (legal)    │                          │
+│  │  Partner/   │  │  Simple page │                          │
+│  │  Admin      │  │  layout      │                          │
+│  └─────────────┘  └──────────────┘                          │
 └─────────────────────────┬───────────────────────────────────┘
                           │ fetch / RSC payload
                           ▼
@@ -52,8 +57,10 @@
 
 - **Client never talks to Supabase directly.** All data flows through Next.js server components or route handlers. The Supabase service key lives only in server-side environment variables.
 - **Route groups** separate concerns:
-  - `app/(marketing)/` — SEO pages rendered via SSR/SSG. Fully static where possible (ISR with on-demand revalidation).
-  - `app/(pwa)/` — the interactive map-first app shell. Heavy client components, minimal SSR.
+  - `app/(app)/` — Unified app shell: map + sheet/sidebar. ALL user-facing content renders here. SSR/SSG content is pre-rendered inside the sheet/sidebar container. The map persists across navigations.
+  - `app/(portal)/` — Separate layout for partner/admin dashboards. No map.
+  - `app/(legal)/` — Minimal page layout for privacy, terms, about, contact. No map.
+- **The app IS the website.** There is no separate marketing layout. SEO pages (region hubs, location details, guides) are routes within the `(app)` layout. Google gets SSR HTML rendered inside the sheet/sidebar. Users see the map-first experience.
 - **BFF pattern**: Next.js acts as Backend for Frontend. Server components fetch and shape data. Route handlers (`app/api/`) serve JSON for client-side TanStack Query when needed (e.g., viewport-based location fetching).
 
 ---
@@ -63,32 +70,36 @@
 ```
 peuterplannen-v2/
 ├── app/
-│   ├── (marketing)/              # SEO pages — SSR/SSG
-│   │   ├── layout.tsx            # Marketing layout (header, footer, structured data)
-│   │   ├── page.tsx              # Homepage
+│   ├── (app)/                    # Unified app shell — map + sheet/sidebar
+│   │   ├── layout.tsx            # App layout: map background, sheet/sidebar, tab bar
+│   │   ├── page.tsx              # Home: map + browse sheet with suggestions + guides
 │   │   ├── [region]/
-│   │   │   ├── page.tsx          # Region hub (e.g., /amsterdam)
-│   │   │   └── [type]/
-│   │   │       └── page.tsx      # Region+type combo (e.g., /amsterdam/speeltuinen)
-│   │   ├── locatie/
+│   │   │   ├── page.tsx          # Region guide: map centered + sheet with guide content
+│   │   │   ├── [type]/
+│   │   │   │   └── page.tsx      # City+type: map with type markers + filtered list
 │   │   │   └── [slug]/
-│   │   │       └── page.tsx      # Location detail SEO page
-│   │   ├── type/
-│   │   │   └── [type]/
-│   │   │       └── page.tsx      # Type hub (e.g., /type/boerderij)
+│   │   │       └── page.tsx      # Location detail: map centered + detail sheet
 │   │   ├── blog/
-│   │   │   ├── page.tsx          # Blog index
 │   │   │   └── [slug]/
-│   │   │       └── page.tsx      # Blog post (from editorial_pages)
-│   │   └── [...slug]/
-│   │       └── page.tsx          # Catch-all for editorial pages
-│   ├── (pwa)/
-│   │   ├── layout.tsx            # App shell layout (no header/footer, map fills viewport)
-│   │   ├── app/
-│   │   │   └── page.tsx          # Main app entry (map + sheet)
-│   │   └── app/locatie/
-│   │       └── [slug]/
-│   │           └── page.tsx      # In-app detail (rendered in sheet, not new page)
+│   │   │       └── page.tsx      # Article: map background + sheet with content
+│   │   └── guides/
+│   │       └── page.tsx          # Guides overview: sheet with guide cards
+│   ├── (portal)/                 # Separate layout — NO map
+│   │   ├── layout.tsx            # Portal layout (standard page, auth required)
+│   │   ├── partner/
+│   │   │   └── page.tsx          # Partner portal (claim/manage listing)
+│   │   └── admin/
+│   │       └── page.tsx          # Admin dashboard
+│   ├── (legal)/                  # Minimal layout — NO map
+│   │   ├── layout.tsx            # Legal layout (simple page, minimal chrome)
+│   │   ├── privacy/
+│   │   │   └── page.tsx          # Privacy policy
+│   │   ├── terms/
+│   │   │   └── page.tsx          # Terms of service
+│   │   ├── about/
+│   │   │   └── page.tsx          # About PeuterPlannen
+│   │   └── contact/
+│   │       └── page.tsx          # Contact form
 │   ├── api/
 │   │   ├── locations/
 │   │   │   └── route.ts          # GET: filtered locations (GeoJSON or JSON)
@@ -141,6 +152,12 @@ peuterplannen-v2/
 │   │   │   ├── FavoriteButton.tsx
 │   │   │   ├── FavoritesSheet.tsx
 │   │   │   └── useFavorites.ts   # localStorage-backed
+│   │   ├── guides/
+│   │   │   ├── GuidesOverview.tsx  # Guides section for home + /guides
+│   │   │   ├── GuideCard.tsx       # Card component for guide entries
+│   │   │   ├── GuideContent.tsx    # Article/guide content renderer (sheet)
+│   │   │   ├── RegionGuide.tsx     # Region guide content component
+│   │   │   └── useGuides.ts       # Guide data fetching + state
 │   │   └── plan/
 │   │       ├── PlanSheet.tsx
 │   │       └── usePlan.ts
@@ -984,7 +1001,7 @@ export const LocationRepository = {
     return data.map((row) => LocationSummarySchema.parse(row));
   },
 
-  /** Fetch locations by type (for type hub pages) */
+  /** Fetch locations by type (for city+type combo pages and filtering) */
   async getByType(type: string): Promise<LocationSummary[]> {
     const { data, error } = await supabase
       .from('locations')
@@ -1028,9 +1045,9 @@ export const LocationRepository = {
 
 | Data | Strategy | TTL |
 |------|----------|-----|
-| Region hub pages | ISR (Static Generation) | Revalidate on Supabase webhook or every 1 hour |
-| Type hub pages | ISR | Same as region |
-| Location detail (SEO) | ISR | Revalidate on data change, fallback: 30 min |
+| Region guide pages | ISR (Static Generation) | Revalidate on Supabase webhook or every 1 hour |
+| City+type combo pages | ISR | Same as region |
+| Location detail (in app shell) | ISR | Revalidate on data change, fallback: 30 min |
 | Location detail (app) | TanStack Query | `staleTime: 5 min`, `gcTime: 30 min` |
 | All locations (markers) | TanStack Query | `staleTime: 10 min`, prefetched in app shell |
 | Regions list | TanStack Query | `staleTime: 1 hour` (rarely changes) |
@@ -1594,7 +1611,7 @@ All browse, search, filter, map, and detail views remain fully functional withou
 import { test, expect } from '@playwright/test';
 
 test('core discovery flow', async ({ page }) => {
-  await page.goto('/app');
+  await page.goto('/');
 
   // Sheet starts in peek state
   const sheet = page.locator('[data-testid="sheet"]');
@@ -1615,7 +1632,7 @@ test('core discovery flow', async ({ page }) => {
 });
 
 test('filter flow', async ({ page }) => {
-  await page.goto('/app');
+  await page.goto('/');
 
   // Apply type filter
   await page.locator('[data-testid="filter-chip-play"]').click();
@@ -1645,7 +1662,7 @@ const VIEWPORTS = [
 for (const vp of VIEWPORTS) {
   test(`sheet peek state — ${vp.name}`, async ({ page }) => {
     await page.setViewportSize(vp);
-    await page.goto('/app');
+    await page.goto('/');
     await page.waitForSelector('[data-testid="sheet"]');
     await expect(page).toHaveScreenshot(`sheet-peek-${vp.name}.png`, {
       maxDiffPixelRatio: 0.01,
@@ -1706,15 +1723,18 @@ describe('computePeuterScore', () => {
 
 ### Page generation strategy
 
-| Page type | Rendering | Revalidation | Example URL |
-|-----------|-----------|--------------|-------------|
-| Homepage | SSG | ISR 1 hour | `/` |
-| Region hub | SSG | ISR 1 hour or on-demand | `/amsterdam` |
-| Type hub | SSG | ISR 1 hour | `/type/speeltuinen` |
-| Region+type combo | SSG | ISR 1 hour | `/amsterdam/speeltuinen` |
-| Location detail | ISR | On data change (webhook) or 30 min | `/locatie/artis-amsterdam` |
-| Blog post | ISR | On publish | `/blog/beste-speeltuinen-amsterdam` |
-| Editorial page | ISR | On publish | `/gids/regenachtige-dagen` |
+All pages below render within the unified `(app)` layout (map + sheet/sidebar), except portal and legal routes.
+
+| Page type | Rendering | Revalidation | Example URL | Layout |
+|-----------|-----------|--------------|-------------|--------|
+| Homepage | SSR (ISR) | Daily | `/` | `(app)` |
+| Region guide | SSG | ISR 1 hour or on-demand | `/amsterdam` | `(app)` |
+| City+type combo | SSG | ISR 1 hour | `/amsterdam/speeltuinen` | `(app)` |
+| Location detail | SSR | On data change (webhook) or 30 min | `/amsterdam/artis` | `(app)` |
+| Blog/guide post | SSG | On publish | `/blog/beste-speeltuinen-amsterdam` | `(app)` |
+| Guides overview | SSG (ISR) | 1 hour | `/guides` | `(app)` |
+| Partner portal | CSR | N/A | `/partner` | `(portal)` |
+| Legal pages | SSG | On deploy | `/privacy`, `/terms` | `(legal)` |
 
 ### Structured data
 
@@ -1732,7 +1752,7 @@ export function LocationStructuredData({ location, region }: LocationStructuredD
     '@type': 'LocalBusiness',
     name: location.name,
     description: location.description,
-    url: `https://peuterplannen.nl/locatie/${location.slug}`,
+    url: `https://peuterplannen.nl/${location.region_slug}/${location.slug}`,
     address: {
       '@type': 'PostalAddress',
       addressLocality: location.city,
@@ -1801,7 +1821,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     })),
     ...locations.map((l) => ({
-      url: `${base}/locatie/${l.slug}`,
+      url: `${base}/${l.region_slug}/${l.slug}`,
       lastModified: new Date(l.updated_at),
       changeFrequency: 'monthly' as const,
       priority: 0.6,
@@ -1830,7 +1850,7 @@ import { AnalyticsRepository } from '@/server/repositories/analytics.repo';
 export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
   const location = await LocationRepository.getBySlug(params.slug);
   if (!location?.affiliate_url) {
-    return NextResponse.redirect(new URL(`/locatie/${params.slug}`, req.url));
+    return NextResponse.redirect(new URL(`/${location?.region_slug ?? ''}/${params.slug}`, req.url));
   }
 
   await AnalyticsRepository.track({
@@ -1984,7 +2004,7 @@ export async function POST(req: NextRequest) {
 
   switch (table) {
     case 'locations':
-      revalidatePath(`/locatie/${record.slug}`);
+      revalidatePath(`/${record.region_slug}/${record.slug}`);
       revalidatePath(`/${record.region_slug}`);
       revalidateTag('locations');
       break;

@@ -88,25 +88,34 @@
 
 ### Phase 3: SEO Foundation (Week 3-5)
 
-**Goal:** Googlebot can crawl every location, region, and type page with real content and structured data.
+**Goal:** Googlebot can crawl every location, region, and type page with real content and structured data. All SEO pages render within the unified app shell — no separate marketing pages.
 
 | Task | Detail |
 |------|--------|
-| SSG region hub pages | `/regio/amsterdam`, `/regio/rotterdam`, etc. — list of locations per region, real content |
-| SSG type hub pages | `/type/speeltuin`, `/type/kinderboerderij`, etc. |
-| SSR location detail pages | `/locatie/[slug]` — full page with all location data, server-rendered |
-| Structured data | JSON-LD on location pages (LocalBusiness), region pages (ItemList), blog posts (Article) |
+| **Route restructure** | Replace `(marketing)` + `(pwa)` route groups with unified `(app)` + `(portal)` + `(legal)` layout. All SEO routes render inside the app shell (map + sheet/sidebar). |
+| SSG region guide pages | `/amsterdam`, `/rotterdam`, etc. — region guide content in the sheet/sidebar, map centered on region |
+| SSG city+type pages | `/amsterdam/speeltuinen`, etc. — filtered list in the sheet, map with type markers |
+| SSR location detail pages | `/amsterdam/artis` — detail content in the sheet/sidebar, map centered on location |
+| Guides feature | Build guides overview (`/guides`) and guide cards section for home sheet. Guides replace standalone blog pages. |
+| Blog/article in sheet | `/blog/[slug]` renders article content in the sheet/sidebar with map background. Replaces separate blog layout. |
+| Portal layout | `/partner` and `/admin` in `(portal)` route group — separate layout, no map. |
+| Legal layout | `/privacy`, `/terms`, `/about`, `/contact` in `(legal)` route group — minimal layout, no map. |
+| Sheet footer | "Heb je een locatie? Beheer je listing →" + Privacy · Voorwaarden · Over — replaces traditional footer. |
+| Structured data | JSON-LD on location pages (type-specific schema), region pages (ItemList), blog posts (Article) — rendered server-side within app layout |
 | Sitemap | Auto-generated `sitemap.xml` from Supabase data |
 | Meta tags | Title, description, canonical URL, Open Graph, Twitter cards per page |
 | Redirect map | Map every old `.html` URL to its v2 equivalent. Store as `next.config.js` redirects. |
-| Blog migration | Convert 50 markdown posts to MDX. Preserve URLs. Add frontmatter for meta tags. |
+| Blog migration | Convert 50 markdown posts to MDX for sheet rendering. Preserve URLs. Add frontmatter for meta tags. |
 
 **Exit criteria:**
-- Every location in Supabase has a crawlable `/locatie/[slug]` page
-- Every region and type has a hub page
+- Every location in Supabase has a crawlable page within the app shell
+- Every region and type has a guide/hub page within the app shell
+- `/guides` overview page works
+- Blog posts render in the sheet with map background
+- `/partner`, `/privacy`, `/terms`, `/about`, `/contact` work in their respective layouts
 - `sitemap.xml` contains all pages
 - Google Rich Results Test passes on a location page
-- All 50 blog posts render correctly
+- All 50 blog posts render correctly in the sheet
 - Old URL → new URL redirect map covers all ~2365 pages
 
 **Rollback:** Staging only. Old pages still live on production. No SEO impact.
@@ -160,16 +169,19 @@
 
 ### Phase 4: Polish & Canonicalize (Week 4-6)
 
-**Goal:** The app feels calm, premium, and coherent. Not just functional — desirable.
+**Goal:** The app feels calm, premium, and coherent. Not just functional — desirable. The unified app shell renders all content types beautifully.
 
 | Task | Detail |
 |------|--------|
-| Location detail canonical | Full detail view: photos, score breakdown, tips, opening hours, directions link, save button |
+| Location detail canonical | Full detail view in sheet/sidebar: photos, score breakdown, tips, opening hours, directions link, save button |
 | Glass design system | Frosted glass panels, subtle shadows, smooth transitions. Brand fonts: Newsreader (headings), Inter (body/UI). |
 | Sheet physics | Velocity-based animation, rubber-band overscroll, gesture handoff between scroll and sheet drag |
+| Sheet content types | Polish all content types in the sheet: browse cards, region guides, article content, guide overview, detail view |
 | Filter system complete | All filter types: age, type, weather, distance, peuterproof score, free/paid |
 | Favorites | localStorage read/write. Heart icon on cards and detail. Favorites tab in bottom nav. |
 | Plan view (basic) | Simple list of saved locations, reorderable. No route optimization yet. |
+| Guide content polish | Region guides and blog articles render beautifully in the sheet. Embedded location cards, images, typography. |
+| Sheet footer | "Heb je een locatie? Beheer je listing →" + Privacy · Voorwaarden · Over links — styled consistently across all sheet states. |
 | Empty states | Friendly illustrations or copy for: no results, no favorites, no plan items, error, offline |
 | Loading skeletons | Skeleton cards, skeleton detail, skeleton map — no layout shift |
 | Error boundaries | Graceful fallback per route segment. Never a white screen. |
@@ -177,9 +189,11 @@
 **Exit criteria:**
 - Detail page looks and feels premium on iPhone 14 and Pixel 7
 - Sheet gestures feel native (no jank, no missed gestures)
+- Region guides and blog articles render well in the sheet on all screen sizes
 - All filter combinations return sensible results or a friendly empty state
 - Favorites persist across sessions
 - No layout shift on any page load (CLS < 0.1)
+- Sheet footer links work and lead to correct layouts (portal/legal)
 
 **Rollback:** Staging only. Revert commits if design direction is wrong.
 
@@ -296,8 +310,8 @@
 |-------|---------|---------------|
 | 1. Foundation | Shell loads on staging, Supabase returns data, TS compiles clean | `curl staging.peuterplannen.nl` returns 200. CI green. |
 | 2. Thin slice | Core loop works: search → find → open → back | Manual test on iPhone + Android. Playwright smoke test. |
-| 3. SEO | Every location has a crawlable page with structured data | Content parity script. Google Rich Results Test. |
-| 4. Polish | Feels premium. No jank. All states handled. | User testing. 60fps sheet animations. No blank states. |
+| 3. SEO | Every location has a crawlable page within app shell. Guides replace blog. Route groups unified. | Content parity script. Google Rich Results Test. All routes render in correct layout. |
+| 4. Polish | Feels premium. No jank. All content types render well in sheet. | User testing. 60fps sheet animations. No blank states. Guides + articles look great in sheet. |
 | 5. Quality | Tests pass. CWV green. Accessible. | CI pipeline. Lighthouse CI. axe-core report. |
 | 6. Validation | v2 provably better than v1 | Side-by-side Lighthouse. User preference. Zero missing pages. |
 | 7. Cutover | Live for 48h with no critical issues | Search Console. Analytics. Error monitoring. |

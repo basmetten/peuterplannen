@@ -2,61 +2,63 @@
 
 Phase 0 documentation for the Next.js App Router rebuild.
 
+**Core principle: The app IS the website.** There is no separate marketing site. Every page on peuterplannen.nl renders within the same map + sheet/sidebar layout, like Apple Maps (maps.apple.com). Guides, search results, place details, region hubs — everything renders in the sidebar/sheet with the map behind it.
+
 ---
 
 ## 1. Route Structure
 
 ### Route Groups
 
-The app uses two Next.js route groups:
+The app uses three Next.js route groups:
 
-- `app/(marketing)` — SSR/SSG pages optimized for SEO and crawlability
-- `app/(pwa)` — client-rendered interactive app shell (map, planner, favorites)
+- `app/(app)` — Unified app shell: map + sheet/sidebar for everything. This is the core experience and covers 95% of the site.
+- `app/(portal)` — Separate layout, NO map. Partner and admin dashboards.
+- `app/(legal)` — Simple minimal pages, NO map. Privacy, terms, about, contact.
 
-Each group gets its own root layout. The marketing layout includes a traditional header/footer. The PWA layout includes the bottom tab bar (mobile) and persistent sidebar (desktop).
+The `(app)` group includes one root layout with the persistent map, sheet (mobile), and sidebar (desktop). SEO pages (region hubs, location details, guides) are routes within this layout — Google gets SSR HTML with real content; users see the map-first experience.
 
-### Marketing / SEO Routes
+### App Routes (`app/(app)`)
 
-All routes below live in `app/(marketing)` and are crawlable, indexable, and render full HTML server-side.
+All routes below share the unified app shell: map background + sheet (mobile) / sidebar (desktop). Content renders in the sheet/sidebar. The map persists across navigations.
 
 | Route | Example | Rendering | Description |
 |---|---|---|---|
-| `/` | — | SSG | Homepage with hero, region cards, type cards, recent blog posts |
-| `/[region]` | `/amsterdam` | SSG | Region hub: intro text, type grid, top locations, nearby regions |
-| `/[type]` | `/speeltuinen` | SSG | National type hub: intro, region grid, top locations nationwide |
-| `/[region]/[type]` | `/amsterdam/speeltuinen` | SSG | City+type combo: filtered location list, map preview, intro text |
-| `/[region]/[slug]` | `/amsterdam/artis` | SSG (ISR 24h) | Location detail: full content, photos, score breakdown, nearby |
-| `/blog` | — | SSG | Blog index with paginated post cards |
-| `/blog/[slug]` | `/blog/beste-speeltuinen-amsterdam` | SSG | Blog post: long-form content with embedded location cards |
-| `/ontdekken` | — | SSG | Discovery hub: curated guides, seasonal picks, editorial content |
-| `/methode` | — | SSG | Methodology: how scores are calculated, data sources, transparency |
-| `/about` | — | SSG | About page |
-| `/contact` | — | SSG | Contact form |
-| `/voor-bedrijven` | — | SSG | B2B landing page for venue owners |
+| `/` | — | SSR (ISR) | Home: map + browse sheet with contextual suggestions + guides section |
+| `/[region]` | `/amsterdam` | SSG (ISR) | Map centered on region + sheet with region guide content (intro, type grid, top locations) |
+| `/[region]/[type]` | `/amsterdam/speeltuinen` | SSG (ISR) | Map with type markers + sheet with filtered location list |
+| `/[region]/[slug]` | `/amsterdam/artis` | SSR | Map centered on location + detail sheet open with full content |
+| `/blog/[slug]` | `/blog/beste-uitjes-amsterdam` | SSG | Map background + sheet with article content |
+| `/guides` | — | SSG (ISR) | Sheet with guides overview (featured, latest, by city) |
 
-**Route conflict resolution:** `/[region]` and `/[type]` share the same `[slug]` pattern at the root level. Resolution order:
+**Route conflict resolution:** `/[region]` and potential catch-all patterns share slug space at the root level. Resolution order:
 
-1. Check against the 8 known type slugs: `speeltuinen`, `boerderijen`, `natuur`, `horeca`, `musea`, `zwemmen`, `pannenkoeken`, `cultuur`
+1. Check against known static routes: `blog`, `guides`
 2. Check against the ~22 known region slugs: `amsterdam`, `rotterdam`, `utrecht`, `den-haag`, etc.
 3. If neither matches → 404
 
-Implementation: use `generateStaticParams` for both, and a shared `middleware.ts` or catch-all with lookup logic.
+Implementation: use `generateStaticParams` for regions, and explicit route segments for `blog` and `guides`.
 
-### PWA / App Routes
+### Portal Routes (`app/(portal)`)
 
-All routes below live in `app/(pwa)` and are client-rendered. They share a single app shell with bottom tabs (mobile) and sidebar (desktop). The map persists across navigations within this group.
+Separate layout — no map, no sheet. Standard page layout for authenticated/dashboard experiences.
 
 | Route | Description |
 |---|---|
-| `/app` | Main interactive experience: map + bottom sheet with location cards |
-| `/app/plan` | Day planner: saved itinerary with drag-to-reorder |
-| `/app/favorieten` | Saved/bookmarked locations |
-| `/app?locatie=amsterdam/artis` | Deep link: opens location detail in the app context |
-| `/app?type=speeltuinen` | Deep link: pre-filters by type |
-| `/app?regio=amsterdam` | Deep link: centers map on region |
-| `/app?regio=amsterdam&type=speeltuinen` | Combined deep link |
+| `/partner` | Partner portal landing: claim/manage listing |
+| `/partner/dashboard` | Partner dashboard (future) |
+| `/admin` | Admin dashboard (future) |
 
-The `/app` route is a single-page app internally. Query parameters control state (selected location, active filters, map viewport) without triggering full page navigations.
+### Legal Routes (`app/(legal)`)
+
+Minimal layout — no map, no sheet. Simple content pages.
+
+| Route | Description |
+|---|---|
+| `/privacy` | Privacy policy |
+| `/terms` | Terms of service |
+| `/about` | About PeuterPlannen |
+| `/contact` | Contact form |
 
 ### Static / Utility Routes
 
@@ -71,17 +73,18 @@ The `/app` route is a single-page app internally. Query parameters control state
 
 ## 2. Navigation Model
 
+There is no traditional website navigation (header with nav links, footer with sitemap). The sheet/sidebar IS the navigation — just like Apple Maps.
+
 ### Mobile Navigation
 
-**Bottom tab bar** — fixed at the bottom, always visible in PWA context:
+**Bottom tab bar** — fixed at the bottom, always visible in the app shell:
 
 | Tab | Icon | Target | Active state |
 |---|---|---|---|
-| Ontdek | compass | `/app` (sheet: peek/half with cards) | Default tab |
-| Kaart | map | `/app` (sheet: collapsed, map fullscreen) | Map focused |
-| Bewaard | heart | `/app/favorieten` | Heart filled |
-| Plan | calendar | `/app/plan` | Badge with count |
-| Meer | dots/menu | Slide-up menu (info, settings, about links) | — |
+| Ontdek | compass | `/` (sheet: peek/half with suggestions + guides) | Default tab |
+| Kaart | map | `/` (sheet: collapsed, map fullscreen) | Map focused |
+| Bewaard | heart | Bewaard content in sheet | Heart filled |
+| Plan | calendar | Plan content in sheet | Badge with count |
 
 **Tab behavior:**
 - Tapping the active tab scrolls its content to top / resets sheet to default state
@@ -91,188 +94,209 @@ The `/app` route is a single-page app internally. Query parameters control state
 
 ### Desktop Navigation
 
-**Persistent sidebar** (left, ~380px wide):
-- Logo + search bar at top
-- Filter chips below search
-- Scrollable content area (cards, detail, plan — depends on context)
-- No bottom tabs; all navigation is inline in the sidebar
+**Persistent sidebar** (left, ~380px wide) — Apple Maps style:
+
+- Top: PeuterPlannen logo + sidebar toggle
+- Navigation: Search bar + filter chips
+- Content area: depends on active route (browse cards, detail, guide content, region hub)
+- Footer (always visible at bottom of sidebar): "Heb je een locatie? Beheer je listing →" + Privacy · Voorwaarden · Over
 
 **Sidebar states:**
-1. **List state** — scrollable location cards with filter chips
-2. **Detail state** — location detail panel (replaces list, back button at top)
-3. **Plan state** — itinerary builder
-4. **Favorites state** — saved locations
+1. **Browse state** — contextual suggestions + guides section (home)
+2. **List state** — scrollable location cards with filter chips (after search/filter)
+3. **Detail state** — location detail panel (replaces list, back button at top)
+4. **Guide state** — guide/article content (region hub, blog post)
+5. **Plan state** — itinerary builder
+6. **Favorites state** — saved locations
 
-Toggle between states via top-level navigation links in the sidebar header.
+### Sheet/Sidebar Content by Route
 
-### SEO → App Transition
+| Route | Sheet/Sidebar Content | Map State |
+|---|---|---|
+| `/` | Contextual suggestions + "Gidsen" section with guide cards | NL overview or user's last city |
+| `/amsterdam` | Region guide: intro, type grid, top locations, editorial content | Centered on Amsterdam, markers visible |
+| `/amsterdam/speeltuinen` | Filtered list: all speeltuinen in Amsterdam | Centered on Amsterdam, type markers only |
+| `/amsterdam/artis` | Full location detail (peek → half → full) | Centered on Artis, marker highlighted |
+| `/blog/beste-uitjes` | Article content (scrollable in sheet/sidebar) | Ambient map, markers for mentioned locations |
+| `/guides` | Guide overview: featured, latest, by city | NL overview |
 
-When a user lands on an SEO page (e.g., `/amsterdam/artis`) and taps the "Open in app" CTA:
+### Navigation Within the App Shell
 
-1. Navigate to `/app?locatie=amsterdam/artis`
-2. App shell loads, map centers on location
-3. Bottom sheet opens to full state with location detail
-4. User is now in the PWA context with full interactivity
+All navigation happens within the sheet/sidebar. The map transitions smoothly between states.
 
-This is a full page navigation (not a soft transition). The marketing layout unmounts, the PWA layout mounts.
+| Action | Result |
+|---|---|
+| Tap region card on home | URL → `/amsterdam`, map flies to Amsterdam, sheet shows region guide |
+| Tap type in region guide | URL → `/amsterdam/speeltuinen`, sheet shows filtered list |
+| Tap location card | URL → `/amsterdam/artis`, browse sheet hides, detail sheet opens |
+| Back from detail | URL pops, detail sheet hides, browse sheet restores |
+| Tap guide card | URL → `/blog/slug`, sheet shows article content |
+| Tap "Heb je een locatie?" in footer | URL → `/partner` (separate layout, exits app shell) |
+| Tap Privacy/Terms/About in footer | URL → `/privacy` etc. (separate layout, exits app shell) |
 
 ### Deep Link Handling
 
 | Input | Behavior |
 |---|---|
-| `/app?locatie=amsterdam/artis` | Center map on location, open detail in sheet/sidebar |
-| `/app?type=speeltuinen` | Set type filter, show filtered cards |
-| `/app?regio=amsterdam` | Set map viewport to region bounds |
-| Shared link (native share) | Generate `/amsterdam/artis` URL (SEO page, not app URL) |
+| `/amsterdam/artis` | App shell loads, map centers on Artis, detail sheet opens |
+| `/amsterdam` | App shell loads, map centers on Amsterdam, sheet shows region guide |
+| `/amsterdam/speeltuinen` | App shell loads, map shows speeltuin markers, sheet shows filtered list |
+| Shared link (native share) | Generate `/amsterdam/artis` URL (same app shell URL — it's the canonical URL) |
 
 ### History Management
 
-- **Within PWA:** use `window.history.replaceState` for filter/viewport changes (no history stack pollution). Use `pushState` only for meaningful navigation: opening a location detail, switching tabs.
+- **Within app shell:** use `window.history.replaceState` for filter/viewport changes (no history stack pollution). Use `pushState` for meaningful navigation: opening a location detail, switching to a region, opening a guide.
 - **Back button in detail view:** pops back to list/map state (previous `pushState` entry).
-- **Back button from app:** if no PWA history, navigates to referring SEO page or `/`.
-- **SEO pages:** standard Next.js navigation with full page loads between route groups.
+- **Back button from guide:** returns to browse/home state.
+- **Portal/legal pages:** standard Next.js navigation with full page loads between route groups.
 
 ---
 
 ## 3. Screen Inventory
 
-### 3.1 Homepage (`/`)
+### 3.1 Home (`/`)
 
-**Above the fold:**
-- Hero with headline ("Ontdek de leukste uitjes met je peuter"), subheading, primary CTA → `/app`
-- Search bar (links to `/app` with query)
+The home screen IS the app. No separate landing page. Users land directly on the map with the browse sheet showing contextual content.
 
-**Below the fold:**
-- Region cards grid (Amsterdam, Rotterdam, Utrecht, Den Haag, ... ~8 featured)
-- Type cards grid (8 types with icon + count)
-- Editorial picks / seasonal content (3-4 cards)
-- Recent blog posts (3 cards)
-- Trust signals (location count, review count)
-- Footer with full link structure
+**Browse sheet content (mobile) / Sidebar content (desktop):**
 
-**Data needed:** Region list with counts, type list with counts, featured locations (curated), recent blog posts.
+1. **Search bar** at top (always visible)
+2. **Contextual suggestion rows** — time/weather-based (4-6 rows with SVG icon + label, like Apple Maps "Find Nearby")
+3. **"Gidsen" section** — guide cards organized by:
+   - Featured guides (hero card carousel)
+   - Latest guides
+   - By city (Amsterdam, Rotterdam, Utrecht, etc.)
+4. **Popular locations** — top-scored nearby (if location known) or nationwide
 
-**Loading state:** Static page — SSG, no loading state needed.
+**Map state:** NL overview (zoom ~7) or user's last city. Markers visible when zoomed in.
 
-### 3.2 Region Hub (`/[region]`)
+**Data needed:** Weather data (Open-Meteo), guide/editorial content, featured locations.
 
-**Above the fold:**
-- Region name as h1, intro paragraph
-- Hero image (region-specific)
-- Type filter grid (8 types, each showing count for this region)
+**SEO:** SSR with contextual content. `<title>`: "PeuterPlannen — Ontdek de leukste uitjes met je peuter". Structured data: `WebSite` + `Organization` + `SearchAction`.
 
-**Below the fold:**
-- Top locations in region (6-8 cards, sorted by score)
-- Map preview (static image linking to `/app?regio=[region]`)
-- Type sections (one per type that has locations in this region)
-- Nearby regions (horizontal scroll)
-- Breadcrumb: Home → [Region]
+### 3.2 Region Guide (`/[region]`)
 
-**Data needed:** Region metadata, location counts by type, top locations (score-sorted), nearby regions.
+A region page renders as a guide in the sheet/sidebar, with the map centered on the region.
 
-### 3.3 Type Hub (`/[type]`)
+**Sheet/sidebar content:**
 
-**Above the fold:**
-- Type name as h1 (e.g., "Speeltuinen"), intro paragraph
-- CTA to explore on map → `/app?type=[type]`
+1. **Back button** (top left) — returns to home
+2. **Region hero image** (full width in sheet)
+3. **Region name** (h1) + intro paragraph
+4. **Type grid** — 8 type cards filtered to this region (icon + name + count)
+5. **Top locations** — 6-8 highest-scored cards
+6. **Editorial content** — region-specific tips, seasonal highlights
+7. **Nearby regions** — horizontal scroll of region cards
 
-**Below the fold:**
-- Region grid (which regions have this type, with counts)
-- Top locations nationwide for this type (8-10 cards)
-- Editorial content about this type
-- Breadcrumb: Home → [Type]
+**Map state:** Centered on region bounds, markers visible for all locations in region.
 
-**Data needed:** Type metadata, location counts by region, top locations for type.
+**Data needed:** Region metadata, location counts by type, top locations, nearby regions.
 
-### 3.4 City+Type Combo (`/[region]/[type]`)
+**SEO:** SSG with ISR. Full HTML content server-rendered in the sheet. Structured data: `ItemList` + `BreadcrumbList`.
 
-**Above the fold:**
-- h1: "[Type] in [Region]" (e.g., "Speeltuinen in Amsterdam")
-- Intro paragraph (unique per combo)
-- Location count + CTA to map → `/app?regio=[region]&type=[type]`
+### 3.3 City+Type Combo (`/[region]/[type]`)
 
-**Below the fold:**
-- All locations for this combo, sorted by score (card list, paginated if >20)
-- Static map preview with markers
-- Related combos (same region different type, same type different region)
-- Breadcrumb: Home → [Region] → [Type]
+**Sheet/sidebar content:**
 
-**Data needed:** Locations filtered by region+type, combo metadata/intro text.
+1. **Back button** + breadcrumb (Region → Type)
+2. **Header** — h1 "[Type] in [Region]", location count
+3. **Filter chips** — active type pre-selected, additional filters available
+4. **Location cards** — all locations matching region+type, sorted by score
 
-### 3.5 Location Detail — SEO Version (`/[region]/[slug]`)
+**Map state:** Centered on region, only matching type markers visible.
 
-**Above the fold:**
-- Location name (h1), type badge, region
-- Hero image (or gallery carousel if multiple images)
-- PeuterPlannen score (overall + breakdown preview)
-- Key facts: address, opening hours, price range, age range
+**Data needed:** Locations filtered by region+type.
 
-**Below the fold:**
-- Full score breakdown (8 criteria with individual scores)
-- Description / editorial review
-- Photo gallery
-- Practical info (parking, public transport, facilities)
-- Map with pin (static or lightweight interactive)
-- Nearby locations (4-6 cards)
-- CTA: "Bekijk op de kaart" → `/app?locatie=[region]/[slug]`
-- Breadcrumb: Home → [Region] → [Location]
-- JSON-LD structured data (see Section 5)
+**SEO:** SSG with ISR. Structured data: `ItemList` + `BreadcrumbList`.
 
-**Data needed:** Full location record, images, score breakdown, nearby locations.
+### 3.4 Location Detail (`/[region]/[slug]`)
 
-### 3.6 Location Detail — In-App Version (`/app?locatie=...`)
-
-Renders in a **separate detail sheet** (mobile) or sidebar detail panel (desktop). The detail sheet is independent from the browse sheet — only one sheet is visible at a time. Opening a location dismisses the browse sheet and presents the detail sheet; closing the detail sheet returns to the browse sheet.
-
-- No header/footer chrome
-- Detail sheet states: half (preview) → full (complete detail) via drag
-- Map shows the location pin, zoomed in
-- "Add to plan" and "Save" buttons prominent
-- Swipe down or back button to dismiss → returns to browse sheet
+Renders in a **detail sheet** (mobile) or sidebar detail panel (desktop). The detail sheet replaces the browse sheet — only one is visible at a time.
 
 **Mobile detail sheet states:**
-1. **Half state** — name, image, score, key facts, "View more" affordance
-2. **Full state** — complete detail (scroll within sheet)
+1. **Peek state** — name, type, score, open/closed, thumbnail
+2. **Half state** — action buttons, quick-info row, description intro, hero photo
+3. **Full state** — complete detail (scrollable): score breakdown, practical info, opening hours, nearby locations
 
 **Desktop sidebar:**
 - Full detail visible in sidebar panel (scrollable)
 - Map zoomed to location on right side
 
-**Data needed:** Same as SEO version. Fetched client-side from Supabase if not already cached.
+**Content (server-rendered for SEO, interactive after hydration):**
+1. Location name (h1), type badge, region
+2. Hero image gallery
+3. PeuterPlannen score + breakdown
+4. Key facts: address, opening hours, price range, age range
+5. Description / editorial review
+6. Practical info (parking, public transport, facilities)
+7. Map with pin
+8. Nearby locations (4-6 cards)
+9. JSON-LD structured data
 
-**Loading state:** Skeleton with image placeholder, 3 text lines, score placeholder.
+**Data needed:** Full location record, images, score breakdown, nearby locations.
 
-**Empty state:** N/A (deep links always target a specific location).
+**SEO:** SSR (graduation check at request time). Full HTML rendered in the sheet container. Googlebot sees complete content. Structured data: type-specific schema + `BreadcrumbList`.
 
-### 3.7 App — Map + List (`/app`)
+### 3.5 App — Map + Browse (`/`)
 
 **Mobile — sheet states:**
 
 | State | Content | Map visibility |
 |---|---|---|
-| **Peek** (~15% height) | Search bar + "X locaties" count + drag handle | Full map visible |
-| **Half** (~50% height) | Search bar + filter chips + scrollable card list | Map visible above sheet |
-| **Full** (100% height) | Search bar + filters + full card list (or detail) | Map hidden |
+| **Peek** (~15% height) | Search bar + suggestion count + drag handle | Full map visible |
+| **Half** (~50% height) | Search bar + filters + scrollable cards or guide content | Map visible above sheet |
+| **Full** (100% height) | Full scrollable content (cards, guides, or detail) | Map hidden |
 
 **Desktop:**
-- Sidebar (left, 380px): search, filters, scrollable cards
+- Sidebar (left, 380px): search, filters, scrollable content
 - Map (right, remaining width): always visible
 - No sheet concept; sidebar is always visible
 
 **Key interactive elements:**
 - Search bar: type-ahead with location/region/type suggestions
 - Filter chips: 8 type filters + "Gratis" + age range + distance
-- Location cards: tap → open detail (sheet full / sidebar detail)
-- Map markers: tap → highlight card + scroll to it (mobile: sheet half if peek)
+- Location cards: tap → URL changes, detail opens
+- Map markers: tap → highlight card + scroll to it
 - Map viewport change → update visible cards (debounced)
-
-**Data needed:** Locations within current map bounds (Supabase query with bounding box). Cached aggressively.
+- Guide cards: tap → URL changes, guide content loads in sheet
 
 **Loading state:** Map loads immediately (tiles). Cards show skeleton (3 placeholder cards). Markers appear as data arrives.
 
 **Empty state:** "Geen locaties gevonden" with suggestion to zoom out or change filters.
 
-### 3.8 App — Favorites (`/app/favorieten`)
+### 3.6 Blog/Article (`/blog/[slug]`)
+
+Renders in the sheet/sidebar, with the map as ambient background. Map shows markers for locations mentioned in the article.
+
+**Sheet/sidebar content:**
+
+1. **Back button** (top left)
+2. **Hero image** (full width)
+3. **Title** (h1), author, date, reading time
+4. **Article body** — Markdown/MDX rendered content with:
+   - Embedded location cards (clickable → `/[region]/[slug]`, opens detail in sheet)
+   - Images with captions
+   - h2/h3 subheadings
+5. **Related locations** — cards for all locations mentioned
+6. **Related articles** — 2-3 related posts
+
+**Map state:** Ambient/zoomed out, with markers for mentioned locations.
+
+**Data needed:** Article content (Markdown/MDX), referenced location IDs.
+
+### 3.7 Guides Overview (`/guides`)
+
+**Sheet/sidebar content:**
+
+1. **Section header** — "Gidsen"
+2. **Featured guides** — hero card carousel
+3. **Latest** — card grid
+4. **By city** — city cards (photo + city name + location count)
+5. **Browse by type** — type cards linking to guide collections
+
+**Map state:** NL overview.
+
+### 3.8 App — Favorites (Bewaard tab)
 
 **Content:**
 - List of saved locations (stored in localStorage, synced to Supabase if authenticated)
@@ -281,7 +305,7 @@ Renders in a **separate detail sheet** (mobile) or sidebar detail panel (desktop
 **Mobile:** replaces sheet content. Map shows pins for all saved locations.
 **Desktop:** replaces sidebar content. Map shows saved location pins.
 
-### 3.9 App — Plan (`/app/plan`)
+### 3.9 App — Plan (Plan tab)
 
 **Content:**
 - Ordered list of planned locations (drag to reorder)
@@ -292,19 +316,6 @@ Renders in a **separate detail sheet** (mobile) or sidebar detail panel (desktop
 **Mobile:** replaces sheet content. Map shows route.
 **Desktop:** replaces sidebar content. Map shows route.
 
-### 3.10 Blog Post (`/blog/[slug]`)
-
-**Above the fold:**
-- Title (h1), author, date, reading time
-- Hero image
-
-**Below the fold:**
-- Long-form content with embedded location cards (clickable → SEO detail page)
-- Related posts
-- CTA to explore mentioned locations on map
-
-**Data needed:** Blog post content (Markdown/MDX), referenced location IDs.
-
 ---
 
 ## 4. Map / List / Detail Relationships
@@ -313,8 +324,8 @@ Renders in a **separate detail sheet** (mobile) or sidebar detail panel (desktop
 
 Mobile uses two independent sheets that never overlap:
 
-1. **Browse sheet** — search bar, filter chips, location card list, contextual suggestion rows. States: peek / half / full.
-2. **Detail sheet** — location detail content. States: half / full.
+1. **Browse sheet** — search bar, filter chips, location card list, contextual suggestions, guide content, article content. States: peek / half / full.
+2. **Detail sheet** — location detail content. States: peek / half / full.
 
 Only one sheet is visible at a time. Opening a location transitions from browse sheet to detail sheet. Closing detail returns to browse sheet (restored to its previous state).
 
@@ -340,7 +351,7 @@ Only one sheet is visible at a time. Opening a location transitions from browse 
         └────────────────┘
 ```
 
-**Cold start default:** Browse sheet in peek/half state showing contextual suggestion rows (nearby, popular, seasonal picks) before the user searches or filters.
+**Cold start default:** Browse sheet in peek/half state showing contextual suggestion rows (nearby, popular, seasonal picks) + guides section before the user searches or filters.
 
 ### Detail Sheet State Machine
 
@@ -358,6 +369,21 @@ Only one sheet is visible at a time. Opening a location transitions from browse 
 - **Tap map marker** → browse sheet hides, detail sheet appears (half)
 - **Back / swipe down from detail half** → detail sheet dismisses, browse sheet restores
 - **Tap nearby location in detail** → detail sheet swaps to new location (push history)
+
+### Route-Driven Sheet Content
+
+When the URL changes (e.g., user navigates to `/amsterdam`), the sheet content updates to match the route:
+
+| URL | Sheet content type |
+|---|---|
+| `/` | Browse: suggestions + guides |
+| `/amsterdam` | Browse: region guide |
+| `/amsterdam/speeltuinen` | Browse: filtered location list |
+| `/amsterdam/artis` | Detail: location detail |
+| `/blog/slug` | Browse: article content |
+| `/guides` | Browse: guides overview |
+
+The sheet state machine manages peek/half/full positioning. The route determines what content fills the sheet.
 
 ### Carousel (Map-Level Overlay)
 
@@ -379,7 +405,7 @@ The carousel is a horizontally scrollable row of compact location cards that flo
                               back button
 ```
 
-No sheet mechanics. Sidebar switches between list and detail content. Map is always visible.
+No sheet mechanics. Sidebar switches between content types based on the active route. Map is always visible.
 
 ### Map ↔ List Synchronization
 
@@ -402,161 +428,150 @@ No sheet mechanics. Sidebar switches between list and detail content. Map is alw
 
 ---
 
-## 5. SEO Page Strategy
+## 5. SEO Strategy
+
+### The App IS the SEO Page
+
+There is no separate marketing page that then links to an app version. The SSR HTML that Google sees IS the app shell with real content rendered in the sheet/sidebar container. After hydration, users get the full interactive map experience.
+
+This is the Apple Maps model: `maps.apple.com/place/artis` renders a full HTML page with place details for Google, and an interactive map experience for users. Same URL, same content, one experience.
 
 ### Rendering Strategy
 
 | Page | Rendering | Revalidation | Count |
 |---|---|---|---|
-| `/` | SSG | Rebuild on deploy | 1 |
-| `/[region]` | SSG | Rebuild on deploy | ~22 |
-| `/[type]` | SSG | Rebuild on deploy | 8 |
-| `/[region]/[type]` | SSG | Rebuild on deploy | ~176 (22×8) |
-| `/[region]/[slug]` | SSG + ISR | Revalidate every 24h | ~2000 |
-| `/blog/[slug]` | SSG | Rebuild on deploy | ~50 |
-| `/ontdekken` | SSG | Rebuild on deploy | 1 |
-| `/methode` | SSG | Rebuild on deploy | 1 |
-| `/about`, `/contact`, `/voor-bedrijven` | SSG | Rebuild on deploy | 3 |
-| `/app` (and sub-routes) | CSR | N/A | — |
+| `/` | SSR (ISR) | Daily | 1 |
+| `/[region]` | SSG (ISR) | On data change, fallback 3600s | ~22 |
+| `/[region]/[type]` | SSG (ISR) | 3600s | ~176 (22x8) |
+| `/[region]/[slug]` | SSR | Graduation check at request time | ~2000 |
+| `/blog/[slug]` | SSG | On deploy | ~50 |
+| `/guides` | SSG (ISR) | 3600s | 1 |
+| `/privacy`, `/terms`, etc. | SSG | On deploy | ~4 |
+| `/partner` | CSR | N/A | — |
 
-**ISR for location pages:** Location data changes infrequently (scores update weekly, hours may change). 24h revalidation balances freshness with build cost. On-demand revalidation via webhook when a location is updated in Supabase.
+### Server-Rendered Content in App Shell
 
-### Location Detail: SEO + App-like UX
+Each SSR/SSG page renders within the `(app)` layout. The server outputs:
 
-The `/[region]/[slug]` page must serve two audiences:
+1. The app shell (map container, sheet/sidebar container, tab bar)
+2. The route-specific content pre-rendered inside the sheet/sidebar container
+3. Map initialization data (center, zoom, markers for the route)
+4. JSON-LD structured data in `<head>`
 
-1. **Googlebot / first-time visitor:** Full server-rendered HTML with all content, structured data, images, and internal links. No JavaScript required for content visibility.
-
-2. **Returning user / app user:** After hydration, the page gains interactive features (save button, add-to-plan, image gallery swipe, map interaction). A persistent "Open in app" banner/CTA encourages transition to `/app?locatie=...`.
-
-Implementation: standard Next.js SSG page. All content is in the initial HTML. Client components hydrate on top for interactivity. No client-side data fetching needed for the core content.
+Googlebot sees the full content in the HTML. Users see the same content hydrated with interactivity.
 
 ### Structured Data (JSON-LD)
 
 | Page Type | Schema.org Type | Key Properties |
 |---|---|---|
 | Homepage | `WebSite` + `Organization` | name, url, searchAction |
-| Region hub | `CollectionPage` | name, description, about (region) |
-| Type hub | `CollectionPage` | name, description |
+| Region guide | `CollectionPage` + `ItemList` | name, description, about (region), itemListElement |
 | City+type combo | `CollectionPage` + `ItemList` | itemListElement (locations) |
-| Location detail | `TouristAttraction` + `Place` | name, address, geo, image, aggregateRating, openingHours, priceRange |
-| Blog post | `Article` + `BlogPosting` | headline, author, datePublished, image |
-| Methodology | `WebPage` + `FAQPage` | mainEntity (FAQ items about scoring) |
+| Location detail | `TouristAttraction` / `Zoo` / `Museum` + `Place` | name, address, geo, image, aggregateRating, openingHours, priceRange |
+| Blog/guide post | `Article` + `BlogPosting` | headline, author, datePublished, image |
+| Guides overview | `CollectionPage` | name, description |
 
 ### Canonical URL Rules
 
 - Every page has exactly one canonical URL
 - Location detail canonical: `https://peuterplannen.nl/[region]/[slug]`
 - No trailing slashes (enforced by Next.js config or middleware)
-- `/app?locatie=amsterdam/artis` is NOT indexed; canonical for that content is `/amsterdam/artis`
-- `<meta name="robots" content="noindex">` on all `/app/*` routes
-- Blog pagination (if any): `rel=prev` / `rel=next` with canonical on page 1
+- `<meta name="robots" content="noindex">` on `/partner/*` and `/admin/*` routes
+- Filtered views with query params (e.g., `?type=speeltuin`) get `noindex`
 
 ### Internal Linking Strategy
 
-Every SEO page participates in a dense internal link graph:
+Every SSR page participates in a dense internal link graph, rendered in the sheet/sidebar content:
 
 | From | Links to |
 |---|---|
-| Homepage | All region hubs, all type hubs, featured locations, recent blog posts |
-| Region hub | All type combos for this region, top locations, nearby regions, homepage |
-| Type hub | All region combos for this type, top locations, homepage |
-| City+type combo | All locations in this combo, region hub, type hub, related combos |
-| Location detail | Region hub, type hub, nearby locations, related city+type combo |
-| Blog post | Referenced locations, relevant region/type hubs |
+| Home (suggestions + guides) | Region guides, featured locations, latest blog posts |
+| Region guide | Type combos for this region, top locations, nearby regions |
+| City+type combo | All locations in this combo, region guide, related combos |
+| Location detail | Region guide, nearby locations, related city+type combo |
+| Blog/guide post | Referenced locations, relevant region guides |
+| Sheet footer | /partner, /privacy, /terms, /about |
 
-**Breadcrumbs** on every page (also in JSON-LD `BreadcrumbList`):
+**Breadcrumbs** on every content page (also in JSON-LD `BreadcrumbList`):
 - Location: Home → [Region] → [Location name]
 - City+type: Home → [Region] → [Type in Region]
-- Type hub: Home → [Type]
-- Region hub: Home → [Region]
+- Region guide: Home → [Region]
 
 ---
 
 ## 6. Content Hierarchy per Page Type
 
-### 6.1 Homepage
+### 6.1 Home (`/`) — Browse Sheet/Sidebar
 
-1. **Hero section** — headline, subheading, search bar, primary CTA
-2. **Region grid** — 8 featured regions as cards (image + name + location count)
-3. **Type grid** — 8 types as cards (icon + name + count)
-4. **Editorial picks** — 3-4 curated location cards (seasonal/topical)
-5. **Recent blog posts** — 3 cards with image, title, excerpt
-6. **Trust bar** — total locations, total reviews, methodology link
-7. **Footer** — full sitemap links, legal, social
+1. **Search bar** (always at top)
+2. **Contextual suggestion rows** — 4-6 time/weather-based suggestions (SVG icon + label)
+3. **"Gidsen" section header**
+4. **Featured guide cards** — hero carousel (Amsterdam met peuters, Regendag activiteiten, etc.)
+5. **Latest guides** — 3 cards with image, title, excerpt
+6. **Popular cities** — region cards (Amsterdam, Rotterdam, Utrecht, etc.)
+7. **Sheet footer** — "Heb je een locatie? Beheer je listing →" + Privacy · Voorwaarden · Over
 
-### 6.2 Region Hub
+### 6.2 Region Guide (`/[region]`) — Sheet/Sidebar
 
-1. **Header** — h1 region name, intro paragraph (2-3 sentences), hero image
-2. **Type grid** — 8 type cards filtered to this region (icon + name + count in region)
-3. **Top locations** — 6-8 highest-scored locations in region (card with image, name, score, type badge)
-4. **Map preview** — static map image with marker clusters, CTA to `/app?regio=...`
-5. **Type sections** — for each type with >3 locations: h2 + 4 cards + "Bekijk alle" link to city+type combo
-6. **Nearby regions** — horizontal scroll of region cards
-7. **Breadcrumb** + footer
+1. **Back button** (top left) + Share button (top right)
+2. **Hero image** (full width, region-specific)
+3. **Region name** (h1) + intro paragraph (2-3 sentences)
+4. **Type grid** — 8 type cards filtered to this region (icon + name + count)
+5. **Top locations** — 6-8 highest-scored location cards
+6. **Editorial content** — region-specific tips, seasonal highlights
+7. **Nearby regions** — horizontal scroll of region cards
+8. **Sheet footer**
 
-### 6.3 Type Hub
+### 6.3 City+Type Combo (`/[region]/[type]`) — Sheet/Sidebar
 
-1. **Header** — h1 type name (e.g., "Speeltuinen in Nederland"), intro paragraph, type icon
-2. **Region grid** — regions that have this type, sorted by count (card with region name + count)
-3. **Top locations** — 8-10 highest-scored locations of this type nationwide
-4. **Editorial content** — what makes a great [type], tips for visiting with toddlers
-5. **Breadcrumb** + footer
+1. **Back button** + breadcrumb
+2. **Header** — h1 "[Type] in [Region]", intro paragraph, location count
+3. **Filter/sort bar** — active type highlighted, additional filters
+4. **Location cards** — all locations matching region+type, sorted by score
+5. **Related combos** — "Also in [Region]" + "Also [type] in"
+6. **Sheet footer**
 
-### 6.4 City+Type Combo
+### 6.4 Location Detail (`/[region]/[slug]`) — Detail Sheet/Sidebar
 
-1. **Header** — h1 "[Type] in [Region]", intro paragraph, location count
-2. **Filter/sort bar** — sort by score/distance/name (minimal, not the full app filter)
-3. **Location cards** — all locations matching region+type, sorted by score (image, name, score, address snippet, key facts)
-4. **Map preview** — static map with all location markers, CTA to `/app?regio=...&type=...`
-5. **Related combos** — "Also in [Region]: [other types]" + "Also [type] in: [other regions]"
-6. **Breadcrumb** + footer
-
-### 6.5 Location Detail — SEO Version
-
-1. **Breadcrumb** (top)
-2. **Hero** — image gallery (1 hero + thumbnails), location name (h1), type badge, region link
-3. **Quick facts bar** — score (large), price, age range, opening hours summary
-4. **CTA bar** — "Open in app" button, save button, share button
-5. **Score breakdown** — 8 criteria each with score + one-line explanation
-6. **Description** — editorial review (2-4 paragraphs)
-7. **Practical info** — full address, opening hours table, pricing table, parking, public transport, facilities (toilets, changing table, stroller access)
-8. **Photo gallery** — remaining images in grid
-9. **Map** — static map with pin + address, link to directions
-10. **Nearby locations** — 4-6 cards within ~5km, same type preferred
-11. **Back to region/type** — contextual links
-12. **Footer**
-
-### 6.6 Location Detail — In-App Version
-
-Same content, different container. Rendered in the bottom sheet (mobile) or sidebar panel (desktop):
-
-**Half-sheet preview (mobile):**
+**Peek state (mobile):**
 1. Drag handle
-2. Hero image (aspect 16:9, edge-to-edge)
-3. Location name + type badge
-4. Score (large) + price + age range
-5. "Bekijk meer" affordance (or just drag up)
+2. Name + type badge
+3. Score + open/closed status
+4. Thumbnail (right-aligned)
 
-**Full-sheet / sidebar detail:**
+**Half state / sidebar top:**
 1. Hero image gallery (swipeable)
 2. Name (h1) + type badge
 3. Action bar: Save, Add to plan, Share, Directions
-4. Score breakdown (expandable)
-5. Description
-6. Practical info (collapsible sections)
-7. Nearby locations (horizontal scroll cards)
+4. Quick-info: weather, age, price, distance
+5. Description intro (2-3 sentences)
 
-### 6.7 Blog Post
+**Full state / sidebar scrollable:**
+1. Score breakdown (expandable)
+2. Full description
+3. Practical info (collapsible sections): opening hours, address, parking, facilities
+4. Photo gallery
+5. Nearby locations (horizontal scroll cards)
+6. "Heb je een locatie?" footer link
 
-1. **Header** — title (h1), author name + avatar, publish date, reading time estimate
-2. **Hero image** — full-width
-3. **Article body** — Markdown/MDX rendered content with:
-   - Embedded location cards (inline component, clickable → `/[region]/[slug]`)
+### 6.5 Blog/Guide Post (`/blog/[slug]`) — Sheet/Sidebar
+
+1. **Back button** (top left) + Share button (top right)
+2. **Hero image** (full width)
+3. **Title** (h1) + author/publisher badge + date
+4. **Article body** — rendered Markdown/MDX with:
+   - Embedded location cards (tap → detail sheet)
    - Images with captions
    - h2/h3 subheadings
-   - Callout boxes (tips, warnings)
-4. **Related locations** — all locations mentioned in the post (card grid)
-5. **Related posts** — 2-3 posts with similar tags/region
-6. **CTA** — "Ontdek deze locaties op de kaart" → `/app` with relevant filters
-7. **Breadcrumb** + footer
+5. **Related locations** — card grid of all mentioned locations
+6. **Related articles** — 2-3 related posts
+7. **Sheet footer**
+
+### 6.6 Guides Overview (`/guides`) — Sheet/Sidebar
+
+1. **Section header** — "Gidsen"
+2. **Featured guide carousel** — large hero cards
+3. **Latest** — card grid (6-8 cards)
+4. **By city** — city cards with photo + name + guide count
+5. **Browse by type** — type cards
+6. **Sheet footer**
