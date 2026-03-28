@@ -534,7 +534,7 @@ function initSearchPill() {
             sheetEl.classList.toggle('search-has-query', q.length > 0);
             if (q.length < SEARCH_MIN_CHARS) { hideSuggestions(); return; }
             _searchTimer = setTimeout(() => {
-                showSuggestions(state.allLocations.filter(l => l.name.toLowerCase().includes(q)).slice(0, SEARCH_MAX_SUGGESTIONS));
+                showSuggestions(state.allLocations.filter(l => l.name.toLowerCase().includes(q)).slice(0, SEARCH_MAX_SUGGESTIONS), q);
             }, 150);
         });
         input.addEventListener('click', (e) => e.stopPropagation());
@@ -564,6 +564,13 @@ function initSearchPill() {
         });
     }
 
+    // Cancel button — slides in from right, dismisses search
+    const cancelBtn = document.getElementById('sheet-search-cancel');
+    if (cancelBtn) {
+        cancelBtn.addEventListener('mousedown', (e) => e.preventDefault());
+        cancelBtn.addEventListener('click', () => cancelSearch());
+    }
+
     // Dynamic placeholder: show current city when location is known
     updateSearchPlaceholder(pillText, input);
 }
@@ -586,7 +593,17 @@ function updateSearchPlaceholder(pillText, input) {
     setPlaceholder();
 }
 
-function showSuggestions(matches) {
+function highlightMatch(text, query) {
+    if (!query) return escapeHtml(text);
+    const idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if (idx === -1) return escapeHtml(text);
+    const before = text.substring(0, idx);
+    const match = text.substring(idx, idx + query.length);
+    const after = text.substring(idx + query.length);
+    return `${escapeHtml(before)}<strong class="suggestion-match">${escapeHtml(match)}</strong>${escapeHtml(after)}`;
+}
+
+function showSuggestions(matches, query) {
     let c = document.getElementById('search-suggestions');
     if (!c) {
         c = document.createElement('div');
@@ -596,11 +613,12 @@ function showSuggestions(matches) {
     }
     if (!matches.length) { c.innerHTML = ''; return; }
 
-    c.innerHTML = matches.map(loc => {
+    c.innerHTML = matches.map((loc, i) => {
         const tl = TYPE_LABELS[loc.type] || loc.type;
-        return `<div class="search-suggestion" data-id="${loc.id}">
+        const highlightedName = highlightMatch(loc.name, query);
+        return `<div class="search-suggestion" data-id="${loc.id}" style="animation-delay:${i * 40}ms">
             <span class="suggestion-icon">\uD83D\uDCCD</span>
-            <span class="suggestion-name">${escapeHtml(loc.name)}</span>
+            <span class="suggestion-name">${highlightedName}</span>
             <span class="suggestion-meta">${escapeHtml(tl)}${loc.region ? ' \u00b7 ' + escapeHtml(loc.region) : ''}</span>
         </div>`;
     }).join('');

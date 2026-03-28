@@ -569,10 +569,8 @@
   transition: opacity var(--wg-duration-fast);
 }
 
-/* Cancel button — slides in from right when search active */
+/* Cancel button — Apple Maps morph: collapsed→visible with spring */
 .sheet-search-cancel {
-  margin-left: var(--pp-space-sm);
-  padding: var(--pp-space-sm) var(--pp-space-sm2);
   font-size: var(--pp-text-sm);
   font-weight: var(--pp-weight-medium);
   color: var(--wg-primary);
@@ -582,15 +580,23 @@
   white-space: nowrap;
   font-family: inherit;
   -webkit-tap-highlight-color: transparent;
+  /* Hidden: zero width, no layout space */
+  max-width: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
   opacity: 0;
-  transform: translateX(20px);
   pointer-events: none;
-  transition: opacity 200ms cubic-bezier(0.32, 0.72, 0, 1) 50ms,
-              transform 250ms cubic-bezier(0.32, 0.72, 0, 1) 50ms;
+  transition: max-width 280ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              opacity 220ms cubic-bezier(0.32, 0.72, 0, 1) 60ms,
+              padding 280ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              margin 280ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .bottom-sheet.search-active .sheet-search-cancel {
+  max-width: 100px;
+  padding: 0 2px 0 8px;
+  margin-left: 4px;
   opacity: 1;
-  transform: translateX(0);
   pointer-events: auto;
 }
 /* Hide presets when search is expanded — filter chips take over */
@@ -651,6 +657,12 @@
   transition: background 80ms ease, transform 200ms cubic-bezier(0.32, 0.72, 0, 1);
   border-bottom: 0.5px solid rgba(var(--pp-neutral-muted-rgb), 0.06);
   -webkit-tap-highlight-color: transparent;
+  /* Stagger animation — each row fades in with delay set via inline style */
+  opacity: 0;
+  animation: suggestion-in 200ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+@keyframes suggestion-in {
+  to { opacity: 1; }
 }
 .search-suggestion:last-child {
   border-bottom: none;
@@ -666,12 +678,17 @@
 }
 .suggestion-name {
   font-size: var(--pp-text-sm);
-  font-weight: var(--pp-weight-medium);
+  font-weight: 400;
   color: var(--wg-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
+}
+/* Matching text highlighted in bold */
+.suggestion-match {
+  font-weight: var(--pp-weight-semibold);
+  color: var(--wg-text-primary);
 }
 .suggestion-meta {
   font-size: var(--pp-text-xs);

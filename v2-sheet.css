@@ -99,9 +99,10 @@
   -webkit-text-fill-color: rgba(100, 80, 70, 0.45);
 }
 
-/* Cancel button — hidden, search cancels via outside tap */
-.sheet-search-cancel {
-  display: none !important;
+/* Cancel button — Apple Maps 17px typography when visible */
+.bottom-sheet.search-active .sheet-search-cancel {
+  font-size: 1.0625rem; /* 17px — match search bar */
+  font-weight: 400;
 }
 
 /* Clear (x) button — Apple Maps 2-stage reveal, 44px touch target */
