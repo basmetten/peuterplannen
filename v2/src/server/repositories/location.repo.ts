@@ -57,6 +57,19 @@ export const LocationRepository = {
     return data.map((row: unknown) => LocationSummarySchema.parse(row));
   },
 
+  /** Fetch locations by region + type (for city+type combo pages) */
+  async getByRegionAndType(regionName: string, type: string): Promise<LocationSummary[]> {
+    const { data, error } = await supabase
+      .from('locations')
+      .select(LOCATION_SUMMARY_COLUMNS)
+      .eq('region', regionName)
+      .eq('type', type)
+      .order('ai_suitability_score_10', { ascending: false, nullsFirst: false });
+
+    if (error) throw new Error(`Failed to fetch by region+type: ${error.message}`);
+    return data.map((row: unknown) => LocationSummarySchema.parse(row));
+  },
+
   /** Fetch locations by type (for type hub pages) */
   async getByType(type: string): Promise<LocationSummary[]> {
     const { data, error } = await supabase

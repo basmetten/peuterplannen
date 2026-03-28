@@ -52,7 +52,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   );
 
-  // 4. Location detail pages: /{region-slug}/{location-slug}
+  // 4. City+type combo pages: /{region-slug}/{type-slug}
+  const comboPages: MetadataRoute.Sitemap = regions.flatMap((region) =>
+    Object.values(TYPE_SLUG_MAP).map((typeSlug) => ({
+      url: `${SITE_URL}/${region.slug}/${typeSlug}`,
+      priority: 0.7,
+      changeFrequency: 'weekly' as const,
+    })),
+  );
+
+  // 5. Location detail pages: /{region-slug}/{location-slug}
   const locationPages: MetadataRoute.Sitemap = seoLocations
     .filter((loc) => regionNameToSlug.has(loc.region))
     .map((loc) => ({
@@ -61,5 +70,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly' as const,
     }));
 
-  return [...homepage, ...regionPages, ...typePages, ...locationPages];
+  return [...homepage, ...regionPages, ...typePages, ...comboPages, ...locationPages];
 }

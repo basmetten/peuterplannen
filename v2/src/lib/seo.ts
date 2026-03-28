@@ -99,6 +99,11 @@ export function typeCanonicalUrl(typeSlug: string): string {
   return `${SITE_URL}/${encodeURIComponent(typeSlug)}`;
 }
 
+/** Canonical URL for a city+type combo page */
+export function comboCanonicalUrl(regionSlug: string, typeSlug: string): string {
+  return `${SITE_URL}/${encodeURIComponent(regionSlug)}/${encodeURIComponent(typeSlug)}`;
+}
+
 // ---------------------------------------------------------------------------
 // Quality dimension labels (Dutch)
 // ---------------------------------------------------------------------------

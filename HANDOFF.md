@@ -3,7 +3,7 @@
 ## Status
 **Phase 1 complete** — Next.js foundation, Supabase connected, slugs migrated.
 **Phase 2 complete** — core loop, polish, desktop layout, navigation, carousel, and PWA done.
-**Phase 3 Tier 1+2+3 complete** — location detail pages, region/type hub pages, sitemap, robots.txt, redirects.
+**Phase 3 Tier 1+2+3+4 complete** — location detail pages, region/type hub pages, city+type combo pages, sitemap, robots.txt, redirects.
 **Route restructuring complete** — unified `(app)` shell replaces `(marketing)` + `(pwa)`.
 
 ## Architecture (current)
@@ -78,8 +78,19 @@ Used by region hub, type hub, and location detail pages. The interactive home pa
 - Created placeholder pages for partner, privacy, terms, about, contact
 - Marketing layout (header+footer) removed
 
+### Phase 3 Tier 4 — City+Type Combo Pages
+- `/[region]/[type]` e.g. `/amsterdam/speeltuinen` — 224 new pages (28 regions × 8 types)
+- Route conflict resolved: `[region]/[slug]/page.tsx` checks `KNOWN_TYPE_SLUGS` first, renders CityTypeCombo or LocationDetail
+- `LocationRepository.getByRegionAndType()` — new server method for filtered fetch
+- `LOCATION_TYPE_LABELS_PLURAL` in enums.ts for collection page titles
+- `comboCanonicalUrl()` in seo.ts
+- JSON-LD: CollectionPage + ItemList + BreadcrumbList
+- Internal links: related combos (other types in same region + same type in other regions)
+- Empty state for combos with no locations
+- Sitemap updated with combo pages (priority 0.7)
+
 ## Build stats
-- 1047 total pages
+- 1271 total pages
 - Build time: ~2.4s static generation
 - API routes: force-dynamic
 - Home page: ISR 5min
@@ -88,7 +99,6 @@ Used by region hub, type hub, and location detail pages. The interactive home pa
 ## What's NOT done yet
 
 ### Phase 3 remaining
-- Tier 4: City+type combo pages (`/[region]/[type]` e.g. `/amsterdam/speeltuinen`)
 - Blog/guides migration into sheet (`/blog/[slug]`, `/guides`)
 - Persistent map in (app) layout (currently map only on home page)
 - SEO content rendered in interactive sheet (currently uses static ContentShell)
@@ -108,10 +118,16 @@ Used by region hub, type hub, and location detail pages. The interactive home pa
 | Home page route | `/` (was `/app`) | App IS the website per architecture doc |
 | Editorial content | Bundled TypeScript module | No fs.readFileSync; works on Cloudflare Pages |
 | Route conflict | KNOWN_TYPE_SLUGS checked first | 8 type slugs are a fixed set, region slugs are dynamic |
+| Combo routing | `[slug]` page resolves type vs location | Same pattern as `[region]` resolving type vs region — KNOWN_TYPE_SLUGS takes priority |
+| Plural labels | LOCATION_TYPE_LABELS_PLURAL in enums.ts | Collection pages use plural ("Speeltuinen in Amsterdam"), detail pages use singular |
 
 ## Next step
 
-Continue Phase 3 Tier 4 (city+type combo pages) or start making the ContentShell use the real interactive sheet/sidebar (progressive enhancement toward the persistent map architecture).
+Phase 3 SEO foundation is nearly complete. Remaining work:
+
+1. **Blog/guides migration** — `/blog/[slug]` and `/guides` pages within the app shell (biggest remaining Phase 3 item)
+2. **Progressive enhancement** — make ContentShell use the real interactive sheet/sidebar (move toward persistent map architecture)
+3. **Photo migration** (Phase 3.5) — Cloudflare R2 storage
 
 **Before starting**, the session should:
 - Read this HANDOFF.md

@@ -31,6 +31,18 @@ export const LOCATION_TYPE_LABELS: Record<LocationType, string> = {
   culture: 'Cultuur',
 };
 
+/** Plural Dutch labels for collection/combo pages */
+export const LOCATION_TYPE_LABELS_PLURAL: Record<LocationType, string> = {
+  play: 'Speeltuinen',
+  farm: 'Kinderboerderijen',
+  nature: 'Natuur',
+  museum: 'Musea',
+  swim: 'Zwemmen',
+  pancake: 'Pannenkoeken',
+  horeca: 'Horeca',
+  culture: 'Cultuur',
+};
+
 /** CSS custom property for each category color — single source of truth */
 export const TYPE_COLORS: Record<LocationType, string> = {
   play: 'var(--color-cat-play)',

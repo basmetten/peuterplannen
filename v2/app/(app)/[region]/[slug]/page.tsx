@@ -8,14 +8,18 @@ import {
   generateSeoDescription,
   shouldIndex,
   locationCanonicalUrl,
+  comboCanonicalUrl,
   SCHEMA_TYPE_MAP,
   TYPE_SLUGS,
+  SLUG_TO_TYPE,
+  KNOWN_TYPE_SLUGS,
   QUALITY_DIMENSION_LABELS,
   QUALITY_RATING_LABELS,
 } from '@/lib/seo';
 import { SITE_URL } from '@/lib/constants';
-import { LOCATION_TYPE_LABELS, PRICE_BAND_LABELS } from '@/domain/enums';
-import type { Location, LocationSummary } from '@/domain/types';
+import { LOCATION_TYPE_LABELS, LOCATION_TYPE_LABELS_PLURAL, TYPE_COLORS, PRICE_BAND_LABELS } from '@/domain/enums';
+import type { LocationType } from '@/domain/enums';
+import type { Location, LocationSummary, Region } from '@/domain/types';
 import { Breadcrumb } from '@/components/patterns/Breadcrumb';
 import {
   StructuredData,
@@ -29,7 +33,7 @@ import { ContentShell } from '@/components/layout/ContentShell';
 export const revalidate = 86400;
 
 // ---------------------------------------------------------------------------
-// Static params — generate pages for all SEO-included locations
+// Static params — location detail pages + city+type combo pages
 // ---------------------------------------------------------------------------
 export async function generateStaticParams() {
   const [regions, locations] = await Promise.all([
@@ -39,12 +43,24 @@ export async function generateStaticParams() {
 
   const regionNameToSlug = new Map(regions.map((r) => [r.name, r.slug]));
 
-  return locations
+  // Location detail params (~1000 pages)
+  const locationParams = locations
     .map((loc) => ({
       region: regionNameToSlug.get(loc.region) ?? loc.region.toLowerCase().replace(/\s+/g, '-'),
       slug: loc.slug,
     }))
     .filter((p) => p.region && p.slug);
+
+  // City+type combo params (regions × types = ~144 pages)
+  const typeSlugValues = Object.values(TYPE_SLUGS);
+  const comboParams = regions.flatMap((r) =>
+    typeSlugValues.map((typeSlug) => ({
+      region: r.slug,
+      slug: typeSlug,
+    })),
+  );
+
+  return [...locationParams, ...comboParams];
 }
 
 // ---------------------------------------------------------------------------
@@ -57,6 +73,27 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { region: regionSlug, slug } = await params;
 
+  // City+type combo pages (e.g. /amsterdam/speeltuinen)
+  if (KNOWN_TYPE_SLUGS.has(slug)) {
+    const region = await RegionRepository.getBySlug(regionSlug);
+    if (!region) return {};
+
+    const typeKey = SLUG_TO_TYPE[slug];
+    const typePlural = LOCATION_TYPE_LABELS_PLURAL[typeKey] ?? typeKey;
+    const title = `${typePlural} in ${region.name} — voor peuters`;
+    const description = `Ontdek de beste ${typePlural.toLowerCase()} voor peuters in ${region.name}. Bekijk alle locaties met beoordelingen en tips.`;
+    const canonical = comboCanonicalUrl(regionSlug, slug);
+
+    return {
+      title,
+      description,
+      alternates: { canonical },
+      robots: { index: true, follow: true },
+      openGraph: { title, description, url: canonical, siteName: 'PeuterPlannen', type: 'website' },
+    };
+  }
+
+  // Location detail pages
   const region = await RegionRepository.getBySlug(regionSlug);
   if (!region) return {};
 
@@ -89,14 +126,33 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // ---------------------------------------------------------------------------
 // Page component
 // ---------------------------------------------------------------------------
-export default async function LocationDetailPage({ params }: Props) {
+export default async function SlugPage({ params }: Props) {
   const { region: regionSlug, slug } = await params;
 
-  // Look up region by slug
+  // City+type combo pages (e.g. /amsterdam/speeltuinen)
+  if (KNOWN_TYPE_SLUGS.has(slug)) {
+    const typeKey = SLUG_TO_TYPE[slug];
+    if (!typeKey) notFound();
+
+    const region = await RegionRepository.getBySlug(regionSlug);
+    if (!region) notFound();
+
+    const locations = await LocationRepository.getByRegionAndType(region.name, typeKey);
+    return (
+      <CityTypeCombo
+        region={region}
+        regionSlug={regionSlug}
+        typeKey={typeKey}
+        typeSlug={slug}
+        locations={locations}
+      />
+    );
+  }
+
+  // Location detail pages
   const region = await RegionRepository.getBySlug(regionSlug);
   if (!region) notFound();
 
-  // Look up location by region name + slug
   const location = await LocationRepository.getBySlug(region.name, slug);
   if (!location) notFound();
 
@@ -340,6 +396,238 @@ export default async function LocationDetailPage({ params }: Props) {
         </nav>
       </article>
     </ContentShell>
+  );
+}
+
+// ===========================================================================
+// City+Type combo page (e.g. /amsterdam/speeltuinen)
+// ===========================================================================
+
+async function CityTypeCombo({
+  region,
+  regionSlug,
+  typeKey,
+  typeSlug,
+  locations,
+}: {
+  region: Region;
+  regionSlug: string;
+  typeKey: LocationType;
+  typeSlug: string;
+  locations: LocationSummary[];
+}) {
+  const typeName = LOCATION_TYPE_LABELS[typeKey] ?? typeKey;
+  const typePlural = LOCATION_TYPE_LABELS_PLURAL[typeKey] ?? typeName;
+  const typeColor = TYPE_COLORS[typeKey];
+  const allRegions = await RegionRepository.getAll();
+
+  const breadcrumbItems = [
+    { label: 'Home', href: '/' },
+    { label: region.name, href: `/${regionSlug}` },
+    { label: typePlural },
+  ];
+
+  const canonical = comboCanonicalUrl(regionSlug, typeSlug);
+
+  // JSON-LD: CollectionPage + ItemList + BreadcrumbList
+  const itemListElements = locations.slice(0, 20).map((loc, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: `${SITE_URL}/${encodeURIComponent(regionSlug)}/${encodeURIComponent(loc.slug)}`,
+    name: loc.name,
+  }));
+
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        name: `${typePlural} in ${region.name}`,
+        description: `De beste ${typePlural.toLowerCase()} voor peuters in ${region.name}`,
+        url: canonical,
+        mainEntity: {
+          '@type': 'ItemList',
+          numberOfItems: locations.length,
+          itemListElement: itemListElements,
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, item: SITE_URL, name: 'Home' },
+          { '@type': 'ListItem', position: 2, item: `${SITE_URL}/${regionSlug}`, name: region.name },
+          { '@type': 'ListItem', position: 3, name: typePlural },
+        ],
+      },
+    ],
+  };
+
+  return (
+    <ContentShell>
+      <StructuredData data={structuredData} />
+      <article className="px-4 py-6">
+        <Breadcrumb items={breadcrumbItems} />
+
+        {/* Header */}
+        <div className="mt-2 flex items-center gap-3">
+          <span
+            className="inline-flex h-3 w-3 rounded-full"
+            style={{ backgroundColor: typeColor }}
+          />
+          <h1 className="text-[28px] font-bold leading-tight tracking-tight text-label sm:text-[34px]">
+            {typePlural} in {region.name}
+          </h1>
+        </div>
+
+        <p className="mt-3 text-[15px] leading-relaxed text-label-secondary">
+          Ontdek {locations.length} {typePlural.toLowerCase()} geschikt voor peuters in {region.name}.
+          Alle locaties zijn beoordeeld op peutervriendelijkheid.
+        </p>
+
+        {/* Location count */}
+        <p className="mt-4 text-[13px] font-medium text-label-tertiary">
+          {locations.length} {locations.length === 1 ? 'locatie' : 'locaties'}
+        </p>
+
+        {/* Location cards */}
+        {locations.length > 0 ? (
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {locations.map((loc) => (
+              <ComboLocationCard key={loc.id} location={loc} regionSlug={regionSlug} />
+            ))}
+          </div>
+        ) : (
+          <div className="mt-8 rounded-card bg-bg-secondary p-6 text-center">
+            <p className="text-[15px] text-label-secondary">
+              Geen {typePlural.toLowerCase()} gevonden in {region.name}.
+            </p>
+            <Link
+              href={`/${regionSlug}`}
+              className="mt-3 inline-block text-[14px] font-medium text-accent hover:underline"
+            >
+              Bekijk alle uitjes in {region.name} →
+            </Link>
+          </div>
+        )}
+
+        {/* Related combos — other types in this region */}
+        <nav className="mt-12 border-t border-separator pt-6">
+          <h2 className="mb-3 text-[16px] font-semibold text-label">
+            Ook in {region.name}
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(TYPE_SLUGS)
+              .filter(([type]) => type !== typeKey)
+              .map(([type, slugVal]) => (
+                <Link
+                  key={type}
+                  href={`/${regionSlug}/${slugVal}`}
+                  className="rounded-pill bg-bg-secondary px-3 py-1.5 text-[13px] font-medium text-label-secondary transition-colors hover:bg-bg-secondary/80 hover:text-label"
+                >
+                  {LOCATION_TYPE_LABELS[type as LocationType]}
+                </Link>
+              ))}
+          </div>
+        </nav>
+
+        {/* Related combos — same type in other regions */}
+        <nav className="mt-8 border-t border-separator pt-6">
+          <h2 className="mb-3 text-[16px] font-semibold text-label">
+            {typePlural} in andere steden
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {allRegions
+              .filter((r) => r.slug !== regionSlug)
+              .slice(0, 12)
+              .map((r) => (
+                <Link
+                  key={r.slug}
+                  href={`/${r.slug}/${typeSlug}`}
+                  className="rounded-pill bg-bg-secondary px-3 py-1.5 text-[13px] font-medium text-label-secondary transition-colors hover:bg-bg-secondary/80 hover:text-label"
+                >
+                  {r.name}
+                </Link>
+              ))}
+          </div>
+        </nav>
+
+        {/* Back links */}
+        <nav className="mt-8 flex flex-wrap gap-3 border-t border-separator pt-6">
+          <Link
+            href={`/${regionSlug}`}
+            className="text-[14px] text-accent hover:underline"
+          >
+            Alle uitjes in {region.name}
+          </Link>
+          <span className="text-label-tertiary">·</span>
+          <Link
+            href={`/${typeSlug}`}
+            className="text-[14px] text-accent hover:underline"
+          >
+            Alle {typePlural.toLowerCase()} in Nederland
+          </Link>
+        </nav>
+      </article>
+    </ContentShell>
+  );
+}
+
+function ComboLocationCard({
+  location,
+  regionSlug,
+}: {
+  location: LocationSummary;
+  regionSlug: string;
+}) {
+  const typeName = LOCATION_TYPE_LABELS[location.type] ?? location.type;
+  const typeColor = TYPE_COLORS[location.type];
+
+  return (
+    <Link
+      href={`/${regionSlug}/${location.slug}`}
+      className="flex gap-3 rounded-card bg-bg-tertiary p-3 shadow-[0_1px_4px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-card"
+    >
+      <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-photo bg-bg-secondary">
+        {location.photo_url?.startsWith('http') ? (
+          <img
+            src={location.photo_url}
+            alt={location.name}
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-label-tertiary">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" strokeWidth="1.5" />
+              <circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="1.5" />
+            </svg>
+          </div>
+        )}
+      </div>
+      <div className="flex min-w-0 flex-1 flex-col justify-center">
+        <h3 className="truncate text-[14px] font-semibold text-label">
+          {location.name}
+        </h3>
+        <div className="mt-1 flex items-center gap-2">
+          <span
+            className="inline-flex items-center rounded-badge px-1.5 py-0.5 text-[10px] font-medium text-white"
+            style={{ backgroundColor: typeColor }}
+          >
+            {typeName}
+          </span>
+          {location.ai_suitability_score_10 != null && (
+            <span className="text-[12px] font-semibold tabular-nums text-accent">
+              {location.ai_suitability_score_10.toFixed(1)}
+            </span>
+          )}
+        </div>
+        {location.toddler_highlight && (
+          <p className="mt-1 truncate text-[12px] text-label-secondary">
+            {location.toddler_highlight}
+          </p>
+        )}
+      </div>
+    </Link>
   );
 }
 
