@@ -428,8 +428,6 @@
   -ms-overflow-style: none;
   scroll-snap-type: x mandatory;
   scroll-padding: 0 var(--pp-space-md);
-  mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 28px), transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 28px), transparent);
 }
 .sheet-presets::-webkit-scrollbar { display: none; }
 .sheet-preset {
@@ -2446,8 +2444,6 @@
     touch-action: pan-x pan-y;
     scroll-snap-type: x proximity;
     scrollbar-width: none;
-    -webkit-mask-image: linear-gradient(to right, transparent, black 8px, black calc(100% - 28px), transparent);
-    mask-image: linear-gradient(to right, transparent, black 8px, black calc(100% - 28px), transparent);
   }
   .sheet-filter-chips::-webkit-scrollbar { display: none; }
   .sheet-filter-chip {
