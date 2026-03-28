@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/app', '/api'],
+        disallow: ['/app.html', '/api'],
       },
     ],
     sitemap: 'https://peuterplannen.nl/sitemap.xml',

@@ -1,15 +1,15 @@
 import Link from 'next/link';
 import type { LocationSummary } from '@/domain/types';
-import { ContentMapLoader } from './ContentMapLoader';
+import { MapUpdater } from './MapUpdater';
 
 /**
  * ContentShell — wraps server-rendered content (region hubs, detail pages,
- * blog posts) in an app-like visual: sidebar panel on desktop with interactive
- * map, scrollable sheet on mobile.
+ * blog posts) in an app-like visual: sidebar panel on desktop with the
+ * persistent map visible to its right, scrollable full-width on mobile.
  *
- * Pass `mapLocations` + a region identifier to show a MapLibre map in the
- * desktop right panel. Without map props, the right panel shows a neutral
- * background (used by blog/guides pages that have no geo data).
+ * Pass `mapLocations` + a region identifier to update the persistent map
+ * in the layout with location markers. Without map props, the persistent
+ * map shows no markers (neutral state).
  */
 
 interface ContentShellProps {
@@ -48,18 +48,24 @@ export function ContentShell({
   mapRegionSlugMap,
   mapHighlightId,
 }: ContentShellProps) {
-  const hasMap = mapLocations && mapLocations.length > 0;
-  const locationHrefs = hasMap
+  const locationHrefs = mapLocations?.length
     ? buildLocationHrefs(mapLocations, mapRegionSlug, mapRegionSlugMap)
     : {};
 
   return (
-    <div className="flex h-dvh w-full">
-      {/* Sidebar / sheet content */}
-      <div className="relative z-10 flex w-full flex-col overflow-y-auto bg-bg-primary md:max-w-[420px] md:border-r md:border-separator md:shadow-lg">
+    <>
+      {/* Push location data to the persistent map in the layout */}
+      <MapUpdater
+        locations={mapLocations ?? []}
+        locationHrefs={locationHrefs}
+        highlightId={mapHighlightId}
+      />
+
+      {/* Sidebar panel — full width on mobile, 420px on desktop */}
+      <aside className="absolute inset-y-0 left-0 z-10 flex w-full flex-col overflow-y-auto bg-bg-primary md:w-[420px] md:border-r md:border-separator md:shadow-lg">
         <div className="flex-1">{children}</div>
 
-        {/* Sheet footer */}
+        {/* Footer */}
         <footer className="border-t border-separator px-4 py-6">
           <Link
             href="/partner"
@@ -85,20 +91,7 @@ export function ContentShell({
             </Link>
           </div>
         </footer>
-      </div>
-
-      {/* Desktop right panel: interactive map or neutral background */}
-      <div className="relative hidden flex-1 md:block">
-        {hasMap ? (
-          <ContentMapLoader
-            locations={mapLocations}
-            locationHrefs={locationHrefs}
-            highlightId={mapHighlightId}
-          />
-        ) : (
-          <div className="h-full bg-bg-secondary" />
-        )}
-      </div>
-    </div>
+      </aside>
+    </>
   );
 }

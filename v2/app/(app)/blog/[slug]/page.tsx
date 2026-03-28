@@ -89,21 +89,17 @@ export default async function BlogPostPage({ params }: Props) {
             {post.title}
           </h1>
 
-          {(post.date || post.tags.length > 0) && (
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-[13px] text-label-secondary">
-              {post.date && (
-                <time dateTime={post.date}>
-                  {formatDate(post.date)}
-                </time>
-              )}
-              {post.tags.length > 0 && (
-                <>
-                  <span className="text-label-tertiary">·</span>
-                  <span>{estimateReadingTime(post.body)} min lezen</span>
-                </>
-              )}
-            </div>
-          )}
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-[13px] text-label-secondary">
+            {post.date && (
+              <time dateTime={post.date}>
+                {formatDate(post.date)}
+              </time>
+            )}
+            {post.date && (
+              <span className="text-label-tertiary">·</span>
+            )}
+            <span>{estimateReadingTime(post.body)} min lezen</span>
+          </div>
         </header>
 
         {/* Article body */}

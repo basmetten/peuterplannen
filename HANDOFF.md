@@ -6,7 +6,8 @@
 **Phase 3 Tier 1+2+3+4 complete** — location detail pages, region/type hub pages, city+type combo pages, sitemap, robots.txt, redirects.
 **Phase 3 blog/guides complete** — 57 blog posts migrated, blog index, guides overview, sitemap updated.
 **Route restructuring complete** — unified `(app)` shell replaces `(marketing)` + `(pwa)`.
-**Phase 3 progressive enhancement complete** — interactive map on SSR content pages (desktop).
+**Phase 3 progressive enhancement complete** — interactive map on SSR content pages (desktop), now with persistent map.
+**Code review hardening complete** — 9 issues fixed (2 critical, 7 warnings).
 
 ## Architecture (current)
 
@@ -14,7 +15,7 @@ Three route groups, per `docs/v2/information-architecture.md`:
 
 | Group | Layout | Purpose |
 |-------|--------|---------|
-| `(app)` | Map + sheet/sidebar (QueryProvider + full-viewport) | All user-facing pages: home, region hubs, type hubs, location detail, guides, blog |
+| `(app)` | Persistent map + MapStateProvider + QueryProvider | All user-facing pages: home, region hubs, type hubs, location detail, guides, blog |
 | `(portal)` | Simple header, no map | Partner dashboard (future) |
 | `(legal)` | Minimal header + footer links | Privacy, terms, about, contact |
 
@@ -23,7 +24,7 @@ Three route groups, per `docs/v2/information-architecture.md`:
 ```
 app/
   (app)/
-    layout.tsx          — QueryProvider + h-dvh container
+    layout.tsx          — QueryProvider + MapStateProvider + PersistentMap (desktop)
     page.tsx            — Home: interactive map app (AppShell, ISR 5min)
     AppShell.tsx         — Client component: map, sheet, sidebar, filters, cards, carousel
     [region]/
@@ -55,22 +56,42 @@ app/
   not-found.tsx
 ```
 
+### Persistent map architecture
+
+The `(app)` layout hosts a persistent MapLibre GL map that never unmounts during intra-app navigation:
+
+```
+(app)/layout.tsx (server)
+  └── QueryProvider (client)
+      └── MapStateProvider (client) — holds locations, hrefs, highlightId
+          ├── PersistentMapLoader (client, dynamic) — desktop only, loads MapLibre lazily
+          │   └── PersistentMap (client) — reads MapStateContext, updates markers/bounds
+          └── {children} (page content)
+              └── ContentShell (server) — renders MapUpdater + sidebar
+                  └── MapUpdater (client) — pushes page data to MapStateContext
+```
+
+- **Desktop**: sidebar (420px, absolute left) + persistent map (fills viewport behind sidebar)
+- **Mobile**: full-width scrollable content, no map (MapLibre not loaded — saves ~200KB)
+- **Home page**: AppShell renders its own MapContainer on top, hiding persistent map
+- **Blog/guides**: MapUpdater sets empty locations → map shows NL with no markers
+- **Content→content navigation**: map persists, markers update smoothly, bounds fly to new locations
+
+Key files:
+- `src/context/MapStateContext.tsx` — React context + provider + `useMapState` hook
+- `src/components/layout/PersistentMap.tsx` — MapLibre GL with dynamic data updates
+- `src/components/layout/PersistentMapLoader.tsx` — `next/dynamic` + desktop gate via `useIsDesktop`
+- `src/components/layout/MapUpdater.tsx` — invisible client component, pushes page data to context
+
 ### ContentShell component
 
 `src/components/layout/ContentShell.tsx` — wraps SSR content in an app-like visual:
-- Desktop: 420px sidebar panel (left) + interactive MapLibre map (right)
-- Mobile: full-width scrollable content (no map — map is desktop only)
+- Desktop: 420px sidebar panel (absolute left, z-10) — persistent map visible to the right
+- Mobile: full-width scrollable content (no map)
+- Renders `MapUpdater` to push location data to persistent map
 - Sheet footer: partner link + privacy/terms/about/contact links
 - Map props: `mapLocations`, `mapRegionSlug`/`mapRegionSlugMap`, `mapHighlightId`
-- Map is dynamically imported (`next/dynamic`, `ssr: false`) — only loads on pages that pass locations
-- Blog/guides pages don't pass map props → right panel shows neutral background
-
-Map component stack:
-```
-ContentShell (server) → ContentMapLoader (client, dynamic) → ContentMap (client, MapLibre GL)
-```
-
-Used by region hub, type hub, location detail, city+type combo, blog, and guides pages. The interactive home page uses AppShell directly (doesn't use ContentShell).
+- Blog/guides pages don't pass map props → persistent map shows no markers
 
 ### Blog data architecture
 
@@ -78,9 +99,9 @@ Blog posts are bundled at build time to avoid `fs.readFileSync` at runtime (Clou
 
 ```
 content/posts/*.md          — 57 markdown source files (frontmatter + body)
-v2/scripts/bundle-posts.mjs — prebuild script (reads .md → generates JSON)
+v2/scripts/bundle-posts.mjs — prebuild script (reads .md → generates JSON, validates dates + descriptions)
 v2/src/content/blog-posts.generated.json — bundled post data
-v2/src/domain/blog.ts       — Zod schema (BlogPost, BlogPostMeta)
+v2/src/domain/blog.ts       — Zod schema (BlogPost, BlogPostMeta, description min 1 char)
 v2/src/server/repositories/blog.repo.ts — data access layer
 v2/src/lib/markdown.ts      — unified/remark/rehype render pipeline
 ```
@@ -89,23 +110,35 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Progressive enhancement — interactive map on SSR pages
-1. **ContentMap** (`src/components/layout/ContentMap.tsx`) — new lightweight MapLibre GL client component for SSR content pages. Features: GeoJSON clustering, terracotta markers, highlighted marker for detail pages, fit-bounds, marker click → Next.js navigation, WebGL error fallback.
-2. **ContentMapLoader** (`src/components/layout/ContentMapLoader.tsx`) — dynamic import wrapper (`next/dynamic`, `ssr: false`) so MapLibre JS/CSS only loads on pages that actually render a map. Blog/guides pages pay zero cost.
-3. **ContentShell upgraded** — accepts `mapLocations`, `mapRegionSlug`/`mapRegionSlugMap`, `mapHighlightId` props. Renders ContentMapLoader in desktop right panel when locations provided.
-4. **Region hub pages** — pass all region locations to ContentShell map (region hub: `mapRegionSlug`, type hub: `mapRegionSlugMap`)
-5. **Location detail pages** — pass main location + nearby locations, highlight main location marker
-6. **City+type combo pages** — pass combo locations to ContentShell map
-7. **"Bekijk op de kaart" fix** — CTA on detail pages now links to `/?locatie=...` (was `/app?locatie=...` which doesn't exist in v2)
+### Code review hardening (9 fixes)
+1. **CRITICAL: `safeHostname()`** — `new URL()` wrapped in try/catch for URLs without protocol
+2. **CRITICAL: Open redirect prevention** — `seo_canonical_target` validated: must start with `/` and not `//`
+3. **Sitemap dedup** — removed duplicate `TYPE_SLUG_MAP`, imports `TYPE_SLUGS` from `seo.ts`
+4. **`resolveHub` caching** — wrapped with React `cache()` to avoid double fetch per request
+5. **Plural labels** — uses `LOCATION_TYPE_LABELS_PLURAL` instead of hardcoded `{typeName}en`
+6. **Blog reading time** — decoupled from `post.tags.length`, always visible
+7. **Date validation** — bundle-posts.mjs validates YYYY-MM-DD format, warns on malformed dates
+8. **Robots narrowed** — `/app` → `/app.html` to avoid blocking future routes
+9. **Blog descriptions** — `z.string().min(1)` + build-time fallback from body for empty descriptions
+
+### Persistent map (Phase 3 remaining)
+1. **MapStateContext** — React context in `(app)` layout holds location data for the persistent map
+2. **PersistentMap** — MapLibre GL component that lives in the layout, never unmounts. Reads data from context. Dynamic GeoJSON updates, fly-to bounds on navigation, highlight filter.
+3. **PersistentMapLoader** — `next/dynamic` wrapper + `useIsDesktop` gate. Mobile clients never download MapLibre (~200KB savings).
+4. **MapUpdater** — invisible client component rendered by ContentShell. Pushes page-specific locations/hrefs/highlightId to context on mount.
+5. **ContentShell refactored** — removed right panel map div. Sidebar uses absolute positioning (left 0, z-10). Persistent map in layout shows through on right side.
+6. **ContentMap + ContentMapLoader deleted** — replaced by PersistentMap architecture.
+7. **Layout upgraded** — `(app)/layout.tsx` now wraps children in `MapStateProvider` + renders `PersistentMapLoader` behind content.
 
 ### Previous sessions
+- Phase 3 progressive enhancement (ContentMap on SSR pages)
 - Phase 3 blog/guides migration (57 posts, index, guides overview)
 - Phase 3 Tier 4: city+type combo pages (224 pages)
 - Route restructuring: unified (app) shell
 
 ## Build stats
 - 1330 total pages
-- Build time: ~3-4s static generation
+- Build time: ~3s static generation
 - API routes: force-dynamic
 - Home page: ISR 5min
 - Hub + detail + blog pages: ISR 24h
@@ -113,7 +146,6 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 ## What's NOT done yet
 
 ### Phase 3 remaining
-- Persistent map in (app) layout (currently each page renders its own map instance — map resets on navigation)
 - Mobile interactive sheet for location-based SSR pages (currently full-width scroll)
 
 ### Beyond Phase 3
@@ -126,10 +158,12 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 | Decision | Choice | Notes |
 |---|---|---|
-| App layout | Minimal (QueryProvider + container) | Each page brings its own rendering; map persistence deferred |
-| ContentShell map | Dynamic import, desktop only | MapLibre loaded only on pages with locations; mobile stays full-width scroll |
-| ContentMap vs MapContainer | Separate component | ContentMap is simpler (no carousel, no sheet interaction). MapContainer has full interactive logic for home page. Future: unify when persistent map lands. |
-| Map on blog/guides | Not shown | No geo data to display; right panel stays neutral background |
+| Persistent map | Layout-level MapLibre + React context | Map never unmounts, pages push data via MapUpdater. Home page covers it with AppShell's own MapContainer. |
+| Map on mobile | Not loaded | `useIsDesktop` gate prevents MapLibre bundle download on mobile (~200KB savings) |
+| Map data flow | Server page → ContentShell → MapUpdater → Context → PersistentMap | Server components compute locations + hrefs, client MapUpdater pushes to context |
+| ContentShell positioning | Absolute sidebar (z-10) + transparent right side | Persistent map in layout (z-0) visible through transparent area |
+| Home page map | Two map instances (AppShell + persistent) | AppShell covers persistent map. Simpler than unifying MapContainer + PersistentMap. |
+| Map on blog/guides | Empty markers, map tiles visible | MapUpdater sets empty locations. NL map tiles show as neutral background. |
 | Home page route | `/` (was `/app`) | App IS the website per architecture doc |
 | Editorial content | Bundled TypeScript module | No fs.readFileSync; works on Cloudflare Pages |
 | Blog content | Prebuild script → generated JSON | Same no-fs principle; `npm run prebuild` bundles content/posts/*.md |
@@ -140,17 +174,17 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## Next step
 
-Progressive enhancement is functionally complete. Remaining work:
+Persistent map is complete. Remaining Phase 3 work:
 
-1. **Persistent map** — move map to (app) layout so it preserves state between navigations (requires AppShell refactor)
-2. **Mobile interactive sheet** — SSR location pages use draggable sheet instead of full-width scroll
-3. **Photo migration** (Phase 3.5) — Cloudflare R2 storage
-4. **Phase 4: Polish** — visual refinement, performance optimization
+1. **Mobile interactive sheet** — SSR location pages use draggable sheet instead of full-width scroll
+2. **Photo migration** (Phase 3.5) — Cloudflare R2 storage
+3. **Phase 4: Polish** — visual refinement, performance optimization
 
 **Before starting**, the session should:
 - Read this HANDOFF.md
 - Read `docs/v2/information-architecture.md` for the full architecture spec
 - Run `npm run build` to confirm 1330 pages generate
-- Test in a real browser: `localhost:3000/amsterdam` (verify map renders with markers in right panel)
-- Test: `localhost:3000/amsterdam/artis` (verify highlighted marker on map)
-- Test: `localhost:3000/blog` (verify no map, neutral right panel)
+- **Verify persistent map in a real browser**: `localhost:3000/amsterdam` → sidebar left, map right with markers
+- Navigate `localhost:3000/amsterdam` → `localhost:3000/amsterdam/artis` → map should smoothly transition (no reset)
+- `localhost:3000/blog` → no markers on map, just NL tiles
+- `localhost:3000/` → AppShell renders normally with its own map

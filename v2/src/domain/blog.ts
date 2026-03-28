@@ -7,7 +7,7 @@ import { z } from 'zod';
 export const BlogPostSchema = z.object({
   slug: z.string().min(1),
   title: z.string().min(1),
-  description: z.string(),
+  description: z.string().min(1),
   date: z.string().nullable(), // ISO date string YYYY-MM-DD
   tags: z.array(z.string()),
   related_regions: z.array(z.string()),

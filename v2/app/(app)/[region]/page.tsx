@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -12,7 +13,7 @@ import {
   SLUG_TO_TYPE,
   TYPE_SLUGS,
 } from '@/lib/seo';
-import { LOCATION_TYPE_LABELS, TYPE_COLORS } from '@/domain/enums';
+import { LOCATION_TYPE_LABELS, LOCATION_TYPE_LABELS_PLURAL, TYPE_COLORS } from '@/domain/enums';
 import type { LocationType } from '@/domain/enums';
 import type { LocationSummary, Region } from '@/domain/types';
 import { Breadcrumb } from '@/components/patterns/Breadcrumb';
@@ -47,7 +48,7 @@ type HubKind =
   | { kind: 'region'; region: Region; locations: LocationSummary[] }
   | { kind: 'type'; typeKey: LocationType; typeSlug: string; locations: LocationSummary[] };
 
-async function resolveHub(slug: string): Promise<HubKind | null> {
+const resolveHub = cache(async function resolveHub(slug: string): Promise<HubKind | null> {
   // Type slugs take priority (they're a known fixed set)
   if (KNOWN_TYPE_SLUGS.has(slug)) {
     const typeKey = SLUG_TO_TYPE[slug];
@@ -61,7 +62,7 @@ async function resolveHub(slug: string): Promise<HubKind | null> {
   if (!region) return null;
   const locations = await LocationRepository.getByRegion(region.name);
   return { kind: 'region', region, locations };
-}
+});
 
 // ---------------------------------------------------------------------------
 // Metadata
@@ -216,7 +217,7 @@ async function RegionHub({
                 href={`/${TYPE_SLUGS[typeKey]}`}
                 className="mt-3 inline-block text-[14px] font-medium text-accent hover:underline"
               >
-                Alle {typeName.toLowerCase()} bekijken →
+                Alle {(LOCATION_TYPE_LABELS_PLURAL[typeKey] ?? typeName).toLowerCase()} bekijken →
               </Link>
             )}
           </section>

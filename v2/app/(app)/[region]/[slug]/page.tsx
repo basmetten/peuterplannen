@@ -156,9 +156,10 @@ export default async function SlugPage({ params }: Props) {
   const location = await LocationRepository.getBySlug(region.name, slug);
   if (!location) notFound();
 
-  // Canonical redirect (duplicate locations)
-  if (location.seo_canonical_target) {
-    redirect(location.seo_canonical_target);
+  // Canonical redirect (duplicate locations) — only allow internal paths
+  const canonicalTarget = location.seo_canonical_target;
+  if (canonicalTarget && canonicalTarget.startsWith('/') && !canonicalTarget.startsWith('//')) {
+    redirect(canonicalTarget);
   }
 
   // Fetch nearby locations
@@ -413,7 +414,7 @@ export default async function SlugPage({ params }: Props) {
             href={`/${typeSlug}`}
             className="text-[14px] text-accent hover:underline"
           >
-            Alle {typeName.toLowerCase()}en in Nederland
+            Alle {(LOCATION_TYPE_LABELS_PLURAL[location.type] ?? typeName).toLowerCase()} in Nederland
           </Link>
         </nav>
       </article>
@@ -654,6 +655,19 @@ function ComboLocationCard({
 }
 
 // ===========================================================================
+// Helpers
+// ===========================================================================
+
+/** Safely extract hostname from a URL string — handles missing protocol */
+function safeHostname(url: string): string {
+  try {
+    return new URL(url).hostname.replace('www.', '');
+  } catch {
+    return url;
+  }
+}
+
+// ===========================================================================
 // Sub-components (server components — no 'use client' needed)
 // ===========================================================================
 
@@ -779,7 +793,7 @@ function PracticalInfo({ location }: { location: Location }) {
                 rel="noopener noreferrer"
                 className="text-accent hover:underline"
               >
-                {new URL(location.website).hostname.replace('www.', '')}
+                {safeHostname(location.website)}
               </a>
             }
           />

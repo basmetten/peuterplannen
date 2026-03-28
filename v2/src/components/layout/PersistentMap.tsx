@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
+import { useMapState } from '@/context/MapStateContext';
 import type { LocationSummary } from '@/domain/types';
 
 const MAP_STYLE =
@@ -12,19 +13,11 @@ const MAP_STYLE =
 const NL_CENTER: [number, number] = [4.9, 52.37];
 const NL_ZOOM = 8;
 
-const SOURCE_ID = 'content-locations';
-const CLUSTER_LAYER = 'content-clusters';
-const CLUSTER_COUNT_LAYER = 'content-cluster-count';
-const MARKER_LAYER = 'content-markers';
-const MARKER_HIGHLIGHT_LAYER = 'content-markers-highlight';
-
-interface ContentMapProps {
-  locations: LocationSummary[];
-  /** Map from location ID → href for click navigation */
-  locationHrefs: Record<number, string>;
-  /** Location ID to highlight with a larger marker */
-  highlightId?: number;
-}
+const SOURCE_ID = 'persistent-locations';
+const CLUSTER_LAYER = 'persistent-clusters';
+const CLUSTER_COUNT_LAYER = 'persistent-cluster-count';
+const MARKER_LAYER = 'persistent-markers';
+const MARKER_HIGHLIGHT_LAYER = 'persistent-markers-highlight';
 
 function toGeoJSON(locs: LocationSummary[]) {
   return {
@@ -41,28 +34,32 @@ function toGeoJSON(locs: LocationSummary[]) {
 }
 
 /**
- * Lightweight map for SSR content pages (desktop right panel).
- * Shows location markers with clustering. Marker click navigates to detail page.
- * No carousel, no sheet interaction — read-only with navigation.
- * Falls back to neutral background if WebGL is unavailable.
+ * Persistent MapLibre GL map that lives in the (app) layout.
+ * Never unmounts during intra-app navigation. Reads location data from
+ * MapStateContext (pushed by MapUpdater in each page's ContentShell).
+ *
+ * When locations change: updates GeoJSON source, fits bounds.
+ * When highlightId changes: updates highlight filter.
+ * Falls back to neutral background if WebGL fails.
  */
-export function ContentMap({
-  locations,
-  locationHrefs,
-  highlightId,
-}: ContentMapProps) {
+export function PersistentMap() {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState(false);
+  const prevLocIdsRef = useRef<string>('');
   const router = useRouter();
+  const { mapState } = useMapState();
 
-  // Stable refs to avoid stale closures in map event handlers
-  const dataRef = useRef({ locationHrefs, router });
-  dataRef.current = { locationHrefs, router };
+  // Stable refs for event handler closures
+  const dataRef = useRef({ locationHrefs: mapState.locationHrefs, router });
+  dataRef.current = { locationHrefs: mapState.locationHrefs, router };
 
-  // Initialize map once
+  // ------------------------------------------------------------------
+  // Initialize map once (persists across navigations)
+  // ------------------------------------------------------------------
   useEffect(() => {
-    if (!containerRef.current || locations.length === 0) return;
+    if (!containerRef.current) return;
 
     let map: maplibregl.Map;
     try {
@@ -76,29 +73,22 @@ export function ContentMap({
         attributionControl: false,
       });
     } catch {
-      // WebGL unavailable or other init failure
       setMapError(true);
       return;
     }
 
     mapRef.current = map;
-
-    // Catch async errors (e.g., WebGL context lost)
-    map.on('error', () => {
-      setMapError(true);
-    });
-
+    map.on('error', () => setMapError(true));
     map.addControl(
       new maplibregl.AttributionControl({ compact: true }),
       'bottom-right',
     );
 
     map.on('load', () => {
-      if (map.getSource(SOURCE_ID)) return;
-
+      // Empty GeoJSON source — data is pushed by MapUpdater via context
       map.addSource(SOURCE_ID, {
         type: 'geojson',
-        data: toGeoJSON(locations),
+        data: { type: 'FeatureCollection', features: [] },
         cluster: true,
         clusterRadius: 50,
         clusterMaxZoom: 14,
@@ -112,7 +102,15 @@ export function ContentMap({
         filter: ['has', 'point_count'],
         paint: {
           'circle-color': '#C05A3A',
-          'circle-radius': ['step', ['get', 'point_count'], 18, 10, 24, 50, 30],
+          'circle-radius': [
+            'step',
+            ['get', 'point_count'],
+            18,
+            10,
+            24,
+            50,
+            30,
+          ],
           'circle-opacity': 0.85,
           'circle-stroke-width': 2,
           'circle-stroke-color': 'rgba(255,255,255,0.6)',
@@ -152,9 +150,7 @@ export function ContentMap({
         id: MARKER_HIGHLIGHT_LAYER,
         type: 'circle',
         source: SOURCE_ID,
-        filter: highlightId
-          ? ['==', ['get', 'id'], highlightId]
-          : ['==', ['get', 'id'], -1],
+        filter: ['==', ['get', 'id'], -1], // No highlight initially
         paint: {
           'circle-color': '#C05A3A',
           'circle-radius': 11,
@@ -163,39 +159,26 @@ export function ContentMap({
         },
       });
 
-      // Fit bounds to show all locations
-      if (locations.length === 1) {
-        map.jumpTo({ center: [locations[0].lng, locations[0].lat], zoom: 14 });
-      } else if (locations.length > 1) {
-        const bounds = new maplibregl.LngLatBounds();
-        for (const loc of locations) {
-          bounds.extend([loc.lng, loc.lat]);
-        }
-        map.fitBounds(bounds, {
-          padding: { top: 40, bottom: 40, left: 40, right: 40 },
-          maxZoom: 14,
-          duration: 0,
-        });
-      }
+      setMapLoaded(true);
     });
 
     // Cluster click → zoom in
     map.on('click', CLUSTER_LAYER, (e) => {
       const feature = e.features?.[0];
       if (!feature) return;
-      const clusterId = feature.properties.cluster_id;
       const source = map.getSource(SOURCE_ID) as maplibregl.GeoJSONSource;
-
-      source.getClusterExpansionZoom(clusterId).then((zoom) => {
-        map.flyTo({
-          center: (feature.geometry as GeoJSON.Point).coordinates as [
-            number,
-            number,
-          ],
-          zoom,
-          duration: 500,
+      source
+        .getClusterExpansionZoom(feature.properties.cluster_id)
+        .then((zoom) => {
+          map.flyTo({
+            center: (feature.geometry as GeoJSON.Point).coordinates as [
+              number,
+              number,
+            ],
+            zoom,
+            duration: 500,
+          });
         });
-      });
     });
 
     // Marker click → navigate to detail page
@@ -227,22 +210,67 @@ export function ContentMap({
       map.remove();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Init once — component remounts on route change
+  }, []); // Init once — layout never unmounts within (app)
 
-  // Update highlighted marker when highlightId changes
+  // ------------------------------------------------------------------
+  // Update GeoJSON source + fit bounds when locations change
+  // ------------------------------------------------------------------
   useEffect(() => {
+    if (!mapLoaded) return;
     const map = mapRef.current;
-    if (!map || !map.isStyleLoaded() || !map.getLayer(MARKER_HIGHLIGHT_LAYER))
-      return;
+    if (!map) return;
+
+    const { locations } = mapState;
+    const source = map.getSource(SOURCE_ID) as maplibregl.GeoJSONSource;
+    if (!source) return;
+
+    // Always update source data (cheap operation)
+    source.setData(toGeoJSON(locations));
+
+    // Only fit bounds when the set of location IDs actually changed
+    const locIds = locations
+      .map((l) => l.id)
+      .sort((a, b) => a - b)
+      .join(',');
+    if (locIds === prevLocIdsRef.current) return;
+    prevLocIdsRef.current = locIds;
+
+    if (locations.length === 0) {
+      // No locations — zoom back to NL overview
+      map.flyTo({ center: NL_CENTER, zoom: NL_ZOOM, duration: 800 });
+    } else if (locations.length === 1) {
+      map.flyTo({
+        center: [locations[0].lng, locations[0].lat],
+        zoom: 14,
+        duration: 800,
+      });
+    } else {
+      const bounds = new maplibregl.LngLatBounds();
+      for (const loc of locations) bounds.extend([loc.lng, loc.lat]);
+      map.fitBounds(bounds, {
+        padding: { top: 40, bottom: 40, left: 40, right: 40 },
+        maxZoom: 14,
+        duration: 800,
+      });
+    }
+  }, [mapLoaded, mapState]);
+
+  // ------------------------------------------------------------------
+  // Update highlight filter when highlightId changes
+  // ------------------------------------------------------------------
+  useEffect(() => {
+    if (!mapLoaded) return;
+    const map = mapRef.current;
+    if (!map || !map.getLayer(MARKER_HIGHLIGHT_LAYER)) return;
+
     map.setFilter(
       MARKER_HIGHLIGHT_LAYER,
-      highlightId
-        ? ['==', ['get', 'id'], highlightId]
+      mapState.highlightId
+        ? ['==', ['get', 'id'], mapState.highlightId]
         : ['==', ['get', 'id'], -1],
     );
-  }, [highlightId]);
+  }, [mapLoaded, mapState.highlightId]);
 
-  // Graceful fallback if WebGL fails
   if (mapError) {
     return <div className="h-full bg-bg-secondary" />;
   }
