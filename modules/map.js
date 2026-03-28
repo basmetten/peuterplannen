@@ -191,7 +191,7 @@ export function initMap() {
                 }
 
                 // Desktop: cluster can't expand further → filter sidebar to cluster locations
-                if (!isMobile && expansionZoom > CLUSTER_MAX_ZOOM) {
+                if (!isMobile && expansionZoom > CLUSTER_MAX_ZOOM && leaves.length > 0) {
                     const locationIds = leaves.map(f => f.properties.id);
                     bus.emit('sidebar:filterToCluster', locationIds, features[0].geometry.coordinates);
                     state.mapInstance.flyTo({

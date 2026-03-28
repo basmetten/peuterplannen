@@ -17,6 +17,8 @@ export function applyLayout() {
     document.documentElement.classList.toggle('pp-mobile-map', !isDesktop);
     const mc = document.getElementById('map-container');
     if (mc) mc.classList.remove('hidden');
+    // Clear cluster filter on breakpoint change to prevent stale hidden cards
+    if (!isDesktop && clusterFilterActive) clearClusterFilter();
     // On mobile: ensure map fills viewport after layout change
     if (!isDesktop && state.mapInstance) {
         setTimeout(() => state.mapInstance.resize(), MAP_RESIZE_DELAY_MS);
