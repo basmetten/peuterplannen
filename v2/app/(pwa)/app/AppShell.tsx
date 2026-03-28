@@ -9,6 +9,8 @@ import { FilterBar } from '@/features/filters/FilterBar';
 import { SearchInput } from '@/features/filters/SearchInput';
 import { useFilters, applyFilters } from '@/features/filters/useFilters';
 import { LocationCard } from '@/components/patterns/LocationCard';
+import { CardListSkeleton } from '@/components/patterns/CardSkeleton';
+import { EmptyFilterState } from '@/components/patterns/EmptyState';
 import { DetailView } from '@/features/detail/DetailView';
 import type { LocationSummary } from '@/domain/types';
 
@@ -18,7 +20,7 @@ interface AppShellProps {
 
 export function AppShell({ initialLocations }: AppShellProps) {
   const [sheetState, sheetSend] = useMachine(sheetMachine);
-  const { filters, toggleType, setWeather, setQuery } = useFilters();
+  const { filters, toggleType, setWeather, setQuery, clearFilters, isFiltered } = useFilters();
 
   const { snap, detailId } = sheetState.context;
   const isDetailOpen = sheetState.matches('detail');
@@ -96,10 +98,13 @@ export function AppShell({ initialLocations }: AppShellProps) {
           ) : (
             <BrowseContent
               locations={filteredLocations}
+              totalCount={initialLocations.length}
               filters={filters}
+              isFiltered={isFiltered}
               onTypeToggle={toggleType}
               onWeatherChange={setWeather}
               onQueryChange={setQuery}
+              onClearFilters={clearFilters}
               onCardTap={handleCardTap}
               onSearchFocus={handleSearchFocus}
               selectedId={detailId}
@@ -111,26 +116,34 @@ export function AppShell({ initialLocations }: AppShellProps) {
   );
 }
 
-/** Browse sheet content: search + filters + card list */
+/** Browse sheet content: search + filters + card list + empty state */
 function BrowseContent({
   locations,
+  totalCount,
   filters,
+  isFiltered,
   onTypeToggle,
   onWeatherChange,
   onQueryChange,
+  onClearFilters,
   onCardTap,
   onSearchFocus,
   selectedId,
 }: {
   locations: LocationSummary[];
+  totalCount: number;
   filters: ReturnType<typeof useFilters>['filters'];
+  isFiltered: boolean;
   onTypeToggle: (type: import('@/domain/enums').LocationType) => void;
   onWeatherChange: (weather: import('@/domain/enums').Weather | null) => void;
   onQueryChange: (query: string) => void;
+  onClearFilters: () => void;
   onCardTap: (location: LocationSummary) => void;
   onSearchFocus: () => void;
   selectedId: number | null;
 }) {
+  const isEmpty = locations.length === 0 && isFiltered;
+
   return (
     <div>
       {/* Search */}
@@ -151,24 +164,93 @@ function BrowseContent({
       {/* Divider */}
       <div className="hairline" />
 
-      {/* Result count */}
-      <div className="px-4 py-2">
-        <p className="text-[13px] tracking-[0.002em] text-label-secondary">
-          {locations.length} locaties
-        </p>
-      </div>
+      {isEmpty ? (
+        /* Empty state */
+        <EmptyFilterState
+          activeTypes={filters.types}
+          activeWeather={filters.weather}
+          query={filters.query}
+          onClearFilters={onClearFilters}
+          onRemoveType={onTypeToggle}
+          onClearWeather={() => onWeatherChange(null)}
+          onClearQuery={() => onQueryChange('')}
+        />
+      ) : (
+        <>
+          {/* Result count */}
+          <div className="px-4 py-2">
+            <p className="text-[13px] tracking-[0.002em] text-label-secondary">
+              {locations.length === totalCount
+                ? `${locations.length} locaties`
+                : `${locations.length} van ${totalCount} locaties`}
+            </p>
+          </div>
 
-      {/* Card list */}
-      <div className="flex flex-col gap-2 px-4 pb-4">
-        {locations.map((loc) => (
-          <LocationCard
-            key={loc.id}
-            location={loc}
-            onTap={onCardTap}
-            isSelected={loc.id === selectedId}
-          />
-        ))}
-      </div>
+          {/* Card list with stagger animation */}
+          <div className="flex flex-col gap-2 px-4 pb-4">
+            {locations.map((loc, i) => (
+              <div
+                key={loc.id}
+                className="animate-[fadeSlideIn_300ms_ease-out_both]"
+                style={{ animationDelay: `${Math.min(i, 10) * 40}ms` }}
+              >
+                <LocationCard
+                  location={loc}
+                  onTap={onCardTap}
+                  isSelected={loc.id === selectedId}
+                />
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
+  );
+}
+
+/** Suspense fallback for the initial app shell load */
+export function AppShellSkeleton() {
+  return (
+    <>
+      {/* Map placeholder */}
+      <div className="absolute inset-0 bg-bg-secondary" />
+
+      {/* Sheet skeleton */}
+      <div
+        className="fixed inset-x-0 bottom-0 z-30 bg-bg-primary"
+        style={{
+          height: '100%',
+          transform: 'translateY(75%)',
+          borderTopLeftRadius: 16,
+          borderTopRightRadius: 16,
+          boxShadow: 'var(--shadow-sheet)',
+        }}
+      >
+        {/* Handle */}
+        <div className="flex items-center justify-center py-2">
+          <div className="h-[5px] w-9 rounded-full" style={{ background: 'rgba(160, 130, 110, 0.30)' }} />
+        </div>
+
+        {/* Search skeleton */}
+        <div className="px-4 pb-3">
+          <div className="h-[44px] w-full animate-pulse rounded-pill bg-bg-secondary" />
+        </div>
+
+        {/* Filter chips skeleton */}
+        <div className="flex gap-2 px-4 pb-3">
+          {[80, 96, 64, 72, 80].map((w, i) => (
+            <div
+              key={i}
+              className="h-[32px] animate-pulse rounded-pill bg-bg-secondary"
+              style={{ width: w, animationDelay: `${i * 60}ms` }}
+            />
+          ))}
+        </div>
+
+        <div className="hairline" />
+
+        <CardListSkeleton count={4} />
+      </div>
+    </>
   );
 }
