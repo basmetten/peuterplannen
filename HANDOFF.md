@@ -1,129 +1,109 @@
 # HANDOFF — PeuterPlannen v2 Rebuild
 
 ## Status
-**Phase 1 complete** — Next.js foundation scaffolded, compiles clean, Supabase connected.
-**Phase 2 next** — first thin slice (map, markers, sheet, cards).
+**Phase 1 complete** — Next.js foundation, Supabase connected, slugs migrated.
+**Phase 2 in progress** — core loop (map + sheet + cards + filters) built, needs polish.
 
 ## What happened this session
 
-### Phase 1 delivered
-- Scaffolded Next.js 16 (App Router) in `/v2/` with TypeScript strict, Tailwind v4, ESLint
-- Domain layer: enums, types, Zod schemas — all aligned with REAL Supabase schema
-- Data access: server-only Supabase client, LocationRepository, RegionRepository
-- Design tokens: full Apple Maps-inspired CSS variable system in globals.css
-- App shell: root layout (Inter + Newsreader), (marketing) and (pwa) route groups
-- Config: .env.example, .editorconfig, Prettier, next.config.ts with security headers
-- Verification page at /verify proves Supabase → Zod → SSR pipeline works
+### Phase 2: First Thin Slice (partial)
+Built the core interactive loop:
 
-### Critical finding: DB schema ≠ docs
-The `docs/v2/system-architecture.md` types/schemas were aspirational, not real. Major differences:
+1. **MapLibre integration** — full-bleed map with Positron tiles (OpenFreeMap), markers from all 2,415 Supabase locations, clustering with terracotta circles and count labels
+2. **Bottom sheet** — XState state machine with peek/half/full states, CSS transitions, touch drag (basic)
+3. **Location cards** — cards in browse sheet with photo, name, type badge, score, highlight
+4. **Detail view** — fetches full location data via API, shows name (Newsreader font), type badge, photo, score, description, facilities, action buttons (route/website)
+5. **Filter system** — type chips (all 8 categories) + weather pills, URL param sync, client-side filtering
+6. **Search** — text search filtering by name, region, highlight
+7. **API routes** — GET /api/locations (summaries), GET /api/locations/[id] (detail)
+8. **TanStack Query** — provider + query definitions with stale-while-revalidate
 
-| Doc assumed | Reality |
-|---|---|
-| `slug` column | Does NOT exist — locations have no slug |
-| `region_slug` | `region` (string name, not slug) |
-| `city` column | Does NOT exist |
-| `short_description` | `toddler_highlight` |
-| `peuter_score` (0-100) | `ai_suitability_score_10` (1-10, nullable) |
-| `featured` (boolean) | `is_featured` (boolean) |
-| `age_groups` (array) | `min_age`, `max_age` (numbers) |
-| `facilities` (array) | `coffee`, `diaper`, `alcohol` (booleans) |
-| `quality_*` dimensions | Context dimensions: `rain_backup_quality`, `buggy_friendliness`, etc. |
-| `photos` (array) | Single `photo_url` |
-| `seo_graduated` (boolean) | `seo_exclude_from_sitemap` (boolean, inverted) |
-| Region `tier` (number 1-3) | Region `tier` (string: 'primary', 'standard', 'region') |
-| `weather` always present | 1 location has null weather |
+### Key bugs fixed
+- MapLibre container height 0: wrapping div needed because MapLibre overrides position to relative
+- Zod validation: `ai_suitability_confidence` and `verification_confidence` are numbers in DB, not strings → used `z.coerce.string()`
+- MapLibre `load` event never firing: OpenFreeMap Positron uses Noto Sans fonts, not Open Sans → cluster labels requested non-existent fonts → `load` blocked
+- React strict mode incompatible with MapLibre: disabled strict mode (MapLibre WebGL context can't survive mount/unmount/remount)
 
-**The domain layer in `/v2/src/domain/` is the source of truth.** The docs in `docs/v2/` are now outdated for schema-related content (types, Zod schemas, repos). Consider updating the docs, or just use the code as reference.
+### Dependencies added
+- `maplibre-gl` — map rendering
+- `@tanstack/react-query` — server state caching
+- `xstate` + `@xstate/react` — sheet state machine
 
-## Key design decisions (unchanged from Phase 0)
+## Key design decisions
 
-| Decision | Choice |
-|---|---|
-| Stack | Next.js 16 App Router, TypeScript strict, React 19, Tailwind v4, Cloudflare Pages |
-| Database | Same Supabase (server-side access only via service key) |
-| Maps | MapLibre GL behind adapter (Phase 2) |
-| State | TanStack Query + XState (Phase 2) |
-| Design | Apple Maps 85-90% likeness, warm terracotta `#C05A3A` |
-| Fonts | Inter (UI), Newsreader (location names on detail only) |
+| Decision | Choice | Notes |
+|---|---|---|
+| Map style | OpenFreeMap Positron | Free, no API key, same as v1. Uses Noto Sans fonts |
+| Map init | Simple useEffect + cleanup | Module-level refs don't work with HMR. Strict mode disabled instead |
+| Sheet state | Single XState machine | browse/detail states, snap management, back navigation |
+| Data flow | SSR → client props | Server component fetches all summaries, passes to client AppShell |
+| Filtering | Client-side | All 2,415 locations passed to client, filtered in memory (fast enough) |
+| Detail fetch | TanStack Query via API route | Fetched on demand when marker/card tapped |
 
-## File inventory (`/v2/`)
+## File inventory (Phase 2 additions)
 
 ```
 app/
-  layout.tsx              — Root layout (Inter + Newsreader, nl lang, viewport)
-  globals.css             — All design tokens + Tailwind v4 @theme
-  not-found.tsx           — Custom 404
-  (marketing)/
-    layout.tsx            — Header + footer for SEO pages
-    page.tsx              — Homepage placeholder
-    verify/page.tsx       — Stack verification (Supabase + Zod proof)
+  api/
+    locations/
+      route.ts              — GET all summaries
+      [id]/route.ts         — GET single location detail
   (pwa)/
-    layout.tsx            — Full viewport for map app
-    app/page.tsx          — Map app placeholder
+    app/
+      page.tsx              — Server component, fetches locations
+      AppShell.tsx           — Client: wires map + sheet + filters
 
 src/
-  domain/
-    enums.ts              — LocationType, Weather, PriceBand, RegionTier, etc.
-    types.ts              — Location, LocationSummary, Region, FilterState, MapViewport
-    schemas.ts            — Zod v4 schemas matching real DB
-  lib/
-    supabase.ts           — Server-only Supabase client
-    cn.ts                 — clsx + tailwind-merge utility
-    constants.ts          — Column selections, map defaults, site metadata
-  server/repositories/
-    location.repo.ts      — getAllSummaries, getById, getByRegion, getByType, etc.
-    region.repo.ts        — getAll, getBySlug, getByTier
+  providers/
+    QueryProvider.tsx        — TanStack Query provider
+  features/
+    map/
+      MapContainer.tsx       — MapLibre full-bleed map with clustering
+      queries.ts             — TanStack Query definitions
+    sheet/
+      Sheet.tsx              — Draggable bottom sheet component
+      sheetMachine.ts        — XState: browse/detail states, snap points
+    filters/
+      FilterBar.tsx          — Type chips + weather pills
+      SearchInput.tsx        — Pill-shaped search input
+      useFilters.ts          — URL param sync + client-side filter logic
+    detail/
+      DetailView.tsx         — Location detail with photo, score, actions
+  components/
+    patterns/
+      LocationCard.tsx       — Card for browse sheet list
 ```
 
-## Build verification
+## What's NOT done yet (Phase 2 remaining)
+- Sheet touch gestures need polish (drag from handle works, but scroll-to-drag handoff is rough)
+- Sheet corner radius morphing (16px → 0 at full state)
+- Carousel overlay (horizontal card scroll in peek state)
+- PWA manifest + service worker
+- Empty states
+- Loading skeletons for card list
+- Back gesture (swipe to dismiss detail)
+- Desktop layout (sidebar instead of sheet)
 
-```
-✓ TypeScript — zero errors (strict mode)
-✓ ESLint — zero warnings
-✓ Next.js build — all 4 routes prerendered
-✓ Supabase — 2,415 locations fetched + Zod-validated
-✓ Regions — all active regions fetched + validated
-```
+## Next step
+Continue Phase 2 polish, or move to Phase 3 (SEO) if the core loop is good enough.
 
-## Next step: Phase 2 — First Thin Slice
-
-From `docs/v2/migration-plan.md`, Phase 2 builds the core loop:
-
-1. **MapLibre integration** — full-bleed map, markers from Supabase data, clustering
-2. **Bottom sheet** — two-sheet system (browse + detail), XState machines, touch gestures
-3. **Location cards** — cards in browse sheet, tap to open detail
-4. **Filter system (basic)** — type filter, weather filter
-5. **Search** — city/place name input
-6. **Location detail** — detail sheet with location info
-
-**Before starting Phase 2**, the session should:
-- Install MapLibre GL, TanStack Query, XState
-- Read `docs/v2/system-architecture.md` sections 3 (state machines), 5 (state management), 6 (map architecture)
-- Note: URL routing for locations needs a decision since there's no `slug` column — options: use `id`, generate slugs from `name`, or add slugs to DB
+**Before starting**, the session should:
+- Read this HANDOFF.md
+- Run `npm run dev` in `/v2/` and test the app at localhost:3000/app
+- Review the sheet interaction and filters
 
 ## Prompt for new session
 
 ```
 cd peuterplannen && read HANDOFF.md
 
-Phase 1 (Next.js foundation) is complete and building clean.
-Start Phase 2: the first thin slice — map, markers, sheet, cards.
-
-Key context:
-- The real DB schema differs from docs/v2/system-architecture.md — trust the code in /v2/src/domain/ over the docs
-- Locations have NO slug — need to decide on URL strategy (id-based, derived slug, or DB migration)
-- 2,415 locations, all Zod-validated
-
-Read docs/v2/migration-plan.md Phase 2 and system-architecture.md (sections 3, 5, 6) before starting.
-Install: maplibre-gl, @tanstack/react-query, xstate @xstate/react
+Phase 2 (core loop) is partially built. Map, markers, sheet, cards, filters, detail all work.
+Continue with Phase 2 polish or Phase 3.
 
 Working rules:
-- Quality over speed. Take more tokens, think deeper, deliver higher quality.
-- Use parallel subagents aggressively wherever tasks are independent.
-- Read the relevant docs/v2/ files thoroughly before writing code.
-- Every architectural decision should trace back to a doc. If it doesn't, flag it.
-- Do NOT touch any old app files (app.html, app.css, glass.css, modules/, etc.) — read-only reference.
-- All new work goes in /v2/. Branch: staging. Never touch main.
-- Update HANDOFF.md before the session ends.
+- Quality over speed
+- Use parallel subagents for independent tasks
+- Do NOT touch old app files
+- All work in /v2/. Branch: staging
+- Update HANDOFF.md before session ends
 ```

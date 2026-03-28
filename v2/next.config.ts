@@ -2,6 +2,10 @@ import type { NextConfig } from 'next';
 import { resolve } from 'path';
 
 const nextConfig: NextConfig = {
+  // Note: strict mode disabled because MapLibre GL can't survive
+  // the mount/unmount/remount cycle (WebGL context gets destroyed).
+  // Works fine in production builds where strict mode doesn't double-mount.
+  reactStrictMode: false,
   // Turbopack root (v2 is nested inside the main repo)
   turbopack: {
     root: resolve(__dirname, '..'),
