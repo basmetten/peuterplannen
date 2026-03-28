@@ -3,7 +3,7 @@ import { LocationRepository } from '@/server/repositories/location.repo';
 import { AppShell, AppShellSkeleton } from './AppShell';
 
 export const metadata = {
-  title: 'Kaart',
+  title: 'Ontdek de leukste uitjes met peuters',
 };
 
 export const revalidate = 300;

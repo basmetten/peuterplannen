@@ -4,117 +4,94 @@
 **Phase 1 complete** — Next.js foundation, Supabase connected, slugs migrated.
 **Phase 2 complete** — core loop, polish, desktop layout, navigation, carousel, and PWA done.
 **Phase 3 Tier 1+2+3 complete** — location detail pages, region/type hub pages, sitemap, robots.txt, redirects.
+**Route restructuring complete** — unified `(app)` shell replaces `(marketing)` + `(pwa)`.
 
-## ⚠️ ARCHITECTURE CHANGE — READ BEFORE CONTINUING
+## Architecture (current)
 
-**The docs in `docs/v2/` have been updated with a major architecture change.**
+Three route groups, per `docs/v2/information-architecture.md`:
 
-Before continuing Phase 3 Tier 4 or any new work, read `docs/v2/information-architecture.md` and `docs/v2/migration-plan.md` (Phase 3 section).
+| Group | Layout | Purpose |
+|-------|--------|---------|
+| `(app)` | Map + sheet/sidebar (QueryProvider + full-viewport) | All user-facing pages: home, region hubs, type hubs, location detail, guides, blog |
+| `(portal)` | Simple header, no map | Partner dashboard (future) |
+| `(legal)` | Minimal header + footer links | Privacy, terms, about, contact |
 
-### What changed:
-The `(marketing)` + `(pwa)` route group split is being replaced with a **unified app shell**:
-- `(app)` — everything renders in the map + sheet/sidebar layout (SEO pages, guides, detail, blog, home)
-- `(portal)` — partner/admin dashboards (separate layout, no map)
-- `(legal)` — privacy, terms, about, contact (minimal pages, no map)
-
-### Why:
-peuterplannen.nl should land directly on the map app, like Apple Maps. No separate marketing pages. The browse sheet IS the homepage. SEO pages render as SSR routes within the app shell. Guides (our blog/collection content) render in the sheet.
-
-### What to do:
-1. Read the updated docs (especially information-architecture.md and migration-plan.md Phase 3)
-2. Restructure route groups: rename `(pwa)` → `(app)`, move SEO routes into `(app)` layout with the map
-3. The existing components (Sheet, Map, Detail, Cards, Filters, Carousel, Sidebar) are all still valid — only the route/layout structure changes
-4. The `(marketing)` layout with its header/footer is no longer needed — replace with the unified app layout that renders content in the sheet/sidebar
-5. Add `(portal)` and `(legal)` route groups for partner dashboard and legal pages
-
-## What happened this session
-
-### Code quality + security fixes (pre-Phase 3 Tier 2)
-
-1. **Fetch error handling** — `r.ok` check before `.json()` in TanStack Query functions
-2. **Website URL validation** — only render link if `https://` or `http://` protocol
-3. **Accessibility** — removed zoom lock (`maximumScale`/`userScalable`), added `aria-pressed` to filter chips, `<search>` element for search input
-4. **ISR for app page** — `revalidate = 300` instead of `force-dynamic` (API routes stay dynamic)
-5. **TYPE_COLORS extracted** — single export from `enums.ts`, removed 4 duplicate definitions
-6. **Viewport resize** — `visualViewport` listener for accurate sheet padding on resize/orientation change
-
-### Phase 3 Tier 2 — Region + Type Hub Pages
-
-1. **Hub page** (`app/(marketing)/[region]/page.tsx`):
-   - Single dynamic route handles both region hubs and type hubs
-   - Route conflict resolved: checks `KNOWN_TYPE_SLUGS` first, then region lookup
-   - `generateStaticParams` returns 18 region slugs + 8 type slugs = 36 paths
-   - `generateMetadata` with editorial content frontmatter (meta_title, meta_description)
-   - ISR 24h revalidation
-   - JSON-LD: `CollectionPage` with `ItemList` (top 20 locations) + `BreadcrumbList`
-
-2. **Region hub features**:
-   - H1 + region blurb from DB
-   - Editorial content from `content/seo/regions/*.md` (18 files)
-   - Locations grouped by type with category color dots
-   - Max 8 cards per type, "Alle [type] bekijken →" overflow links
-   - Internal links: other regions (pill chips) + all type hubs
-
-3. **Type hub features**:
-   - H1 with category color dot
-   - Editorial content from `content/seo/types/*.md` (7 files)
-   - Locations grouped by region with "Alle uitjes →" links
-   - Max 6 cards per region
-   - Internal links: other type categories (pill chips)
-
-4. **Content reader** (`src/lib/content.ts`):
-   - Reads markdown files with YAML frontmatter
-   - Parses `## H2` sections into heading + body pairs
-   - Handles filename mismatch: `boerderijen` → `kinderboerderijen.md`
-   - Returns null gracefully for missing files (e.g., `cultuur` has no content file)
-
-## Key design decisions
-
-| Decision | Choice | Notes |
-|---|---|---|
-| Route conflict | Type slugs checked first via `KNOWN_TYPE_SLUGS` | Static set of 8 slugs; no ambiguity possible |
-| Hub page approach | Single `[region]/page.tsx` for both | Clean branching at top; `generateStaticParams` covers both |
-| Editorial content | Markdown files read at build time via `fs.readFileSync` | Content lives in old repo's `content/seo/` dir; read via `../content/seo/` relative path |
-| Card limit | 8 per type (region hub), 6 per region (type hub) | Prevents huge DOM; overflow links to category/region pages |
-| Hero image fallback | Gradient with category color + map pin | Photos not migrated yet (Phase 3.5); only external URLs shown |
-| Title template | Page generates base title, layout appends "| PeuterPlannen" | Avoids duplication |
-| ISR revalidation | 24 hours (86400s) | Content changes slowly; on-demand revalidation via webhook later |
-
-## File inventory (Phase 3 all tiers)
+### Route map
 
 ```
 app/
-  sitemap.ts                  — Dynamic sitemap (1037 URLs)
-  robots.ts                   — robots.txt
-  (marketing)/
+  (app)/
+    layout.tsx          — QueryProvider + h-dvh container
+    page.tsx            — Home: interactive map app (AppShell, ISR 5min)
+    AppShell.tsx         — Client component: map, sheet, sidebar, filters, cards, carousel
     [region]/
-      page.tsx                — Region + type hub page (ISR 24h)
+      page.tsx          — Region + type hub (SSR, ContentShell wrapper, ISR 24h)
       [slug]/
-        page.tsx              — Location detail SSR page (ISR 24h)
-
-src/
-  lib/
-    seo.ts                    — SEO utilities (title, description, graduation, schema types, URL builders)
-    content.ts                — Markdown content reader for editorial blurbs
-  components/
-    patterns/
-      Breadcrumb.tsx          — SEO breadcrumb navigation
-      StructuredData.tsx      — JSON-LD structured data component + builders
-  domain/
-    enums.ts                  — Added TYPE_COLORS (single source of truth)
-  server/
-    repositories/
-      location.repo.ts        — Added getNearby() method
-  domain/
-    schemas.ts                — Fixed nullable boolean handling (boolOrFalse)
-
-next.config.ts                — Added .html redirects + trailingSlash: false
+        page.tsx        — Location detail (SSR, ContentShell wrapper, ISR 24h)
+  (portal)/
+    layout.tsx          — Simple header
+    partner/
+      page.tsx          — Placeholder
+  (legal)/
+    layout.tsx          — Minimal header + footer links
+    privacy/page.tsx    — Placeholder
+    terms/page.tsx      — Placeholder
+    about/page.tsx      — Placeholder
+    contact/page.tsx    — Placeholder
+  api/
+    locations/route.ts  — force-dynamic
+    locations/[id]/route.ts — force-dynamic
+  sitemap.ts
+  robots.ts
+  layout.tsx            — Root: metadata template, viewport, global styles
+  not-found.tsx
 ```
+
+### ContentShell component
+
+`src/components/layout/ContentShell.tsx` — wraps SSR content in an app-like visual:
+- Desktop: 420px sidebar panel (left) + map placeholder (right)
+- Mobile: full-width scrollable content
+- Sheet footer: partner link + privacy/terms/about/contact links
+
+Used by region hub, type hub, and location detail pages. The interactive home page uses AppShell directly (doesn't use ContentShell).
+
+## What happened this session
+
+### Code quality + security fixes
+1. Fetch error handling — `r.ok` check before `.json()`
+2. Website URL validation — only allow http(s) protocols
+3. Accessibility — removed zoom lock, added aria-pressed, `<search>` element
+4. App page ISR (5min) instead of force-dynamic
+5. TYPE_COLORS extracted to single source in enums.ts
+6. Viewport resize tracking via visualViewport listener
+
+### Phase 3 Tier 2 — Region + Type Hub Pages
+- Single `[region]/page.tsx` handles both region and type hubs
+- Editorial content bundled as TypeScript module (no fs.readFileSync)
+- 36 hub pages (18 regions + 8 types)
+
+### Route restructuring
+- Replaced `(marketing)` + `(pwa)` with `(app)` + `(portal)` + `(legal)`
+- Home page moved from `/app` to `/`
+- SEO pages render in ContentShell (app-like sidebar visual)
+- Created placeholder pages for partner, privacy, terms, about, contact
+- Marketing layout (header+footer) removed
+
+## Build stats
+- 1047 total pages
+- Build time: ~2.4s static generation
+- API routes: force-dynamic
+- Home page: ISR 5min
+- Hub + detail pages: ISR 24h
 
 ## What's NOT done yet
 
 ### Phase 3 remaining
-- Tier 4: City+type combo pages (`/[region]/[type]/page.tsx`) — e.g., `/amsterdam/speeltuinen`
+- Tier 4: City+type combo pages (`/[region]/[type]` e.g. `/amsterdam/speeltuinen`)
+- Blog/guides migration into sheet (`/blog/[slug]`, `/guides`)
+- Persistent map in (app) layout (currently map only on home page)
+- SEO content rendered in interactive sheet (currently uses static ContentShell)
 
 ### Beyond Phase 3
 - Phase 3.5: Photo migration to Cloudflare R2
@@ -122,33 +99,22 @@ next.config.ts                — Added .html redirects + trailingSlash: false
 - Phase 5: Quality Gates (E2E tests, CWV, accessibility, service worker)
 - Staging deployment (Cloudflare Pages)
 
-## Build stats
-- 1044 total pages (1000 detail + 18 region hubs + 8 type hubs + homepage + app + sitemap + robots + verify + 404)
-- Build time: ~3s for static generation
-- API routes stay `force-dynamic` (TanStack Query with client-side staleTime)
-- App page: ISR 5min; detail + hub pages: ISR 24h
+## Key design decisions
+
+| Decision | Choice | Notes |
+|---|---|---|
+| App layout | Minimal (QueryProvider + container) | Each page brings its own rendering; map persistence deferred |
+| ContentShell | Static sidebar visual | Not the interactive sheet; provides app-like UX for SSR pages without full sheet machinery |
+| Home page route | `/` (was `/app`) | App IS the website per architecture doc |
+| Editorial content | Bundled TypeScript module | No fs.readFileSync; works on Cloudflare Pages |
+| Route conflict | KNOWN_TYPE_SLUGS checked first | 8 type slugs are a fixed set, region slugs are dynamic |
 
 ## Next step
-Continue Phase 3 Tier 4 (city+type combo pages) or move to staging deployment.
+
+Continue Phase 3 Tier 4 (city+type combo pages) or start making the ContentShell use the real interactive sheet/sidebar (progressive enhancement toward the persistent map architecture).
 
 **Before starting**, the session should:
 - Read this HANDOFF.md
-- Run `npm run dev` in `/v2/` and test hub pages (e.g., localhost:3000/amsterdam, localhost:3000/speeltuinen)
-- Verify detail pages still work (e.g., localhost:3000/amsterdam/artis)
-- Run `npm run build` to confirm all 1044 pages generate
-
-## Prompt for new session
-
-```
-cd peuterplannen && read HANDOFF.md
-
-Phase 3 Tier 1+2+3 complete (1044 pages: details, region hubs, type hubs, sitemap, robots).
-Phase 3 Tier 4 (city+type combo pages) or staging deployment next.
-
-Working rules:
-- Quality over speed
-- Use parallel subagents for independent tasks
-- Do NOT touch old app files
-- All work in /v2/. Branch: staging
-- Update HANDOFF.md before session ends
-```
+- Read `docs/v2/information-architecture.md` for the full architecture spec
+- Run `npm run build` to confirm 1047 pages generate
+- Test: `localhost:3000/`, `localhost:3000/amsterdam`, `localhost:3000/amsterdam/artis`, `localhost:3000/privacy`

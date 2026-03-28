@@ -1,6 +1,6 @@
 import { QueryProvider } from '@/providers/QueryProvider';
 
-export default function PwaLayout({
+export default function AppLayout({
   children,
 }: {
   children: React.ReactNode;

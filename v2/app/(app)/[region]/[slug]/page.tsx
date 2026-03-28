@@ -21,6 +21,7 @@ import {
   StructuredData,
   buildLocationStructuredData,
 } from '@/components/patterns/StructuredData';
+import { ContentShell } from '@/components/layout/ContentShell';
 
 // ---------------------------------------------------------------------------
 // ISR: revalidate every 24 hours
@@ -158,10 +159,10 @@ export default async function LocationDetailPage({ params }: Props) {
     .filter((d) => d.value != null && d.value !== '');
 
   return (
-    <>
+    <ContentShell>
       <StructuredData data={structuredData} />
 
-      <article className="mx-auto max-w-3xl px-4 pb-16">
+      <article className="px-4 pb-16">
         {/* Breadcrumb */}
         <Breadcrumb items={breadcrumbItems} />
 
@@ -338,7 +339,7 @@ export default async function LocationDetailPage({ params }: Props) {
           </Link>
         </nav>
       </article>
-    </>
+    </ContentShell>
   );
 }
 

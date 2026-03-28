@@ -18,6 +18,7 @@ import type { LocationSummary, Region } from '@/domain/types';
 import { Breadcrumb } from '@/components/patterns/Breadcrumb';
 import { StructuredData } from '@/components/patterns/StructuredData';
 import { SITE_URL } from '@/lib/constants';
+import { ContentShell } from '@/components/layout/ContentShell';
 
 // ---------------------------------------------------------------------------
 // ISR — revalidate every 24 hours (same as detail pages)
@@ -156,9 +157,9 @@ async function RegionHub({
   });
 
   return (
-    <>
+    <ContentShell>
       <StructuredData data={structuredData} />
-      <article className="mx-auto max-w-3xl px-4 py-6">
+      <article className="px-4 py-6">
         <Breadcrumb items={breadcrumbItems} />
 
         {/* Header */}
@@ -255,7 +256,7 @@ async function RegionHub({
           ))}
         </nav>
       </article>
-    </>
+    </ContentShell>
   );
 }
 
@@ -301,9 +302,9 @@ async function TypeHub({
   });
 
   return (
-    <>
+    <ContentShell>
       <StructuredData data={structuredData} />
-      <article className="mx-auto max-w-3xl px-4 py-6">
+      <article className="px-4 py-6">
         <Breadcrumb items={breadcrumbItems} />
 
         {/* Header */}
@@ -380,7 +381,7 @@ async function TypeHub({
           </div>
         </nav>
       </article>
-    </>
+    </ContentShell>
   );
 }
 
