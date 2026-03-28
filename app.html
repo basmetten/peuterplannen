@@ -108,8 +108,8 @@
     <link rel="preload" href="/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/plus-jakarta-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/app.bundle.css?v=202603280607-9e97480f">
-    <script src="/nav-floating.js?v=202603280607-9e97480f" defer></script>
+    <link rel="stylesheet" href="/app.bundle.css?v=202603280621-21f3822c">
+    <script src="/nav-floating.js?v=202603280621-21f3822c" defer></script>
 
 </head>
 <body class="pp-app">
@@ -705,18 +705,11 @@
                     <button class="sheet-filter-chip" data-filter="horeca" data-type="horeca" aria-pressed="false">Horeca <span class="chip-count"></span></button>
                     <button class="sheet-filter-chip" data-filter="swim" data-type="swim" aria-pressed="false">Zwemmen <span class="chip-count"></span></button>
                     <button class="sheet-filter-chip" data-filter="pancake" data-type="pancake" aria-pressed="false">Pannenkoeken <span class="chip-count"></span></button>
-                    <div class="sort-pill-wrap" style="position: relative;">
-                        <button class="sort-chip" id="sort-pill" aria-haspopup="listbox" aria-expanded="false" onclick="toggleSort(event)">
-                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h7M3 12h10M3 18h13"/></svg>
-                            <span id="sort-label">Dichtbij</span>
-                            <svg class="sort-chevron" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-                        </button>
-                        <div class="sort-dropdown" id="sort-dropdown" role="listbox" aria-label="Sorteer op">
-                            <button class="sort-option active" data-sort="default" role="option" aria-selected="true" onclick="selectSort('default', event)">Dichtbij</button>
-                            <button class="sort-option" data-sort="peuterscore" role="option" aria-selected="false" onclick="selectSort('peuterscore', event)">Beste score</button>
-                            <button class="sort-option" data-sort="az" role="option" aria-selected="false" onclick="selectSort('az', event)">A – Z</button>
-                        </div>
-                    </div>
+                    <button class="sort-chip" id="sort-pill" aria-haspopup="listbox" aria-expanded="false" onclick="toggleSort(event)">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h7M3 12h10M3 18h13"/></svg>
+                        <span id="sort-label">Dichtbij</span>
+                        <svg class="sort-chevron" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
                 </div>
             </div>
             <!-- Meta (shown in half/full, not peek) -->
@@ -729,6 +722,13 @@
             <div class="sheet-list" id="sheet-list" role="list" aria-label="Locatie lijst"></div>
         </div>
     </div>
+    </div>
+
+    <!-- Sort dropdown (outside sheet stacking context for proper fixed positioning) -->
+    <div class="sort-dropdown" id="sort-dropdown" role="listbox" aria-label="Sorteer op">
+        <button class="sort-option active" data-sort="default" role="option" aria-selected="true" onclick="selectSort('default', event)">Dichtbij</button>
+        <button class="sort-option" data-sort="peuterscore" role="option" aria-selected="false" onclick="selectSort('peuterscore', event)">Beste score</button>
+        <button class="sort-option" data-sort="az" role="option" aria-selected="false" onclick="selectSort('az', event)">A – Z</button>
     </div>
 
     <!-- Detail Sheet overlay (dims map when detail is open) -->
@@ -842,7 +842,7 @@
 
     <div id="sr-announcer" class="sr-only" aria-live="polite" role="status"></div>
 
-    <script type="module" src="app.bundle.js?v=202603280607-9e97480f"></script>
+    <script type="module" src="app.bundle.js?v=202603280621-21f3822c"></script>
 
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>
