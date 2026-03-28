@@ -4,7 +4,7 @@ import { escapeHtml, slugify, trackEvent, buildDetailUrl } from './modules/utils
 import { toggleFavorite, toggleFavoriteFromSheet, shareLocation, updateShortlistBar, updateFavBadge, shareShortlist, showShortlist, clearShortlist, clearSharedShortlist } from './modules/favorites.js';
 import { loadLocations, checkWeather, initAutocomplete, getCurrentLocation, updateLocation, setCity, updateLocationFromMap, applySort, showGpsStatus } from './modules/data.js';
 import { initGeolocation } from './modules/geolocation.js';
-import { toggleTag, toggleWeather, toggleFacility, toggleAge, toggleRadius, togglePreset, toggleFilterPanel, resetAllFilters, updateFilterCount, syncFilterPanelForViewport, syncPresetAria, syncChipAria, openMapFilters, closeMapFilters, toggleMapMoreFilters, updateMapPillBadge, openMapFilterModal, toggleMapTag, toggleFoodFit, togglePractical, togglePriceBand } from './modules/filters.js';
+import { toggleTag, toggleWeather, toggleFacility, toggleAge, toggleRadius, togglePreset, toggleFilterPanel, resetAllFilters, updateFilterCount, syncFilterPanelForViewport, syncPresetAria, syncChipAria, openMapFilters, closeMapFilters, toggleMapMoreFilters, updateMapPillBadge, openMapFilterModal, toggleMapTag, toggleFoodFit, togglePractical, togglePriceBand, toggleSort, selectSort } from './modules/filters.js';
 import { renderCards } from './modules/cards.js';
 import { loadMapLibre, initMap, updateMapMarkers, fitMapToMarkers, updateUserLocationOnMap, highlightMarker, setDisplayMode } from './modules/map.js';
 import { openLocSheet, closeLocSheet, openInfoPanel, closeInfoPanel, showLocationDetail, initSheetGestures } from './modules/sheet.js';
@@ -91,6 +91,7 @@ Object.assign(window, {
     toggleFavorite, toggleFavoriteFromSheet, applySort, loadLocations,
     syncPresetAria, syncChipAria,
     toggleFoodFit, togglePractical, togglePriceBand,
+    toggleSort, selectSort,
 });
 
 // === URL Parameter Parsing ===

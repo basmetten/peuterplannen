@@ -1,6 +1,6 @@
 import { state, DESKTOP_WIDTH, TYPE_LABELS, PRESET_LABELS } from './state.js';
 import { trackEvent } from './utils.js';
-import { loadLocations, showGpsStatus } from './data.js';
+import { loadLocations, showGpsStatus, applySort } from './data.js';
 import bus from './bus.js';
 
 /* Re-trigger a CSS animation by removing and re-adding it via reflow */
@@ -168,6 +168,97 @@ export function updateFilterCount() {
     syncFilterPanelForViewport();
     updateMapPillBadge();
 }
+
+// ── Sort dropdown toggle ──
+
+const SORT_LABELS = { default: 'Dichtbij', peuterscore: 'Beste score', az: 'A – Z' };
+let _sortDropdownOpen = false;
+let _sortClickOutside = null;
+
+/**
+ * Toggle the sort dropdown open/closed.
+ */
+export function toggleSort(e) {
+    if (e) e.stopPropagation();
+    const pill = document.getElementById('sort-pill');
+    const dd = document.getElementById('sort-dropdown');
+    if (!pill || !dd) return;
+    _sortDropdownOpen = !_sortDropdownOpen;
+    pill.setAttribute('aria-expanded', String(_sortDropdownOpen));
+    dd.classList.toggle('open', _sortDropdownOpen);
+
+    if (_sortDropdownOpen) {
+        _sortClickOutside = (ev) => {
+            if (!pill.contains(ev.target) && !dd.contains(ev.target)) {
+                closeSortDropdown();
+            }
+        };
+        setTimeout(() => document.addEventListener('click', _sortClickOutside), 0);
+    } else {
+        closeSortDropdown();
+    }
+}
+
+function closeSortDropdown() {
+    _sortDropdownOpen = false;
+    const pill = document.getElementById('sort-pill');
+    const dd = document.getElementById('sort-dropdown');
+    if (pill) pill.setAttribute('aria-expanded', 'false');
+    if (dd) dd.classList.remove('open');
+    if (_sortClickOutside) {
+        document.removeEventListener('click', _sortClickOutside);
+        _sortClickOutside = null;
+    }
+}
+
+/**
+ * Select a sort option and re-sort the list.
+ */
+export function selectSort(val, e) {
+    if (e) e.stopPropagation();
+    // Update pill label
+    const label = document.getElementById('sort-label');
+    if (label) label.textContent = SORT_LABELS[val] || val;
+    // Update active state in dropdown
+    document.querySelectorAll('.sort-option').forEach(opt => {
+        const isActive = opt.dataset.sort === val;
+        opt.classList.toggle('active', isActive);
+        opt.setAttribute('aria-selected', String(isActive));
+    });
+    closeSortDropdown();
+    // Apply sort via data.js
+    applySort(val);
+    trackEvent('sort_change', val);
+}
+
+// ── Filter count badges ──
+
+const TYPE_KEYS = ['play', 'farm', 'nature', 'museum', 'swim', 'pancake', 'horeca'];
+
+/**
+ * Update count badges on type filter chips showing how many locations match each type.
+ */
+export function updateFilterCounts() {
+    const locs = state.allLocations;
+    if (!locs || !locs.length) return;
+    // Count per type
+    const counts = {};
+    for (const type of TYPE_KEYS) counts[type] = 0;
+    for (const loc of locs) {
+        if (counts[loc.type] !== undefined) counts[loc.type]++;
+    }
+    // Update chip count spans in both filter-chip-toolbar and sheet-filter-chips
+    for (const type of TYPE_KEYS) {
+        const count = counts[type];
+        const selector = `[data-type="${type}"] .chip-count`;
+        document.querySelectorAll(selector).forEach(el => {
+            el.textContent = count > 0 ? `(${count})` : '';
+        });
+    }
+}
+
+// Listen for data loads to update counts
+bus.on('cards:render', () => updateFilterCounts());
 
 function collapseFilterPanelAfterSelection() {
     if (window.innerWidth < DESKTOP_WIDTH && !document.documentElement.classList.contains('pp-desktop')) {

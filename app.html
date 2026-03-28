@@ -108,8 +108,8 @@
     <link rel="preload" href="/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/plus-jakarta-sans-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/app.bundle.css?v=202603272320-5c5e8db3">
-    <script src="/nav-floating.js?v=202603272320-5c5e8db3" defer></script>
+    <link rel="stylesheet" href="/app.bundle.css?v=202603280601-770585a4">
+    <script src="/nav-floating.js?v=202603280601-770585a4" defer></script>
 
 </head>
 <body class="pp-app">
@@ -311,13 +311,13 @@
             <div class="filter-chips" id="filter-chip-toolbar" role="toolbar" aria-label="Filter categorieën">
                 <button class="chip active" onclick="toggleTag('all', event)" aria-selected="true">Alles</button>
                 <span class="chip-label">Type:</span>
-                <button class="chip" data-type="play" onclick="toggleTag('play', event)" aria-selected="false">Speeltuin</button>
-                <button class="chip" data-type="farm" onclick="toggleTag('farm', event)" aria-selected="false">Boerderij</button>
-                <button class="chip" data-type="nature" onclick="toggleTag('nature', event)" aria-selected="false">Natuur</button>
-                <button class="chip" data-type="museum" onclick="toggleTag('museum', event)" aria-selected="false">Museum</button>
-                <button class="chip" data-type="swim" onclick="toggleTag('swim', event)" aria-selected="false">Zwemmen</button>
-                <button class="chip" data-type="pancake" onclick="toggleTag('pancake', event)" aria-selected="false">Pannenkoeken</button>
-                <button class="chip" data-type="horeca" onclick="toggleTag('horeca', event)" aria-selected="false">Horeca</button>
+                <button class="chip" data-type="play" onclick="toggleTag('play', event)" aria-selected="false">Speeltuin <span class="chip-count"></span></button>
+                <button class="chip" data-type="farm" onclick="toggleTag('farm', event)" aria-selected="false">Boerderij <span class="chip-count"></span></button>
+                <button class="chip" data-type="nature" onclick="toggleTag('nature', event)" aria-selected="false">Natuur <span class="chip-count"></span></button>
+                <button class="chip" data-type="museum" onclick="toggleTag('museum', event)" aria-selected="false">Museum <span class="chip-count"></span></button>
+                <button class="chip" data-type="swim" onclick="toggleTag('swim', event)" aria-selected="false">Zwemmen <span class="chip-count"></span></button>
+                <button class="chip" data-type="pancake" onclick="toggleTag('pancake', event)" aria-selected="false">Pannenkoeken <span class="chip-count"></span></button>
+                <button class="chip" data-type="horeca" onclick="toggleTag('horeca', event)" aria-selected="false">Horeca <span class="chip-count"></span></button>
                 <span class="chip-label">Weer:</span>
                 <button class="chip" onclick="toggleWeather('indoor', event)" aria-selected="false">Binnen</button>
                 <button class="chip" onclick="toggleWeather('outdoor', event)" aria-selected="false">Buiten</button>
@@ -685,26 +685,38 @@
                 </div>
                 <!-- Preset chips — compact horizontal scroll -->
                 <div class="sheet-presets" id="sheet-presets" role="toolbar" aria-label="Situatie-presets">
-                    <button class="sheet-preset" data-preset="short-drive" onclick="togglePreset('short-drive', event)" aria-pressed="false">Korte rit</button>
-                    <button class="sheet-preset" data-preset="rain" onclick="togglePreset('rain', event)" aria-pressed="false">Regenproof</button>
-                    <button class="sheet-preset" data-preset="lunch-play" onclick="togglePreset('lunch-play', event)" aria-pressed="false">Lunch + spelen</button>
-                    <button class="sheet-preset" data-preset="peuterproof" onclick="togglePreset('peuterproof', event)" aria-pressed="false">Peuterproof</button>
-                    <button class="sheet-preset" data-preset="now-open" onclick="togglePreset('now-open', event)" aria-pressed="false">Nu open</button>
-                    <button class="sheet-preset" data-preset="outdoor-coffee" onclick="togglePreset('outdoor-coffee', event)" aria-pressed="false">Buiten + koffie</button>
-                    <button class="sheet-preset" data-preset="dreumesproof" onclick="togglePreset('dreumesproof', event)" aria-pressed="false">Dreumesproof</button>
-                    <button class="sheet-preset" data-preset="terras-kids" onclick="togglePreset('terras-kids', event)" aria-pressed="false">Terrasje + kids</button>
+                    <button class="sheet-preset" data-preset="short-drive" onclick="togglePreset('short-drive', event)" aria-pressed="false"><span class="preset-icon">🚗</span><span class="preset-label">Korte rit</span></button>
+                    <button class="sheet-preset" data-preset="rain" onclick="togglePreset('rain', event)" aria-pressed="false"><span class="preset-icon">☔</span><span class="preset-label">Regenproof</span></button>
+                    <button class="sheet-preset" data-preset="lunch-play" onclick="togglePreset('lunch-play', event)" aria-pressed="false"><span class="preset-icon">🍽️</span><span class="preset-label">Lunch + spelen</span></button>
+                    <button class="sheet-preset" data-preset="peuterproof" onclick="togglePreset('peuterproof', event)" aria-pressed="false"><span class="preset-icon">🧒</span><span class="preset-label">Peuterproof</span></button>
+                    <button class="sheet-preset" data-preset="now-open" onclick="togglePreset('now-open', event)" aria-pressed="false"><span class="preset-icon">🟢</span><span class="preset-label">Nu open</span></button>
+                    <button class="sheet-preset" data-preset="outdoor-coffee" onclick="togglePreset('outdoor-coffee', event)" aria-pressed="false"><span class="preset-icon">☕</span><span class="preset-label">Buiten + koffie</span></button>
+                    <button class="sheet-preset" data-preset="dreumesproof" onclick="togglePreset('dreumesproof', event)" aria-pressed="false"><span class="preset-icon">👶</span><span class="preset-label">Dreumesproof</span></button>
+                    <button class="sheet-preset" data-preset="terras-kids" onclick="togglePreset('terras-kids', event)" aria-pressed="false"><span class="preset-icon">☀️</span><span class="preset-label">Terrasje + kids</span></button>
                 </div>
                 <!-- Inline filter chips (shown when search expanded) -->
                 <!-- Category chips — always visible in peek -->
                 <div class="sheet-filter-chips" id="sheet-filter-chips" role="toolbar" aria-label="Filter op type">
                     <button class="sheet-filter-chip active" data-filter="all" aria-pressed="true">Alles</button>
-                    <button class="sheet-filter-chip" data-filter="play" data-type="play" aria-pressed="false">Speeltuin</button>
-                    <button class="sheet-filter-chip" data-filter="farm" data-type="farm" aria-pressed="false">Boerderij</button>
-                    <button class="sheet-filter-chip" data-filter="nature" data-type="nature" aria-pressed="false">Natuur</button>
-                    <button class="sheet-filter-chip" data-filter="museum" data-type="museum" aria-pressed="false">Museum</button>
-                    <button class="sheet-filter-chip" data-filter="horeca" data-type="horeca" aria-pressed="false">Horeca</button>
-                    <button class="sheet-filter-chip" data-filter="swim" data-type="swim" aria-pressed="false">Zwemmen</button>
-                    <button class="sheet-filter-chip" data-filter="pancake" data-type="pancake" aria-pressed="false">Pannenkoeken</button>
+                    <button class="sheet-filter-chip" data-filter="play" data-type="play" aria-pressed="false">Speeltuin <span class="chip-count"></span></button>
+                    <button class="sheet-filter-chip" data-filter="farm" data-type="farm" aria-pressed="false">Boerderij <span class="chip-count"></span></button>
+                    <button class="sheet-filter-chip" data-filter="nature" data-type="nature" aria-pressed="false">Natuur <span class="chip-count"></span></button>
+                    <button class="sheet-filter-chip" data-filter="museum" data-type="museum" aria-pressed="false">Museum <span class="chip-count"></span></button>
+                    <button class="sheet-filter-chip" data-filter="horeca" data-type="horeca" aria-pressed="false">Horeca <span class="chip-count"></span></button>
+                    <button class="sheet-filter-chip" data-filter="swim" data-type="swim" aria-pressed="false">Zwemmen <span class="chip-count"></span></button>
+                    <button class="sheet-filter-chip" data-filter="pancake" data-type="pancake" aria-pressed="false">Pannenkoeken <span class="chip-count"></span></button>
+                    <div class="sort-pill-wrap" style="position: relative;">
+                        <button class="sort-chip" id="sort-pill" aria-haspopup="listbox" aria-expanded="false" onclick="toggleSort(event)">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h7M3 12h10M3 18h13"/></svg>
+                            <span id="sort-label">Dichtbij</span>
+                            <svg class="sort-chevron" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                        </button>
+                        <div class="sort-dropdown" id="sort-dropdown" role="listbox" aria-label="Sorteer op">
+                            <button class="sort-option active" data-sort="default" role="option" aria-selected="true" onclick="selectSort('default', event)">Dichtbij</button>
+                            <button class="sort-option" data-sort="peuterscore" role="option" aria-selected="false" onclick="selectSort('peuterscore', event)">Beste score</button>
+                            <button class="sort-option" data-sort="az" role="option" aria-selected="false" onclick="selectSort('az', event)">A – Z</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- Meta (shown in half/full, not peek) -->
@@ -830,7 +842,7 @@
 
     <div id="sr-announcer" class="sr-only" aria-live="polite" role="status"></div>
 
-    <script type="module" src="app.bundle.js?v=202603272320-5c5e8db3"></script>
+    <script type="module" src="app.bundle.js?v=202603280601-770585a4"></script>
 
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token":"74c21d127cea482bb454b6c85071a46f"}'></script>
 </body>

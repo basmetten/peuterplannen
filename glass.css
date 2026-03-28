@@ -435,18 +435,22 @@
 .sheet-preset {
   flex-shrink: 0;
   scroll-snap-align: start;
-  padding: 8px 18px;
-  min-height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 72px;
+  min-height: 56px;
+  padding: 8px 12px;
   border: 1px solid rgba(var(--pp-neutral-muted-rgb), 0.08);
-  border-radius: var(--pp-radius-pill, 100px);
+  border-radius: var(--wg-radius-card, 12px);
   background: var(--wg-glass-interactive);
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
-  font-size: var(--pp-text-xs);
-  font-weight: var(--pp-weight-semibold);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.04);
+  font-size: var(--pp-text-2xs);
+  font-weight: var(--pp-weight-medium, 500);
   font-family: inherit;
   color: var(--pp-text-secondary, var(--wg-text-body));
   cursor: pointer;
-  white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
   transition: background 200ms ease,
               color 200ms ease,
@@ -454,6 +458,8 @@
               box-shadow 200ms ease,
               border-color 200ms ease;
 }
+.preset-icon { font-size: 1.25rem; line-height: 1; }
+.preset-label { white-space: nowrap; font-weight: var(--pp-weight-semibold, 600); }
 .sheet-preset:active {
   background: var(--wg-glass-interactive-pressed);
   border-color: rgba(var(--pp-primary-rgb), 0.25);
@@ -476,13 +482,19 @@
   font-weight: var(--pp-weight-semibold);
   animation: chip-activate 250ms var(--wg-ease-spring);
 }
-/* Checkmark scales in when preset activates */
-.sheet-preset.active::before {
+/* Active preset — checkmark overlay on icon */
+.sheet-preset.active .preset-icon::after {
   content: '\2713';
-  display: inline-block;
-  margin-right: var(--pp-space-xs);
-  font-size: 0.85em;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
   animation: check-pop 300ms var(--wg-ease-bounce);
+}
+.sheet-preset.active .preset-icon {
+  position: relative;
 }
 .sheet-search-pill {
   display: flex;
@@ -2480,6 +2492,100 @@
   .sheet-filter-chip.active[data-type="swim"] { background: var(--pp-type-swim-dark); border-color: transparent; box-shadow: 0 2px 10px rgba(25, 118, 210, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15); }
   .sheet-filter-chip.active[data-type="pancake"] { background: var(--pp-type-pancake-dark); border-color: transparent; box-shadow: 0 2px 10px rgba(158, 126, 30, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15); }
   .sheet-filter-chip.active[data-type="horeca"] { background: var(--pp-type-horeca-dark); border-color: transparent; box-shadow: 0 2px 10px rgba(196, 89, 62, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15); }
+
+  /* ── Sort pill + dropdown ── */
+  .sort-pill-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+  .sort-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: var(--pp-space-sm) var(--pp-space-md);
+    border-radius: var(--pp-radius-pill, 100px);
+    border: 1px solid rgba(var(--pp-neutral-muted-rgb), 0.08);
+    background: var(--wg-glass-interactive);
+    font-size: var(--pp-text-xs);
+    font-weight: var(--pp-weight-semibold);
+    font-family: inherit;
+    color: var(--pp-text-secondary, var(--wg-text-body));
+    cursor: pointer;
+    flex-shrink: 0;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform var(--wg-duration-fast) var(--wg-ease-standard),
+                background 200ms ease;
+  }
+  .sort-chip:active {
+    transform: scale(0.95);
+    background: var(--wg-glass-interactive-pressed);
+  }
+  .sort-chip svg { flex-shrink: 0; }
+  .sort-chevron {
+    transition: transform 0.2s var(--pp-ease-spring);
+  }
+  .sort-chip[aria-expanded="true"] .sort-chevron {
+    transform: rotate(180deg);
+  }
+  .sort-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 160px;
+    background: var(--wg-glass-elevated, rgba(255, 252, 249, 0.95));
+    backdrop-filter: var(--wg-blur-panel, blur(40px));
+    -webkit-backdrop-filter: var(--wg-blur-panel, blur(40px));
+    border-radius: var(--wg-radius-card, 12px);
+    box-shadow: var(--pp-shadow-popover);
+    padding: 4px;
+    z-index: 300;
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+    transition: opacity 0.15s var(--pp-ease-spring),
+                transform 0.15s var(--pp-ease-spring);
+    pointer-events: none;
+  }
+  .sort-dropdown.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+  .sort-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 14px;
+    border: none;
+    border-radius: var(--wg-radius-tag, 8px);
+    font-size: var(--pp-text-sm);
+    font-family: inherit;
+    color: var(--wg-text-body, #5C4433);
+    background: transparent;
+    cursor: pointer;
+    transition: background var(--pp-duration-fast, 120ms) var(--pp-ease-spring);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sort-option:hover { background: var(--pp-surface-tint); }
+  .sort-option.active {
+    color: var(--pp-primary, #D4775A);
+    font-weight: var(--wg-weight-semibold, 600);
+  }
+  .sort-option:active { transform: scale(0.97); }
+
+  /* ── Chip count badges ── */
+  .chip-count {
+    font-size: var(--pp-text-2xs);
+    color: var(--wg-text-faint, #6B5A4A);
+    font-weight: var(--wg-weight-normal, 400);
+    margin-left: 1px;
+    opacity: 0.8;
+  }
+  .sheet-filter-chip.active .chip-count,
+  .chip.active .chip-count {
+    color: rgba(255, 255, 255, 0.75);
+  }
 
   /* "Meer" button in filter chip row */
   .sheet-filter-more {
