@@ -113,6 +113,51 @@
 
 ---
 
+### Phase 3.5: Photo Storage Migration (Week 4)
+
+**Goal:** Move location photos from git to Cloudflare R2. Serve optimized images via Cloudflare Image Resizing instead of pre-generated thumbnails.
+
+**Context:** The old app stores ~547 MB of photos in git (`/images/locations/`), with 4 files per location (thumb.webp, thumb.jpg, hero.webp, hero.jpg). This cannot move to Cloudflare Pages (size limits) and bloats the repo. The v2 approach: store one original per location in R2, let Cloudflare Image Resizing generate sizes on-demand at the CDN edge.
+
+| Task | Detail |
+|------|--------|
+| Create R2 bucket | `peuterplannen-photos` bucket via Cloudflare API (`$CLOUDFLARE_API_TOKEN`) |
+| Upload existing photos | Script to upload all `hero.webp` files from `/images/locations/` to R2 with key pattern `{region}/{slug}/hero.webp` |
+| Configure Image Resizing | Enable on the staging domain. Set up transform URL pattern for thumb/hero/card sizes. |
+| Next.js image loader | Custom Cloudflare image loader in `next.config.ts` so `<Image>` components request transforms automatically |
+| Update photo pipeline | Modify `.scripts/pipeline/fetch-photos.js` to upload to R2 instead of writing to disk |
+| Update Supabase URLs | Batch update `photo_url` in Supabase to point to R2 public URLs instead of relative paths |
+| R2 binding in wrangler | Add `R2_BUCKET` binding in `wrangler.jsonc` for direct access from Cloudflare Pages functions |
+| Verify | All location cards and detail pages show photos from R2. Thumbnail generation works via Image Resizing. No broken images. |
+
+**Image sizes (generated on-demand by Cloudflare Image Resizing):**
+
+| Use | Dimensions | Quality |
+|-----|-----------|---------|
+| Card thumbnail | 400×300 (fit=cover) | 80 |
+| Detail hero | 800×600 (fit=cover) | 85 |
+| Carousel card | 144×144 (fit=cover) | 80 |
+| OG image | 1200×630 (fit=cover) | 85 |
+
+**Environment variables to add:**
+
+| Variable | Purpose |
+|----------|---------|
+| `CLOUDFLARE_ACCOUNT_ID` | R2 API access |
+| `R2_BUCKET_NAME` | Bucket name (`peuterplannen-photos`) |
+| `R2_PUBLIC_URL` | Public access URL for the bucket |
+
+**Exit criteria:**
+- All photos served from R2 via Cloudflare CDN
+- `<Image>` components in v2 request correct transform URLs
+- No photos stored in git for v2 (old `/images/locations/` remains for v1 until cutover)
+- Photo pipeline uploads to R2 instead of disk
+- Page load time for cards with photos is equal or better than v1
+
+**Rollback:** R2 is additive. Old photos in git still work for v1. If R2 fails, point `photo_url` back to relative paths.
+
+---
+
 ### Phase 4: Polish & Canonicalize (Week 4-6)
 
 **Goal:** The app feels calm, premium, and coherent. Not just functional — desirable.
