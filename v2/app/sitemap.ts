@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { LocationRepository } from '@/server/repositories/location.repo';
 import { RegionRepository } from '@/server/repositories/region.repo';
+import { BlogRepository } from '@/server/repositories/blog.repo';
 import { SITE_URL } from '@/lib/constants';
 import type { LocationType } from '@/domain/enums';
 
@@ -70,5 +71,35 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly' as const,
     }));
 
-  return [...homepage, ...regionPages, ...typePages, ...comboPages, ...locationPages];
+  // 6. Blog index + guides overview
+  const contentPages: MetadataRoute.Sitemap = [
+    {
+      url: `${SITE_URL}/blog`,
+      priority: 0.7,
+      changeFrequency: 'weekly' as const,
+    },
+    {
+      url: `${SITE_URL}/guides`,
+      priority: 0.7,
+      changeFrequency: 'weekly' as const,
+    },
+  ];
+
+  // 7. Blog post pages: /blog/{slug}
+  const blogPosts: MetadataRoute.Sitemap = BlogRepository.getAll().map((post) => ({
+    url: `${SITE_URL}/blog/${post.slug}`,
+    priority: 0.5,
+    changeFrequency: 'monthly' as const,
+    ...(post.date ? { lastModified: new Date(post.date) } : {}),
+  }));
+
+  return [
+    ...homepage,
+    ...regionPages,
+    ...typePages,
+    ...comboPages,
+    ...locationPages,
+    ...contentPages,
+    ...blogPosts,
+  ];
 }

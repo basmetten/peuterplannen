@@ -4,6 +4,7 @@
 **Phase 1 complete** — Next.js foundation, Supabase connected, slugs migrated.
 **Phase 2 complete** — core loop, polish, desktop layout, navigation, carousel, and PWA done.
 **Phase 3 Tier 1+2+3+4 complete** — location detail pages, region/type hub pages, city+type combo pages, sitemap, robots.txt, redirects.
+**Phase 3 blog/guides complete** — 57 blog posts migrated, blog index, guides overview, sitemap updated.
 **Route restructuring complete** — unified `(app)` shell replaces `(marketing)` + `(pwa)`.
 
 ## Architecture (current)
@@ -27,7 +28,13 @@ app/
     [region]/
       page.tsx          — Region + type hub (SSR, ContentShell wrapper, ISR 24h)
       [slug]/
-        page.tsx        — Location detail (SSR, ContentShell wrapper, ISR 24h)
+        page.tsx        — Location detail + city+type combo (SSR, ContentShell, ISR 24h)
+    blog/
+      page.tsx          — Blog index (SSG, ContentShell, ISR 24h)
+      [slug]/
+        page.tsx        — Blog post (SSG, ContentShell, ISR 24h)
+    guides/
+      page.tsx          — Guides overview (SSG, ContentShell, ISR 24h)
   (portal)/
     layout.tsx          — Simple header
     partner/
@@ -54,52 +61,52 @@ app/
 - Mobile: full-width scrollable content
 - Sheet footer: partner link + privacy/terms/about/contact links
 
-Used by region hub, type hub, and location detail pages. The interactive home page uses AppShell directly (doesn't use ContentShell).
+Used by region hub, type hub, location detail, blog, and guides pages. The interactive home page uses AppShell directly (doesn't use ContentShell).
+
+### Blog data architecture
+
+Blog posts are bundled at build time to avoid `fs.readFileSync` at runtime (Cloudflare Pages constraint):
+
+```
+content/posts/*.md          — 57 markdown source files (frontmatter + body)
+v2/scripts/bundle-posts.mjs — prebuild script (reads .md → generates JSON)
+v2/src/content/blog-posts.generated.json — bundled post data
+v2/src/domain/blog.ts       — Zod schema (BlogPost, BlogPostMeta)
+v2/src/server/repositories/blog.repo.ts — data access layer
+v2/src/lib/markdown.ts      — unified/remark/rehype render pipeline
+```
+
+The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdown pipeline includes a `rehypeRewriteLinks` plugin that converts old-style links (`/amsterdam.html`, `/app.html?regio=X`, trailing slashes) to v2 routes.
 
 ## What happened this session
 
-### Code quality + security fixes
-1. Fetch error handling — `r.ok` check before `.json()`
-2. Website URL validation — only allow http(s) protocols
-3. Accessibility — removed zoom lock, added aria-pressed, `<search>` element
-4. App page ISR (5min) instead of force-dynamic
-5. TYPE_COLORS extracted to single source in enums.ts
-6. Viewport resize tracking via visualViewport listener
+### Blog/guides migration (Phase 3)
+1. **Blog data layer** — Zod schema for post validation, prebuild script to bundle 57 markdown files into JSON, BlogRepository with getAll/getBySlug/getByTag/getByRegion/getRelated methods
+2. **Markdown rendering pipeline** — unified + remark-parse + remark-rehype + rehype-stringify + rehype-slug + rehype-autolink-headings + custom rehypeRewriteLinks plugin
+3. **Blog post route** `/blog/[slug]` — SSG with ISR 24h, JSON-LD BlogPosting + BreadcrumbList, reading time, tags, related posts section
+4. **Blog index** `/blog` — all posts sorted by date, post cards with title/description/date/tags
+5. **Guides overview** `/guides` — featured guides, latest posts, browse by city (links to city guides), browse by type (links to type hub pages)
+6. **Sitemap** — blog index, guides overview, and all 57 blog posts added
+7. **Blog content CSS** — `.blog-content` class with typography rules for rendered markdown (headings, lists, links, blockquotes, hr)
+8. **Dependencies added** — gray-matter, unified, remark-parse, remark-rehype, rehype-stringify, rehype-slug, rehype-autolink-headings
 
-### Phase 3 Tier 2 — Region + Type Hub Pages
-- Single `[region]/page.tsx` handles both region and type hubs
-- Editorial content bundled as TypeScript module (no fs.readFileSync)
-- 36 hub pages (18 regions + 8 types)
-
-### Route restructuring
-- Replaced `(marketing)` + `(pwa)` with `(app)` + `(portal)` + `(legal)`
-- Home page moved from `/app` to `/`
-- SEO pages render in ContentShell (app-like sidebar visual)
-- Created placeholder pages for partner, privacy, terms, about, contact
-- Marketing layout (header+footer) removed
-
-### Phase 3 Tier 4 — City+Type Combo Pages
+### Previous session: Phase 3 Tier 4 — City+Type Combo Pages
 - `/[region]/[type]` e.g. `/amsterdam/speeltuinen` — 224 new pages (28 regions × 8 types)
-- Route conflict resolved: `[region]/[slug]/page.tsx` checks `KNOWN_TYPE_SLUGS` first, renders CityTypeCombo or LocationDetail
-- `LocationRepository.getByRegionAndType()` — new server method for filtered fetch
-- `LOCATION_TYPE_LABELS_PLURAL` in enums.ts for collection page titles
-- `comboCanonicalUrl()` in seo.ts
+- Route conflict resolved: `[region]/[slug]/page.tsx` checks `KNOWN_TYPE_SLUGS` first
+- `LocationRepository.getByRegionAndType()` — new server method
 - JSON-LD: CollectionPage + ItemList + BreadcrumbList
-- Internal links: related combos (other types in same region + same type in other regions)
-- Empty state for combos with no locations
-- Sitemap updated with combo pages (priority 0.7)
+- Internal links: related combos
 
 ## Build stats
-- 1271 total pages
-- Build time: ~2.4s static generation
+- 1330 total pages (was 1271 before blog migration)
+- Build time: ~2.7s static generation
 - API routes: force-dynamic
 - Home page: ISR 5min
-- Hub + detail pages: ISR 24h
+- Hub + detail + blog pages: ISR 24h
 
 ## What's NOT done yet
 
 ### Phase 3 remaining
-- Blog/guides migration into sheet (`/blog/[slug]`, `/guides`)
 - Persistent map in (app) layout (currently map only on home page)
 - SEO content rendered in interactive sheet (currently uses static ContentShell)
 
@@ -114,23 +121,25 @@ Used by region hub, type hub, and location detail pages. The interactive home pa
 | Decision | Choice | Notes |
 |---|---|---|
 | App layout | Minimal (QueryProvider + container) | Each page brings its own rendering; map persistence deferred |
-| ContentShell | Static sidebar visual | Not the interactive sheet; provides app-like UX for SSR pages without full sheet machinery |
+| ContentShell | Static sidebar visual | Not the interactive sheet; provides app-like UX for SSR pages |
 | Home page route | `/` (was `/app`) | App IS the website per architecture doc |
 | Editorial content | Bundled TypeScript module | No fs.readFileSync; works on Cloudflare Pages |
-| Route conflict | KNOWN_TYPE_SLUGS checked first | 8 type slugs are a fixed set, region slugs are dynamic |
-| Combo routing | `[slug]` page resolves type vs location | Same pattern as `[region]` resolving type vs region — KNOWN_TYPE_SLUGS takes priority |
-| Plural labels | LOCATION_TYPE_LABELS_PLURAL in enums.ts | Collection pages use plural ("Speeltuinen in Amsterdam"), detail pages use singular |
+| Blog content | Prebuild script → generated JSON | Same no-fs principle; `npm run prebuild` bundles content/posts/*.md |
+| Markdown pipeline | unified + remark + rehype | Server-only, renders at build time during SSG |
+| Link rewriting | rehype plugin | Converts .html links, /app.html?regio=X, trailing slashes to v2 routes |
+| Route conflict | KNOWN_TYPE_SLUGS checked first | blog/guides are explicit segments (no conflict with [region]) |
+| Guides page | Curated view of blog data | Featured + latest + by-city + by-type — all sourced from BlogRepository |
 
 ## Next step
 
-Phase 3 SEO foundation is nearly complete. Remaining work:
+Phase 3 SEO content is functionally complete. Remaining work:
 
-1. **Blog/guides migration** — `/blog/[slug]` and `/guides` pages within the app shell (biggest remaining Phase 3 item)
-2. **Progressive enhancement** — make ContentShell use the real interactive sheet/sidebar (move toward persistent map architecture)
-3. **Photo migration** (Phase 3.5) — Cloudflare R2 storage
+1. **Progressive enhancement** — make ContentShell use the real interactive sheet/sidebar (move toward persistent map architecture)
+2. **Photo migration** (Phase 3.5) — Cloudflare R2 storage
+3. **Phase 4: Polish** — visual refinement, performance optimization
 
 **Before starting**, the session should:
 - Read this HANDOFF.md
 - Read `docs/v2/information-architecture.md` for the full architecture spec
-- Run `npm run build` to confirm 1047 pages generate
-- Test: `localhost:3000/`, `localhost:3000/amsterdam`, `localhost:3000/amsterdam/artis`, `localhost:3000/privacy`
+- Run `npm run build` to confirm 1330 pages generate
+- Test: `localhost:3000/`, `localhost:3000/blog`, `localhost:3000/blog/amsterdam-met-peuters-en-kleuters`, `localhost:3000/guides`
