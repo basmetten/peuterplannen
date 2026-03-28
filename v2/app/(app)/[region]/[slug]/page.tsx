@@ -214,8 +214,30 @@ export default async function SlugPage({ params }: Props) {
     }))
     .filter((d) => d.value != null && d.value !== '');
 
+  // Build map locations: main location + nearby
+  const mainLocSummary: LocationSummary = {
+    id: location.id,
+    name: location.name,
+    slug: location.slug,
+    type: location.type,
+    lat: location.lat,
+    lng: location.lng,
+    region: location.region,
+    toddler_highlight: location.toddler_highlight,
+    weather: location.weather,
+    ai_suitability_score_10: location.ai_suitability_score_10,
+    photo_url: location.photo_url,
+    is_featured: location.is_featured,
+    price_band: location.price_band,
+  };
+  const mapLocations = [mainLocSummary, ...nearby];
+
   return (
-    <ContentShell>
+    <ContentShell
+      mapLocations={mapLocations}
+      mapRegionSlug={regionSlug}
+      mapHighlightId={location.id}
+    >
       <StructuredData data={structuredData} />
 
       <article className="px-4 pb-16">
@@ -277,7 +299,7 @@ export default async function SlugPage({ params }: Props) {
         {/* CTA bar */}
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
-            href={`/app?locatie=${encodeURIComponent(regionSlug + '/' + slug)}`}
+            href={`/?locatie=${encodeURIComponent(regionSlug + '/' + slug)}`}
             className="inline-flex h-11 items-center gap-2 rounded-pill bg-accent px-5 text-[15px] font-semibold text-white transition-colors hover:bg-accent-hover active:bg-accent-active"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -463,7 +485,7 @@ async function CityTypeCombo({
   };
 
   return (
-    <ContentShell>
+    <ContentShell mapLocations={locations} mapRegionSlug={regionSlug}>
       <StructuredData data={structuredData} />
       <article className="px-4 py-6">
         <Breadcrumb items={breadcrumbItems} />

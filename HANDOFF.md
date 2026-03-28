@@ -6,6 +6,7 @@
 **Phase 3 Tier 1+2+3+4 complete** — location detail pages, region/type hub pages, city+type combo pages, sitemap, robots.txt, redirects.
 **Phase 3 blog/guides complete** — 57 blog posts migrated, blog index, guides overview, sitemap updated.
 **Route restructuring complete** — unified `(app)` shell replaces `(marketing)` + `(pwa)`.
+**Phase 3 progressive enhancement complete** — interactive map on SSR content pages (desktop).
 
 ## Architecture (current)
 
@@ -26,9 +27,9 @@ app/
     page.tsx            — Home: interactive map app (AppShell, ISR 5min)
     AppShell.tsx         — Client component: map, sheet, sidebar, filters, cards, carousel
     [region]/
-      page.tsx          — Region + type hub (SSR, ContentShell wrapper, ISR 24h)
+      page.tsx          — Region + type hub (SSR, ContentShell + map, ISR 24h)
       [slug]/
-        page.tsx        — Location detail + city+type combo (SSR, ContentShell, ISR 24h)
+        page.tsx        — Location detail + city+type combo (SSR, ContentShell + map, ISR 24h)
     blog/
       page.tsx          — Blog index (SSG, ContentShell, ISR 24h)
       [slug]/
@@ -57,11 +58,19 @@ app/
 ### ContentShell component
 
 `src/components/layout/ContentShell.tsx` — wraps SSR content in an app-like visual:
-- Desktop: 420px sidebar panel (left) + map placeholder (right)
-- Mobile: full-width scrollable content
+- Desktop: 420px sidebar panel (left) + interactive MapLibre map (right)
+- Mobile: full-width scrollable content (no map — map is desktop only)
 - Sheet footer: partner link + privacy/terms/about/contact links
+- Map props: `mapLocations`, `mapRegionSlug`/`mapRegionSlugMap`, `mapHighlightId`
+- Map is dynamically imported (`next/dynamic`, `ssr: false`) — only loads on pages that pass locations
+- Blog/guides pages don't pass map props → right panel shows neutral background
 
-Used by region hub, type hub, location detail, blog, and guides pages. The interactive home page uses AppShell directly (doesn't use ContentShell).
+Map component stack:
+```
+ContentShell (server) → ContentMapLoader (client, dynamic) → ContentMap (client, MapLibre GL)
+```
+
+Used by region hub, type hub, location detail, city+type combo, blog, and guides pages. The interactive home page uses AppShell directly (doesn't use ContentShell).
 
 ### Blog data architecture
 
@@ -80,26 +89,23 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Blog/guides migration (Phase 3)
-1. **Blog data layer** — Zod schema for post validation, prebuild script to bundle 57 markdown files into JSON, BlogRepository with getAll/getBySlug/getByTag/getByRegion/getRelated methods
-2. **Markdown rendering pipeline** — unified + remark-parse + remark-rehype + rehype-stringify + rehype-slug + rehype-autolink-headings + custom rehypeRewriteLinks plugin
-3. **Blog post route** `/blog/[slug]` — SSG with ISR 24h, JSON-LD BlogPosting + BreadcrumbList, reading time, tags, related posts section
-4. **Blog index** `/blog` — all posts sorted by date, post cards with title/description/date/tags
-5. **Guides overview** `/guides` — featured guides, latest posts, browse by city (links to city guides), browse by type (links to type hub pages)
-6. **Sitemap** — blog index, guides overview, and all 57 blog posts added
-7. **Blog content CSS** — `.blog-content` class with typography rules for rendered markdown (headings, lists, links, blockquotes, hr)
-8. **Dependencies added** — gray-matter, unified, remark-parse, remark-rehype, rehype-stringify, rehype-slug, rehype-autolink-headings
+### Progressive enhancement — interactive map on SSR pages
+1. **ContentMap** (`src/components/layout/ContentMap.tsx`) — new lightweight MapLibre GL client component for SSR content pages. Features: GeoJSON clustering, terracotta markers, highlighted marker for detail pages, fit-bounds, marker click → Next.js navigation, WebGL error fallback.
+2. **ContentMapLoader** (`src/components/layout/ContentMapLoader.tsx`) — dynamic import wrapper (`next/dynamic`, `ssr: false`) so MapLibre JS/CSS only loads on pages that actually render a map. Blog/guides pages pay zero cost.
+3. **ContentShell upgraded** — accepts `mapLocations`, `mapRegionSlug`/`mapRegionSlugMap`, `mapHighlightId` props. Renders ContentMapLoader in desktop right panel when locations provided.
+4. **Region hub pages** — pass all region locations to ContentShell map (region hub: `mapRegionSlug`, type hub: `mapRegionSlugMap`)
+5. **Location detail pages** — pass main location + nearby locations, highlight main location marker
+6. **City+type combo pages** — pass combo locations to ContentShell map
+7. **"Bekijk op de kaart" fix** — CTA on detail pages now links to `/?locatie=...` (was `/app?locatie=...` which doesn't exist in v2)
 
-### Previous session: Phase 3 Tier 4 — City+Type Combo Pages
-- `/[region]/[type]` e.g. `/amsterdam/speeltuinen` — 224 new pages (28 regions × 8 types)
-- Route conflict resolved: `[region]/[slug]/page.tsx` checks `KNOWN_TYPE_SLUGS` first
-- `LocationRepository.getByRegionAndType()` — new server method
-- JSON-LD: CollectionPage + ItemList + BreadcrumbList
-- Internal links: related combos
+### Previous sessions
+- Phase 3 blog/guides migration (57 posts, index, guides overview)
+- Phase 3 Tier 4: city+type combo pages (224 pages)
+- Route restructuring: unified (app) shell
 
 ## Build stats
-- 1330 total pages (was 1271 before blog migration)
-- Build time: ~2.7s static generation
+- 1330 total pages
+- Build time: ~3-4s static generation
 - API routes: force-dynamic
 - Home page: ISR 5min
 - Hub + detail + blog pages: ISR 24h
@@ -107,8 +113,8 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 ## What's NOT done yet
 
 ### Phase 3 remaining
-- Persistent map in (app) layout (currently map only on home page)
-- SEO content rendered in interactive sheet (currently uses static ContentShell)
+- Persistent map in (app) layout (currently each page renders its own map instance — map resets on navigation)
+- Mobile interactive sheet for location-based SSR pages (currently full-width scroll)
 
 ### Beyond Phase 3
 - Phase 3.5: Photo migration to Cloudflare R2
@@ -121,7 +127,9 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 | Decision | Choice | Notes |
 |---|---|---|
 | App layout | Minimal (QueryProvider + container) | Each page brings its own rendering; map persistence deferred |
-| ContentShell | Static sidebar visual | Not the interactive sheet; provides app-like UX for SSR pages |
+| ContentShell map | Dynamic import, desktop only | MapLibre loaded only on pages with locations; mobile stays full-width scroll |
+| ContentMap vs MapContainer | Separate component | ContentMap is simpler (no carousel, no sheet interaction). MapContainer has full interactive logic for home page. Future: unify when persistent map lands. |
+| Map on blog/guides | Not shown | No geo data to display; right panel stays neutral background |
 | Home page route | `/` (was `/app`) | App IS the website per architecture doc |
 | Editorial content | Bundled TypeScript module | No fs.readFileSync; works on Cloudflare Pages |
 | Blog content | Prebuild script → generated JSON | Same no-fs principle; `npm run prebuild` bundles content/posts/*.md |
@@ -132,14 +140,17 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## Next step
 
-Phase 3 SEO content is functionally complete. Remaining work:
+Progressive enhancement is functionally complete. Remaining work:
 
-1. **Progressive enhancement** — make ContentShell use the real interactive sheet/sidebar (move toward persistent map architecture)
-2. **Photo migration** (Phase 3.5) — Cloudflare R2 storage
-3. **Phase 4: Polish** — visual refinement, performance optimization
+1. **Persistent map** — move map to (app) layout so it preserves state between navigations (requires AppShell refactor)
+2. **Mobile interactive sheet** — SSR location pages use draggable sheet instead of full-width scroll
+3. **Photo migration** (Phase 3.5) — Cloudflare R2 storage
+4. **Phase 4: Polish** — visual refinement, performance optimization
 
 **Before starting**, the session should:
 - Read this HANDOFF.md
 - Read `docs/v2/information-architecture.md` for the full architecture spec
 - Run `npm run build` to confirm 1330 pages generate
-- Test: `localhost:3000/`, `localhost:3000/blog`, `localhost:3000/blog/amsterdam-met-peuters-en-kleuters`, `localhost:3000/guides`
+- Test in a real browser: `localhost:3000/amsterdam` (verify map renders with markers in right panel)
+- Test: `localhost:3000/amsterdam/artis` (verify highlighted marker on map)
+- Test: `localhost:3000/blog` (verify no map, neutral right panel)

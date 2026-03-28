@@ -157,7 +157,7 @@ async function RegionHub({
   });
 
   return (
-    <ContentShell>
+    <ContentShell mapLocations={locations} mapRegionSlug={slug}>
       <StructuredData data={structuredData} />
       <article className="px-4 py-6">
         <Breadcrumb items={breadcrumbItems} />
@@ -278,8 +278,9 @@ async function TypeHub({
   const typeName = LOCATION_TYPE_LABELS[typeKey] ?? typeKey;
   const typeColor = TYPE_COLORS[typeKey];
 
-  // Build region → slug map for card links
+  // Build region → slug map for card links + map marker navigation
   const regionNameToSlug = new Map(regions.map((r) => [r.name, r.slug]));
+  const regionSlugMap = Object.fromEntries(regionNameToSlug);
 
   // Group locations by region
   const regionGroups = groupByRegion(locations, regions);
@@ -302,7 +303,7 @@ async function TypeHub({
   });
 
   return (
-    <ContentShell>
+    <ContentShell mapLocations={locations} mapRegionSlugMap={regionSlugMap}>
       <StructuredData data={structuredData} />
       <article className="px-4 py-6">
         <Breadcrumb items={breadcrumbItems} />
