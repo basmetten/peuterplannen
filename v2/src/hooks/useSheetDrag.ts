@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useCallback, useEffect } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { SNAP_POINTS, type SheetSnap } from '@/features/sheet/sheetMachine';
 
 /* ---------- Constants ---------- */
@@ -111,6 +111,8 @@ interface UseSheetDragReturn {
   scrollTouchStart: (e: React.TouchEvent) => void;
   scrollTouchMove: (e: React.TouchEvent) => void;
   scrollTouchEnd: () => void;
+  /** Distance-proportional spring duration (ms) for the current snap transition. Resets to null after animation. */
+  springDuration: number | null;
 }
 
 interface DragState {
@@ -207,32 +209,11 @@ export function useSheetDrag({
     el.style.borderTopRightRadius = '';
   }, []);
 
-  /**
-   * Apply a distance-proportional spring transition before clearing inline styles.
-   * This makes the snap-to-target animation feel iOS-native.
-   */
-  const applySpringTransition = useCallback((fromPct: number, toPct: number) => {
-    const el = sheetRef.current;
-    if (!el) return;
-    const duration = getSpringDuration(fromPct, toPct);
-    el.style.transition = `transform ${duration}ms cubic-bezier(0.32, 0.72, 0, 1), border-radius ${Math.min(duration, 200)}ms cubic-bezier(0.32, 0.72, 0, 1)`;
-    // Set target position — browser will animate from current inline transform
-    el.style.transform = `translateY(${100 - toPct}%)`;
-    const r = computeRadius(toPct);
-    el.style.borderTopLeftRadius = `${r}px`;
-    el.style.borderTopRightRadius = `${r}px`;
-
-    // Clear inline styles after transition completes so CSS classes take over
-    const cleanup = () => {
-      clearInlineStyles();
-      el.removeEventListener('transitionend', cleanup);
-    };
-    el.addEventListener('transitionend', cleanup, { once: true });
-    // Fallback: clear after duration + buffer in case transitionend doesn't fire
-    setTimeout(() => {
-      clearInlineStyles();
-    }, duration + 50);
-  }, [clearInlineStyles]);
+  // Distance-proportional spring duration — exposed as state so the component
+  // can use it in its React-controlled style prop. This avoids race conditions
+  // between direct DOM manipulation and React's style reconciliation.
+  const [springDuration, setSpringDuration] = useState<number | null>(null);
+  const springTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const trackVelocity = useCallback((clientY: number) => {
     const ds = dragState.current;
@@ -323,12 +304,20 @@ export function useSheetDrag({
     const resolved = resolveSnap(fromPct, ds.velocity, snapsRef.current);
     const toPct = SNAP_POINTS[resolved];
 
-    // Apply distance-proportional spring animation to target
-    applySpringTransition(fromPct, toPct);
+    // Clear drag overrides so React's style prop controls transform
+    clearInlineStyles();
 
-    // Notify parent of new snap
+    // Set distance-proportional duration — component reads this via springDuration
+    const duration = getSpringDuration(fromPct, toPct);
+    setSpringDuration(duration);
+
+    // Reset to default after animation completes
+    if (springTimerRef.current) clearTimeout(springTimerRef.current);
+    springTimerRef.current = setTimeout(() => setSpringDuration(null), duration + 50);
+
+    // Notify parent → React re-renders with new transform + our custom duration
     onSnapChange(resolved);
-  }, [clearInlineStyles, applySpringTransition, onSnapChange]);
+  }, [clearInlineStyles, onSnapChange]);
 
   /* --- Handle touch (always starts drag) --- */
 
@@ -435,5 +424,6 @@ export function useSheetDrag({
     scrollTouchStart,
     scrollTouchMove,
     scrollTouchEnd,
+    springDuration,
   };
 }

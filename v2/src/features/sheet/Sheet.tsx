@@ -22,6 +22,7 @@ export function Sheet({ snap, onSnapChange, children, className = '' }: SheetPro
     scrollTouchStart,
     scrollTouchMove,
     scrollTouchEnd,
+    springDuration,
   } = useSheetDrag({
     snap,
     availableSnaps: ['peek', 'half', 'full'],
@@ -31,13 +32,17 @@ export function Sheet({ snap, onSnapChange, children, className = '' }: SheetPro
 
   const radiusValue = computeRadius(snapPct);
 
+  // Use distance-proportional duration when available, otherwise default
+  const transitionDuration = springDuration ?? 'var(--duration-sheet)';
+  const radiusDuration = springDuration ? `${Math.min(springDuration, 200)}ms` : 'var(--duration-fast)';
+
   return (
     <div
       ref={sheetRef}
       className={`fixed inset-x-0 bottom-0 z-30 flex flex-col bg-bg-primary will-change-transform ${className}`}
       style={{
         transform: isHidden ? 'translateY(100%)' : `translateY(${100 - snapPct}%)`,
-        transition: 'transform var(--duration-sheet) var(--ease-default), border-radius var(--duration-fast) var(--ease-default)',
+        transition: `transform ${typeof transitionDuration === 'number' ? `${transitionDuration}ms` : transitionDuration} var(--ease-default), border-radius ${radiusDuration} var(--ease-default)`,
         borderTopLeftRadius: `${radiusValue}px`,
         borderTopRightRadius: `${radiusValue}px`,
         boxShadow: isHidden ? 'none' : 'var(--shadow-sheet)',

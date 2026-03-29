@@ -81,6 +81,7 @@ export function ContentSheetContainer({
     scrollTouchStart,
     scrollTouchMove,
     scrollTouchEnd,
+    springDuration,
   } = useSheetDrag({
     snap,
     availableSnaps: ['peek', 'half', 'full'],
@@ -90,14 +91,17 @@ export function ContentSheetContainer({
 
   const radiusValue = computeRadius(snapPct);
 
+  // Use distance-proportional duration when available, otherwise default
+  const transitionDuration = springDuration ? `${springDuration}ms` : 'var(--duration-sheet)';
+  const radiusDuration = springDuration ? `${Math.min(springDuration, 200)}ms` : 'var(--duration-fast)';
+
   // Only apply inline styles after JS detects mobile viewport.
   // Before hydration, CSS classes (.content-sheet / .content-sheet--full) handle positioning.
   // On desktop, CSS @media overrides with !important — no inline styles needed.
   const mobileStyle = isMobile
     ? {
         transform: `translateY(${100 - snapPct}%)`,
-        transition:
-          'transform var(--duration-sheet) var(--ease-default), border-radius var(--duration-fast) var(--ease-default)',
+        transition: `transform ${transitionDuration} var(--ease-default), border-radius ${radiusDuration} var(--ease-default)`,
         borderTopLeftRadius: `${radiusValue}px`,
         borderTopRightRadius: `${radiusValue}px`,
         boxShadow: 'var(--shadow-sheet)',
