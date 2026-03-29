@@ -19,7 +19,7 @@ export function LocationCard({ location, onTap, isSelected }: LocationCardProps)
   const favorited = isFavorite(location.id);
   const [bouncing, setBouncing] = useState(false);
 
-  const handleHeartClick = (e: React.MouseEvent) => {
+  const handleHeartClick = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.stopPropagation();
     toggleFavorite(location.id);
     setBouncing(true);
@@ -27,24 +27,31 @@ export function LocationCard({ location, onTap, isSelected }: LocationCardProps)
   };
 
   return (
-    <button
-      type="button"
+    // Plain <div> with onClick — not "interactive" per axe, so no nested-interactive violation
+    <div
       data-testid="location-card"
       onClick={() => onTap(location)}
       className={`
-        relative flex w-full gap-3 rounded-card bg-bg-tertiary p-4 text-left
+        relative flex w-full cursor-pointer gap-3 rounded-card bg-bg-tertiary p-4 text-left
         transition-shadow duration-fast ease-spring
         ${isSelected ? 'shadow-card ring-2 ring-accent/30' : 'shadow-[0_1px_3px_rgba(0,0,0,0.06)]'}
       `}
     >
+      {/* Screen reader + keyboard accessible button (visually hidden) */}
+      <button
+        type="button"
+        className="sr-only focus:not-sr-only focus:absolute focus:inset-0 focus:z-[1] focus:rounded-card focus:outline-2 focus:outline-offset-2 focus:outline-accent"
+        onClick={() => onTap(location)}
+        aria-label={`Open ${location.name}`}
+      />
+
       {/* Favorite heart button */}
-      <span
-        role="button"
-        tabIndex={0}
+      <button
+        type="button"
         aria-label={favorited ? 'Verwijder uit favorieten' : 'Bewaar als favoriet'}
         onClick={handleHeartClick}
-        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleHeartClick(e as unknown as React.MouseEvent); } }}
-        className="absolute right-2 top-2 z-[1] flex h-[28px] w-[28px] items-center justify-center rounded-full bg-bg-tertiary/80 backdrop-blur-sm transition-transform duration-fast ease-spring"
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleHeartClick(e); } }}
+        className="absolute right-2 top-2 z-[1] flex h-[28px] w-[28px] items-center justify-center rounded-full bg-bg-tertiary/80 backdrop-blur-sm transition-transform duration-fast ease-spring focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent"
         style={{ transform: bouncing ? 'scale(1.25)' : 'scale(1)' }}
       >
         {favorited ? (
@@ -56,7 +63,7 @@ export function LocationCard({ location, onTap, isSelected }: LocationCardProps)
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
           </svg>
         )}
-      </span>
+      </button>
 
       {/* Photo */}
       <div className="h-[72px] w-[72px] flex-shrink-0 overflow-hidden rounded-photo bg-bg-secondary">
@@ -98,6 +105,6 @@ export function LocationCard({ location, onTap, isSelected }: LocationCardProps)
           </p>
         )}
       </div>
-    </button>
+    </div>
   );
 }

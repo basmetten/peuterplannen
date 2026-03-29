@@ -8,14 +8,16 @@
 
 :root {
   /* === Accent (replaces Apple systemBlue) === */
-  --color-accent:         #C05A3A;
-  --color-accent-hover:   #A84D32;
-  --color-accent-active:  #93422B;
+  /* #B3553A passes WCAG AA 4.5:1 on bg-primary AND as bg with white text */
+  --color-accent:         #B3553A;
+  --color-accent-hover:   #9C4A31;
+  --color-accent-active:  #8B4029;
 
   /* === Labels (text hierarchy) === */
-  --color-label:          #1A1209;
-  --color-label-secondary: rgba(90, 60, 40, 0.60);
-  --color-label-tertiary:  rgba(90, 60, 40, 0.30);
+  /* All label colors pass WCAG AA 4.5:1 on bg-primary (#FFFAF7) */
+  --color-label:          #1A1209;           /* ~17:1 */
+  --color-label-secondary: rgba(90, 60, 40, 0.82);  /* ~5.8:1 */
+  --color-label-tertiary:  rgba(90, 60, 40, 0.73);  /* ~4.6:1 */
   --color-label-quaternary: rgba(90, 60, 40, 0.18);
 
   /* === Backgrounds === */
@@ -32,14 +34,15 @@
   --color-system-yellow:  #FFCC00;
 
   /* === Category colors === */
-  --color-cat-play:       #52B788;
-  --color-cat-farm:       #8B6F47;
-  --color-cat-nature:     #2D6A4F;
-  --color-cat-museum:     #7B2D8B;
+  /* All pass WCAG AA 4.5:1 with white text */
+  --color-cat-play:       #358060;  /* 4.75:1 */
+  --color-cat-farm:       #8B6F47;  /* 4.74:1 */
+  --color-cat-nature:     #2D6A4F;  /* 6.74:1 */
+  --color-cat-museum:     #7B2D8B;  /* 8.20:1 */
   --color-cat-culture:    #5B3F8B;
-  --color-cat-swim:       #2196F3;
-  --color-cat-pancake:    #E9C46A;
-  --color-cat-horeca:     #E76F51;
+  --color-cat-swim:       #1565C0;  /* 5.68:1 */
+  --color-cat-pancake:    #8B7035;  /* 4.69:1 */
+  --color-cat-horeca:     #B8503A;  /* 4.91:1 */
 
   /* === Glass (map controls ONLY) === */
   --color-glass-bg:       rgba(255, 250, 247, 0.85);

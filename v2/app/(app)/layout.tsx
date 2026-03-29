@@ -10,14 +10,14 @@ export default function AppLayout({
   return (
     <QueryProvider>
       <MapStateProvider>
-        <div className="relative h-dvh w-full overflow-hidden">
+        <main id="main-content" className="relative h-dvh w-full overflow-hidden">
           {/* Persistent map — desktop only, z-0 behind page content */}
           <div className="absolute inset-0 z-0 hidden md:block">
             <PersistentMapLoader />
           </div>
           {/* Page content — z-10 above map */}
           {children}
-        </div>
+        </main>
       </MapStateProvider>
     </QueryProvider>
   );

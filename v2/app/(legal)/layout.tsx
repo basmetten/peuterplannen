@@ -14,7 +14,7 @@ export default function LegalLayout({
           </Link>
         </div>
       </header>
-      <main className="flex-1">{children}</main>
+      <main id="main-content" className="flex-1">{children}</main>
       <footer className="border-t border-separator py-6">
         <div className="mx-auto flex max-w-3xl gap-4 px-4 text-[13px] text-label-tertiary">
           <Link href="/privacy" className="hover:text-label-secondary">Privacy</Link>

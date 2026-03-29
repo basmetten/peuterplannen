@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Newsreader } from 'next/font/google';
 import { OfflineBanner } from '@/components/patterns/OfflineBanner';
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
+import { WebVitalsReporter } from '@/components/analytics/WebVitalsReporter';
 import './globals.css';
 
 const inter = Inter({
@@ -50,6 +52,17 @@ export default function RootLayout({
   return (
     <html lang="nl" className={`${inter.variable} ${newsreader.variable}`}>
       <body className="min-h-dvh bg-bg-primary text-label font-sans antialiased">
+        {/* Skip link — first focusable element for keyboard users */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[9999] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-white focus:shadow-lg"
+        >
+          Ga naar inhoud
+        </a>
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
+        <WebVitalsReporter />
         <OfflineBanner />
         {children}
       </body>

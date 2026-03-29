@@ -39,7 +39,7 @@ export function SearchInput({
           onChange={(e) => onChange(e.target.value)}
           onFocus={onFocus}
           placeholder={placeholder}
-          className="h-[44px] flex-1 bg-transparent text-[17px] tracking-[-0.025em] text-label placeholder:text-label-tertiary focus:outline-none"
+          className="h-[44px] flex-1 bg-transparent text-[17px] tracking-[-0.025em] text-label placeholder:text-label-tertiary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-1 focus-visible:rounded-sm"
         />
 
         {/* Clear button */}
