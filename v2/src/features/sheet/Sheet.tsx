@@ -7,11 +7,13 @@ import { SNAP_POINTS, type SheetSnap } from './sheetMachine';
 interface SheetProps {
   snap: SheetSnap;
   onSnapChange: (snap: SheetSnap) => void;
+  /** Sticky header rendered between drag handle and scrollable content */
+  stickyHeader?: ReactNode;
   children: ReactNode;
   className?: string;
 }
 
-export function Sheet({ snap, onSnapChange, children, className = '' }: SheetProps) {
+export function Sheet({ snap, onSnapChange, stickyHeader, children, className = '' }: SheetProps) {
   const snapPct = SNAP_POINTS[snap];
   const isHidden = snap === 'hidden';
 
@@ -60,6 +62,11 @@ export function Sheet({ snap, onSnapChange, children, className = '' }: SheetPro
         />
       </div>
 
+      {/* Sticky header (mode pills) — stays fixed above scroll */}
+      {stickyHeader && (
+        <div className="flex-shrink-0">{stickyHeader}</div>
+      )}
+
       {/* Scrollable content with scroll-to-drag handoff */}
       <div
         ref={scrollRef}
@@ -69,8 +76,8 @@ export function Sheet({ snap, onSnapChange, children, className = '' }: SheetPro
         onTouchEnd={scrollTouchEnd}
       >
         {children}
-        {/* Bottom spacer for TabBar (49px + safe area inset) */}
-        <div className="h-[49px]" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
+        {/* Bottom safe-area spacer for iPhone home indicator */}
+        <div style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
       </div>
     </div>
   );

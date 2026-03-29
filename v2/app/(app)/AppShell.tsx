@@ -3,6 +3,8 @@
 import { useCallback, useMemo, useEffect, useRef, useState, Suspense } from 'react';
 import { useMachine } from '@xstate/react';
 import { useIsDesktop } from '@/hooks/useIsDesktop';
+import { useFavorites } from '@/hooks/useFavorites';
+import { usePlan } from '@/hooks/usePlan';
 import { MapContainer } from '@/features/map/MapContainer';
 import { Sheet } from '@/features/sheet/Sheet';
 import { Sidebar, SIDEBAR_WIDTH } from '@/features/sidebar/Sidebar';
@@ -15,7 +17,7 @@ import { CardListSkeleton } from '@/components/patterns/CardSkeleton';
 import { EmptyFilterState } from '@/components/patterns/EmptyState';
 import { DetailView } from '@/features/detail/DetailView';
 import { CarouselOverlay } from '@/features/carousel/CarouselOverlay';
-import { TabBar, type TabId } from '@/components/layout/TabBar';
+import { SheetModeSwitcher, type SheetMode } from '@/components/layout/SheetModeSwitcher';
 import { FavoritesList } from '@/features/favorites/FavoritesList';
 import { PlanView } from '@/features/plan/PlanView';
 import type { LocationSummary } from '@/domain/types';
@@ -46,7 +48,9 @@ export function AppShell({ initialLocations }: AppShellProps) {
   const isDesktop = useIsDesktop();
   const [sheetState, sheetSend] = useMachine(sheetMachine);
   const { filters, toggleType, setWeather, setQuery, togglePriceBand, setMinScore, setAgeKey, clearFilters, isFiltered } = useFilters();
-  const [activeTab, setActiveTab] = useState<TabId>('ontdek');
+  const [sheetMode, setSheetMode] = useState<SheetMode>('ontdek');
+  const { favorites } = useFavorites();
+  const { planIds } = usePlan();
 
   const { snap, detailId, carouselLocationIds, carouselActiveId } = sheetState.context;
   const isDetailOpen = sheetState.matches('detail');
@@ -61,6 +65,20 @@ export function AppShell({ initialLocations }: AppShellProps) {
     () => applyFilters(initialLocations, filters),
     [initialLocations, filters],
   );
+
+  // Mode-aware map locations: filter markers based on active mode
+  const mapLocations = useMemo(() => {
+    switch (sheetMode) {
+      case 'bewaard':
+        return initialLocations.filter((loc) => favorites.has(loc.id));
+      case 'plan':
+        return planIds
+          .map((id) => initialLocations.find((l) => l.id === id))
+          .filter((l): l is LocationSummary => l !== undefined);
+      default:
+        return filteredLocations;
+    }
+  }, [sheetMode, initialLocations, filteredLocations, favorites, planIds]);
 
   // Track viewport height for accurate sheet padding (handles resize + orientation change)
   const [viewportHeight, setViewportHeight] = useState(
@@ -205,23 +223,12 @@ export function AppShell({ initialLocations }: AppShellProps) {
       .filter((l): l is LocationSummary => l !== undefined);
   }, [carouselLocationIds, initialLocations]);
 
-  // --- Tab change handler ---
+  // --- Mode change handler ---
 
-  const handleTabChange = useCallback((tab: TabId) => {
-    setActiveTab(tab);
-
-    if (tab === 'kaart') {
-      // Collapse sheet to peek to show the map
-      if (!isDesktop) {
-        sheetSend({ type: 'SNAP_TO', target: 'peek' });
-      }
-    } else if (tab === 'ontdek' || tab === 'bewaard' || tab === 'plan') {
-      // Expand sheet to half if it's at peek
-      if (!isDesktop && snap === 'peek') {
-        sheetSend({ type: 'SNAP_TO', target: 'half' });
-      }
-    }
-  }, [isDesktop, snap, sheetSend]);
+  const handleModeChange = useCallback((mode: SheetMode) => {
+    setSheetMode(mode);
+    // No sheet snap manipulation — mode just changes content, map viewport preserved
+  }, []);
 
   // --- Shared content (rendered in sidebar or sheet) ---
 
@@ -231,8 +238,8 @@ export function AppShell({ initialLocations }: AppShellProps) {
       return <DetailView locationId={detailId} onClose={handleDetailClose} />;
     }
 
-    // Tab-based content
-    switch (activeTab) {
+    // Mode-based content
+    switch (sheetMode) {
       case 'bewaard':
         return (
           <FavoritesList
@@ -275,11 +282,16 @@ export function AppShell({ initialLocations }: AppShellProps) {
 
   const content = getSheetContent();
 
+  // Mode pills: visible when not in detail view
+  const modeSwitcher = !isDetailOpen ? (
+    <SheetModeSwitcher activeMode={sheetMode} onModeChange={handleModeChange} />
+  ) : null;
+
   return (
     <>
       {/* Map — always visible, offset on desktop */}
       <MapContainer
-        locations={filteredLocations}
+        locations={mapLocations}
         selectedId={detailId}
         carouselActiveId={carouselActiveId}
         onMarkerClick={handleMarkerClick}
@@ -300,21 +312,18 @@ export function AppShell({ initialLocations }: AppShellProps) {
         />
       )}
 
-      {/* Desktop: persistent sidebar. Mobile: draggable bottom sheet + tab bar */}
+      {/* Desktop: persistent sidebar. Mobile: draggable bottom sheet (no tab bar) */}
       {isDesktop ? (
         <Sidebar>
-          <SidebarTabs activeTab={activeTab} onTabChange={handleTabChange} />
+          <SidebarTabs activeMode={sheetMode} onModeChange={handleModeChange} />
           {content}
         </Sidebar>
       ) : (
-        <>
-          <Suspense>
-            <Sheet snap={snap} onSnapChange={handleSnapChange}>
-              {content}
-            </Sheet>
-          </Suspense>
-          <TabBar activeTab={activeTab} onTabChange={handleTabChange} />
-        </>
+        <Suspense>
+          <Sheet snap={snap} onSnapChange={handleSnapChange} stickyHeader={modeSwitcher}>
+            {content}
+          </Sheet>
+        </Suspense>
       )}
     </>
   );
@@ -433,34 +442,29 @@ function BrowseContent({
 
 // --- Desktop sidebar tabs (segmented control) ---
 
-type SidebarTabId = 'ontdek' | 'bewaard' | 'plan';
-
-const SIDEBAR_TABS: { id: SidebarTabId; label: string }[] = [
+const SIDEBAR_TABS: { id: SheetMode; label: string }[] = [
   { id: 'ontdek', label: 'Ontdek' },
   { id: 'bewaard', label: 'Bewaard' },
   { id: 'plan', label: 'Plan' },
 ];
 
 function SidebarTabs({
-  activeTab,
-  onTabChange,
+  activeMode,
+  onModeChange,
 }: {
-  activeTab: TabId;
-  onTabChange: (tab: TabId) => void;
+  activeMode: SheetMode;
+  onModeChange: (mode: SheetMode) => void;
 }) {
-  // Map the full TabId to the sidebar subset (kaart maps to ontdek on desktop)
-  const current: SidebarTabId = activeTab === 'kaart' ? 'ontdek' : activeTab;
-
   return (
     <div className="px-4 pb-2 pt-3">
       <div className="flex rounded-[10px] bg-bg-secondary p-0.5">
         {SIDEBAR_TABS.map((tab) => {
-          const isActive = tab.id === current;
+          const isActive = tab.id === activeMode;
           return (
             <button
               key={tab.id}
               type="button"
-              onClick={() => onTabChange(tab.id)}
+              onClick={() => onModeChange(tab.id)}
               className={`flex-1 rounded-[8px] px-3 py-1.5 text-[13px] font-medium tracking-[0.002em] transition-all duration-fast ${
                 isActive
                   ? 'bg-bg-primary text-label shadow-sm'
@@ -499,6 +503,17 @@ export function AppShellSkeleton() {
         {/* Handle (mobile only) */}
         <div className="flex items-center justify-center py-2 md:hidden">
           <div className="h-[5px] w-9 rounded-full" style={{ background: 'rgba(160, 130, 110, 0.30)' }} />
+        </div>
+
+        {/* Mode pills skeleton */}
+        <div className="flex justify-center gap-2 px-4 py-1.5 md:hidden">
+          {[64, 72, 52].map((w, i) => (
+            <div
+              key={i}
+              className="h-[32px] animate-pulse rounded-full bg-bg-secondary"
+              style={{ width: w }}
+            />
+          ))}
         </div>
 
         {/* Search skeleton */}

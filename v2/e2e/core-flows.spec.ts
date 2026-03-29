@@ -124,8 +124,8 @@ test.describe('Favorites', () => {
     await page.getByLabel('Terug').click();
     await expect(page.getByText(/\d+ locaties/)).toBeVisible({ timeout: 5_000 });
 
-    // Navigate to Bewaard tab
-    await page.getByRole('button', { name: 'Bewaard', exact: true }).first().click();
+    // Navigate to Bewaard mode (pill inside sheet/sidebar — badge may append count to name)
+    await page.getByRole('button', { name: /^Bewaard/ }).first().click();
 
     // Should show at least 1 favorited location
     await expect(page.getByText('1 locatie')).toBeVisible({ timeout: 5_000 });
@@ -145,8 +145,8 @@ test.describe('Plan', () => {
     await page.getByLabel('Terug').click();
     await expect(page.getByText(/\d+ locaties/)).toBeVisible({ timeout: 5_000 });
 
-    // Navigate to Plan tab
-    await page.getByRole('button', { name: 'Plan', exact: true }).first().click();
+    // Navigate to Plan mode (pill inside sheet/sidebar — badge may append count to name)
+    await page.getByRole('button', { name: /^Plan/ }).first().click();
 
     await expect(page.getByText('Dagplanner')).toBeVisible({ timeout: 5_000 });
     await expect(page.getByText('1 locatie')).toBeVisible();
