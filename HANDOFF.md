@@ -138,6 +138,18 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
+### Phase 6 code review fixes (4 critical, 3 warning)
+
+1. **CategoryGrid hidden during search** (critical) — wrapped in `!filters.query` guard in BrowseContent
+2. **ClusterList desktop guard** (critical) — added `!isDesktop` check; desktop uses CarouselOverlay
+3. **overflow-clip instead of overflow-hidden** (critical) — prevents Safari from creating a new stacking context that breaks `backdrop-filter` on `.glass` children
+4. **Stagger animations removed** (critical) — removed `animate-[fadeSlideIn]` + `animationDelay` wrappers from card list; cards render instantly (Apple Maps behavior)
+5. **Margin transition properties** (warning) — `margin` → `margin-inline` + `margin-bottom` for correct CSS transition targeting
+6. **Glass token warm white** (warning) — `oklch(1 0 0 / 0.85)` → `rgba(255, 250, 247, 0.85)` to match `:root` bg-primary warmth
+7. **Dead `.sheet-container` CSS removed** (warning) — unused class, Sheet.tsx uses inline styles
+
+Also: visual regression tests now mask the map canvas (`canvas` locator) to eliminate tile-rendering flakiness. Threshold back to 3% (from 5%). All 82 tests passing consistently.
+
 ### Phase 6: Apple Maps iOS Visual Polish
 
 **Phase 6-pre: Mandatory cleanup (7 items):**

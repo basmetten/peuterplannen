@@ -316,8 +316,8 @@ export function AppShell({ initialLocations }: AppShellProps) {
       );
     }
 
-    // Cluster list (mobile) — vertical list replaces carousel overlay
-    if (isCarouselOpen && carouselLocationIds) {
+    // Cluster list (mobile only) — vertical list replaces carousel overlay
+    if (!isDesktop && isCarouselOpen && carouselLocationIds) {
       const clusterLocations = carouselLocationIds
         .map(id => initialLocations.find(l => l.id === id))
         .filter((l): l is LocationSummary => l !== undefined)
@@ -471,11 +471,13 @@ function BrowseContent({
         onFocus={onSearchFocus}
       />
 
-      {/* Category grid (type filter) */}
-      <CategoryGrid
-        activeTypes={filters.types}
-        onTypeToggle={onTypeToggle}
-      />
+      {/* Category grid (type filter) — hidden during search */}
+      {!filters.query && (
+        <CategoryGrid
+          activeTypes={filters.types}
+          onTypeToggle={onTypeToggle}
+        />
+      )}
 
       {/* Secondary filters */}
       <FilterBar
@@ -522,18 +524,13 @@ function BrowseContent({
 
           {/* Card list */}
           <div className="card-list flex flex-col gap-2 px-4 pb-4">
-            {locations.map((loc, i) => (
-              <div
+            {locations.map((loc) => (
+              <LocationCard
                 key={loc.id}
-                className="animate-[fadeSlideIn_300ms_ease-out_both]"
-                style={{ animationDelay: `${Math.min(i, 10) * 40}ms` }}
-              >
-                <LocationCard
-                  location={loc}
-                  onTap={onCardTap}
-                  isSelected={loc.id === selectedId}
-                />
-              </div>
+                location={loc}
+                onTap={onCardTap}
+                isSelected={loc.id === selectedId}
+              />
             ))}
           </div>
         </>

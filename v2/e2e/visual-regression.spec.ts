@@ -20,12 +20,14 @@ async function waitForApp(page: Page) {
 }
 
 test.describe('Visual regression — Home', () => {
-  // Home page tests have CategoryGrid with SVG icons — slightly higher tolerance
-  // due to sub-pixel rendering variance across runs
+  // Map tiles render non-deterministically — mask the map canvas on screenshots
+  const mapMask = (page: Page) => [page.locator('canvas').first()];
+
   test('home page initial state', async ({ page }) => {
     await waitForApp(page);
     await expect(page).toHaveScreenshot('home-initial.png', {
-      maxDiffPixelRatio: 0.05,
+      maxDiffPixelRatio: 0.03,
+      mask: mapMask(page),
     });
   });
 
@@ -34,7 +36,8 @@ test.describe('Visual regression — Home', () => {
     await page.getByPlaceholder('Zoek een uitje...').fill('Amsterdam');
     await page.waitForTimeout(300);
     await expect(page).toHaveScreenshot('home-search-active.png', {
-      maxDiffPixelRatio: 0.05,
+      maxDiffPixelRatio: 0.03,
+      mask: mapMask(page),
     });
   });
 
@@ -44,7 +47,8 @@ test.describe('Visual regression — Home', () => {
     await expect(page.getByText(/\d+ van \d+ locaties/)).toBeVisible({ timeout: 5_000 });
     await page.waitForTimeout(300);
     await expect(page).toHaveScreenshot('home-filter-active.png', {
-      maxDiffPixelRatio: 0.05,
+      maxDiffPixelRatio: 0.03,
+      mask: mapMask(page),
     });
   });
 });

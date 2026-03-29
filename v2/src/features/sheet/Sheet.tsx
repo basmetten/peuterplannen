@@ -42,10 +42,10 @@ export function Sheet({ snap, onSnapChange, stickyHeader, children, className = 
   return (
     <div
       ref={sheetRef}
-      className={`fixed inset-x-0 bottom-0 z-30 flex flex-col overflow-hidden ${className}`}
+      className={`fixed inset-x-0 bottom-0 z-30 flex flex-col overflow-clip ${className}`}
       style={{
         transform: isHidden ? 'translateY(100%)' : `translateY(${100 - snapPct}%)`,
-        transition: `transform ${durationStr} var(--ease-default), border-radius ${durationStr} var(--ease-default), margin ${durationStr} var(--ease-default)`,
+        transition: `transform ${durationStr} var(--ease-default), border-radius ${durationStr} var(--ease-default), margin-inline ${durationStr} var(--ease-default), margin-bottom ${durationStr} var(--ease-default)`,
         marginInline: `${floatFactor * 12}px`,
         marginBottom: `${floatFactor * 8}px`,
         borderRadius: `${floatFactor * 16}px`,
