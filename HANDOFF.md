@@ -11,7 +11,7 @@
 **Mobile interactive sheet complete** — SSR content pages use draggable bottom sheet on mobile (CSS-first, zero CLS).
 **Phase 3.5 photo migration complete** — 2,324 photos uploaded to Cloudflare R2, all DB URLs updated, all components use `getPhotoUrl()` helper.
 **Phase 4A complete** — Error boundaries on root, (app), and (legal) route segments. Graceful fallback UI in Dutch.
-**Phase 4B complete** — Favorites system: localStorage-backed `useFavorites` hook, heart icons on cards + detail view, bottom tab bar (Ontdek/Kaart/Bewaard/Plan), favorites list view with empty state.
+**Phase 4B complete** — Favorites system: localStorage-backed `useFavorites` hook, heart icons on cards + detail view, favorites list view with empty state.
 **Phase 4C complete** — Cloudflare Image Resizing: `OptimizedImage` component, all client + server images use `/cdn-cgi/image/` transform URLs with appropriate presets (card 144x144, hero 800x600, OG 1200x630).
 **Phase 4D complete** — Sheet physics refactor: extracted `useSheetDrag` hook (DRY), logarithmic rubber-banding, distance-proportional spring duration, strong fling detection, scroll lock timeout, ref-based position tracking.
 **Phase 4E complete** — Filter system completion: price band (multi-select), peuterproof score (7+/8+/9+ presets), age range (0-2/2-4/4-6 presets). All URL-persisted, all with empty-state removable pills. LocationSummary extended with `min_age`, `max_age`.
@@ -19,6 +19,7 @@
 **Phase 4G complete** — Empty states + offline banner: all tab states have empty states (browse filters, favorites, plan). OfflineBanner component in root layout shows Dutch notification when offline.
 **Phase 4H complete** — Desktop sidebar tabs: segmented control (Ontdek/Bewaard/Plan) at top of sidebar. Desktop users can now access favorites and plan views. All Phase 4 exit criteria met.
 **Phase 5A complete** — Playwright E2E tests: 44 tests (22 desktop + 22 mobile), all passing. Core flows covered: home, search, filters, detail, favorites, plan, SSR pages, navigation, error handling.
+**UX correction complete** — Replaced bottom TabBar with sheet mode switcher (3 pills inside sheet header: Ontdek/Bewaard/Plan). Mode-aware map markers. No "Kaart" tab — map always visible. Per `CORRECTION-sheet-mode-switcher.md` and updated `docs/v2/information-architecture.md`.
 
 ## Architecture (current)
 
@@ -208,7 +209,7 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 | Photo URLs | `getPhotoUrl()` centralized helper | Converts relative paths → R2 URLs. All components use it. Backward compatible without R2. |
 | Photo storage | Cloudflare R2 (S3-compatible) | Migration script uploads hero.webp files. Image Resizing URLs generated. |
 | Favorites | localStorage via `useSyncExternalStore` | `pp-favorites` key, Set<number> of IDs. Cross-tab sync. No auth needed. |
-| Tab bar | Mobile: 4-tab bar. Desktop: 3-tab segmented control | Mobile: Apple HIG 49px + safe area. Desktop: Ontdek/Bewaard/Plan (no Kaart — map always visible). Shared `activeTab` state. |
+| Mode switcher | Mobile: 3 pills in sheet header. Desktop: segmented control in sidebar | Ontdek/Bewaard/Plan. No tab bar, no "Kaart" mode. Pills sticky below drag handle. Count badges on Bewaard/Plan. Mode-aware map markers. |
 | Image optimization | Cloudflare Image Resizing via URL pattern | `/cdn-cgi/image/width=W,height=H,fit=cover,quality=Q,format=auto/path`. Client uses `OptimizedImage`, server uses `getResizedPhotoUrl()`. |
 | Sheet drag logic | Single `useSheetDrag` hook | Both Sheet.tsx and ContentSheetContainer.tsx consume this hook. Vaul-inspired rubber-band, scroll lock, strong fling. Eliminated ~260 lines of duplication. |
 | Filter system | 6 filter types, URL-persisted | Types (multi-select), weather (radio), price (multi-select), score (threshold), age (preset), search query. All in `useFilters` hook. Distance deferred (needs GPS). |
