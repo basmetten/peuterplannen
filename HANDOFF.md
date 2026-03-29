@@ -137,7 +137,26 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Phase 5C: Analytics Event Wiring
+### Phase 5D: CI, Map Analytics, Image Quota Optimization, GA4 + Image Resizing Activation
+
+**CI Pipeline:**
+- Created `.github/workflows/v2-ci.yml` — triggers on staging pushes/PRs, builds, typechecks, runs E2E + a11y tests with Playwright browser caching
+
+**Analytics events (map + scroll):**
+- `trackMapPan(lat, lng, zoom)` — debounced 500ms on moveend in MapContainer
+- `trackMapZoom(zoom, direction)` — tracks in/out direction on zoomend
+- `trackDetailScrollDepth(locationId, depth)` — IntersectionObserver on 4 invisible markers at 25/50/75/100% in DetailView
+
+**Image Resizing quota optimization:**
+- Enabled Cloudflare Image Transformations on peuterplannen.nl zone (Images > Transformations, free tier: 5000/month)
+- Removed `/cdn-cgi/image/` resize for OG images (social crawlers get raw R2 URL) — saves 2000+ potential transformations
+- With 2000+ locations: card (144×144) + hero (800×600) = max ~4000 transforms, within free limit
+
+**GA4 activated:**
+- Set `NEXT_PUBLIC_GA_ID=G-46RW178B97` in `.env.local`
+- GA4 stream: PeuterPlannen, https://peuterplannen.nl, Stream-ID 13695083201
+
+### Previous: Phase 5C: Analytics Event Wiring
 
 Wired all typed analytics events from `src/lib/analytics.ts` into UI components:
 - **`useFavorites.ts`** — `trackFavoriteToggle(id, add/remove, count)` in `toggleFavorite()`
@@ -252,16 +271,17 @@ All events are fire-and-forget no-ops without GA4 loaded (`NEXT_PUBLIC_GA_ID` en
 
 ## Next step
 
-**Phase 5 complete (analytics, a11y, performance, visual regression).** Remaining before Phase 6:
+**Phase 5 complete. GA4 + Image Resizing activated. CI pipeline ready.**
 
-1. **Set `NEXT_PUBLIC_GA_ID`** — GA4 measurement ID to activate analytics in production
-2. **Enable Cloudflare Image Resizing** on the zone (dashboard toggle) — all `/cdn-cgi/image/` URLs ready
-3. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
-4. **Phase 6: Staging Validation** — content parity, SEO parity, performance comparison, user testing
+Remaining before Phase 6:
+1. **Set GitHub Actions secrets** — `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` in repo settings (needed for CI to work)
+2. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
+3. **Phase 6: Staging Validation** — content parity, SEO parity, performance comparison, user testing
+4. **Google Maps API key restriction** — restrict to `peuterplannen.nl/*` and `staging.peuterplannen.nl/*`
 
 **Before starting**, the session should:
 - Read this HANDOFF.md
-- Run `npm run build` to confirm 1330 pages generate
+- Run `cd /Users/basmetten/peuterplannen/v2 && npm run build` to confirm 1330 pages generate
 - Run `npm run test:e2e:all` to confirm 82 tests pass (44 core + 22 a11y + 16 visual)
-- Verify photos load: `curl -sI https://photos.peuterplannen.nl/amsterdam/artis/hero.webp`
+- Verify Image Resizing works: `curl -sI https://photos.peuterplannen.nl/cdn-cgi/image/width=144,height=144,fit=cover,quality=80,format=auto/amsterdam/artis/hero.webp`
 - `localhost:3000/` → AppShell renders with map, sidebar tabs (desktop) or sheet mode pills (mobile)
