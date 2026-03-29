@@ -23,6 +23,7 @@
 **Phase 5B complete** — Accessibility: axe-core integration, 22 tests, zero critical/serious violations. WCAG AA color contrast fixed (label tokens, accent, category badges). Skip link, `<main>` landmarks, focus-visible styles, nested-interactive fix. Analytics: GA4 with Consent Mode v2, typed event module (seo-analytics.md §9 taxonomy), web-vitals CWV reporting. Performance: Lighthouse CI config with budgets. Visual regression: 16 screenshot baselines.
 **Phase 5C complete** — Analytics event wiring: all typed events from `src/lib/analytics.ts` now fire from UI components. detail_open (map/card source), debounced search_query, filter_apply (type/weather/price/score/age), favorite_toggle, plan_add/remove, website_click, route_click. All no-ops without `NEXT_PUBLIC_GA_ID`.
 **Phase 6 complete** — Apple Maps iOS visual polish: floating sheet (margins + radius + drop-shadow), glass header (backdrop blur on drag handle + mode pills), GPU optimizations, CategoryGrid (2×4 SVG icons replacing type chips), "In de buurt" nearby locations, ClusterList (vertical card list on mobile replacing carousel).
+**Staging deployment complete** — v2 live at `staging.peuterplannen.nl` via `@opennextjs/cloudflare` (Cloudflare Workers). GitHub Actions secrets set. Google Maps API key already restricted.
 
 ## Architecture (current)
 
@@ -138,7 +139,35 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Phase 6 code review fixes (4 critical, 3 warning)
+### Staging deployment to Cloudflare Workers
+
+**Infrastructure completed:**
+1. **GitHub Actions secrets set** — `SUPABASE_URL` + `SUPABASE_SERVICE_KEY` via `gh secret set`
+2. **Google Maps API key verified** — already restricted to `peuterplannen.nl/*` + `staging.peuterplannen.nl/*`
+3. **`@opennextjs/cloudflare` adapter** — installed and configured in v2/
+   - `wrangler.jsonc` — targets `peuterplannen-staging` worker, route `staging.peuterplannen.nl/*`
+   - `open-next.config.ts` — minimal config (no ISR bindings for staging)
+   - `initOpenNextCloudflareForDev()` added to `next.config.ts`
+   - `npm run deploy:staging` script: `opennextjs-cloudflare build && wrangler deploy`
+4. **v2 deployed and verified** at `staging.peuterplannen.nl`:
+   - Home page: sidebar, CategoryGrid, map, location cards, photos loading
+   - Detail view: location data, action buttons, description, facilities
+   - Blog/SSR pages: full content rendering, breadcrumbs
+   - API routes: HTTP 200
+   - Sitemap: HTTP 200
+
+**Bug fix: image lazy loading deadlock**
+- `content-visibility: auto` on `.card-list > *` combined with `loading="lazy"` creates an IntersectionObserver deadlock: content-visibility hides elements → browser never detects them for lazy loading → images never load
+- Fix: changed `OptimizedImage` default from `loading="lazy"` to `loading="eager"`. Performance stays good because `content-visibility: auto` already handles render optimization.
+
+**Deployment architecture:**
+- v2 runs on Cloudflare Workers (not Pages) via `@opennextjs/cloudflare`
+- Static assets served from Workers Static Assets (.open-next/assets)
+- ISR not configured (build-time static pages served as-is — fine for staging)
+- `peuterplannen.nl` (production) remains on GitHub Pages (old app, untouched)
+- `staging.peuterplannen.nl` now serves v2 via Cloudflare Workers
+
+### Previous: Phase 6 code review fixes (4 critical, 3 warning)
 
 1. **CategoryGrid hidden during search** (critical) — wrapped in `!filters.query` guard in BrowseContent
 2. **ClusterList desktop guard** (critical) — added `!isDesktop` check; desktop uses CarouselOverlay
@@ -312,6 +341,7 @@ All events are fire-and-forget no-ops without GA4 loaded (`NEXT_PUBLIC_GA_ID` en
 | Filter system | 6 filter types, URL-persisted | Types (multi-select), weather (radio), price (multi-select), score (threshold), age (preset), search query. All in `useFilters` hook. Distance deferred (needs GPS). |
 | Plan view | localStorage ordered array via `useSyncExternalStore` | `pp-plan` key, number[] of IDs. Reorderable. Same cross-tab sync pattern as favorites. |
 | Offline indicator | `navigator.onLine` event listeners | OfflineBanner in root layout. Auto-shows/hides. No service worker needed. |
+| API caching | Cloudflare edge cache via Cache-Control headers | `s-maxage=3600` (1h edge), `max-age=300` (5min browser), `stale-while-revalidate=60`. Reduces Supabase egress ~99%. Routes stay `force-dynamic` (execute on miss), but Cloudflare caches responses. |
 | Color contrast | All tokens pass WCAG AA 4.5:1 | Label secondary 0.82, tertiary 0.73, accent #B3553A, all category badges darkened for white text. |
 | Analytics | GA4 + Consent Mode v2 + web-vitals | Typed event module in `src/lib/analytics.ts`. GA4 loads only when `NEXT_PUBLIC_GA_ID` set. CWV reported via `web-vitals` dynamic import. |
 | LocationCard a11y | div + sr-only button + heart button | No nested interactive. div has onClick for mouse, sr-only button for keyboard/screen reader. Heart button independent at z-1. |
@@ -321,19 +351,22 @@ All events are fire-and-forget no-ops without GA4 loaded (`NEXT_PUBLIC_GA_ID` en
 | Category grid | 2×4 grid of SVG icons with TYPE_COLORS | Replaces type filter chips in FilterBar. Same onTypeToggle handler, same multi-select behavior. |
 | Nearby locations | haversine distance + horizontal scroll cards | Bottom of DetailView, 6 nearest locations. NearbyCard: 140px wide, photo + name + type dot + distance. |
 | Cluster list | Vertical card list in sheet (mobile) | Replaces CarouselOverlay on mobile. Featured locations sort first with "Aanbevolen" badge. Desktop keeps carousel overlay. |
+| Staging deployment | Cloudflare Workers via @opennextjs/cloudflare | `npm run deploy:staging` builds + deploys. wrangler.jsonc in v2/. ISR not configured (build-time static). |
+| Image loading | `loading="eager"` default in OptimizedImage | `content-visibility: auto` handles perf; `loading="lazy"` deadlocks with it in scroll containers. |
 
 ## Next step
 
-**Phase 6 complete. Apple Maps iOS visual polish applied.**
+**Staging deployed. Infrastructure ready for Phase 7.**
 
 Remaining:
-1. **Set GitHub Actions secrets** — `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` in repo settings (needed for CI to work)
-2. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
-3. **Phase 7: Staging Validation** — content parity, SEO parity, performance comparison, user testing
-4. **Google Maps API key restriction** — restrict to `peuterplannen.nl/*` and `staging.peuterplannen.nl/*`
+1. **Phase 7: Staging Validation** — content parity, SEO parity, performance comparison, user testing at staging.peuterplannen.nl
+2. **CI/CD for staging** — update `.github/workflows/staging.yml` to deploy v2 (currently deploys old app)
+3. **ISR setup** (optional for production) — R2 bucket + Durable Objects bindings for time-based revalidation
+4. **Production cutover** — DNS switch peuterplannen.nl from GitHub Pages to Cloudflare Workers
 
 **Before starting**, the session should:
 - Read this HANDOFF.md
 - Run `cd /Users/basmetten/peuterplannen/v2 && npm run build` to confirm 1330 pages generate
 - Run `npm run test:e2e:all` to confirm 82 tests pass (44 core + 22 a11y + 16 visual)
-- `localhost:3000/` → Floating sheet with glass header, CategoryGrid, nearby locations on detail
+- Visit `staging.peuterplannen.nl` to verify live deployment
+- `npm run deploy:staging` to push latest changes to staging
