@@ -18,6 +18,7 @@
 **Phase 4F complete** — Plan view: localStorage-backed `usePlan` hook (ordered list), reorderable with up/down controls, numbered route display, "Toevoegen aan plan" button on detail view. Empty state with guidance.
 **Phase 4G complete** — Empty states + offline banner: all tab states have empty states (browse filters, favorites, plan). OfflineBanner component in root layout shows Dutch notification when offline.
 **Phase 4H complete** — Desktop sidebar tabs: segmented control (Ontdek/Bewaard/Plan) at top of sidebar. Desktop users can now access favorites and plan views. All Phase 4 exit criteria met.
+**Phase 5A complete** — Playwright E2E tests: 44 tests (22 desktop + 22 mobile), all passing. Core flows covered: home, search, filters, detail, favorites, plan, SSR pages, navigation, error handling.
 
 ## Architecture (current)
 
@@ -140,6 +141,13 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 4. Mobile TabBar unchanged — still shows all 4 tabs (Ontdek/Kaart/Bewaard/Plan)
 5. **Phase 4 exit criteria fully met** — all 7 criteria verified with screenshots
 
+### Phase 5A: Playwright E2E Tests
+1. **44 tests** (22 desktop × 2 projects: Desktop Chrome 1280×800, iPhone 14)
+2. **Core flows covered**: home load, search, filters (type/weather/empty state), location detail (open/buttons/back), favorites (save + view), plan (add + view), SSR pages (region/blog/guides/404), navigation (footer/breadcrumbs), no-crash check
+3. **WebGL graceful fallback** — MapContainer catches WebGL init failure (headless Chromium). PersistentMap already had this.
+4. **`data-testid="location-card"`** added to LocationCard for reliable test targeting
+5. **Playwright config**: SwiftShader WebGL, auto webServer build+start, HTML reporter
+
 ### Previous sessions
 - Phase 4E/F/G: Filter system, plan view, empty states, offline banner
 - Phase 4D: Sheet physics refactor (useSheetDrag, rubber-banding, spring duration)
@@ -172,9 +180,11 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 - **Cloudflare Image Resizing activation** — `/cdn-cgi/image/` URLs generated but need Image Resizing enabled on the Cloudflare zone (falls back to full-size images until then)
 - Turbopack dev compatibility for `.content-sheet` CSS (works in production)
 
-### Phase 5: Quality Gates
-- E2E tests, CWV, accessibility, service worker
-- Staging deployment (Cloudflare Pages)
+### Phase 5 remaining
+- **Accessibility audit** — axe-core integration, keyboard navigation testing
+- **Performance budget** — Lighthouse CI, LCP < 2.5s, CLS < 0.1
+- **Analytics** — GA4 page views + custom events
+- **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
 
 ## Key design decisions
 
@@ -207,15 +217,16 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## Next step
 
-**Phase 4 complete.** All exit criteria verified. Next priorities:
+**Phase 4 complete, Phase 5 E2E done.** Next priorities:
 
-1. **Enable Cloudflare Image Resizing** on the zone (via dashboard/API) so `/cdn-cgi/image/` URLs work
-2. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
-3. **Phase 5: Quality Gates** — E2E tests (Playwright), CWV measurement, accessibility audit (axe-core), analytics setup
+1. **Enable Cloudflare Image Resizing** on the zone (dashboard toggle) — all `/cdn-cgi/image/` URLs ready
+2. **Phase 5 remaining** — accessibility audit (axe-core), performance budget (Lighthouse), analytics (GA4)
+3. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
 4. **Phase 6: Staging Validation** — content parity, SEO parity, performance comparison, user testing
 
 **Before starting**, the session should:
 - Read this HANDOFF.md
 - Run `npm run build` to confirm 1330 pages generate
+- Run `npm run test:e2e` to confirm 44 E2E tests pass
 - Verify photos load: `curl -sI https://photos.peuterplannen.nl/amsterdam/artis/hero.webp`
-- `localhost:3000/` → AppShell renders with map, sidebar tabs (desktop) or tab bar (mobile), favorites/plan views work
+- `localhost:3000/` → AppShell renders with map, sidebar tabs (desktop) or tab bar (mobile)
