@@ -29,6 +29,7 @@ export function LocationCard({ location, onTap, isSelected }: LocationCardProps)
   return (
     <button
       type="button"
+      data-testid="location-card"
       onClick={() => onTap(location)}
       className={`
         relative flex w-full gap-3 rounded-card bg-bg-tertiary p-4 text-left

@@ -80,15 +80,22 @@ export function MapContainer({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const map = new maplibregl.Map({
-      container: containerRef.current,
-      style: MAP_STYLE,
-      center: NL_CENTER,
-      zoom: INITIAL_ZOOM,
-      minZoom: 4,
-      maxZoom: 18,
-      attributionControl: false,
-    });
+    let map: maplibregl.Map;
+    try {
+      map = new maplibregl.Map({
+        container: containerRef.current,
+        style: MAP_STYLE,
+        center: NL_CENTER,
+        zoom: INITIAL_ZOOM,
+        minZoom: 4,
+        maxZoom: 18,
+        attributionControl: false,
+      });
+    } catch {
+      // WebGL not available (e.g. headless browser, old GPU)
+      console.warn('MapLibre: WebGL init failed, map disabled');
+      return;
+    }
     mapRef.current = map;
 
     map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
