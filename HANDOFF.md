@@ -17,6 +17,7 @@
 **Phase 4E complete** — Filter system completion: price band (multi-select), peuterproof score (7+/8+/9+ presets), age range (0-2/2-4/4-6 presets). All URL-persisted, all with empty-state removable pills. LocationSummary extended with `min_age`, `max_age`.
 **Phase 4F complete** — Plan view: localStorage-backed `usePlan` hook (ordered list), reorderable with up/down controls, numbered route display, "Toevoegen aan plan" button on detail view. Empty state with guidance.
 **Phase 4G complete** — Empty states + offline banner: all tab states have empty states (browse filters, favorites, plan). OfflineBanner component in root layout shows Dutch notification when offline.
+**Phase 4H complete** — Desktop sidebar tabs: segmented control (Ontdek/Bewaard/Plan) at top of sidebar. Desktop users can now access favorites and plan views. All Phase 4 exit criteria met.
 
 ## Architecture (current)
 
@@ -132,29 +133,15 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Phase 4E: Filter System Completion
-1. **4 new filters** added to `useFilters` hook + `FilterBar` + `EmptyFilterState`:
-   - **Price band** — multi-select chips (Gratis/Goedkoop/Gemiddeld/Duur), URL param `price=free,low`
-   - **Peuterproof score** — threshold presets (7+/8+/9+), URL param `score=8`
-   - **Age range** — 3 presets (0-2/2-4/4-6 jaar), URL param `age=2-4`. Overlap filter: `min_age ≤ preset.max AND max_age ≥ preset.min`
-   - All URL-persisted, shareable, removable via pills in empty state
-2. **LocationSummary extended** — added `min_age`, `max_age` to schema pick, constants, and types
-3. **FilterBar redesigned** — Row 1: type chips (scroll). Row 2: weather + price + score + age pills with visual dividers
-4. **Domain FilterState** in `types.ts` removed (was unused, conflicted with useFilters.ts version)
-5. Distance filter deferred — requires GPS permission flow (Phase 5)
-
-### Phase 4F: Plan View
-1. **`usePlan` hook** (`src/hooks/usePlan.ts`) — localStorage-backed ordered array, `useSyncExternalStore` pattern matching useFavorites. Cross-tab sync. Operations: add, remove, moveUp, moveDown, clear.
-2. **PlanView component** (`src/features/plan/PlanView.tsx`) — numbered route display with up/down reorder controls and remove button per item. Empty state guides user to detail view.
-3. **Detail view integration** — "Toevoegen aan plan" action button (+ icon → checkmark when in plan) added alongside Website/Route/Bewaren buttons.
-4. **PlanPlaceholder removed** from AppShell.
-
-### Phase 4G: Empty States + Offline
-1. **All empty states covered**: browse filters (EmptyFilterState), favorites (FavoritesEmptyState), plan (PlanEmptyState)
-2. **OfflineBanner** — `navigator.onLine` + event listeners, shows Dutch notification bar when offline
-3. Error boundaries already existed (Phase 4A) — root, (app), (legal) route segments
+### Phase 4H: Desktop Sidebar Tabs
+1. **SidebarTabs component** — Apple-style segmented control (Ontdek/Bewaard/Plan) at top of sidebar
+2. **Removed `!isDesktop` guard** in `getSheetContent()` — desktop now routes to favorites/plan views
+3. **"Kaart" tab excluded** on desktop — map is always visible, no need for tab
+4. Mobile TabBar unchanged — still shows all 4 tabs (Ontdek/Kaart/Bewaard/Plan)
+5. **Phase 4 exit criteria fully met** — all 7 criteria verified with screenshots
 
 ### Previous sessions
+- Phase 4E/F/G: Filter system, plan view, empty states, offline banner
 - Phase 4D: Sheet physics refactor (useSheetDrag, rubber-banding, spring duration)
 - Phase 4A/B/C: Error boundaries, favorites system, image optimization
 - Phase 3.5: Photo migration to R2 (2,324 files, custom domain photos.peuterplannen.nl)
@@ -179,12 +166,9 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 - Update photo pipeline (`fetch-photos.js`) to upload new photos to R2 instead of disk
 - ~108 locations have null photo_url (no local hero.webp found)
 
-### Phase 4 remaining
-- **Distance filter** — requires GPS permission flow + haversine calculation (deferred to Phase 5)
-- **Desktop favorites** — TabBar is mobile-only; desktop sidebar could show a favorites toggle
-- **Guide/blog content polish** — typography refinements in sheet
-- **Visual refinement** — further animation polish
-- **Mobile map on SSR content pages** — currently warm bg behind sheet
+### Phase 4 deferred (low priority polish)
+- **Distance filter** — requires GPS permission flow + haversine calculation
+- **Mobile map on SSR content pages** — currently warm bg behind sheet (intentional: saves ~200KB MapLibre on mobile)
 - **Cloudflare Image Resizing activation** — `/cdn-cgi/image/` URLs generated but need Image Resizing enabled on the Cloudflare zone (falls back to full-size images until then)
 - Turbopack dev compatibility for `.content-sheet` CSS (works in production)
 
@@ -214,7 +198,7 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 | Photo URLs | `getPhotoUrl()` centralized helper | Converts relative paths → R2 URLs. All components use it. Backward compatible without R2. |
 | Photo storage | Cloudflare R2 (S3-compatible) | Migration script uploads hero.webp files. Image Resizing URLs generated. |
 | Favorites | localStorage via `useSyncExternalStore` | `pp-favorites` key, Set<number> of IDs. Cross-tab sync. No auth needed. |
-| Tab bar | Mobile-only, 4 tabs (Ontdek/Kaart/Bewaard/Plan) | Apple HIG 49px height + safe area. Content routing via `activeTab` state in AppShell. |
+| Tab bar | Mobile: 4-tab bar. Desktop: 3-tab segmented control | Mobile: Apple HIG 49px + safe area. Desktop: Ontdek/Bewaard/Plan (no Kaart — map always visible). Shared `activeTab` state. |
 | Image optimization | Cloudflare Image Resizing via URL pattern | `/cdn-cgi/image/width=W,height=H,fit=cover,quality=Q,format=auto/path`. Client uses `OptimizedImage`, server uses `getResizedPhotoUrl()`. |
 | Sheet drag logic | Single `useSheetDrag` hook | Both Sheet.tsx and ContentSheetContainer.tsx consume this hook. Vaul-inspired rubber-band, scroll lock, strong fling. Eliminated ~260 lines of duplication. |
 | Filter system | 6 filter types, URL-persisted | Types (multi-select), weather (radio), price (multi-select), score (threshold), age (preset), search query. All in `useFilters` hook. Distance deferred (needs GPS). |
@@ -223,15 +207,15 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## Next step
 
-Phase 4A–G complete. Next priorities:
+**Phase 4 complete.** All exit criteria verified. Next priorities:
 
-1. **Phase 4 remaining** — desktop favorites, visual polish, guide/blog content polish
-2. **Enable Cloudflare Image Resizing** on the zone (via dashboard/API) so `/cdn-cgi/image/` URLs work
-3. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
-4. **Phase 5: Quality Gates** — E2E tests, CWV, accessibility
+1. **Enable Cloudflare Image Resizing** on the zone (via dashboard/API) so `/cdn-cgi/image/` URLs work
+2. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
+3. **Phase 5: Quality Gates** — E2E tests (Playwright), CWV measurement, accessibility audit (axe-core), analytics setup
+4. **Phase 6: Staging Validation** — content parity, SEO parity, performance comparison, user testing
 
 **Before starting**, the session should:
 - Read this HANDOFF.md
 - Run `npm run build` to confirm 1330 pages generate
 - Verify photos load: `curl -sI https://photos.peuterplannen.nl/amsterdam/artis/hero.webp`
-- `localhost:3000/` → AppShell renders with map, tab bar, favorites
+- `localhost:3000/` → AppShell renders with map, sidebar tabs (desktop) or tab bar (mobile), favorites/plan views work
