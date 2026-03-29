@@ -470,7 +470,7 @@ function SidebarTabs({
                   ? 'bg-bg-primary text-label shadow-sm'
                   : 'text-label-secondary hover:text-label'
               }`}
-              aria-current={isActive ? 'page' : undefined}
+              aria-pressed={isActive}
             >
               {tab.label}
             </button>

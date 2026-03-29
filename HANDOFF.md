@@ -139,7 +139,7 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 1. **SidebarTabs component** — Apple-style segmented control (Ontdek/Bewaard/Plan) at top of sidebar
 2. **Removed `!isDesktop` guard** in `getSheetContent()` — desktop now routes to favorites/plan views
 3. **"Kaart" tab excluded** on desktop — map is always visible, no need for tab
-4. Mobile TabBar unchanged — still shows all 4 tabs (Ontdek/Kaart/Bewaard/Plan)
+4. Mobile TabBar replaced with SheetModeSwitcher (3 mode pills: Ontdek/Bewaard/Plan inside the sheet header)
 5. **Phase 4 exit criteria fully met** — all 7 criteria verified with screenshots
 
 ### Phase 5A: Playwright E2E Tests
@@ -230,4 +230,4 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 - Run `npm run build` to confirm 1330 pages generate
 - Run `npm run test:e2e` to confirm 44 E2E tests pass
 - Verify photos load: `curl -sI https://photos.peuterplannen.nl/amsterdam/artis/hero.webp`
-- `localhost:3000/` → AppShell renders with map, sidebar tabs (desktop) or tab bar (mobile)
+- `localhost:3000/` → AppShell renders with map, sidebar tabs (desktop) or sheet mode pills (mobile)

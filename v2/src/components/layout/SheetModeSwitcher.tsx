@@ -58,7 +58,8 @@ function ModePill({
           ? 'bg-accent text-white shadow-sm'
           : 'bg-bg-secondary text-label-secondary'
       }`}
-      aria-current={active ? 'page' : undefined}
+      aria-pressed={active}
+      aria-label={badge > 0 ? `${label} (${badge})` : label}
     >
       {label}
       {badge > 0 && (
