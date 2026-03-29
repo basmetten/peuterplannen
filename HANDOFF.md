@@ -21,6 +21,7 @@
 **Phase 5A complete** — Playwright E2E tests: 44 tests (22 desktop + 22 mobile), all passing. Core flows covered: home, search, filters, detail, favorites, plan, SSR pages, navigation, error handling.
 **UX correction complete** — Replaced bottom TabBar with sheet mode switcher (3 pills inside sheet header: Ontdek/Bewaard/Plan). Mode-aware map markers. No "Kaart" tab — map always visible. Per `CORRECTION-sheet-mode-switcher.md` and updated `docs/v2/information-architecture.md`.
 **Phase 5B complete** — Accessibility: axe-core integration, 22 tests, zero critical/serious violations. WCAG AA color contrast fixed (label tokens, accent, category badges). Skip link, `<main>` landmarks, focus-visible styles, nested-interactive fix. Analytics: GA4 with Consent Mode v2, typed event module (seo-analytics.md §9 taxonomy), web-vitals CWV reporting. Performance: Lighthouse CI config with budgets. Visual regression: 16 screenshot baselines.
+**Phase 5C complete** — Analytics event wiring: all typed events from `src/lib/analytics.ts` now fire from UI components. detail_open (map/card source), debounced search_query, filter_apply (type/weather/price/score/age), favorite_toggle, plan_add/remove, website_click, route_click. All no-ops without `NEXT_PUBLIC_GA_ID`.
 
 ## Architecture (current)
 
@@ -136,7 +137,17 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Phase 5B: Quality Gates — Accessibility, Analytics, Performance, Visual Regression
+### Phase 5C: Analytics Event Wiring
+
+Wired all typed analytics events from `src/lib/analytics.ts` into UI components:
+- **`useFavorites.ts`** — `trackFavoriteToggle(id, add/remove, count)` in `toggleFavorite()`
+- **`usePlan.ts`** — `trackPlanToggle(id, add/remove)` in `addToPlan()` / `removeFromPlan()`
+- **`AppShell.tsx`** — `trackDetailOpen(id, 'map'|'card')` in marker/card/carousel handlers; debounced `trackSearch(query, count)` (800ms); `trackFilterApply(type, value, count)` via useEffect comparing prev/current filter state
+- **`DetailView.tsx`** — `trackWebsiteClick(id, url)` and `trackRouteClick(id, 'google_maps')` on action button clicks
+
+All events are fire-and-forget no-ops without GA4 loaded (`NEXT_PUBLIC_GA_ID` env var).
+
+### Previous: Phase 5B: Quality Gates — Accessibility, Analytics, Performance, Visual Regression
 
 **Accessibility (22 tests, zero violations):**
 1. **axe-core integration** — `@axe-core/playwright` tests on home, region, blog pages at both viewports
@@ -202,7 +213,7 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 - Turbopack dev compatibility for `.content-sheet` CSS (works in production)
 
 ### Phase 5 remaining
-- **Analytics event wiring** — analytics module is built but events not yet fired from components (need to add `trackSearch()`, `trackFilterApply()`, `trackDetailOpen()`, `trackFavoriteToggle()` calls to the actual UI code). Requires `NEXT_PUBLIC_GA_ID` env var.
+- **Set `NEXT_PUBLIC_GA_ID` env var** — GA4 measurement ID needed to activate analytics
 - **Lighthouse CI in CI pipeline** — `lighthouserc.json` config ready, needs GitHub Actions workflow
 - **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
 
@@ -241,9 +252,9 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## Next step
 
-**Phase 5 nearly complete.** Remaining: wire analytics events into UI, GA ID env var, staging deployment. Next priorities:
+**Phase 5 complete (analytics, a11y, performance, visual regression).** Remaining before Phase 6:
 
-1. **Wire analytics events** — add `trackSearch()`, `trackDetailOpen()`, etc. calls to actual components. Set `NEXT_PUBLIC_GA_ID` env var.
+1. **Set `NEXT_PUBLIC_GA_ID`** — GA4 measurement ID to activate analytics in production
 2. **Enable Cloudflare Image Resizing** on the zone (dashboard toggle) — all `/cdn-cgi/image/` URLs ready
 3. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
 4. **Phase 6: Staging Validation** — content parity, SEO parity, performance comparison, user testing
