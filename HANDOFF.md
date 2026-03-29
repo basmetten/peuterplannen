@@ -167,6 +167,10 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 - `peuterplannen.nl` (production) remains on GitHub Pages (old app, untouched)
 - `staging.peuterplannen.nl` now serves v2 via Cloudflare Workers
 
+### Cloudflare edge caching on API routes
+
+Added `Cache-Control: public, max-age=300, s-maxage=3600, stale-while-revalidate=60` to both API route success responses (`/api/locations` and `/api/locations/[id]`). 404/error responses intentionally not cached. Reduces Supabase egress ~99% — Cloudflare edge serves cached responses for 1 hour. `force-dynamic` stays on both routes so code executes on cache miss.
+
 ### Previous: Phase 6 code review fixes (4 critical, 3 warning)
 
 1. **CategoryGrid hidden during search** (critical) — wrapped in `!filters.query` guard in BrowseContent
