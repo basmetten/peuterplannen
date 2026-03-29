@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "peuterplannen-staging",
+  "account_id": "f0d916e43c5d8443e527cfcd04c57176",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-09-27",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "routes": [
+    {
+      "pattern": "staging.peuterplannen.nl/*",
+      "zone_name": "peuterplannen.nl"
+    }
+  ]
+}

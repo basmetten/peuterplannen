@@ -32,7 +32,7 @@ export function OptimizedImage({
   size,
   alt,
   className = '',
-  loading = 'lazy',
+  loading = 'eager',
 }: OptimizedImageProps) {
   const [loaded, setLoaded] = useState(false);
   const { width, height } = IMAGE_SIZES[size];

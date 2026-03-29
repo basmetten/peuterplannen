@@ -1,5 +1,6 @@
 import type { NextConfig } from 'next';
 import { resolve } from 'path';
+import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare';
 
 const nextConfig: NextConfig = {
   // Note: strict mode disabled because MapLibre GL can't survive
@@ -53,3 +54,5 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+initOpenNextCloudflareForDev();
