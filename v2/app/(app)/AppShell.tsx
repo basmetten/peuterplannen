@@ -215,7 +215,7 @@ export function AppShell({ initialLocations }: AppShellProps) {
       if (!isDesktop) {
         sheetSend({ type: 'SNAP_TO', target: 'peek' });
       }
-    } else if (tab === 'ontdek' || tab === 'bewaard') {
+    } else if (tab === 'ontdek' || tab === 'bewaard' || tab === 'plan') {
       // Expand sheet to half if it's at peek
       if (!isDesktop && snap === 'peek') {
         sheetSend({ type: 'SNAP_TO', target: 'half' });
@@ -231,28 +231,26 @@ export function AppShell({ initialLocations }: AppShellProps) {
       return <DetailView locationId={detailId} onClose={handleDetailClose} />;
     }
 
-    // Tab-based content (mobile only — desktop always shows browse in sidebar)
-    if (!isDesktop) {
-      switch (activeTab) {
-        case 'bewaard':
-          return (
-            <FavoritesList
-              locations={initialLocations}
-              onCardTap={handleCardTap}
-              selectedId={detailId}
-            />
-          );
-        case 'plan':
-          return (
-            <PlanView
-              locations={initialLocations}
-              onCardTap={handleCardTap}
-              selectedId={detailId}
-            />
-          );
-        default:
-          break;
-      }
+    // Tab-based content
+    switch (activeTab) {
+      case 'bewaard':
+        return (
+          <FavoritesList
+            locations={initialLocations}
+            onCardTap={handleCardTap}
+            selectedId={detailId}
+          />
+        );
+      case 'plan':
+        return (
+          <PlanView
+            locations={initialLocations}
+            onCardTap={handleCardTap}
+            selectedId={detailId}
+          />
+        );
+      default:
+        break;
     }
 
     return (
@@ -304,7 +302,10 @@ export function AppShell({ initialLocations }: AppShellProps) {
 
       {/* Desktop: persistent sidebar. Mobile: draggable bottom sheet + tab bar */}
       {isDesktop ? (
-        <Sidebar>{content}</Sidebar>
+        <Sidebar>
+          <SidebarTabs activeTab={activeTab} onTabChange={handleTabChange} />
+          {content}
+        </Sidebar>
       ) : (
         <>
           <Suspense>
@@ -426,6 +427,52 @@ function BrowseContent({
           </div>
         </>
       )}
+    </div>
+  );
+}
+
+// --- Desktop sidebar tabs (segmented control) ---
+
+type SidebarTabId = 'ontdek' | 'bewaard' | 'plan';
+
+const SIDEBAR_TABS: { id: SidebarTabId; label: string }[] = [
+  { id: 'ontdek', label: 'Ontdek' },
+  { id: 'bewaard', label: 'Bewaard' },
+  { id: 'plan', label: 'Plan' },
+];
+
+function SidebarTabs({
+  activeTab,
+  onTabChange,
+}: {
+  activeTab: TabId;
+  onTabChange: (tab: TabId) => void;
+}) {
+  // Map the full TabId to the sidebar subset (kaart maps to ontdek on desktop)
+  const current: SidebarTabId = activeTab === 'kaart' ? 'ontdek' : activeTab;
+
+  return (
+    <div className="px-4 pb-2 pt-3">
+      <div className="flex rounded-[10px] bg-bg-secondary p-0.5">
+        {SIDEBAR_TABS.map((tab) => {
+          const isActive = tab.id === current;
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => onTabChange(tab.id)}
+              className={`flex-1 rounded-[8px] px-3 py-1.5 text-[13px] font-medium tracking-[0.002em] transition-all duration-fast ${
+                isActive
+                  ? 'bg-bg-primary text-label shadow-sm'
+                  : 'text-label-secondary hover:text-label'
+              }`}
+              aria-current={isActive ? 'page' : undefined}
+            >
+              {tab.label}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
