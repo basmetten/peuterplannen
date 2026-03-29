@@ -77,20 +77,34 @@ There is no traditional website navigation (header with nav links, footer with s
 
 ### Mobile Navigation
 
-**Bottom tab bar** — fixed at the bottom, always visible in the app shell:
+**Sheet mode switcher** — compact pills inside the sheet header, below the drag handle. There is NO bottom tab bar. The sheet IS the navigation container, like Apple Maps web (maps.apple.com).
 
-| Tab | Icon | Target | Active state |
+| Mode | Label | Sheet Content | Map State |
 |---|---|---|---|
-| Ontdek | compass | `/` (sheet: peek/half with suggestions + guides) | Default tab |
-| Kaart | map | `/` (sheet: collapsed, map fullscreen) | Map focused |
-| Bewaard | heart | Bewaard content in sheet | Heart filled |
-| Plan | calendar | Plan content in sheet | Badge with count |
+| Ontdek | "Ontdek" | Search, filters, suggestions, cards, guide previews | All/filtered markers |
+| Bewaard | "Bewaard" + count badge | Saved location cards | Favorited location markers only, fit bounds |
+| Plan | "Plan" + count badge | Ordered day plan list | Planned stops with numbered badges + route lines |
 
-**Tab behavior:**
-- Tapping the active tab scrolls its content to top / resets sheet to default state
-- Tapping a different tab navigates, preserving map viewport
-- Tab bar hides when bottom sheet is in full state (location detail)
-- Tab bar shows when sheet is in peek or half state
+**Why no tab bar:**
+- Saves 49px of screen real estate on mobile (plus safe-area)
+- Keeps everything inside the sheet (Apple Maps web model — no external navigation)
+- The map is always accessible by dragging the sheet down — no need for a "Kaart" tab
+- Modes are content variants within the same sheet, not separate destinations
+
+**Mode switcher behavior:**
+- Pills are sticky at the top of the sheet (below drag handle, above scrollable content)
+- Switching mode changes sheet content AND map markers — map viewport preserved
+- Active pill: accent background + white text. Inactive: `bg-secondary` + `label-secondary`
+- Bewaard/Plan pills show count badge (small, like Apple notification badges) when > 0
+- Tapping the active mode pill scrolls its content to top / resets sheet to default state
+- When detail view is open, mode pills are hidden (detail has its own back button)
+- Returning from detail restores the previous mode
+
+**Mode switcher design:**
+- Pill height: ~32px, row total ~44px with padding
+- Pill shape: rounded-full, subtle background
+- Positioned directly below drag handle, horizontally centered
+- Consistent with Apple Maps web panel header aesthetic
 
 ### Desktop Navigation
 
@@ -296,25 +310,33 @@ Renders in the sheet/sidebar, with the map as ambient background. Map shows mark
 
 **Map state:** NL overview.
 
-### 3.8 App — Favorites (Bewaard tab)
+### 3.8 App — Favorites (Bewaard mode)
 
-**Content:**
-- List of saved locations (stored in localStorage, synced to Supabase if authenticated)
+Activated via sheet mode switcher pill. Content renders in the same sheet container — the user never leaves the map.
+
+**Sheet content:**
+- Count header ("3 bewaarde locaties")
+- Saved location cards (stored in localStorage, synced to Supabase if authenticated)
+- Cards are tappable → opens detail view (same flow as Ontdek mode)
 - Empty state: illustration + "Je hebt nog geen favorieten" + CTA to explore
 
-**Mobile:** replaces sheet content. Map shows pins for all saved locations.
-**Desktop:** replaces sidebar content. Map shows saved location pins.
+**Map state:** Shows markers ONLY for saved locations. Fits bounds to show all favorites.
+**Desktop:** Same content in sidebar, same map behavior.
 
-### 3.9 App — Plan (Plan tab)
+### 3.9 App — Plan (Plan mode)
 
-**Content:**
+Activated via sheet mode switcher pill. Content renders in the same sheet container.
+
+**Sheet content:**
+- Header "Jouw dagplan"
 - Ordered list of planned locations (drag to reorder)
-- Route visualization on map (connecting lines)
+- Route visualization on map (connecting lines between stops)
 - Time estimates between stops
+- "Route bekijken" CTA → opens directions
 - Empty state: "Begin een dagplan" + CTA to explore
 
-**Mobile:** replaces sheet content. Map shows route.
-**Desktop:** replaces sidebar content. Map shows route.
+**Map state:** Shows markers for planned stops with numbered badges + route lines.
+**Desktop:** Same content in sidebar, same map behavior.
 
 ---
 
