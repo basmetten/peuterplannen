@@ -53,9 +53,6 @@ function toGeoJSON(locs: LocationSummary[]) {
         toddler_highlight: loc.toddler_highlight,
         weather: loc.weather,
         ai_suitability_score_10: loc.ai_suitability_score_10,
-        photo_url: loc.photo_url,
-        is_featured: loc.is_featured,
-        price_band: loc.price_band,
       },
     })),
   };

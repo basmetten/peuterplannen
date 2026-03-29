@@ -134,6 +134,10 @@
   --radius-photo: var(--radius-photo);
   --radius-badge: var(--radius-badge);
 
+  /* Glass */
+  --color-glass-bg: oklch(1 0 0 / 0.85);
+  --backdrop-blur-glass: 20px;
+
   /* Shadows */
   --shadow-sheet: var(--shadow-sheet);
   --shadow-card: var(--shadow-card);
@@ -144,6 +148,13 @@
   --duration-fast: var(--duration-fast);
   --duration-default: var(--duration-default);
   --duration-slow: var(--duration-slow);
+}
+
+/* === Glass utility === */
+.glass {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(var(--backdrop-blur-glass)) saturate(1.2);
+  -webkit-backdrop-filter: blur(var(--backdrop-blur-glass)) saturate(1.2);
 }
 
 /* === Base Styles === */
@@ -192,6 +203,18 @@ body {
     border-right: 1px solid var(--color-separator);
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
   }
+}
+
+/* GPU layer promotion for animated elements */
+.sheet-container {
+  will-change: transform;
+  contain: layout style;
+}
+
+/* Offscreen card optimization */
+.card-list > * {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 80px;
 }
 
 /* Hairline dividers (Apple Maps style: 0.5px) */

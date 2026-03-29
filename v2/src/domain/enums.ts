@@ -16,9 +16,6 @@ export type RegionTier = (typeof REGION_TIERS)[number];
 export const SEO_TIERS = ['auto', 'support'] as const;
 export type SeoTier = (typeof SEO_TIERS)[number];
 
-export const SHEET_STATES = ['hidden', 'peek', 'half', 'full'] as const;
-export type SheetState = (typeof SHEET_STATES)[number];
-
 /** Human-readable Dutch labels for location types */
 export const LOCATION_TYPE_LABELS: Record<LocationType, string> = {
   play: 'Speeltuin',

@@ -1,15 +1,13 @@
 'use client';
 
-import { LOCATION_TYPES, LOCATION_TYPE_LABELS, TYPE_COLORS, PRICE_BANDS, PRICE_BAND_LABELS, AGE_PRESETS, SCORE_PRESETS } from '@/domain/enums';
-import type { LocationType, Weather, PriceBand, AgePresetKey } from '@/domain/enums';
+import { WEATHER_OPTIONS, PRICE_BANDS, PRICE_BAND_LABELS, AGE_PRESETS, SCORE_PRESETS } from '@/domain/enums';
+import type { Weather, PriceBand, AgePresetKey } from '@/domain/enums';
 
 interface FilterBarProps {
-  activeTypes: LocationType[];
   activeWeather: Weather | null;
   activePriceBands: PriceBand[];
   activeMinScore: number | null;
   activeAgeKey: AgePresetKey | null;
-  onTypeToggle: (type: LocationType) => void;
   onWeatherChange: (weather: Weather | null) => void;
   onPriceBandToggle: (band: PriceBand) => void;
   onScoreChange: (score: number | null) => void;
@@ -23,50 +21,21 @@ const WEATHER_LABELS: Record<Weather, string> = {
 };
 
 export function FilterBar({
-  activeTypes,
   activeWeather,
   activePriceBands,
   activeMinScore,
   activeAgeKey,
-  onTypeToggle,
   onWeatherChange,
   onPriceBandToggle,
   onScoreChange,
   onAgeChange,
 }: FilterBarProps) {
   return (
-    <div className="flex flex-col gap-2 px-4 pb-3">
-      {/* Row 1: Type chips — horizontal scroll */}
-      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 scrollbar-none">
-        {LOCATION_TYPES.map((type) => {
-          const isActive = activeTypes.includes(type);
-          const color = TYPE_COLORS[type];
-          return (
-            <button
-              key={type}
-              type="button"
-              aria-pressed={isActive}
-              onClick={() => onTypeToggle(type)}
-              className={`
-                flex-shrink-0 rounded-pill px-3 py-1.5 text-[13px] font-medium tracking-[0.002em]
-                transition-all duration-fast ease-spring
-                ${isActive
-                  ? 'text-white shadow-sm'
-                  : 'bg-bg-secondary text-label-secondary hover:bg-bg-secondary/80'
-                }
-              `}
-              style={isActive ? { backgroundColor: color } : undefined}
-            >
-              {LOCATION_TYPE_LABELS[type]}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Row 2: Secondary filters — weather, price, score, age */}
+    <div className="px-4 pb-3">
+      {/* Secondary filters — weather, price, score, age */}
       <div className="-mx-4 flex items-center gap-1.5 overflow-x-auto px-4 scrollbar-none">
         {/* Weather */}
-        {(['indoor', 'outdoor', 'both'] as const).map((w) => {
+        {WEATHER_OPTIONS.map((w) => {
           const isActive = activeWeather === w;
           return (
             <Pill

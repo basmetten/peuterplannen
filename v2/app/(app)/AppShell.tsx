@@ -10,6 +10,7 @@ import { Sheet } from '@/features/sheet/Sheet';
 import { Sidebar, SIDEBAR_WIDTH } from '@/features/sidebar/Sidebar';
 import { sheetMachine, SNAP_POINTS, type SheetSnap } from '@/features/sheet/sheetMachine';
 import { FilterBar } from '@/features/filters/FilterBar';
+import { CategoryGrid } from '@/components/patterns/CategoryGrid';
 import { SearchInput } from '@/features/filters/SearchInput';
 import { useFilters, applyFilters } from '@/features/filters/useFilters';
 import { LocationCard } from '@/components/patterns/LocationCard';
@@ -17,12 +18,14 @@ import { CardListSkeleton } from '@/components/patterns/CardSkeleton';
 import { EmptyFilterState } from '@/components/patterns/EmptyState';
 import { DetailView } from '@/features/detail/DetailView';
 import { CarouselOverlay } from '@/features/carousel/CarouselOverlay';
+import { ClusterList } from '@/features/carousel/ClusterList';
 import { SheetModeSwitcher, type SheetMode } from '@/components/layout/SheetModeSwitcher';
 import { FavoritesList } from '@/features/favorites/FavoritesList';
 import { PlanView } from '@/features/plan/PlanView';
 import type { LocationSummary } from '@/domain/types';
 import { trackDetailOpen, trackSearch, trackFilterApply } from '@/lib/analytics';
 import type { FilterState } from '@/features/filters/useFilters';
+import { haversine } from '@/lib/geo';
 
 interface AppShellProps {
   initialLocations: LocationSummary[];
@@ -67,6 +70,21 @@ export function AppShell({ initialLocations }: AppShellProps) {
     () => applyFilters(initialLocations, filters),
     [initialLocations, filters],
   );
+
+  // Nearby locations for detail view
+  const nearbyLocations = useMemo(() => {
+    if (!detailId) return [];
+    const current = initialLocations.find(l => l.id === detailId);
+    if (!current) return [];
+    return initialLocations
+      .filter(l => l.id !== detailId)
+      .map(l => ({
+        ...l,
+        distance: haversine(current.lat, current.lng, l.lat, l.lng),
+      }))
+      .sort((a, b) => a.distance - b.distance)
+      .slice(0, 6);
+  }, [detailId, initialLocations]);
 
   // Mode-aware map locations: filter markers based on active mode
   const mapLocations = useMemo(() => {
@@ -288,7 +306,34 @@ export function AppShell({ initialLocations }: AppShellProps) {
   const getSheetContent = () => {
     // Detail view always takes priority
     if (isDetailOpen && detailId) {
-      return <DetailView locationId={detailId} onClose={handleDetailClose} />;
+      return (
+        <DetailView
+          locationId={detailId}
+          onClose={handleDetailClose}
+          nearbyLocations={nearbyLocations}
+          onNearbyTap={handleCardTap}
+        />
+      );
+    }
+
+    // Cluster list (mobile) — vertical list replaces carousel overlay
+    if (isCarouselOpen && carouselLocationIds) {
+      const clusterLocations = carouselLocationIds
+        .map(id => initialLocations.find(l => l.id === id))
+        .filter((l): l is LocationSummary => l !== undefined)
+        .sort((a, b) => {
+          if (a.is_featured && !b.is_featured) return -1;
+          if (!a.is_featured && b.is_featured) return 1;
+          return (b.ai_suitability_score_10 ?? 0) - (a.ai_suitability_score_10 ?? 0);
+        });
+
+      return (
+        <ClusterList
+          locations={clusterLocations}
+          onCardTap={handleCarouselCardTap}
+          onClose={() => sheetSend({ type: 'CAROUSEL_CLOSE' })}
+        />
+      );
     }
 
     // Mode-based content
@@ -349,13 +394,13 @@ export function AppShell({ initialLocations }: AppShellProps) {
         carouselActiveId={carouselActiveId}
         onMarkerClick={handleMarkerClick}
         onMapClick={handleMapClick}
-        onClusterExpand={isDesktop ? undefined : handleClusterExpand}
+        onClusterExpand={handleClusterExpand}
         bottomPadding={bottomPadding}
         leftOffset={isDesktop ? SIDEBAR_WIDTH : 0}
       />
 
-      {/* Carousel overlay — mobile only, map-level, not part of sheet */}
-      {!isDesktop && (
+      {/* Carousel overlay — desktop only, floating map-level (mobile uses ClusterList in sheet) */}
+      {isDesktop && (
         <CarouselOverlay
           locations={carouselLocations}
           activeId={carouselActiveId}
@@ -426,14 +471,18 @@ function BrowseContent({
         onFocus={onSearchFocus}
       />
 
-      {/* Filters */}
-      <FilterBar
+      {/* Category grid (type filter) */}
+      <CategoryGrid
         activeTypes={filters.types}
+        onTypeToggle={onTypeToggle}
+      />
+
+      {/* Secondary filters */}
+      <FilterBar
         activeWeather={filters.weather}
         activePriceBands={filters.priceBands}
         activeMinScore={filters.minScore}
         activeAgeKey={filters.ageKey}
-        onTypeToggle={onTypeToggle}
         onWeatherChange={onWeatherChange}
         onPriceBandToggle={onPriceBandToggle}
         onScoreChange={onScoreChange}
@@ -471,8 +520,8 @@ function BrowseContent({
             </p>
           </div>
 
-          {/* Card list with stagger animation */}
-          <div className="flex flex-col gap-2 px-4 pb-4">
+          {/* Card list */}
+          <div className="card-list flex flex-col gap-2 px-4 pb-4">
             {locations.map((loc, i) => (
               <div
                 key={loc.id}
@@ -537,29 +586,31 @@ function SidebarTabs({
 // --- Suspense fallback ---
 
 export function AppShellSkeleton() {
+  // Skeleton at peek state (75% translateY = 25% visible), floatFactor ≈ 1.0
   return (
     <>
       {/* Map placeholder */}
       <div className="absolute inset-0 bg-bg-secondary" />
 
-      {/* Sheet skeleton (mobile) */}
+      {/* Sheet skeleton (mobile) — floating style */}
       <div
-        className="fixed inset-x-0 bottom-0 z-30 bg-bg-primary md:bottom-auto md:left-0 md:top-0 md:w-[380px] md:border-r md:border-separator"
+        className="fixed inset-x-0 bottom-0 z-30 overflow-hidden md:bottom-auto md:left-0 md:top-0 md:w-[380px] md:border-r md:border-separator"
         style={{
           height: '100%',
           transform: 'translateY(75%)',
-          borderTopLeftRadius: 16,
-          borderTopRightRadius: 16,
-          boxShadow: 'var(--shadow-sheet)',
+          marginInline: 12,
+          marginBottom: 8,
+          borderRadius: 16,
+          filter: 'drop-shadow(0 -2px 16px rgba(0,0,0,0.10))',
         }}
       >
-        {/* Handle (mobile only) */}
-        <div className="flex items-center justify-center py-2 md:hidden">
+        {/* Handle (mobile only) — glass */}
+        <div className="glass flex items-center justify-center py-2 md:hidden">
           <div className="h-[5px] w-9 rounded-full" style={{ background: 'rgba(160, 130, 110, 0.30)' }} />
         </div>
 
-        {/* Mode pills skeleton */}
-        <div className="flex justify-center gap-2 px-4 py-1.5 md:hidden">
+        {/* Mode pills skeleton — glass */}
+        <div className="glass flex justify-center gap-2 px-4 py-1.5 md:hidden">
           {[64, 72, 52].map((w, i) => (
             <div
               key={i}
@@ -569,25 +620,28 @@ export function AppShellSkeleton() {
           ))}
         </div>
 
-        {/* Search skeleton */}
-        <div className="px-4 pb-3">
-          <div className="h-[44px] w-full animate-pulse rounded-pill bg-bg-secondary" />
+        {/* Content area — solid bg */}
+        <div className="bg-bg-primary">
+          {/* Search skeleton */}
+          <div className="px-4 pb-3">
+            <div className="h-[44px] w-full animate-pulse rounded-pill bg-bg-secondary" />
+          </div>
+
+          {/* Filter chips skeleton */}
+          <div className="flex gap-2 px-4 pb-3">
+            {[80, 96, 64, 72, 80].map((w, i) => (
+              <div
+                key={i}
+                className="h-[32px] animate-pulse rounded-pill bg-bg-secondary"
+                style={{ width: w, animationDelay: `${i * 60}ms` }}
+              />
+            ))}
+          </div>
+
+          <div className="hairline" />
+
+          <CardListSkeleton count={4} />
         </div>
-
-        {/* Filter chips skeleton */}
-        <div className="flex gap-2 px-4 pb-3">
-          {[80, 96, 64, 72, 80].map((w, i) => (
-            <div
-              key={i}
-              className="h-[32px] animate-pulse rounded-pill bg-bg-secondary"
-              style={{ width: w, animationDelay: `${i * 60}ms` }}
-            />
-          ))}
-        </div>
-
-        <div className="hairline" />
-
-        <CardListSkeleton count={4} />
       </div>
     </>
   );

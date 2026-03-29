@@ -72,7 +72,7 @@ export const sheetMachine = createMachine({
             previousSnap: ({ context }) => context.snap,
             carouselLocationIds: ({ event }) => event.locationIds,
             carouselActiveId: ({ event }) => event.locationIds[0] ?? null,
-            snap: 'hidden' as SheetSnap,
+            snap: 'half' as SheetSnap,
           }),
         },
       },

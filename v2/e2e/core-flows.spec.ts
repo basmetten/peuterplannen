@@ -23,12 +23,11 @@ test.describe('Home page loads', () => {
     await expect(page.getByPlaceholder('Zoek een uitje...')).toBeVisible({ timeout: 15_000 });
   });
 
-  test('has filter chips', async ({ page }) => {
+  test('has category grid', async ({ page }) => {
     await waitForApp(page);
-    // Filter chips are the first buttons matching exact type labels in the scroll container
-    // Use getByRole with exact matching
+    // Category grid buttons use short labels
     await expect(page.getByRole('button', { name: 'Speeltuin', exact: true }).first()).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Kinderboerderij', exact: true }).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Boerderij', exact: true }).first()).toBeVisible();
   });
 });
 

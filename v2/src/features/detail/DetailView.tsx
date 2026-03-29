@@ -5,18 +5,25 @@ import { useQuery } from '@tanstack/react-query';
 import { locationQueries } from '@/features/map/queries';
 import { LOCATION_TYPE_LABELS, PRICE_BAND_LABELS, TYPE_COLORS } from '@/domain/enums';
 import type { PriceBand } from '@/domain/enums';
+import type { LocationSummary } from '@/domain/types';
 import { getPhotoUrl } from '@/lib/image';
 import { OptimizedImage } from '@/components/patterns/OptimizedImage';
 import { useFavorites } from '@/hooks/useFavorites';
 import { usePlan } from '@/hooks/usePlan';
 import { trackWebsiteClick, trackRouteClick, trackDetailScrollDepth } from '@/lib/analytics';
 
+interface NearbyLocation extends LocationSummary {
+  distance: number;
+}
+
 interface DetailViewProps {
   locationId: number;
   onClose: () => void;
+  nearbyLocations?: NearbyLocation[];
+  onNearbyTap?: (location: LocationSummary) => void;
 }
 
-export function DetailView({ locationId, onClose }: DetailViewProps) {
+export function DetailView({ locationId, onClose, nearbyLocations = [], onNearbyTap }: DetailViewProps) {
   const { data: location, isLoading } = useQuery(locationQueries.detail(locationId));
   const { isFavorite, toggleFavorite } = useFavorites();
   const { isInPlan, addToPlan, removeFromPlan } = usePlan();
@@ -212,20 +219,23 @@ export function DetailView({ locationId, onClose }: DetailViewProps) {
         </div>
       )}
 
-      {/* Divider */}
-      {location.description && <div className="hairline mx-4 my-4" />}
-
       {/* Facilities */}
-      <div className="px-4">
-        <h3 className="mb-3 text-[17px] font-semibold tracking-[-0.025em] text-label">
-          Faciliteiten
-        </h3>
-        <div className="flex flex-wrap gap-2">
-          {location.coffee && <FacilityBadge label="Koffie" />}
-          {location.diaper && <FacilityBadge label="Verschoonplek" />}
-          {location.weather && <FacilityBadge label={weatherLabel(location.weather)} />}
-        </div>
-      </div>
+      {(location.coffee || location.diaper || location.weather) && (
+        <>
+          {/* Divider (after description OR after score section) */}
+          <div className="hairline mx-4 my-4" />
+          <div className="px-4">
+            <h3 className="mb-3 text-[17px] font-semibold tracking-[-0.025em] text-label">
+              Faciliteiten
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {location.coffee && <FacilityBadge label="Koffie" />}
+              {location.diaper && <FacilityBadge label="Verschoonplek" />}
+              {location.weather && <FacilityBadge label={weatherLabel(location.weather)} />}
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Scroll depth marker: 75% */}
       <div ref={setMarkerRef(2)} data-depth="75" aria-hidden="true" />
@@ -241,6 +251,23 @@ export function DetailView({ locationId, onClose }: DetailViewProps) {
             <p className="whitespace-pre-line text-[15px] leading-[1.5] tracking-normal text-label-secondary">
               {location.opening_hours}
             </p>
+          </div>
+        </>
+      )}
+
+      {/* Nearby locations */}
+      {nearbyLocations.length > 0 && onNearbyTap && (
+        <>
+          <div className="hairline mx-4 my-4" />
+          <div className="px-4">
+            <h3 className="mb-3 text-[17px] font-semibold tracking-[-0.025em] text-label">
+              In de buurt
+            </h3>
+            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
+              {nearbyLocations.map(loc => (
+                <NearbyCard key={loc.id} location={loc} onTap={() => onNearbyTap(loc)} />
+              ))}
+            </div>
           </div>
         </>
       )}
@@ -393,12 +420,54 @@ function weatherLabel(weather: string): string {
   }
 }
 
+/** Compact card for "In de buurt" horizontal scroll */
+function NearbyCard({ location, onTap }: { location: NearbyLocation; onTap: () => void }) {
+  const typeColor = TYPE_COLORS[location.type] ?? 'var(--color-label-secondary)';
+  const distanceStr = location.distance < 1
+    ? `${Math.round(location.distance * 1000)} m`
+    : `${location.distance.toFixed(1)} km`;
+
+  return (
+    <button
+      type="button"
+      onClick={onTap}
+      className="flex w-[140px] flex-shrink-0 flex-col overflow-hidden rounded-card bg-bg-secondary"
+    >
+      {getPhotoUrl(location.photo_url) ? (
+        <OptimizedImage
+          src={location.photo_url}
+          size="card"
+          alt={location.name}
+          className="aspect-[4/3] w-full object-cover"
+        />
+      ) : (
+        <div className="flex aspect-[4/3] w-full items-center justify-center bg-bg-secondary">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-label-quaternary)" strokeWidth="1.5">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+        </div>
+      )}
+      <div className="flex flex-col gap-0.5 p-2">
+        <span className="truncate text-[13px] font-medium text-label">{location.name}</span>
+        <div className="flex items-center gap-1.5">
+          <span
+            className="inline-block h-1.5 w-1.5 rounded-full"
+            style={{ backgroundColor: typeColor }}
+          />
+          <span className="text-[11px] text-label-secondary">{distanceStr}</span>
+        </div>
+      </div>
+    </button>
+  );
+}
+
 /** Loading skeleton */
 function DetailSkeleton() {
   return (
     <div className="animate-pulse px-4 py-4">
       <div className="mb-4 h-6 w-20 rounded-badge bg-bg-secondary" />
-      <div className="mb-3 aspect-[4/3] w-full rounded-photo bg-bg-secondary" />
+      <div className="mb-4 aspect-[4/3] w-full rounded-photo bg-bg-secondary" />
       <div className="mb-2 h-8 w-3/4 rounded bg-bg-secondary" />
       <div className="mb-4 h-4 w-1/3 rounded bg-bg-secondary" />
       <div className="mb-8 flex gap-4">

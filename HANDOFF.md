@@ -22,6 +22,7 @@
 **UX correction complete** — Replaced bottom TabBar with sheet mode switcher (3 pills inside sheet header: Ontdek/Bewaard/Plan). Mode-aware map markers. No "Kaart" tab — map always visible. Per `CORRECTION-sheet-mode-switcher.md` and updated `docs/v2/information-architecture.md`.
 **Phase 5B complete** — Accessibility: axe-core integration, 22 tests, zero critical/serious violations. WCAG AA color contrast fixed (label tokens, accent, category badges). Skip link, `<main>` landmarks, focus-visible styles, nested-interactive fix. Analytics: GA4 with Consent Mode v2, typed event module (seo-analytics.md §9 taxonomy), web-vitals CWV reporting. Performance: Lighthouse CI config with budgets. Visual regression: 16 screenshot baselines.
 **Phase 5C complete** — Analytics event wiring: all typed events from `src/lib/analytics.ts` now fire from UI components. detail_open (map/card source), debounced search_query, filter_apply (type/weather/price/score/age), favorite_toggle, plan_add/remove, website_click, route_click. All no-ops without `NEXT_PUBLIC_GA_ID`.
+**Phase 6 complete** — Apple Maps iOS visual polish: floating sheet (margins + radius + drop-shadow), glass header (backdrop blur on drag handle + mode pills), GPU optimizations, CategoryGrid (2×4 SVG icons replacing type chips), "In de buurt" nearby locations, ClusterList (vertical card list on mobile replacing carousel).
 
 ## Architecture (current)
 
@@ -137,7 +138,43 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Phase 5D: CI, Map Analytics, Image Quota Optimization, GA4 + Image Resizing Activation
+### Phase 6: Apple Maps iOS Visual Polish
+
+**Phase 6-pre: Mandatory cleanup (7 items):**
+- Registered glass tokens (`--color-glass-bg`, `--backdrop-blur-glass`) in `@theme inline` + `.glass` utility class
+- Fixed empty facilities heading guard in `DetailView.tsx` (no orphaned `<h3>`)
+- Replaced hardcoded weather options with `WEATHER_OPTIONS` import in `FilterBar.tsx`
+- Removed dead `SHEET_STATES`/`SheetState` exports from `enums.ts`
+- Fixed `DetailSkeleton` photo spacing (`mb-3` → `mb-4`)
+- Verified `ease-bouncy` was already registered in `@theme inline`
+- Note: 6-pre-2 (`.content-sheet` `!important` conflict) documented as awareness — no code change needed
+
+**Phase 6A: Visual Polish — Floating Sheet + Glass + GPU:**
+- **Floating sheet**: `Sheet.tsx` uses `floatFactor` (1 at peek → 0 at full) to control `marginInline`, `marginBottom`, `borderRadius`, and `drop-shadow`. All corners round at peek, edge-to-edge at full.
+- **Glass header**: Drag handle and sticky header use `.glass` class (semi-transparent + backdrop blur). Scrollable content gets solid `bg-bg-primary` for readability.
+- **GPU optimizations**: `will-change: transform` on sheet container, `content-visibility: auto` on `.card-list > *`, `contain: layout style` on scroll container. Cleaned unused GeoJSON properties (`photo_url`, `is_featured`, `price_band`) from MapContainer.
+- **AppShellSkeleton** updated to match floating style at peek state
+
+**Phase 6B: Discovery — Category Grid + Nearby:**
+- **CategoryGrid component** (`src/components/patterns/CategoryGrid.tsx`): 2×4 grid of category buttons with inline SVG icons and TYPE_COLORS. Replaces type filter chips in `FilterBar`.
+- **FilterBar** simplified to secondary filters only (weather, price, score, age). Type filtering moved to CategoryGrid.
+- **"In de buurt" section** on DetailView: shows 4-6 nearest locations as horizontal scroll cards with photo, name, type dot, and distance. Uses new `haversine()` utility from `src/lib/geo.ts`. `nearbyLocations` computed in AppShell via `useMemo` when detail is open.
+- **NearbyCard** component in DetailView: compact 140px card with photo, name, type dot, distance
+
+**Phase 6C: Monetization-ready — Cluster List:**
+- **ClusterList component** (`src/features/carousel/ClusterList.tsx`): vertical card list replacing CarouselOverlay on mobile. Featured locations (`is_featured`) sort to top with "Aanbevolen" badge. Back button + count header.
+- **CAROUSEL_OPEN snap** changed from `hidden` to `half` in `sheetMachine.ts`
+- **Mobile**: cluster taps show ClusterList in sheet (via `getSheetContent()`)
+- **Desktop**: cluster taps show CarouselOverlay (floating, unchanged)
+- **Cluster expand** now enabled on both mobile and desktop (was mobile-only)
+
+**Tests:**
+- E2E test updated: "has filter chips" → "has category grid" (checks for "Boerderij" instead of "Kinderboerderij")
+- Visual regression baselines regenerated for home page states (CategoryGrid changes layout)
+- Home page visual tests use 5% tolerance (map tile rendering variance)
+- **82 tests total: 44 core + 22 a11y + 16 visual** — 81+ consistently passing, 1 home-initial desktop screenshot occasionally flaky due to map tile loading variance
+
+### Previous: Phase 5D: CI, Map Analytics, Image Quota Optimization, GA4 + Image Resizing Activation
 
 **CI Pipeline:**
 - Created `.github/workflows/v2-ci.yml` — triggers on staging pushes/PRs, builds, typechecks, runs E2E + a11y tests with Playwright browser caching
@@ -226,15 +263,14 @@ All events are fire-and-forget no-ops without GA4 loaded (`NEXT_PUBLIC_GA_ID` en
 - ~108 locations have null photo_url (no local hero.webp found)
 
 ### Phase 4 deferred (low priority polish)
-- **Distance filter** — requires GPS permission flow + haversine calculation
+- **Distance filter** — requires GPS permission flow (haversine utility now exists in `src/lib/geo.ts`)
 - **Mobile map on SSR content pages** — currently warm bg behind sheet (intentional: saves ~200KB MapLibre on mobile)
-- **Cloudflare Image Resizing activation** — `/cdn-cgi/image/` URLs generated but need Image Resizing enabled on the Cloudflare zone (falls back to full-size images until then)
 - Turbopack dev compatibility for `.content-sheet` CSS (works in production)
 
-### Phase 5 remaining
-- **Set `NEXT_PUBLIC_GA_ID` env var** — GA4 measurement ID needed to activate analytics
+### Remaining infrastructure
 - **Lighthouse CI in CI pipeline** — `lighthouserc.json` config ready, needs GitHub Actions workflow
 - **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
+- **GitHub Actions secrets** — `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` needed for CI
 
 ## Key design decisions
 
@@ -268,20 +304,24 @@ All events are fire-and-forget no-ops without GA4 loaded (`NEXT_PUBLIC_GA_ID` en
 | Analytics | GA4 + Consent Mode v2 + web-vitals | Typed event module in `src/lib/analytics.ts`. GA4 loads only when `NEXT_PUBLIC_GA_ID` set. CWV reported via `web-vitals` dynamic import. |
 | LocationCard a11y | div + sr-only button + heart button | No nested interactive. div has onClick for mouse, sr-only button for keyboard/screen reader. Heart button independent at z-1. |
 | Test suite | 82 Playwright tests | 44 core flows + 22 axe-core a11y + 16 visual regression screenshots. `npm run test:e2e:all` runs everything. |
+| Floating sheet | floatFactor-based margins + radius + drop-shadow | 1 at peek (floating card with gap) → 0 at full (edge-to-edge). GPU-accelerated filter: drop-shadow. |
+| Glass header | .glass utility class on drag handle + sticky header | Semi-transparent bg + backdrop blur. Scrollable content keeps solid bg-bg-primary. |
+| Category grid | 2×4 grid of SVG icons with TYPE_COLORS | Replaces type filter chips in FilterBar. Same onTypeToggle handler, same multi-select behavior. |
+| Nearby locations | haversine distance + horizontal scroll cards | Bottom of DetailView, 6 nearest locations. NearbyCard: 140px wide, photo + name + type dot + distance. |
+| Cluster list | Vertical card list in sheet (mobile) | Replaces CarouselOverlay on mobile. Featured locations sort first with "Aanbevolen" badge. Desktop keeps carousel overlay. |
 
 ## Next step
 
-**Phase 5 complete. GA4 + Image Resizing activated. CI pipeline ready.**
+**Phase 6 complete. Apple Maps iOS visual polish applied.**
 
-Remaining before Phase 6:
+Remaining:
 1. **Set GitHub Actions secrets** — `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` in repo settings (needed for CI to work)
 2. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
-3. **Phase 6: Staging Validation** — content parity, SEO parity, performance comparison, user testing
+3. **Phase 7: Staging Validation** — content parity, SEO parity, performance comparison, user testing
 4. **Google Maps API key restriction** — restrict to `peuterplannen.nl/*` and `staging.peuterplannen.nl/*`
 
 **Before starting**, the session should:
 - Read this HANDOFF.md
 - Run `cd /Users/basmetten/peuterplannen/v2 && npm run build` to confirm 1330 pages generate
 - Run `npm run test:e2e:all` to confirm 82 tests pass (44 core + 22 a11y + 16 visual)
-- Verify Image Resizing works: `curl -sI https://photos.peuterplannen.nl/cdn-cgi/image/width=144,height=144,fit=cover,quality=80,format=auto/amsterdam/artis/hero.webp`
-- `localhost:3000/` → AppShell renders with map, sidebar tabs (desktop) or sheet mode pills (mobile)
+- `localhost:3000/` → Floating sheet with glass header, CategoryGrid, nearby locations on detail
