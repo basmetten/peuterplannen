@@ -20,6 +20,7 @@
 **Phase 4H complete** — Desktop sidebar tabs: segmented control (Ontdek/Bewaard/Plan) at top of sidebar. Desktop users can now access favorites and plan views. All Phase 4 exit criteria met.
 **Phase 5A complete** — Playwright E2E tests: 44 tests (22 desktop + 22 mobile), all passing. Core flows covered: home, search, filters, detail, favorites, plan, SSR pages, navigation, error handling.
 **UX correction complete** — Replaced bottom TabBar with sheet mode switcher (3 pills inside sheet header: Ontdek/Bewaard/Plan). Mode-aware map markers. No "Kaart" tab — map always visible. Per `CORRECTION-sheet-mode-switcher.md` and updated `docs/v2/information-architecture.md`.
+**Phase 5B complete** — Accessibility: axe-core integration, 22 tests, zero critical/serious violations. WCAG AA color contrast fixed (label tokens, accent, category badges). Skip link, `<main>` landmarks, focus-visible styles, nested-interactive fix. Analytics: GA4 with Consent Mode v2, typed event module (seo-analytics.md §9 taxonomy), web-vitals CWV reporting. Performance: Lighthouse CI config with budgets. Visual regression: 16 screenshot baselines.
 
 ## Architecture (current)
 
@@ -135,21 +136,39 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Phase 4H: Desktop Sidebar Tabs
-1. **SidebarTabs component** — Apple-style segmented control (Ontdek/Bewaard/Plan) at top of sidebar
-2. **Removed `!isDesktop` guard** in `getSheetContent()` — desktop now routes to favorites/plan views
-3. **"Kaart" tab excluded** on desktop — map is always visible, no need for tab
-4. Mobile TabBar replaced with SheetModeSwitcher (3 mode pills: Ontdek/Bewaard/Plan inside the sheet header)
-5. **Phase 4 exit criteria fully met** — all 7 criteria verified with screenshots
+### Phase 5B: Quality Gates — Accessibility, Analytics, Performance, Visual Regression
 
-### Phase 5A: Playwright E2E Tests
-1. **44 tests** (22 desktop × 2 projects: Desktop Chrome 1280×800, iPhone 14)
-2. **Core flows covered**: home load, search, filters (type/weather/empty state), location detail (open/buttons/back), favorites (save + view), plan (add + view), SSR pages (region/blog/guides/404), navigation (footer/breadcrumbs), no-crash check
-3. **WebGL graceful fallback** — MapContainer catches WebGL init failure (headless Chromium). PersistentMap already had this.
-4. **`data-testid="location-card"`** added to LocationCard for reliable test targeting
-5. **Playwright config**: SwiftShader WebGL, auto webServer build+start, HTML reporter
+**Accessibility (22 tests, zero violations):**
+1. **axe-core integration** — `@axe-core/playwright` tests on home, region, blog pages at both viewports
+2. **WCAG AA color contrast fixes**:
+   - Label tokens: `label-secondary` 0.60→0.82 (5.8:1), `label-tertiary` 0.30→0.73 (4.6:1)
+   - Accent: `#C05A3A`→`#B3553A` (4.73:1) — fixes both accent-on-light and white-on-accent
+   - Category badges: darkened `play`, `swim`, `pancake`, `horeca` — all now ≥4.5:1 with white text
+3. **Skip link** — "Ga naar inhoud" (sr-only, visible on focus), targets `#main-content`
+4. **`<main>` landmarks** — added `id="main-content"` on all 3 route group layouts
+5. **Focus-visible styles** — SearchInput uses `focus-visible:ring-2` instead of `focus:outline-none`
+6. **LocationCard nested-interactive fix** — changed from `<button>` to `<div>` with sr-only button for keyboard access
+7. **Keyboard navigation tests** — search input reachable, filter chips keyboard-activatable
+
+**Analytics (GA4 + event taxonomy):**
+1. **`src/lib/analytics.ts`** — typed event functions matching `seo-analytics.md` §9 taxonomy (page_view, search_query, filter_apply, detail_open, favorite_toggle, plan_add, affiliate_click, route_click, website_click, etc.)
+2. **`GoogleAnalytics` component** — GA4 with Consent Mode v2 (analytics_storage granted, ad_storage denied). Loads via `next/script` afterInteractive.
+3. **`WebVitalsReporter` component** — reports CLS, INP, LCP, FCP, TTFB to GA4. Dynamic import keeps it off critical path.
+4. **Root layout** — GA4 conditionally loaded when `NEXT_PUBLIC_GA_ID` env var is set.
+
+**Performance:**
+1. **`lighthouserc.json`** — Lighthouse CI config testing 4 representative URLs. Budgets: LCP < 2.5s, CLS < 0.1, a11y ≥ 0.9, perf ≥ 0.8.
+2. **`web-vitals` package** — real user CWV monitoring via WebVitalsReporter.
+3. **npm scripts**: `test:e2e:a11y`, `test:e2e:visual`, `test:e2e:all`, `test:e2e:update-snapshots`
+
+**Visual regression:**
+1. **16 screenshot baselines** — 8 states × 2 viewports (mobile + desktop)
+2. **States captured**: home initial, search active, filter active, detail open, region hub, blog post, empty search results, 404 page
+3. **Run `npm run test:e2e:update-snapshots`** after intentional visual changes
 
 ### Previous sessions
+- Phase 5A: Playwright E2E tests (44 tests, WebGL fallback)
+- Phase 4H/UX correction: Sheet mode switcher, mode-aware map markers
 - Phase 4E/F/G: Filter system, plan view, empty states, offline banner
 - Phase 4D: Sheet physics refactor (useSheetDrag, rubber-banding, spring duration)
 - Phase 4A/B/C: Error boundaries, favorites system, image optimization
@@ -168,6 +187,7 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 - API routes: force-dynamic
 - Home page: ISR 5min
 - Hub + detail + blog pages: ISR 24h
+- **Test suite**: 82 tests (44 core + 22 a11y + 16 visual regression), ~60s total
 
 ## What's NOT done yet
 
@@ -182,9 +202,8 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 - Turbopack dev compatibility for `.content-sheet` CSS (works in production)
 
 ### Phase 5 remaining
-- **Accessibility audit** — axe-core integration, keyboard navigation testing
-- **Performance budget** — Lighthouse CI, LCP < 2.5s, CLS < 0.1
-- **Analytics** — GA4 page views + custom events
+- **Analytics event wiring** — analytics module is built but events not yet fired from components (need to add `trackSearch()`, `trackFilterApply()`, `trackDetailOpen()`, `trackFavoriteToggle()` calls to the actual UI code). Requires `NEXT_PUBLIC_GA_ID` env var.
+- **Lighthouse CI in CI pipeline** — `lighthouserc.json` config ready, needs GitHub Actions workflow
 - **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
 
 ## Key design decisions
@@ -215,19 +234,23 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 | Filter system | 6 filter types, URL-persisted | Types (multi-select), weather (radio), price (multi-select), score (threshold), age (preset), search query. All in `useFilters` hook. Distance deferred (needs GPS). |
 | Plan view | localStorage ordered array via `useSyncExternalStore` | `pp-plan` key, number[] of IDs. Reorderable. Same cross-tab sync pattern as favorites. |
 | Offline indicator | `navigator.onLine` event listeners | OfflineBanner in root layout. Auto-shows/hides. No service worker needed. |
+| Color contrast | All tokens pass WCAG AA 4.5:1 | Label secondary 0.82, tertiary 0.73, accent #B3553A, all category badges darkened for white text. |
+| Analytics | GA4 + Consent Mode v2 + web-vitals | Typed event module in `src/lib/analytics.ts`. GA4 loads only when `NEXT_PUBLIC_GA_ID` set. CWV reported via `web-vitals` dynamic import. |
+| LocationCard a11y | div + sr-only button + heart button | No nested interactive. div has onClick for mouse, sr-only button for keyboard/screen reader. Heart button independent at z-1. |
+| Test suite | 82 Playwright tests | 44 core flows + 22 axe-core a11y + 16 visual regression screenshots. `npm run test:e2e:all` runs everything. |
 
 ## Next step
 
-**Phase 4 complete, Phase 5 E2E done.** Next priorities:
+**Phase 5 nearly complete.** Remaining: wire analytics events into UI, GA ID env var, staging deployment. Next priorities:
 
-1. **Enable Cloudflare Image Resizing** on the zone (dashboard toggle) — all `/cdn-cgi/image/` URLs ready
-2. **Phase 5 remaining** — accessibility audit (axe-core), performance budget (Lighthouse), analytics (GA4)
+1. **Wire analytics events** — add `trackSearch()`, `trackDetailOpen()`, etc. calls to actual components. Set `NEXT_PUBLIC_GA_ID` env var.
+2. **Enable Cloudflare Image Resizing** on the zone (dashboard toggle) — all `/cdn-cgi/image/` URLs ready
 3. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
 4. **Phase 6: Staging Validation** — content parity, SEO parity, performance comparison, user testing
 
 **Before starting**, the session should:
 - Read this HANDOFF.md
 - Run `npm run build` to confirm 1330 pages generate
-- Run `npm run test:e2e` to confirm 44 E2E tests pass
+- Run `npm run test:e2e:all` to confirm 82 tests pass (44 core + 22 a11y + 16 visual)
 - Verify photos load: `curl -sI https://photos.peuterplannen.nl/amsterdam/artis/hero.webp`
 - `localhost:3000/` → AppShell renders with map, sidebar tabs (desktop) or sheet mode pills (mobile)
