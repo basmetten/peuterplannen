@@ -4,6 +4,7 @@ import { useRef, useEffect } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import type { LocationSummary } from '@/domain/types';
+import { trackMapPan, trackMapZoom } from '@/lib/analytics';
 
 const MAP_STYLE = process.env.NEXT_PUBLIC_MAP_STYLE_URL ?? 'https://tiles.openfreemap.org/styles/positron';
 const NL_CENTER: [number, number] = [4.9, 52.37];
@@ -162,6 +163,27 @@ export function MapContainer({
           'circle-stroke-width': 3,
           'circle-stroke-color': '#ffffff',
         },
+      });
+
+      // Analytics: debounced pan tracking
+      let panTimer: ReturnType<typeof setTimeout> | null = null;
+      map.on('moveend', () => {
+        if (panTimer) clearTimeout(panTimer);
+        panTimer = setTimeout(() => {
+          const center = map.getCenter();
+          trackMapPan(center.lat, center.lng, map.getZoom());
+        }, 500);
+      });
+
+      // Analytics: zoom tracking with direction
+      let previousZoom = map.getZoom();
+      map.on('zoomend', () => {
+        const currentZoom = map.getZoom();
+        const direction = currentZoom > previousZoom ? 'in' : 'out';
+        if (currentZoom !== previousZoom) {
+          trackMapZoom(currentZoom, direction);
+        }
+        previousZoom = currentZoom;
       });
     });
 

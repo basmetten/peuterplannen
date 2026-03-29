@@ -119,7 +119,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: canonical,
       siteName: 'PeuterPlannen',
       type: 'website',
-      ...(getPhotoUrl(location.photo_url) && { images: [{ url: getResizedPhotoUrl(location.photo_url, 'og') ?? getPhotoUrl(location.photo_url)! }] }),
+      ...(getPhotoUrl(location.photo_url) && { images: [{ url: getPhotoUrl(location.photo_url)! }] }),
     },
   };
 }

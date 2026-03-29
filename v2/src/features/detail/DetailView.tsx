@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { locationQueries } from '@/features/map/queries';
 import { LOCATION_TYPE_LABELS, PRICE_BAND_LABELS, TYPE_COLORS } from '@/domain/enums';
@@ -9,7 +9,7 @@ import { getPhotoUrl } from '@/lib/image';
 import { OptimizedImage } from '@/components/patterns/OptimizedImage';
 import { useFavorites } from '@/hooks/useFavorites';
 import { usePlan } from '@/hooks/usePlan';
-import { trackWebsiteClick, trackRouteClick } from '@/lib/analytics';
+import { trackWebsiteClick, trackRouteClick, trackDetailScrollDepth } from '@/lib/analytics';
 
 interface DetailViewProps {
   locationId: number;
@@ -24,6 +24,39 @@ export function DetailView({ locationId, onClose }: DetailViewProps) {
 
   const favorited = isFavorite(locationId);
   const inPlan = isInPlan(locationId);
+
+  // Scroll depth tracking
+  const firedRef = useRef(new Set<number>());
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const markerRefs = useRef<(HTMLDivElement | null)[]>([null, null, null, null]);
+  const MILESTONES = [25, 50, 75, 100];
+
+  const setMarkerRef = useCallback((index: number) => (el: HTMLDivElement | null) => {
+    markerRefs.current[index] = el;
+  }, []);
+
+  useEffect(() => {
+    firedRef.current = new Set<number>();
+
+    observerRef.current = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const depth = Number(entry.target.getAttribute('data-depth'));
+        if (depth && !firedRef.current.has(depth)) {
+          firedRef.current.add(depth);
+          trackDetailScrollDepth(locationId, depth);
+        }
+      }
+    }, { threshold: 0.1 });
+
+    for (const el of markerRefs.current) {
+      if (el) observerRef.current.observe(el);
+    }
+
+    return () => {
+      observerRef.current?.disconnect();
+    };
+  }, [locationId]);
 
   const handleToggleFavorite = () => {
     toggleFavorite(locationId);
@@ -75,6 +108,9 @@ export function DetailView({ locationId, onClose }: DetailViewProps) {
           />
         </div>
       )}
+
+      {/* Scroll depth marker: 25% */}
+      <div ref={setMarkerRef(0)} data-depth="25" aria-hidden="true" />
 
       {/* Header */}
       <div className="px-4">
@@ -158,6 +194,9 @@ export function DetailView({ locationId, onClose }: DetailViewProps) {
         />
       </div>
 
+      {/* Scroll depth marker: 50% */}
+      <div ref={setMarkerRef(1)} data-depth="50" aria-hidden="true" />
+
       {/* Divider */}
       <div className="hairline mx-4 my-4" />
 
@@ -188,6 +227,9 @@ export function DetailView({ locationId, onClose }: DetailViewProps) {
         </div>
       </div>
 
+      {/* Scroll depth marker: 75% */}
+      <div ref={setMarkerRef(2)} data-depth="75" aria-hidden="true" />
+
       {/* Opening hours */}
       {location.opening_hours && (
         <>
@@ -202,6 +244,9 @@ export function DetailView({ locationId, onClose }: DetailViewProps) {
           </div>
         </>
       )}
+
+      {/* Scroll depth marker: 100% */}
+      <div ref={setMarkerRef(3)} data-depth="100" aria-hidden="true" />
     </div>
   );
 }

@@ -149,3 +149,20 @@ export function trackRouteClick(
     provider,
   });
 }
+
+/* ─── Map interaction events ─── */
+
+/** Map pan — debounced, fires after user stops panning */
+export function trackMapPan(lat: number, lng: number, zoom: number): void {
+  trackEvent('map_pan', { lat: Math.round(lat * 1000) / 1000, lng: Math.round(lng * 1000) / 1000, zoom: Math.round(zoom) });
+}
+
+/** Map zoom change */
+export function trackMapZoom(zoom: number, direction: 'in' | 'out'): void {
+  trackEvent('map_zoom', { zoom: Math.round(zoom), direction });
+}
+
+/** Detail view scroll depth milestone */
+export function trackDetailScrollDepth(locationId: number, depth: number): void {
+  trackEvent('detail_scroll_depth', { location_id: locationId, depth_pct: depth });
+}
