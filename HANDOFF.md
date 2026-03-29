@@ -13,6 +13,7 @@
 **Phase 4A complete** — Error boundaries on root, (app), and (legal) route segments. Graceful fallback UI in Dutch.
 **Phase 4B complete** — Favorites system: localStorage-backed `useFavorites` hook, heart icons on cards + detail view, bottom tab bar (Ontdek/Kaart/Bewaard/Plan), favorites list view with empty state.
 **Phase 4C complete** — Cloudflare Image Resizing: `OptimizedImage` component, all client + server images use `/cdn-cgi/image/` transform URLs with appropriate presets (card 144x144, hero 800x600, OG 1200x630).
+**Phase 4D complete** — Sheet physics refactor: extracted `useSheetDrag` hook (DRY), logarithmic rubber-banding, distance-proportional spring duration, strong fling detection, scroll lock timeout, ref-based position tracking.
 
 ## Architecture (current)
 
@@ -128,29 +129,19 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Phase 4A: Error Boundaries
-- `app/error.tsx` — root-level fallback (warm white bg, "Er ging iets mis", retry + home buttons)
-- `app/(app)/error.tsx` — app layout overlay (semi-transparent bg, "Oeps, dat ging niet goed")
-- `app/(legal)/error.tsx` — legal pages fallback
-- All client components with `'use client'`, on-brand styling, Dutch copy
-
-### Phase 4B: Favorites System
-1. **`useFavorites` hook** (`src/hooks/useFavorites.ts`) — `useSyncExternalStore` with localStorage (`pp-favorites`). SSR-safe. Cross-tab sync via `storage` event. Cached snapshots to avoid unnecessary allocations.
-2. **Heart on LocationCard** — 28x28 button top-right, `stopPropagation`, scale bounce animation. Filled terracotta when favorited, outline when not.
-3. **Heart on DetailView** — 48px circle action button (matches Website/Route style). Label: "Bewaren" ↔ "Bewaard". Scale bounce on toggle.
-4. **FavoritesList** (`src/features/favorites/FavoritesList.tsx`) — filters `initialLocations` by favorite IDs. Empty state: "Nog geen favorieten" with heart icon.
-5. **TabBar** (`src/components/layout/TabBar.tsx`) — 4 tabs (Ontdek/Kaart/Bewaard/Plan), 49px + safe-area padding, mobile only. Badge count on Bewaard tab. Compass/pin/heart/list SVG icons.
-6. **AppShell integration** — `activeTab` state, tab-based content routing (Bewaard → FavoritesList, Plan → placeholder, default → BrowseContent). Tab changes adjust sheet snap state.
-7. **Sheet bottom padding** — 49px spacer at bottom of Sheet scroll area for TabBar clearance.
-
-### Phase 4C: Image Optimization
-1. **`OptimizedImage` component** (`src/components/patterns/OptimizedImage.tsx`) — generates Cloudflare Image Resizing URLs (`/cdn-cgi/image/...`). Fade-in on load. Warm gradient fallback for null src. `decoding="async"`, explicit width/height for CLS.
-2. **IMAGE_SIZES updated** — card/carousel: 144x144 (2x retina for 72px display), hero: 800x600, OG: 1200x630.
-3. **Client components updated** — LocationCard, CarouselCard, DetailView all use `OptimizedImage`.
-4. **Server components updated** — `[region]/[slug]/page.tsx` and `[region]/page.tsx` use `getResizedPhotoUrl()` for HeroImage, NearbyCard, CityTypeCard, OG images.
-5. **Format auto** — Cloudflare serves WebP/AVIF based on browser Accept header.
+### Phase 4D: Sheet Physics Refactor
+1. **`useSheetDrag` hook** (`src/hooks/useSheetDrag.ts`) — extracted ALL shared drag logic from Sheet.tsx and ContentSheetContainer.tsx into a single reusable hook. Both components now consume this hook, eliminating ~260 lines of duplicated code.
+2. **Logarithmic rubber-banding** — vaul-inspired formula `8 * (Math.log(offset + 1) - 2)` replaces linear clamping. Dragging past peek or full feels like iOS elastic resistance.
+3. **Distance-proportional spring duration** — short snaps (peek↔half, 25%) animate in ~250ms (snappy); long snaps (peek↔full, 67%) in ~450ms (smooth). Formula: `200 + min(distance/50, 1) * 250`.
+4. **Strong fling detection** — velocity >2.0 px/ms jumps to first/last snap (vaul pattern). Normal fling (>0.4 px/ms) moves one snap in drag direction.
+5. **Scroll lock timeout** — 100ms delay after scroll-blocked drag attempt prevents flicker at scroll-top boundary (vaul pattern).
+6. **Ref-based position tracking** — `currentPctRef` replaces fragile regex parsing of inline `transform` styles.
+7. **Overscroll prevention** — `overscroll-behavior-y: none` on scroll container when at full snap, preventing iOS Safari elastic bounce interference.
+8. **Sheet.tsx simplified** — 304 → 72 lines (77% reduction).
+9. **ContentSheetContainer.tsx simplified** — 380 → 134 lines (65% reduction).
 
 ### Previous sessions
+- Phase 4A/B/C: Error boundaries, favorites system, image optimization
 - Phase 3.5: Photo migration to R2 (2,324 files, custom domain photos.peuterplannen.nl)
 - Mobile interactive sheet (ContentSheetContainer, CSS-first, zero CLS)
 - Code review hardening (9 fixes, 2 critical)
@@ -178,7 +169,7 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 - **Plan view** — basic saved list, reorderable (currently placeholder "Binnenkort beschikbaar")
 - **Desktop favorites** — TabBar is mobile-only; desktop sidebar could show a favorites toggle
 - **Guide/blog content polish** — typography refinements in sheet
-- **Visual refinement** — glass design system, sheet physics tuning
+- **Visual refinement** — glass design system, further animation polish
 - **Mobile map on SSR content pages** — currently warm bg behind sheet
 - **Cloudflare Image Resizing activation** — `/cdn-cgi/image/` URLs generated but need Image Resizing enabled on the Cloudflare zone (falls back to full-size images until then)
 - Turbopack dev compatibility for `.content-sheet` CSS (works in production)
@@ -211,10 +202,11 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 | Favorites | localStorage via `useSyncExternalStore` | `pp-favorites` key, Set<number> of IDs. Cross-tab sync. No auth needed. |
 | Tab bar | Mobile-only, 4 tabs (Ontdek/Kaart/Bewaard/Plan) | Apple HIG 49px height + safe area. Content routing via `activeTab` state in AppShell. |
 | Image optimization | Cloudflare Image Resizing via URL pattern | `/cdn-cgi/image/width=W,height=H,fit=cover,quality=Q,format=auto/path`. Client uses `OptimizedImage`, server uses `getResizedPhotoUrl()`. |
+| Sheet drag logic | Single `useSheetDrag` hook | Both Sheet.tsx and ContentSheetContainer.tsx consume this hook. Vaul-inspired rubber-band, scroll lock, strong fling. Eliminated ~260 lines of duplication. |
 
 ## Next step
 
-Phase 4A/B/C complete. Next priorities:
+Phase 4A/B/C/D complete. Next priorities:
 
 1. **Phase 4 continued** — filter system completion, plan view, visual polish
 2. **Enable Cloudflare Image Resizing** on the zone (via dashboard/API) so `/cdn-cgi/image/` URLs work
