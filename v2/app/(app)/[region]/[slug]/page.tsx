@@ -231,6 +231,8 @@ export default async function SlugPage({ params }: Props) {
     photo_url: location.photo_url,
     is_featured: location.is_featured,
     price_band: location.price_band,
+    min_age: location.min_age,
+    max_age: location.max_age,
   };
   const mapLocations = [mainLocSummary, ...nearby];
 

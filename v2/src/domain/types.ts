@@ -108,6 +108,8 @@ export interface LocationSummary {
   photo_url: string | null;
   is_featured: boolean;
   price_band: PriceBand | null;
+  min_age: number | null;
+  max_age: number | null;
 }
 
 /** GeoJSON Feature for map rendering */
@@ -130,16 +132,6 @@ export interface Region {
   is_active: boolean;
   created_at: string;
   updated_at: string;
-}
-
-/** Filter state — always derived from URL search params */
-export interface FilterState {
-  types: LocationType[];
-  weather: Weather | null;
-  region: string | null;
-  query: string;
-  minScore: number | null;
-  priceBand: PriceBand | null;
 }
 
 /** Map viewport for viewport-based fetching */

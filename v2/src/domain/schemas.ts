@@ -86,6 +86,8 @@ export const LocationSummarySchema = LocationRowSchema.pick({
   photo_url: true,
   is_featured: true,
   price_band: true,
+  min_age: true,
+  max_age: true,
 });
 
 export const RegionRowSchema = z.object({

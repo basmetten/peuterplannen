@@ -8,6 +8,7 @@ import type { PriceBand } from '@/domain/enums';
 import { getPhotoUrl } from '@/lib/image';
 import { OptimizedImage } from '@/components/patterns/OptimizedImage';
 import { useFavorites } from '@/hooks/useFavorites';
+import { usePlan } from '@/hooks/usePlan';
 
 interface DetailViewProps {
   locationId: number;
@@ -17,9 +18,11 @@ interface DetailViewProps {
 export function DetailView({ locationId, onClose }: DetailViewProps) {
   const { data: location, isLoading } = useQuery(locationQueries.detail(locationId));
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { isInPlan, addToPlan, removeFromPlan } = usePlan();
   const [bouncing, setBouncing] = useState(false);
 
   const favorited = isFavorite(locationId);
+  const inPlan = isInPlan(locationId);
 
   const handleToggleFavorite = () => {
     toggleFavorite(locationId);
@@ -146,6 +149,10 @@ export function DetailView({ locationId, onClose }: DetailViewProps) {
           bouncing={bouncing}
           onToggle={handleToggleFavorite}
         />
+        <PlanActionButton
+          inPlan={inPlan}
+          onToggle={() => inPlan ? removeFromPlan(locationId) : addToPlan(locationId)}
+        />
       </div>
 
       {/* Divider */}
@@ -266,6 +273,44 @@ function FavoriteActionButton({
       </div>
       <span className="text-[11px] tracking-[0.014em] text-accent">
         {favorited ? 'Bewaard' : 'Bewaren'}
+      </span>
+    </button>
+  );
+}
+
+/** Plan action button (matches ActionButton style) */
+function PlanActionButton({
+  inPlan,
+  onToggle,
+}: {
+  inPlan: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className="flex flex-col items-center gap-1"
+      aria-label={inPlan ? 'Verwijder uit plan' : 'Toevoegen aan plan'}
+    >
+      <div
+        className={`flex h-12 w-12 items-center justify-center rounded-full transition-all duration-fast ease-spring ${
+          inPlan ? 'bg-accent text-white' : 'bg-bg-secondary text-label'
+        }`}
+      >
+        {inPlan ? (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
+        ) : (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+        )}
+      </div>
+      <span className="text-[11px] tracking-[0.014em] text-accent">
+        {inPlan ? 'In plan' : 'Plan'}
       </span>
     </button>
   );

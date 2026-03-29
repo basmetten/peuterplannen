@@ -17,6 +17,7 @@ import { DetailView } from '@/features/detail/DetailView';
 import { CarouselOverlay } from '@/features/carousel/CarouselOverlay';
 import { TabBar, type TabId } from '@/components/layout/TabBar';
 import { FavoritesList } from '@/features/favorites/FavoritesList';
+import { PlanView } from '@/features/plan/PlanView';
 import type { LocationSummary } from '@/domain/types';
 
 interface AppShellProps {
@@ -44,7 +45,7 @@ function findByParam(locations: LocationSummary[], param: string): LocationSumma
 export function AppShell({ initialLocations }: AppShellProps) {
   const isDesktop = useIsDesktop();
   const [sheetState, sheetSend] = useMachine(sheetMachine);
-  const { filters, toggleType, setWeather, setQuery, clearFilters, isFiltered } = useFilters();
+  const { filters, toggleType, setWeather, setQuery, togglePriceBand, setMinScore, setAgeKey, clearFilters, isFiltered } = useFilters();
   const [activeTab, setActiveTab] = useState<TabId>('ontdek');
 
   const { snap, detailId, carouselLocationIds, carouselActiveId } = sheetState.context;
@@ -242,7 +243,13 @@ export function AppShell({ initialLocations }: AppShellProps) {
             />
           );
         case 'plan':
-          return <PlanPlaceholder />;
+          return (
+            <PlanView
+              locations={initialLocations}
+              onCardTap={handleCardTap}
+              selectedId={detailId}
+            />
+          );
         default:
           break;
       }
@@ -257,6 +264,9 @@ export function AppShell({ initialLocations }: AppShellProps) {
         onTypeToggle={toggleType}
         onWeatherChange={setWeather}
         onQueryChange={setQuery}
+        onPriceBandToggle={togglePriceBand}
+        onScoreChange={setMinScore}
+        onAgeChange={setAgeKey}
         onClearFilters={clearFilters}
         onCardTap={handleCardTap}
         onSearchFocus={handleSearchFocus}
@@ -319,6 +329,9 @@ function BrowseContent({
   onTypeToggle,
   onWeatherChange,
   onQueryChange,
+  onPriceBandToggle,
+  onScoreChange,
+  onAgeChange,
   onClearFilters,
   onCardTap,
   onSearchFocus,
@@ -331,6 +344,9 @@ function BrowseContent({
   onTypeToggle: (type: import('@/domain/enums').LocationType) => void;
   onWeatherChange: (weather: import('@/domain/enums').Weather | null) => void;
   onQueryChange: (query: string) => void;
+  onPriceBandToggle: (band: import('@/domain/enums').PriceBand) => void;
+  onScoreChange: (score: number | null) => void;
+  onAgeChange: (key: import('@/domain/enums').AgePresetKey | null) => void;
   onClearFilters: () => void;
   onCardTap: (location: LocationSummary) => void;
   onSearchFocus: () => void;
@@ -351,8 +367,14 @@ function BrowseContent({
       <FilterBar
         activeTypes={filters.types}
         activeWeather={filters.weather}
+        activePriceBands={filters.priceBands}
+        activeMinScore={filters.minScore}
+        activeAgeKey={filters.ageKey}
         onTypeToggle={onTypeToggle}
         onWeatherChange={onWeatherChange}
+        onPriceBandToggle={onPriceBandToggle}
+        onScoreChange={onScoreChange}
+        onAgeChange={onAgeChange}
       />
 
       {/* Divider */}
@@ -363,10 +385,16 @@ function BrowseContent({
         <EmptyFilterState
           activeTypes={filters.types}
           activeWeather={filters.weather}
+          activePriceBands={filters.priceBands}
+          activeMinScore={filters.minScore}
+          activeAgeKey={filters.ageKey}
           query={filters.query}
           onClearFilters={onClearFilters}
           onRemoveType={onTypeToggle}
           onClearWeather={() => onWeatherChange(null)}
+          onRemovePriceBand={onPriceBandToggle}
+          onClearScore={() => onScoreChange(null)}
+          onClearAge={() => onAgeChange(null)}
           onClearQuery={() => onQueryChange('')}
         />
       ) : (
@@ -398,31 +426,6 @@ function BrowseContent({
           </div>
         </>
       )}
-    </div>
-  );
-}
-
-// --- Plan tab placeholder ---
-
-function PlanPlaceholder() {
-  return (
-    <div className="flex flex-col items-center px-8 py-16 text-center">
-      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-bg-secondary">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-label-tertiary">
-          <line x1="8" y1="6" x2="21" y2="6" />
-          <line x1="8" y1="12" x2="21" y2="12" />
-          <line x1="8" y1="18" x2="21" y2="18" />
-          <line x1="3" y1="6" x2="3.01" y2="6" />
-          <line x1="3" y1="12" x2="3.01" y2="12" />
-          <line x1="3" y1="18" x2="3.01" y2="18" />
-        </svg>
-      </div>
-      <h3 className="text-[17px] font-semibold tracking-[-0.025em] text-label">
-        Dagplanner
-      </h3>
-      <p className="mt-2 text-[15px] leading-[1.5] tracking-normal text-label-secondary">
-        Binnenkort beschikbaar
-      </p>
     </div>
   );
 }

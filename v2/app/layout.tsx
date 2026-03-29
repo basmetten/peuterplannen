@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Newsreader } from 'next/font/google';
+import { OfflineBanner } from '@/components/patterns/OfflineBanner';
 import './globals.css';
 
 const inter = Inter({
@@ -49,6 +50,7 @@ export default function RootLayout({
   return (
     <html lang="nl" className={`${inter.variable} ${newsreader.variable}`}>
       <body className="min-h-dvh bg-bg-primary text-label font-sans antialiased">
+        <OfflineBanner />
         {children}
       </body>
     </html>

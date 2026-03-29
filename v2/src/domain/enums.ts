@@ -62,3 +62,14 @@ export const PRICE_BAND_LABELS: Record<PriceBand, string> = {
   mid: 'Gemiddeld',
   high: 'Duur',
 };
+
+/** Age filter presets — covers the core PeuterPlannen audience */
+export const AGE_PRESETS = [
+  { key: '0-2', label: '0–2 jaar', min: 0, max: 2 },
+  { key: '2-4', label: '2–4 jaar', min: 2, max: 4 },
+  { key: '4-6', label: '4–6 jaar', min: 4, max: 6 },
+] as const;
+export type AgePresetKey = (typeof AGE_PRESETS)[number]['key'];
+
+/** Score filter presets */
+export const SCORE_PRESETS = [7, 8, 9] as const;

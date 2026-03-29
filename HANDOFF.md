@@ -14,6 +14,9 @@
 **Phase 4B complete** — Favorites system: localStorage-backed `useFavorites` hook, heart icons on cards + detail view, bottom tab bar (Ontdek/Kaart/Bewaard/Plan), favorites list view with empty state.
 **Phase 4C complete** — Cloudflare Image Resizing: `OptimizedImage` component, all client + server images use `/cdn-cgi/image/` transform URLs with appropriate presets (card 144x144, hero 800x600, OG 1200x630).
 **Phase 4D complete** — Sheet physics refactor: extracted `useSheetDrag` hook (DRY), logarithmic rubber-banding, distance-proportional spring duration, strong fling detection, scroll lock timeout, ref-based position tracking.
+**Phase 4E complete** — Filter system completion: price band (multi-select), peuterproof score (7+/8+/9+ presets), age range (0-2/2-4/4-6 presets). All URL-persisted, all with empty-state removable pills. LocationSummary extended with `min_age`, `max_age`.
+**Phase 4F complete** — Plan view: localStorage-backed `usePlan` hook (ordered list), reorderable with up/down controls, numbered route display, "Toevoegen aan plan" button on detail view. Empty state with guidance.
+**Phase 4G complete** — Empty states + offline banner: all tab states have empty states (browse filters, favorites, plan). OfflineBanner component in root layout shows Dutch notification when offline.
 
 ## Architecture (current)
 
@@ -129,18 +132,30 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Phase 4D: Sheet Physics Refactor
-1. **`useSheetDrag` hook** (`src/hooks/useSheetDrag.ts`) — extracted ALL shared drag logic from Sheet.tsx and ContentSheetContainer.tsx into a single reusable hook. Both components now consume this hook, eliminating ~260 lines of duplicated code.
-2. **Logarithmic rubber-banding** — vaul-inspired formula `8 * (Math.log(offset + 1) - 2)` replaces linear clamping. Dragging past peek or full feels like iOS elastic resistance.
-3. **Distance-proportional spring duration** — short snaps (peek↔half, 25%) animate in ~250ms (snappy); long snaps (peek↔full, 67%) in ~450ms (smooth). Formula: `200 + min(distance/50, 1) * 250`.
-4. **Strong fling detection** — velocity >2.0 px/ms jumps to first/last snap (vaul pattern). Normal fling (>0.4 px/ms) moves one snap in drag direction.
-5. **Scroll lock timeout** — 100ms delay after scroll-blocked drag attempt prevents flicker at scroll-top boundary (vaul pattern).
-6. **Ref-based position tracking** — `currentPctRef` replaces fragile regex parsing of inline `transform` styles.
-7. **Overscroll prevention** — `overscroll-behavior-y: none` on scroll container when at full snap, preventing iOS Safari elastic bounce interference.
-8. **Sheet.tsx simplified** — 304 → 72 lines (77% reduction).
-9. **ContentSheetContainer.tsx simplified** — 380 → 134 lines (65% reduction).
+### Phase 4E: Filter System Completion
+1. **4 new filters** added to `useFilters` hook + `FilterBar` + `EmptyFilterState`:
+   - **Price band** — multi-select chips (Gratis/Goedkoop/Gemiddeld/Duur), URL param `price=free,low`
+   - **Peuterproof score** — threshold presets (7+/8+/9+), URL param `score=8`
+   - **Age range** — 3 presets (0-2/2-4/4-6 jaar), URL param `age=2-4`. Overlap filter: `min_age ≤ preset.max AND max_age ≥ preset.min`
+   - All URL-persisted, shareable, removable via pills in empty state
+2. **LocationSummary extended** — added `min_age`, `max_age` to schema pick, constants, and types
+3. **FilterBar redesigned** — Row 1: type chips (scroll). Row 2: weather + price + score + age pills with visual dividers
+4. **Domain FilterState** in `types.ts` removed (was unused, conflicted with useFilters.ts version)
+5. Distance filter deferred — requires GPS permission flow (Phase 5)
+
+### Phase 4F: Plan View
+1. **`usePlan` hook** (`src/hooks/usePlan.ts`) — localStorage-backed ordered array, `useSyncExternalStore` pattern matching useFavorites. Cross-tab sync. Operations: add, remove, moveUp, moveDown, clear.
+2. **PlanView component** (`src/features/plan/PlanView.tsx`) — numbered route display with up/down reorder controls and remove button per item. Empty state guides user to detail view.
+3. **Detail view integration** — "Toevoegen aan plan" action button (+ icon → checkmark when in plan) added alongside Website/Route/Bewaren buttons.
+4. **PlanPlaceholder removed** from AppShell.
+
+### Phase 4G: Empty States + Offline
+1. **All empty states covered**: browse filters (EmptyFilterState), favorites (FavoritesEmptyState), plan (PlanEmptyState)
+2. **OfflineBanner** — `navigator.onLine` + event listeners, shows Dutch notification bar when offline
+3. Error boundaries already existed (Phase 4A) — root, (app), (legal) route segments
 
 ### Previous sessions
+- Phase 4D: Sheet physics refactor (useSheetDrag, rubber-banding, spring duration)
 - Phase 4A/B/C: Error boundaries, favorites system, image optimization
 - Phase 3.5: Photo migration to R2 (2,324 files, custom domain photos.peuterplannen.nl)
 - Mobile interactive sheet (ContentSheetContainer, CSS-first, zero CLS)
@@ -165,11 +180,10 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 - ~108 locations have null photo_url (no local hero.webp found)
 
 ### Phase 4 remaining
-- **Filter system completion** — price band, score threshold, age range UI (data types exist)
-- **Plan view** — basic saved list, reorderable (currently placeholder "Binnenkort beschikbaar")
+- **Distance filter** — requires GPS permission flow + haversine calculation (deferred to Phase 5)
 - **Desktop favorites** — TabBar is mobile-only; desktop sidebar could show a favorites toggle
 - **Guide/blog content polish** — typography refinements in sheet
-- **Visual refinement** — glass design system, further animation polish
+- **Visual refinement** — further animation polish
 - **Mobile map on SSR content pages** — currently warm bg behind sheet
 - **Cloudflare Image Resizing activation** — `/cdn-cgi/image/` URLs generated but need Image Resizing enabled on the Cloudflare zone (falls back to full-size images until then)
 - Turbopack dev compatibility for `.content-sheet` CSS (works in production)
@@ -203,14 +217,18 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 | Tab bar | Mobile-only, 4 tabs (Ontdek/Kaart/Bewaard/Plan) | Apple HIG 49px height + safe area. Content routing via `activeTab` state in AppShell. |
 | Image optimization | Cloudflare Image Resizing via URL pattern | `/cdn-cgi/image/width=W,height=H,fit=cover,quality=Q,format=auto/path`. Client uses `OptimizedImage`, server uses `getResizedPhotoUrl()`. |
 | Sheet drag logic | Single `useSheetDrag` hook | Both Sheet.tsx and ContentSheetContainer.tsx consume this hook. Vaul-inspired rubber-band, scroll lock, strong fling. Eliminated ~260 lines of duplication. |
+| Filter system | 6 filter types, URL-persisted | Types (multi-select), weather (radio), price (multi-select), score (threshold), age (preset), search query. All in `useFilters` hook. Distance deferred (needs GPS). |
+| Plan view | localStorage ordered array via `useSyncExternalStore` | `pp-plan` key, number[] of IDs. Reorderable. Same cross-tab sync pattern as favorites. |
+| Offline indicator | `navigator.onLine` event listeners | OfflineBanner in root layout. Auto-shows/hides. No service worker needed. |
 
 ## Next step
 
-Phase 4A/B/C/D complete. Next priorities:
+Phase 4A–G complete. Next priorities:
 
-1. **Phase 4 continued** — filter system completion, plan view, visual polish
+1. **Phase 4 remaining** — desktop favorites, visual polish, guide/blog content polish
 2. **Enable Cloudflare Image Resizing** on the zone (via dashboard/API) so `/cdn-cgi/image/` URLs work
 3. **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
+4. **Phase 5: Quality Gates** — E2E tests, CWV, accessibility
 
 **Before starting**, the session should:
 - Read this HANDOFF.md

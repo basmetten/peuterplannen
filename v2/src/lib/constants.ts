@@ -2,7 +2,7 @@
 export const LOCATION_SUMMARY_COLUMNS = `
   id, name, slug, type, lat, lng, region,
   toddler_highlight, weather, ai_suitability_score_10,
-  photo_url, is_featured, price_band
+  photo_url, is_featured, price_band, min_age, max_age
 `.trim();
 
 export const LOCATION_DETAIL_COLUMNS = '*';
