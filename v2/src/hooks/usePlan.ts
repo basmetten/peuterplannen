@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useSyncExternalStore } from 'react';
+import { trackPlanToggle } from '@/lib/analytics';
 
 const STORAGE_KEY = 'pp-plan';
 
@@ -90,12 +91,14 @@ export function usePlan() {
     const current = readPlan();
     if (!current.includes(id)) {
       writePlan([...current, id]);
+      trackPlanToggle(id, 'add');
     }
   }, []);
 
   const removeFromPlan = useCallback((id: number): void => {
     const current = readPlan();
     writePlan(current.filter((i) => i !== id));
+    trackPlanToggle(id, 'remove');
   }, []);
 
   const moveUp = useCallback((id: number): void => {

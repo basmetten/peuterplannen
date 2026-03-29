@@ -21,6 +21,8 @@ import { SheetModeSwitcher, type SheetMode } from '@/components/layout/SheetMode
 import { FavoritesList } from '@/features/favorites/FavoritesList';
 import { PlanView } from '@/features/plan/PlanView';
 import type { LocationSummary } from '@/domain/types';
+import { trackDetailOpen, trackSearch, trackFilterApply } from '@/lib/analytics';
+import type { FilterState } from '@/features/filters/useFilters';
 
 interface AppShellProps {
   initialLocations: LocationSummary[];
@@ -159,6 +161,7 @@ export function AppShell({ initialLocations }: AppShellProps) {
   // --- Handlers ---
 
   const handleMarkerClick = useCallback((location: LocationSummary) => {
+    trackDetailOpen(location.id, 'map');
     sheetSend({ type: 'OPEN_DETAIL', id: location.id });
     pushDetailUrl(location);
   }, [sheetSend, pushDetailUrl]);
@@ -186,6 +189,7 @@ export function AppShell({ initialLocations }: AppShellProps) {
   }, [isDetailOpen, sheetSend]);
 
   const handleCardTap = useCallback((location: LocationSummary) => {
+    trackDetailOpen(location.id, 'card');
     sheetSend({ type: 'OPEN_DETAIL', id: location.id });
     pushDetailUrl(location);
   }, [sheetSend, pushDetailUrl]);
@@ -200,6 +204,54 @@ export function AppShell({ initialLocations }: AppShellProps) {
     }
   }, [isDesktop, snap, sheetSend]);
 
+  // --- Analytics: debounced search tracking ---
+
+  const searchTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => {
+    if (!filters.query) return;
+    clearTimeout(searchTimerRef.current);
+    searchTimerRef.current = setTimeout(() => {
+      trackSearch(filters.query, filteredLocations.length);
+    }, 800);
+    return () => clearTimeout(searchTimerRef.current);
+  }, [filters.query]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // --- Analytics: filter change tracking ---
+
+  const prevFiltersRef = useRef<FilterState>(filters);
+  useEffect(() => {
+    const prev = prevFiltersRef.current;
+    prevFiltersRef.current = filters;
+    if (prev === filters) return;
+
+    const count = filteredLocations.length;
+
+    // Type filter additions
+    filters.types
+      .filter((t) => !prev.types.includes(t))
+      .forEach((t) => trackFilterApply('type', t, count));
+
+    // Weather change
+    if (filters.weather && filters.weather !== prev.weather) {
+      trackFilterApply('weather', filters.weather, count);
+    }
+
+    // Price band additions
+    filters.priceBands
+      .filter((p) => !prev.priceBands.includes(p))
+      .forEach((p) => trackFilterApply('price', p, count));
+
+    // Score change
+    if (filters.minScore !== null && filters.minScore !== prev.minScore) {
+      trackFilterApply('score', `${filters.minScore}+`, count);
+    }
+
+    // Age change
+    if (filters.ageKey && filters.ageKey !== prev.ageKey) {
+      trackFilterApply('age', filters.ageKey, count);
+    }
+  }, [filters, filteredLocations.length]);
+
   // --- Carousel handlers (mobile only) ---
 
   const handleClusterExpand = useCallback((locations: LocationSummary[]) => {
@@ -207,6 +259,7 @@ export function AppShell({ initialLocations }: AppShellProps) {
   }, [sheetSend]);
 
   const handleCarouselCardTap = useCallback((location: LocationSummary) => {
+    trackDetailOpen(location.id, 'card');
     sheetSend({ type: 'OPEN_DETAIL', id: location.id });
     pushDetailUrl(location);
   }, [sheetSend, pushDetailUrl]);

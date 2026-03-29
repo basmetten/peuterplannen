@@ -9,6 +9,7 @@ import { getPhotoUrl } from '@/lib/image';
 import { OptimizedImage } from '@/components/patterns/OptimizedImage';
 import { useFavorites } from '@/hooks/useFavorites';
 import { usePlan } from '@/hooks/usePlan';
+import { trackWebsiteClick, trackRouteClick } from '@/lib/analytics';
 
 interface DetailViewProps {
   locationId: number;
@@ -126,6 +127,7 @@ export function DetailView({ locationId, onClose }: DetailViewProps) {
           <ActionButton
             label="Website"
             href={location.website}
+            onClick={() => trackWebsiteClick(locationId, location.website!)}
             icon={
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />
@@ -137,6 +139,7 @@ export function DetailView({ locationId, onClose }: DetailViewProps) {
         <ActionButton
           label="Route"
           href={`https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`}
+          onClick={() => trackRouteClick(locationId, 'google_maps')}
           primary
           icon={
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -209,17 +212,20 @@ function ActionButton({
   href,
   icon,
   primary = false,
+  onClick,
 }: {
   label: string;
   href: string;
   icon: React.ReactNode;
   primary?: boolean;
+  onClick?: () => void;
 }) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={onClick}
       className="flex flex-col items-center gap-1"
     >
       <div

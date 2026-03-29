@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useSyncExternalStore } from 'react';
+import { trackFavoriteToggle } from '@/lib/analytics';
 
 const STORAGE_KEY = 'pp-favorites';
 
@@ -90,12 +91,14 @@ export function useFavorites() {
   const toggleFavorite = useCallback(
     (id: number): void => {
       const current = getSnapshot();
-      if (current.has(id)) {
+      const wasPresent = current.has(id);
+      if (wasPresent) {
         current.delete(id);
       } else {
         current.add(id);
       }
       writeFavorites(current);
+      trackFavoriteToggle(id, wasPresent ? 'remove' : 'add', current.size);
     },
     [],
   );
