@@ -164,10 +164,18 @@
   background: var(--color-bg-primary);
 }
 
-/* Override Silk's default handle sizing */
+/* Override Silk's default handle sizing + indicator */
 .SilkSheet-content [data-silk~="a16"] {
   width: 100% !important;
   height: auto !important;
+}
+
+/* Style Silk's handle indicator to match our grip bar */
+.SilkSheet-content [data-silk~="e0"] {
+  width: 36px !important;
+  height: 5px !important;
+  border-radius: 999px !important;
+  background: rgba(160, 130, 110, 0.30) !important;
 }
 
 /* === Base Styles === */

@@ -126,13 +126,8 @@ export function SilkSheet({
             {/* SpecialWrapper required for Safari when inertOutside={false} without backdrop */}
             <Sheet.SpecialWrapper.Root>
               <Sheet.SpecialWrapper.Content>
-                {/* Drag handle */}
-                <Sheet.Handle className="flex flex-shrink-0 cursor-grab items-center justify-center bg-bg-primary py-2 active:cursor-grabbing">
-                  <div
-                    className="h-[5px] w-9 rounded-full"
-                    style={{ background: 'rgba(160, 130, 110, 0.30)' }}
-                  />
-                </Sheet.Handle>
+                {/* Drag handle — Silk renders its own <span> indicator, styled via CSS */}
+                <Sheet.Handle className="flex flex-shrink-0 cursor-grab items-center justify-center bg-bg-primary py-2 active:cursor-grabbing" />
 
                 {/* Sticky header (mode pills + search bar) */}
                 {stickyHeader && (
