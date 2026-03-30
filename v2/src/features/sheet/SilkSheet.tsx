@@ -108,6 +108,7 @@ export function SilkSheet({
         <Sheet.View
           ref={viewRef}
           className={`SilkSheet-view ${className}`}
+          style={{ zIndex: 30 }}
           contentPlacement="bottom"
           detents={[...DETENTS]}
           swipeDismissal={false}
