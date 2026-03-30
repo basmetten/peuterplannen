@@ -172,6 +172,7 @@
 
 /* Style Silk's handle indicator to match our grip bar */
 .SilkSheet-content [data-silk~="e0"] {
+  position: relative !important;
   width: 36px !important;
   height: 5px !important;
   border-radius: 999px !important;
