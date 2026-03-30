@@ -37,14 +37,11 @@ jobs:
       - name: Bundle blog posts
         run: npm run prebuild
 
-      - name: Build Next.js app
-        run: npm run build
+      - name: Build for Cloudflare (Next.js + OpenNext)
+        run: npx opennextjs-cloudflare build
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-
-      - name: Build OpenNext for Cloudflare
-        run: npx opennextjs-cloudflare build
 
       - name: Ensure DNS record exists for staging.peuterplannen.nl
         working-directory: .
