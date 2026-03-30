@@ -27,6 +27,7 @@
 **Library migration complete** — cmdk + Fuse.js (fuzzy search), Embla Carousel (nearby + desktop carousel). Vaul was tried for bottom sheet but crashed iOS Safari (GPU memory exhaustion from `will-change: transform` + MapLibre WebGL) — reverted to custom `useSheetDrag` hook with Issue A fix (swipe-anywhere-to-expand at non-full snaps). Old SearchInput.tsx deleted. Glass/backdrop-filter tokens removed.
 **Phase 7 Silk Polish complete** — MapLibre GPU optimization (pixelRatio:1, maxTileCacheSize:12, fadeDuration:0, fill-extrusion removal), Silk sheet integration (@silk-hq/components replaces custom Sheet.tsx for AppShell), Apple Maps detail view redesign (share/close buttons, quick info row, "Goed om te weten" section), CSS iOS polish (tap feedback, touch improvements), GPS location button (GeolocateControl with warm styling).
 **Phase 8 Stability & Polish complete** — GPU stability (single map instance, freeze during animations, WebGL context loss handling), edge-to-edge bleed (overscroll color, safe areas), desktop CarouselOverlay→sidebar ClusterList, desktop browse↔detail slide transition (150ms, parallax), sidebar collapse toggle (localStorage-persisted), search results group fade. Photo gallery skipped (needs multi-photo DB field).
+**Phase 9 Home & Navigation Redesign complete** — Mode switcher removed (Ontdek/Bewaard/Plan pills gone). New HomeContent with curated sections: search, categories, guides strip, bewaard/plan previews, filters, location list. Silk SheetStack integration: all drill-downs (detail, cluster, favorites, plan, guide) push as stacked sheet layers with 93.3% scale-back animation. GuideDetailView loads blog posts via dynamic import with client-side markdown rendering. Desktop: 60px icon nav column (search/book/heart/plan) + 380px content panel = 440px sidebar. GuideListView with featured/city/recent sections. All deployed to staging.
 
 ## Architecture (current)
 
@@ -423,10 +424,24 @@ All events are fire-and-forget no-ops without GA4 loaded (`NEXT_PUBLIC_GA_ID` en
 ### Remaining infrastructure
 - **Lighthouse CI in CI pipeline** — `lighthouserc.json` config ready, needs GitHub Actions workflow
 
-### Next: Apple Maps polish (Silk + detail redesign + MapLibre optimization)
-- **Silk sheet library** — replace custom `useSheetDrag` + `Sheet.tsx` with `@silk-hq/components` (native-feel sheet, license="non-commercial" for now)
-- **MapLibre memory optimization** — `pixelRatio: 1`, `maxTileCacheSize: 12`, disable 3D buildings, pause rendering when sheet is full
-- **Detail view redesign** — X close button (right) instead of ← back (left), quick info row (open/closed, distance), "Good to Know" section from hidden DB fields (buggy_friendliness, toilet_confidence, parking_ease, food_fit, rain_backup_quality)
+### Next: Phase 8 — GPU Stability + Desktop Transitions + Edge-to-Edge
+See `PHASE-8-STABILITY-AND-POLISH.md` for full spec:
+- **8A: GPU stability** — eliminate double MapLibre instances, freeze map during sheet animations, WebGL context loss handling
+- **8B: Edge-to-edge bleed** — overscroll color matching, safe area handling, 100dvh map
+- **8C: Desktop CarouselOverlay → sidebar ClusterList** — Apple Maps style
+- **8D: Desktop browse↔detail slide transition** — 150ms ease-out, scroll position preserved
+- **8E: Photo gallery** — in sheet/sidebar, Embla carousel
+- **8F: Sidebar collapse toggle** — map goes fullscreen
+- **8G: Search results fade** — group fade, no stagger
+
+### After Phase 8: Phase 9 — Home State Redesign + Guides + Stack Navigation
+See `PHASE-9-HOME-GUIDES-NAVIGATION.md` for full spec:
+- **Remove mode switcher** (Ontdek/Bewaard/Plan pills) — replace with stack navigation
+- **Home state**: peek = search only, half = categories + nearby, full = guides + bewaard + plan + all locations
+- **Silk SheetStack** for layered navigation (detail, guide, favorites, plan as stacked sheets)
+- **Guide detail view** in sheet — hero image + markdown rendered + related locations
+- **Desktop nav column** (60px) with icons replacing tab buttons
+- **Blog/guide routes stay** for SEO, sheet provides in-app discovery
 - **CSS iOS feel** — `touch-action: manipulation` globally, `-webkit-tap-highlight-color: transparent`, `overscroll-behavior: contain` on scroll containers, `pointerdown`/`pointerup` press feedback
 - **LazyMotion** — `npm install motion`, `<LazyMotion features={domAnimation} strict>` in root layout, `whileTap={{ scale: 0.96 }}` on tappable elements
 - **GPS location button** — MapLibre `GeolocateControl` (built-in, 3-state), custom styling, inline error messages
