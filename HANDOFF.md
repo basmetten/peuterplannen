@@ -25,6 +25,7 @@
 **Phase 6 complete** — Apple Maps iOS visual polish: floating sheet (margins + radius + drop-shadow), glass header (backdrop blur on drag handle + mode pills), GPU optimizations, CategoryGrid (2×4 SVG icons replacing type chips), "In de buurt" nearby locations, ClusterList (vertical card list on mobile replacing carousel).
 **Staging deployment complete** — v2 live at `staging.peuterplannen.nl` via `@opennextjs/cloudflare` (Cloudflare Workers). GitHub Actions secrets set. Google Maps API key already restricted.
 **Library migration complete** — cmdk + Fuse.js (fuzzy search), Embla Carousel (nearby + desktop carousel). Vaul was tried for bottom sheet but crashed iOS Safari (GPU memory exhaustion from `will-change: transform` + MapLibre WebGL) — reverted to custom `useSheetDrag` hook with Issue A fix (swipe-anywhere-to-expand at non-full snaps). Old SearchInput.tsx deleted. Glass/backdrop-filter tokens removed.
+**Phase 7 Silk Polish complete** — MapLibre GPU optimization (pixelRatio:1, maxTileCacheSize:12, fadeDuration:0, fill-extrusion removal), Silk sheet integration (@silk-hq/components replaces custom Sheet.tsx for AppShell), Apple Maps detail view redesign (share/close buttons, quick info row, "Goed om te weten" section), CSS iOS polish (tap feedback, touch improvements), GPS location button (GeolocateControl with warm styling).
 
 ## Architecture (current)
 
@@ -140,7 +141,51 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Library migration: cmdk + Fuse.js + Embla (Vaul reverted)
+### Phase 7: Silk Sheet + Apple Maps Detail Redesign + Performance
+
+**7A: MapLibre GPU memory optimization:**
+- `pixelRatio: 1` (saves 50-75% canvas VRAM on Retina)
+- `maxTileCacheSize: 12` (down from ~45)
+- `fadeDuration: 0` (no fade on zoom)
+- Remove 3D `fill-extrusion` layers on load (can use 900MB+ on iOS)
+- Applied to both MapContainer and PersistentMap
+
+**7B: Silk sheet integration (`@silk-hq/components`):**
+- `SilkSheet.tsx` — controlled wrapper mapping our snaps to Silk detents
+- Detents: `25lvh` (peek), `50lvh` (half), content height `92lvh` (full)
+- `inertOutside={false}` — map stays interactive behind sheet
+- `SpecialWrapper` for Safari compatibility without backdrop
+- `Scroll.Root` + `Scroll.View` for scroll-to-drag handoff
+- `scrollGesture` disabled until last detent reached (no content scroll at peek/half)
+- `swipeDismissal={false}`, `swipeOvershoot={true}`
+- Silk CSS layered import for Tailwind V4 compatibility
+- **NEEDS IPHONE TESTING** — if crashes like Vaul, revert immediately
+
+**7C: Apple Maps detail view redesign:**
+- Share button (left) + X close button (right) replace back arrow
+- Route button now first (primary action)
+- Quick info row: score, type, price (compact, evenly spaced)
+- Photo moved below quick info (Apple Maps: actions first)
+- New "Goed om te weten" section surfacing hidden DB fields:
+  buggy_friendliness, toilet_confidence, parking_ease, food_fit,
+  rain_backup_quality, noise_level, shade_or_shelter
+- 7 custom SVG icons (stroller, toilet, parking, food, umbrella, volume, sun)
+- Updated skeleton to match new layout
+
+**7D: CSS iOS polish:**
+- `-webkit-tap-highlight-color: transparent` on all interactive elements
+- `touch-action: manipulation` (removes 300ms tap delay)
+- `-webkit-user-select: none` on UI chrome
+- LocationCard press feedback: scale(0.97) on press, spring bounce-back
+
+**7E: GPS location button:**
+- MapLibre GeolocateControl (top-right, both map instances)
+- `trackUserLocation: true`, `showAccuracyCircle: true`
+- Custom styling: 44px, 12px radius, warm bg, accent color active state
+- Pulse animation while waiting for GPS signal
+- User location dot + accuracy circle in accent color
+
+### Previous: Library migration: cmdk + Fuse.js + Embla (Vaul reverted)
 
 **Vaul attempted and reverted:** Vaul was installed and VaulSheet.tsx built as a thin wrapper. Deployed to staging — immediately crashed iOS Safari. Root cause: Vaul injects `will-change: transform` on `[data-vaul-drawer]` and a `::after` pseudo-element at 200% height, creating permanent GPU compositing layers. Combined with MapLibre WebGL canvas, this exhausts iOS Safari's ~300-500MB GPU memory budget. VaulSheet.tsx deleted, vaul package removed.
 
@@ -337,8 +382,14 @@ All events are fire-and-forget no-ops without GA4 loaded (`NEXT_PUBLIC_GA_ID` en
 
 ### Remaining infrastructure
 - **Lighthouse CI in CI pipeline** — `lighthouserc.json` config ready, needs GitHub Actions workflow
-- **Staging deployment** — Cloudflare Pages at staging.peuterplannen.nl
-- **GitHub Actions secrets** — `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` needed for CI
+
+### Next: Apple Maps polish (Silk + detail redesign + MapLibre optimization)
+- **Silk sheet library** — replace custom `useSheetDrag` + `Sheet.tsx` with `@silk-hq/components` (native-feel sheet, license="non-commercial" for now)
+- **MapLibre memory optimization** — `pixelRatio: 1`, `maxTileCacheSize: 12`, disable 3D buildings, pause rendering when sheet is full
+- **Detail view redesign** — X close button (right) instead of ← back (left), quick info row (open/closed, distance), "Good to Know" section from hidden DB fields (buggy_friendliness, toilet_confidence, parking_ease, food_fit, rain_backup_quality)
+- **CSS iOS feel** — `touch-action: manipulation` globally, `-webkit-tap-highlight-color: transparent`, `overscroll-behavior: contain` on scroll containers, `pointerdown`/`pointerup` press feedback
+- **LazyMotion** — `npm install motion`, `<LazyMotion features={domAnimation} strict>` in root layout, `whileTap={{ scale: 0.96 }}` on tappable elements
+- **GPS location button** — MapLibre `GeolocateControl` (built-in, 3-state), custom styling, inline error messages
 
 ## Key design decisions
 
@@ -364,7 +415,10 @@ All events are fire-and-forget no-ops without GA4 loaded (`NEXT_PUBLIC_GA_ID` en
 | Favorites | localStorage via `useSyncExternalStore` | `pp-favorites` key, Set<number> of IDs. Cross-tab sync. No auth needed. |
 | Mode switcher | Mobile: 3 pills in sheet header. Desktop: segmented control in sidebar | Ontdek/Bewaard/Plan. No tab bar, no "Kaart" mode. Pills sticky below drag handle. Count badges on Bewaard/Plan. Mode-aware map markers. |
 | Image optimization | Cloudflare Image Resizing via URL pattern | `/cdn-cgi/image/width=W,height=H,fit=cover,quality=Q,format=auto/path`. Client uses `OptimizedImage`, server uses `getResizedPhotoUrl()`. |
-| Sheet drag logic | Custom `useSheetDrag` hook (both AppShell + ContentSheetContainer) | Vaul tried and reverted (crashes iOS Safari). Issue A fixed: at non-full snaps, swipe anywhere moves sheet. Rubber-banding, distance-proportional spring, velocity-based fling. |
+| Sheet drag logic | Silk (@silk-hq/components) for AppShell, useSheetDrag for ContentSheetContainer | Silk uses CSS Scroll Snap + WAAPI (no will-change compositing layers). ContentSheetContainer keeps custom hook. If Silk crashes Safari, revert to useSheetDrag. |
+| Detail view | Apple Maps-style with share/close header | Share (left) + X close (right), quick info row, "Goed om te weten" from hidden DB fields, photo below actions. |
+| GPS button | MapLibre GeolocateControl | 44px warm-styled button, accent-colored dot + accuracy circle. Browser permission prompt = GDPR consent. |
+| MapLibre GPU | pixelRatio: 1, maxTileCacheSize: 12 | Saves 50-75% canvas VRAM on Retina. 3D fill-extrusion layers removed on load. |
 | Filter system | 6 filter types, URL-persisted | Types (multi-select), weather (radio), price (multi-select), score (threshold), age (preset), search query. All in `useFilters` hook. Distance deferred (needs GPS). |
 | Plan view | localStorage ordered array via `useSyncExternalStore` | `pp-plan` key, number[] of IDs. Reorderable. Same cross-tab sync pattern as favorites. |
 | Offline indicator | `navigator.onLine` event listeners | OfflineBanner in root layout. Auto-shows/hides. No service worker needed. |
@@ -373,7 +427,7 @@ All events are fire-and-forget no-ops without GA4 loaded (`NEXT_PUBLIC_GA_ID` en
 | Analytics | GA4 + Consent Mode v2 + web-vitals | Typed event module in `src/lib/analytics.ts`. GA4 loads only when `NEXT_PUBLIC_GA_ID` set. CWV reported via `web-vitals` dynamic import. |
 | LocationCard a11y | div + sr-only button + heart button | No nested interactive. div has onClick for mouse, sr-only button for keyboard/screen reader. Heart button independent at z-1. |
 | Test suite | 82 Playwright tests | 44 core flows + 22 axe-core a11y + 16 visual regression screenshots. `npm run test:e2e:all` runs everything. |
-| Floating sheet | floatFactor-based margins + radius + drop-shadow | 1 at peek (floating card with gap) → 0 at full (edge-to-edge). GPU-accelerated filter: drop-shadow. |
+| Floating sheet | REVERTED — causes Safari crashes | floatFactor margins + radius + drop-shadow was tried and removed. Sheet is now flat, full-width, fixed radius. |
 | Sheet header | Solid bg-bg-primary on drag handle + sticky header | Glass/backdrop-filter crashes iOS Safari. NEVER add backdrop-filter to sheet or its children. |
 | Search | cmdk + Fuse.js fuzzy search | SearchCommand replaces SearchInput. Grouped results by type, keyboard nav, typo-tolerant. |
 | Carousel | Embla Carousel | HorizontalCardStrip (nearby), CarouselOverlay (desktop clusters). Replaces manual scroll-snap logic. |
