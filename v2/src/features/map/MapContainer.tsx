@@ -101,6 +101,16 @@ export function MapContainer({
 
     map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
 
+    // GPS location button (Apple Maps style)
+    const geolocate = new maplibregl.GeolocateControl({
+      positionOptions: { enableHighAccuracy: true },
+      trackUserLocation: true,
+      showAccuracyCircle: true,
+      showUserLocation: true,
+      fitBoundsOptions: { maxZoom: 15 },
+    });
+    map.addControl(geolocate, 'top-right');
+
     map.on('load', () => {
       // Remove 3D fill-extrusion layers — can use 900MB+ at street zoom on iOS
       for (const layer of map.getStyle().layers) {

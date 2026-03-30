@@ -184,6 +184,48 @@ button, [role="button"], nav {
   user-select: none;
 }
 
+/* === GPS location button — Apple Maps style === */
+.maplibregl-ctrl-geolocate {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--color-bg-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.maplibregl-ctrl-geolocate:hover {
+  background: var(--color-bg-secondary);
+}
+
+.maplibregl-ctrl-geolocate-active {
+  color: var(--color-accent);
+}
+
+.maplibregl-ctrl-geolocate-waiting {
+  animation: gpsWaiting 1.5s ease infinite;
+}
+
+@keyframes gpsWaiting {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.maplibregl-user-location-dot {
+  background-color: var(--color-accent);
+}
+
+.maplibregl-user-location-accuracy-circle {
+  background-color: rgba(179, 85, 58, 0.15);
+}
+
+.maplibregl-ctrl-top-right {
+  top: 16px;
+  right: 16px;
+}
+
 /* Content sheet — SSR-safe responsive positioning.
    Mobile: bottom sheet with snap states (half / full default).
    Desktop: 420px sidebar panel. CSS handles both without JS. */
