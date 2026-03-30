@@ -126,14 +126,12 @@ export function SilkSheet({
             <Sheet.SpecialWrapper.Root>
               <Sheet.SpecialWrapper.Content>
                 {/* Drag handle */}
-                <div className="flex flex-shrink-0 items-center justify-center bg-bg-primary py-2">
-                  <Sheet.Handle asChild>
-                    <div
-                      className="h-[5px] w-9 rounded-full"
-                      style={{ background: 'rgba(160, 130, 110, 0.30)' }}
-                    />
-                  </Sheet.Handle>
-                </div>
+                <Sheet.Handle className="flex flex-shrink-0 cursor-grab items-center justify-center bg-bg-primary py-2 active:cursor-grabbing">
+                  <div
+                    className="h-[5px] w-9 rounded-full"
+                    style={{ background: 'rgba(160, 130, 110, 0.30)' }}
+                  />
+                </Sheet.Handle>
 
                 {/* Sticky header (mode pills + search bar) */}
                 {stickyHeader && (

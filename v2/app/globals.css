@@ -142,8 +142,10 @@
 }
 
 /* === Silk Sheet styles === */
+/* Silk portal z-index: must be above MapLibre controls (z-index: 2) */
 .SilkSheet-view {
   height: var(--silk-100-lvh-dvh-pct, 100lvh);
+  z-index: 30;
 }
 
 .SilkSheet-content {
@@ -160,6 +162,12 @@
 .SilkSheet-scroll {
   flex: 1;
   background: var(--color-bg-primary);
+}
+
+/* Override Silk's default handle sizing */
+.SilkSheet-content [data-silk~="a16"] {
+  width: 100% !important;
+  height: auto !important;
 }
 
 /* === Base Styles === */
