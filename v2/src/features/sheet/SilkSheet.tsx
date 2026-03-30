@@ -99,8 +99,10 @@ export function SilkSheet({
   return (
     <Sheet.Root
       license="non-commercial"
+      defaultPresented={true}
       presented={isPresented}
       onPresentedChange={handlePresentedChange}
+      defaultActiveDetent={1}
       activeDetent={activeDetent}
       onActiveDetentChange={handleActiveDetentChange}
     >
@@ -116,6 +118,7 @@ export function SilkSheet({
           nativeEdgeSwipePrevention={true}
           swipeOvershoot={true}
           nativeFocusScrollPrevention={true}
+          enteringAnimationSettings={{ skip: true }}
           onTravelRangeChange={handleTravelRangeChange}
           onTravelStatusChange={handleTravelStatusChange}
           onTravel={handleTravel}
