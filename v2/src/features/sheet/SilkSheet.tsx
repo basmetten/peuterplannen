@@ -103,6 +103,7 @@ export function SilkSheet({
       defaultActiveDetent={1}
       activeDetent={activeDetent}
       onActiveDetentChange={handleActiveDetentChange}
+      forComponent="closest"
     >
       <Sheet.Portal>
         <Sheet.View
@@ -121,6 +122,13 @@ export function SilkSheet({
           onTravelStatusChange={handleTravelStatusChange}
           onTravel={handleTravel}
         >
+          <Sheet.Outlet
+            stackingAnimation={{
+              scale: [1, 0.933] as [number, number],
+              borderRadius: ({ progress, tween }: { progress: number; tween: (s: string | number, e: string | number) => string }) =>
+                tween('0px', `${progress * 12}px`),
+            }}
+          />
           <Sheet.Content className="SilkSheet-content">
             <Sheet.BleedingBackground className="bg-bg-primary" />
 

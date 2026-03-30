@@ -2,9 +2,11 @@
 
 import { useCallback, useMemo, useEffect, useRef, useState, Suspense } from 'react';
 import { useMachine } from '@xstate/react';
+import { SheetStack } from '@silk-hq/components';
 import { useIsDesktop } from '@/hooks/useIsDesktop';
 import { MapContainer } from '@/features/map/MapContainer';
 import { SilkSheet } from '@/features/sheet/SilkSheet';
+import { StackedSheet } from '@/features/sheet/StackedSheet';
 import { Sidebar, SIDEBAR_WIDTH } from '@/features/sidebar/Sidebar';
 import { sheetMachine, SNAP_POINTS, type SheetSnap } from '@/features/sheet/sheetMachine';
 import { useFilters, applyFilters } from '@/features/filters/useFilters';
@@ -306,64 +308,40 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
     setShowPlan(true);
   }, []);
 
-  // --- Shared sheet content ---
+  // Cluster locations (memoized for both mobile and desktop)
+  const clusterLocations = useMemo(() => {
+    if (!carouselLocationIds) return [];
+    return carouselLocationIds
+      .map(id => initialLocations.find(l => l.id === id))
+      .filter((l): l is LocationSummary => l !== undefined)
+      .sort((a, b) => {
+        if (a.is_featured && !b.is_featured) return -1;
+        if (!a.is_featured && b.is_featured) return 1;
+        return (b.ai_suitability_score_10 ?? 0) - (a.ai_suitability_score_10 ?? 0);
+      });
+  }, [carouselLocationIds, initialLocations]);
 
-  const getSheetContent = () => {
-    if (isDetailOpen && detailId) {
-      return (
-        <DetailView
-          locationId={detailId}
-          onClose={handleDetailClose}
-          nearbyLocations={nearbyLocations}
-          onNearbyTap={handleCardTap}
-        />
-      );
-    }
-
-    if (isCarouselOpen && carouselLocationIds) {
-      const clusterLocations = carouselLocationIds
-        .map(id => initialLocations.find(l => l.id === id))
-        .filter((l): l is LocationSummary => l !== undefined)
-        .sort((a, b) => {
-          if (a.is_featured && !b.is_featured) return -1;
-          if (!a.is_featured && b.is_featured) return 1;
-          return (b.ai_suitability_score_10 ?? 0) - (a.ai_suitability_score_10 ?? 0);
-        });
-
-      return (
-        <ClusterList
-          locations={clusterLocations}
-          onCardTap={handleCarouselCardTap}
-          onClose={() => sheetSend({ type: 'CAROUSEL_CLOSE' })}
-        />
-      );
-    }
-
-    return (
-      <HomeContent
-        filteredLocations={filteredLocations}
-        initialLocations={initialLocations}
-        filters={filters}
-        isFiltered={isFiltered}
-        guides={initialGuides}
-        onTypeToggle={toggleType}
-        onWeatherChange={setWeather}
-        onQueryChange={setQuery}
-        onPriceBandToggle={togglePriceBand}
-        onScoreChange={setMinScore}
-        onAgeChange={setAgeKey}
-        onClearFilters={clearFilters}
-        onCardTap={handleCardTap}
-        onSearchFocus={handleSearchFocus}
-        onGuideTap={handleGuideTap}
-        onFavoritesTap={handleFavoritesTap}
-        onPlanTap={handlePlanTap}
-        selectedId={detailId}
-      />
-    );
+  // HomeContent props (shared between mobile and desktop)
+  const homeContentProps = {
+    filteredLocations,
+    initialLocations,
+    filters,
+    isFiltered,
+    guides: initialGuides,
+    onTypeToggle: toggleType,
+    onWeatherChange: setWeather,
+    onQueryChange: setQuery,
+    onPriceBandToggle: togglePriceBand,
+    onScoreChange: setMinScore,
+    onAgeChange: setAgeKey,
+    onClearFilters: clearFilters,
+    onCardTap: handleCardTap,
+    onSearchFocus: handleSearchFocus,
+    onGuideTap: handleGuideTap,
+    onFavoritesTap: handleFavoritesTap,
+    onPlanTap: handlePlanTap,
+    selectedId: detailId,
   };
-
-  const content = getSheetContent();
 
   return (
     <>
@@ -412,47 +390,15 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
               aria-hidden={isDetailOpen}
               inert={isDetailOpen || undefined}
             >
-              {(() => {
-                if (isCarouselOpen && carouselLocationIds) {
-                  const clusterLocations = carouselLocationIds
-                    .map(id => initialLocations.find(l => l.id === id))
-                    .filter((l): l is LocationSummary => l !== undefined)
-                    .sort((a, b) => {
-                      if (a.is_featured && !b.is_featured) return -1;
-                      if (!a.is_featured && b.is_featured) return 1;
-                      return (b.ai_suitability_score_10 ?? 0) - (a.ai_suitability_score_10 ?? 0);
-                    });
-                  return (
-                    <ClusterList
-                      locations={clusterLocations}
-                      onCardTap={handleCarouselCardTap}
-                      onClose={() => sheetSend({ type: 'CAROUSEL_CLOSE' })}
-                    />
-                  );
-                }
-                return (
-                  <HomeContent
-                    filteredLocations={filteredLocations}
-                    initialLocations={initialLocations}
-                    filters={filters}
-                    isFiltered={isFiltered}
-                    guides={initialGuides}
-                    onTypeToggle={toggleType}
-                    onWeatherChange={setWeather}
-                    onQueryChange={setQuery}
-                    onPriceBandToggle={togglePriceBand}
-                    onScoreChange={setMinScore}
-                    onAgeChange={setAgeKey}
-                    onClearFilters={clearFilters}
-                    onCardTap={handleCardTap}
-                    onSearchFocus={handleSearchFocus}
-                    onGuideTap={handleGuideTap}
-                    onFavoritesTap={handleFavoritesTap}
-                    onPlanTap={handlePlanTap}
-                    selectedId={detailId}
-                  />
-                );
-              })()}
+              {isCarouselOpen && clusterLocations.length > 0 ? (
+                <ClusterList
+                  locations={clusterLocations}
+                  onCardTap={handleCarouselCardTap}
+                  onClose={() => sheetSend({ type: 'CAROUSEL_CLOSE' })}
+                />
+              ) : (
+                <HomeContent {...homeContentProps} />
+              )}
             </div>
 
             {/* Detail panel — slides over from right */}
@@ -474,9 +420,54 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
         </Sidebar>
       ) : (
         <Suspense>
-          <SilkSheet snap={snap} onSnapChange={handleSnapChange}>
-            {content}
-          </SilkSheet>
+          <SheetStack.Root>
+            {/* Layer 0: Home browse sheet — always present */}
+            <SilkSheet snap={snap} onSnapChange={handleSnapChange}>
+              <HomeContent {...homeContentProps} />
+            </SilkSheet>
+
+            {/* Layer 1+: Stacked sheets */}
+            <StackedSheet presented={isDetailOpen} onClose={handleDetailClose}>
+              {isDetailOpen && detailId && (
+                <DetailView
+                  locationId={detailId}
+                  onClose={handleDetailClose}
+                  nearbyLocations={nearbyLocations}
+                  onNearbyTap={handleCardTap}
+                />
+              )}
+            </StackedSheet>
+
+            <StackedSheet presented={isCarouselOpen} onClose={() => sheetSend({ type: 'CAROUSEL_CLOSE' })}>
+              {isCarouselOpen && clusterLocations.length > 0 && (
+                <ClusterList
+                  locations={clusterLocations}
+                  onCardTap={handleCarouselCardTap}
+                  onClose={() => sheetSend({ type: 'CAROUSEL_CLOSE' })}
+                />
+              )}
+            </StackedSheet>
+
+            <StackedSheet presented={showFavorites} onClose={() => setShowFavorites(false)}>
+              {showFavorites && (
+                <FavoritesList
+                  locations={initialLocations}
+                  onCardTap={handleCardTap}
+                  selectedId={detailId}
+                />
+              )}
+            </StackedSheet>
+
+            <StackedSheet presented={showPlan} onClose={() => setShowPlan(false)}>
+              {showPlan && (
+                <PlanView
+                  locations={initialLocations}
+                  onCardTap={handleCardTap}
+                  selectedId={detailId}
+                />
+              )}
+            </StackedSheet>
+          </SheetStack.Root>
         </Suspense>
       )}
     </>
