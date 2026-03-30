@@ -3,25 +3,19 @@
 import { useCallback, useMemo, useEffect, useRef, useState, Suspense } from 'react';
 import { useMachine } from '@xstate/react';
 import { useIsDesktop } from '@/hooks/useIsDesktop';
-import { useFavorites } from '@/hooks/useFavorites';
-import { usePlan } from '@/hooks/usePlan';
 import { MapContainer } from '@/features/map/MapContainer';
 import { SilkSheet } from '@/features/sheet/SilkSheet';
 import { Sidebar, SIDEBAR_WIDTH } from '@/features/sidebar/Sidebar';
 import { sheetMachine, SNAP_POINTS, type SheetSnap } from '@/features/sheet/sheetMachine';
-import { FilterBar } from '@/features/filters/FilterBar';
-import { CategoryGrid } from '@/components/patterns/CategoryGrid';
-import { SearchCommand } from '@/features/search/SearchCommand';
 import { useFilters, applyFilters } from '@/features/filters/useFilters';
-import { LocationCard } from '@/components/patterns/LocationCard';
 import { CardListSkeleton } from '@/components/patterns/CardSkeleton';
-import { EmptyFilterState } from '@/components/patterns/EmptyState';
 import { DetailView } from '@/features/detail/DetailView';
 import { ClusterList } from '@/features/carousel/ClusterList';
-import { SheetModeSwitcher, type SheetMode } from '@/components/layout/SheetModeSwitcher';
+import { HomeContent } from '@/features/home/HomeContent';
 import { FavoritesList } from '@/features/favorites/FavoritesList';
 import { PlanView } from '@/features/plan/PlanView';
 import type { LocationSummary } from '@/domain/types';
+import type { BlogPostMeta } from '@/domain/blog';
 import { useMapState } from '@/context/MapStateContext';
 import { useMapFreeze } from '@/hooks/useMapFreeze';
 import { trackDetailOpen, trackSearch, trackFilterApply } from '@/lib/analytics';
@@ -30,6 +24,7 @@ import { haversine } from '@/lib/geo';
 
 interface AppShellProps {
   initialLocations: LocationSummary[];
+  initialGuides: BlogPostMeta[];
 }
 
 // --- URL helpers ---
@@ -50,18 +45,20 @@ function findByParam(locations: LocationSummary[], param: string): LocationSumma
 
 // --- Main component ---
 
-export function AppShell({ initialLocations }: AppShellProps) {
+export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
   const isDesktop = useIsDesktop();
   const { setAppMapActive } = useMapState();
   const [sheetState, sheetSend] = useMachine(sheetMachine);
   const { filters, toggleType, setWeather, setQuery, togglePriceBand, setMinScore, setAgeKey, clearFilters, isFiltered } = useFilters();
-  const [sheetMode, setSheetMode] = useState<SheetMode>('ontdek');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     if (typeof window === 'undefined') return false;
     return localStorage.getItem('pp-sidebar-collapsed') === 'true';
   });
-  const { favorites } = useFavorites();
-  const { planIds } = usePlan();
+
+  // Layer state (stack navigation — replaces mode switcher)
+  const [showFavorites, setShowFavorites] = useState(false);
+  const [showPlan, setShowPlan] = useState(false);
+  const [guideSlug, setGuideSlug] = useState<string | null>(null);
 
   // Map ref for freeze/unfreeze during sheet animations
   const mapInstanceRef = useRef<import('maplibre-gl').Map | null>(null);
@@ -102,21 +99,10 @@ export function AppShell({ initialLocations }: AppShellProps) {
       .slice(0, 6);
   }, [detailId, initialLocations]);
 
-  // Mode-aware map locations: filter markers based on active mode
-  const mapLocations = useMemo(() => {
-    switch (sheetMode) {
-      case 'bewaard':
-        return initialLocations.filter((loc) => favorites.has(loc.id));
-      case 'plan':
-        return planIds
-          .map((id) => initialLocations.find((l) => l.id === id))
-          .filter((l): l is LocationSummary => l !== undefined);
-      default:
-        return filteredLocations;
-    }
-  }, [sheetMode, initialLocations, filteredLocations, favorites, planIds]);
+  // Map always shows full filtered set (no mode-based filtering)
+  const mapLocations = filteredLocations;
 
-  // Track viewport height for accurate sheet padding (handles resize + orientation change)
+  // Track viewport height for accurate sheet padding
   const [viewportHeight, setViewportHeight] = useState(
     typeof window !== 'undefined' ? window.innerHeight : 800,
   );
@@ -131,7 +117,7 @@ export function AppShell({ initialLocations }: AppShellProps) {
     return () => window.removeEventListener('resize', update);
   }, []);
 
-  // Map bottom padding (mobile only — desktop has no sheet)
+  // Map bottom padding (mobile only)
   const bottomPadding = useMemo(() => {
     if (isDesktop) return 0;
     return (SNAP_POINTS[snap] / 100) * viewportHeight;
@@ -150,7 +136,6 @@ export function AppShell({ initialLocations }: AppShellProps) {
     const loc = findByParam(initialLocations, locatie);
     if (!loc) return;
 
-    // Set up history so back has a "browse" entry to return to
     const browseUrl = new URL(window.location.href);
     browseUrl.searchParams.delete('locatie');
     window.history.replaceState({ mode: 'browse' }, '', browseUrl.toString());
@@ -184,7 +169,6 @@ export function AppShell({ initialLocations }: AppShellProps) {
     return () => window.removeEventListener('popstate', handler);
   }, [initialLocations, sheetSend]);
 
-  // Push locatie to URL when detail opens via user action
   const pushDetailUrl = useCallback((location: LocationSummary) => {
     if (isNavigatingRef.current) return;
     const url = new URL(window.location.href);
@@ -204,7 +188,7 @@ export function AppShell({ initialLocations }: AppShellProps) {
     if (isCarouselOpen) {
       sheetSend({ type: 'CAROUSEL_CLOSE' });
     } else if (isDetailOpen) {
-      window.history.back(); // popstate → CLOSE_DETAIL
+      window.history.back();
     } else if (!isDesktop && snap !== 'peek') {
       sheetSend({ type: 'SNAP_TO', target: 'peek' });
     }
@@ -212,11 +196,11 @@ export function AppShell({ initialLocations }: AppShellProps) {
 
   const handleSnapChange = useCallback((newSnap: SheetSnap) => {
     freezeMap();
-    setTimeout(unfreezeMap, 500); // resume after Silk animation settles
+    setTimeout(unfreezeMap, 500);
 
     if (isDetailOpen) {
       if (newSnap === 'hidden' || newSnap === 'peek') {
-        window.history.back(); // popstate → CLOSE_DETAIL
+        window.history.back();
       } else {
         sheetSend({ type: 'DRAG_END', snapTo: newSnap });
       }
@@ -230,7 +214,6 @@ export function AppShell({ initialLocations }: AppShellProps) {
     freezeMap();
     sheetSend({ type: 'OPEN_DETAIL', id: location.id });
     pushDetailUrl(location);
-    // flyTo AFTER sheet animation completes — prevents concurrent GPU work
     setTimeout(() => {
       unfreezeMap();
       const map = mapInstanceRef.current;
@@ -245,7 +228,7 @@ export function AppShell({ initialLocations }: AppShellProps) {
   }, [sheetSend, pushDetailUrl, freezeMap, unfreezeMap]);
 
   const handleDetailClose = useCallback(() => {
-    window.history.back(); // popstate → CLOSE_DETAIL
+    window.history.back();
   }, []);
 
   const handleSearchFocus = useCallback(() => {
@@ -254,7 +237,7 @@ export function AppShell({ initialLocations }: AppShellProps) {
     }
   }, [isDesktop, snap, sheetSend]);
 
-  // --- Analytics: debounced search tracking ---
+  // --- Analytics ---
 
   const searchTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => {
@@ -266,8 +249,6 @@ export function AppShell({ initialLocations }: AppShellProps) {
     return () => clearTimeout(searchTimerRef.current);
   }, [filters.query]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // --- Analytics: filter change tracking ---
-
   const prevFiltersRef = useRef<FilterState>(filters);
   useEffect(() => {
     const prev = prevFiltersRef.current;
@@ -275,34 +256,21 @@ export function AppShell({ initialLocations }: AppShellProps) {
     if (prev === filters) return;
 
     const count = filteredLocations.length;
-
-    // Type filter additions
     filters.types
       .filter((t) => !prev.types.includes(t))
       .forEach((t) => trackFilterApply('type', t, count));
-
-    // Weather change
-    if (filters.weather && filters.weather !== prev.weather) {
+    if (filters.weather && filters.weather !== prev.weather)
       trackFilterApply('weather', filters.weather, count);
-    }
-
-    // Price band additions
     filters.priceBands
       .filter((p) => !prev.priceBands.includes(p))
       .forEach((p) => trackFilterApply('price', p, count));
-
-    // Score change
-    if (filters.minScore !== null && filters.minScore !== prev.minScore) {
+    if (filters.minScore !== null && filters.minScore !== prev.minScore)
       trackFilterApply('score', `${filters.minScore}+`, count);
-    }
-
-    // Age change
-    if (filters.ageKey && filters.ageKey !== prev.ageKey) {
+    if (filters.ageKey && filters.ageKey !== prev.ageKey)
       trackFilterApply('age', filters.ageKey, count);
-    }
   }, [filters, filteredLocations.length]);
 
-  // --- Carousel handlers (mobile only) ---
+  // --- Carousel handlers ---
 
   const handleClusterExpand = useCallback((locations: LocationSummary[]) => {
     sheetSend({ type: 'CAROUSEL_OPEN', locationIds: locations.map((l) => l.id) });
@@ -314,7 +282,7 @@ export function AppShell({ initialLocations }: AppShellProps) {
     pushDetailUrl(location);
   }, [sheetSend, pushDetailUrl]);
 
-  // --- Sidebar collapse toggle (desktop only) ---
+  // --- Sidebar collapse toggle ---
 
   const toggleSidebar = useCallback(() => {
     setSidebarCollapsed(prev => {
@@ -324,17 +292,23 @@ export function AppShell({ initialLocations }: AppShellProps) {
     });
   }, []);
 
-  // --- Mode change handler ---
+  // --- Layer handlers (stack navigation) ---
 
-  const handleModeChange = useCallback((mode: SheetMode) => {
-    setSheetMode(mode);
-    // No sheet snap manipulation — mode just changes content, map viewport preserved
+  const handleGuideTap = useCallback((slug: string) => {
+    setGuideSlug(slug);
   }, []);
 
-  // --- Shared content (rendered in sidebar or sheet) ---
+  const handleFavoritesTap = useCallback(() => {
+    setShowFavorites(true);
+  }, []);
+
+  const handlePlanTap = useCallback(() => {
+    setShowPlan(true);
+  }, []);
+
+  // --- Shared sheet content ---
 
   const getSheetContent = () => {
-    // Detail view always takes priority
     if (isDetailOpen && detailId) {
       return (
         <DetailView
@@ -346,7 +320,6 @@ export function AppShell({ initialLocations }: AppShellProps) {
       );
     }
 
-    // Cluster list — vertical list in sheet (mobile) or sidebar (desktop)
     if (isCarouselOpen && carouselLocationIds) {
       const clusterLocations = carouselLocationIds
         .map(id => initialLocations.find(l => l.id === id))
@@ -366,35 +339,13 @@ export function AppShell({ initialLocations }: AppShellProps) {
       );
     }
 
-    // Mode-based content
-    switch (sheetMode) {
-      case 'bewaard':
-        return (
-          <FavoritesList
-            locations={initialLocations}
-            onCardTap={handleCardTap}
-            selectedId={detailId}
-          />
-        );
-      case 'plan':
-        return (
-          <PlanView
-            locations={initialLocations}
-            onCardTap={handleCardTap}
-            selectedId={detailId}
-          />
-        );
-      default:
-        break;
-    }
-
     return (
-      <BrowseContent
-        locations={filteredLocations}
-        allLocations={initialLocations}
-        totalCount={initialLocations.length}
+      <HomeContent
+        filteredLocations={filteredLocations}
+        initialLocations={initialLocations}
         filters={filters}
         isFiltered={isFiltered}
+        guides={initialGuides}
         onTypeToggle={toggleType}
         onWeatherChange={setWeather}
         onQueryChange={setQuery}
@@ -404,17 +355,15 @@ export function AppShell({ initialLocations }: AppShellProps) {
         onClearFilters={clearFilters}
         onCardTap={handleCardTap}
         onSearchFocus={handleSearchFocus}
+        onGuideTap={handleGuideTap}
+        onFavoritesTap={handleFavoritesTap}
+        onPlanTap={handlePlanTap}
         selectedId={detailId}
       />
     );
   };
 
   const content = getSheetContent();
-
-  // Mode pills: visible when not in detail view
-  const modeSwitcher = !isDetailOpen ? (
-    <SheetModeSwitcher activeMode={sheetMode} onModeChange={handleModeChange} />
-  ) : null;
 
   return (
     <>
@@ -463,8 +412,6 @@ export function AppShell({ initialLocations }: AppShellProps) {
               aria-hidden={isDetailOpen}
               inert={isDetailOpen || undefined}
             >
-              <SidebarTabs activeMode={sheetMode} onModeChange={handleModeChange} />
-              {/* Browse/cluster/mode content (everything except detail) */}
               {(() => {
                 if (isCarouselOpen && carouselLocationIds) {
                   const clusterLocations = carouselLocationIds
@@ -483,32 +430,28 @@ export function AppShell({ initialLocations }: AppShellProps) {
                     />
                   );
                 }
-                switch (sheetMode) {
-                  case 'bewaard':
-                    return <FavoritesList locations={initialLocations} onCardTap={handleCardTap} selectedId={detailId} />;
-                  case 'plan':
-                    return <PlanView locations={initialLocations} onCardTap={handleCardTap} selectedId={detailId} />;
-                  default:
-                    return (
-                      <BrowseContent
-                        locations={filteredLocations}
-                        allLocations={initialLocations}
-                        totalCount={initialLocations.length}
-                        filters={filters}
-                        isFiltered={isFiltered}
-                        onTypeToggle={toggleType}
-                        onWeatherChange={setWeather}
-                        onQueryChange={setQuery}
-                        onPriceBandToggle={togglePriceBand}
-                        onScoreChange={setMinScore}
-                        onAgeChange={setAgeKey}
-                        onClearFilters={clearFilters}
-                        onCardTap={handleCardTap}
-                        onSearchFocus={handleSearchFocus}
-                        selectedId={detailId}
-                      />
-                    );
-                }
+                return (
+                  <HomeContent
+                    filteredLocations={filteredLocations}
+                    initialLocations={initialLocations}
+                    filters={filters}
+                    isFiltered={isFiltered}
+                    guides={initialGuides}
+                    onTypeToggle={toggleType}
+                    onWeatherChange={setWeather}
+                    onQueryChange={setQuery}
+                    onPriceBandToggle={togglePriceBand}
+                    onScoreChange={setMinScore}
+                    onAgeChange={setAgeKey}
+                    onClearFilters={clearFilters}
+                    onCardTap={handleCardTap}
+                    onSearchFocus={handleSearchFocus}
+                    onGuideTap={handleGuideTap}
+                    onFavoritesTap={handleFavoritesTap}
+                    onPlanTap={handlePlanTap}
+                    selectedId={detailId}
+                  />
+                );
               })()}
             </div>
 
@@ -531,7 +474,7 @@ export function AppShell({ initialLocations }: AppShellProps) {
         </Sidebar>
       ) : (
         <Suspense>
-          <SilkSheet snap={snap} onSnapChange={handleSnapChange} stickyHeader={modeSwitcher}>
+          <SilkSheet snap={snap} onSnapChange={handleSnapChange}>
             {content}
           </SilkSheet>
         </Suspense>
@@ -540,215 +483,24 @@ export function AppShell({ initialLocations }: AppShellProps) {
   );
 }
 
-// --- Browse content (shared between sidebar and sheet) ---
-
-function BrowseContent({
-  locations,
-  allLocations,
-  totalCount,
-  filters,
-  isFiltered,
-  onTypeToggle,
-  onWeatherChange,
-  onQueryChange,
-  onPriceBandToggle,
-  onScoreChange,
-  onAgeChange,
-  onClearFilters,
-  onCardTap,
-  onSearchFocus,
-  selectedId,
-}: {
-  locations: LocationSummary[];
-  allLocations: LocationSummary[];
-  totalCount: number;
-  filters: ReturnType<typeof useFilters>['filters'];
-  isFiltered: boolean;
-  onTypeToggle: (type: import('@/domain/enums').LocationType) => void;
-  onWeatherChange: (weather: import('@/domain/enums').Weather | null) => void;
-  onQueryChange: (query: string) => void;
-  onPriceBandToggle: (band: import('@/domain/enums').PriceBand) => void;
-  onScoreChange: (score: number | null) => void;
-  onAgeChange: (key: import('@/domain/enums').AgePresetKey | null) => void;
-  onClearFilters: () => void;
-  onCardTap: (location: LocationSummary) => void;
-  onSearchFocus: () => void;
-  selectedId: number | null;
-}) {
-  const isEmpty = locations.length === 0 && isFiltered;
-
-  return (
-    <div>
-      {/* Search — fuzzy search across all locations via cmdk + Fuse.js */}
-      <SearchCommand
-        locations={allLocations}
-        onSelect={onCardTap}
-        onQueryChange={onQueryChange}
-        onFocus={onSearchFocus}
-      />
-
-      {/* Category grid (type filter) — hidden during search */}
-      {!filters.query && (
-        <CategoryGrid
-          activeTypes={filters.types}
-          onTypeToggle={onTypeToggle}
-        />
-      )}
-
-      {/* Secondary filters */}
-      <FilterBar
-        activeWeather={filters.weather}
-        activePriceBands={filters.priceBands}
-        activeMinScore={filters.minScore}
-        activeAgeKey={filters.ageKey}
-        onWeatherChange={onWeatherChange}
-        onPriceBandToggle={onPriceBandToggle}
-        onScoreChange={onScoreChange}
-        onAgeChange={onAgeChange}
-      />
-
-      {/* Divider */}
-      <div className="hairline" />
-
-      {isEmpty ? (
-        /* Empty state */
-        <EmptyFilterState
-          activeTypes={filters.types}
-          activeWeather={filters.weather}
-          activePriceBands={filters.priceBands}
-          activeMinScore={filters.minScore}
-          activeAgeKey={filters.ageKey}
-          query={filters.query}
-          onClearFilters={onClearFilters}
-          onRemoveType={onTypeToggle}
-          onClearWeather={() => onWeatherChange(null)}
-          onRemovePriceBand={onPriceBandToggle}
-          onClearScore={() => onScoreChange(null)}
-          onClearAge={() => onAgeChange(null)}
-          onClearQuery={() => onQueryChange('')}
-        />
-      ) : (
-        <>
-          {/* Result count */}
-          <div className="px-4 py-2">
-            <p className="text-[13px] tracking-[0.002em] text-label-secondary">
-              {locations.length === totalCount
-                ? `${locations.length} locaties`
-                : `${locations.length} van ${totalCount} locaties`}
-            </p>
-          </div>
-
-          {/* Card list */}
-          <div className="card-list flex flex-col gap-2 px-4 pb-4">
-            {locations.map((loc) => (
-              <LocationCard
-                key={loc.id}
-                location={loc}
-                onTap={onCardTap}
-                isSelected={loc.id === selectedId}
-              />
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
-
-// --- Desktop sidebar tabs (segmented control) ---
-
-const SIDEBAR_TABS: { id: SheetMode; label: string }[] = [
-  { id: 'ontdek', label: 'Ontdek' },
-  { id: 'bewaard', label: 'Bewaard' },
-  { id: 'plan', label: 'Plan' },
-];
-
-function SidebarTabs({
-  activeMode,
-  onModeChange,
-}: {
-  activeMode: SheetMode;
-  onModeChange: (mode: SheetMode) => void;
-}) {
-  return (
-    <div className="px-4 pb-2 pt-3">
-      <div className="flex rounded-[10px] bg-bg-secondary p-0.5">
-        {SIDEBAR_TABS.map((tab) => {
-          const isActive = tab.id === activeMode;
-          return (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => onModeChange(tab.id)}
-              className={`flex-1 rounded-[8px] px-3 py-1.5 text-[13px] font-medium tracking-[0.002em] transition-all duration-fast ${
-                isActive
-                  ? 'bg-bg-primary text-label shadow-sm'
-                  : 'text-label-secondary hover:text-label'
-              }`}
-              aria-pressed={isActive}
-            >
-              {tab.label}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 // --- Suspense fallback ---
 
 export function AppShellSkeleton() {
-  // Skeleton at peek state (75% translateY = 25% visible), floatFactor ≈ 1.0
   return (
     <>
-      {/* Map placeholder */}
       <div className="absolute inset-0 bg-bg-secondary" />
-
-      {/* Sheet skeleton (mobile) — matches simplified Sheet.tsx */}
       <div
         className="fixed inset-x-0 bottom-0 z-30 overflow-hidden rounded-t-2xl shadow-sheet md:bottom-auto md:left-0 md:top-0 md:w-[380px] md:rounded-none md:border-r md:border-separator md:shadow-none"
-        style={{
-          height: '100%',
-          transform: 'translateY(75%)',
-        }}
+        style={{ height: '100%', transform: 'translateY(75%)' }}
       >
-        {/* Handle (mobile only) */}
         <div className="flex items-center justify-center bg-bg-primary py-2 md:hidden">
           <div className="h-[5px] w-9 rounded-full" style={{ background: 'rgba(160, 130, 110, 0.30)' }} />
         </div>
-
-        {/* Mode pills skeleton */}
-        <div className="flex justify-center gap-2 bg-bg-primary px-4 py-1.5 md:hidden">
-          {[64, 72, 52].map((w, i) => (
-            <div
-              key={i}
-              className="h-[32px] animate-pulse rounded-full bg-bg-secondary"
-              style={{ width: w }}
-            />
-          ))}
-        </div>
-
-        {/* Content area — solid bg */}
         <div className="bg-bg-primary">
-          {/* Search skeleton */}
-          <div className="px-4 pb-3">
+          <div className="px-4 pb-3 pt-1">
             <div className="h-[44px] w-full animate-pulse rounded-pill bg-bg-secondary" />
           </div>
-
-          {/* Filter chips skeleton */}
-          <div className="flex gap-2 px-4 pb-3">
-            {[80, 96, 64, 72, 80].map((w, i) => (
-              <div
-                key={i}
-                className="h-[32px] animate-pulse rounded-pill bg-bg-secondary"
-                style={{ width: w, animationDelay: `${i * 60}ms` }}
-              />
-            ))}
-          </div>
-
           <div className="hairline" />
-
           <CardListSkeleton count={4} />
         </div>
       </div>

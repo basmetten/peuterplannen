@@ -28,7 +28,6 @@ const DETENT_TO_SNAP: Record<number, SheetSnap> = {
 interface SilkSheetProps {
   snap: SheetSnap;
   onSnapChange: (snap: SheetSnap) => void;
-  stickyHeader?: ReactNode;
   children: ReactNode;
   className?: string;
 }
@@ -36,7 +35,6 @@ interface SilkSheetProps {
 export function SilkSheet({
   snap,
   onSnapChange,
-  stickyHeader,
   children,
   className = '',
 }: SilkSheetProps) {
@@ -131,11 +129,6 @@ export function SilkSheet({
               <Sheet.SpecialWrapper.Content>
                 {/* Drag handle — Silk renders its own <span> indicator, styled via CSS */}
                 <Sheet.Handle className="flex flex-shrink-0 cursor-grab items-center justify-center bg-bg-primary py-2 active:cursor-grabbing" />
-
-                {/* Sticky header (mode pills + search bar) */}
-                {stickyHeader && (
-                  <div className="flex-shrink-0 bg-bg-primary">{stickyHeader}</div>
-                )}
 
                 {/* Scrollable content with scroll-to-drag handoff */}
                 <Scroll.Root>
