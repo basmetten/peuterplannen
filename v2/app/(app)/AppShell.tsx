@@ -16,6 +16,7 @@ import { ClusterList } from '@/features/carousel/ClusterList';
 import { HomeContent } from '@/features/home/HomeContent';
 import { FavoritesList } from '@/features/favorites/FavoritesList';
 import { PlanView } from '@/features/plan/PlanView';
+import { GuideDetailView } from '@/features/guides/GuideDetailView';
 import type { LocationSummary } from '@/domain/types';
 import type { BlogPostMeta } from '@/domain/blog';
 import { useMapState } from '@/context/MapStateContext';
@@ -464,6 +465,19 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
                   locations={initialLocations}
                   onCardTap={handleCardTap}
                   selectedId={detailId}
+                />
+              )}
+            </StackedSheet>
+
+            <StackedSheet presented={guideSlug !== null} onClose={() => setGuideSlug(null)} swipe={false}>
+              {guideSlug && (
+                <GuideDetailView
+                  slug={guideSlug}
+                  allGuides={initialGuides}
+                  locations={initialLocations}
+                  onClose={() => setGuideSlug(null)}
+                  onLocationTap={handleCardTap}
+                  onGuideTap={handleGuideTap}
                 />
               )}
             </StackedSheet>
