@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import type { LocationSummary } from '@/domain/types';
 import { LOCATION_TYPE_LABELS, TYPE_COLORS } from '@/domain/enums';
 import { OptimizedImage } from '@/components/patterns/OptimizedImage';
@@ -18,6 +18,21 @@ export function LocationCard({ location, onTap, isSelected }: LocationCardProps)
   const { isFavorite, toggleFavorite } = useFavorites();
   const favorited = isFavorite(location.id);
   const [bouncing, setBouncing] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handlePressDown = useCallback(() => {
+    if (cardRef.current) {
+      cardRef.current.style.transform = 'scale(0.97)';
+      cardRef.current.style.transition = 'transform 80ms ease-out';
+    }
+  }, []);
+
+  const handlePressUp = useCallback(() => {
+    if (cardRef.current) {
+      cardRef.current.style.transform = 'scale(1)';
+      cardRef.current.style.transition = 'transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1)';
+    }
+  }, []);
 
   const handleHeartClick = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.stopPropagation();
@@ -29,8 +44,13 @@ export function LocationCard({ location, onTap, isSelected }: LocationCardProps)
   return (
     // Plain <div> with onClick — not "interactive" per axe, so no nested-interactive violation
     <div
+      ref={cardRef}
       data-testid="location-card"
       onClick={() => onTap(location)}
+      onPointerDown={handlePressDown}
+      onPointerUp={handlePressUp}
+      onPointerLeave={handlePressUp}
+      onPointerCancel={handlePressUp}
       className={`
         relative flex w-full cursor-pointer gap-3 rounded-card bg-bg-tertiary p-4 text-left
         transition-shadow duration-fast ease-spring

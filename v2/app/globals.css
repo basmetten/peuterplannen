@@ -170,6 +170,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* === iOS native feel === */
+
+/* Remove grey tap highlight + 300ms tap delay on interactive elements */
+button, a, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Prevent text selection on UI chrome (not on content text) */
+button, [role="button"], nav {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 /* Content sheet — SSR-safe responsive positioning.
    Mobile: bottom sheet with snap states (half / full default).
    Desktop: 420px sidebar panel. CSS handles both without JS. */
