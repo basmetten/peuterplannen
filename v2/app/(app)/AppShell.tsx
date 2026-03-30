@@ -56,6 +56,10 @@ export function AppShell({ initialLocations }: AppShellProps) {
   const [sheetState, sheetSend] = useMachine(sheetMachine);
   const { filters, toggleType, setWeather, setQuery, togglePriceBand, setMinScore, setAgeKey, clearFilters, isFiltered } = useFilters();
   const [sheetMode, setSheetMode] = useState<SheetMode>('ontdek');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return localStorage.getItem('pp-sidebar-collapsed') === 'true';
+  });
   const { favorites } = useFavorites();
   const { planIds } = usePlan();
 
@@ -310,6 +314,16 @@ export function AppShell({ initialLocations }: AppShellProps) {
     pushDetailUrl(location);
   }, [sheetSend, pushDetailUrl]);
 
+  // --- Sidebar collapse toggle (desktop only) ---
+
+  const toggleSidebar = useCallback(() => {
+    setSidebarCollapsed(prev => {
+      const next = !prev;
+      localStorage.setItem('pp-sidebar-collapsed', String(next));
+      return next;
+    });
+  }, []);
+
   // --- Mode change handler ---
 
   const handleModeChange = useCallback((mode: SheetMode) => {
@@ -413,13 +427,34 @@ export function AppShell({ initialLocations }: AppShellProps) {
         onMapClick={handleMapClick}
         onClusterExpand={handleClusterExpand}
         bottomPadding={bottomPadding}
-        leftOffset={isDesktop ? SIDEBAR_WIDTH : 0}
+        leftOffset={isDesktop && !sidebarCollapsed ? SIDEBAR_WIDTH : 0}
         mapInstanceRef={mapInstanceRef}
       />
 
+      {/* Desktop sidebar collapse toggle */}
+      {isDesktop && (
+        <button
+          type="button"
+          onClick={toggleSidebar}
+          className="fixed z-40 flex h-8 w-8 items-center justify-center rounded-xl bg-bg-primary shadow-card transition-[left] duration-200 ease-out"
+          style={{
+            left: sidebarCollapsed ? 16 : SIDEBAR_WIDTH + 16,
+            top: 16,
+          }}
+          aria-label={sidebarCollapsed ? 'Zijbalk tonen' : 'Zijbalk verbergen'}
+        >
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+            <path
+              d={sidebarCollapsed ? 'M7.5 5L12.5 10L7.5 15' : 'M12.5 5L7.5 10L12.5 15'}
+              stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      )}
+
       {/* Desktop: persistent sidebar with browse↔detail slide transition */}
       {isDesktop ? (
-        <Sidebar>
+        <Sidebar collapsed={sidebarCollapsed}>
           <div className="relative flex-1 overflow-hidden">
             {/* Browse panel — always rendered to preserve scroll position */}
             <div
