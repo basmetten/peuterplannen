@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { locationQueries } from '@/features/map/queries';
 import { LOCATION_TYPE_LABELS, PRICE_BAND_LABELS, TYPE_COLORS } from '@/domain/enums';
@@ -37,7 +37,6 @@ export function DetailView({ locationId, onClose, nearbyLocations = [], onNearby
   const firedRef = useRef(new Set<number>());
   const observerRef = useRef<IntersectionObserver | null>(null);
   const markerRefs = useRef<(HTMLDivElement | null)[]>([null, null, null, null]);
-  const MILESTONES = [25, 50, 75, 100];
 
   const setMarkerRef = useCallback((index: number) => (el: HTMLDivElement | null) => {
     markerRefs.current[index] = el;
@@ -72,6 +71,15 @@ export function DetailView({ locationId, onClose, nearbyLocations = [], onNearby
     setTimeout(() => setBouncing(false), 300);
   };
 
+  const handleShare = () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      navigator.share({ url, title: location?.name ?? '' });
+    } else {
+      navigator.clipboard.writeText(url);
+    }
+  };
+
   if (isLoading) {
     return <DetailSkeleton />;
   }
@@ -87,42 +95,48 @@ export function DetailView({ locationId, onClose, nearbyLocations = [], onNearby
   const typeColor = TYPE_COLORS[location.type] ?? 'var(--color-label-secondary)';
   const score = location.ai_suitability_score_10;
 
+  // Check if any "Goed om te weten" fields exist
+  const hasGoodToKnow = !!(
+    location.buggy_friendliness ||
+    location.toilet_confidence ||
+    location.parking_ease ||
+    location.food_fit ||
+    location.rain_backup_quality ||
+    location.noise_level ||
+    location.shade_or_shelter
+  );
+
   return (
     <div className="pb-8">
-      {/* Back button */}
-      <div className="sticky top-0 z-10 flex items-center gap-2 bg-bg-primary px-4 pb-2">
+      {/* 1. Header — Share (left) + X close (right) */}
+      <div className="sticky top-0 z-10 flex items-center justify-between bg-bg-primary px-4 pb-2 pt-1">
+        <button
+          type="button"
+          onClick={handleShare}
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-bg-secondary"
+          aria-label="Delen"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+            <polyline points="16 6 12 2 8 6" />
+            <line x1="12" y1="2" x2="12" y2="15" />
+          </svg>
+        </button>
+
         <button
           type="button"
           onClick={onClose}
-          className="flex h-[44px] w-[44px] items-center justify-center rounded-full transition-colors hover:bg-bg-secondary"
-          aria-label="Terug"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-bg-secondary"
+          aria-label="Sluiten"
         >
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
         </button>
-        <div className="flex-1" />
       </div>
 
-      {/* Hero photo */}
-      {getPhotoUrl(location.photo_url) && (
-        <div className="mx-4 mb-4 overflow-hidden rounded-photo">
-          <OptimizedImage
-            src={location.photo_url}
-            size="hero"
-            alt={location.name}
-            loading="eager"
-            className="aspect-[4/3] w-full object-cover"
-          />
-        </div>
-      )}
-
-      {/* Scroll depth marker: 25% */}
-      <div ref={setMarkerRef(0)} data-depth="25" aria-hidden="true" />
-
-      {/* Header */}
+      {/* 2. Type badge */}
       <div className="px-4">
-        {/* Type badge */}
         <span
           className="inline-flex items-center rounded-badge px-2 py-0.5 text-[11px] font-medium tracking-[0.014em] text-white"
           style={{ backgroundColor: typeColor }}
@@ -130,43 +144,33 @@ export function DetailView({ locationId, onClose, nearbyLocations = [], onNearby
           {LOCATION_TYPE_LABELS[location.type] ?? location.type}
         </span>
 
-        {/* Name (Newsreader) */}
+        {/* 3. Location name (Newsreader) */}
         <h2 className="mt-2 font-accent text-[28px] font-normal leading-[1.15] tracking-[-0.029em] text-label">
           {location.name}
         </h2>
 
-        {/* Region */}
+        {/* 4. Region */}
         <p className="mt-1 text-[15px] tracking-normal text-label-secondary">
           {location.region}
         </p>
-
-        {/* Score + price */}
-        <div className="mt-3 flex items-center gap-4">
-          {score !== null && (
-            <div className="flex items-center gap-1.5">
-              <div
-                className="flex h-8 w-8 items-center justify-center rounded-full text-[13px] font-bold text-white"
-                style={{ backgroundColor: scoreColor(score) }}
-              >
-                {score.toFixed(1)}
-              </div>
-              <span className="text-[13px] text-label-secondary">Peuterscore</span>
-            </div>
-          )}
-
-          {location.price_band && (
-            <span className="text-[13px] text-label-secondary">
-              {PRICE_BAND_LABELS[location.price_band as PriceBand]}
-            </span>
-          )}
-        </div>
       </div>
 
-      {/* Divider */}
-      <div className="hairline mx-4 my-4" />
+      {/* Scroll depth marker: 25% */}
+      <div ref={setMarkerRef(0)} data-depth="25" aria-hidden="true" />
 
-      {/* Action buttons (Apple Maps style) */}
-      <div className="flex justify-center gap-4 px-4">
+      {/* 5. Action buttons */}
+      <div className="mt-3 flex justify-center gap-4 px-4">
+        <ActionButton
+          label="Route"
+          href={`https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`}
+          onClick={() => trackRouteClick(locationId, 'google_maps')}
+          primary
+          icon={
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="3 11 22 2 13 21 11 13 3 11" />
+            </svg>
+          }
+        />
         {location.website && /^https?:\/\//i.test(location.website) && (
           <ActionButton
             label="Website"
@@ -180,17 +184,6 @@ export function DetailView({ locationId, onClose, nearbyLocations = [], onNearby
             }
           />
         )}
-        <ActionButton
-          label="Route"
-          href={`https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`}
-          onClick={() => trackRouteClick(locationId, 'google_maps')}
-          primary
-          icon={
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="3 11 22 2 13 21 11 13 3 11" />
-            </svg>
-          }
-        />
         <FavoriteActionButton
           favorited={favorited}
           bouncing={bouncing}
@@ -202,28 +195,123 @@ export function DetailView({ locationId, onClose, nearbyLocations = [], onNearby
         />
       </div>
 
-      {/* Scroll depth marker: 50% */}
-      <div ref={setMarkerRef(1)} data-depth="50" aria-hidden="true" />
+      {/* 6. Quick info row */}
+      <div className="mt-4 flex items-start justify-evenly px-4 py-2">
+        {score !== null && (
+          <QuickInfoItem
+            label="Score"
+            value={score.toFixed(1)}
+            valueColor={scoreColor(score)}
+          />
+        )}
+        {location.weather && (
+          <QuickInfoItem label="Type" value={weatherLabel(location.weather)} />
+        )}
+        {location.price_band && (
+          <QuickInfoItem label="Prijs" value={PRICE_BAND_LABELS[location.price_band as PriceBand]} />
+        )}
+      </div>
 
-      {/* Divider */}
-      <div className="hairline mx-4 my-4" />
-
-      {/* Description */}
-      {location.description && (
-        <div className="px-4">
-          <h3 className="mb-2 text-[17px] font-semibold tracking-[-0.025em] text-label">
-            Over deze locatie
-          </h3>
-          <p className="text-[15px] leading-[1.5] tracking-normal text-label-secondary">
-            {location.description}
-          </p>
+      {/* 7. Hero photo (below quick info — Apple Maps pattern) */}
+      {getPhotoUrl(location.photo_url) && (
+        <div className="mx-4 mt-3 overflow-hidden rounded-photo">
+          <OptimizedImage
+            src={location.photo_url}
+            size="hero"
+            alt={location.name}
+            loading="eager"
+            className="aspect-[4/3] w-full object-cover"
+          />
         </div>
       )}
 
-      {/* Facilities */}
+      {/* Scroll depth marker: 50% */}
+      <div ref={setMarkerRef(1)} data-depth="50" aria-hidden="true" />
+
+      {/* 8. Description */}
+      {location.description && (
+        <>
+          <div className="hairline mx-4 my-4" />
+          <div className="px-4">
+            <h3 className="mb-2 text-[17px] font-semibold tracking-[-0.025em] text-label">
+              Over deze locatie
+            </h3>
+            <p className="text-[15px] leading-[1.5] tracking-normal text-label-secondary">
+              {location.description}
+            </p>
+          </div>
+        </>
+      )}
+
+      {/* 9. "Goed om te weten" — hidden DB fields */}
+      {hasGoodToKnow && (
+        <>
+          <div className="hairline mx-4 my-4" />
+          <div className="px-4">
+            <h3 className="mb-3 text-[17px] font-semibold tracking-[-0.025em] text-label">
+              Goed om te weten
+            </h3>
+            <div className="flex flex-col gap-2.5">
+              {location.buggy_friendliness && (
+                <GoodToKnowRow
+                  icon={<StrollerIcon />}
+                  label="Kinderwagen"
+                  value={location.buggy_friendliness}
+                />
+              )}
+              {location.toilet_confidence && (
+                <GoodToKnowRow
+                  icon={<ToiletIcon />}
+                  label="Toilet"
+                  value={location.toilet_confidence}
+                />
+              )}
+              {location.parking_ease && (
+                <GoodToKnowRow
+                  icon={<ParkingIcon />}
+                  label="Parkeren"
+                  value={location.parking_ease}
+                />
+              )}
+              {location.food_fit && (
+                <GoodToKnowRow
+                  icon={<FoodIcon />}
+                  label="Eten & drinken"
+                  value={location.food_fit}
+                />
+              )}
+              {location.rain_backup_quality && (
+                <GoodToKnowRow
+                  icon={<UmbrellaIcon />}
+                  label="Bij regen"
+                  value={location.rain_backup_quality}
+                />
+              )}
+              {location.noise_level && (
+                <GoodToKnowRow
+                  icon={<VolumeIcon />}
+                  label="Geluidsniveau"
+                  value={location.noise_level}
+                />
+              )}
+              {location.shade_or_shelter && (
+                <GoodToKnowRow
+                  icon={<SunIcon />}
+                  label="Schaduw"
+                  value={location.shade_or_shelter}
+                />
+              )}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Scroll depth marker: 75% */}
+      <div ref={setMarkerRef(2)} data-depth="75" aria-hidden="true" />
+
+      {/* 10. Facilities */}
       {(location.coffee || location.diaper || location.weather) && (
         <>
-          {/* Divider (after description OR after score section) */}
           <div className="hairline mx-4 my-4" />
           <div className="px-4">
             <h3 className="mb-3 text-[17px] font-semibold tracking-[-0.025em] text-label">
@@ -238,10 +326,7 @@ export function DetailView({ locationId, onClose, nearbyLocations = [], onNearby
         </>
       )}
 
-      {/* Scroll depth marker: 75% */}
-      <div ref={setMarkerRef(2)} data-depth="75" aria-hidden="true" />
-
-      {/* Opening hours */}
+      {/* 11. Opening hours */}
       {location.opening_hours && (
         <>
           <div className="hairline mx-4 my-4" />
@@ -256,7 +341,7 @@ export function DetailView({ locationId, onClose, nearbyLocations = [], onNearby
         </>
       )}
 
-      {/* Nearby locations */}
+      {/* 12. Nearby locations */}
       {nearbyLocations.length > 0 && onNearbyTap && (
         <>
           <div className="hairline mx-4 my-4" />
@@ -281,7 +366,100 @@ export function DetailView({ locationId, onClose, nearbyLocations = [], onNearby
   );
 }
 
-/** Action button (Apple Maps circular style) */
+/* ---------- Quick info row ---------- */
+
+function QuickInfoItem({ label, value, valueColor }: { label: string; value: string; valueColor?: string }) {
+  return (
+    <div className="flex flex-col items-center gap-0.5 text-center">
+      <span className="text-[11px] text-label-tertiary">{label}</span>
+      <span className="text-[15px] font-medium" style={valueColor ? { color: valueColor } : undefined}>
+        {value}
+      </span>
+    </div>
+  );
+}
+
+/* ---------- "Goed om te weten" row ---------- */
+
+function GoodToKnowRow({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="flex h-7 w-7 items-center justify-center text-label-secondary">{icon}</span>
+      <span className="text-[15px] text-label-secondary">{label}</span>
+      <span className="ml-auto text-[15px] text-label">{value}</span>
+    </div>
+  );
+}
+
+/* ---------- "Goed om te weten" icons (20x20 stroke SVGs) ---------- */
+
+function StrollerIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="7" cy="17" r="1.5" />
+      <circle cx="15" cy="17" r="1.5" />
+      <path d="M3 3h2l1 4h10l-1.5 6H7L5 5" />
+    </svg>
+  );
+}
+
+function ToiletIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10 2v4M6 6h8a2 2 0 0 1 2 2v2a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8a2 2 0 0 1 2-2z" />
+      <path d="M8 14v4M12 14v4" />
+    </svg>
+  );
+}
+
+function ParkingIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="14" height="14" rx="2" />
+      <path d="M8 14V6h3a3 3 0 0 1 0 6H8" />
+    </svg>
+  );
+}
+
+function FoodIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 3v6a4 4 0 0 0 4 4h0a4 4 0 0 0 4-4V3" />
+      <path d="M7 3v4M7 13v5" />
+      <path d="M15 3v3a3 3 0 0 1-3 3h0M15 3c0 3 2 4 2 6s-2 3-2 3v6" />
+    </svg>
+  );
+}
+
+function UmbrellaIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10 2v1M10 11v5a2 2 0 0 1-4 0" />
+      <path d="M3 11a7 7 0 0 1 14 0" />
+    </svg>
+  );
+}
+
+function VolumeIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="4 7 8 7 13 3 13 17 8 13 4 13" />
+      <path d="M16 6.5a4.5 4.5 0 0 1 0 7" />
+    </svg>
+  );
+}
+
+function SunIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="10" cy="10" r="3" />
+      <path d="M10 2v2M10 16v2M3.5 3.5l1.4 1.4M15.1 15.1l1.4 1.4M2 10h2M16 10h2M3.5 16.5l1.4-1.4M15.1 4.9l1.4-1.4" />
+    </svg>
+  );
+}
+
+/* ---------- Action buttons ---------- */
+
 function ActionButton({
   label,
   href,
@@ -291,7 +469,7 @@ function ActionButton({
 }: {
   label: string;
   href: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   primary?: boolean;
   onClick?: () => void;
 }) {
@@ -319,7 +497,6 @@ function ActionButton({
   );
 }
 
-/** Favorite action button (matches ActionButton style) */
 function FavoriteActionButton({
   favorited,
   bouncing,
@@ -359,7 +536,6 @@ function FavoriteActionButton({
   );
 }
 
-/** Plan action button (matches ActionButton style) */
 function PlanActionButton({
   inPlan,
   onToggle,
@@ -397,7 +573,8 @@ function PlanActionButton({
   );
 }
 
-/** Facility badge */
+/* ---------- Helpers ---------- */
+
 function FacilityBadge({ label }: { label: string }) {
   return (
     <span className="inline-flex items-center rounded-badge bg-bg-secondary px-2.5 py-1 text-[13px] tracking-[0.002em] text-label-secondary">
@@ -406,14 +583,12 @@ function FacilityBadge({ label }: { label: string }) {
   );
 }
 
-/** Score color based on value */
 function scoreColor(score: number): string {
   if (score >= 8) return 'var(--color-system-green)';
   if (score >= 6) return 'var(--color-accent)';
   return 'var(--color-label-secondary)';
 }
 
-/** Weather label */
 function weatherLabel(weather: string): string {
   switch (weather) {
     case 'indoor': return 'Binnen';
@@ -423,7 +598,8 @@ function weatherLabel(weather: string): string {
   }
 }
 
-/** Compact card for "In de buurt" horizontal scroll */
+/* ---------- Nearby card ---------- */
+
 function NearbyCard({ location, onTap }: { location: NearbyLocation; onTap: () => void }) {
   const typeColor = TYPE_COLORS[location.type] ?? 'var(--color-label-secondary)';
   const distanceStr = location.distance < 1
@@ -465,18 +641,24 @@ function NearbyCard({ location, onTap }: { location: NearbyLocation; onTap: () =
   );
 }
 
-/** Loading skeleton */
+/* ---------- Loading skeleton ---------- */
+
 function DetailSkeleton() {
   return (
     <div className="animate-pulse px-4 py-4">
-      <div className="mb-4 h-6 w-20 rounded-badge bg-bg-secondary" />
-      <div className="mb-4 aspect-[4/3] w-full rounded-photo bg-bg-secondary" />
+      <div className="mb-3 flex justify-between">
+        <div className="h-10 w-10 rounded-full bg-bg-secondary" />
+        <div className="h-10 w-10 rounded-full bg-bg-secondary" />
+      </div>
+      <div className="mb-2 h-5 w-16 rounded-badge bg-bg-secondary" />
       <div className="mb-2 h-8 w-3/4 rounded bg-bg-secondary" />
       <div className="mb-4 h-4 w-1/3 rounded bg-bg-secondary" />
-      <div className="mb-8 flex gap-4">
+      <div className="mb-4 flex justify-center gap-4">
+        <div className="h-12 w-12 rounded-full bg-bg-secondary" />
         <div className="h-12 w-12 rounded-full bg-bg-secondary" />
         <div className="h-12 w-12 rounded-full bg-bg-secondary" />
       </div>
+      <div className="mb-4 aspect-[4/3] w-full rounded-photo bg-bg-secondary" />
       <div className="space-y-2">
         <div className="h-4 w-full rounded bg-bg-secondary" />
         <div className="h-4 w-5/6 rounded bg-bg-secondary" />
