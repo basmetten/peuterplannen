@@ -88,6 +88,9 @@ export function MapContainer({
         minZoom: 4,
         maxZoom: 18,
         attributionControl: false,
+        pixelRatio: 1,              // 1x instead of 2-3x Retina — saves 50-75% canvas VRAM
+        maxTileCacheSize: 12,       // Default ~45 — fewer tiles cached in GPU memory
+        fadeDuration: 0,            // No fade transitions on zoom — saves GPU work
       });
     } catch {
       // WebGL not available (e.g. headless browser, old GPU)
@@ -99,6 +102,13 @@ export function MapContainer({
     map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
 
     map.on('load', () => {
+      // Remove 3D fill-extrusion layers — can use 900MB+ at street zoom on iOS
+      for (const layer of map.getStyle().layers) {
+        if (layer.type === 'fill-extrusion') {
+          map.removeLayer(layer.id);
+        }
+      }
+
       if (map.getSource(SOURCE_ID)) return;
 
       map.addSource(SOURCE_ID, {

@@ -71,6 +71,9 @@ export function PersistentMap() {
         minZoom: 4,
         maxZoom: 18,
         attributionControl: false,
+        pixelRatio: 1,
+        maxTileCacheSize: 12,
+        fadeDuration: 0,
       });
     } catch {
       setMapError(true);
@@ -85,6 +88,13 @@ export function PersistentMap() {
     );
 
     map.on('load', () => {
+      // Remove 3D fill-extrusion layers — can use 900MB+ at street zoom on iOS
+      for (const layer of map.getStyle().layers) {
+        if (layer.type === 'fill-extrusion') {
+          map.removeLayer(layer.id);
+        }
+      }
+
       // Empty GeoJSON source — data is pushed by MapUpdater via context
       map.addSource(SOURCE_ID, {
         type: 'geojson',
