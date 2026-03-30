@@ -23,6 +23,8 @@ import { SheetModeSwitcher, type SheetMode } from '@/components/layout/SheetMode
 import { FavoritesList } from '@/features/favorites/FavoritesList';
 import { PlanView } from '@/features/plan/PlanView';
 import type { LocationSummary } from '@/domain/types';
+import { useMapState } from '@/context/MapStateContext';
+import { useMapFreeze } from '@/hooks/useMapFreeze';
 import { trackDetailOpen, trackSearch, trackFilterApply } from '@/lib/analytics';
 import type { FilterState } from '@/features/filters/useFilters';
 import { haversine } from '@/lib/geo';
@@ -51,15 +53,26 @@ function findByParam(locations: LocationSummary[], param: string): LocationSumma
 
 export function AppShell({ initialLocations }: AppShellProps) {
   const isDesktop = useIsDesktop();
+  const { setAppMapActive } = useMapState();
   const [sheetState, sheetSend] = useMachine(sheetMachine);
   const { filters, toggleType, setWeather, setQuery, togglePriceBand, setMinScore, setAgeKey, clearFilters, isFiltered } = useFilters();
   const [sheetMode, setSheetMode] = useState<SheetMode>('ontdek');
   const { favorites } = useFavorites();
   const { planIds } = usePlan();
 
+  // Map ref for freeze/unfreeze during sheet animations
+  const mapInstanceRef = useRef<import('maplibre-gl').Map | null>(null);
+  const { freeze: freezeMap, unfreeze: unfreezeMap } = useMapFreeze(mapInstanceRef);
+
   const { snap, detailId, carouselLocationIds, carouselActiveId } = sheetState.context;
   const isDetailOpen = sheetState.matches('detail');
   const isCarouselOpen = sheetState.matches('carousel');
+
+  // Signal to layout that AppShell has its own map — prevents PersistentMap from mounting
+  useEffect(() => {
+    setAppMapActive(true);
+    return () => setAppMapActive(false);
+  }, [setAppMapActive]);
 
   // Prevent circular URL ↔ state updates
   const isNavigatingRef = useRef(false);
@@ -195,6 +208,9 @@ export function AppShell({ initialLocations }: AppShellProps) {
   }, [isCarouselOpen, isDetailOpen, isDesktop, snap, sheetSend]);
 
   const handleSnapChange = useCallback((newSnap: SheetSnap) => {
+    freezeMap();
+    setTimeout(unfreezeMap, 500); // resume after Silk animation settles
+
     if (isDetailOpen) {
       if (newSnap === 'hidden' || newSnap === 'peek') {
         window.history.back(); // popstate → CLOSE_DETAIL
@@ -204,13 +220,26 @@ export function AppShell({ initialLocations }: AppShellProps) {
     } else {
       sheetSend({ type: 'DRAG_END', snapTo: newSnap });
     }
-  }, [isDetailOpen, sheetSend]);
+  }, [isDetailOpen, sheetSend, freezeMap, unfreezeMap]);
 
   const handleCardTap = useCallback((location: LocationSummary) => {
     trackDetailOpen(location.id, 'card');
+    freezeMap();
     sheetSend({ type: 'OPEN_DETAIL', id: location.id });
     pushDetailUrl(location);
-  }, [sheetSend, pushDetailUrl]);
+    // flyTo AFTER sheet animation completes — prevents concurrent GPU work
+    setTimeout(() => {
+      unfreezeMap();
+      const map = mapInstanceRef.current;
+      if (map) {
+        map.flyTo({
+          center: [location.lng, location.lat],
+          zoom: Math.max(map.getZoom(), 13),
+          duration: 600,
+        });
+      }
+    }, 450);
+  }, [sheetSend, pushDetailUrl, freezeMap, unfreezeMap]);
 
   const handleDetailClose = useCallback(() => {
     window.history.back(); // popstate → CLOSE_DETAIL
@@ -398,16 +427,17 @@ export function AppShell({ initialLocations }: AppShellProps) {
         onClusterExpand={handleClusterExpand}
         bottomPadding={bottomPadding}
         leftOffset={isDesktop ? SIDEBAR_WIDTH : 0}
+        mapInstanceRef={mapInstanceRef}
       />
 
-      {/* Carousel overlay — desktop only, floating map-level (mobile uses ClusterList in sheet) */}
-      {isDesktop && (
+      {/* Carousel overlay — desktop only, conditionally rendered to save GPU (mobile uses ClusterList in sheet) */}
+      {isDesktop && isCarouselOpen && (
         <CarouselOverlay
           locations={carouselLocations}
           activeId={carouselActiveId}
           onCardTap={handleCarouselCardTap}
           onActiveChange={handleCarouselActiveChange}
-          visible={isCarouselOpen}
+          visible={true}
         />
       )}
 

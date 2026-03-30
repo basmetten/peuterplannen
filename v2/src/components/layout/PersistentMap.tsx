@@ -74,6 +74,7 @@ export function PersistentMap() {
         pixelRatio: 1,
         maxTileCacheSize: 12,
         fadeDuration: 0,
+        renderWorldCopies: false,
       });
     } catch {
       setMapError(true);

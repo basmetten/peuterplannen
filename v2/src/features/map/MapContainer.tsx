@@ -33,6 +33,8 @@ interface MapContainerProps {
   bottomPadding?: number;
   /** Left offset in px for desktop sidebar */
   leftOffset?: number;
+  /** External ref to the MapLibre instance (for useMapFreeze) */
+  mapInstanceRef?: React.RefObject<maplibregl.Map | null>;
 }
 
 function toGeoJSON(locs: LocationSummary[]) {
@@ -67,6 +69,7 @@ export function MapContainer({
   onClusterExpand,
   bottomPadding = 0,
   leftOffset = 0,
+  mapInstanceRef,
 }: MapContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -91,6 +94,7 @@ export function MapContainer({
         pixelRatio: 1,              // 1x instead of 2-3x Retina — saves 50-75% canvas VRAM
         maxTileCacheSize: 12,       // Default ~45 — fewer tiles cached in GPU memory
         fadeDuration: 0,            // No fade transitions on zoom — saves GPU work
+        renderWorldCopies: false,   // Save render work — NL-focused app
       });
     } catch {
       // WebGL not available (e.g. headless browser, old GPU)
@@ -98,6 +102,18 @@ export function MapContainer({
       return;
     }
     mapRef.current = map;
+    if (mapInstanceRef) (mapInstanceRef as React.MutableRefObject<maplibregl.Map | null>).current = map;
+
+    // WebGL context loss handling — iOS Safari drops contexts under memory pressure
+    const canvas = map.getCanvas();
+    canvas.addEventListener('webglcontextlost', (e) => {
+      e.preventDefault(); // allow recovery
+      console.warn('[MapContainer] WebGL context lost');
+    });
+    canvas.addEventListener('webglcontextrestored', () => {
+      console.info('[MapContainer] WebGL context restored');
+      map.triggerRepaint();
+    });
 
     map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
 
@@ -278,9 +294,10 @@ export function MapContainer({
 
     return () => {
       mapRef.current = null;
+      if (mapInstanceRef) (mapInstanceRef as React.MutableRefObject<maplibregl.Map | null>).current = null;
       map.remove();
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Update data when locations change
   useEffect(() => {
@@ -303,12 +320,12 @@ export function MapContainer({
     );
   }, [selectedId, carouselActiveId]);
 
-  // Resize map when sidebar offset changes
+  // Resize map when sidebar offset changes (desktop only — leftOffset is always 0 on mobile)
   useEffect(() => {
+    if (leftOffset === 0) return; // skip on mobile
     const map = mapRef.current;
     if (!map) return;
-    // Small delay to let CSS transition complete
-    const timer = setTimeout(() => map.resize(), 50);
+    const timer = setTimeout(() => map.resize(), 300); // after sidebar transition
     return () => clearTimeout(timer);
   }, [leftOffset]);
 

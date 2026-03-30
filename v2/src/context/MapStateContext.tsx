@@ -21,6 +21,9 @@ interface MapState {
 interface MapStateContextValue {
   mapState: MapState;
   setMapState: (state: MapState) => void;
+  /** When true, AppShell's MapContainer is active — PersistentMap should not render */
+  appMapActive: boolean;
+  setAppMapActive: (active: boolean) => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -33,9 +36,10 @@ const EMPTY_STATE: MapState = { locations: [], locationHrefs: {} };
 
 export function MapStateProvider({ children }: { children: ReactNode }) {
   const [mapState, setMapState] = useState<MapState>(EMPTY_STATE);
+  const [appMapActive, setAppMapActive] = useState(false);
 
   return (
-    <MapStateContext.Provider value={{ mapState, setMapState }}>
+    <MapStateContext.Provider value={{ mapState, setMapState, appMapActive, setAppMapActive }}>
       {children}
     </MapStateContext.Provider>
   );
