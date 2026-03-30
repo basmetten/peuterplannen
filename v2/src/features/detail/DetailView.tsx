@@ -8,6 +8,7 @@ import type { PriceBand } from '@/domain/enums';
 import type { LocationSummary } from '@/domain/types';
 import { getPhotoUrl } from '@/lib/image';
 import { OptimizedImage } from '@/components/patterns/OptimizedImage';
+import { HorizontalCardStrip } from '@/components/patterns/HorizontalCardStrip';
 import { useFavorites } from '@/hooks/useFavorites';
 import { usePlan } from '@/hooks/usePlan';
 import { trackWebsiteClick, trackRouteClick, trackDetailScrollDepth } from '@/lib/analytics';
@@ -89,7 +90,7 @@ export function DetailView({ locationId, onClose, nearbyLocations = [], onNearby
   return (
     <div className="pb-8">
       {/* Back button */}
-      <div className="sticky top-0 z-10 flex items-center gap-2 bg-bg-primary/95 px-4 pb-2 backdrop-blur-sm">
+      <div className="sticky top-0 z-10 flex items-center gap-2 bg-bg-primary px-4 pb-2">
         <button
           type="button"
           onClick={onClose}
@@ -263,11 +264,13 @@ export function DetailView({ locationId, onClose, nearbyLocations = [], onNearby
             <h3 className="mb-3 text-[17px] font-semibold tracking-[-0.025em] text-label">
               In de buurt
             </h3>
-            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
+            <HorizontalCardStrip>
               {nearbyLocations.map(loc => (
-                <NearbyCard key={loc.id} location={loc} onTap={() => onNearbyTap(loc)} />
+                <div key={loc.id} className="min-w-[140px] flex-shrink-0">
+                  <NearbyCard location={loc} onTap={() => onNearbyTap(loc)} />
+                </div>
               ))}
-            </div>
+            </HorizontalCardStrip>
           </div>
         </>
       )}

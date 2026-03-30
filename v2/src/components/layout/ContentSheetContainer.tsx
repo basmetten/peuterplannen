@@ -2,7 +2,7 @@
 
 import { useState, useEffect, type ReactNode } from 'react';
 import Link from 'next/link';
-import { useSheetDrag, computeRadius } from '@/hooks/useSheetDrag';
+import { useSheetDrag } from '@/hooks/useSheetDrag';
 import { SNAP_POINTS, type SheetSnap } from '@/features/sheet/sheetMachine';
 
 /* ---------- Footer ---------- */
@@ -89,11 +89,8 @@ export function ContentSheetContainer({
     enabled: isMobile,
   });
 
-  const radiusValue = computeRadius(snapPct);
-
   // Use distance-proportional duration when available, otherwise default
   const transitionDuration = springDuration ? `${springDuration}ms` : 'var(--duration-sheet)';
-  const radiusDuration = springDuration ? `${Math.min(springDuration, 200)}ms` : 'var(--duration-fast)';
 
   // Only apply inline styles after JS detects mobile viewport.
   // Before hydration, CSS classes (.content-sheet / .content-sheet--full) handle positioning.
@@ -101,10 +98,7 @@ export function ContentSheetContainer({
   const mobileStyle = isMobile
     ? {
         transform: `translateY(${100 - snapPct}%)`,
-        transition: `transform ${transitionDuration} var(--ease-default), border-radius ${radiusDuration} var(--ease-default)`,
-        borderTopLeftRadius: `${radiusValue}px`,
-        borderTopRightRadius: `${radiusValue}px`,
-        boxShadow: 'var(--shadow-sheet)',
+        transition: `transform ${transitionDuration} var(--ease-default)`,
       }
     : undefined;
 

@@ -11,7 +11,7 @@ import { Sidebar, SIDEBAR_WIDTH } from '@/features/sidebar/Sidebar';
 import { sheetMachine, SNAP_POINTS, type SheetSnap } from '@/features/sheet/sheetMachine';
 import { FilterBar } from '@/features/filters/FilterBar';
 import { CategoryGrid } from '@/components/patterns/CategoryGrid';
-import { SearchInput } from '@/features/filters/SearchInput';
+import { SearchCommand } from '@/features/search/SearchCommand';
 import { useFilters, applyFilters } from '@/features/filters/useFilters';
 import { LocationCard } from '@/components/patterns/LocationCard';
 import { CardListSkeleton } from '@/components/patterns/CardSkeleton';
@@ -361,6 +361,7 @@ export function AppShell({ initialLocations }: AppShellProps) {
     return (
       <BrowseContent
         locations={filteredLocations}
+        allLocations={initialLocations}
         totalCount={initialLocations.length}
         filters={filters}
         isFiltered={isFiltered}
@@ -431,6 +432,7 @@ export function AppShell({ initialLocations }: AppShellProps) {
 
 function BrowseContent({
   locations,
+  allLocations,
   totalCount,
   filters,
   isFiltered,
@@ -446,6 +448,7 @@ function BrowseContent({
   selectedId,
 }: {
   locations: LocationSummary[];
+  allLocations: LocationSummary[];
   totalCount: number;
   filters: ReturnType<typeof useFilters>['filters'];
   isFiltered: boolean;
@@ -464,10 +467,11 @@ function BrowseContent({
 
   return (
     <div>
-      {/* Search */}
-      <SearchInput
-        value={filters.query}
-        onChange={onQueryChange}
+      {/* Search — fuzzy search across all locations via cmdk + Fuse.js */}
+      <SearchCommand
+        locations={allLocations}
+        onSelect={onCardTap}
+        onQueryChange={onQueryChange}
         onFocus={onSearchFocus}
       />
 
@@ -589,25 +593,21 @@ export function AppShellSkeleton() {
       {/* Map placeholder */}
       <div className="absolute inset-0 bg-bg-secondary" />
 
-      {/* Sheet skeleton (mobile) — floating style */}
+      {/* Sheet skeleton (mobile) — matches simplified Sheet.tsx */}
       <div
-        className="fixed inset-x-0 bottom-0 z-30 overflow-hidden md:bottom-auto md:left-0 md:top-0 md:w-[380px] md:border-r md:border-separator"
+        className="fixed inset-x-0 bottom-0 z-30 overflow-hidden rounded-t-2xl shadow-sheet md:bottom-auto md:left-0 md:top-0 md:w-[380px] md:rounded-none md:border-r md:border-separator md:shadow-none"
         style={{
           height: '100%',
           transform: 'translateY(75%)',
-          marginInline: 12,
-          marginBottom: 8,
-          borderRadius: 16,
-          filter: 'drop-shadow(0 -2px 16px rgba(0,0,0,0.10))',
         }}
       >
-        {/* Handle (mobile only) — glass */}
-        <div className="glass flex items-center justify-center py-2 md:hidden">
+        {/* Handle (mobile only) */}
+        <div className="flex items-center justify-center bg-bg-primary py-2 md:hidden">
           <div className="h-[5px] w-9 rounded-full" style={{ background: 'rgba(160, 130, 110, 0.30)' }} />
         </div>
 
-        {/* Mode pills skeleton — glass */}
-        <div className="glass flex justify-center gap-2 px-4 py-1.5 md:hidden">
+        {/* Mode pills skeleton */}
+        <div className="flex justify-center gap-2 bg-bg-primary px-4 py-1.5 md:hidden">
           {[64, 72, 52].map((w, i) => (
             <div
               key={i}

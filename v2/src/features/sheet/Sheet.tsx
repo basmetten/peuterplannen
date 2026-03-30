@@ -32,33 +32,19 @@ export function Sheet({ snap, onSnapChange, stickyHeader, children, className = 
     enabled: true, // Sheet.tsx is always mobile (only rendered in AppShell mobile path)
   });
 
-  // floatFactor: 1 at peek (25%), ~0.6 at half (50%), 0 at full (92%)
-  const floatFactor = isHidden ? 0 : Math.max(0, Math.min(1, (92 - snapPct) / 67));
-
-  // Use distance-proportional duration when available, otherwise default
-  const durationMs = springDuration ?? 350;
-  const durationStr = `${durationMs}ms`;
-
   return (
     <div
       ref={sheetRef}
-      className={`fixed inset-x-0 bottom-0 z-30 flex flex-col overflow-clip ${className}`}
+      className={`fixed inset-x-0 bottom-0 z-30 flex flex-col overflow-hidden rounded-t-2xl shadow-sheet ${className}`}
       style={{
         transform: isHidden ? 'translateY(100%)' : `translateY(${100 - snapPct}%)`,
-        transition: `transform ${durationStr} var(--ease-default), border-radius ${durationStr} var(--ease-default), margin-inline ${durationStr} var(--ease-default), margin-bottom ${durationStr} var(--ease-default)`,
-        marginInline: `${floatFactor * 12}px`,
-        marginBottom: `${floatFactor * 8}px`,
-        borderRadius: `${floatFactor * 16}px`,
-        filter: floatFactor > 0
-          ? `drop-shadow(0 -2px ${8 + floatFactor * 8}px rgba(0,0,0,${(0.04 + floatFactor * 0.06).toFixed(2)}))`
-          : undefined,
-        willChange: 'transform',
+        transition: `transform ${springDuration ? `${springDuration}ms` : 'var(--duration-sheet)'} var(--ease-default)`,
         height: '100%',
       }}
     >
-      {/* Drag handle — glass background, touch-none prevents browser scroll interference */}
+      {/* Drag handle — solid bg, touch-none prevents browser scroll interference */}
       <div
-        className="glass flex flex-shrink-0 touch-none items-center justify-center py-2"
+        className="flex flex-shrink-0 touch-none items-center justify-center bg-bg-primary py-2"
         onTouchStart={handleTouchStart}
       >
         <div
@@ -67,9 +53,9 @@ export function Sheet({ snap, onSnapChange, stickyHeader, children, className = 
         />
       </div>
 
-      {/* Sticky header (mode pills) — glass background, stays fixed above scroll */}
+      {/* Sticky header (mode pills) — solid bg, stays fixed above scroll */}
       {stickyHeader && (
-        <div className="flex-shrink-0 glass">{stickyHeader}</div>
+        <div className="flex-shrink-0 bg-bg-primary">{stickyHeader}</div>
       )}
 
       {/* Scrollable content with scroll-to-drag handoff — solid background for readability */}

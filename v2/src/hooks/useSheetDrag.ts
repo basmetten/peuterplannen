@@ -62,18 +62,6 @@ export function resolveSnap(
 }
 
 /**
- * Compute corner radius based on sheet position.
- * 16px from hidden through half, linearly morphs to 0 at full.
- */
-export function computeRadius(pct: number): number {
-  const halfPct = SNAP_POINTS.half;
-  const fullPct = SNAP_POINTS.full;
-  if (pct <= halfPct) return 16;
-  if (pct >= fullPct) return 0;
-  return 16 * (1 - (pct - halfPct) / (fullPct - halfPct));
-}
-
-/**
  * Logarithmic rubber-band resistance when dragging past bounds (vaul pattern).
  * At 100px overshoot → ~21px movement. At 300px → ~30px. Heavy resistance.
  */
@@ -194,9 +182,6 @@ export function useSheetDrag({
     if (!el) return;
     el.style.transition = 'none';
     el.style.transform = `translateY(${100 - pct}%)`;
-    const r = computeRadius(pct);
-    el.style.borderTopLeftRadius = `${r}px`;
-    el.style.borderTopRightRadius = `${r}px`;
     currentPctRef.current = pct;
   }, []);
 
@@ -205,8 +190,6 @@ export function useSheetDrag({
     if (!el) return;
     el.style.transition = '';
     el.style.transform = '';
-    el.style.borderTopLeftRadius = '';
-    el.style.borderTopRightRadius = '';
   }, []);
 
   // Distance-proportional spring duration — exposed as state so the component
@@ -359,6 +342,12 @@ export function useSheetDrag({
     const ds = dragState.current;
     ds.touchStartY = e.touches[0].clientY;
     ds.scrollTopAtStart = scrollRef.current?.scrollTop ?? 0;
+
+    // At non-full snaps, prevent content scroll entirely (Apple Maps behavior)
+    const isAtFull = snapPctRef.current >= SNAP_POINTS[snapsRef.current[snapsRef.current.length - 1]];
+    if (!isAtFull && scrollRef.current) {
+      scrollRef.current.style.overflowY = 'hidden';
+    }
   }, [enabled]);
 
   const scrollTouchMove = useCallback((e: React.TouchEvent) => {
@@ -380,13 +369,26 @@ export function useSheetDrag({
 
     const currentY = e.touches[0].clientY;
     const deltaY = currentY - ds.touchStartY; // positive = pulling down
+    const absDelta = Math.abs(deltaY);
 
-    // Check scrollTop on THIS frame (not just start) to catch iOS negative scrollTop.
-    // iOS Safari reports negative scrollTop during elastic overscroll — perfect handoff trigger.
+    // Apple Maps behavior: at non-full snaps, swiping ANYWHERE moves the sheet.
+    // Content scrolling is only allowed at the full (highest) snap.
+    const isAtFull = snapPctRef.current >= SNAP_POINTS[snapsRef.current[snapsRef.current.length - 1]];
+
+    if (!isAtFull) {
+      // At peek/half: always drag the sheet, never scroll content
+      if (absDelta > DRAG_THRESHOLD) {
+        e.preventDefault();
+        beginDrag(currentY, 'scroll');
+      }
+      return;
+    }
+
+    // --- At full snap: scroll-to-drag handoff (pull down past scrollTop=0) ---
+
     const scrollTop = scrollEl.scrollTop;
 
     // If content is NOT at the top, record scroll block time (vaul pattern).
-    // This prevents flicker when scroll momentum stops at the top.
     if (scrollTop > 0) {
       ds.lastScrollBlockTime = performance.now();
       return;
@@ -404,13 +406,16 @@ export function useSheetDrag({
     ) {
       e.preventDefault();
       beginDrag(currentY, 'scroll');
-      // Pre-seed velocity so the drag feels continuous with the scroll
       dragState.current.velocity = -0.1; // slight downward momentum
     }
   }, [enabled, beginDrag, moveDrag]);
 
   const scrollTouchEnd = useCallback(() => {
     if (!enabled) return;
+    // Restore scroll if we locked it at non-full snap
+    if (scrollRef.current) {
+      scrollRef.current.style.overflowY = '';
+    }
     const ds = dragState.current;
     if (ds.active && ds.source === 'scroll') {
       endDrag();

@@ -51,7 +51,7 @@ export function LocationCard({ location, onTap, isSelected }: LocationCardProps)
         aria-label={favorited ? 'Verwijder uit favorieten' : 'Bewaar als favoriet'}
         onClick={handleHeartClick}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleHeartClick(e); } }}
-        className="absolute right-2 top-2 z-[1] flex h-[28px] w-[28px] items-center justify-center rounded-full bg-bg-tertiary/80 backdrop-blur-sm transition-transform duration-fast ease-spring focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent"
+        className="absolute right-2 top-2 z-[1] flex h-[28px] w-[28px] items-center justify-center rounded-full bg-bg-tertiary transition-transform duration-fast ease-spring focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent"
         style={{ transform: bouncing ? 'scale(1.25)' : 'scale(1)' }}
       >
         {favorited ? (

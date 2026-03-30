@@ -24,6 +24,7 @@
 **Phase 5C complete** — Analytics event wiring: all typed events from `src/lib/analytics.ts` now fire from UI components. detail_open (map/card source), debounced search_query, filter_apply (type/weather/price/score/age), favorite_toggle, plan_add/remove, website_click, route_click. All no-ops without `NEXT_PUBLIC_GA_ID`.
 **Phase 6 complete** — Apple Maps iOS visual polish: floating sheet (margins + radius + drop-shadow), glass header (backdrop blur on drag handle + mode pills), GPU optimizations, CategoryGrid (2×4 SVG icons replacing type chips), "In de buurt" nearby locations, ClusterList (vertical card list on mobile replacing carousel).
 **Staging deployment complete** — v2 live at `staging.peuterplannen.nl` via `@opennextjs/cloudflare` (Cloudflare Workers). GitHub Actions secrets set. Google Maps API key already restricted.
+**Library migration complete** — cmdk + Fuse.js (fuzzy search), Embla Carousel (nearby + desktop carousel). Vaul was tried for bottom sheet but crashed iOS Safari (GPU memory exhaustion from `will-change: transform` + MapLibre WebGL) — reverted to custom `useSheetDrag` hook with Issue A fix (swipe-anywhere-to-expand at non-full snaps). Old SearchInput.tsx deleted. Glass/backdrop-filter tokens removed.
 
 ## Architecture (current)
 
@@ -139,7 +140,29 @@ The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdo
 
 ## What happened this session
 
-### Staging deployment to Cloudflare Workers
+### Library migration: cmdk + Fuse.js + Embla (Vaul reverted)
+
+**Vaul attempted and reverted:** Vaul was installed and VaulSheet.tsx built as a thin wrapper. Deployed to staging — immediately crashed iOS Safari. Root cause: Vaul injects `will-change: transform` on `[data-vaul-drawer]` and a `::after` pseudo-element at 200% height, creating permanent GPU compositing layers. Combined with MapLibre WebGL canvas, this exhausts iOS Safari's ~300-500MB GPU memory budget. VaulSheet.tsx deleted, vaul package removed.
+
+**Issue A fix (custom useSheetDrag):** Instead of Vaul, Issue A was fixed directly in `useSheetDrag.ts`. At non-full snaps (peek/half), swiping anywhere on the content area moves the sheet — content scrolling is only allowed at the full snap. This matches Apple Maps behavior. Three changes: `scrollTouchStart` locks overflow at non-full snaps, `scrollTouchMove` begins drag immediately at non-full snaps, `scrollTouchEnd` restores overflow.
+
+**cmdk + Fuse.js migration (SearchInput → SearchCommand):**
+- `src/features/search/SearchCommand.tsx` — fuzzy search across all 2000+ locations
+- Fuse.js keys: name (0.7), region (0.2), type (0.1), threshold 0.3
+- Results grouped by type with colored circle badges
+- cmdk provides keyboard navigation (arrow keys, enter)
+- Old `SearchInput.tsx` deleted
+
+**Embla Carousel migration:**
+- `src/components/patterns/HorizontalCardStrip.tsx` — reusable Embla-based horizontal scroll
+- Used in DetailView's "In de buurt" nearby locations (replaces manual `overflow-x-auto`)
+- `CarouselOverlay.tsx` refactored: Embla replaces manual scroll-snap + scrollend + IntersectionObserver
+
+**Glass/backdrop-filter removal:** All `backdrop-filter: blur()` removed from sheet components. `--color-glass-bg`, `--backdrop-blur-glass`, `--glass-blur` tokens removed. Sheet header uses solid `bg-bg-primary`. Shadow simplified to `0 -2px 16px rgba(0,0,0,0.10)`.
+
+**Cloudflare Workers:** User upgraded to paid plan ($5/mo, 10 MiB limit) to accommodate larger bundle.
+
+### Previous: Staging deployment to Cloudflare Workers
 
 **Infrastructure completed:**
 1. **GitHub Actions secrets set** — `SUPABASE_URL` + `SUPABASE_SERVICE_KEY` via `gh secret set`
@@ -341,7 +364,7 @@ All events are fire-and-forget no-ops without GA4 loaded (`NEXT_PUBLIC_GA_ID` en
 | Favorites | localStorage via `useSyncExternalStore` | `pp-favorites` key, Set<number> of IDs. Cross-tab sync. No auth needed. |
 | Mode switcher | Mobile: 3 pills in sheet header. Desktop: segmented control in sidebar | Ontdek/Bewaard/Plan. No tab bar, no "Kaart" mode. Pills sticky below drag handle. Count badges on Bewaard/Plan. Mode-aware map markers. |
 | Image optimization | Cloudflare Image Resizing via URL pattern | `/cdn-cgi/image/width=W,height=H,fit=cover,quality=Q,format=auto/path`. Client uses `OptimizedImage`, server uses `getResizedPhotoUrl()`. |
-| Sheet drag logic | Single `useSheetDrag` hook | Both Sheet.tsx and ContentSheetContainer.tsx consume this hook. Vaul-inspired rubber-band, scroll lock, strong fling. Eliminated ~260 lines of duplication. |
+| Sheet drag logic | Custom `useSheetDrag` hook (both AppShell + ContentSheetContainer) | Vaul tried and reverted (crashes iOS Safari). Issue A fixed: at non-full snaps, swipe anywhere moves sheet. Rubber-banding, distance-proportional spring, velocity-based fling. |
 | Filter system | 6 filter types, URL-persisted | Types (multi-select), weather (radio), price (multi-select), score (threshold), age (preset), search query. All in `useFilters` hook. Distance deferred (needs GPS). |
 | Plan view | localStorage ordered array via `useSyncExternalStore` | `pp-plan` key, number[] of IDs. Reorderable. Same cross-tab sync pattern as favorites. |
 | Offline indicator | `navigator.onLine` event listeners | OfflineBanner in root layout. Auto-shows/hides. No service worker needed. |
@@ -351,7 +374,9 @@ All events are fire-and-forget no-ops without GA4 loaded (`NEXT_PUBLIC_GA_ID` en
 | LocationCard a11y | div + sr-only button + heart button | No nested interactive. div has onClick for mouse, sr-only button for keyboard/screen reader. Heart button independent at z-1. |
 | Test suite | 82 Playwright tests | 44 core flows + 22 axe-core a11y + 16 visual regression screenshots. `npm run test:e2e:all` runs everything. |
 | Floating sheet | floatFactor-based margins + radius + drop-shadow | 1 at peek (floating card with gap) → 0 at full (edge-to-edge). GPU-accelerated filter: drop-shadow. |
-| Glass header | .glass utility class on drag handle + sticky header | Semi-transparent bg + backdrop blur. Scrollable content keeps solid bg-bg-primary. |
+| Sheet header | Solid bg-bg-primary on drag handle + sticky header | Glass/backdrop-filter crashes iOS Safari. NEVER add backdrop-filter to sheet or its children. |
+| Search | cmdk + Fuse.js fuzzy search | SearchCommand replaces SearchInput. Grouped results by type, keyboard nav, typo-tolerant. |
+| Carousel | Embla Carousel | HorizontalCardStrip (nearby), CarouselOverlay (desktop clusters). Replaces manual scroll-snap logic. |
 | Category grid | 2×4 grid of SVG icons with TYPE_COLORS | Replaces type filter chips in FilterBar. Same onTypeToggle handler, same multi-select behavior. |
 | Nearby locations | haversine distance + horizontal scroll cards | Bottom of DetailView, 6 nearest locations. NearbyCard: 140px wide, photo + name + type dot + distance. |
 | Cluster list | Vertical card list in sheet (mobile) | Replaces CarouselOverlay on mobile. Featured locations sort first with "Aanbevolen" badge. Desktop keeps carousel overlay. |

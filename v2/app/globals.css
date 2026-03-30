@@ -44,10 +44,6 @@
   --color-cat-pancake:    #8B7035;  /* 4.69:1 */
   --color-cat-horeca:     #B8503A;  /* 4.91:1 */
 
-  /* === Glass (map controls ONLY) === */
-  --color-glass-bg:       rgba(255, 250, 247, 0.85);
-  --glass-blur:           blur(20px) saturate(180%);
-
   /* === Spacing (Apple Maps rhythm: multiples of 4) === */
   --space-1:  4px;
   --space-2:  8px;
@@ -70,9 +66,7 @@
   --radius-badge:    8px;
 
   /* === Shadows === */
-  --shadow-sheet: 0 4px 8px rgba(0,0,0,0.07),
-                  0 8px 24px rgba(0,0,0,0.08),
-                  0 16px 48px rgba(0,0,0,0.05);
+  --shadow-sheet: 0 -2px 16px rgba(0,0,0,0.10);
 
   --shadow-card:  0 2px 8px rgba(0,0,0,0.08),
                   0 4px 16px rgba(0,0,0,0.06);
@@ -134,10 +128,6 @@
   --radius-photo: var(--radius-photo);
   --radius-badge: var(--radius-badge);
 
-  /* Glass */
-  --color-glass-bg: rgba(255, 250, 247, 0.85);
-  --backdrop-blur-glass: 20px;
-
   /* Shadows */
   --shadow-sheet: var(--shadow-sheet);
   --shadow-card: var(--shadow-card);
@@ -148,13 +138,6 @@
   --duration-fast: var(--duration-fast);
   --duration-default: var(--duration-default);
   --duration-slow: var(--duration-slow);
-}
-
-/* === Glass utility === */
-.glass {
-  background: var(--color-glass-bg);
-  backdrop-filter: blur(var(--backdrop-blur-glass)) saturate(1.2);
-  -webkit-backdrop-filter: blur(var(--backdrop-blur-glass)) saturate(1.2);
 }
 
 /* === Base Styles === */
@@ -174,7 +157,6 @@ body {
   bottom: 0;
   z-index: 30;
   height: 100%;
-  will-change: transform;
   transform: translateY(50%); /* half state default */
   border-top-left-radius: var(--radius-sheet);
   border-top-right-radius: var(--radius-sheet);
