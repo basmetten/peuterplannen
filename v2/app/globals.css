@@ -116,8 +116,8 @@
   --color-cat-horeca: var(--color-cat-horeca);
 
   /* Typography */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-accent: 'Newsreader', Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-accent: var(--font-newsreader), Georgia, serif;
 
   /* Spacing */
   --spacing-sheet-x: var(--sheet-padding-x);
@@ -170,9 +170,8 @@
   height: auto !important;
 }
 
-/* Style Silk's handle indicator to match our grip bar */
-.SilkSheet-content [data-silk~="e0"] {
-  position: relative !important;
+/* Style Silk's visual grip pill indicator (verified: Silk v0.10.1, attr a17) */
+.SilkSheet-content [data-silk~="a17"] {
   width: 36px !important;
   height: 5px !important;
   border-radius: 999px !important;

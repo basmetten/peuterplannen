@@ -77,6 +77,9 @@ export function MapContainer({
   const cbRef = useRef({ onMarkerClick, onMapClick, onClusterExpand, locations });
   cbRef.current = { onMarkerClick, onMapClick, onClusterExpand, locations };
 
+  // Pan timer ref (component scope for proper cleanup)
+  const panTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // Initialize map
   useEffect(() => {
     if (!containerRef.current) return;
@@ -199,12 +202,12 @@ export function MapContainer({
       });
 
       // Analytics: debounced pan tracking
-      let panTimer: ReturnType<typeof setTimeout> | null = null;
       map.on('moveend', () => {
-        if (panTimer) clearTimeout(panTimer);
-        panTimer = setTimeout(() => {
+        if (panTimerRef.current) clearTimeout(panTimerRef.current);
+        panTimerRef.current = setTimeout(() => {
           const center = map.getCenter();
           trackMapPan(center.lat, center.lng, map.getZoom());
+          panTimerRef.current = null;
         }, 500);
       });
 
@@ -293,9 +296,10 @@ export function MapContainer({
     map.on('mouseleave', CLUSTER_LAYER, () => { map.getCanvas().style.cursor = ''; });
 
     return () => {
+      if (panTimerRef.current) clearTimeout(panTimerRef.current);
+      map.remove();
       mapRef.current = null;
       if (mapInstanceRef) (mapInstanceRef as React.MutableRefObject<maplibregl.Map | null>).current = null;
-      map.remove();
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -320,28 +324,35 @@ export function MapContainer({
     );
   }, [selectedId, carouselActiveId]);
 
-  // Resize map when sidebar offset changes (desktop only — leftOffset is always 0 on mobile)
+  // Resize map when sidebar offset changes (including collapse back to 0)
+  const prevLeftOffset = useRef(leftOffset);
   useEffect(() => {
-    if (leftOffset === 0) return; // skip on mobile
+    if (prevLeftOffset.current === leftOffset) return;
+    prevLeftOffset.current = leftOffset;
     const map = mapRef.current;
     if (!map) return;
-    const timer = setTimeout(() => map.resize(), 300); // after sidebar transition
+    const timer = setTimeout(() => map.resize(), 300);
     return () => clearTimeout(timer);
   }, [leftOffset]);
 
-  // Fly to selected marker
+  // Fly to selected marker (delayed to let sheet animation settle)
   useEffect(() => {
     const map = mapRef.current;
     if (!selectedId || !map) return;
     const loc = locations.find((l) => l.id === selectedId);
-    if (loc) {
-      map.flyTo({
+    if (!loc) return;
+
+    const timer = setTimeout(() => {
+      if (!mapRef.current) return;
+      mapRef.current.flyTo({
         center: [loc.lng, loc.lat],
-        zoom: Math.max(map.getZoom(), 13),
+        zoom: Math.max(mapRef.current.getZoom(), 13),
         duration: 600,
         padding: { bottom: bottomPadding },
       });
-    }
+    }, 400);
+
+    return () => clearTimeout(timer);
   }, [selectedId, locations, bottomPadding]);
 
   return (

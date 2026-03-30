@@ -105,7 +105,7 @@ function Pill({ label, isActive, onClick }: { label: string; isActive: boolean; 
       aria-pressed={isActive}
       onClick={onClick}
       className={`
-        flex-shrink-0 rounded-pill px-2.5 py-1 text-[12px] font-medium tracking-[0.002em]
+        flex-shrink-0 rounded-pill px-2.5 min-h-[44px] py-2 text-[12px] font-medium tracking-[0.002em]
         transition-all duration-fast ease-spring
         ${isActive
           ? 'bg-accent text-white shadow-sm'

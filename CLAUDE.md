@@ -56,7 +56,7 @@ Apple Maps 85-90% likeness with warm coral/terracotta palette. Light mode only.
 |--------|--------|
 | Main font | Inter (variable) |
 | Accent font | Newsreader (location names on detail sheet only) |
-| Primary accent | `#C05A3A` (deep terracotta) |
+| Primary accent | `#B3553A` (deep terracotta) |
 | Sheet | Two separate sheets: browse + detail (never both visible) |
 | Icons | SVG, no emoji |
 | Glass | Only for map overlay controls, sheet is solid |

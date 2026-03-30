@@ -72,11 +72,14 @@ export function DetailView({ locationId, onClose, nearbyLocations = [], onNearby
   };
 
   const handleShare = () => {
-    const url = window.location.href;
+    const regionSlug = location?.region?.toLowerCase().replace(/\s+/g, '-') ?? '';
+    const shareUrl = location
+      ? `${window.location.origin}/${regionSlug}/${location.slug}`
+      : window.location.href;
     if (navigator.share) {
-      navigator.share({ url, title: location?.name ?? '' });
+      navigator.share({ url: shareUrl, title: location?.name ?? '' });
     } else {
-      navigator.clipboard.writeText(url);
+      navigator.clipboard.writeText(shareUrl);
     }
   };
 
@@ -310,7 +313,7 @@ export function DetailView({ locationId, onClose, nearbyLocations = [], onNearby
       <div ref={setMarkerRef(2)} data-depth="75" aria-hidden="true" />
 
       {/* 10. Facilities */}
-      {(location.coffee || location.diaper || location.weather) && (
+      {(location.coffee || location.diaper) && (
         <>
           <div className="hairline mx-4 my-4" />
           <div className="px-4">
@@ -320,7 +323,6 @@ export function DetailView({ locationId, onClose, nearbyLocations = [], onNearby
             <div className="flex flex-wrap gap-2">
               {location.coffee && <FacilityBadge label="Koffie" />}
               {location.diaper && <FacilityBadge label="Verschoonplek" />}
-              {location.weather && <FacilityBadge label={weatherLabel(location.weather)} />}
             </div>
           </div>
         </>
@@ -657,6 +659,12 @@ function DetailSkeleton() {
         <div className="h-12 w-12 rounded-full bg-bg-secondary" />
         <div className="h-12 w-12 rounded-full bg-bg-secondary" />
         <div className="h-12 w-12 rounded-full bg-bg-secondary" />
+      </div>
+      {/* Quick info skeleton */}
+      <div className="mb-3 flex gap-4 px-0 py-2">
+        <div className="h-4 w-16 rounded bg-bg-secondary" />
+        <div className="h-4 w-20 rounded bg-bg-secondary" />
+        <div className="h-4 w-12 rounded bg-bg-secondary" />
       </div>
       <div className="mb-4 aspect-[4/3] w-full rounded-photo bg-bg-secondary" />
       <div className="space-y-2">

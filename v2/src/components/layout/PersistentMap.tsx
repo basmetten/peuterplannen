@@ -82,7 +82,13 @@ export function PersistentMap() {
     }
 
     mapRef.current = map;
-    map.on('error', () => setMapError(true));
+    map.on('error', (e) => {
+      // Only treat initialization errors as fatal, not tile load failures
+      const msg = e.error?.message ?? '';
+      if (msg.includes('Failed to initialize') || msg.includes('WebGL')) {
+        setMapError(true);
+      }
+    });
     map.addControl(
       new maplibregl.AttributionControl({ compact: true }),
       'bottom-right',
@@ -217,8 +223,8 @@ export function PersistentMap() {
     });
 
     return () => {
-      mapRef.current = null;
       map.remove();
+      mapRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Init once — layout never unmounts within (app)

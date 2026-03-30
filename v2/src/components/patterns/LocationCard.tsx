@@ -46,7 +46,6 @@ export function LocationCard({ location, onTap, isSelected }: LocationCardProps)
     <div
       ref={cardRef}
       data-testid="location-card"
-      onClick={() => onTap(location)}
       onPointerDown={handlePressDown}
       onPointerUp={handlePressUp}
       onPointerLeave={handlePressUp}
@@ -57,10 +56,10 @@ export function LocationCard({ location, onTap, isSelected }: LocationCardProps)
         ${isSelected ? 'shadow-card ring-2 ring-accent/30' : 'shadow-[0_1px_3px_rgba(0,0,0,0.06)]'}
       `}
     >
-      {/* Screen reader + keyboard accessible button (visually hidden) */}
+      {/* Full-card tap target — transparent overlay, visible focus ring */}
       <button
         type="button"
-        className="sr-only focus:not-sr-only focus:absolute focus:inset-0 focus:z-[1] focus:rounded-card focus:outline-2 focus:outline-offset-2 focus:outline-accent"
+        className="absolute inset-0 z-[1] rounded-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         onClick={() => onTap(location)}
         aria-label={`Open ${location.name}`}
       />
@@ -71,7 +70,7 @@ export function LocationCard({ location, onTap, isSelected }: LocationCardProps)
         aria-label={favorited ? 'Verwijder uit favorieten' : 'Bewaar als favoriet'}
         onClick={handleHeartClick}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleHeartClick(e); } }}
-        className="absolute right-2 top-2 z-[1] flex h-[28px] w-[28px] items-center justify-center rounded-full bg-bg-tertiary transition-transform duration-fast ease-spring focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent"
+        className="absolute right-0.5 top-0.5 z-[2] flex h-[44px] w-[44px] items-center justify-center rounded-full transition-transform duration-fast ease-spring focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent"
         style={{ transform: bouncing ? 'scale(1.25)' : 'scale(1)' }}
       >
         {favorited ? (

@@ -24,6 +24,7 @@ import { useFavorites } from '@/hooks/useFavorites';
 import { usePlan } from '@/hooks/usePlan';
 import { useMapState } from '@/context/MapStateContext';
 import { useMapFreeze } from '@/hooks/useMapFreeze';
+import { SheetErrorBoundary } from '@/components/patterns/SheetErrorBoundary';
 import { trackDetailOpen, trackSearch, trackFilterApply } from '@/lib/analytics';
 import type { FilterState } from '@/features/filters/useFilters';
 import { haversine } from '@/lib/geo';
@@ -56,10 +57,11 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
   const { setAppMapActive } = useMapState();
   const [sheetState, sheetSend] = useMachine(sheetMachine);
   const { filters, toggleType, setWeather, setQuery, togglePriceBand, setMinScore, setAgeKey, clearFilters, isFiltered } = useFilters();
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return localStorage.getItem('pp-sidebar-collapsed') === 'true';
-  });
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  useEffect(() => {
+    const saved = localStorage.getItem('pp-sidebar-collapsed');
+    if (saved === 'true') setSidebarCollapsed(true);
+  }, []);
 
   // Layer state (stack navigation — replaces mode switcher)
   const [showFavorites, setShowFavorites] = useState(false);
@@ -441,14 +443,17 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
               className="absolute inset-0 overflow-y-auto overscroll-contain bg-bg-primary transition-transform duration-150 ease-out"
               style={{ transform: isDetailOpen ? 'translateX(0)' : 'translateX(100%)' }}
               aria-hidden={!isDetailOpen}
+              inert={!isDetailOpen || undefined}
             >
               {isDetailOpen && detailId && (
-                <DetailView
-                  locationId={detailId}
-                  onClose={handleDetailClose}
-                  nearbyLocations={nearbyLocations}
-                  onNearbyTap={handleCardTap}
-                />
+                <SheetErrorBoundary>
+                  <DetailView
+                    locationId={detailId}
+                    onClose={handleDetailClose}
+                    nearbyLocations={nearbyLocations}
+                    onNearbyTap={handleCardTap}
+                  />
+                </SheetErrorBoundary>
               )}
             </div>
 
@@ -457,6 +462,7 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
               className="absolute inset-0 overflow-y-auto overscroll-contain bg-bg-primary transition-transform duration-150 ease-out"
               style={{ transform: guideSlug ? 'translateX(0)' : 'translateX(100%)' }}
               aria-hidden={!guideSlug}
+              inert={!guideSlug || undefined}
             >
               {guideSlug && (
                 <GuideDetailView
@@ -482,12 +488,14 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
             {/* Layer 1+: Stacked sheets */}
             <StackedSheet presented={isDetailOpen} onClose={handleDetailClose}>
               {isDetailOpen && detailId && (
-                <DetailView
-                  locationId={detailId}
-                  onClose={handleDetailClose}
-                  nearbyLocations={nearbyLocations}
-                  onNearbyTap={handleCardTap}
-                />
+                <SheetErrorBoundary>
+                  <DetailView
+                    locationId={detailId}
+                    onClose={handleDetailClose}
+                    nearbyLocations={nearbyLocations}
+                    onNearbyTap={handleCardTap}
+                  />
+                </SheetErrorBoundary>
               )}
             </StackedSheet>
 

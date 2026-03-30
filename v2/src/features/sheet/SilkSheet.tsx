@@ -39,7 +39,7 @@ export function SilkSheet({
   className = '',
 }: SilkSheetProps) {
   const isPresented = snap !== 'hidden';
-  const activeDetent = SNAP_TO_DETENT[snap] || 1;
+  const activeDetent = SNAP_TO_DETENT[snap] ?? 1;
 
   // Track whether sheet reached last detent (full) — enables content scrolling
   const [scrollEnabled, setScrollEnabled] = useState(false);
@@ -60,7 +60,7 @@ export function SilkSheet({
   const handleActiveDetentChange = useCallback(
     (detent: number) => {
       const newSnap = DETENT_TO_SNAP[detent];
-      if (newSnap) {
+      if (newSnap !== undefined) {
         onSnapChange(newSnap);
       }
     },
@@ -97,10 +97,8 @@ export function SilkSheet({
   return (
     <Sheet.Root
       license="non-commercial"
-      defaultPresented={true}
       presented={isPresented}
       onPresentedChange={handlePresentedChange}
-      defaultActiveDetent={1}
       activeDetent={activeDetent}
       onActiveDetentChange={handleActiveDetentChange}
       forComponent="closest"
@@ -114,7 +112,6 @@ export function SilkSheet({
           detents={[...DETENTS]}
           swipeDismissal={false}
           inertOutside={false}
-          nativeEdgeSwipePrevention={true}
           swipeOvershoot={true}
           nativeFocusScrollPrevention={true}
           enteringAnimationSettings={{ skip: true }}

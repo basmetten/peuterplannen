@@ -73,7 +73,9 @@ export function StackedSheet({
                   <Scroll.View
                     className="SilkSheet-scroll"
                     scrollGesture="auto"
+                    scrollGestureTrap={{ yEnd: true }}
                     safeArea="layout-viewport"
+                    onScrollStart={{ dismissKeyboard: true }}
                   >
                     <Scroll.Content>
                       {children}
