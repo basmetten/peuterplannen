@@ -31,17 +31,30 @@ export function GuideDetailView({
 
   // Load guide data via dynamic import
   useEffect(() => {
+    let cancelled = false;
     setLoading(true);
     setBodyHtml('');
-    import('@/content/blog-posts.generated.json').then(async (data) => {
-      const post = (data.default as BlogPost[]).find((p) => p.slug === slug);
-      if (post) {
-        setGuide(post);
-        const html = await renderMarkdownClient(post.body);
-        setBodyHtml(html);
+    setGuide(null);
+
+    (async () => {
+      try {
+        const data = await import('@/content/blog-posts.generated.json');
+        const posts = (data.default ?? data) as BlogPost[];
+        const post = posts.find((p) => p.slug === slug);
+        if (cancelled) return;
+        if (post) {
+          setGuide(post);
+          const html = await renderMarkdownClient(post.body);
+          if (!cancelled) setBodyHtml(html);
+        }
+      } catch (err) {
+        console.error('Failed to load guide:', err);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-      setLoading(false);
-    });
+    })();
+
+    return () => { cancelled = true; };
   }, [slug]);
 
   // Related locations (matching guide's related_regions)

@@ -34,6 +34,12 @@ export function getPhotoUrl(
     return `${R2_PUBLIC_URL}/${key}`;
   }
 
+  // Blog images — stored in R2 under blog/ prefix
+  if (photoUrl.startsWith('/images/blog/') && R2_PUBLIC_URL) {
+    const filename = photoUrl.slice('/images/blog/'.length);
+    return `${R2_PUBLIC_URL}/blog/${filename}`;
+  }
+
   // No R2 configured or unrecognized path
   return null;
 }
