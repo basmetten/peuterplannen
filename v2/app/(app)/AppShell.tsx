@@ -17,7 +17,6 @@ import { LocationCard } from '@/components/patterns/LocationCard';
 import { CardListSkeleton } from '@/components/patterns/CardSkeleton';
 import { EmptyFilterState } from '@/components/patterns/EmptyState';
 import { DetailView } from '@/features/detail/DetailView';
-import { CarouselOverlay } from '@/features/carousel/CarouselOverlay';
 import { ClusterList } from '@/features/carousel/ClusterList';
 import { SheetModeSwitcher, type SheetMode } from '@/components/layout/SheetModeSwitcher';
 import { FavoritesList } from '@/features/favorites/FavoritesList';
@@ -311,18 +310,6 @@ export function AppShell({ initialLocations }: AppShellProps) {
     pushDetailUrl(location);
   }, [sheetSend, pushDetailUrl]);
 
-  const handleCarouselActiveChange = useCallback((locationId: number) => {
-    sheetSend({ type: 'CAROUSEL_SWIPE', locationId });
-  }, [sheetSend]);
-
-  // Resolve carousel IDs to LocationSummary objects for rendering
-  const carouselLocations = useMemo(() => {
-    if (!carouselLocationIds) return [];
-    return carouselLocationIds
-      .map((id) => initialLocations.find((l) => l.id === id))
-      .filter((l): l is LocationSummary => l !== undefined);
-  }, [carouselLocationIds, initialLocations]);
-
   // --- Mode change handler ---
 
   const handleModeChange = useCallback((mode: SheetMode) => {
@@ -345,8 +332,8 @@ export function AppShell({ initialLocations }: AppShellProps) {
       );
     }
 
-    // Cluster list (mobile only) — vertical list replaces carousel overlay
-    if (!isDesktop && isCarouselOpen && carouselLocationIds) {
+    // Cluster list — vertical list in sheet (mobile) or sidebar (desktop)
+    if (isCarouselOpen && carouselLocationIds) {
       const clusterLocations = carouselLocationIds
         .map(id => initialLocations.find(l => l.id === id))
         .filter((l): l is LocationSummary => l !== undefined)
@@ -429,17 +416,6 @@ export function AppShell({ initialLocations }: AppShellProps) {
         leftOffset={isDesktop ? SIDEBAR_WIDTH : 0}
         mapInstanceRef={mapInstanceRef}
       />
-
-      {/* Carousel overlay — desktop only, conditionally rendered to save GPU (mobile uses ClusterList in sheet) */}
-      {isDesktop && isCarouselOpen && (
-        <CarouselOverlay
-          locations={carouselLocations}
-          activeId={carouselActiveId}
-          onCardTap={handleCarouselCardTap}
-          onActiveChange={handleCarouselActiveChange}
-          visible={true}
-        />
-      )}
 
       {/* Desktop: persistent sidebar. Mobile: draggable bottom sheet (no tab bar) */}
       {isDesktop ? (
