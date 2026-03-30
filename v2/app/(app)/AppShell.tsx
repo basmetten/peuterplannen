@@ -417,11 +417,82 @@ export function AppShell({ initialLocations }: AppShellProps) {
         mapInstanceRef={mapInstanceRef}
       />
 
-      {/* Desktop: persistent sidebar. Mobile: draggable bottom sheet (no tab bar) */}
+      {/* Desktop: persistent sidebar with browse↔detail slide transition */}
       {isDesktop ? (
         <Sidebar>
-          <SidebarTabs activeMode={sheetMode} onModeChange={handleModeChange} />
-          {content}
+          <div className="relative flex-1 overflow-hidden">
+            {/* Browse panel — always rendered to preserve scroll position */}
+            <div
+              className="absolute inset-0 overflow-y-auto overscroll-contain transition-transform duration-150 ease-out"
+              style={{ transform: isDetailOpen ? 'translateX(-30%)' : 'translateX(0)' }}
+              aria-hidden={isDetailOpen}
+              inert={isDetailOpen || undefined}
+            >
+              <SidebarTabs activeMode={sheetMode} onModeChange={handleModeChange} />
+              {/* Browse/cluster/mode content (everything except detail) */}
+              {(() => {
+                if (isCarouselOpen && carouselLocationIds) {
+                  const clusterLocations = carouselLocationIds
+                    .map(id => initialLocations.find(l => l.id === id))
+                    .filter((l): l is LocationSummary => l !== undefined)
+                    .sort((a, b) => {
+                      if (a.is_featured && !b.is_featured) return -1;
+                      if (!a.is_featured && b.is_featured) return 1;
+                      return (b.ai_suitability_score_10 ?? 0) - (a.ai_suitability_score_10 ?? 0);
+                    });
+                  return (
+                    <ClusterList
+                      locations={clusterLocations}
+                      onCardTap={handleCarouselCardTap}
+                      onClose={() => sheetSend({ type: 'CAROUSEL_CLOSE' })}
+                    />
+                  );
+                }
+                switch (sheetMode) {
+                  case 'bewaard':
+                    return <FavoritesList locations={initialLocations} onCardTap={handleCardTap} selectedId={detailId} />;
+                  case 'plan':
+                    return <PlanView locations={initialLocations} onCardTap={handleCardTap} selectedId={detailId} />;
+                  default:
+                    return (
+                      <BrowseContent
+                        locations={filteredLocations}
+                        allLocations={initialLocations}
+                        totalCount={initialLocations.length}
+                        filters={filters}
+                        isFiltered={isFiltered}
+                        onTypeToggle={toggleType}
+                        onWeatherChange={setWeather}
+                        onQueryChange={setQuery}
+                        onPriceBandToggle={togglePriceBand}
+                        onScoreChange={setMinScore}
+                        onAgeChange={setAgeKey}
+                        onClearFilters={clearFilters}
+                        onCardTap={handleCardTap}
+                        onSearchFocus={handleSearchFocus}
+                        selectedId={detailId}
+                      />
+                    );
+                }
+              })()}
+            </div>
+
+            {/* Detail panel — slides over from right */}
+            <div
+              className="absolute inset-0 overflow-y-auto overscroll-contain bg-bg-primary transition-transform duration-150 ease-out"
+              style={{ transform: isDetailOpen ? 'translateX(0)' : 'translateX(100%)' }}
+              aria-hidden={!isDetailOpen}
+            >
+              {isDetailOpen && detailId && (
+                <DetailView
+                  locationId={detailId}
+                  onClose={handleDetailClose}
+                  nearbyLocations={nearbyLocations}
+                  onNearbyTap={handleCardTap}
+                />
+              )}
+            </div>
+          </div>
         </Sidebar>
       ) : (
         <Suspense>
