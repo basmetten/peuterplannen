@@ -137,7 +137,7 @@ export function SearchCommand({ locations, onSelect, onQueryChange, onFocus }: S
 
         {/* Results dropdown */}
         {showResults && results.length > 0 && (
-          <Command.List className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[300px] overflow-y-auto rounded-xl bg-bg-primary shadow-card">
+          <Command.List className="search-results-fade absolute left-0 right-0 top-full z-50 mt-1 max-h-[300px] overflow-y-auto rounded-xl bg-bg-primary shadow-card">
             {grouped.map(([type, locs]) => (
               <Command.Group
                 key={type}
