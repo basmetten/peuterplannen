@@ -6,7 +6,7 @@ import { useIsDesktop } from '@/hooks/useIsDesktop';
 import { useFavorites } from '@/hooks/useFavorites';
 import { usePlan } from '@/hooks/usePlan';
 import { MapContainer } from '@/features/map/MapContainer';
-import { Sheet } from '@/features/sheet/Sheet';
+import { SilkSheet } from '@/features/sheet/SilkSheet';
 import { Sidebar, SIDEBAR_WIDTH } from '@/features/sidebar/Sidebar';
 import { sheetMachine, SNAP_POINTS, type SheetSnap } from '@/features/sheet/sheetMachine';
 import { FilterBar } from '@/features/filters/FilterBar';
@@ -419,9 +419,9 @@ export function AppShell({ initialLocations }: AppShellProps) {
         </Sidebar>
       ) : (
         <Suspense>
-          <Sheet snap={snap} onSnapChange={handleSnapChange} stickyHeader={modeSwitcher}>
+          <SilkSheet snap={snap} onSnapChange={handleSnapChange} stickyHeader={modeSwitcher}>
             {content}
-          </Sheet>
+          </SilkSheet>
         </Suspense>
       )}
     </>

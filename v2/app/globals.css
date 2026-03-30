@@ -1,3 +1,4 @@
+@import "@silk-hq/components/layered-styles";
 @import "tailwindcss";
 
 /* ===================================================
@@ -138,6 +139,27 @@
   --duration-fast: var(--duration-fast);
   --duration-default: var(--duration-default);
   --duration-slow: var(--duration-slow);
+}
+
+/* === Silk Sheet styles === */
+.SilkSheet-view {
+  height: var(--silk-100-lvh-dvh-pct, 100lvh);
+}
+
+.SilkSheet-content {
+  height: 92lvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-primary);
+  border-top-left-radius: var(--radius-sheet);
+  border-top-right-radius: var(--radius-sheet);
+  box-shadow: var(--shadow-sheet);
+  overflow: hidden;
+}
+
+.SilkSheet-scroll {
+  flex: 1;
+  background: var(--color-bg-primary);
 }
 
 /* === Base Styles === */
