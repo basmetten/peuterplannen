@@ -7,7 +7,7 @@ import { useIsDesktop } from '@/hooks/useIsDesktop';
 import { MapContainer } from '@/features/map/MapContainer';
 import { SilkSheet } from '@/features/sheet/SilkSheet';
 import { StackedSheet } from '@/features/sheet/StackedSheet';
-import { Sidebar, SIDEBAR_WIDTH } from '@/features/sidebar/Sidebar';
+import { Sidebar, SIDEBAR_WIDTH, type DesktopSection } from '@/features/sidebar/Sidebar';
 import { sheetMachine, SNAP_POINTS, type SheetSnap } from '@/features/sheet/sheetMachine';
 import { useFilters, applyFilters } from '@/features/filters/useFilters';
 import { CardListSkeleton } from '@/components/patterns/CardSkeleton';
@@ -19,6 +19,8 @@ import { PlanView } from '@/features/plan/PlanView';
 import { GuideDetailView } from '@/features/guides/GuideDetailView';
 import type { LocationSummary } from '@/domain/types';
 import type { BlogPostMeta } from '@/domain/blog';
+import { useFavorites } from '@/hooks/useFavorites';
+import { usePlan } from '@/hooks/usePlan';
 import { useMapState } from '@/context/MapStateContext';
 import { useMapFreeze } from '@/hooks/useMapFreeze';
 import { trackDetailOpen, trackSearch, trackFilterApply } from '@/lib/analytics';
@@ -62,6 +64,14 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
   const [showFavorites, setShowFavorites] = useState(false);
   const [showPlan, setShowPlan] = useState(false);
   const [guideSlug, setGuideSlug] = useState<string | null>(null);
+
+  // Desktop nav section
+  const [desktopSection, setDesktopSection] = useState<DesktopSection>('browse');
+
+  // Favorites/plan counts for nav badges
+  const { count: favCount } = useFavorites();
+  const { planIds } = usePlan();
+  const planCount = planIds.length;
 
   // Map ref for freeze/unfreeze during sheet animations
   const mapInstanceRef = useRef<import('maplibre-gl').Map | null>(null);
@@ -382,20 +392,38 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
 
       {/* Desktop: persistent sidebar with browse↔detail slide transition */}
       {isDesktop ? (
-        <Sidebar collapsed={sidebarCollapsed}>
+        <Sidebar
+          collapsed={sidebarCollapsed}
+          activeSection={desktopSection}
+          onSectionChange={setDesktopSection}
+          favCount={favCount}
+          planCount={planCount}
+        >
           <div className="relative flex-1 overflow-hidden">
-            {/* Browse panel — always rendered to preserve scroll position */}
+            {/* Content panel — always rendered to preserve scroll position */}
             <div
               className="absolute inset-0 overflow-y-auto overscroll-contain transition-transform duration-150 ease-out"
-              style={{ transform: isDetailOpen ? 'translateX(-30%)' : 'translateX(0)' }}
-              aria-hidden={isDetailOpen}
-              inert={isDetailOpen || undefined}
+              style={{ transform: isDetailOpen || guideSlug ? 'translateX(-30%)' : 'translateX(0)' }}
+              aria-hidden={isDetailOpen || guideSlug !== null}
+              inert={isDetailOpen || guideSlug !== null || undefined}
             >
               {isCarouselOpen && clusterLocations.length > 0 ? (
                 <ClusterList
                   locations={clusterLocations}
                   onCardTap={handleCarouselCardTap}
                   onClose={() => sheetSend({ type: 'CAROUSEL_CLOSE' })}
+                />
+              ) : desktopSection === 'favorites' ? (
+                <FavoritesList
+                  locations={initialLocations}
+                  onCardTap={handleCardTap}
+                  selectedId={detailId}
+                />
+              ) : desktopSection === 'plan' ? (
+                <PlanView
+                  locations={initialLocations}
+                  onCardTap={handleCardTap}
+                  selectedId={detailId}
                 />
               ) : (
                 <HomeContent {...homeContentProps} />
@@ -414,6 +442,24 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
                   onClose={handleDetailClose}
                   nearbyLocations={nearbyLocations}
                   onNearbyTap={handleCardTap}
+                />
+              )}
+            </div>
+
+            {/* Guide detail panel — slides over from right */}
+            <div
+              className="absolute inset-0 overflow-y-auto overscroll-contain bg-bg-primary transition-transform duration-150 ease-out"
+              style={{ transform: guideSlug ? 'translateX(0)' : 'translateX(100%)' }}
+              aria-hidden={!guideSlug}
+            >
+              {guideSlug && (
+                <GuideDetailView
+                  slug={guideSlug}
+                  allGuides={initialGuides}
+                  locations={initialLocations}
+                  onClose={() => setGuideSlug(null)}
+                  onLocationTap={handleCardTap}
+                  onGuideTap={handleGuideTap}
                 />
               )}
             </div>

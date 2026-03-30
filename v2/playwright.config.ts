@@ -22,7 +22,10 @@ export default defineConfig({
     {
       name: 'mobile',
       use: {
-        ...devices['iPhone 14'],
+        // Use Chromium with iPhone 14 viewport (CI only installs Chromium)
+        ...devices['Pixel 7'],
+        viewport: { width: 390, height: 664 },
+        deviceScaleFactor: 3,
       },
     },
     {
