@@ -12,6 +12,10 @@ concurrency:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+defaults:
+  run:
+    working-directory: v2
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -25,18 +29,22 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
+          cache-dependency-path: v2/package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build static site
+      - name: Bundle blog posts
+        run: npm run prebuild
+
+      - name: Build Next.js app
         run: npm run build
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       - name: Ensure DNS record exists for staging.peuterplannen.nl
+        working-directory: .
         env:
           CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
@@ -66,7 +74,7 @@ jobs:
           CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
           CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx wrangler deploy --env staging
+        run: npx wrangler deploy
 
       - name: Smoke test staging
         run: |
