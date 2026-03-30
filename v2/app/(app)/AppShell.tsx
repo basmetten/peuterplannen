@@ -17,6 +17,7 @@ import { HomeContent } from '@/features/home/HomeContent';
 import { FavoritesList } from '@/features/favorites/FavoritesList';
 import { PlanView } from '@/features/plan/PlanView';
 import { GuideDetailView } from '@/features/guides/GuideDetailView';
+import { GuideListView } from '@/features/guides/GuideListView';
 import type { LocationSummary } from '@/domain/types';
 import type { BlogPostMeta } from '@/domain/blog';
 import { useFavorites } from '@/hooks/useFavorites';
@@ -412,6 +413,11 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
                   locations={clusterLocations}
                   onCardTap={handleCarouselCardTap}
                   onClose={() => sheetSend({ type: 'CAROUSEL_CLOSE' })}
+                />
+              ) : desktopSection === 'guides' ? (
+                <GuideListView
+                  guides={initialGuides}
+                  onGuideTap={handleGuideTap}
                 />
               ) : desktopSection === 'favorites' ? (
                 <FavoritesList
