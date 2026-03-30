@@ -26,6 +26,7 @@
 **Staging deployment complete** — v2 live at `staging.peuterplannen.nl` via `@opennextjs/cloudflare` (Cloudflare Workers). GitHub Actions secrets set. Google Maps API key already restricted.
 **Library migration complete** — cmdk + Fuse.js (fuzzy search), Embla Carousel (nearby + desktop carousel). Vaul was tried for bottom sheet but crashed iOS Safari (GPU memory exhaustion from `will-change: transform` + MapLibre WebGL) — reverted to custom `useSheetDrag` hook with Issue A fix (swipe-anywhere-to-expand at non-full snaps). Old SearchInput.tsx deleted. Glass/backdrop-filter tokens removed.
 **Phase 7 Silk Polish complete** — MapLibre GPU optimization (pixelRatio:1, maxTileCacheSize:12, fadeDuration:0, fill-extrusion removal), Silk sheet integration (@silk-hq/components replaces custom Sheet.tsx for AppShell), Apple Maps detail view redesign (share/close buttons, quick info row, "Goed om te weten" section), CSS iOS polish (tap feedback, touch improvements), GPS location button (GeolocateControl with warm styling).
+**Phase 8 Stability & Polish complete** — GPU stability (single map instance, freeze during animations, WebGL context loss handling), edge-to-edge bleed (overscroll color, safe areas), desktop CarouselOverlay→sidebar ClusterList, desktop browse↔detail slide transition (150ms, parallax), sidebar collapse toggle (localStorage-persisted), search results group fade. Photo gallery skipped (needs multi-photo DB field).
 
 ## Architecture (current)
 
@@ -140,6 +141,45 @@ v2/src/lib/markdown.ts      — unified/remark/rehype render pipeline
 The `prebuild` npm script runs `bundle-posts.mjs` before every build. The markdown pipeline includes a `rehypeRewriteLinks` plugin that converts old-style links (`/amsterdam.html`, `/app.html?regio=X`, trailing slashes) to v2 routes.
 
 ## What happened this session
+
+### Phase 8: GPU Stability, Edge-to-Edge, Desktop Transitions & Polish
+
+**8A: GPU Stability Foundation:**
+- Single map instance: added `appMapActive` flag to MapStateContext — PersistentMap doesn't render when AppShell's MapContainer is active (prevents dual WebGL contexts)
+- Map freeze during sheet animations: `useMapFreeze` hook freezes MapLibre render loop, `flyTo` sequenced AFTER sheet animation (450ms delay)
+- Skip `map.resize()` on mobile (leftOffset=0)
+- WebGL context loss/restored handlers on canvas
+- CarouselOverlay conditionally rendered (unmount when hidden)
+- `renderWorldCopies: false` on both map instances
+
+**8B: Edge-to-Edge Visual Bleed:**
+- `html { background-color: #E8DED5; overscroll-behavior: none }` — matches map tile edges
+- GPS button uses `env(safe-area-inset-*)` for notch/Dynamic Island
+- `interactive-widget=resizes-visual` prevents map reflow on keyboard open
+
+**8C: Desktop CarouselOverlay → Sidebar ClusterList:**
+- Removed floating CarouselOverlay on desktop (Funda-style → Apple Maps style)
+- ClusterList now renders inside sidebar on both mobile and desktop
+
+**8D: Desktop Browse↔Detail Slide Transition:**
+- Detail panel slides in from right (`translateX(100%→0)`, 150ms ease-out)
+- Browse panel shifts left 30% for parallax depth
+- Browse content stays mounted (scroll position preserved on back)
+- `inert` attribute disables browse panel when detail is open
+
+**8E: Photo Gallery — SKIPPED:**
+- Data model only has single `photo_url` per location
+- Gallery needs `additional_photos` DB field — deferred to future phase
+
+**8F: Desktop Sidebar Collapse Toggle:**
+- Toggle button on map edge, chevron icon flips based on state
+- Sidebar slides out with `transform: translateX(-380px)`, map fills full width
+- State persisted in localStorage (`pp-sidebar-collapsed`)
+- Desktop only
+
+**8G: Search Results Fade:**
+- `fadeInGroup` keyframe: opacity + translateY, 200ms, applied to Command.List as a whole
+- Apple Maps pattern: entire group fades, no card stagger
 
 ### Phase 7: Silk Sheet + Apple Maps Detail Redesign + Performance
 
