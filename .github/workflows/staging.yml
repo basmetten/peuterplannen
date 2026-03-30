@@ -69,6 +69,15 @@ jobs:
             echo "DNS record bestaat al — skip."
           fi
 
+      - name: Set Worker secrets
+        env:
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "${{ secrets.SUPABASE_URL }}" | npx wrangler secret put SUPABASE_URL --name peuterplannen-staging
+          echo "${{ secrets.SUPABASE_SERVICE_KEY }}" | npx wrangler secret put SUPABASE_SERVICE_KEY --name peuterplannen-staging
+
       - name: Deploy to Cloudflare Worker (staging)
         env:
           CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
