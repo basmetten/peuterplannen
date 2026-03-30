@@ -180,6 +180,12 @@
 }
 
 /* === Base Styles === */
+html {
+  /* Match overscroll rubber-band color to map tile edges — no white gaps */
+  background-color: #E8DED5;
+  overscroll-behavior: none;
+}
+
 body {
   background: var(--color-bg-primary);
   color: var(--color-label);
@@ -239,8 +245,8 @@ button, [role="button"], nav {
 }
 
 .maplibregl-ctrl-top-right {
-  top: 16px;
-  right: 16px;
+  top: max(16px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
 }
 
 /* Content sheet — SSR-safe responsive positioning.
