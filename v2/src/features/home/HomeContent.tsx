@@ -79,7 +79,7 @@ export function HomeContent({
   }, [initialLocations, planIds]);
 
   return (
-    <div className="w-full min-w-0 overflow-hidden">
+    <div className="w-full min-w-0 max-w-[100vw]">
       {/* Search */}
       <SearchCommand
         locations={initialLocations}
