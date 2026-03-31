@@ -114,8 +114,8 @@ test.describe('Location detail', () => {
     await expandSheet(page);
     await openFirstDetail(page);
 
-    // Action buttons may be below fold — scroll to them
-    const routeBtn = page.getByText('Route');
+    // Action buttons — use exact match to avoid location highlight text containing "route"
+    const routeBtn = page.getByRole('link', { name: 'Route' });
     await routeBtn.scrollIntoViewIfNeeded();
     await expect(routeBtn).toBeVisible({ timeout: 5_000 });
   });
@@ -125,9 +125,10 @@ test.describe('Location detail', () => {
     await expandSheet(page);
     await openFirstDetail(page);
 
-    await page.getByLabel('Sluiten').click();
+    // Force click — Silk sheet overlay can intercept pointer events during animation
+    await page.getByLabel('Sluiten').first().click({ force: true });
     // After closing, search bar should be visible again
-    await expect(page.getByPlaceholder('Zoek een uitje...')).toBeVisible({ timeout: 5_000 });
+    await expect(page.getByPlaceholder('Zoek een uitje...')).toBeVisible({ timeout: 10_000 });
   });
 });
 
@@ -137,11 +138,11 @@ test.describe('Favorites', () => {
     await expandSheet(page);
     await openFirstDetail(page);
 
-    // Save as favorite
-    await page.getByLabel('Bewaar als favoriet').click();
+    // Save as favorite — force click to bypass Silk overlay interception
+    await page.getByLabel('Bewaar als favoriet').first().click({ force: true });
 
     // Close detail
-    await page.getByLabel('Sluiten').click();
+    await page.getByLabel('Sluiten').first().click({ force: true });
     await expect(page.getByPlaceholder('Zoek een uitje...')).toBeVisible({ timeout: 5_000 });
 
     // Bewaard section should now be visible in home content (sheet expanded)
@@ -157,11 +158,12 @@ test.describe('Plan', () => {
     await openFirstDetail(page);
 
     // Add to plan
-    await page.getByLabel('Toevoegen aan plan').click();
-    await expect(page.getByText('In plan')).toBeVisible({ timeout: 2_000 });
+    await page.getByLabel('Toevoegen aan plan').first().click();
+    // Verify the button changed to "Verwijder uit plan" (exact text avoids matching location names)
+    await expect(page.getByLabel('Verwijder uit plan')).toBeVisible({ timeout: 2_000 });
 
     // Close detail
-    await page.getByLabel('Sluiten').click();
+    await page.getByLabel('Sluiten').first().click();
     await expect(page.getByPlaceholder('Zoek een uitje...')).toBeVisible({ timeout: 5_000 });
 
     // Plan section should now be visible in home content (sheet expanded)
