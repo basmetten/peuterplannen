@@ -33,6 +33,7 @@ export function GuideListView({ guides, onGuideTap }: GuideListViewProps) {
   const latest = useMemo(
     () => guides
       .filter((g) => !FEATURED_SLUGS.has(g.slug))
+      .sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
       .slice(0, 8),
     [guides],
   );

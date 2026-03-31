@@ -55,17 +55,19 @@ export function StackedSheet({
                   <button
                     type="button"
                     onClick={onClose}
-                    className="flex h-[32px] w-[32px] items-center justify-center rounded-full bg-bg-secondary"
+                    className="flex h-[44px] w-[44px] items-center justify-center"
                     aria-label="Sluiten"
                   >
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                      <path
-                        d="M1 1l12 12M13 1L1 13"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                    </svg>
+                    <span className="flex h-[32px] w-[32px] items-center justify-center rounded-full bg-bg-secondary">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path
+                          d="M1 1l12 12M13 1L1 13"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </span>
                   </button>
                 </div>
 

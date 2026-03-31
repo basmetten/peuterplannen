@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { OptimizedImage } from '@/components/patterns/OptimizedImage';
+import { GuideCard } from '@/components/patterns/GuideCard';
 import { LocationCard } from '@/components/patterns/LocationCard';
 import { HorizontalCardStrip } from '@/components/patterns/HorizontalCardStrip';
 import { renderMarkdownClient } from '@/lib/markdown-client';
@@ -97,7 +98,10 @@ export function GuideDetailView({
   if (!guide) {
     return (
       <div className="flex flex-col items-center justify-center gap-3 p-8 text-center">
-        <span className="text-[32px]">📖</span>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-label-quaternary">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+        </svg>
         <p className="text-[15px] text-label-secondary">Gids niet gevonden</p>
       </div>
     );
@@ -105,6 +109,20 @@ export function GuideDetailView({
 
   return (
     <div>
+      {/* Desktop-only back button (on mobile, StackedSheet provides close) */}
+      <div className="sticky top-0 z-10 hidden items-center bg-bg-primary px-4 py-2 md:flex">
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-bg-secondary"
+          aria-label="Terug"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+        </button>
+      </div>
+
       {/* Hero image */}
       {guide.featured_image && (
         <div className="relative">
@@ -173,26 +191,7 @@ export function GuideDetailView({
           </h2>
           <HorizontalCardStrip className="px-4">
             {relatedGuides.map((g) => (
-              <button
-                key={g.slug}
-                type="button"
-                onClick={() => onGuideTap(g.slug)}
-                className="w-[160px] flex-shrink-0 overflow-hidden rounded-2xl bg-bg-secondary text-left transition-transform active:scale-[0.97]"
-              >
-                {g.featured_image && (
-                  <OptimizedImage
-                    src={g.featured_image}
-                    alt={g.title}
-                    size="card"
-                    className="h-[90px] w-full object-cover"
-                  />
-                )}
-                <div className="p-2.5">
-                  <h3 className="line-clamp-2 text-[13px] font-medium leading-tight text-label">
-                    {g.title}
-                  </h3>
-                </div>
-              </button>
+              <GuideCard key={g.slug} guide={g} onTap={onGuideTap} />
             ))}
           </HorizontalCardStrip>
         </section>

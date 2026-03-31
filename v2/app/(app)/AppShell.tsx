@@ -310,6 +310,27 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
 
   // --- Layer handlers (stack navigation) ---
 
+  const handleGuideLocationTap = useCallback((location: LocationSummary) => {
+    setGuideSlug(null);
+    setTimeout(() => {
+      trackDetailOpen(location.id, 'card');
+      freezeMap();
+      sheetSend({ type: 'OPEN_DETAIL', id: location.id });
+      pushDetailUrl(location);
+      setTimeout(() => {
+        unfreezeMap();
+        const map = mapInstanceRef.current;
+        if (map) {
+          map.flyTo({
+            center: [location.lng, location.lat],
+            zoom: Math.max(map.getZoom(), 13),
+            duration: 600,
+          });
+        }
+      }, 450);
+    }, 50);
+  }, [sheetSend, pushDetailUrl, freezeMap, unfreezeMap]);
+
   const handleGuideTap = useCallback((slug: string) => {
     setGuideSlug(slug);
   }, []);
@@ -342,6 +363,7 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
     filters,
     isFiltered,
     guides: initialGuides,
+    snap,
     onTypeToggle: toggleType,
     onWeatherChange: setWeather,
     onQueryChange: setQuery,
@@ -470,7 +492,7 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
                   allGuides={initialGuides}
                   locations={initialLocations}
                   onClose={() => setGuideSlug(null)}
-                  onLocationTap={handleCardTap}
+                  onLocationTap={handleGuideLocationTap}
                   onGuideTap={handleGuideTap}
                 />
               )}
@@ -536,7 +558,7 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
                   allGuides={initialGuides}
                   locations={initialLocations}
                   onClose={() => setGuideSlug(null)}
-                  onLocationTap={handleCardTap}
+                  onLocationTap={handleGuideLocationTap}
                   onGuideTap={handleGuideTap}
                 />
               )}

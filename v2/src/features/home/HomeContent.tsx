@@ -8,11 +8,13 @@ import { LocationCard } from '@/components/patterns/LocationCard';
 import { EmptyFilterState } from '@/components/patterns/EmptyState';
 import { HorizontalCardStrip } from '@/components/patterns/HorizontalCardStrip';
 import { OptimizedImage } from '@/components/patterns/OptimizedImage';
+import { GuideCard } from '@/components/patterns/GuideCard';
 import { LOCATION_TYPE_LABELS, TYPE_COLORS } from '@/domain/enums';
 import type { LocationType } from '@/domain/enums';
 import type { LocationSummary } from '@/domain/types';
 import type { BlogPostMeta } from '@/domain/blog';
 import type { FilterState } from '@/features/filters/useFilters';
+import type { SheetSnap } from '@/features/sheet/sheetMachine';
 import { useFavorites } from '@/hooks/useFavorites';
 import { usePlan } from '@/hooks/usePlan';
 
@@ -22,6 +24,7 @@ interface HomeContentProps {
   filters: FilterState;
   isFiltered: boolean;
   guides: BlogPostMeta[];
+  snap: SheetSnap;
   onTypeToggle: (type: LocationType) => void;
   onWeatherChange: (weather: import('@/domain/enums').Weather | null) => void;
   onQueryChange: (query: string) => void;
@@ -56,6 +59,7 @@ export function HomeContent({
   onFavoritesTap,
   onPlanTap,
   selectedId,
+  snap,
 }: HomeContentProps) {
   const { favorites, count: favCount } = useFavorites();
   const { planIds } = usePlan();
@@ -84,78 +88,66 @@ export function HomeContent({
         onFocus={onSearchFocus}
       />
 
-      {/* Categories — hidden during search */}
-      {!filters.query && (
+      {/* Everything below search is hidden at peek — only search bar + drag handle visible */}
+      {snap !== 'peek' && (
         <>
-          <CategoryGrid
-            activeTypes={filters.types}
-            onTypeToggle={onTypeToggle}
-          />
+          {/* Categories — hidden during search */}
+          {!filters.query && (
+            <>
+              <CategoryGrid
+                activeTypes={filters.types}
+                onTypeToggle={onTypeToggle}
+              />
 
-          {/* Guides strip */}
-          {guides.length > 0 && (
-            <SectionStrip title="Gidsen" className="mt-1">
-              <HorizontalCardStrip className="px-4">
-                {guides.map(guide => (
-                  <button
-                    key={guide.slug}
-                    type="button"
-                    onClick={() => onGuideTap(guide.slug)}
-                    className="w-[160px] flex-shrink-0 overflow-hidden rounded-2xl bg-bg-secondary text-left transition-transform active:scale-[0.97]"
-                  >
-                    {guide.featured_image && (
-                      <OptimizedImage
-                        src={guide.featured_image}
-                        alt={guide.title}
-                        size="card"
-                        className="h-[90px] w-full object-cover"
+              {/* Guides strip */}
+              {guides.length > 0 && (
+                <SectionStrip title="Gidsen" className="mt-1">
+                  <HorizontalCardStrip className="px-4">
+                    {guides.map(guide => (
+                      <GuideCard
+                        key={guide.slug}
+                        guide={guide}
+                        onTap={onGuideTap}
                       />
-                    )}
-                    <div className="p-2.5">
-                      <h3 className="line-clamp-2 text-[13px] font-medium leading-tight text-label">
-                        {guide.title}
-                      </h3>
-                    </div>
-                  </button>
-                ))}
-              </HorizontalCardStrip>
-            </SectionStrip>
+                    ))}
+                  </HorizontalCardStrip>
+                </SectionStrip>
+              )}
+
+              {/* Bewaard preview */}
+              {favCount > 0 && (
+                <SectionStrip
+                  title={`Bewaard (${favCount})`}
+                  action="Bekijk alle"
+                  onAction={onFavoritesTap}
+                >
+                  <HorizontalCardStrip className="px-4">
+                    {favPreview.map(loc => (
+                      <SmallLocationCard key={loc.id} location={loc} onTap={onCardTap} />
+                    ))}
+                  </HorizontalCardStrip>
+                </SectionStrip>
+              )}
+
+              {/* Plan preview */}
+              {planIds.length > 0 && (
+                <SectionStrip
+                  title={`Je plan (${planIds.length})`}
+                  action="Bekijk alle"
+                  onAction={onPlanTap}
+                >
+                  <HorizontalCardStrip className="px-4">
+                    {planPreview.map((loc, i) => (
+                      <SmallLocationCard key={loc.id} location={loc} onTap={onCardTap} index={i + 1} />
+                    ))}
+                  </HorizontalCardStrip>
+                </SectionStrip>
+              )}
+            </>
           )}
 
-          {/* Bewaard preview */}
-          {favCount > 0 && (
-            <SectionStrip
-              title={`Bewaard (${favCount})`}
-              action="Bekijk alle"
-              onAction={onFavoritesTap}
-            >
-              <HorizontalCardStrip className="px-4">
-                {favPreview.map(loc => (
-                  <SmallLocationCard key={loc.id} location={loc} onTap={onCardTap} />
-                ))}
-              </HorizontalCardStrip>
-            </SectionStrip>
-          )}
-
-          {/* Plan preview */}
-          {planIds.length > 0 && (
-            <SectionStrip
-              title={`Je plan (${planIds.length})`}
-              action="Bekijk alle"
-              onAction={onPlanTap}
-            >
-              <HorizontalCardStrip className="px-4">
-                {planPreview.map((loc, i) => (
-                  <SmallLocationCard key={loc.id} location={loc} onTap={onCardTap} index={i + 1} />
-                ))}
-              </HorizontalCardStrip>
-            </SectionStrip>
-          )}
-        </>
-      )}
-
-      {/* Filters */}
-      <FilterBar
+          {/* Filters */}
+          <FilterBar
         activeWeather={filters.weather}
         activePriceBands={filters.priceBands}
         activeMinScore={filters.minScore}
@@ -205,6 +197,8 @@ export function HomeContent({
           </div>
         </>
       )}
+        </>
+      )}
     </div>
   );
 }
@@ -232,7 +226,7 @@ function SectionStrip({
           <button
             type="button"
             onClick={onAction}
-            className="text-[13px] font-medium text-accent"
+            className="min-h-[44px] flex items-center px-2 text-[13px] font-medium text-accent"
           >
             {action} ›
           </button>
@@ -272,7 +266,10 @@ function SmallLocationCard({
         />
       ) : (
         <div className="flex h-[80px] w-full items-center justify-center bg-bg-secondary">
-          <span className="text-[20px] text-label-quaternary">📍</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-label-quaternary">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
         </div>
       )}
       <div className="p-2">
