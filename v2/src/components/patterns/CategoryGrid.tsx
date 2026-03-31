@@ -58,7 +58,10 @@ const ICONS: Record<LocationType, React.ReactNode> = {
 
 export function CategoryGrid({ activeTypes, onTypeToggle }: CategoryGridProps) {
   return (
-    <div className="grid grid-cols-4 gap-y-3 gap-x-2 px-4 py-3">
+    <div
+      className="grid grid-cols-4 gap-y-3 gap-x-2 px-4 py-3"
+      style={{ gridTemplateColumns: 'repeat(4, minmax(0, 1fr))' }}
+    >
       {LOCATION_TYPES.map((type) => {
         const isActive = activeTypes.includes(type);
         const color = TYPE_COLORS[type];

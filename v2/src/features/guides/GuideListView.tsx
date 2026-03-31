@@ -62,7 +62,7 @@ export function GuideListView({ guides, onGuideTap }: GuideListViewProps) {
           <h3 className="mb-3 text-[13px] font-medium uppercase tracking-widest text-label-tertiary">
             Per stad
           </h3>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2" style={{ gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}>
             {cityGuides.map((g) => (
               <SmallGuideCard key={g.slug} guide={g} onTap={onGuideTap} />
             ))}
