@@ -39,6 +39,7 @@ export default defineConfig({
     },
     {
       name: 'desktop',
+      testIgnore: /touch-gestures/,
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1280, height: 800 },

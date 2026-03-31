@@ -6,12 +6,21 @@ async function waitForApp(page: Page) {
   await expect(page.getByPlaceholder('Zoek een uitje...')).toBeVisible({ timeout: 15_000 });
 }
 
-/** Expand sheet to full so location cards and count are visible */
+/** Expand sheet so location cards and count are visible.
+ *  On desktop (sidebar), content is always visible — just wait for it.
+ *  On mobile (Silk sheet), click search to expand from peek. */
 async function expandSheet(page: Page) {
-  // Click the search bar to expand sheet from peek to at least half
-  await page.getByPlaceholder('Zoek een uitje...').click();
-  // Wait for location count to become visible (sheet expanded past peek)
-  await expect(page.getByText(/\d+ locaties/)).toBeVisible({ timeout: 10_000 });
+  const viewport = page.viewportSize();
+  const isDesktop = viewport && viewport.width >= 1024;
+
+  if (isDesktop) {
+    // Desktop sidebar always shows content — just wait for it to load
+    await expect(page.getByText(/\d+ locaties/)).toBeVisible({ timeout: 15_000 });
+  } else {
+    // Mobile: click search to expand sheet from peek
+    await page.getByPlaceholder('Zoek een uitje...').click();
+    await expect(page.getByText(/\d+ locaties/)).toBeVisible({ timeout: 10_000 });
+  }
 }
 
 /** Click a location card to open detail view */

@@ -363,7 +363,7 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
     filters,
     isFiltered,
     guides: initialGuides,
-    snap,
+    snap: isDesktop ? 'full' as const : snap,
     onTypeToggle: toggleType,
     onWeatherChange: setWeather,
     onQueryChange: setQuery,
