@@ -77,11 +77,10 @@ export function SilkSheet({
     [onSnapChange],
   );
 
-  // Enable scroll only at last detent (full)
+  // Enable scroll at half or full state (detent >= 2)
   const handleTravelRangeChange = useCallback(
     ({ start }: { start: number; end: number }) => {
-      // Detent 3 is the last (full) — enable scrolling
-      setScrollEnabled(start >= 3);
+      setScrollEnabled(start >= 2);
     },
     [],
   );
