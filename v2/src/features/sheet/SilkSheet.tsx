@@ -48,13 +48,13 @@ export function SilkSheet({
   // Prevent re-entrant updates during stepping
   const travelStatusRef = useRef<string>('idleOutside');
 
-  // Skip onActiveDetentChange during initial mount — Silk reports its internal
-  // detent state immediately which would override our intended initial snap.
-  const mountedRef = useRef(false);
+  // Track the last programmatic snap to ignore Silk echoing it back.
+  // When we set activeDetent from our snap prop, Silk fires onActiveDetentChange
+  // with the same value — we should ignore that echo to prevent loops.
+  const lastProgrammaticDetent = useRef(activeDetent);
   useEffect(() => {
-    const timer = setTimeout(() => { mountedRef.current = true; }, 500);
-    return () => clearTimeout(timer);
-  }, []);
+    lastProgrammaticDetent.current = activeDetent;
+  }, [activeDetent]);
 
   const handlePresentedChange = useCallback(
     (presented: boolean) => {
@@ -67,7 +67,8 @@ export function SilkSheet({
 
   const handleActiveDetentChange = useCallback(
     (detent: number) => {
-      if (!mountedRef.current) return; // Skip Silk's init callback
+      // Skip if this is Silk echoing back our own programmatic detent change
+      if (detent === lastProgrammaticDetent.current) return;
       const newSnap = DETENT_TO_SNAP[detent];
       if (newSnap !== undefined) {
         onSnapChange(newSnap);
