@@ -226,46 +226,92 @@ button, [role="button"], nav {
   user-select: none;
 }
 
-/* === GPS location button — Apple Maps style === */
-.maplibregl-ctrl-geolocate {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: var(--color-bg-primary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+/* === Map controls — Apple Maps style === */
+
+/* Control group positioning */
+.maplibregl-ctrl-top-right {
+  top: max(16px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+}
+
+/* Shared control group container — Apple rounded-rect with soft shadow */
+.maplibregl-ctrl-top-right .maplibregl-ctrl-group {
+  background: #FFFFFF;
+  border-radius: 13px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.12),
+    0 0 0 0.5px rgba(0, 0, 0, 0.06);
   border: none;
+  overflow: hidden;
+}
+
+/* Remove MapLibre's default border between buttons in a group */
+.maplibregl-ctrl-group button + button {
+  border-top: 0.5px solid rgba(0, 0, 0, 0.08);
+}
+
+/* GPS button — Apple Maps location.fill icon */
+.maplibregl-ctrl-geolocate {
+  width: 44px !important;
+  height: 44px !important;
+  border: none !important;
   cursor: pointer;
-  transition: background-color 150ms ease;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+  transition: background-color 120ms ease;
 }
 
 .maplibregl-ctrl-geolocate:hover {
-  background: var(--color-bg-secondary);
+  background: rgba(0, 0, 0, 0.04);
 }
 
-.maplibregl-ctrl-geolocate-active {
-  color: var(--color-accent);
+.maplibregl-ctrl-geolocate:active {
+  background: rgba(0, 0, 0, 0.08);
 }
 
-.maplibregl-ctrl-geolocate-waiting {
+/* Replace default icon with Apple-style location arrow (SF Symbols location.fill) */
+.maplibregl-ctrl-geolocate .maplibregl-ctrl-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='3 11 22 2 13 21 11 13 3 11'/%3E%3C/svg%3E") !important;
+  background-size: 20px 20px !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Active state — location tracking, use accent color */
+.maplibregl-ctrl-geolocate-active .maplibregl-ctrl-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='%23007AFF' stroke='%23007AFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='3 11 22 2 13 21 11 13 3 11'/%3E%3C/svg%3E") !important;
+}
+
+/* Waiting state — pulsing while acquiring location */
+.maplibregl-ctrl-geolocate-waiting .maplibregl-ctrl-icon {
   animation: gpsWaiting 1.5s ease infinite;
 }
 
 @keyframes gpsWaiting {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  50% { opacity: 0.3; }
 }
 
+/* User location dot — terracotta accent */
 .maplibregl-user-location-dot {
-  background-color: var(--color-accent);
+  background-color: #007AFF;
+}
+
+.maplibregl-user-location-dot::before {
+  background-color: #007AFF;
 }
 
 .maplibregl-user-location-accuracy-circle {
-  background-color: rgba(179, 85, 58, 0.15);
+  background-color: rgba(0, 122, 255, 0.12);
 }
 
-.maplibregl-ctrl-top-right {
-  top: max(16px, env(safe-area-inset-top));
-  right: max(16px, env(safe-area-inset-right));
+/* Attribution control — compact and unobtrusive */
+.maplibregl-ctrl-bottom-right .maplibregl-ctrl-attrib {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  font-size: 10px;
 }
 
 /* Content sheet — SSR-safe responsive positioning.
