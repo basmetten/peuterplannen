@@ -128,7 +128,7 @@ export function SilkSheet({
             }}
           />
           <Sheet.Content className="SilkSheet-content">
-            <Sheet.BleedingBackground className="bg-bg-primary" />
+            <Sheet.BleedingBackground className="SilkSheet-bg" />
 
             <Sheet.SpecialWrapper.Root>
               <Sheet.SpecialWrapper.Content>

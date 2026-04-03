@@ -147,11 +147,25 @@
    Only apply visual styles (background, border-radius, shadow, color) here.
    Handle grip is styled via className prop on Sheet.Handle, not via data-silk selectors. */
 
+/* Sheet.View — must be tall enough for the sheet to travel its full range */
+.SilkSheet-view {
+  height: calc(var(--silk-100-lvh-dvh-pct, 100dvh) + 60px);
+}
+
+/* Sheet.Content — height defines the MAXIMUM the sheet can reach (last detent).
+   Silk's overflow:visible !important prevents border-radius clipping here,
+   so border-radius goes on BleedingBackground instead. */
 .SilkSheet-content {
-  background: var(--color-bg-primary);
-  border-top-left-radius: var(--radius-sheet);
-  border-top-right-radius: var(--radius-sheet);
+  height: calc(100% - max(env(safe-area-inset-top, 0px), 6px));
   box-shadow: var(--shadow-sheet);
+}
+
+/* BleedingBackground — the correct place for border-radius and background color.
+   Silk sets border-radius:inherit on this element and it bleeds below the sheet
+   during swipe overshoot so no white gaps appear. */
+.SilkSheet-bg {
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  background-color: var(--color-bg-primary);
 }
 
 /* Do NOT style .SilkSheet-scroll (Scroll.View) — Silk owns this element's layout.

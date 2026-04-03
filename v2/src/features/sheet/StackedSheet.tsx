@@ -52,6 +52,7 @@ export function StackedSheet({
     >
       <Sheet.Portal>
         <Sheet.View
+          className="SilkSheet-view"
           contentPlacement="bottom"
           swipeDismissal={swipe}
           inertOutside={false}
@@ -60,7 +61,7 @@ export function StackedSheet({
           style={{ zIndex: 31 }}
         >
           <Sheet.Content className="SilkSheet-content">
-            <Sheet.BleedingBackground className="bg-bg-primary" />
+            <Sheet.BleedingBackground className="SilkSheet-bg" />
             {title && <Sheet.Title className="sr-only">{title}</Sheet.Title>}
 
             <Sheet.SpecialWrapper.Root>
