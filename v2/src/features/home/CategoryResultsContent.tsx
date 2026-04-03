@@ -65,7 +65,7 @@ export function CategoryResultsContent({
   const label = LOCATION_TYPE_LABELS[category];
 
   return (
-    <div className="flex flex-col">
+    <div className="flex min-w-0 flex-col overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-3 px-4 pb-2">
         <div

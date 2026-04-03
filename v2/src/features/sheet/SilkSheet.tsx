@@ -6,20 +6,20 @@ import type { SheetSnap } from './sheetMachine';
 
 /* ---------- Snap ↔ Detent mapping ---------- */
 
-// Silk detents: 1 = peek (25lvh), 2 = half (50lvh), 3 = full (content height)
+// Silk detents: 1 = peek (25lvh), 2 = full (content height)
+// No half detent — Apple Maps style: peek or full, nothing in between.
 // The browse sheet is always presented (no hidden state).
-const DETENTS = ['25lvh', '50lvh'] as const;
+const DETENTS = ['25lvh'] as const;
 
 const SNAP_TO_DETENT: Record<SheetSnap, number> = {
   peek: 1,
-  half: 2,
-  full: 3,
+  half: 2, // maps to full in Silk (same as full)
+  full: 2,
 };
 
 const DETENT_TO_SNAP: Record<number, SheetSnap> = {
   1: 'peek',
-  2: 'half',
-  3: 'full',
+  2: 'full',
 };
 
 /* ---------- Component ---------- */

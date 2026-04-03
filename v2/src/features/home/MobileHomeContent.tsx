@@ -44,7 +44,7 @@ export function MobileHomeContent({
   const { planIds } = usePlan();
 
   return (
-    <div className="w-full min-w-0 max-w-[100vw]">
+    <div className="w-full min-w-0 overflow-hidden">
       {/* Search — always visible, even at peek */}
       <SearchCommand
         locations={locations}
