@@ -124,7 +124,10 @@ export const LocationRepository = {
       .order('ai_suitability_score_10', { ascending: false, nullsFirst: false })
       .limit(limit * 3); // Fetch extra to allow type-preference sorting
 
-    if (error) throw new Error(`Failed to fetch nearby: ${error.message}`);
+    if (error) {
+      console.warn(`getNearby failed for location ${locationId}: ${error.message}`);
+      return []; // Non-critical — return empty rather than crashing the build
+    }
 
     const parsed = data.map((row: unknown) => LocationSummarySchema.parse(row));
 
