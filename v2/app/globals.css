@@ -142,31 +142,17 @@
 }
 
 /* === Silk Sheet styles === */
-/* Silk portal z-index: must be above MapLibre controls (z-index: 2) */
-.SilkSheet-view {
-  height: var(--silk-100-lvh-dvh-pct, 100lvh);
-  z-index: 30;
-}
+/* Only visual styling — let Silk handle its own layout and scroll. */
 
 .SilkSheet-content {
-  height: 92lvh;
-  display: flex;
-  flex-direction: column;
   background: var(--color-bg-primary);
   border-top-left-radius: var(--radius-sheet);
   border-top-right-radius: var(--radius-sheet);
   box-shadow: var(--shadow-sheet);
-  overflow: hidden;
 }
 
-/* Native scroll container inside the sheet.
-   Silk's SpecialWrapper (b0, b1) are display:block — flex:1 can't
-   constrain height. We use explicit height via CSS calc instead.
-   92lvh = sheet content height, 40px = handle height. */
 .SilkSheet-scroll {
-  height: calc(92lvh - 40px);
   background: var(--color-bg-primary);
-  -webkit-overflow-scrolling: touch;
 }
 
 /* Silk handle: a16 is the touch-target container, a17 is the grip indicator.

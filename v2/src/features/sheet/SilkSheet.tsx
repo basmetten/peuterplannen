@@ -1,12 +1,12 @@
 'use client';
 
-import { type ReactNode, useCallback, useRef, useState, useEffect } from 'react';
-import { Sheet } from '@silk-hq/components';
+import { type ReactNode, useCallback, useRef, useEffect } from 'react';
+import { Sheet, Scroll } from '@silk-hq/components';
 import type { SheetSnap } from './sheetMachine';
 
 /* ---------- Snap ↔ Detent mapping ---------- */
 
-// Silk detents: 0 = off-screen, 1 = peek (25lvh), 2 = half (50lvh), 3 = full (content height = 92lvh)
+// Silk detents: 0 = off-screen, 1 = peek (25lvh), 2 = half (50lvh), 3 = full (content height)
 const DETENTS = ['25lvh', '50lvh'] as const;
 
 const SNAP_TO_DETENT: Record<SheetSnap, number> = {
@@ -32,6 +32,16 @@ interface SilkSheetProps {
   className?: string;
 }
 
+/**
+ * Silk-powered bottom sheet with scroll-to-drag handoff.
+ *
+ * Silk automatically handles:
+ * - At non-last detents (peek, half): swipe gestures move the sheet
+ * - At last detent (full): swipe gestures scroll the content
+ * - Scroll at top + pull down: hands off from scroll to sheet drag
+ *
+ * We just set scrollGesture="auto" and let Silk coordinate.
+ */
 export function SilkSheet({
   snap,
   onSnapChange,
@@ -40,17 +50,9 @@ export function SilkSheet({
 }: SilkSheetProps) {
   const isPresented = snap !== 'hidden';
   const activeDetent = SNAP_TO_DETENT[snap] ?? 1;
-
-  // Track whether sheet reached last detent (full) — enables content scrolling
-  const [scrollEnabled, setScrollEnabled] = useState(false);
   const viewRef = useRef<HTMLDivElement>(null);
 
-  // Prevent re-entrant updates during stepping
-  const travelStatusRef = useRef<string>('idleOutside');
-
-  // Track the last programmatic snap to ignore Silk echoing it back.
-  // When we set activeDetent from our snap prop, Silk fires onActiveDetentChange
-  // with the same value — we should ignore that echo to prevent loops.
+  // Track the last programmatic detent to ignore Silk echoing it back.
   const lastProgrammaticDetent = useRef(activeDetent);
   useEffect(() => {
     lastProgrammaticDetent.current = activeDetent;
@@ -58,49 +60,19 @@ export function SilkSheet({
 
   const handlePresentedChange = useCallback(
     (presented: boolean) => {
-      if (!presented) {
-        onSnapChange('hidden');
-      }
+      if (!presented) onSnapChange('hidden');
     },
     [onSnapChange],
   );
 
   const handleActiveDetentChange = useCallback(
     (detent: number) => {
-      // Skip if this is Silk echoing back our own programmatic detent change
+      // Skip echoes of our own programmatic detent changes
       if (detent === lastProgrammaticDetent.current) return;
       const newSnap = DETENT_TO_SNAP[detent];
-      if (newSnap !== undefined) {
-        onSnapChange(newSnap);
-      }
+      if (newSnap !== undefined) onSnapChange(newSnap);
     },
     [onSnapChange],
-  );
-
-  // Enable scroll at half or full state (detent >= 2)
-  const handleTravelRangeChange = useCallback(
-    ({ start }: { start: number; end: number }) => {
-      setScrollEnabled(start >= 2);
-    },
-    [],
-  );
-
-  const handleTravelStatusChange = useCallback((status: string) => {
-    travelStatusRef.current = status;
-    // Reset scroll when dismissed
-    if (status === 'idleOutside') {
-      setScrollEnabled(false);
-    }
-  }, []);
-
-  // Dismiss keyboard when dragging down from full
-  const handleTravel = useCallback(
-    ({ progress }: { progress: number }) => {
-      if (progress < 0.999 && viewRef.current) {
-        viewRef.current.focus();
-      }
-    },
-    [],
   );
 
   return (
@@ -124,9 +96,6 @@ export function SilkSheet({
           swipeOvershoot={true}
           nativeFocusScrollPrevention={true}
           enteringAnimationSettings={{ skip: true }}
-          onTravelRangeChange={handleTravelRangeChange}
-          onTravelStatusChange={handleTravelStatusChange}
-          onTravel={handleTravel}
         >
           <Sheet.Outlet
             stackingAnimation={{
@@ -138,27 +107,27 @@ export function SilkSheet({
           <Sheet.Content className="SilkSheet-content">
             <Sheet.BleedingBackground className="bg-bg-primary" />
 
-            {/* SpecialWrapper required for Safari when inertOutside={false} without backdrop */}
             <Sheet.SpecialWrapper.Root>
               <Sheet.SpecialWrapper.Content>
-                {/* Drag handle — Silk renders its own <span> indicator, styled via CSS */}
                 <Sheet.Handle className="flex flex-shrink-0 cursor-grab items-center justify-center bg-bg-primary py-2 active:cursor-grabbing" />
 
-                {/* Scrollable content — native overflow scroll (Silk's Scroll.View
-                    can't detect overflow because flex ancestors don't constrain height).
-                    overscroll-behavior-y: contain prevents scroll chaining to body. */}
-                <div
-                  className="SilkSheet-scroll"
-                  style={{
-                    overflowY: scrollEnabled ? 'auto' : 'hidden',
-                    WebkitOverflowScrolling: 'touch',
-                    overscrollBehaviorY: 'contain',
-                  }}
-                >
-                  {children}
-                  {/* Bottom safe-area spacer for iPhone home indicator */}
-                  <div style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
-                </div>
+                {/* Silk handles scroll-to-drag handoff automatically:
+                    - Non-last detent: gestures move the sheet
+                    - Last detent: gestures scroll content
+                    - Scroll at top + pull down: transitions from scroll to sheet drag */}
+                <Scroll.Root>
+                  <Scroll.View
+                    className="SilkSheet-scroll"
+                    scrollGesture="auto"
+                    safeArea="layout-viewport"
+                    onScrollStart={{ dismissKeyboard: true }}
+                  >
+                    <Scroll.Content>
+                      {children}
+                      <div style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
+                    </Scroll.Content>
+                  </Scroll.View>
+                </Scroll.Root>
               </Sheet.SpecialWrapper.Content>
             </Sheet.SpecialWrapper.Root>
           </Sheet.Content>
