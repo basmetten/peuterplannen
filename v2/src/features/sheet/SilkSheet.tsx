@@ -6,18 +6,17 @@ import type { SheetSnap } from './sheetMachine';
 
 /* ---------- Snap ↔ Detent mapping ---------- */
 
-// Silk detents: 0 = off-screen, 1 = peek (25lvh), 2 = half (50lvh), 3 = full (content height)
+// Silk detents: 1 = peek (25lvh), 2 = half (50lvh), 3 = full (content height)
+// The browse sheet is always presented (no hidden state).
 const DETENTS = ['25lvh', '50lvh'] as const;
 
 const SNAP_TO_DETENT: Record<SheetSnap, number> = {
-  hidden: 0,
   peek: 1,
   half: 2,
   full: 3,
 };
 
 const DETENT_TO_SNAP: Record<number, SheetSnap> = {
-  0: 'hidden',
   1: 'peek',
   2: 'half',
   3: 'full',
@@ -28,6 +27,10 @@ const DETENT_TO_SNAP: Record<number, SheetSnap> = {
 interface SilkSheetProps {
   snap: SheetSnap;
   onSnapChange: (snap: SheetSnap) => void;
+  /** Per-frame travel progress callback (0 = offscreen, 1 = full). Drives map dimming. */
+  onTravelProgress?: (progress: number, progressAtDetents: Record<number, number>) => void;
+  /** Fires when travel status changes (entering, stepping, idleInside, etc.) */
+  onTravelStatusChange?: (status: string) => void;
   children: ReactNode;
   className?: string;
 }
@@ -45,10 +48,12 @@ interface SilkSheetProps {
 export function SilkSheet({
   snap,
   onSnapChange,
+  onTravelProgress,
+  onTravelStatusChange,
   children,
   className = '',
 }: SilkSheetProps) {
-  const isPresented = snap !== 'hidden';
+  const isPresented = true; // Browse sheet is always visible
   const activeDetent = SNAP_TO_DETENT[snap] ?? 1;
   const viewRef = useRef<HTMLDivElement>(null);
 
@@ -60,7 +65,7 @@ export function SilkSheet({
 
   const handlePresentedChange = useCallback(
     (presented: boolean) => {
-      if (!presented) onSnapChange('hidden');
+      if (!presented) onSnapChange('peek'); // Browse sheet falls back to peek, never hides
     },
     [onSnapChange],
   );
@@ -73,6 +78,22 @@ export function SilkSheet({
       if (newSnap !== undefined) onSnapChange(newSnap);
     },
     [onSnapChange],
+  );
+
+  // Per-frame travel handler — drives map dimming and other travel-synced effects
+  const handleTravel = useCallback(
+    ({ progress, progressAtDetents }: { progress: number; range: unknown; progressAtDetents: Record<number, number> }) => {
+      onTravelProgress?.(progress, progressAtDetents);
+    },
+    [onTravelProgress],
+  );
+
+  // Travel status handler — e.g. freeze map during travel
+  const handleTravelStatusChange = useCallback(
+    (status: string) => {
+      onTravelStatusChange?.(status);
+    },
+    [onTravelStatusChange],
   );
 
   return (
@@ -96,6 +117,8 @@ export function SilkSheet({
           swipeOvershoot={true}
           nativeFocusScrollPrevention={true}
           enteringAnimationSettings={{ skip: true }}
+          onTravel={handleTravel}
+          onTravelStatusChange={handleTravelStatusChange}
         >
           <Sheet.Outlet
             stackingAnimation={{
@@ -109,7 +132,10 @@ export function SilkSheet({
 
             <Sheet.SpecialWrapper.Root>
               <Sheet.SpecialWrapper.Content>
-                <Sheet.Handle className="flex flex-shrink-0 cursor-grab items-center justify-center bg-bg-primary py-2 active:cursor-grabbing" />
+                <Sheet.Handle className="flex flex-shrink-0 cursor-grab items-center justify-center bg-bg-primary py-2 active:cursor-grabbing">
+                  {/* Grip pill — styled as JSX child, not via data-silk CSS selectors */}
+                  <div className="h-[5px] w-9 rounded-full" style={{ background: 'rgba(160, 130, 110, 0.30)' }} />
+                </Sheet.Handle>
 
                 {/* Silk handles scroll-to-drag handoff automatically:
                     - Non-last detent: gestures move the sheet
@@ -117,13 +143,14 @@ export function SilkSheet({
                     - Scroll at top + pull down: transitions from scroll to sheet drag */}
                 <Scroll.Root>
                   <Scroll.View
-                    className="SilkSheet-scroll"
                     scrollGesture="auto"
                     safeArea="layout-viewport"
                     onScrollStart={{ dismissKeyboard: true }}
                   >
                     <Scroll.Content>
-                      {children}
+                      <div className="bg-bg-primary">
+                        {children}
+                      </div>
                       <div style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
                     </Scroll.Content>
                   </Scroll.View>

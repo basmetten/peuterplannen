@@ -29,6 +29,18 @@ export default defineConfig({
       },
     },
     {
+      name: 'mobile-touch',
+      testMatch: /touch-gestures|sheet-navigation/,
+      use: {
+        // iPhone 14 with touch events enabled for gesture testing
+        ...devices['iPhone 14'],
+        viewport: { width: 390, height: 664 },
+        hasTouch: true,
+        isMobile: true,
+        deviceScaleFactor: 3,
+      },
+    },
+    {
       name: 'desktop',
       use: {
         ...devices['Desktop Chrome'],

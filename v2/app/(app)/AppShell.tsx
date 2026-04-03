@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useEffect, useRef, useState, Suspense } from 'react';
 import { useMachine } from '@xstate/react';
-import { SheetStack } from '@silk-hq/components';
+import { SheetStack, updateThemeColor } from '@silk-hq/components';
 import { useIsDesktop } from '@/hooks/useIsDesktop';
 import { MapContainer } from '@/features/map/MapContainer';
 import { SilkSheet } from '@/features/sheet/SilkSheet';
@@ -14,6 +14,8 @@ import { CardListSkeleton } from '@/components/patterns/CardSkeleton';
 import { DetailView } from '@/features/detail/DetailView';
 import { ClusterList } from '@/features/carousel/ClusterList';
 import { HomeContent } from '@/features/home/HomeContent';
+import { MobileHomeContent } from '@/features/home/MobileHomeContent';
+import { CategoryResultsContent } from '@/features/home/CategoryResultsContent';
 import { FavoritesList } from '@/features/favorites/FavoritesList';
 import { PlanView } from '@/features/plan/PlanView';
 import { GuideDetailView } from '@/features/guides/GuideDetailView';
@@ -27,6 +29,8 @@ import { useMapFreeze } from '@/hooks/useMapFreeze';
 import { SheetErrorBoundary } from '@/components/patterns/SheetErrorBoundary';
 import { trackDetailOpen, trackSearch, trackFilterApply } from '@/lib/analytics';
 import type { FilterState } from '@/features/filters/useFilters';
+import type { LocationType } from '@/domain/enums';
+import { LOCATION_TYPE_LABELS } from '@/domain/enums';
 import { haversine } from '@/lib/geo';
 
 interface AppShellProps {
@@ -67,6 +71,8 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
   const [showFavorites, setShowFavorites] = useState(false);
   const [showPlan, setShowPlan] = useState(false);
   const [guideSlug, setGuideSlug] = useState<string | null>(null);
+  const [activeCategoryFilter, setActiveCategoryFilter] = useState<LocationType | null>(null);
+  const [showGuideList, setShowGuideList] = useState(false);
 
   // Desktop nav section
   const [desktopSection, setDesktopSection] = useState<DesktopSection>('browse');
@@ -80,6 +86,34 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
   const mapInstanceRef = useRef<import('maplibre-gl').Map | null>(null);
   const { freeze: freezeMap, unfreeze: unfreezeMap } = useMapFreeze(mapInstanceRef);
 
+  // Map dim overlay opacity — driven by Silk onTravel per-frame callback
+  const mapDimRef = useRef<HTMLDivElement>(null);
+
+  // Per-frame travel handler: dims the map as browse sheet rises from peek→full
+  const handleTravelProgress = useCallback(
+    (progress: number, progressAtDetents: Record<number, number>) => {
+      const el = mapDimRef.current;
+      if (!el) return;
+      // Start dimming after peek detent, max dim at full
+      const peekProgress = progressAtDetents[1] ?? 0.25;
+      const dimProgress = Math.max(0, (progress - peekProgress) / (1 - peekProgress));
+      el.style.opacity = String(dimProgress * 0.12);
+    },
+    [],
+  );
+
+  // Freeze map during sheet travel for GPU stability
+  const handleTravelStatusChange = useCallback(
+    (status: string) => {
+      if (status === 'entering' || status === 'stepping') {
+        freezeMap();
+      } else if (status === 'idleInside' || status === 'idleOutside') {
+        unfreezeMap();
+      }
+    },
+    [freezeMap, unfreezeMap],
+  );
+
   const { snap, detailId, carouselLocationIds, carouselActiveId } = sheetState.context;
   const isDetailOpen = sheetState.matches('detail');
   const isCarouselOpen = sheetState.matches('carousel');
@@ -90,9 +124,26 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
     return () => setAppMapActive(false);
   }, [setAppMapActive]);
 
+  // Sync iOS status bar theme-color with sheet stacking state
+  useEffect(() => {
+    if (isDetailOpen || showFavorites || showPlan || guideSlug) {
+      // Slightly darker when stacked sheet is open (matches the dimmed backdrop)
+      updateThemeColor('#E2D8CF');
+    } else {
+      // Default: match the map tile edge color
+      updateThemeColor('#E8DED5');
+    }
+  }, [isDetailOpen, showFavorites, showPlan, guideSlug]);
+
   // Prevent circular URL ↔ state updates
   const isNavigatingRef = useRef(false);
   const initializedRef = useRef(false);
+
+  // Refs for layer state — used by popstate handler to avoid stale closures
+  const activeCategoryFilterRef = useRef(activeCategoryFilter);
+  activeCategoryFilterRef.current = activeCategoryFilter;
+  const showGuideListRef = useRef(showGuideList);
+  showGuideListRef.current = showGuideList;
 
   // Filter locations client-side
   const filteredLocations = useMemo(
@@ -163,7 +214,29 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
   // --- URL deep linking: back/forward ---
 
   useEffect(() => {
-    const handler = () => {
+    const handler = (e: PopStateEvent) => {
+      const state = e.state as Record<string, unknown> | null;
+
+      // Handle layer-based back navigation (category, guide list)
+      if (state?.layer === 'category') {
+        setActiveCategoryFilter(state.type as LocationType);
+        return;
+      }
+      if (state?.layer === 'guideList') {
+        setShowGuideList(true);
+        return;
+      }
+
+      // Close any open layer sheets on generic back (use refs to avoid stale closures)
+      if (activeCategoryFilterRef.current) {
+        setActiveCategoryFilter(null);
+        return;
+      }
+      if (showGuideListRef.current) {
+        setShowGuideList(false);
+        return;
+      }
+
       const url = new URL(window.location.href);
       const locatie = url.searchParams.get('locatie');
 
@@ -215,7 +288,7 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
     setTimeout(unfreezeMap, 500);
 
     if (isDetailOpen) {
-      if (newSnap === 'hidden' || newSnap === 'peek') {
+      if (newSnap === 'peek') {
         window.history.back();
       } else {
         sheetSend({ type: 'DRAG_END', snapTo: newSnap });
@@ -343,6 +416,16 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
     setShowPlan(true);
   }, []);
 
+  const handleCategoryTap = useCallback((type: LocationType) => {
+    setActiveCategoryFilter(type);
+    window.history.pushState({ layer: 'category', type }, '');
+  }, []);
+
+  const handleGuideListTap = useCallback(() => {
+    setShowGuideList(true);
+    window.history.pushState({ layer: 'guideList' }, '');
+  }, []);
+
   // Cluster locations (memoized for both mobile and desktop)
   const clusterLocations = useMemo(() => {
     if (!carouselLocationIds) return [];
@@ -393,6 +476,16 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
         leftOffset={isDesktop && !sidebarCollapsed ? SIDEBAR_WIDTH : 0}
         mapInstanceRef={mapInstanceRef}
       />
+
+      {/* Map dim overlay — opacity driven per-frame by Silk onTravel (mobile only) */}
+      {!isDesktop && (
+        <div
+          ref={mapDimRef}
+          className="pointer-events-none fixed inset-0 z-[29] bg-black"
+          style={{ opacity: 0 }}
+          aria-hidden
+        />
+      )}
 
       {/* Desktop sidebar collapse toggle */}
       {isDesktop && (
@@ -502,13 +595,76 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
       ) : (
         <Suspense>
           <SheetStack.Root>
-            {/* Layer 0: Home browse sheet — always present */}
-            <SilkSheet snap={snap} onSnapChange={handleSnapChange}>
-              <HomeContent {...homeContentProps} />
+            {/* Stacking dim overlay — dims map when detail/guide sheets stack above browse sheet */}
+            <SheetStack.Outlet
+              stackingAnimation={{
+                opacity: [0, 0.15] as [number, number],
+              }}
+              asChild
+            >
+              <div
+                style={{
+                  position: 'fixed',
+                  inset: 0,
+                  zIndex: 29,
+                  background: 'black',
+                  pointerEvents: 'none',
+                  opacity: 0,
+                }}
+                aria-hidden
+              />
+            </SheetStack.Outlet>
+
+            {/* Layer 0: Home browse sheet — always present, Apple Maps launchpad */}
+            <SilkSheet
+              snap={snap}
+              onSnapChange={handleSnapChange}
+              onTravelProgress={handleTravelProgress}
+              onTravelStatusChange={handleTravelStatusChange}
+            >
+              <MobileHomeContent
+                snap={snap}
+                locations={initialLocations}
+                guides={initialGuides}
+                onCardTap={handleCardTap}
+                onSearchFocus={handleSearchFocus}
+                onQueryChange={setQuery}
+                onCategoryTap={handleCategoryTap}
+                onGuideListTap={handleGuideListTap}
+                onFavoritesTap={handleFavoritesTap}
+                onPlanTap={handlePlanTap}
+              />
             </SilkSheet>
 
-            {/* Layer 1+: Stacked sheets */}
-            <StackedSheet presented={isDetailOpen} onClose={handleDetailClose}>
+            {/* Category results sheet — opens when a quick-filter row is tapped */}
+            <StackedSheet
+              presented={activeCategoryFilter !== null}
+              onClose={() => setActiveCategoryFilter(null)}
+              swipe={false}
+              title={activeCategoryFilter ? LOCATION_TYPE_LABELS[activeCategoryFilter] : 'Resultaten'}
+            >
+              {activeCategoryFilter && (
+                <CategoryResultsContent
+                  category={activeCategoryFilter}
+                  allLocations={initialLocations}
+                  onCardTap={handleCardTap}
+                  onClose={() => setActiveCategoryFilter(null)}
+                />
+              )}
+            </StackedSheet>
+
+            {/* Guide list sheet — opens when Gidsen entry row is tapped */}
+            <StackedSheet presented={showGuideList} onClose={() => setShowGuideList(false)} swipe={false} title="Gidsen">
+              {showGuideList && (
+                <GuideListView
+                  guides={initialGuides}
+                  onGuideTap={handleGuideTap}
+                />
+              )}
+            </StackedSheet>
+
+            {/* Layer 1+: Stacked sheets (with a11y titles via sheetRole="dialog") */}
+            <StackedSheet presented={isDetailOpen} onClose={handleDetailClose} title="Locatie details">
               {isDetailOpen && detailId && (
                 <SheetErrorBoundary>
                   <DetailView
@@ -521,7 +677,7 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
               )}
             </StackedSheet>
 
-            <StackedSheet presented={isCarouselOpen} onClose={() => sheetSend({ type: 'CAROUSEL_CLOSE' })}>
+            <StackedSheet presented={isCarouselOpen} onClose={() => sheetSend({ type: 'CAROUSEL_CLOSE' })} title="Locaties in dit gebied">
               {isCarouselOpen && clusterLocations.length > 0 && (
                 <ClusterList
                   locations={clusterLocations}
@@ -531,7 +687,7 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
               )}
             </StackedSheet>
 
-            <StackedSheet presented={showFavorites} onClose={() => setShowFavorites(false)}>
+            <StackedSheet presented={showFavorites} onClose={() => setShowFavorites(false)} title="Bewaarde locaties">
               {showFavorites && (
                 <FavoritesList
                   locations={initialLocations}
@@ -541,7 +697,7 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
               )}
             </StackedSheet>
 
-            <StackedSheet presented={showPlan} onClose={() => setShowPlan(false)}>
+            <StackedSheet presented={showPlan} onClose={() => setShowPlan(false)} title="Dagplan">
               {showPlan && (
                 <PlanView
                   locations={initialLocations}
@@ -551,7 +707,7 @@ export function AppShell({ initialLocations, initialGuides }: AppShellProps) {
               )}
             </StackedSheet>
 
-            <StackedSheet presented={guideSlug !== null} onClose={() => setGuideSlug(null)} swipe={false}>
+            <StackedSheet presented={guideSlug !== null} onClose={() => setGuideSlug(null)} swipe={false} title="Gids">
               {guideSlug && (
                 <GuideDetailView
                   slug={guideSlug}

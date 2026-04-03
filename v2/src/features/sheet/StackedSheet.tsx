@@ -1,12 +1,14 @@
 'use client';
 
-import { type ReactNode, useCallback } from 'react';
+import { type ReactNode, useCallback, useState } from 'react';
 import { Sheet, Scroll } from '@silk-hq/components';
 
 interface StackedSheetProps {
   presented: boolean;
   onClose: () => void;
   swipe?: boolean;
+  /** Accessible title for screen readers */
+  title?: string;
   children: ReactNode;
 }
 
@@ -19,8 +21,12 @@ export function StackedSheet({
   presented,
   onClose,
   swipe = true,
+  title,
   children,
 }: StackedSheetProps) {
+  // Track whether exit animation is complete before allowing unmount
+  const [safeToUnmount, setSafeToUnmount] = useState(!presented);
+
   const handlePresentedChange = useCallback(
     (p: boolean) => {
       if (!p) onClose();
@@ -28,12 +34,21 @@ export function StackedSheet({
     [onClose],
   );
 
+  const handleSafeToUnmount = useCallback((safe: boolean) => {
+    setSafeToUnmount(safe);
+  }, []);
+
+  // Keep content mounted until exit animation completes
+  const shouldRenderContent = presented || !safeToUnmount;
+
   return (
     <Sheet.Root
       license="non-commercial"
       presented={presented}
       onPresentedChange={handlePresentedChange}
+      onSafeToUnmountChange={handleSafeToUnmount}
       forComponent="closest"
+      sheetRole="dialog"
     >
       <Sheet.Portal>
         <Sheet.View
@@ -46,6 +61,7 @@ export function StackedSheet({
         >
           <Sheet.Content className="SilkSheet-content">
             <Sheet.BleedingBackground className="bg-bg-primary" />
+            {title && <Sheet.Title className="sr-only">{title}</Sheet.Title>}
 
             <Sheet.SpecialWrapper.Root>
               <Sheet.SpecialWrapper.Content>
@@ -73,14 +89,15 @@ export function StackedSheet({
 
                 <Scroll.Root>
                   <Scroll.View
-                    className="SilkSheet-scroll"
                     scrollGesture="auto"
-                    {...(swipe ? { scrollGestureTrap: { yEnd: true } } : {})}
+                    scrollGestureTrap={{ yEnd: true }}
                     safeArea="layout-viewport"
                     onScrollStart={{ dismissKeyboard: true }}
                   >
                     <Scroll.Content>
-                      {children}
+                      <div className="bg-bg-primary">
+                        {children}
+                      </div>
                       <div style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
                     </Scroll.Content>
                   </Scroll.View>

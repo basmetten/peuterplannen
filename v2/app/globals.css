@@ -142,7 +142,10 @@
 }
 
 /* === Silk Sheet styles === */
-/* Only visual styling — let Silk handle its own layout and scroll. */
+/* IMPORTANT: Never set layout/overflow/display on Silk internal elements (data-silk).
+   Silk manages Scroll.View, Sheet.Content, and Handle sizing with !important rules.
+   Only apply visual styles (background, border-radius, shadow, color) here.
+   Handle grip is styled via className prop on Sheet.Handle, not via data-silk selectors. */
 
 .SilkSheet-content {
   background: var(--color-bg-primary);
@@ -151,38 +154,8 @@
   box-shadow: var(--shadow-sheet);
 }
 
-.SilkSheet-scroll {
-  background: var(--color-bg-primary);
-}
-
-/* Silk handle: a16 is the touch-target container, a17 is the grip indicator.
-   In Silk v0.10.1 both attrs can be on the SAME element.
-   We need the container full-width + centered, with a small grip pill inside. */
-.SilkSheet-content [data-silk~="a16"] {
-  width: 100% !important;
-  height: auto !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  padding: 8px 0 !important;
-}
-
-/* The grip pill: rendered via a17's ::after or as the element itself.
-   When a16 and a17 share the same element, override width back to auto
-   (the pill is drawn by the ::after pseudo-element or a child span). */
-.SilkSheet-content [data-silk~="a16"][data-silk~="a17"]::after {
-  content: '' !important;
-  display: block !important;
-  width: 36px !important;
-  height: 5px !important;
-  border-radius: 999px !important;
-  background: rgba(160, 130, 110, 0.30) !important;
-}
-
-/* Hide Silk's default indicator when we're using our own */
-.SilkSheet-content [data-silk~="a16"][data-silk~="a17"] > * {
-  display: none !important;
-}
+/* Do NOT style .SilkSheet-scroll (Scroll.View) — Silk owns this element's layout.
+   Background goes on Sheet.Content or Scroll.Content children instead. */
 
 /* === Base Styles === */
 html {

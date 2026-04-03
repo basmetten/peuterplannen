@@ -5,7 +5,6 @@ import { createMachine, assign } from 'xstate';
  * These match Apple Maps behavior.
  */
 export const SNAP_POINTS = {
-  hidden: 0,
   peek: 25,
   half: 50,
   full: 92,
@@ -84,7 +83,7 @@ export const sheetMachine = createMachine({
         },
         DRAG_END: [
           {
-            guard: ({ event }) => event.snapTo === 'hidden' || event.snapTo === 'peek',
+            guard: ({ event }) => event.snapTo === 'peek',
             target: 'browse',
             actions: assign({
               detailId: null,

@@ -15,7 +15,7 @@ interface SheetProps {
 
 export function Sheet({ snap, onSnapChange, stickyHeader, children, className = '' }: SheetProps) {
   const snapPct = SNAP_POINTS[snap];
-  const isHidden = snap === 'hidden';
+  const isHidden = false; // Browse sheet is always visible
 
   const {
     sheetRef,

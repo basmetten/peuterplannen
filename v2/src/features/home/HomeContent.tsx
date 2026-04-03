@@ -8,7 +8,6 @@ import { LocationCard } from '@/components/patterns/LocationCard';
 import { EmptyFilterState } from '@/components/patterns/EmptyState';
 import { HorizontalCardStrip } from '@/components/patterns/HorizontalCardStrip';
 import { OptimizedImage } from '@/components/patterns/OptimizedImage';
-import { GuideCard } from '@/components/patterns/GuideCard';
 import { LOCATION_TYPE_LABELS, TYPE_COLORS } from '@/domain/enums';
 import type { LocationType } from '@/domain/enums';
 import type { LocationSummary } from '@/domain/types';
@@ -98,21 +97,6 @@ export function HomeContent({
                 activeTypes={filters.types}
                 onTypeToggle={onTypeToggle}
               />
-
-              {/* Guides strip */}
-              {guides.length > 0 && (
-                <SectionStrip title="Gidsen" className="mt-1">
-                  <HorizontalCardStrip className="px-4">
-                    {guides.map(guide => (
-                      <GuideCard
-                        key={guide.slug}
-                        guide={guide}
-                        onTap={onGuideTap}
-                      />
-                    ))}
-                  </HorizontalCardStrip>
-                </SectionStrip>
-              )}
 
               {/* Bewaard preview */}
               {favCount > 0 && (
