@@ -54,6 +54,7 @@ export function StackedSheet({
         <Sheet.View
           className="SilkSheet-view"
           contentPlacement="bottom"
+          detents={['50lvh']}
           swipeDismissal={swipe}
           inertOutside={false}
           nativeEdgeSwipePrevention={true}

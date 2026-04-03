@@ -63,12 +63,17 @@ export function MobileHomeContent({
                 Ontdek in de buurt
               </h2>
             </div>
+
+            {/* Guides entry — prominent, above category rows */}
+            <div className="px-4 pb-2">
+              <GuidesEntryRow onTap={onGuideListTap} guideCount={guides.length} />
+            </div>
+
             <QuickFilterList onCategoryTap={onCategoryTap} />
           </div>
 
-          {/* Section: Guides + personal (consistent row style, all inside px-4) */}
+          {/* Section: Personal (Bewaard / Plan) */}
           <div className="flex flex-col gap-[3px] px-4">
-            <GuidesEntryRow onTap={onGuideListTap} guideCount={guides.length} />
 
             {favCount > 0 && (
               <MiniEntryRow
