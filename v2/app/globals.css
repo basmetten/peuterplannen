@@ -159,9 +159,14 @@
   overflow: hidden;
 }
 
+/* Native scroll container inside the sheet.
+   Silk's SpecialWrapper (b0, b1) are display:block — flex:1 can't
+   constrain height. We use explicit height via CSS calc instead.
+   92lvh = sheet content height, 40px = handle height. */
 .SilkSheet-scroll {
-  flex: 1;
+  height: calc(92lvh - 40px);
   background: var(--color-bg-primary);
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Silk handle: a16 is the touch-target container, a17 is the grip indicator.

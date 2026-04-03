@@ -1,7 +1,7 @@
 'use client';
 
 import { type ReactNode, useCallback, useRef, useState, useEffect } from 'react';
-import { Sheet, Scroll } from '@silk-hq/components';
+import { Sheet } from '@silk-hq/components';
 import type { SheetSnap } from './sheetMachine';
 
 /* ---------- Snap ↔ Detent mapping ---------- */
@@ -144,22 +144,21 @@ export function SilkSheet({
                 {/* Drag handle — Silk renders its own <span> indicator, styled via CSS */}
                 <Sheet.Handle className="flex flex-shrink-0 cursor-grab items-center justify-center bg-bg-primary py-2 active:cursor-grabbing" />
 
-                {/* Scrollable content with scroll-to-drag handoff */}
-                <Scroll.Root>
-                  <Scroll.View
-                    className="SilkSheet-scroll"
-                    scrollGesture={scrollEnabled ? 'auto' : false}
-                    scrollGestureTrap={{ yEnd: true }}
-                    safeArea="layout-viewport"
-                    onScrollStart={{ dismissKeyboard: true }}
-                  >
-                    <Scroll.Content>
-                      {children}
-                      {/* Bottom safe-area spacer for iPhone home indicator */}
-                      <div style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
-                    </Scroll.Content>
-                  </Scroll.View>
-                </Scroll.Root>
+                {/* Scrollable content — native overflow scroll (Silk's Scroll.View
+                    can't detect overflow because flex ancestors don't constrain height).
+                    overscroll-behavior-y: contain prevents scroll chaining to body. */}
+                <div
+                  className="SilkSheet-scroll"
+                  style={{
+                    overflowY: scrollEnabled ? 'auto' : 'hidden',
+                    WebkitOverflowScrolling: 'touch',
+                    overscrollBehaviorY: 'contain',
+                  }}
+                >
+                  {children}
+                  {/* Bottom safe-area spacer for iPhone home indicator */}
+                  <div style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} />
+                </div>
               </Sheet.SpecialWrapper.Content>
             </Sheet.SpecialWrapper.Root>
           </Sheet.Content>
